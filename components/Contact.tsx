@@ -68,7 +68,7 @@ const Contact = () => {
             Let's Start Your <span className="text-gradient">Automation Journey</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            Ready to transform your workflows? Get in touch with us today and discover 
+            Ready to transform your workflows? Get in touch with us today and discover
             how we can help automate your processes and boost productivity.
           </p>
         </motion.div>
@@ -82,7 +82,7 @@ const Contact = () => {
             className="bg-secondary-50 rounded-2xl p-8"
           >
             <h3 className="text-2xl font-bold text-secondary-900 mb-6">Send us a message</h3>
-            
+
             {isSubmitted && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}

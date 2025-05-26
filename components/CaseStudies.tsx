@@ -35,7 +35,7 @@ const CaseStudies = () => {
         "Zero data loss incidents",
         "24/7 automated monitoring"
       ],
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center",
       technologies: ["Python", "Apache Airflow", "PostgreSQL", "Docker"],
       duration: "4 months",
       teamSize: "5 people"
@@ -73,7 +73,7 @@ const CaseStudies = () => {
             Success <span className="text-gradient">Stories</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            Real results from real clients. See how we've helped organizations 
+            Real results from real clients. See how we've helped organizations
             transform their operations through intelligent automation.
           </p>
         </motion.div>
@@ -100,7 +100,7 @@ const CaseStudies = () => {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  
+
                   {/* Floating Stats */}
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -124,11 +124,11 @@ const CaseStudies = () => {
                     {study.industry}
                   </span>
                 </div>
-                
+
                 <h3 className="text-3xl font-bold text-secondary-900 mb-4">
                   {study.title}
                 </h3>
-                
+
                 <p className="text-lg text-secondary-600 mb-6">
                   <strong>Client:</strong> {study.client}
                 </p>
@@ -139,7 +139,7 @@ const CaseStudies = () => {
                     <h4 className="text-lg font-semibold text-secondary-900 mb-2">Challenge</h4>
                     <p className="text-secondary-600">{study.challenge}</p>
                   </div>
-                  
+
                   <div>
                     <h4 className="text-lg font-semibold text-secondary-900 mb-2">Solution</h4>
                     <p className="text-secondary-600">{study.solution}</p>
@@ -201,7 +201,7 @@ const CaseStudies = () => {
               Ready to Write Your Success Story?
             </h3>
             <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-              Let's discuss how we can help transform your organization with 
+              Let's discuss how we can help transform your organization with
               intelligent automation solutions tailored to your specific needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

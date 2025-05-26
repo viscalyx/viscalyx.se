@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Calendar, Clock, User, ArrowRight, Tag } from 'lucide-react'
+import { Calendar, Clock, User, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
@@ -84,19 +84,19 @@ const BlogPage = () => {
 
   const categories = [
     "All",
-    "Automation", 
-    "PowerShell", 
-    "DevOps", 
-    "Open Source", 
-    "Kubernetes", 
-    "Infrastructure", 
+    "Automation",
+    "PowerShell",
+    "DevOps",
+    "Open Source",
+    "Kubernetes",
+    "Infrastructure",
     "Monitoring"
   ]
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="gradient-bg section-padding pt-32">
         <div className="container-custom">
@@ -110,7 +110,7 @@ const BlogPage = () => {
               Insights & <span className="text-gradient">Knowledge</span>
             </h1>
             <p className="text-xl text-secondary-600 mb-8">
-              Stay updated with the latest trends, best practices, and insights in 
+              Stay updated with the latest trends, best practices, and insights in
               automation, DevOps, and open-source development.
             </p>
           </motion.div>
@@ -128,7 +128,7 @@ const BlogPage = () => {
             className="mb-16"
           >
             <h2 className="text-3xl font-bold text-secondary-900 mb-8">Featured Article</h2>
-            
+
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
               <div className="grid lg:grid-cols-2">
                 <div className="relative h-64 lg:h-full">
@@ -144,7 +144,7 @@ const BlogPage = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
                   <div className="flex items-center text-secondary-500 text-sm mb-4">
                     <User className="w-4 h-4 mr-2" />
@@ -156,15 +156,15 @@ const BlogPage = () => {
                     <Clock className="w-4 h-4 mr-2" />
                     {featuredPost.readTime}
                   </div>
-                  
+
                   <h3 className="text-2xl lg:text-3xl font-bold text-secondary-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">
                     {featuredPost.title}
                   </h3>
-                  
+
                   <p className="text-secondary-600 mb-6 leading-relaxed">
                     {featuredPost.excerpt}
                   </p>
-                  
+
                   <Link
                     href={`/blog/${featuredPost.slug}`}
                     className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
@@ -230,7 +230,7 @@ const BlogPage = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center text-secondary-500 text-xs mb-3">
                     <Calendar className="w-3 h-3 mr-1" />
@@ -239,15 +239,15 @@ const BlogPage = () => {
                     <Clock className="w-3 h-3 mr-1" />
                     {post.readTime}
                   </div>
-                  
+
                   <h3 className="text-lg font-bold text-secondary-900 mb-3 group-hover:text-primary-600 transition-colors duration-300 line-clamp-2">
                     {post.title}
                   </h3>
-                  
+
                   <p className="text-secondary-600 text-sm mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
-                  
+
                   <Link
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center text-primary-600 hover:text-primary-700 text-sm font-medium group"

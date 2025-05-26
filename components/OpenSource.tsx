@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Star, GitBranch, Users, ExternalLink } from 'lucide-react'
+import { Github, Star, Users, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 
 const OpenSource = () => {
@@ -53,7 +53,7 @@ const OpenSource = () => {
             Open Source <span className="text-gradient">Contributions</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            We believe in giving back to the community. Our active contributions to open-source 
+            We believe in giving back to the community. Our active contributions to open-source
             projects help advance automation and DevOps practices worldwide.
           </p>
         </motion.div>
@@ -106,7 +106,7 @@ const OpenSource = () => {
                   <Github className="w-5 h-5 text-secondary-700" />
                 </div>
               </div>
-              
+
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-xl font-semibold text-secondary-900 group-hover:text-primary-600 transition-colors">
@@ -117,17 +117,17 @@ const OpenSource = () => {
                     {project.stars}
                   </div>
                 </div>
-                
+
                 <p className="text-secondary-600 mb-4">
                   {project.description}
                 </p>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
                     <span className="text-sm text-secondary-600">{project.language}</span>
                   </div>
-                  
+
                   <motion.a
                     href={project.link}
                     target="_blank"
@@ -158,7 +158,7 @@ const OpenSource = () => {
               Join Our Open Source Community
             </h3>
             <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-              Collaborate with us on cutting-edge automation tools and contribute to 
+              Collaborate with us on cutting-edge automation tools and contribute to
               projects that impact thousands of developers worldwide.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -67,12 +67,12 @@ const Footer = () => {
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-gradient mb-4">Viscalyx</h3>
               <p className="text-secondary-300 leading-relaxed">
-                Empowering organizations through intelligent automation. We deliver 
-                cutting-edge solutions that transform workflows and boost productivity 
+                Empowering organizations through intelligent automation. We deliver
+                cutting-edge solutions that transform workflows and boost productivity
                 for developers and IT professionals worldwide.
               </p>
             </div>
-            
+
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <motion.a
@@ -174,7 +174,7 @@ const Footer = () => {
                 Get the latest insights on automation, DevOps, and open-source contributions.
               </p>
             </div>
-            
+
             <div className="mt-6 lg:mt-0 lg:flex-shrink-0">
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
@@ -208,7 +208,7 @@ const Footer = () => {
             <p className="text-secondary-400 text-sm">
               © {currentYear} Viscalyx. All rights reserved.
             </p>
-            
+
             <div className="flex items-center mt-4 sm:mt-0 text-secondary-400 text-sm">
               <span>Made with</span>
               <motion.div

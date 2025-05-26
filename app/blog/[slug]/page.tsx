@@ -8,7 +8,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 const BlogPost = ({ params }: { params: { slug: string } }) => {
-  // Mock blog post data - in a real app, this would come from a CMS or API
+  // Mock blog post data - in a real app, this would fetch based on params.slug
+  // console.log('Blog slug:', params.slug); // Uncomment when implementing dynamic content
   const post = {
     title: "The Future of Infrastructure Automation: Trends for 2025",
     content: `
@@ -53,7 +54,7 @@ Configuration WebServerConfig {
             Ensure = 'Present'
             Name = 'Web-Server'
         }
-        
+
         File WebContent {
             Ensure = 'Present'
             DestinationPath = 'C:\\inetpub\\wwwroot\\index.html'
@@ -114,7 +115,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50">
         <div className="container-custom">
@@ -123,25 +124,25 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Link 
+            <Link
               href="/blog"
               className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               Back to Blog
             </Link>
-            
+
             <div className="max-w-4xl">
               <div className="mb-6">
                 <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                   {post.category}
                 </span>
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
                 {post.title}
               </h1>
-              
+
               <div className="flex items-center text-secondary-600 mb-8">
                 <div className="flex items-center mr-6">
                   <User className="w-4 h-4 mr-2" />
@@ -156,7 +157,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   {post.readTime}
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-4">
                 <span className="text-secondary-600">Share:</span>
                 <button className="bg-white p-2 rounded-lg shadow hover:shadow-md transition-shadow">
@@ -195,7 +196,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   {post.content}
                 </div>
               </div>
-              
+
               {/* Tags */}
               <div className="mt-12 pt-8 border-t border-secondary-200">
                 <div className="flex items-center flex-wrap gap-3">
@@ -210,7 +211,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   ))}
                 </div>
               </div>
-              
+
               {/* Author Bio */}
               <div className="mt-12 p-8 bg-secondary-50 rounded-xl">
                 <div className="flex items-start space-x-4">
@@ -220,9 +221,9 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   <div>
                     <h3 className="text-xl font-bold text-secondary-900 mb-2">Johan Ljunggren</h3>
                     <p className="text-secondary-600 mb-4">
-                      Founder and Lead Consultant at Viscalyx. Johan is a passionate automation expert 
-                      with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. 
-                      He's an active contributor to the PowerShell DSC Community and helps organizations 
+                      Founder and Lead Consultant at Viscalyx. Johan is a passionate automation expert
+                      with over 8 years of experience in DevOps, PowerShell DSC, and open-source development.
+                      He's an active contributor to the PowerShell DSC Community and helps organizations
                       worldwide streamline their infrastructure management.
                     </p>
                     <div className="flex space-x-4">

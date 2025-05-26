@@ -13,7 +13,7 @@ const Testimonials = () => {
       name: "Sarah Johnson",
       role: "DevOps Engineer",
       company: "TechCorp Solutions",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b7c1?w=120&h=120&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=face",
       content: "Viscalyx transformed our deployment pipeline completely. What used to take hours now happens in minutes. Their automation expertise is unmatched.",
       rating: 5,
       project: "CI/CD Pipeline Automation"
@@ -69,7 +69,7 @@ const Testimonials = () => {
             What Our <span className="text-gradient">Clients Say</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            Don't just take our word for it. Here's what industry professionals 
+            Don't just take our word for it. Here's what industry professionals
             say about working with Viscalyx.
           </p>
         </motion.div>
@@ -153,8 +153,8 @@ const Testimonials = () => {
                   key={index}
                   onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    index === currentIndex 
-                      ? 'bg-primary-600' 
+                    index === currentIndex
+                      ? 'bg-primary-600'
                       : 'bg-secondary-300 hover:bg-secondary-400'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
@@ -187,7 +187,7 @@ const Testimonials = () => {
             { number: "200+", label: "Projects Delivered" },
             { number: "99%", label: "Client Satisfaction" },
             { number: "24/7", label: "Support Available" }
-          ].map((stat, index) => (
+          ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">
                 {stat.number}

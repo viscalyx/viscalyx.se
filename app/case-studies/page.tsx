@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowLeft, Building, Users, Clock, TrendingUp, CheckCircle, ExternalLink } from 'lucide-react'
+import { Building, Users, Clock, TrendingUp, CheckCircle, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
@@ -41,7 +41,7 @@ const CaseStudiesPage = () => {
         "24/7 automated monitoring",
         "99.99% data accuracy improvement"
       ],
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=500&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center",
       technologies: ["Python", "Apache Airflow", "PostgreSQL", "Docker", "Kubernetes"],
       duration: "4 months",
       teamSize: "5 people",
@@ -128,7 +128,7 @@ const CaseStudiesPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="gradient-bg section-padding pt-32">
         <div className="container-custom">
@@ -142,7 +142,7 @@ const CaseStudiesPage = () => {
               Success <span className="text-gradient">Stories</span>
             </h1>
             <p className="text-xl text-secondary-600 mb-8">
-              Discover how we've helped organizations across industries transform 
+              Discover how we've helped organizations across industries transform
               their operations with intelligent automation solutions.
             </p>
           </motion.div>
@@ -174,7 +174,7 @@ const CaseStudiesPage = () => {
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    
+
                     {/* Floating Stats */}
                     <div className="absolute bottom-6 left-6 right-6">
                       <div className="grid grid-cols-3 gap-3">
@@ -200,7 +200,7 @@ const CaseStudiesPage = () => {
                   <h2 className="text-3xl font-bold text-secondary-900 mb-4">
                     {study.title}
                   </h2>
-                  
+
                   <p className="text-lg text-primary-600 font-medium mb-6">
                     {study.client}
                   </p>
@@ -211,7 +211,7 @@ const CaseStudiesPage = () => {
                       <h3 className="text-lg font-semibold text-secondary-900 mb-2">Challenge</h3>
                       <p className="text-secondary-600 text-sm">{study.challenge}</p>
                     </div>
-                    
+
                     <div>
                       <h3 className="text-lg font-semibold text-secondary-900 mb-2">Solution</h3>
                       <p className="text-secondary-600 text-sm">{study.solution}</p>
@@ -279,7 +279,7 @@ const CaseStudiesPage = () => {
                 Ready to Transform Your Organization?
               </h2>
               <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-                Every successful automation journey starts with understanding your unique challenges. 
+                Every successful automation journey starts with understanding your unique challenges.
                 Let's discuss how we can help you achieve similar results.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
