@@ -3,8 +3,34 @@
 import { motion } from 'framer-motion'
 import { Github, Star, Users, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter, usePathname } from 'next/navigation'
 
 const OpenSource = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation or external links
+      if (href.startsWith('http')) {
+        window.open(href, '_blank', 'noopener noreferrer')
+      } else {
+        router.push(href)
+      }
+    }
+  }
   const contributions = [
     {
       name: "PowerShell DSC Community",
@@ -173,15 +199,15 @@ const OpenSource = () => {
                 <Github className="w-5 h-5 mr-2" />
                 Follow on GitHub
               </motion.a>
-              <motion.a
-                href="#contact"
+              <motion.button
+                onClick={() => handleNavigation('#contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
               >
                 <Users className="w-5 h-5 mr-2" />
                 Collaborate With Us
-              </motion.a>
+              </motion.button>
             </div>
           </div>
         </motion.div>

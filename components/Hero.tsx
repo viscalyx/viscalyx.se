@@ -3,8 +3,31 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Zap, Code } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter, usePathname } from 'next/navigation'
 
 const Hero = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation
+      router.push(href)
+    }
+  }
+
   return (
     <section className="min-h-screen gradient-bg flex items-center justify-center relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -81,23 +104,23 @@ const Hero = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <motion.a
-                href="#contact"
+              <motion.button
+                onClick={() => handleNavigation('#contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary inline-flex items-center justify-center group"
               >
                 Start Your Project
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
-              <motion.a
-                href="#services"
+              </motion.button>
+              <motion.button
+                onClick={() => handleNavigation('#services')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary inline-flex items-center justify-center"
               >
                 Explore Services
-              </motion.a>
+              </motion.button>
             </motion.div>
 
             {/* Stats */}

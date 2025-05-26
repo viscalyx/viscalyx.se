@@ -3,10 +3,14 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Code, Zap } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +19,27 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleNavigation = (href: string, name: string) => {
+    setIsMenuOpen(false)
+
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation
+      router.push(href)
+    }
+  }
 
   const menuItems = [
     { name: 'About', href: '#about' },
@@ -38,42 +63,43 @@ const Header = () => {
       <nav className="container-custom section-padding py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-2"
-          >
-            <div className="relative">
-              <Zap className="h-8 w-8 text-primary-600" />
-              <Code className="h-4 w-4 text-primary-800 absolute -bottom-1 -right-1" />
-            </div>
-            <span className="text-2xl font-bold text-gradient">Viscalyx</span>
-          </motion.div>
+          <Link href="/" className="flex items-center space-x-2">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-2"
+            >
+              <div className="relative">
+                <Zap className="h-8 w-8 text-primary-600" />
+                <Code className="h-4 w-4 text-primary-800 absolute -bottom-1 -right-1" />
+              </div>
+              <span className="text-2xl font-bold text-gradient">Viscalyx</span>
+            </motion.div>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => (
-              <motion.a
+              <motion.button
                 key={item.name}
-                href={item.href}
+                onClick={() => handleNavigation(item.href, item.name)}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="text-secondary-700 hover:text-primary-600 font-medium transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
+                className="text-secondary-700 hover:text-primary-600 font-medium transition-colors duration-200 bg-transparent border-none cursor-pointer"
               >
                 {item.name}
-              </motion.a>
+              </motion.button>
             ))}
-            <motion.a
-              href="#contact"
+            <motion.button
+              onClick={() => handleNavigation('#contact', 'Contact')}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               className="btn-primary"
             >
               Get Started
-            </motion.a>
+            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -97,22 +123,24 @@ const Header = () => {
             >
               <div className="py-4 space-y-2">
                 {menuItems.map((item, index) => (
-                  <motion.a
+                  <motion.button
                     key={item.name}
-                    href={item.href}
+                    onClick={() => handleNavigation(item.href, item.name)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="block px-6 py-3 text-secondary-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200"
-                    onClick={() => setIsMenuOpen(false)}
+                    className="block w-full text-left px-6 py-3 text-secondary-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 bg-transparent border-none cursor-pointer"
                   >
                     {item.name}
-                  </motion.a>
+                  </motion.button>
                 ))}
                 <div className="px-6 pt-2">
-                  <a href="#contact" className="btn-primary w-full text-center block">
+                  <button
+                    onClick={() => handleNavigation('#contact', 'Contact')}
+                    className="btn-primary w-full text-center block"
+                  >
                     Get Started
-                  </a>
+                  </button>
                 </div>
               </div>
             </motion.div>

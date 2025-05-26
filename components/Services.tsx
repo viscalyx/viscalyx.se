@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import {
   Cog,
   Server,
@@ -17,6 +18,27 @@ import {
 const Services = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation
+      router.push(href)
+    }
+  }
 
   const services = [
     {
@@ -157,23 +179,23 @@ const Services = () => {
               Get a free consultation to explore the possibilities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="#contact"
+              <motion.button
+                onClick={() => handleNavigation('#contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary inline-flex items-center justify-center"
               >
                 Get Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </motion.a>
-              <motion.a
-                href="#expertise"
+              </motion.button>
+              <motion.button
+                onClick={() => handleNavigation('#expertise')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary inline-flex items-center justify-center"
               >
                 View Our Expertise
-              </motion.a>
+              </motion.button>
             </div>
           </div>
         </motion.div>

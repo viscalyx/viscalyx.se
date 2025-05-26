@@ -3,9 +3,40 @@
 import { motion } from 'framer-motion'
 import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation or external links
+      if (href === '#') {
+        // Do nothing for placeholder links
+        return
+      } else if (href.startsWith('http')) {
+        // External link
+        window.open(href, '_blank', 'noopener noreferrer')
+      } else {
+        // Internal page navigation
+        router.push(href)
+      }
+    }
+  }
 
   const footerLinks = {
     company: [
@@ -102,12 +133,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
+                  <button
+                    onClick={() => handleNavigation(link.href)}
+                    className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline bg-transparent border-none cursor-pointer text-left p-0"
                   >
                     {link.name}
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -124,13 +155,23 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
-                  >
-                    {link.name}
-                    <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
-                  </Link>
+                  {link.href.startsWith('#') || link.href === '#' ? (
+                    <button
+                      onClick={() => handleNavigation(link.href)}
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
+                    >
+                      {link.name}
+                      <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
+                    >
+                      {link.name}
+                      <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -147,12 +188,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.href.startsWith('#') ? (
+                    <button
+                      onClick={() => handleNavigation(link.href)}
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline bg-transparent border-none cursor-pointer text-left p-0"
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

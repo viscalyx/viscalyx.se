@@ -3,8 +3,30 @@
 import { motion } from 'framer-motion'
 import { TrendingUp, Clock, Users, CheckCircle } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter, usePathname } from 'next/navigation'
 
 const CaseStudies = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a section link (starts with #)
+    if (href.startsWith('#')) {
+      // If we're not on the home page, navigate to home first
+      if (pathname !== '/') {
+        router.push(`/${href}`)
+      } else {
+        // We're already on home page, just scroll to section
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
+    } else {
+      // Regular page navigation
+      router.push(href)
+    }
+  }
   const caseStudies = [
     {
       title: "Global E-commerce Platform Automation",
@@ -205,22 +227,22 @@ const CaseStudies = () => {
               intelligent automation solutions tailored to your specific needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="#contact"
+              <motion.button
+                onClick={() => handleNavigation('#contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50"
               >
                 Start Your Project
-              </motion.a>
-              <motion.a
-                href="/case-studies"
+              </motion.button>
+              <motion.button
+                onClick={() => handleNavigation('/case-studies')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600"
               >
                 View All Case Studies
-              </motion.a>
+              </motion.button>
             </div>
           </div>
         </motion.div>
