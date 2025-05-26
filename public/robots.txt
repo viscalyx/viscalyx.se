@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Block AI training crawlers
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://viscalyx.com/sitemap.xml
