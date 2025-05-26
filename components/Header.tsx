@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Code, Zap } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -68,10 +69,13 @@ const Header = () => {
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
             >
-              <div className="relative">
-                <Zap className="h-8 w-8 text-primary-600" />
-                <Code className="h-4 w-4 text-primary-800 absolute -bottom-1 -right-1" />
-              </div>
+              <Image
+                src="/viscalyx_logo_128x128.png"
+                alt="Viscalyx Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
               <span className="text-2xl font-bold text-gradient">Viscalyx</span>
             </motion.div>
           </Link>
