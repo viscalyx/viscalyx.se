@@ -70,7 +70,7 @@ const Header = () => {
               className="flex items-center space-x-2"
             >
               <Image
-                src="/viscalyx_logo_128x128.png"
+                src="/favicon-32x32.png"
                 alt="Viscalyx Logo"
                 width={32}
                 height={32}
