@@ -16,21 +16,21 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setActiveId(entry.target.id)
           }
         })
       },
       {
-        rootMargin: '-80px 0px -80% 0px', // Adjust based on header height
+        rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
         threshold: 0.1,
       }
     )
 
     // Observe all headings
-    items.forEach((item) => {
+    items.forEach(item => {
       const element = document.getElementById(item.id)
       if (element) {
         observer.observe(element)
@@ -47,34 +47,33 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items }) => {
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       })
     }
   }
 
   return (
-    <ul className="space-y-2 text-sm">
+    <div className="space-y-1">
       {items.map((item, index) => (
-        <li 
-          key={index} 
+        <div
+          key={index}
           className={`${
-            item.level === 3 ? 'ml-4' : 
-            item.level === 4 ? 'ml-8' : ''
+            item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
           }`}
         >
           <button
             onClick={() => handleClick(item.id)}
-            className={`text-left w-full transition-colors block py-1 hover:underline ${
+            className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 ${
               activeId === item.id
-                ? 'text-primary-600 font-medium'
+                ? 'text-primary-600 font-medium bg-primary-50 border-l-2 border-primary-600'
                 : 'text-secondary-600 hover:text-primary-600'
             }`}
           >
-            {item.text}
+            <span className="text-sm leading-relaxed">{item.text}</span>
           </button>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   )
 }
 

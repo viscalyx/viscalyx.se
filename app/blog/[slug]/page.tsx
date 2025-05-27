@@ -257,8 +257,39 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid lg:grid-cols-4 gap-12">
+            {' '}
             {/* Main Content */}{' '}
             <div className="lg:col-span-3">
+              {/* Mobile Table of Contents */}
+              {tableOfContents.length > 0 && (
+                <div className="lg:hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                  <details className="group">
+                    <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900">
+                      <div className="flex items-center">
+                        <BookOpen className="w-5 h-5 mr-2" />
+                        Table of Contents
+                      </div>
+                      <svg
+                        className="w-5 h-5 transition-transform group-open:rotate-180"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </summary>
+                    <div className="mt-4">
+                      <TableOfContents items={tableOfContents} />
+                    </div>
+                  </details>
+                </div>
+              )}
+
               <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 prose-p:text-secondary-700 prose-a:text-primary-600 prose-code:text-primary-600 prose-pre:bg-secondary-50 prose-headings:scroll-mt-24">
                 <div
                   dangerouslySetInnerHTML={{ __html: contentWithIds }}
@@ -323,47 +354,51 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>{' '}
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              {' '}
-              {/* Table of Contents */}
-              {tableOfContents.length > 0 && (
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-                  <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Table of Contents
+              <div className="sticky top-8 space-y-8 max-h-[calc(100vh-4rem)] overflow-y-auto hidden lg:block">
+                {/* Table of Contents */}
+                {tableOfContents.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-lg p-6">
+                    <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
+                      <BookOpen className="w-5 h-5 mr-2" />
+                      Table of Contents
+                    </h3>
+                    <div className="max-h-80 overflow-y-auto">
+                      <TableOfContents items={tableOfContents} />
+                    </div>
+                  </div>
+                )}
+
+                {/* Related Posts */}
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-bold text-secondary-900 mb-4">
+                    Related Articles
                   </h3>
-                  <TableOfContents items={tableOfContents} />
-                </div>
-              )}
-              {/* Related Posts */}
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold text-secondary-900 mb-4">
-                  Related Articles
-                </h3>
-                <div className="space-y-4">
-                  {relatedPosts.map(relatedPost => (
-                    <Link
-                      key={relatedPost.slug}
-                      href={`/blog/${relatedPost.slug}`}
-                      className="flex space-x-3 group"
-                    >
-                      <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                        <Image
-                          src={relatedPost.image}
-                          alt={relatedPost.title}
-                          fill
-                          className="object-cover transition-transform group-hover:scale-110"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-medium text-secondary-900 group-hover:text-primary-600 transition-colors line-clamp-2">
-                          {relatedPost.title}
-                        </h4>
-                      </div>
-                    </Link>
-                  ))}
+                  <div className="space-y-4">
+                    {relatedPosts.map(relatedPost => (
+                      <Link
+                        key={relatedPost.slug}
+                        href={`/blog/${relatedPost.slug}`}
+                        className="flex space-x-3 group"
+                      >
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                          <Image
+                            src={relatedPost.image}
+                            alt={relatedPost.title}
+                            fill
+                            className="object-cover transition-transform group-hover:scale-110"
+                          />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-secondary-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                            {relatedPost.title}
+                          </h4>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
