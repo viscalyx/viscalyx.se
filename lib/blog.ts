@@ -74,11 +74,13 @@ export async function getPostData(slug: string): Promise<BlogPost | null> {
       date: data.date || new Date().toISOString().split('T')[0],
       author: data.author || 'Unknown Author',
       excerpt: data.excerpt || '',
-      image: data.image || 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
+      image:
+        data.image ||
+        'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
       tags: data.tags || [],
       readTime: data.readTime || '5 min read',
       category,
-      content: contentHtml
+      content: contentHtml,
     }
   } catch (error) {
     console.error(`Error reading blog post ${slug}:`, error)
@@ -105,7 +107,9 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
   }
 
   // Sort posts by date (newest first)
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return posts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
 }
 
 // Get featured post (most recent)
@@ -115,16 +119,19 @@ export async function getFeaturedPost(): Promise<BlogPostMetadata | null> {
 }
 
 // Get related posts by tags or category
-export async function getRelatedPosts(currentSlug: string, category?: string, limit: number = 3): Promise<BlogPostMetadata[]> {
+export async function getRelatedPosts(
+  currentSlug: string,
+  category?: string,
+  limit: number = 3
+): Promise<BlogPostMetadata[]> {
   const allPosts = await getAllPosts()
 
-  let relatedPosts = allPosts
-    .filter(post => post.slug !== currentSlug)
+  let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
 
   // If category is provided, find posts with matching category or tags
   if (category) {
-    relatedPosts = relatedPosts.filter(post =>
-      post.category === category || post.tags.includes(category)
+    relatedPosts = relatedPosts.filter(
+      post => post.category === category || post.tags.includes(category)
     )
   }
 

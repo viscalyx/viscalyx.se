@@ -1,10 +1,19 @@
 export const metadata = {
   title: {
-    default: 'Viscalyx - Automation Consulting for Developers & IT Professionals',
-    template: '%s | Viscalyx'
+    default:
+      'Viscalyx - Automation Consulting for Developers & IT Professionals',
+    template: '%s | Viscalyx',
   },
-  description: 'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
-  keywords: ['automation', 'PowerShell DSC', 'DevOps', 'infrastructure', 'consulting', 'IT automation'],
+  description:
+    'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
+  keywords: [
+    'automation',
+    'PowerShell DSC',
+    'DevOps',
+    'infrastructure',
+    'consulting',
+    'IT automation',
+  ],
   authors: [{ name: 'Viscalyx' }],
   creator: 'Viscalyx',
   publisher: 'Viscalyx',
@@ -22,7 +31,8 @@ export const metadata = {
     locale: 'en_US',
     url: 'https://viscalyx.se',
     title: 'Viscalyx - Automation Consulting for Developers & IT Professionals',
-    description: 'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
+    description:
+      'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
     siteName: 'Viscalyx',
     images: [
       {
@@ -36,8 +46,11 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Viscalyx - Automation Consulting for Developers & IT Professionals',
-    description: 'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
-    images: ['https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&h=630&fit=crop&crop=center'],
+    description:
+      'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
+    images: [
+      'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&h=630&fit=crop&crop=center',
+    ],
   },
   robots: {
     index: true,

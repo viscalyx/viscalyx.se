@@ -1,7 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Twitter, Mail, ExternalLink, Heart } from 'lucide-react'
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Mail,
+  ExternalLink,
+  Heart,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -43,43 +50,43 @@ const Footer = () => {
       { name: 'About Us', href: '#about' },
       { name: 'Services', href: '#services' },
       { name: 'Expertise', href: '#expertise' },
-      { name: 'Open Source', href: '#open-source' }
+      { name: 'Open Source', href: '#open-source' },
     ],
     resources: [
       { name: 'Blog', href: '/blog' },
       { name: 'Case Studies', href: '/case-studies' },
       { name: 'Documentation', href: '#' },
-      { name: 'Community', href: '#' }
+      { name: 'Community', href: '#' },
     ],
     support: [
       { name: 'Contact Us', href: '#contact' },
       { name: 'FAQ', href: '#' },
       { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' }
-    ]
+      { name: 'Terms of Service', href: '/terms' },
+    ],
   }
 
   const socialLinks = [
     {
       name: 'GitHub',
       href: 'https://github.com/viscalyx',
-      icon: Github
+      icon: Github,
     },
     {
       name: 'LinkedIn',
       href: 'https://linkedin.com/company/viscalyx',
-      icon: Linkedin
+      icon: Linkedin,
     },
     {
       name: 'Twitter',
       href: 'https://twitter.com/viscalyx',
-      icon: Twitter
+      icon: Twitter,
     },
     {
       name: 'Email',
       href: 'mailto:hello@viscalyx.com',
-      icon: Mail
-    }
+      icon: Mail,
+    },
   ]
 
   return (
@@ -96,16 +103,19 @@ const Footer = () => {
             className="lg:col-span-2"
           >
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-gradient mb-4">Viscalyx</h3>
+              <h3 className="text-2xl font-bold text-gradient mb-4">
+                Viscalyx
+              </h3>
               <p className="text-secondary-300 leading-relaxed">
-                Empowering organizations through intelligent automation. We deliver
-                cutting-edge solutions that transform workflows and boost productivity
-                for developers and IT professionals worldwide.
+                Empowering organizations through intelligent automation. We
+                deliver cutting-edge solutions that transform workflows and
+                boost productivity for developers and IT professionals
+                worldwide.
               </p>
             </div>
 
             <div className="flex space-x-4">
-              {socialLinks.map((social) => (
+              {socialLinks.map(social => (
                 <motion.a
                   key={social.name}
                   href={social.href}
@@ -131,7 +141,7 @@ const Footer = () => {
           >
             <h4 className="text-lg font-semibold mb-6">Company</h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
+              {footerLinks.company.map(link => (
                 <li key={link.name}>
                   <button
                     onClick={() => handleNavigation(link.href)}
@@ -153,7 +163,7 @@ const Footer = () => {
           >
             <h4 className="text-lg font-semibold mb-6">Resources</h4>
             <ul className="space-y-3">
-              {footerLinks.resources.map((link) => (
+              {footerLinks.resources.map(link => (
                 <li key={link.name}>
                   {link.href.startsWith('#') || link.href === '#' ? (
                     <button
@@ -186,7 +196,7 @@ const Footer = () => {
           >
             <h4 className="text-lg font-semibold mb-6">Support</h4>
             <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
+              {footerLinks.support.map(link => (
                 <li key={link.name}>
                   {link.href.startsWith('#') ? (
                     <button
@@ -221,7 +231,8 @@ const Footer = () => {
             <div className="lg:max-w-xl">
               <h4 className="text-xl font-semibold mb-2">Stay Updated</h4>
               <p className="text-secondary-300">
-                Get the latest insights on automation, DevOps, and open-source contributions.
+                Get the latest insights on automation, DevOps, and open-source
+                contributions.
               </p>
             </div>
 

@@ -8,29 +8,33 @@ import Image from 'next/image'
 
 const About = () => {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   const values = [
     {
       icon: Target,
-      title: "Precision & Excellence",
-      description: "Every automation solution is crafted with meticulous attention to detail and tested thoroughly."
+      title: 'Precision & Excellence',
+      description:
+        'Every automation solution is crafted with meticulous attention to detail and tested thoroughly.',
     },
     {
       icon: Users,
-      title: "Client-Centric Approach",
-      description: "Understanding your unique challenges to deliver tailored solutions that fit your workflow."
+      title: 'Client-Centric Approach',
+      description:
+        'Understanding your unique challenges to deliver tailored solutions that fit your workflow.',
     },
     {
       icon: Lightbulb,
-      title: "Innovation First",
-      description: "Leveraging cutting-edge technologies and best practices to solve complex problems."
+      title: 'Innovation First',
+      description:
+        'Leveraging cutting-edge technologies and best practices to solve complex problems.',
     },
     {
       icon: Award,
-      title: "Open Source Commitment",
-      description: "Actively contributing to the community and sharing knowledge through open-source projects."
-    }
+      title: 'Open Source Commitment',
+      description:
+        'Actively contributing to the community and sharing knowledge through open-source projects.',
+    },
   ]
 
   return (
@@ -70,9 +74,11 @@ const About = () => {
               transition={{ delay: 0.4 }}
               className="text-lg text-secondary-600 leading-relaxed"
             >
-              Viscalyx is a specialized consulting company dedicated to transforming how developers and IT professionals work.
-              As a sole proprietorship, we provide personalized, high-quality automation solutions that eliminate repetitive tasks
-              and streamline complex workflows.
+              Viscalyx is a specialized consulting company dedicated to
+              transforming how developers and IT professionals work. As a sole
+              proprietorship, we provide personalized, high-quality automation
+              solutions that eliminate repetitive tasks and streamline complex
+              workflows.
             </motion.p>
 
             <motion.p
@@ -81,9 +87,11 @@ const About = () => {
               transition={{ delay: 0.5 }}
               className="text-lg text-secondary-600 leading-relaxed"
             >
-              Our expertise spans PowerShell Desired State Configuration (DSC), DevOps automation, and contributing to
-              open-source projects that benefit the entire development community. We believe in building solutions that
-              not only solve immediate problems but also create lasting value.
+              Our expertise spans PowerShell Desired State Configuration (DSC),
+              DevOps automation, and contributing to open-source projects that
+              benefit the entire development community. We believe in building
+              solutions that not only solve immediate problems but also create
+              lasting value.
             </motion.p>
 
             {/* Values Grid */}
@@ -100,8 +108,12 @@ const About = () => {
                     <value.icon className="h-6 w-6 text-primary-600 mt-1" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-secondary-900 mb-1">{value.title}</h3>
-                    <p className="text-secondary-600 text-sm">{value.description}</p>
+                    <h3 className="font-semibold text-secondary-900 mb-1">
+                      {value.title}
+                    </h3>
+                    <p className="text-secondary-600 text-sm">
+                      {value.description}
+                    </p>
                   </div>
                 </motion.div>
               ))}
@@ -118,7 +130,11 @@ const About = () => {
             <div className="relative">
               <motion.div
                 animate={{ rotate: [0, 5, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
                 className="relative z-10"
               >
                 <Image
@@ -139,12 +155,18 @@ const About = () => {
               >
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary-600">98%</div>
-                    <div className="text-sm text-secondary-600">Task Reduction</div>
+                    <div className="text-2xl font-bold text-primary-600">
+                      98%
+                    </div>
+                    <div className="text-sm text-secondary-600">
+                      Task Reduction
+                    </div>
                   </div>
                   <div className="w-px h-12 bg-secondary-200" />
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary-600">24/7</div>
+                    <div className="text-2xl font-bold text-primary-600">
+                      24/7
+                    </div>
                     <div className="text-sm text-secondary-600">Automation</div>
                   </div>
                 </div>

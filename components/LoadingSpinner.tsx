@@ -8,17 +8,20 @@ interface LoadingSpinnerProps {
   color?: 'primary' | 'white' | 'secondary'
 }
 
-const LoadingSpinner = ({ size = 'md', color = 'primary' }: LoadingSpinnerProps) => {
+const LoadingSpinner = ({
+  size = 'md',
+  color = 'primary',
+}: LoadingSpinnerProps) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
-    lg: 'w-8 h-8'
+    lg: 'w-8 h-8',
   }
 
   const colorClasses = {
     primary: 'text-primary-600',
     white: 'text-white',
-    secondary: 'text-secondary-600'
+    secondary: 'text-secondary-600',
   }
 
   return (
@@ -27,7 +30,9 @@ const LoadingSpinner = ({ size = 'md', color = 'primary' }: LoadingSpinnerProps)
       animate={{ opacity: 1 }}
       className="flex items-center justify-center"
     >
-      <Loader2 className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`} />
+      <Loader2
+        className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`}
+      />
     </motion.div>
   )
 }

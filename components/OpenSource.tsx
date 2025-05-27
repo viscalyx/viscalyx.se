@@ -33,36 +33,42 @@ const OpenSource = () => {
   }
   const contributions = [
     {
-      name: "PowerShell DSC Community",
-      description: "Active contributor to PowerShell Desired State Configuration resources and modules",
-      language: "PowerShell",
-      stars: "2.5k",
-      link: "https://github.com/dsccommunity",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop&crop=center"
+      name: 'PowerShell DSC Community',
+      description:
+        'Active contributor to PowerShell Desired State Configuration resources and modules',
+      language: 'PowerShell',
+      stars: '2.5k',
+      link: 'https://github.com/dsccommunity',
+      image:
+        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop&crop=center',
     },
     {
-      name: "DSC Resource Kit",
-      description: "Comprehensive collection of DSC resources for Windows configuration management",
-      language: "PowerShell",
-      stars: "1.8k",
-      link: "https://github.com/PowerShell/DscResources",
-      image: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400&h=300&fit=crop&crop=center"
+      name: 'DSC Resource Kit',
+      description:
+        'Comprehensive collection of DSC resources for Windows configuration management',
+      language: 'PowerShell',
+      stars: '1.8k',
+      link: 'https://github.com/PowerShell/DscResources',
+      image:
+        'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400&h=300&fit=crop&crop=center',
     },
     {
-      name: "Automation Toolkits",
-      description: "Modern automation tools and frameworks for DevOps professionals",
-      language: "TypeScript",
-      stars: "892",
-      link: "#",
-      image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop&crop=center"
-    }
+      name: 'Automation Toolkits',
+      description:
+        'Modern automation tools and frameworks for DevOps professionals',
+      language: 'TypeScript',
+      stars: '892',
+      link: '#',
+      image:
+        'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop&crop=center',
+    },
   ]
 
   const stats = [
-    { label: "Open Source Projects", value: "50+" },
-    { label: "GitHub Stars", value: "5.2k" },
-    { label: "Community Members", value: "12k+" },
-    { label: "Years Contributing", value: "8+" }
+    { label: 'Open Source Projects', value: '50+' },
+    { label: 'GitHub Stars', value: '5.2k' },
+    { label: 'Community Members', value: '12k+' },
+    { label: 'Years Contributing', value: '8+' },
   ]
 
   return (
@@ -79,8 +85,9 @@ const OpenSource = () => {
             Open Source <span className="text-gradient">Contributions</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            We believe in giving back to the community. Our active contributions to open-source
-            projects help advance automation and DevOps practices worldwide.
+            We believe in giving back to the community. Our active contributions
+            to open-source projects help advance automation and DevOps practices
+            worldwide.
           </p>
         </motion.div>
 
@@ -144,14 +151,14 @@ const OpenSource = () => {
                   </div>
                 </div>
 
-                <p className="text-secondary-600 mb-4">
-                  {project.description}
-                </p>
+                <p className="text-secondary-600 mb-4">{project.description}</p>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
-                    <span className="text-sm text-secondary-600">{project.language}</span>
+                    <span className="text-sm text-secondary-600">
+                      {project.language}
+                    </span>
                   </div>
 
                   <motion.a
@@ -184,8 +191,9 @@ const OpenSource = () => {
               Join Our Open Source Community
             </h3>
             <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-              Collaborate with us on cutting-edge automation tools and contribute to
-              projects that impact thousands of developers worldwide.
+              Collaborate with us on cutting-edge automation tools and
+              contribute to projects that impact thousands of developers
+              worldwide.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a

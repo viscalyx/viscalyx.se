@@ -10,49 +10,59 @@ const Testimonials = () => {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "DevOps Engineer",
-      company: "TechCorp Solutions",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=face",
-      content: "Viscalyx transformed our deployment pipeline completely. What used to take hours now happens in minutes. Their automation expertise is unmatched.",
+      name: 'Sarah Johnson',
+      role: 'DevOps Engineer',
+      company: 'TechCorp Solutions',
+      image:
+        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=face',
+      content:
+        'Viscalyx transformed our deployment pipeline completely. What used to take hours now happens in minutes. Their automation expertise is unmatched.',
       rating: 5,
-      project: "CI/CD Pipeline Automation"
+      project: 'CI/CD Pipeline Automation',
     },
     {
-      name: "Michael Chen",
-      role: "Senior Software Engineer",
-      company: "Innovation Labs",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face",
-      content: "The PowerShell DSC implementations by Viscalyx saved us months of manual configuration work. Incredible attention to detail and technical depth.",
+      name: 'Michael Chen',
+      role: 'Senior Software Engineer',
+      company: 'Innovation Labs',
+      image:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face',
+      content:
+        'The PowerShell DSC implementations by Viscalyx saved us months of manual configuration work. Incredible attention to detail and technical depth.',
       rating: 5,
-      project: "Infrastructure as Code"
+      project: 'Infrastructure as Code',
     },
     {
-      name: "Emily Rodriguez",
-      role: "IT Director",
-      company: "Global Finance Inc",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face",
-      content: "Working with Viscalyx was a game-changer. They didn't just deliver automation - they taught our team best practices that we continue to use today.",
+      name: 'Emily Rodriguez',
+      role: 'IT Director',
+      company: 'Global Finance Inc',
+      image:
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face',
+      content:
+        "Working with Viscalyx was a game-changer. They didn't just deliver automation - they taught our team best practices that we continue to use today.",
       rating: 5,
-      project: "Enterprise Automation Platform"
+      project: 'Enterprise Automation Platform',
     },
     {
-      name: "David Kim",
-      role: "Cloud Architect",
-      company: "StartupVenture",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face",
-      content: "The open-source contributions and knowledge sharing approach of Viscalyx shows their commitment to the community. True professionals.",
+      name: 'David Kim',
+      role: 'Cloud Architect',
+      company: 'StartupVenture',
+      image:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face',
+      content:
+        'The open-source contributions and knowledge sharing approach of Viscalyx shows their commitment to the community. True professionals.',
       rating: 5,
-      project: "Cloud Migration Automation"
-    }
+      project: 'Cloud Migration Automation',
+    },
   ]
 
   const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length)
+    setCurrentIndex(prev => (prev + 1) % testimonials.length)
   }
 
   const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+    setCurrentIndex(
+      prev => (prev - 1 + testimonials.length) % testimonials.length
+    )
   }
 
   return (
@@ -91,7 +101,10 @@ const Testimonials = () => {
             {/* Rating */}
             <div className="flex items-center mb-6">
               {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                <Star
+                  key={i}
+                  className="w-5 h-5 text-yellow-400 fill-current"
+                />
               ))}
             </div>
 
@@ -183,11 +196,11 @@ const Testimonials = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
         >
           {[
-            { number: "50+", label: "Happy Clients" },
-            { number: "200+", label: "Projects Delivered" },
-            { number: "99%", label: "Client Satisfaction" },
-            { number: "24/7", label: "Support Available" }
-          ].map((stat) => (
+            { number: '50+', label: 'Happy Clients' },
+            { number: '200+', label: 'Projects Delivered' },
+            { number: '99%', label: 'Client Satisfaction' },
+            { number: '24/7', label: 'Support Available' },
+          ].map(stat => (
             <div key={stat.label} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">
                 {stat.number}

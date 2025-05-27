@@ -1,11 +1,11 @@
 ---
-title: "Infrastructure as Code Best Practices"
-date: "2024-12-15"
-author: "Viscalyx Team"
-excerpt: "Learn the fundamental principles and best practices for implementing Infrastructure as Code in your organization."
-image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center"
-tags: ["Infrastructure as Code", "DevOps", "Automation", "Best Practices"]
-readTime: "8 min read"
+title: 'Infrastructure as Code Best Practices'
+date: '2024-12-15'
+author: 'Viscalyx Team'
+excerpt: 'Learn the fundamental principles and best practices for implementing Infrastructure as Code in your organization.'
+image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
+tags: ['Infrastructure as Code', 'DevOps', 'Automation', 'Best Practices']
+readTime: '8 min read'
 ---
 
 # Infrastructure as Code Best Practices
@@ -51,6 +51,7 @@ Create new infrastructure rather than modifying existing resources. This practic
 ### 3. Version Everything
 
 Store all infrastructure code in version control and tag releases. This enables:
+
 - Rollback capabilities
 - Change tracking
 - Collaboration
@@ -84,6 +85,7 @@ Create reusable modules for common infrastructure patterns. This reduces duplica
 ### Implement Proper Testing
 
 Test your infrastructure code just like application code:
+
 - **Syntax validation**: Check for syntax errors
 - **Unit tests**: Test individual modules
 - **Integration tests**: Verify complete deployments
@@ -99,6 +101,7 @@ Test your infrastructure code just like application code:
 ### Monitoring and Observability
 
 Implement comprehensive monitoring for your infrastructure:
+
 - Resource utilization
 - Performance metrics
 - Security events

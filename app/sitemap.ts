@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
-    }
+    },
   ]
 
   // Dynamic blog pages
@@ -61,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date('2024-12-05'),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
-    }
+    },
   ].filter(fallback => !posts.some(post => fallback.url.includes(post.slug)))
 
   return [...staticPages, ...blogPages, ...fallbackBlogPages]

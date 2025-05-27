@@ -54,7 +54,8 @@
   }
 
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
@@ -85,7 +86,12 @@
     @apply text-secondary-700 leading-relaxed;
   }
 
-  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
     @apply text-secondary-900 font-bold;
   }
 
@@ -105,7 +111,8 @@
     @apply mb-4;
   }
 
-  .prose ul, .prose ol {
+  .prose ul,
+  .prose ol {
     @apply mb-4 ml-6;
   }
 

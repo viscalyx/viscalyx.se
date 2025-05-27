@@ -3,7 +3,13 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, Calendar, User, ExternalLink, CheckCircle } from 'lucide-react'
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  ExternalLink,
+  CheckCircle,
+} from 'lucide-react'
 
 const caseStudies = [
   {
@@ -13,22 +19,32 @@ const caseStudies = [
     industry: 'Financial Services',
     duration: '6 months',
     date: '2024',
-    image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&crop=center',
-    overview: 'Complete automation of manual processes across multiple departments, reducing operational costs by 60% and improving efficiency.',
-    challenge: 'The client was struggling with manual, time-consuming processes across their operations, compliance, and reporting departments. This led to high operational costs, human errors, and delayed reporting cycles.',
-    solution: 'We implemented a comprehensive automation platform using PowerShell DSC, Azure DevOps, and custom workflows to automate infrastructure provisioning, compliance checking, and report generation.',
-    technologies: ['PowerShell DSC', 'Azure DevOps', 'Azure Automation', 'Power Platform', 'REST APIs'],
+    image:
+      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&crop=center',
+    overview:
+      'Complete automation of manual processes across multiple departments, reducing operational costs by 60% and improving efficiency.',
+    challenge:
+      'The client was struggling with manual, time-consuming processes across their operations, compliance, and reporting departments. This led to high operational costs, human errors, and delayed reporting cycles.',
+    solution:
+      'We implemented a comprehensive automation platform using PowerShell DSC, Azure DevOps, and custom workflows to automate infrastructure provisioning, compliance checking, and report generation.',
+    technologies: [
+      'PowerShell DSC',
+      'Azure DevOps',
+      'Azure Automation',
+      'Power Platform',
+      'REST APIs',
+    ],
     results: [
       { metric: '60%', description: 'Reduction in operational costs' },
       { metric: '90%', description: 'Decrease in manual errors' },
       { metric: '75%', description: 'Faster reporting cycles' },
-      { metric: '40', description: 'Hours saved per week' }
+      { metric: '40', description: 'Hours saved per week' },
     ],
     testimonial: {
-      text: "Viscalyx transformed our operations completely. The automation platform they built has saved us hundreds of hours and significantly reduced our operational costs.",
-      author: "Sarah Johnson",
-      role: "Director of Operations"
-    }
+      text: 'Viscalyx transformed our operations completely. The automation platform they built has saved us hundreds of hours and significantly reduced our operational costs.',
+      author: 'Sarah Johnson',
+      role: 'Director of Operations',
+    },
   },
   {
     slug: 'devops-transformation',
@@ -37,22 +53,32 @@ const caseStudies = [
     industry: 'Healthcare Technology',
     duration: '4 months',
     date: '2024',
-    image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=600&fit=crop&crop=center',
-    overview: 'Complete DevOps transformation enabling faster deployments, improved reliability, and scalable infrastructure.',
-    challenge: 'A growing healthcare startup needed to scale their development operations while maintaining HIPAA compliance and ensuring zero-downtime deployments.',
-    solution: 'We implemented a complete CI/CD pipeline with automated testing, compliance checks, and blue-green deployments using Azure DevOps and PowerShell DSC.',
-    technologies: ['PowerShell DSC', 'Azure DevOps', 'Docker', 'Kubernetes', 'Terraform'],
+    image:
+      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=600&fit=crop&crop=center',
+    overview:
+      'Complete DevOps transformation enabling faster deployments, improved reliability, and scalable infrastructure.',
+    challenge:
+      'A growing healthcare startup needed to scale their development operations while maintaining HIPAA compliance and ensuring zero-downtime deployments.',
+    solution:
+      'We implemented a complete CI/CD pipeline with automated testing, compliance checks, and blue-green deployments using Azure DevOps and PowerShell DSC.',
+    technologies: [
+      'PowerShell DSC',
+      'Azure DevOps',
+      'Docker',
+      'Kubernetes',
+      'Terraform',
+    ],
     results: [
       { metric: '10x', description: 'Faster deployment cycles' },
       { metric: '99.9%', description: 'System uptime achieved' },
       { metric: '100%', description: 'HIPAA compliance maintained' },
-      { metric: '50%', description: 'Reduction in deployment issues' }
+      { metric: '50%', description: 'Reduction in deployment issues' },
     ],
     testimonial: {
-      text: "The DevOps transformation Viscalyx delivered exceeded our expectations. We went from weekly deployments to multiple deployments per day with zero downtime.",
-      author: "Dr. Michael Chen",
-      role: "CTO"
-    }
+      text: 'The DevOps transformation Viscalyx delivered exceeded our expectations. We went from weekly deployments to multiple deployments per day with zero downtime.',
+      author: 'Dr. Michael Chen',
+      role: 'CTO',
+    },
   },
   {
     slug: 'cloud-migration',
@@ -61,32 +87,46 @@ const caseStudies = [
     industry: 'Manufacturing',
     duration: '8 months',
     date: '2023',
-    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
-    overview: 'Successful migration of legacy systems to Azure cloud with automated scaling and disaster recovery.',
-    challenge: 'Legacy on-premises infrastructure was limiting scalability and increasing maintenance costs. The client needed a modern, scalable solution.',
-    solution: 'We designed and implemented a phased migration to Azure with automated infrastructure provisioning, monitoring, and disaster recovery using PowerShell DSC and Azure Resource Manager.',
-    technologies: ['PowerShell DSC', 'Azure Resource Manager', 'Azure Monitor', 'Logic Apps', 'SQL Database'],
+    image:
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
+    overview:
+      'Successful migration of legacy systems to Azure cloud with automated scaling and disaster recovery.',
+    challenge:
+      'Legacy on-premises infrastructure was limiting scalability and increasing maintenance costs. The client needed a modern, scalable solution.',
+    solution:
+      'We designed and implemented a phased migration to Azure with automated infrastructure provisioning, monitoring, and disaster recovery using PowerShell DSC and Azure Resource Manager.',
+    technologies: [
+      'PowerShell DSC',
+      'Azure Resource Manager',
+      'Azure Monitor',
+      'Logic Apps',
+      'SQL Database',
+    ],
     results: [
       { metric: '45%', description: 'Reduction in infrastructure costs' },
       { metric: '3x', description: 'Improved application performance' },
       { metric: '24/7', description: 'Automated monitoring implemented' },
-      { metric: '99.95%', description: 'Disaster recovery SLA achieved' }
+      { metric: '99.95%', description: 'Disaster recovery SLA achieved' },
     ],
     testimonial: {
-      text: "Viscalyx made our cloud migration seamless. Their expertise in automation ensured minimal downtime and maximum efficiency.",
-      author: "Jennifer Rodriguez",
-      role: "IT Director"
-    }
-  }
+      text: 'Viscalyx made our cloud migration seamless. Their expertise in automation ensured minimal downtime and maximum efficiency.',
+      author: 'Jennifer Rodriguez',
+      role: 'IT Director',
+    },
+  },
 ]
 
 export function generateStaticParams() {
-  return caseStudies.map((study) => ({
+  return caseStudies.map(study => ({
     slug: study.slug,
   }))
 }
 
-export default function CaseStudyDetail({ params }: { params: { slug: string } }) {
+export default function CaseStudyDetail({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const caseStudy = caseStudies.find(study => study.slug === params.slug)
 
   if (!caseStudy) {
@@ -122,7 +162,9 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
                 </div>
                 <div className="flex items-center text-secondary-600">
                   <Calendar className="w-5 h-5 mr-2" />
-                  <span>{caseStudy.duration} • {caseStudy.date}</span>
+                  <span>
+                    {caseStudy.duration} • {caseStudy.date}
+                  </span>
                 </div>
               </div>
             </div>
@@ -145,7 +187,9 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
           <div className="lg:col-span-2 space-y-12">
             {/* Challenge */}
             <section>
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">The Challenge</h2>
+              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
+                The Challenge
+              </h2>
               <p className="text-lg text-secondary-600 leading-relaxed">
                 {caseStudy.challenge}
               </p>
@@ -153,13 +197,17 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
 
             {/* Solution */}
             <section>
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">Our Solution</h2>
+              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
+                Our Solution
+              </h2>
               <p className="text-lg text-secondary-600 leading-relaxed mb-8">
                 {caseStudy.solution}
               </p>
 
               <div>
-                <h3 className="text-xl font-semibold text-secondary-900 mb-4">Technologies Used</h3>
+                <h3 className="text-xl font-semibold text-secondary-900 mb-4">
+                  Technologies Used
+                </h3>
                 <div className="flex flex-wrap gap-3">
                   {caseStudy.technologies.map((tech, index) => (
                     <span
@@ -179,8 +227,12 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
                 "{caseStudy.testimonial.text}"
               </blockquote>
               <div>
-                <div className="font-semibold">{caseStudy.testimonial.author}</div>
-                <div className="text-primary-200">{caseStudy.testimonial.role}</div>
+                <div className="font-semibold">
+                  {caseStudy.testimonial.author}
+                </div>
+                <div className="text-primary-200">
+                  {caseStudy.testimonial.role}
+                </div>
               </div>
             </section>
           </div>
@@ -189,14 +241,20 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
           <div className="space-y-8">
             {/* Results */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-secondary-900 mb-6">Key Results</h3>
+              <h3 className="text-2xl font-bold text-secondary-900 mb-6">
+                Key Results
+              </h3>
               <div className="space-y-6">
                 {caseStudy.results.map((result, index) => (
                   <div key={index} className="flex items-start">
                     <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                     <div>
-                      <div className="text-2xl font-bold text-primary-600">{result.metric}</div>
-                      <div className="text-secondary-600">{result.description}</div>
+                      <div className="text-2xl font-bold text-primary-600">
+                        {result.metric}
+                      </div>
+                      <div className="text-secondary-600">
+                        {result.description}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -205,18 +263,26 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
 
             {/* Project Info */}
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h3 className="text-xl font-semibold text-secondary-900 mb-6">Project Info</h3>
+              <h3 className="text-xl font-semibold text-secondary-900 mb-6">
+                Project Info
+              </h3>
               <div className="space-y-4">
                 <div>
-                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">Industry</div>
+                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">
+                    Industry
+                  </div>
                   <div className="text-secondary-900">{caseStudy.industry}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">Duration</div>
+                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">
+                    Duration
+                  </div>
                   <div className="text-secondary-900">{caseStudy.duration}</div>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">Year</div>
+                  <div className="text-sm font-medium text-secondary-500 uppercase tracking-wider">
+                    Year
+                  </div>
                   <div className="text-secondary-900">{caseStudy.date}</div>
                 </div>
               </div>
@@ -224,9 +290,12 @@ export default function CaseStudyDetail({ params }: { params: { slug: string } }
 
             {/* CTA */}
             <div className="bg-secondary-900 rounded-2xl p-8 text-white text-center">
-              <h3 className="text-xl font-bold mb-4">Ready to Transform Your Business?</h3>
+              <h3 className="text-xl font-bold mb-4">
+                Ready to Transform Your Business?
+              </h3>
               <p className="text-secondary-300 mb-6">
-                Let's discuss how we can help automate your processes and drive results.
+                Let's discuss how we can help automate your processes and drive
+                results.
               </p>
               <Link
                 href="/#contact"

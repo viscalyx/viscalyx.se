@@ -29,56 +29,67 @@ const CaseStudies = () => {
   }
   const caseStudies = [
     {
-      title: "Global E-commerce Platform Automation",
-      client: "Fortune 500 Retail Company",
-      industry: "E-commerce",
-      challenge: "Manual deployment processes causing 4-hour downtimes",
-      solution: "Implemented CI/CD pipeline with automated testing and rollback capabilities",
+      title: 'Global E-commerce Platform Automation',
+      client: 'Fortune 500 Retail Company',
+      industry: 'E-commerce',
+      challenge: 'Manual deployment processes causing 4-hour downtimes',
+      solution:
+        'Implemented CI/CD pipeline with automated testing and rollback capabilities',
       results: [
-        "99.9% uptime improvement",
-        "4 hours to 15 minutes deployment time",
-        "80% reduction in deployment errors",
-        "$2M annual savings"
+        '99.9% uptime improvement',
+        '4 hours to 15 minutes deployment time',
+        '80% reduction in deployment errors',
+        '$2M annual savings',
       ],
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&crop=center",
-      technologies: ["Azure DevOps", "PowerShell DSC", "Kubernetes", "Terraform"],
-      duration: "6 months",
-      teamSize: "8 people"
+      image:
+        'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&crop=center',
+      technologies: [
+        'Azure DevOps',
+        'PowerShell DSC',
+        'Kubernetes',
+        'Terraform',
+      ],
+      duration: '6 months',
+      teamSize: '8 people',
     },
     {
-      title: "Healthcare Data Processing Automation",
-      client: "Regional Healthcare Network",
-      industry: "Healthcare",
-      challenge: "Manual patient data processing taking 8 hours daily",
-      solution: "Built automated data pipeline with compliance and security controls",
+      title: 'Healthcare Data Processing Automation',
+      client: 'Regional Healthcare Network',
+      industry: 'Healthcare',
+      challenge: 'Manual patient data processing taking 8 hours daily',
+      solution:
+        'Built automated data pipeline with compliance and security controls',
       results: [
-        "95% processing time reduction",
-        "100% HIPAA compliance maintained",
-        "Zero data loss incidents",
-        "24/7 automated monitoring"
+        '95% processing time reduction',
+        '100% HIPAA compliance maintained',
+        'Zero data loss incidents',
+        '24/7 automated monitoring',
       ],
-      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center",
-      technologies: ["Python", "Apache Airflow", "PostgreSQL", "Docker"],
-      duration: "4 months",
-      teamSize: "5 people"
+      image:
+        'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center',
+      technologies: ['Python', 'Apache Airflow', 'PostgreSQL', 'Docker'],
+      duration: '4 months',
+      teamSize: '5 people',
     },
     {
-      title: "Financial Services Infrastructure Modernization",
-      client: "Investment Management Firm",
-      industry: "Financial Services",
-      challenge: "Legacy infrastructure limiting scalability and compliance",
-      solution: "Migrated to cloud-native architecture with automated compliance checks",
+      title: 'Financial Services Infrastructure Modernization',
+      client: 'Investment Management Firm',
+      industry: 'Financial Services',
+      challenge: 'Legacy infrastructure limiting scalability and compliance',
+      solution:
+        'Migrated to cloud-native architecture with automated compliance checks',
       results: [
-        "10x infrastructure scalability",
-        "60% cost reduction",
-        "Automated compliance reporting",
-        "99.99% availability SLA"
+        '10x infrastructure scalability',
+        '60% cost reduction',
+        'Automated compliance reporting',
+        '99.99% availability SLA',
       ],
-      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop&crop=center",
-      technologies: ["AWS", "Terraform", "Jenkins", "Ansible"],
-      duration: "8 months",
-      teamSize: "12 people"
-    }
+      image:
+        'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop&crop=center',
+      technologies: ['AWS', 'Terraform', 'Jenkins', 'Ansible'],
+      duration: '8 months',
+      teamSize: '12 people',
+    },
   ]
 
   return (
@@ -113,7 +124,9 @@ const CaseStudies = () => {
               }`}
             >
               {/* Image */}
-              <div className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+              <div
+                className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}
+              >
                 <div className="relative h-96 rounded-2xl overflow-hidden group">
                   <Image
                     src={study.image}
@@ -128,11 +141,15 @@ const CaseStudies = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
                         <Clock className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-                        <div className="text-sm font-medium text-secondary-900">{study.duration}</div>
+                        <div className="text-sm font-medium text-secondary-900">
+                          {study.duration}
+                        </div>
                       </div>
                       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
                         <Users className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-                        <div className="text-sm font-medium text-secondary-900">{study.teamSize}</div>
+                        <div className="text-sm font-medium text-secondary-900">
+                          {study.teamSize}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -158,12 +175,16 @@ const CaseStudies = () => {
                 {/* Challenge & Solution */}
                 <div className="space-y-6 mb-8">
                   <div>
-                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">Challenge</h4>
+                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">
+                      Challenge
+                    </h4>
                     <p className="text-secondary-600">{study.challenge}</p>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">Solution</h4>
+                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">
+                      Solution
+                    </h4>
                     <p className="text-secondary-600">{study.solution}</p>
                   </div>
                 </div>
@@ -185,7 +206,9 @@ const CaseStudies = () => {
                         className="flex items-center space-x-3"
                       >
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-secondary-700 text-sm">{result}</span>
+                        <span className="text-secondary-700 text-sm">
+                          {result}
+                        </span>
                       </motion.div>
                     ))}
                   </div>
@@ -193,9 +216,11 @@ const CaseStudies = () => {
 
                 {/* Technologies */}
                 <div>
-                  <h4 className="text-lg font-semibold text-secondary-900 mb-3">Technologies Used</h4>
+                  <h4 className="text-lg font-semibold text-secondary-900 mb-3">
+                    Technologies Used
+                  </h4>
                   <div className="flex flex-wrap gap-2">
-                    {study.technologies.map((tech) => (
+                    {study.technologies.map(tech => (
                       <span
                         key={tech}
                         className="bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"

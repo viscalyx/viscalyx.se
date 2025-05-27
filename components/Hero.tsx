@@ -40,7 +40,7 @@ const Hero = () => {
           transition={{
             duration: 20,
             repeat: Infinity,
-            ease: "linear"
+            ease: 'linear',
           }}
           className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-primary-400/20 rounded-full blur-3xl"
         />
@@ -52,7 +52,7 @@ const Hero = () => {
           transition={{
             duration: 25,
             repeat: Infinity,
-            ease: "linear"
+            ease: 'linear',
           }}
           className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl"
         />
@@ -74,7 +74,9 @@ const Hero = () => {
               className="flex items-center space-x-2 text-primary-600"
             >
               <Sparkles className="h-5 w-5" />
-              <span className="font-medium">Automation & DevOps Excellence</span>
+              <span className="font-medium">
+                Automation & DevOps Excellence
+              </span>
             </motion.div>
 
             <motion.h1
@@ -94,8 +96,9 @@ const Hero = () => {
               transition={{ delay: 0.4 }}
               className="text-xl text-secondary-600 leading-relaxed max-w-2xl"
             >
-              Professional consulting services that automate repetitive tasks for developers and IT professionals.
-              Boost productivity with PowerShell DSC, DevOps solutions, and open-source contributions.
+              Professional consulting services that automate repetitive tasks
+              for developers and IT professionals. Boost productivity with
+              PowerShell DSC, DevOps solutions, and open-source contributions.
             </motion.p>
 
             <motion.div
@@ -140,7 +143,9 @@ const Hero = () => {
               </div>
               <div className="text-center col-span-2 md:col-span-1">
                 <div className="text-3xl font-bold text-primary-600">∞</div>
-                <div className="text-secondary-600">Open Source Contributions</div>
+                <div className="text-secondary-600">
+                  Open Source Contributions
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -155,7 +160,11 @@ const Hero = () => {
             <div className="relative z-10">
               <motion.div
                 animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
                 className="relative"
               >
                 <Image
@@ -171,11 +180,11 @@ const Hero = () => {
                 <motion.div
                   animate={{
                     rotate: [0, 360],
-                    y: [0, -10, 0]
+                    y: [0, -10, 0],
                   }}
                   transition={{
-                    rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                    rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
+                    y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
                   }}
                   className="absolute -top-6 -right-6 bg-primary-600 p-4 rounded-2xl shadow-lg"
                 >
@@ -185,11 +194,11 @@ const Hero = () => {
                 <motion.div
                   animate={{
                     rotate: [360, 0],
-                    y: [0, 10, 0]
+                    y: [0, 10, 0],
                   }}
                   transition={{
-                    rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-                    y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                    rotate: { duration: 15, repeat: Infinity, ease: 'linear' },
+                    y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
                   }}
                   className="absolute -bottom-6 -left-6 bg-secondary-800 p-4 rounded-2xl shadow-lg"
                 >

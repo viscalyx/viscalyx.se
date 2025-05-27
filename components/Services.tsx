@@ -12,12 +12,12 @@ import {
   Zap,
   Database,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react'
 
 const Services = () => {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
   const router = useRouter()
   const pathname = usePathname()
 
@@ -43,46 +43,82 @@ const Services = () => {
   const services = [
     {
       icon: Cog,
-      title: "Task Automation",
-      description: "Eliminate repetitive manual processes with intelligent automation solutions tailored to your specific workflow needs.",
-      features: ["Custom PowerShell Scripts", "Workflow Optimization", "Process Documentation", "Error Handling & Logging"],
-      color: "primary"
+      title: 'Task Automation',
+      description:
+        'Eliminate repetitive manual processes with intelligent automation solutions tailored to your specific workflow needs.',
+      features: [
+        'Custom PowerShell Scripts',
+        'Workflow Optimization',
+        'Process Documentation',
+        'Error Handling & Logging',
+      ],
+      color: 'primary',
     },
     {
       icon: Server,
-      title: "DevOps Solutions",
-      description: "Streamline your development pipeline with modern DevOps practices and infrastructure automation.",
-      features: ["CI/CD Pipeline Setup", "Infrastructure as Code", "Container Deployment", "Monitoring & Alerting"],
-      color: "secondary"
+      title: 'DevOps Solutions',
+      description:
+        'Streamline your development pipeline with modern DevOps practices and infrastructure automation.',
+      features: [
+        'CI/CD Pipeline Setup',
+        'Infrastructure as Code',
+        'Container Deployment',
+        'Monitoring & Alerting',
+      ],
+      color: 'secondary',
     },
     {
       icon: GitBranch,
-      title: "PowerShell DSC",
-      description: "Implement Desired State Configuration for consistent and reliable system management across your infrastructure.",
-      features: ["Configuration Management", "Compliance Monitoring", "Drift Detection", "Automated Remediation"],
-      color: "primary"
+      title: 'PowerShell DSC',
+      description:
+        'Implement Desired State Configuration for consistent and reliable system management across your infrastructure.',
+      features: [
+        'Configuration Management',
+        'Compliance Monitoring',
+        'Drift Detection',
+        'Automated Remediation',
+      ],
+      color: 'primary',
     },
     {
       icon: Shield,
-      title: "Security Automation",
-      description: "Enhance your security posture with automated security checks, compliance monitoring, and threat response.",
-      features: ["Security Scanning", "Compliance Auditing", "Vulnerability Assessment", "Incident Response"],
-      color: "secondary"
+      title: 'Security Automation',
+      description:
+        'Enhance your security posture with automated security checks, compliance monitoring, and threat response.',
+      features: [
+        'Security Scanning',
+        'Compliance Auditing',
+        'Vulnerability Assessment',
+        'Incident Response',
+      ],
+      color: 'secondary',
     },
     {
       icon: Database,
-      title: "Data Management",
-      description: "Automate data processing, backup strategies, and database maintenance tasks for improved reliability.",
-      features: ["Automated Backups", "Data Migration", "Database Optimization", "Reporting Automation"],
-      color: "primary"
+      title: 'Data Management',
+      description:
+        'Automate data processing, backup strategies, and database maintenance tasks for improved reliability.',
+      features: [
+        'Automated Backups',
+        'Data Migration',
+        'Database Optimization',
+        'Reporting Automation',
+      ],
+      color: 'primary',
     },
     {
       icon: Zap,
-      title: "Performance Optimization",
-      description: "Identify bottlenecks and implement solutions to dramatically improve system and application performance.",
-      features: ["Performance Analysis", "Resource Optimization", "Scalability Planning", "Monitoring Setup"],
-      color: "secondary"
-    }
+      title: 'Performance Optimization',
+      description:
+        'Identify bottlenecks and implement solutions to dramatically improve system and application performance.',
+      features: [
+        'Performance Analysis',
+        'Resource Optimization',
+        'Scalability Planning',
+        'Monitoring Setup',
+      ],
+      color: 'secondary',
+    },
   ]
 
   return (
@@ -95,14 +131,17 @@ const Services = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="text-primary-600 font-semibold text-lg">Our Services</span>
+          <span className="text-primary-600 font-semibold text-lg">
+            Our Services
+          </span>
           <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mt-2 mb-6">
             Comprehensive Automation
             <span className="text-gradient block">Solutions</span>
           </h2>
           <p className="text-lg text-secondary-600 max-w-3xl mx-auto leading-relaxed">
-            From simple task automation to complex DevOps pipelines, we deliver solutions that transform
-            how your team works and scales your operations efficiently.
+            From simple task automation to complex DevOps pipelines, we deliver
+            solutions that transform how your team works and scales your
+            operations efficiently.
           </p>
         </motion.div>
 
@@ -117,11 +156,13 @@ const Services = () => {
               className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-secondary-100"
             >
               {/* Icon */}
-              <div className={`inline-flex p-4 rounded-2xl mb-6 ${
-                service.color === 'primary'
-                  ? 'bg-primary-100 text-primary-600 group-hover:bg-primary-600 group-hover:text-white'
-                  : 'bg-secondary-100 text-secondary-600 group-hover:bg-secondary-600 group-hover:text-white'
-              } transition-all duration-300`}>
+              <div
+                className={`inline-flex p-4 rounded-2xl mb-6 ${
+                  service.color === 'primary'
+                    ? 'bg-primary-100 text-primary-600 group-hover:bg-primary-600 group-hover:text-white'
+                    : 'bg-secondary-100 text-secondary-600 group-hover:bg-secondary-600 group-hover:text-white'
+                } transition-all duration-300`}
+              >
                 <service.icon className="h-8 w-8" />
               </div>
 
@@ -141,11 +182,15 @@ const Services = () => {
                     key={feature}
                     initial={{ opacity: 0, x: -20 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: (index * 0.1) + (featureIndex * 0.05) + 0.5 }}
+                    transition={{
+                      delay: index * 0.1 + featureIndex * 0.05 + 0.5,
+                    }}
                     className="flex items-center space-x-3"
                   >
                     <CheckCircle className="h-4 w-4 text-primary-600 flex-shrink-0" />
-                    <span className="text-secondary-700 text-sm">{feature}</span>
+                    <span className="text-secondary-700 text-sm">
+                      {feature}
+                    </span>
                   </motion.div>
                 ))}
               </div>
@@ -175,8 +220,9 @@ const Services = () => {
               Ready to Transform Your Workflow?
             </h3>
             <p className="text-secondary-600 mb-6 max-w-2xl mx-auto">
-              Let's discuss how we can automate your most time-consuming tasks and streamline your operations.
-              Get a free consultation to explore the possibilities.
+              Let's discuss how we can automate your most time-consuming tasks
+              and streamline your operations. Get a free consultation to explore
+              the possibilities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button

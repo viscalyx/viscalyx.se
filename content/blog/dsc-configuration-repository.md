@@ -1,18 +1,18 @@
 ---
-title: "Create a dsc configuration repository"
-date: "2017-08-13"
-author: "Johan Ljunggren"
+title: 'Create a dsc configuration repository'
+date: '2017-08-13'
+author: 'Johan Ljunggren'
 excerpt: "Learn how to create a PowerShell DSC configuration repository using Microsoft's templates and common tests. This comprehensive guide walks you through setting up GitHub, AppVeyor, and Azure integration to build, test, and deploy DSC configurations for automated infrastructure management."
-image: "https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=800&h=600&fit=crop&crop=center"
+image: 'https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=800&h=600&fit=crop&crop=center'
 tags:
   [
-    "Infrastructure as Code",
-    "PowerShell",
-    "DSC",
-    "Desired State Configuration",
-    "Automation",
+    'Infrastructure as Code',
+    'PowerShell',
+    'DSC',
+    'Desired State Configuration',
+    'Automation',
   ]
-readTime: "10 min read"
+readTime: '10 min read'
 ---
 
 {% include toc %}

@@ -1,12 +1,12 @@
 ---
-title: "Getting Started with PowerShell DSC"
-date: "2024-12-20"
-author: "Johan Ljunggren"
+title: 'Getting Started with PowerShell DSC'
+date: '2024-12-20'
+author: 'Johan Ljunggren'
 excerpt: "A beginner's guide to PowerShell Desired State Configuration (DSC) and how to automate Windows server management."
-image: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=800&h=600&fit=crop&crop=center"
-tags: ["PowerShell", "DSC", "Windows", "Automation", "Configuration Management"]
-readTime: "10 min read"
-category: "PowerShell DSC"
+image: 'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=800&h=600&fit=crop&crop=center'
+tags: ['PowerShell', 'DSC', 'Windows', 'Automation', 'Configuration Management']
+readTime: '10 min read'
+category: 'PowerShell DSC'
 ---
 
 # Getting Started with PowerShell DSC

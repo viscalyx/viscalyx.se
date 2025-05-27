@@ -10,7 +10,7 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -20,38 +20,40 @@ const Contact = () => {
     setTimeout(() => setIsSubmitted(false), 3000)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
   const contactInfo = [
     {
       icon: Mail,
-      title: "Email",
-      details: "hello@viscalyx.com",
-      description: "Send us an email anytime"
+      title: 'Email',
+      details: 'hello@viscalyx.com',
+      description: 'Send us an email anytime',
     },
     {
       icon: Phone,
-      title: "Phone",
-      details: "+1 (555) 123-4567",
-      description: "Mon-Fri from 8am to 6pm"
+      title: 'Phone',
+      details: '+1 (555) 123-4567',
+      description: 'Mon-Fri from 8am to 6pm',
     },
     {
       icon: MapPin,
-      title: "Location",
-      details: "Remote Worldwide",
-      description: "We work with clients globally"
+      title: 'Location',
+      details: 'Remote Worldwide',
+      description: 'We work with clients globally',
     },
     {
       icon: Clock,
-      title: "Response Time",
-      details: "Within 24 hours",
-      description: "Quick turnaround guaranteed"
-    }
+      title: 'Response Time',
+      details: 'Within 24 hours',
+      description: 'Quick turnaround guaranteed',
+    },
   ]
 
   return (
@@ -65,11 +67,13 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
-            Let's Start Your <span className="text-gradient">Automation Journey</span>
+            Let's Start Your{' '}
+            <span className="text-gradient">Automation Journey</span>
           </h2>
           <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
-            Ready to transform your workflows? Get in touch with us today and discover
-            how we can help automate your processes and boost productivity.
+            Ready to transform your workflows? Get in touch with us today and
+            discover how we can help automate your processes and boost
+            productivity.
           </p>
         </motion.div>
 
@@ -81,7 +85,9 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="bg-secondary-50 rounded-2xl p-8"
           >
-            <h3 className="text-2xl font-bold text-secondary-900 mb-6">Send us a message</h3>
+            <h3 className="text-2xl font-bold text-secondary-900 mb-6">
+              Send us a message
+            </h3>
 
             {isSubmitted && (
               <motion.div
@@ -90,14 +96,19 @@ const Contact = () => {
                 className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center"
               >
                 <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
-                <span className="text-green-800">Thank you! We'll get back to you soon.</span>
+                <span className="text-green-800">
+                  Thank you! We'll get back to you soon.
+                </span>
               </motion.div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-secondary-700 mb-2"
+                  >
                     Full Name *
                   </label>
                   <input
@@ -112,7 +123,10 @@ const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-secondary-700 mb-2"
+                  >
                     Email Address *
                   </label>
                   <input
@@ -129,7 +143,10 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="company" className="block text-sm font-medium text-secondary-700 mb-2">
+                <label
+                  htmlFor="company"
+                  className="block text-sm font-medium text-secondary-700 mb-2"
+                >
                   Company
                 </label>
                 <input
@@ -144,7 +161,10 @@ const Contact = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-secondary-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-secondary-700 mb-2"
+                >
                   Message *
                 </label>
                 <textarea
@@ -188,8 +208,12 @@ const Contact = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary-600/80 to-primary-800/80" />
               <div className="absolute inset-0 flex items-center justify-center text-white text-center p-8">
                 <div>
-                  <h4 className="text-2xl font-bold mb-2">Ready to Get Started?</h4>
-                  <p className="text-primary-100">Let's discuss your automation needs</p>
+                  <h4 className="text-2xl font-bold mb-2">
+                    Ready to Get Started?
+                  </h4>
+                  <p className="text-primary-100">
+                    Let's discuss your automation needs
+                  </p>
                 </div>
               </div>
             </div>
@@ -231,7 +255,8 @@ const Contact = () => {
             >
               <h4 className="text-xl font-bold mb-3">Prefer a quick call?</h4>
               <p className="text-primary-100 mb-6">
-                Schedule a free 30-minute consultation to discuss your automation needs.
+                Schedule a free 30-minute consultation to discuss your
+                automation needs.
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
