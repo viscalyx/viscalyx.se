@@ -5,6 +5,7 @@ import { Mail, ExternalLink, Heart } from 'lucide-react'
 import GitHubIcon from './GitHubIcon'
 import LinkedInIcon from './LinkedInIcon'
 import XIcon from './XIcon'
+import BlueskyIcon from './BlueskyIcon'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -77,6 +78,11 @@ const Footer = () => {
     <XIcon className={className} variant="light" />
   )
 
+  // Custom wrapper for Bluesky icon to match the expected interface
+  const BlueskyIconWrapper = ({ className }: { className?: string }) => (
+    <BlueskyIcon className={className} variant="light" />
+  )
+
   const socialLinks = [
     {
       name: 'GitHub',
@@ -92,6 +98,11 @@ const Footer = () => {
       name: 'X',
       href: 'https://x.com/viscalyx',
       icon: XIconWrapper,
+    },
+    {
+      name: 'Bluesky',
+      href: 'https://bsky.app/profile/viscalyx.com',
+      icon: BlueskyIconWrapper,
     },
     {
       name: 'Email',
