@@ -11,11 +11,95 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import TableOfContents from '@/components/TableOfContents'
 import { getPostBySlug, getAllPosts, getRelatedPosts } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
   params: { slug: string }
+}
+
+interface TocItem {
+  id: string
+  text: string
+  level: number
+}
+
+// Function to extract headings from HTML content and create table of contents
+function extractTableOfContents(htmlContent: string): TocItem[] {
+  // Create a temporary DOM element to parse the HTML
+  if (typeof window === 'undefined') {
+    // Server-side: use a simple regex approach
+    const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
+    const headings: TocItem[] = []
+    let match
+
+    while ((match = headingRegex.exec(htmlContent)) !== null) {
+      const level = parseInt(match[1])
+      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove any HTML tags
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+        .trim()
+
+      // Ensure the id is not empty
+      const finalId =
+        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+
+      headings.push({ id: finalId, text, level })
+    }
+
+    return headings
+  } else {
+    // Client-side: use DOM parsing (for future hydration)
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlContent, 'text/html')
+    const headings = Array.from(doc.querySelectorAll('h2, h3, h4'))
+
+    return headings.map(heading => {
+      const text = heading.textContent || ''
+      const level = parseInt(heading.tagName.charAt(1))
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+        .trim()
+
+      // Ensure the id is not empty
+      const finalId =
+        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+
+      return { id: finalId, text, level }
+    })
+  }
+}
+
+// Function to add IDs to headings in HTML content
+function addHeadingIds(htmlContent: string): string {
+  return htmlContent.replace(
+    /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
+    (match, level, attributes, text) => {
+      const cleanText = text.replace(/<[^>]*>/g, '').trim()
+      const id = cleanText
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+        .trim()
+
+      // Ensure the id is not empty
+      const finalId =
+        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+
+      return `<h${level}${attributes} id="${finalId}">${text}</h${level}>`
+    }
+  )
 }
 
 const BlogPost = async ({ params }: BlogPostPageProps) => {
@@ -45,29 +129,49 @@ function getFallbackPost(slug: string) {
   const fallbackPosts: { [key: string]: any } = {
     template: {
       title: 'Blog Post Template',
-      content: `# Your Title
+      content: `<h1>Blog Post Template</h1>
+<p>This is a template for creating new blog posts. It demonstrates the structure and formatting that will be used throughout the blog.</p>
 
-Your introduction paragraph here.
+<h2>Getting Started</h2>
+<p>When creating a new blog post, start with a compelling introduction that hooks your readers and gives them a preview of what they'll learn.</p>
 
-## Section Heading
+<h3>Writing Tips</h3>
+<ul>
+<li>Keep paragraphs short and scannable</li>
+<li>Use headings to break up content</li>
+<li>Include relevant examples</li>
+</ul>
 
-Your content here.
+<h2>Content Structure</h2>
+<p>A well-structured blog post typically follows this pattern:</p>
 
-### Subsection (optional)
+<h3>Introduction</h3>
+<p>Set the stage and explain what readers will gain from the article.</p>
 
-- Point 1
-- Point 2
+<h3>Main Content</h3>
+<p>Break your main content into logical sections with clear headings.</p>
 
-## Conclusion
+<h4>Subsections</h4>
+<p>Use subsections when you need to dive deeper into specific topics.</p>
 
-Your conclusion here.`,
-      author: 'Author Name',
+<h2>Best Practices</h2>
+<p>Here are some best practices to follow when writing blog posts:</p>
+
+<h3>SEO Considerations</h3>
+<p>Make sure your content is optimized for search engines while remaining valuable to readers.</p>
+
+<h3>Engagement</h3>
+<p>Encourage reader interaction through questions and calls-to-action.</p>
+
+<h2>Conclusion</h2>
+<p>Wrap up your post with a strong conclusion that reinforces your main points and provides next steps for readers.</p>`,
+      author: 'Johan Ljunggren',
       date: '2025-01-01',
-      readTime: '3 min read',
+      readTime: '5 min read',
       image:
         'https://images.unsplash.com/photo-1593505681742-8cbb6f44de25?w=1200&h=600&fit=crop&crop=center',
       category: 'Template',
-      tags: ['Template'],
+      tags: ['Template', 'Guide', 'Writing'],
       slug: 'template',
     },
   }
@@ -81,6 +185,10 @@ interface BlogPostContentProps {
 }
 
 const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
+  // Extract table of contents and add IDs to headings
+  const tableOfContents = extractTableOfContents(post.content)
+  const contentWithIds = addHeadingIds(post.content)
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -149,11 +257,11 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid lg:grid-cols-4 gap-12">
-            {/* Main Content */}
+            {/* Main Content */}{' '}
             <div className="lg:col-span-3">
-              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 prose-p:text-secondary-700 prose-a:text-primary-600 prose-code:text-primary-600 prose-pre:bg-secondary-50">
+              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 prose-p:text-secondary-700 prose-a:text-primary-600 prose-code:text-primary-600 prose-pre:bg-secondary-50 prose-headings:scroll-mt-24">
                 <div
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
                 />
               </div>
@@ -216,51 +324,19 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                 </div>
               </div>
             </div>
-
             {/* Sidebar */}
             <div className="lg:col-span-1">
+              {' '}
               {/* Table of Contents */}
-              <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-                <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
-                  <BookOpen className="w-5 h-5 mr-2" />
-                  Table of Contents
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  <li>
-                    <a
-                      href="#"
-                      className="text-secondary-600 hover:text-primary-600"
-                    >
-                      Key Trends Shaping Infrastructure
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-secondary-600 hover:text-primary-600"
-                    >
-                      PowerShell DSC in Modern Automation
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-secondary-600 hover:text-primary-600"
-                    >
-                      Challenges and Solutions
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="text-secondary-600 hover:text-primary-600"
-                    >
-                      Looking Ahead
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
+              {tableOfContents.length > 0 && (
+                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+                  <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Table of Contents
+                  </h3>
+                  <TableOfContents items={tableOfContents} />
+                </div>
+              )}
               {/* Related Posts */}
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h3 className="text-lg font-bold text-secondary-900 mb-4">
