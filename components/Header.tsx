@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -57,7 +58,7 @@ const Header = () => {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/90 backdrop-blur-custom shadow-lg'
+          ? 'bg-white/90 dark:bg-secondary-900/90 backdrop-blur-custom shadow-lg'
           : 'bg-transparent'
       }`}
     >
@@ -90,11 +91,12 @@ const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="text-secondary-700 hover:text-primary-600 font-medium transition-colors duration-200 bg-transparent border-none cursor-pointer"
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 bg-transparent border-none cursor-pointer"
               >
                 {item.name}
               </motion.button>
             ))}
+            <ThemeToggle />
             <motion.button
               onClick={() => handleNavigation('#contact', 'Contact')}
               initial={{ opacity: 0, y: -20 }}
@@ -107,17 +109,20 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg bg-primary-50 text-primary-600"
-          >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </motion.button>
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </motion.button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -127,7 +132,7 @@ const Header = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 bg-white rounded-lg shadow-xl overflow-hidden"
+              className="md:hidden mt-4 bg-white dark:bg-secondary-800 rounded-lg shadow-xl overflow-hidden"
             >
               <div className="py-4 space-y-2">
                 {menuItems.map((item, index) => (
@@ -137,7 +142,7 @@ const Header = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="block w-full text-left px-6 py-3 text-secondary-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 bg-transparent border-none cursor-pointer"
+                    className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 bg-transparent border-none cursor-pointer"
                   >
                     {item.name}
                   </motion.button>

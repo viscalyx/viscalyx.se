@@ -77,17 +77,17 @@ const BlogPage = async () => {
   const allCategories = ['All', ...Array.from(new Set(categories))]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
 
       {/* Hero Section */}
       <section className="gradient-bg section-padding pt-32">
         <div className="container-custom">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
               Insights & <span className="text-gradient">Knowledge</span>
             </h1>
-            <p className="text-xl text-secondary-600 mb-8">
+            <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-8">
               Stay updated with the latest trends, best practices, and insights
               in automation, DevOps, and open-source development.
             </p>
@@ -96,14 +96,14 @@ const BlogPage = async () => {
       </section>
 
       {/* Featured Post */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-secondary-900">
         <div className="container-custom">
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-secondary-900 mb-8">
+            <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-8">
               Featured Article
             </h2>
 
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
+            <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
               <div className="grid lg:grid-cols-2">
                 <div className="relative h-64 lg:h-full">
                   <Image
@@ -120,7 +120,7 @@ const BlogPage = async () => {
                 </div>
 
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="flex items-center text-secondary-500 text-sm mb-4">
+                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm mb-4">
                     <User className="w-4 h-4 mr-2" />
                     {displayFeaturedPost.author}
                     <span className="mx-3">•</span>
@@ -131,17 +131,17 @@ const BlogPage = async () => {
                     {displayFeaturedPost.readTime}
                   </div>
 
-                  <h3 className="text-2xl lg:text-3xl font-bold text-secondary-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">
+                  <h3 className="text-2xl lg:text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
                     {displayFeaturedPost.title}
                   </h3>
 
-                  <p className="text-secondary-600 mb-6 leading-relaxed">
+                  <p className="text-secondary-600 dark:text-secondary-400 mb-6 leading-relaxed">
                     {displayFeaturedPost.excerpt}
                   </p>
 
                   <Link
                     href={`/blog/${displayFeaturedPost.slug}`}
-                    className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
+                    className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium group"
                   >
                     Read Full Article
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -154,7 +154,7 @@ const BlogPage = async () => {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="section-padding bg-secondary-50">
+      <section className="section-padding bg-secondary-50 dark:bg-secondary-800">
         <div className="container-custom">
           {/* Category Filter */}
           <div className="mb-12">
@@ -164,8 +164,8 @@ const BlogPage = async () => {
                   key={category}
                   className={`px-4 py-2 rounded-full transition-colors duration-200 ${
                     category === 'All'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-white text-secondary-600 hover:bg-primary-50 hover:text-primary-600'
+                      ? 'bg-primary-600 dark:bg-primary-500 text-white'
+                      : 'bg-white dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
                 >
                   {category}
@@ -179,7 +179,7 @@ const BlogPage = async () => {
             {displayBlogPosts.map((post: any, index: number) => (
               <article
                 key={post.slug}
-                className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
+                className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
@@ -196,7 +196,7 @@ const BlogPage = async () => {
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-center text-secondary-500 text-xs mb-3">
+                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
                     <Calendar className="w-3 h-3 mr-1" />
                     {new Date(post.date).toLocaleDateString()}
                     <span className="mx-2">•</span>
@@ -204,17 +204,17 @@ const BlogPage = async () => {
                     {post.readTime}
                   </div>
 
-                  <h3 className="text-lg font-bold text-secondary-900 mb-3 group-hover:text-primary-600 transition-colors duration-300 line-clamp-2">
+                  <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2">
                     {post.title}
                   </h3>
 
-                  <p className="text-secondary-600 text-sm mb-4 line-clamp-3">
+                  <p className="text-secondary-600 dark:text-secondary-400 text-sm mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
 
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center text-primary-600 hover:text-primary-700 text-sm font-medium group"
+                    className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium group"
                   >
                     Read More
                     <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />

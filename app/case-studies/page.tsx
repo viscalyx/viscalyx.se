@@ -169,7 +169,7 @@ const CaseStudiesPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
 
       {/* Hero Section */}
@@ -181,10 +181,10 @@ const CaseStudiesPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
               Success <span className="text-gradient">Stories</span>
             </h1>
-            <p className="text-xl text-secondary-600 mb-8">
+            <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-8">
               Discover how we've helped organizations across industries
               transform their operations with intelligent automation solutions.
             </p>
@@ -193,7 +193,7 @@ const CaseStudiesPage = () => {
       </section>
 
       {/* Case Studies Grid */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-secondary-900">
         <div className="container-custom">
           <div className="grid gap-12">
             {caseStudies.map((study, index) => (
@@ -223,21 +223,21 @@ const CaseStudiesPage = () => {
                     {/* Floating Stats */}
                     <div className="absolute bottom-6 left-6 right-6">
                       <div className="grid grid-cols-3 gap-3">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 text-center">
-                          <Building className="w-4 h-4 text-primary-600 mx-auto mb-1" />
-                          <div className="text-xs font-medium text-secondary-900">
+                        <div className="bg-white/95 dark:bg-secondary-800/95 backdrop-blur-sm rounded-lg p-3 text-center">
+                          <Building className="w-4 h-4 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                          <div className="text-xs font-medium text-secondary-900 dark:text-secondary-100">
                             {study.industry}
                           </div>
                         </div>
-                        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 text-center">
-                          <Clock className="w-4 h-4 text-primary-600 mx-auto mb-1" />
-                          <div className="text-xs font-medium text-secondary-900">
+                        <div className="bg-white/95 dark:bg-secondary-800/95 backdrop-blur-sm rounded-lg p-3 text-center">
+                          <Clock className="w-4 h-4 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                          <div className="text-xs font-medium text-secondary-900 dark:text-secondary-100">
                             {study.duration}
                           </div>
                         </div>
-                        <div className="bg-white/95 backdrop-blur-sm rounded-lg p-3 text-center">
-                          <Users className="w-4 h-4 text-primary-600 mx-auto mb-1" />
-                          <div className="text-xs font-medium text-secondary-900">
+                        <div className="bg-white/95 dark:bg-secondary-800/95 backdrop-blur-sm rounded-lg p-3 text-center">
+                          <Users className="w-4 h-4 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                          <div className="text-xs font-medium text-secondary-900 dark:text-secondary-100">
                             {study.teamSize}
                           </div>
                         </div>
@@ -248,30 +248,30 @@ const CaseStudiesPage = () => {
 
                 {/* Content */}
                 <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
-                  <h2 className="text-3xl font-bold text-secondary-900 mb-4">
+                  <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
                     {study.title}
                   </h2>
 
-                  <p className="text-lg text-primary-600 font-medium mb-6">
+                  <p className="text-lg text-primary-600 dark:text-primary-400 font-medium mb-6">
                     {study.client}
                   </p>
 
                   {/* Challenge & Solution */}
                   <div className="space-y-4 mb-6">
                     <div>
-                      <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                      <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">
                         Challenge
                       </h3>
-                      <p className="text-secondary-600 text-sm">
+                      <p className="text-secondary-600 dark:text-secondary-400 text-sm">
                         {study.challenge}
                       </p>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                      <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">
                         Solution
                       </h3>
-                      <p className="text-secondary-600 text-sm">
+                      <p className="text-secondary-600 dark:text-secondary-400 text-sm">
                         {study.solution}
                       </p>
                     </div>
@@ -279,8 +279,8 @@ const CaseStudiesPage = () => {
 
                   {/* Key Results */}
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-secondary-900 mb-3 flex items-center">
-                      <TrendingUp className="w-5 h-5 text-primary-600 mr-2" />
+                    <h3 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-3 flex items-center">
+                      <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
                       Key Results
                     </h3>
                     <div className="grid gap-2">
@@ -290,7 +290,7 @@ const CaseStudiesPage = () => {
                           className="flex items-center space-x-3"
                         >
                           <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span className="text-secondary-700 text-sm">
+                          <span className="text-secondary-700 dark:text-secondary-300 text-sm">
                             {result}
                           </span>
                         </div>
@@ -300,14 +300,14 @@ const CaseStudiesPage = () => {
 
                   {/* Technologies */}
                   <div className="mb-6">
-                    <h3 className="text-sm font-semibold text-secondary-900 mb-2">
+                    <h3 className="text-sm font-semibold text-secondary-900 dark:text-secondary-100 mb-2">
                       Technologies
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {study.technologies.slice(0, 4).map(tech => (
                         <span
                           key={tech}
-                          className="bg-secondary-100 text-secondary-700 px-2 py-1 rounded text-xs"
+                          className="bg-secondary-100 dark:bg-secondary-800 text-secondary-700 dark:text-secondary-300 px-2 py-1 rounded text-xs"
                         >
                           {tech}
                         </span>
@@ -318,7 +318,7 @@ const CaseStudiesPage = () => {
                   {/* CTA */}
                   <Link
                     href={`/case-studies/${study.slug}`}
-                    className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
+                    className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium group"
                   >
                     Read Full Case Study
                     <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -331,7 +331,7 @@ const CaseStudiesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-secondary-50">
+      <section className="section-padding bg-secondary-50 dark:bg-secondary-800">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -93,7 +93,7 @@ const CaseStudies = () => {
   ]
 
   return (
-    <section className="section-padding bg-white">
+    <section className="section-padding bg-white dark:bg-secondary-900">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -102,10 +102,10 @@ const CaseStudies = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
             Success <span className="text-gradient">Stories</span>
           </h2>
-          <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
+          <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
             Real results from real clients. See how we've helped organizations
             transform their operations through intelligent automation.
           </p>
@@ -139,15 +139,15 @@ const CaseStudies = () => {
                   {/* Floating Stats */}
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
-                        <Clock className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-                        <div className="text-sm font-medium text-secondary-900">
+                      <div className="bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-lg p-3 text-center">
+                        <Clock className="w-5 h-5 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                        <div className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
                           {study.duration}
                         </div>
                       </div>
-                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-center">
-                        <Users className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-                        <div className="text-sm font-medium text-secondary-900">
+                      <div className="bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-lg p-3 text-center">
+                        <Users className="w-5 h-5 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                        <div className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
                           {study.teamSize}
                         </div>
                       </div>
@@ -159,40 +159,44 @@ const CaseStudies = () => {
               {/* Content */}
               <div className={index % 2 === 1 ? 'lg:col-start-1' : ''}>
                 <div className="mb-4">
-                  <span className="inline-block bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="inline-block bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-sm font-medium">
                     {study.industry}
                   </span>
                 </div>
 
-                <h3 className="text-3xl font-bold text-secondary-900 mb-4">
+                <h3 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
                   {study.title}
                 </h3>
 
-                <p className="text-lg text-secondary-600 mb-6">
+                <p className="text-lg text-secondary-600 dark:text-secondary-400 mb-6">
                   <strong>Client:</strong> {study.client}
                 </p>
 
                 {/* Challenge & Solution */}
                 <div className="space-y-6 mb-8">
                   <div>
-                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">
+                    <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">
                       Challenge
                     </h4>
-                    <p className="text-secondary-600">{study.challenge}</p>
+                    <p className="text-secondary-600 dark:text-secondary-400">
+                      {study.challenge}
+                    </p>
                   </div>
 
                   <div>
-                    <h4 className="text-lg font-semibold text-secondary-900 mb-2">
+                    <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">
                       Solution
                     </h4>
-                    <p className="text-secondary-600">{study.solution}</p>
+                    <p className="text-secondary-600 dark:text-secondary-400">
+                      {study.solution}
+                    </p>
                   </div>
                 </div>
 
                 {/* Results */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-secondary-900 mb-4 flex items-center">
-                    <TrendingUp className="w-5 h-5 text-primary-600 mr-2" />
+                  <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center">
+                    <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400 mr-2" />
                     Key Results
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -206,7 +210,7 @@ const CaseStudies = () => {
                         className="flex items-center space-x-3"
                       >
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-secondary-700 text-sm">
+                        <span className="text-secondary-700 dark:text-secondary-300 text-sm">
                           {result}
                         </span>
                       </motion.div>
@@ -216,14 +220,14 @@ const CaseStudies = () => {
 
                 {/* Technologies */}
                 <div>
-                  <h4 className="text-lg font-semibold text-secondary-900 mb-3">
+                  <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-3">
                     Technologies Used
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {study.technologies.map(tech => (
                       <span
                         key={tech}
-                        className="bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm"
+                        className="bg-secondary-100 dark:bg-secondary-800 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm"
                       >
                         {tech}
                       </span>

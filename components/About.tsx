@@ -38,7 +38,11 @@ const About = () => {
   ]
 
   return (
-    <section id="about" className="section-padding bg-white" ref={ref}>
+    <section
+      id="about"
+      className="section-padding bg-white dark:bg-secondary-900"
+      ref={ref}
+    >
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
@@ -53,7 +57,7 @@ const About = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 }}
-                className="text-primary-600 font-semibold text-lg"
+                className="text-primary-600 dark:text-primary-400 font-semibold text-lg"
               >
                 About Viscalyx
               </motion.span>
@@ -61,7 +65,7 @@ const About = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.3 }}
-                className="text-3xl md:text-4xl font-bold text-secondary-900 mt-2"
+                className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2"
               >
                 Empowering Organizations Through
                 <span className="text-gradient block">Smart Automation</span>
@@ -72,7 +76,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4 }}
-              className="text-lg text-secondary-600 leading-relaxed"
+              className="text-lg text-secondary-600 dark:text-secondary-400 leading-relaxed"
             >
               Viscalyx is a specialized consulting company dedicated to
               transforming how developers and IT professionals work. As a sole
@@ -85,7 +89,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.5 }}
-              className="text-lg text-secondary-600 leading-relaxed"
+              className="text-lg text-secondary-600 dark:text-secondary-400 leading-relaxed"
             >
               Our expertise spans PowerShell Desired State Configuration (DSC),
               DevOps automation, and contributing to open-source projects that
@@ -102,16 +106,16 @@ const About = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.6 + index * 0.1 }}
-                  className="flex items-start space-x-4 p-4 rounded-lg hover:bg-primary-50/50 transition-colors duration-200"
+                  className="flex items-start space-x-4 p-4 rounded-lg hover:bg-primary-50/50 dark:hover:bg-primary-900/20 transition-colors duration-200"
                 >
                   <div className="flex-shrink-0">
-                    <value.icon className="h-6 w-6 text-primary-600 mt-1" />
+                    <value.icon className="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-secondary-900 mb-1">
+                    <h3 className="font-semibold text-secondary-900 dark:text-secondary-100 mb-1">
                       {value.title}
                     </h3>
-                    <p className="text-secondary-600 text-sm">
+                    <p className="text-secondary-600 dark:text-secondary-400 text-sm">
                       {value.description}
                     </p>
                   </div>
@@ -151,29 +155,31 @@ const About = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border border-secondary-100"
+                className="absolute -bottom-8 -left-8 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700"
               >
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary-600">
                       98%
                     </div>
-                    <div className="text-sm text-secondary-600">
+                    <div className="text-sm text-secondary-600 dark:text-secondary-400">
                       Task Reduction
                     </div>
                   </div>
-                  <div className="w-px h-12 bg-secondary-200" />
+                  <div className="w-px h-12 bg-secondary-200 dark:bg-secondary-600" />
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary-600">
                       24/7
                     </div>
-                    <div className="text-sm text-secondary-600">Automation</div>
+                    <div className="text-sm text-secondary-600 dark:text-secondary-400">
+                      Automation
+                    </div>
                   </div>
                 </div>
               </motion.div>
 
               {/* Background Element */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/30 to-secondary-100/30 rounded-2xl blur-3xl transform scale-110 -z-10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 rounded-2xl blur-3xl transform scale-110 -z-10" />
             </div>
           </motion.div>
         </div>

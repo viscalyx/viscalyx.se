@@ -57,7 +57,10 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="section-padding bg-white">
+    <section
+      id="contact"
+      className="section-padding bg-white dark:bg-secondary-900"
+    >
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,11 +69,11 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
             Let's Start Your{' '}
             <span className="text-gradient">Automation Journey</span>
           </h2>
-          <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
+          <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
             Ready to transform your workflows? Get in touch with us today and
             discover how we can help automate your processes and boost
             productivity.
@@ -83,9 +86,9 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-secondary-50 rounded-2xl p-8"
+            className="bg-secondary-50 dark:bg-secondary-800 rounded-2xl p-8"
           >
-            <h3 className="text-2xl font-bold text-secondary-900 mb-6">
+            <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
               Send us a message
             </h3>
 
@@ -93,10 +96,10 @@ const Contact = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center"
+                className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4 mb-6 flex items-center"
               >
-                <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
-                <span className="text-green-800">
+                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mr-3" />
+                <span className="text-green-800 dark:text-green-300">
                   Thank you! We'll get back to you soon.
                 </span>
               </motion.div>
@@ -107,7 +110,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-secondary-700 mb-2"
+                    className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                   >
                     Full Name *
                   </label>
@@ -118,14 +121,15 @@ const Contact = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                     placeholder="John Doe"
                   />
                 </div>
                 <div>
+                  {' '}
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-secondary-700 mb-2"
+                    className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                   >
                     Email Address *
                   </label>
@@ -136,7 +140,7 @@ const Contact = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                     placeholder="john@company.com"
                   />
                 </div>
@@ -145,7 +149,7 @@ const Contact = () => {
               <div>
                 <label
                   htmlFor="company"
-                  className="block text-sm font-medium text-secondary-700 mb-2"
+                  className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                 >
                   Company
                 </label>
@@ -155,7 +159,7 @@ const Contact = () => {
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                   placeholder="Your Company"
                 />
               </div>
@@ -163,7 +167,7 @@ const Contact = () => {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-secondary-700 mb-2"
+                  className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                 >
                   Message *
                 </label>
@@ -174,7 +178,7 @@ const Contact = () => {
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-none"
+                  className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-none text-secondary-900 dark:text-secondary-100"
                   placeholder="Tell us about your automation needs..."
                 />
               </div>
@@ -226,19 +230,19 @@ const Contact = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  className="flex items-start space-x-4 p-6 bg-white dark:bg-secondary-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
-                  <div className="bg-primary-100 p-3 rounded-lg">
-                    <item.icon className="w-6 h-6 text-primary-600" />
+                  <div className="bg-primary-100 dark:bg-primary-900/50 p-3 rounded-lg">
+                    <item.icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-secondary-900 mb-1">
+                    <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-1">
                       {item.title}
                     </h4>
-                    <p className="text-primary-600 font-medium mb-1">
+                    <p className="text-primary-600 dark:text-primary-400 font-medium mb-1">
                       {item.details}
                     </p>
-                    <p className="text-secondary-600 text-sm">
+                    <p className="text-secondary-600 dark:text-secondary-400 text-sm">
                       {item.description}
                     </p>
                   </div>

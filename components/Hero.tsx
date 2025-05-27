@@ -71,7 +71,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center space-x-2 text-primary-600"
+              className="flex items-center space-x-2 text-primary-600 dark:text-primary-400"
             >
               <Sparkles className="h-5 w-5" />
               <span className="font-medium">
@@ -94,7 +94,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-secondary-600 leading-relaxed max-w-2xl"
+              className="text-xl text-secondary-600 dark:text-secondary-400 leading-relaxed max-w-2xl"
             >
               Professional consulting services that automate repetitive tasks
               for developers and IT professionals. Boost productivity with
@@ -131,19 +131,23 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-secondary-200"
+              className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-secondary-200 dark:border-secondary-700"
             >
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-600">5+</div>
-                <div className="text-secondary-600">Years Experience</div>
+                <div className="text-secondary-600 dark:text-secondary-400">
+                  Years Experience
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-600">100+</div>
-                <div className="text-secondary-600">Tasks Automated</div>
+                <div className="text-secondary-600 dark:text-secondary-400">
+                  Tasks Automated
+                </div>
               </div>
               <div className="text-center col-span-2 md:col-span-1">
                 <div className="text-3xl font-bold text-primary-600">∞</div>
-                <div className="text-secondary-600">
+                <div className="text-secondary-600 dark:text-secondary-400">
                   Open Source Contributions
                 </div>
               </div>

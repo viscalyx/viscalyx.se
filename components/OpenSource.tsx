@@ -72,7 +72,10 @@ const OpenSource = () => {
   ]
 
   return (
-    <section id="open-source" className="section-padding bg-secondary-50">
+    <section
+      id="open-source"
+      className="section-padding bg-secondary-50 dark:bg-secondary-900"
+    >
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -81,10 +84,10 @@ const OpenSource = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
             Open Source <span className="text-gradient">Contributions</span>
           </h2>
-          <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
+          <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
             We believe in giving back to the community. Our active contributions
             to open-source projects help advance automation and DevOps practices
             worldwide.
@@ -108,10 +111,12 @@ const OpenSource = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center"
             >
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
                 {stat.value}
               </div>
-              <div className="text-secondary-600">{stat.label}</div>
+              <div className="text-secondary-600 dark:text-secondary-400">
+                {stat.label}
+              </div>
             </motion.div>
           ))}
         </motion.div>
@@ -125,7 +130,7 @@ const OpenSource = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden card-hover group"
+              className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg overflow-hidden card-hover group"
             >
               <div className="relative h-48 overflow-hidden">
                 <Image
@@ -135,28 +140,30 @@ const OpenSource = () => {
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full p-2">
-                  <Github className="w-5 h-5 text-secondary-700" />
+                <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
+                  <Github className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
                 </div>
               </div>
 
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-semibold text-secondary-900 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {project.name}
                   </h3>
-                  <div className="flex items-center text-secondary-500 text-sm">
+                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm">
                     <Star className="w-4 h-4 mr-1" />
                     {project.stars}
                   </div>
                 </div>
 
-                <p className="text-secondary-600 mb-4">{project.description}</p>
+                <p className="text-secondary-600 dark:text-secondary-400 mb-4">
+                  {project.description}
+                </p>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
-                    <span className="text-sm text-secondary-600">
+                    <div className="w-3 h-3 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
+                    <span className="text-sm text-secondary-600 dark:text-secondary-400">
                       {project.language}
                     </span>
                   </div>
@@ -167,7 +174,7 @@ const OpenSource = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center text-primary-600 hover:text-primary-700 text-sm font-medium"
+                    className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                   >
                     View Project
                     <ExternalLink className="w-4 h-4 ml-1" />

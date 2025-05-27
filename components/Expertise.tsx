@@ -48,7 +48,11 @@ const Expertise = () => {
   ]
 
   return (
-    <section id="expertise" className="section-padding bg-white" ref={ref}>
+    <section
+      id="expertise"
+      className="section-padding bg-white dark:bg-secondary-900"
+      ref={ref}
+    >
       <div className="container-custom">
         {/* Header */}
         <motion.div
@@ -57,14 +61,14 @@ const Expertise = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="text-primary-600 font-semibold text-lg">
+          <span className="text-primary-600 dark:text-primary-400 font-semibold text-lg">
             Technical Expertise
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mt-2 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2 mb-6">
             Deep Technical Knowledge
             <span className="text-gradient block">Proven Results</span>
           </h2>
-          <p className="text-lg text-secondary-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto leading-relaxed">
             Years of hands-on experience with cutting-edge technologies and
             methodologies, combined with a commitment to continuous learning and
             industry best practices.
@@ -80,7 +84,7 @@ const Expertise = () => {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold text-secondary-900 mb-8">
+              <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-8">
                 Core Technologies
               </h3>
               <div className="space-y-6">
@@ -99,15 +103,15 @@ const Expertise = () => {
                         >
                           <tech.icon className="h-4 w-4" />
                         </div>
-                        <span className="font-medium text-secondary-900">
+                        <span className="font-medium text-secondary-900 dark:text-secondary-100">
                           {tech.name}
                         </span>
                       </div>
-                      <span className="text-secondary-600 font-medium">
+                      <span className="text-secondary-600 dark:text-secondary-400 font-medium">
                         {tech.level}%
                       </span>
                     </div>
-                    <div className="w-full bg-secondary-200 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-secondary-200 dark:bg-secondary-700 rounded-full h-2 overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={isInView ? { width: `${tech.level}%` } : {}}
@@ -131,9 +135,9 @@ const Expertise = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.6 }}
-              className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-6"
+              className="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-800/50 rounded-2xl p-6"
             >
-              <h4 className="text-xl font-bold text-secondary-900 mb-4">
+              <h4 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
                 Certifications & Credentials
               </h4>
               <div className="space-y-3">
@@ -145,8 +149,10 @@ const Expertise = () => {
                     transition={{ delay: 0.8 + index * 0.1 }}
                     className="flex items-center space-x-3"
                   >
-                    <div className="w-2 h-2 bg-primary-600 rounded-full" />
-                    <span className="text-secondary-700">{cert}</span>
+                    <div className="w-2 h-2 bg-primary-600 dark:bg-primary-400 rounded-full" />
+                    <span className="text-secondary-700 dark:text-secondary-300">
+                      {cert}
+                    </span>
                   </motion.div>
                 ))}
               </div>
@@ -185,16 +191,16 @@ const Expertise = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-secondary-100 z-20"
+                className="absolute -bottom-6 -right-6 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20"
               >
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600 mb-1">
+                  <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
                     5+
                   </div>
-                  <div className="text-sm text-secondary-600">
+                  <div className="text-sm text-secondary-600 dark:text-secondary-400">
                     Years Experience
                   </div>
-                  <div className="text-xs text-secondary-500 mt-1">
+                  <div className="text-xs text-secondary-500 dark:text-secondary-500 mt-1">
                     in Automation
                   </div>
                 </div>
@@ -210,12 +216,12 @@ const Expertise = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.8 }}
-                className="bg-white border border-secondary-100 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
+                className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
-                <div className="text-2xl font-bold text-primary-600 mb-1">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
                   50+
                 </div>
-                <div className="text-sm text-secondary-600">
+                <div className="text-sm text-secondary-600 dark:text-secondary-400">
                   Projects Completed
                 </div>
               </motion.div>
@@ -224,12 +230,12 @@ const Expertise = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.9 }}
-                className="bg-white border border-secondary-100 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
+                className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
-                <div className="text-2xl font-bold text-primary-600 mb-1">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
                   100%
                 </div>
-                <div className="text-sm text-secondary-600">
+                <div className="text-sm text-secondary-600 dark:text-secondary-400">
                   Client Satisfaction
                 </div>
               </motion.div>
@@ -238,24 +244,28 @@ const Expertise = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 1.0 }}
-                className="bg-white border border-secondary-100 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
+                className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
-                <div className="text-2xl font-bold text-primary-600 mb-1">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
                   24/7
                 </div>
-                <div className="text-sm text-secondary-600">System Uptime</div>
+                <div className="text-sm text-secondary-600 dark:text-secondary-400">
+                  System Uptime
+                </div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 1.1 }}
-                className="bg-white border border-secondary-100 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
+                className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
-                <div className="text-2xl font-bold text-primary-600 mb-1">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
                   ∞
                 </div>
-                <div className="text-sm text-secondary-600">Open Source</div>
+                <div className="text-sm text-secondary-600 dark:text-secondary-400">
+                  Open Source
+                </div>
               </motion.div>
             </div>
 

@@ -66,7 +66,7 @@ const Testimonials = () => {
   }
 
   return (
-    <section className="section-padding bg-gradient-to-br from-primary-50 to-secondary-50">
+    <section className="section-padding bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-800">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,10 +75,10 @@ const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
             What Our <span className="text-gradient">Clients Say</span>
           </h2>
-          <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
+          <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
             Don't just take our word for it. Here's what industry professionals
             say about working with Viscalyx.
           </p>
@@ -91,11 +91,11 @@ const Testimonials = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative"
+            className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl p-8 md:p-12 relative"
           >
             {/* Quote Icon */}
-            <div className="absolute top-6 right-6 bg-primary-100 p-3 rounded-full">
-              <Quote className="w-6 h-6 text-primary-600" />
+            <div className="absolute top-6 right-6 bg-primary-100 dark:bg-primary-900/50 p-3 rounded-full">
+              <Quote className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             </div>
 
             {/* Rating */}
@@ -109,7 +109,7 @@ const Testimonials = () => {
             </div>
 
             {/* Content */}
-            <blockquote className="text-xl md:text-2xl text-secondary-700 leading-relaxed mb-8 italic">
+            <blockquote className="text-xl md:text-2xl text-secondary-700 dark:text-secondary-300 leading-relaxed mb-8 italic">
               "{testimonials[currentIndex].content}"
             </blockquote>
 
@@ -125,21 +125,21 @@ const Testimonials = () => {
                   />
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-secondary-900">
+                  <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100">
                     {testimonials[currentIndex].name}
                   </h4>
-                  <p className="text-secondary-600">
+                  <p className="text-secondary-600 dark:text-secondary-400">
                     {testimonials[currentIndex].role}
                   </p>
-                  <p className="text-primary-600 font-medium">
+                  <p className="text-primary-600 dark:text-primary-400 font-medium">
                     {testimonials[currentIndex].company}
                   </p>
                 </div>
               </div>
 
               <div className="hidden md:block">
-                <div className="bg-primary-100 px-4 py-2 rounded-full">
-                  <span className="text-sm text-primary-700 font-medium">
+                <div className="bg-primary-100 dark:bg-primary-900/50 px-4 py-2 rounded-full">
+                  <span className="text-sm text-primary-700 dark:text-primary-300 font-medium">
                     {testimonials[currentIndex].project}
                   </span>
                 </div>
@@ -153,10 +153,10 @@ const Testimonials = () => {
               onClick={prevTestimonial}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="bg-white dark:bg-secondary-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
               aria-label="Previous testimonial"
             >
-              <ArrowLeft className="w-5 h-5 text-secondary-600" />
+              <ArrowLeft className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
             </motion.button>
 
             {/* Dots */}
@@ -167,8 +167,8 @@ const Testimonials = () => {
                   onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-colors duration-300 ${
                     index === currentIndex
-                      ? 'bg-primary-600'
-                      : 'bg-secondary-300 hover:bg-secondary-400'
+                      ? 'bg-primary-600 dark:bg-primary-400'
+                      : 'bg-secondary-300 dark:bg-secondary-600 hover:bg-secondary-400 dark:hover:bg-secondary-500'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -179,10 +179,10 @@ const Testimonials = () => {
               onClick={nextTestimonial}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="bg-white dark:bg-secondary-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
               aria-label="Next testimonial"
             >
-              <ArrowRight className="w-5 h-5 text-secondary-600" />
+              <ArrowRight className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
             </motion.button>
           </div>
         </div>
@@ -202,10 +202,12 @@ const Testimonials = () => {
             { number: '24/7', label: 'Support Available' },
           ].map(stat => (
             <div key={stat.label} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary-600 mb-2">
+              <div className="text-3xl md:text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
                 {stat.number}
               </div>
-              <div className="text-secondary-600">{stat.label}</div>
+              <div className="text-secondary-600 dark:text-secondary-400">
+                {stat.label}
+              </div>
             </div>
           ))}
         </motion.div>

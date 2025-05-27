@@ -131,14 +131,14 @@ const Services = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="text-primary-600 font-semibold text-lg">
+          <span className="text-primary-600 dark:text-primary-400 font-semibold text-lg">
             Our Services
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mt-2 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2 mb-6">
             Comprehensive Automation
             <span className="text-gradient block">Solutions</span>
           </h2>
-          <p className="text-lg text-secondary-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto leading-relaxed">
             From simple task automation to complex DevOps pipelines, we deliver
             solutions that transform how your team works and scales your
             operations efficiently.
@@ -153,25 +153,25 @@ const Services = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-secondary-100"
+              className="group bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-secondary-100 dark:border-secondary-700"
             >
               {/* Icon */}
               <div
                 className={`inline-flex p-4 rounded-2xl mb-6 ${
                   service.color === 'primary'
-                    ? 'bg-primary-100 text-primary-600 group-hover:bg-primary-600 group-hover:text-white'
-                    : 'bg-secondary-100 text-secondary-600 group-hover:bg-secondary-600 group-hover:text-white'
+                    ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 group-hover:bg-primary-600 group-hover:text-white'
+                    : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-400 group-hover:bg-secondary-600 group-hover:text-white'
                 } transition-all duration-300`}
               >
                 <service.icon className="h-8 w-8" />
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-bold text-secondary-900 mb-4 group-hover:text-primary-600 transition-colors">
+              <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-4 group-hover:text-primary-600 transition-colors">
                 {service.title}
               </h3>
 
-              <p className="text-secondary-600 mb-6 leading-relaxed">
+              <p className="text-secondary-600 dark:text-secondary-400 mb-6 leading-relaxed">
                 {service.description}
               </p>
 
@@ -187,8 +187,8 @@ const Services = () => {
                     }}
                     className="flex items-center space-x-3"
                   >
-                    <CheckCircle className="h-4 w-4 text-primary-600 flex-shrink-0" />
-                    <span className="text-secondary-700 text-sm">
+                    <CheckCircle className="h-4 w-4 text-primary-600 dark:text-primary-400 flex-shrink-0" />
+                    <span className="text-secondary-700 dark:text-secondary-300 text-sm">
                       {feature}
                     </span>
                   </motion.div>
@@ -199,7 +199,7 @@ const Services = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-secondary-50 hover:bg-primary-600 text-secondary-700 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center group/btn"
+                className="w-full bg-secondary-50 dark:bg-secondary-700 hover:bg-primary-600 text-secondary-700 dark:text-secondary-200 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center group/btn"
               >
                 Learn More
                 <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -215,11 +215,11 @@ const Services = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="text-center mt-16"
         >
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-secondary-100 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-secondary-900 mb-4">
+          <div className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg border border-secondary-100 dark:border-secondary-700 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
               Ready to Transform Your Workflow?
             </h3>
-            <p className="text-secondary-600 mb-6 max-w-2xl mx-auto">
+            <p className="text-secondary-600 dark:text-secondary-400 mb-6 max-w-2xl mx-auto">
               Let's discuss how we can automate your most time-consuming tasks
               and streamline your operations. Get a free consultation to explore
               the possibilities.
