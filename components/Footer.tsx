@@ -2,10 +2,13 @@
 
 import { motion } from 'framer-motion'
 import { Mail, ExternalLink, Heart } from 'lucide-react'
-import GitHubIcon from './GitHubIcon'
-import LinkedInIcon from './LinkedInIcon'
-import XIcon from './XIcon'
-import BlueskyIcon from './BlueskyIcon'
+import {
+  GitHubIcon,
+  LinkedInIcon,
+  XIcon,
+  BlueskyIcon,
+  MastodonIcon,
+} from './SocialIcons'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -63,46 +66,31 @@ const Footer = () => {
     ],
   }
 
-  // Custom wrapper for GitHub icon to match the expected interface
-  const GitHubIconWrapper = ({ className }: { className?: string }) => (
-    <GitHubIcon className={className} variant="light" />
-  )
-
-  // Custom wrapper for LinkedIn icon to match the expected interface
-  const LinkedInIconWrapper = ({ className }: { className?: string }) => (
-    <LinkedInIcon className={className} variant="light" />
-  )
-
-  // Custom wrapper for X icon to match the expected interface
-  const XIconWrapper = ({ className }: { className?: string }) => (
-    <XIcon className={className} variant="light" />
-  )
-
-  // Custom wrapper for Bluesky icon to match the expected interface
-  const BlueskyIconWrapper = ({ className }: { className?: string }) => (
-    <BlueskyIcon className={className} variant="light" />
-  )
-
   const socialLinks = [
     {
       name: 'GitHub',
       href: 'https://github.com/viscalyx',
-      icon: GitHubIconWrapper,
+      icon: GitHubIcon,
     },
     {
       name: 'LinkedIn',
       href: 'https://linkedin.com/company/viscalyx',
-      icon: LinkedInIconWrapper,
+      icon: LinkedInIcon,
     },
     {
       name: 'X',
       href: 'https://x.com/viscalyx',
-      icon: XIconWrapper,
+      icon: XIcon,
     },
     {
       name: 'Bluesky',
       href: 'https://bsky.app/profile/viscalyx.com',
-      icon: BlueskyIconWrapper,
+      icon: BlueskyIcon,
+    },
+    {
+      name: 'Mastodon',
+      href: 'https://mastodon.social/@viscalyx',
+      icon: MastodonIcon,
     },
     {
       name: 'Email',
@@ -145,7 +133,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
-                  className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300"
+                  className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
                   aria-label={social.name}
                 >
                   <social.icon className="w-5 h-5" />
