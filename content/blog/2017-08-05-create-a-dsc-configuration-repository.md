@@ -4,7 +4,14 @@ date: "2017-08-13"
 author: "Johan Ljunggren"
 excerpt: "Learn how to create a PowerShell DSC configuration repository using Microsoft's templates and common tests. This comprehensive guide walks you through setting up GitHub, AppVeyor, and Azure integration to build, test, and deploy DSC configurations for automated infrastructure management."
 image: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?w=800&h=600&fit=crop&crop=center"
-tags: ["Infrastructure as Code", "PowerShell", "DSC", "Desired State Configuration", "Automation"]
+tags:
+  [
+    "Infrastructure as Code",
+    "PowerShell",
+    "DSC",
+    "Desired State Configuration",
+    "Automation",
+  ]
 readTime: "10 min read"
 ---
 
@@ -96,8 +103,8 @@ register for a free account.
    1. Add correct license for your repository, normally MIT is used for
       Open Source Software (OSS).
 1. Clone the repository locally. This will make a local copy of the repository on
-   your hard drive. *Please replace **USERNAME** with you github account
-   username, for example, my account username is 'johlju'.*
+   your hard drive. _Please replace **USERNAME** with you github account
+   username, for example, my account username is 'johlju'._
 
    ```powershell
    cd 'c:\source'
@@ -189,25 +196,26 @@ both methods.
 
 1. Login in to the [Azure Portal](https://portal.azure.com).
 1. Create the Azure Active Directory application account.
+
    1. Go to **Azure Active Directory**.
-      *I assume you are in the correct directory, if not, change to the correct directory*.
+      _I assume you are in the correct directory, if not, change to the correct directory_.
    1. Click on **App registrations**.
    1. Click on **New application registration**.
-   1. Enter a descriptive name in the *Name* field. For example '**DscConfigurationExampleAppId**'.
-      *This name is only for your records, and will only be used for setting*
-      *permission later.*.
-   1. Leave *Application type* as **Web app / API**.
-   1. For the mandatory field *Sign-on URL* enter any URL. For example
-      `https://dummy`. *This URL is not of interest since it will not be used*.
+   1. Enter a descriptive name in the _Name_ field. For example '**DscConfigurationExampleAppId**'.
+      _This name is only for your records, and will only be used for setting_
+      _permission later._.
+   1. Leave _Application type_ as **Web app / API**.
+   1. For the mandatory field _Sign-on URL_ enter any URL. For example
+      `https://dummy`. _This URL is not of interest since it will not be used_.
    1. Click on **Create**.
    1. On the list of application registrations, click on the newly created application.
    1. In the blade, look for **Application ID** and save this somewhere as your
       application id. We need this in a later step.
       Application ID looks something like this; 'ed978ce1-4d9c-4cd0-9374-4888e0fcab36'.
    1. On the **Settings** blade, click on **Keys**.
-   1. Add a descriptive key description in the *Description* field. For example
+   1. Add a descriptive key description in the _Description_ field. For example
       '**DscConfigurationExampleAppPassword**'.
-   1. Choose when the key password will expire, in the *Expires* field. For example
+   1. Choose when the key password will expire, in the _Expires_ field. For example
       '**In 1 year**'.
    1. Click **Save**, and please, keep the blade open until you completed the following
       steps.
@@ -215,19 +223,20 @@ both methods.
       a password manager. We need this in a later step.
       The password will look something like this 'B5zwEx6B+fj92mEk5LC7IPa4P+d28NY7QuqhLP1Dehs='.
 
-      >**Note:** When leaving this blade you will not be able to see the key password
-      >again. If you do then you need to create a new key password and optionally
-      >delete the old one.
+      > **Note:** When leaving this blade you will not be able to see the key password
+      > again. If you do then you need to create a new key password and optionally
+      > delete the old one.
 
 1. Copy the **Tenant ID** and save this somewhere. We need this in a later step.
    1. Go back to **Azure Active Directory**.
    1. Click on **Properties**.
-   1. Look for the field *Directory ID*, this value is the same as your
+   1. Look for the field _Directory ID_, this value is the same as your
       **Tenant ID**. Copy the **Directory ID** and save this somewhere as your
       tenant id.
       Tenant ID looks something like this; '84a06b73-5842-4d03-8123-ee27708b7f36'.
 1. Copy the **Subscription ID** and save this somewhere. We need this in a later
    step.
+
    1. Go to **Subscriptions** (same place as Azure Active Directory)
 
       > **Note:** If you don't see subscriptions in the list, then you need to
@@ -236,13 +245,14 @@ both methods.
    1. Look for the field **Subscription ID** column. Copy and save this somewhere
       as your subscription id.
       Subscription ID looks something like this; '4de0edba-1816-4f9b-880f-db90ee863d11'.
+
 1. Set the required permission for the Azure Active Directory Application on the
    subscription.
    1. While still in the subscriptions list, please click on the subscription with
       the same id as you copied above.
    1. Click on **Access control (IAM)**.
    1. Click **Add**.
-   1. In the field *Role* select **Contributor**.
+   1. In the field _Role_ select **Contributor**.
    1. In the field Select (the search box), write the name of the Azure Active
       Directory Application, for example '**DscConfigurationExampleAppId**'.
    1. When the name of the Azure Active Directory Application returns in search
@@ -264,8 +274,9 @@ account and give the application account Contributor permission on the subscript
    {% gist 301490cc813e4b490a3cecc1f010d921 %}
 
 1. Start a PowerShell session and change the directory to the location where you
-   save the script file  'New-AzureServicePrincipal.ps1'.
+   save the script file 'New-AzureServicePrincipal.ps1'.
 1. If you already know your subscription id, skip to the next step.
+
    1. Run the following in the PowerShell session
 
       ```powershell
@@ -273,21 +284,23 @@ account and give the application account Contributor permission on the subscript
       Get-AzureRmSubscription
       ```
 
-   1. Look for the *Id* property, this is the **Subscription ID**.
+   1. Look for the _Id_ property, this is the **Subscription ID**.
       Copy the **Subscription ID** and save this somewhere.
       Subscription ID looks something like this; '4de0edba-1816-4f9b-880f-db90ee863d11'.
+
 1. Run the following in the PowerShell session.
+
    - Change variable `$azureActiveDirectoryApplicationName` to something descriptive.
 
-     >**Note:** The application name is only for your records, it will only show
-     >as the account having permission on the subscription.
+     > **Note:** The application name is only for your records, it will only show
+     > as the account having permission on the subscription.
 
    - Change variable `$azureSubscriptionId` to the subscription id copied in the
      previous step.
    - Change variable `$azureDomain` to your domain name (this is optional).
 
-     >**Note:** Domain is used to build the URL for the parameters home page and
-     >identifiers URI but is is not of interest since it will not be used.
+     > **Note:** Domain is used to build the URL for the parameters home page and
+     > identifiers URI but is is not of interest since it will not be used.
 
    - When the script is run, you will be asked for a password. This is the
      password key that will will need later to login using the application account.
@@ -348,9 +361,9 @@ all the id's and password in that file. Even if they are stored encrypted, that
 is not best security wise. Instead we need to remove the secure variables from the
 appveyor.yml file and add them to your AppVeyor account.
 
->**Note:** If you want to keep the ID's and password encrypted in the appveyor.yml
->file, then you should encrypt the strings using [Encrypt configuration data](https://ci.appveyor.com/tools/encrypt).
->If you choose to keep the values in appveyor.yml, then you can skip this step.
+> **Note:** If you want to keep the ID's and password encrypted in the appveyor.yml
+> file, then you should encrypt the strings using [Encrypt configuration data](https://ci.appveyor.com/tools/encrypt).
+> If you choose to keep the values in appveyor.yml, then you can skip this step.
 
 1. Go back to your project in Visual Studio Code (or whatever editor you are using).
 1. Remove the following block from the appveyor.yml.
@@ -367,6 +380,7 @@ appveyor.yml file and add them to your AppVeyor account.
    ```
 
 1. Add the environment variables to the AppVeyor project settings.
+
    1. If you just did the previous section, then you should have the correct page
       already up and can skip this step.
       1. Go to the [Project tab](https://ci.appveyor.com/projects).
@@ -374,17 +388,18 @@ appveyor.yml file and add them to your AppVeyor account.
    1. Click on Settings.
    1. Click on Environment.
    1. Add environment variable 'TenantID'.
+
       1. Under **Environment variables**, click **Add variable**.
-      1. In the *Name* field, type **TenantId**.
-      1. In the *Value* field, type the value for tenant id that you save in the
+      1. In the _Name_ field, type **TenantId**.
+      1. In the _Value_ field, type the value for tenant id that you save in the
          previous step.
-      1. Hover over the *Value* field and then click on the lock icon next to it
+      1. Hover over the _Value_ field and then click on the lock icon next to it
          to make it a encrypted value.
 
-         >**Note:** If the value is not secure (encrypted), then anyone sending
-         >in a pull request (PR) could compromise your variables.
-         >Environment variables that are encrypted will not be available for
-         >a pull request (PR).
+         > **Note:** If the value is not secure (encrypted), then anyone sending
+         > in a pull request (PR) could compromise your variables.
+         > Environment variables that are encrypted will not be available for
+         > a pull request (PR).
 
    1. Repeat the previous step for the following environment variables, and make
       sure to secure each value. Use the values you saved in the previous steps.
@@ -405,35 +420,35 @@ appveyor.yml file and add them to your AppVeyor account.
 1. Rename the folder 'TemplateConfigModule' to 'DscConfigurationExampleModule'.
 1. Rename the module manifest 'TemplateConfigModule.psd1' to 'DscConfigurationExampleModule.psd1'
 
->**Note:** The folder name and module manifest file name must have the same name
->as the repository name, and the folder name must end with 'Module'.
+> **Note:** The folder name and module manifest file name must have the same name
+> as the repository name, and the folder name must end with 'Module'.
 
 #### Modify the content of the module manifest
 
 For more information regarding how to write a module manifest, please see the
-article [How to Write a PowerShell Module Manifest](https://msdn.microsoft.com/en-us/library/dd878337(v=vs.85).aspx)
+article [How to Write a PowerShell Module Manifest](<https://msdn.microsoft.com/en-us/library/dd878337(v=vs.85).aspx>)
 and you can also use the cmdlet [New-ModuleManifest](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/New-ModuleManifest?view=powershell-5.0)
 to create a module manifest.
 
 For this exercise we just change the values in the existing module manifest we
 just renamed.
 
- 1. Open the module manifest file 'DscConfigurationExampleModule.psd1'.
- 1. Change the value for property **ModuleVersion** to '1.0.0.0'.
- 1. Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
+1.  Open the module manifest file 'DscConfigurationExampleModule.psd1'.
+1.  Change the value for property **ModuleVersion** to '1.0.0.0'.
+1.  Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
     got from the cmdlet.
- 1. The property **RequiredModules** must be changed to the value below
+1.  The property **RequiredModules** must be changed to the value below
 
     ```powershell
     RequiredModules = @('PSDscResources','xComputerManagement')
     ```
 
-    >**Note:** The property RequiredModules is mandatory, because it is used to
-    >make sure the user has the correct module loaded, but more important for
-    >us it is used during testing to load the correct modules into the test
-    >environment.
+    > **Note:** The property RequiredModules is mandatory, because it is used to
+    > make sure the user has the correct module loaded, but more important for
+    > us it is used during testing to load the correct modules into the test
+    > environment.
 
- 1. The property **WindowsOSVersion** is not a property that is part of the
+1.  The property **WindowsOSVersion** is not a property that is part of the
     normal module manifest elements. This property has been added to the **PrivateData**
     hash table for the purpose of determine which operating systems the tests
     should run on. Let's change this to property to limit testing on
@@ -443,12 +458,12 @@ just renamed.
     WindowsOSVersion = '2012-R2-Datacenter','2016-Datacenter'
     ```
 
-    >**Note:** Please set this to the **Sku** for all operating systems your
-    >configuration supports.
-    >If you want to find out which Sku are available then read
-    >[How to find Windows VM images in the Azure Marketplace with Azure PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/cli-ps-findimage).
+    > **Note:** Please set this to the **Sku** for all operating systems your
+    > configuration supports.
+    > If you want to find out which Sku are available then read
+    > [How to find Windows VM images in the Azure Marketplace with Azure PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/cli-ps-findimage).
 
- 1. Change the values in the rest of the properties to something appropriate.
+1.  Change the values in the rest of the properties to something appropriate.
     Properties that are commented are optional. They can be removed if not used.
 
     ```powershell
@@ -460,11 +475,11 @@ just renamed.
     ProjectUri = 'https://github.com/USERNAME/DscConfigurationExample'
     ```
 
-    >**Note:** Some of the properties are required to publish a module
-    >to PowerShell Gallery. Read more in the section
-    >[Sharing relies on completing important metadata](https://github.com/PowerShell/DscConfigurations#sharing-relies-on-completing-important-metadata)
-    >in the [DscConfiguration](https://github.com/PowerShell/DscConfigurations)
-    >repository.
+    > **Note:** Some of the properties are required to publish a module
+    > to PowerShell Gallery. Read more in the section
+    > [Sharing relies on completing important metadata](https://github.com/PowerShell/DscConfigurations#sharing-relies-on-completing-important-metadata)
+    > in the [DscConfiguration](https://github.com/PowerShell/DscConfigurations)
+    > repository.
 
 ### Add a README to the module
 
@@ -586,8 +601,8 @@ a new file which holds our configuration for both target nodes.
    }
    ```
 
-   >**Note:** The named used for the configuration must be equal to what was used
-   >for the configuration data file for the first target node.
+   > **Note:** The named used for the configuration must be equal to what was used
+   > for the configuration data file for the first target node.
 
 #### Second node configuration
 
@@ -614,8 +629,8 @@ a new file which holds our configuration for both target nodes.
    }
    ```
 
-   >**Note:** The named used for the configuration must be equal to what was used
-   >for the configuration data file for the second target node.
+   > **Note:** The named used for the configuration must be equal to what was used
+   > for the configuration data file for the second target node.
 
 ### AppVeyor Testing
 
@@ -624,10 +639,10 @@ a new file which holds our configuration for both target nodes.
 We would like to use the latest build worker for our testing. So let's update
 appveyor.yml to use the latest build worker.
 
->**Note:** You can find out which build worker exist in the AppVeyor documentation
->[Build worker images](https://www.appveyor.com/docs/build-environment/#build-worker-images).
+> **Note:** You can find out which build worker exist in the AppVeyor documentation
+> [Build worker images](https://www.appveyor.com/docs/build-environment/#build-worker-images).
 
-1. Open the file appveyor.yml and add the below line directly after the *Version*
+1. Open the file appveyor.yml and add the below line directly after the _Version_
    dictionary.
 
    ```yml
@@ -646,7 +661,7 @@ appveyor.yml to use the latest build worker.
 
 We need to tell in what location we want to provision resources in Azure.
 
-1. Open the file appveyor.yml and add the below line directly after the *BuildID*
+1. Open the file appveyor.yml and add the below line directly after the _BuildID_
    dictionary. Change the location name to something that fits your needs.
 
    ```yml
@@ -655,7 +670,7 @@ We need to tell in what location we want to provision resources in Azure.
 
 #### Workaround for AppVeyor testing
 
->**Note:** This will be updated as soon as we get this fixes merged!
+> **Note:** This will be updated as soon as we get this fixes merged!
 
 There are bugs in the current version of the test framework ([DscConfiguration.Tests](https://github.com/PowerShell/DscConfiguration.Tests)).
 The fixes for these bugs has not yet been reviewed and merged, so for that reason
@@ -693,8 +708,8 @@ in my fork.
 Since we connected AppVeyor to our repository, the only thing we need to do is
 to commit all changes and push to the repository.
 
->*Note:* You can also commit and push directly from Visual Studio Code if you
->are using that.
+> _Note:_ You can also commit and push directly from Visual Studio Code if you
+> are using that.
 
 1. Open a PowerShell session and run the following. This will stage all new and
    changed files, and commit them with the commit message. And after that we push

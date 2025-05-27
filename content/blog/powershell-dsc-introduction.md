@@ -24,6 +24,7 @@ DSC is built on three core components:
 ## Key Benefits
 
 ### Declarative Approach
+
 With DSC, you describe what you want, not how to achieve it:
 
 ```powershell
@@ -45,9 +46,11 @@ Configuration WebServerConfig {
 ```
 
 ### Idempotency
+
 DSC configurations are idempotent, meaning you can run them multiple times safely. The system will only make changes when the current state doesn't match the desired state.
 
 ### Self-Healing
+
 The LCM can be configured to continuously monitor and correct configuration drift, ensuring your systems stay in the desired state.
 
 ## Getting Started
@@ -95,6 +98,7 @@ Start-DscConfiguration -Path 'C:\DSC\Configs' -Wait -Verbose
 ## Common DSC Resources
 
 ### Built-in Resources
+
 - **File**: Manage files and directories
 - **Registry**: Configure registry settings
 - **WindowsFeature**: Install/remove Windows features
@@ -102,7 +106,9 @@ Start-DscConfiguration -Path 'C:\DSC\Configs' -Wait -Verbose
 - **User**: Manage local user accounts
 
 ### Community Resources
+
 The PowerShell Gallery contains hundreds of community-contributed DSC resources for managing:
+
 - IIS configurations
 - SQL Server installations
 - Active Directory
@@ -112,6 +118,7 @@ The PowerShell Gallery contains hundreds of community-contributed DSC resources 
 ## Best Practices
 
 ### 1. Use Composite Resources
+
 Create reusable components by combining multiple resources:
 
 ```powershell
@@ -142,6 +149,7 @@ Configuration WebServer {
 ```
 
 ### 2. Implement Configuration Data
+
 Separate your configuration logic from environment-specific data:
 
 ```powershell
@@ -162,11 +170,13 @@ $ConfigData = @{
 ```
 
 ### 3. Use Pull Servers for Scale
+
 For larger environments, implement a DSC Pull Server to centrally manage configurations and reduce administrative overhead.
 
 ## Troubleshooting Tips
 
 ### Check DSC Status
+
 Monitor the status of your DSC configurations:
 
 ```powershell
@@ -175,10 +185,13 @@ Get-DscLocalConfigurationManager
 ```
 
 ### Review Event Logs
+
 DSC writes detailed information to Windows Event Logs:
+
 - Applications and Services Logs → Microsoft → Windows → Desired State Configuration
 
 ### Test Configurations
+
 Always test your configurations in a development environment before applying to production.
 
 ## Conclusion
