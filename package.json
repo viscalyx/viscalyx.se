@@ -11,6 +11,9 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",
+    "spell:check": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --no-progress",
+    "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
     "clean": "rm -rf .next out",
     "analyze": "ANALYZE=true npm run build",
     "export": "next export"
@@ -33,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "autoprefixer": "^10.4.21",
+    "cspell": "^9.0.2",
     "eslint": "^9.27.0",
     "eslint-config-next": "15.3.2",
     "postcss": "^8.5.3",
