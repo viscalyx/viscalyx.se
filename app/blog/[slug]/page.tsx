@@ -1,117 +1,86 @@
-'use client'
-
-import { motion } from 'framer-motion'
-import { ArrowLeft, Calendar, Clock, User, Share2, BookOpen, Tag } from 'lucide-react'
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  User,
+  Share2,
+  BookOpen,
+  Tag,
+} from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { getPostBySlug, getAllPosts, getRelatedPosts } from '@/lib/blog'
+import { notFound } from 'next/navigation'
 
-const BlogPost = ({ params }: { params: { slug: string } }) => {
-  // Mock blog post data - in a real app, this would fetch based on params.slug
-  // console.log('Blog slug:', params.slug); // Uncomment when implementing dynamic content
-  const post = {
-    title: "The Future of Infrastructure Automation: Trends for 2025",
-    content: `
-# The Future of Infrastructure Automation: Trends for 2025
-
-As we advance through 2025, the landscape of infrastructure automation continues to evolve at an unprecedented pace. Organizations worldwide are adopting more sophisticated automation strategies to manage complex, multi-cloud environments while maintaining security, compliance, and cost efficiency.
-
-## Key Trends Shaping Infrastructure Automation
-
-### 1. AI-Driven Infrastructure Management
-
-Artificial Intelligence is no longer just a buzzword in infrastructure automation. We're seeing practical implementations where AI algorithms can:
-
-- **Predictive Scaling**: Automatically adjust resources based on predicted demand patterns
-- **Anomaly Detection**: Identify unusual behavior in infrastructure components before they cause issues
-- **Self-Healing Systems**: Automatically remediate common infrastructure problems without human intervention
-
-### 2. GitOps Everywhere
-
-GitOps has moved beyond Kubernetes deployments and is now being applied to:
-
-- **Infrastructure Provisioning**: Using Git repositories as the single source of truth for infrastructure state
-- **Security Policy Management**: Version-controlled security policies that automatically deploy across environments
-- **Configuration Management**: Declarative configuration that ensures consistency across all systems
-
-### 3. Platform Engineering Renaissance
-
-The rise of platform engineering teams is creating:
-
-- **Developer Self-Service**: Internal platforms that allow developers to provision resources independently
-- **Standardized Workflows**: Consistent deployment patterns across all applications
-- **Improved Developer Experience**: Reduced cognitive load on development teams
-
-## PowerShell DSC in Modern Automation
-
-PowerShell Desired State Configuration continues to play a crucial role in Windows-centric environments:
-
-\`\`\`powershell
-Configuration WebServerConfig {
-    Node 'WebServer' {
-        WindowsFeature IIS {
-            Ensure = 'Present'
-            Name = 'Web-Server'
-        }
-
-        File WebContent {
-            Ensure = 'Present'
-            DestinationPath = 'C:\\inetpub\\wwwroot\\index.html'
-            Contents = '<h1>Automated Deployment Success!</h1>'
-        }
-    }
+interface BlogPostPageProps {
+  params: { slug: string }
 }
-\`\`\`
 
-## Challenges and Solutions
+const BlogPost = async ({ params }: BlogPostPageProps) => {
+  // Await params in Next.js 15+
+  const { slug } = await params
 
-### Challenge: Multi-Cloud Complexity
-**Solution**: Adopt cloud-agnostic tools and standardized APIs
+  // Get the blog post from markdown
+  const post = await getPostBySlug(slug)
 
-### Challenge: Security at Scale
-**Solution**: Implement policy-as-code and automated compliance checking
+  if (!post) {
+    // If markdown post not found, use fallback data for existing slugs
+    const fallbackPost = getFallbackPost(slug)
+    if (!fallbackPost) {
+      notFound()
+    }
+    return <BlogPostContent post={fallbackPost} relatedPosts={[]} />
+  }
 
-### Challenge: Skills Gap
-**Solution**: Invest in training and adopt declarative tools that reduce complexity
+  // Get related posts
+  const relatedPosts = await getRelatedPosts(post.slug, post.category)
 
-## Looking Ahead
+  return <BlogPostContent post={post} relatedPosts={relatedPosts} />
+}
 
-The future of infrastructure automation lies in:
+// Fallback data for existing blog posts that don't have markdown files yet
+function getFallbackPost(slug: string) {
+  const fallbackPosts: { [key: string]: any } = {
+    template: {
+      title: 'Blog Post Template',
+      content: `# Your Title
 
-1. **Increased Abstraction**: Higher-level tools that hide complexity
-2. **Better Integration**: Seamless workflows across the entire SDLC
-3. **Enhanced Observability**: Better insights into automated systems
-4. **Sustainable Practices**: Automation that optimizes for environmental impact
+Your introduction paragraph here.
+
+## Section Heading
+
+Your content here.
+
+### Subsection (optional)
+
+- Point 1
+- Point 2
 
 ## Conclusion
 
-Infrastructure automation in 2025 is about more than just efficiency—it's about creating resilient, scalable, and sustainable systems that can adapt to changing business needs. Organizations that embrace these trends will find themselves better positioned to compete in an increasingly digital world.
-
-The key is to start small, focus on high-impact areas, and gradually expand automation coverage while maintaining security and reliability standards.
-`,
-    author: "Johan Ljunggren",
-    date: "2024-12-15",
-    readTime: "8 min read",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop&crop=center",
-    category: "Automation",
-    tags: ["Infrastructure", "Automation", "AI", "GitOps", "DevOps"],
-    slug: "future-infrastructure-automation-2025"
+Your conclusion here.`,
+      author: 'Author Name',
+      date: '2025-01-01',
+      readTime: '3 min read',
+      image:
+        'https://images.unsplash.com/photo-1593505681742-8cbb6f44de25?w=1200&h=600&fit=crop&crop=center',
+      category: 'Template',
+      tags: ['Template'],
+      slug: 'template',
+    },
   }
 
-  const relatedPosts = [
-    {
-      title: "PowerShell DSC Best Practices for Enterprise Environments",
-      slug: "powershell-dsc-best-practices",
-      image: "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=300&h=200&fit=crop&crop=center"
-    },
-    {
-      title: "Building Resilient CI/CD Pipelines with Azure DevOps",
-      slug: "resilient-cicd-azure-devops",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=200&fit=crop&crop=center"
-    }
-  ]
+  return fallbackPosts[slug] || null
+}
 
+interface BlogPostContentProps {
+  post: any
+  relatedPosts: any[]
+}
+
+const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -119,11 +88,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div>
             <Link
               href="/blog"
               className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 group"
@@ -165,7 +130,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -185,23 +150,20 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
         <div className="container-custom">
           <div className="grid lg:grid-cols-4 gap-12">
             {/* Main Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="lg:col-span-3"
-            >
-              <div className="prose prose-lg max-w-none">
-                <div className="whitespace-pre-line text-secondary-700 leading-relaxed">
-                  {post.content}
-                </div>
+            <div className="lg:col-span-3">
+              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 prose-p:text-secondary-700 prose-a:text-primary-600 prose-code:text-primary-600 prose-pre:bg-secondary-50">
+                <div
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  className="markdown-content"
+                />
               </div>
 
               {/* Tags */}
               <div className="mt-12 pt-8 border-t border-secondary-200">
+                {' '}
                 <div className="flex items-center flex-wrap gap-3">
                   <Tag className="w-4 h-4 text-secondary-500" />
-                  {post.tags.map((tag) => (
+                  {post.tags.map((tag: string) => (
                     <span
                       key={tag}
                       className="bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 cursor-pointer transition-colors"
@@ -219,30 +181,44 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                     JL
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-secondary-900 mb-2">Johan Ljunggren</h3>
+                    <h3 className="text-xl font-bold text-secondary-900 mb-2">
+                      Johan Ljunggren
+                    </h3>
                     <p className="text-secondary-600 mb-4">
-                      Founder and Lead Consultant at Viscalyx. Johan is a passionate automation expert
-                      with over 8 years of experience in DevOps, PowerShell DSC, and open-source development.
-                      He's an active contributor to the PowerShell DSC Community and helps organizations
-                      worldwide streamline their infrastructure management.
+                      Founder and Lead Consultant at Viscalyx. Johan is a
+                      passionate automation expert with over 8 years of
+                      experience in DevOps, PowerShell DSC, and open-source
+                      development. He's an active contributor to the PowerShell
+                      DSC Community and helps organizations worldwide streamline
+                      their infrastructure management.
                     </p>
                     <div className="flex space-x-4">
-                      <a href="#" className="text-primary-600 hover:text-primary-700">LinkedIn</a>
-                      <a href="#" className="text-primary-600 hover:text-primary-700">GitHub</a>
-                      <a href="#" className="text-primary-600 hover:text-primary-700">Twitter</a>
+                      <a
+                        href="#"
+                        className="text-primary-600 hover:text-primary-700"
+                      >
+                        LinkedIn
+                      </a>
+                      <a
+                        href="#"
+                        className="text-primary-600 hover:text-primary-700"
+                      >
+                        GitHub
+                      </a>
+                      <a
+                        href="#"
+                        className="text-primary-600 hover:text-primary-700"
+                      >
+                        Twitter
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Sidebar */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="lg:col-span-1"
-            >
+            <div className="lg:col-span-1">
               {/* Table of Contents */}
               <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
                 <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
@@ -250,18 +226,48 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   Table of Contents
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li><a href="#" className="text-secondary-600 hover:text-primary-600">Key Trends Shaping Infrastructure</a></li>
-                  <li><a href="#" className="text-secondary-600 hover:text-primary-600">PowerShell DSC in Modern Automation</a></li>
-                  <li><a href="#" className="text-secondary-600 hover:text-primary-600">Challenges and Solutions</a></li>
-                  <li><a href="#" className="text-secondary-600 hover:text-primary-600">Looking Ahead</a></li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-secondary-600 hover:text-primary-600"
+                    >
+                      Key Trends Shaping Infrastructure
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-secondary-600 hover:text-primary-600"
+                    >
+                      PowerShell DSC in Modern Automation
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-secondary-600 hover:text-primary-600"
+                    >
+                      Challenges and Solutions
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="text-secondary-600 hover:text-primary-600"
+                    >
+                      Looking Ahead
+                    </a>
+                  </li>
                 </ul>
               </div>
 
               {/* Related Posts */}
               <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold text-secondary-900 mb-4">Related Articles</h3>
+                <h3 className="text-lg font-bold text-secondary-900 mb-4">
+                  Related Articles
+                </h3>
                 <div className="space-y-4">
-                  {relatedPosts.map((relatedPost) => (
+                  {relatedPosts.map(relatedPost => (
                     <Link
                       key={relatedPost.slug}
                       href={`/blog/${relatedPost.slug}`}
@@ -284,7 +290,7 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -292,6 +298,14 @@ The key is to start small, focus on high-impact areas, and gradually expand auto
       <Footer />
     </div>
   )
+}
+
+// Generate static paths for all blog posts
+export async function generateStaticParams() {
+  const posts = await getAllPosts()
+  return posts.map(post => ({
+    slug: post.slug,
+  }))
 }
 
 export default BlogPost
