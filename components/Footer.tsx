@@ -1,14 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import {
-  Github,
-  Linkedin,
-  Twitter,
-  Mail,
-  ExternalLink,
-  Heart,
-} from 'lucide-react'
+import { Mail, ExternalLink, Heart } from 'lucide-react'
+import GitHubIcon from './GitHubIcon'
+import LinkedInIcon from './LinkedInIcon'
+import XIcon from './XIcon'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -66,21 +62,36 @@ const Footer = () => {
     ],
   }
 
+  // Custom wrapper for GitHub icon to match the expected interface
+  const GitHubIconWrapper = ({ className }: { className?: string }) => (
+    <GitHubIcon className={className} variant="light" />
+  )
+
+  // Custom wrapper for LinkedIn icon to match the expected interface
+  const LinkedInIconWrapper = ({ className }: { className?: string }) => (
+    <LinkedInIcon className={className} variant="light" />
+  )
+
+  // Custom wrapper for X icon to match the expected interface
+  const XIconWrapper = ({ className }: { className?: string }) => (
+    <XIcon className={className} variant="light" />
+  )
+
   const socialLinks = [
     {
       name: 'GitHub',
       href: 'https://github.com/viscalyx',
-      icon: Github,
+      icon: GitHubIconWrapper,
     },
     {
       name: 'LinkedIn',
       href: 'https://linkedin.com/company/viscalyx',
-      icon: Linkedin,
+      icon: LinkedInIconWrapper,
     },
     {
-      name: 'Twitter',
-      href: 'https://twitter.com/viscalyx',
-      icon: Twitter,
+      name: 'X',
+      href: 'https://x.com/viscalyx',
+      icon: XIconWrapper,
     },
     {
       name: 'Email',
