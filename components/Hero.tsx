@@ -4,10 +4,12 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Zap, Code } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 const Hero = () => {
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('hero')
 
   const handleNavigation = (href: string) => {
     // Check if it's a section link (starts with #)
@@ -74,9 +76,7 @@ const Hero = () => {
               className="flex items-center space-x-2 text-primary-600 dark:text-primary-400"
             >
               <Sparkles className="h-5 w-5" />
-              <span className="font-medium">
-                Automation & DevOps Excellence
-              </span>
+              <span className="font-medium">{t('badge')}</span>
             </motion.div>
 
             <motion.h1
@@ -85,9 +85,9 @@ const Hero = () => {
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
             >
-              Streamline Your
-              <span className="text-gradient block">Development</span>
-              Workflow
+              {t('title')}
+              <span className="text-gradient block">{t('titleHighlight')}</span>
+              {t('titleEnd')}
             </motion.h1>
 
             <motion.p
@@ -96,9 +96,7 @@ const Hero = () => {
               transition={{ delay: 0.4 }}
               className="text-xl text-secondary-600 dark:text-secondary-400 leading-relaxed max-w-2xl"
             >
-              Professional consulting services that automate repetitive tasks
-              for developers and IT professionals. Boost productivity with
-              PowerShell DSC, DevOps solutions, and open-source contributions.
+              {t('description')}
             </motion.p>
 
             <motion.div
@@ -113,7 +111,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary inline-flex items-center justify-center group"
               >
-                Start Your Project
+                {t('buttons.startProject')}
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
               <motion.button
@@ -122,7 +120,7 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary inline-flex items-center justify-center"
               >
-                Explore Services
+                {t('buttons.exploreServices')}
               </motion.button>
             </motion.div>
 
@@ -134,21 +132,27 @@ const Hero = () => {
               className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-secondary-200 dark:border-secondary-700"
             >
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary-600">5+</div>
+                <div className="text-3xl font-bold text-primary-600">
+                  {t('stats.experience.value')}
+                </div>
                 <div className="text-secondary-600 dark:text-secondary-400">
-                  Years Experience
+                  {t('stats.experience.label')}
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary-600">100+</div>
+                <div className="text-3xl font-bold text-primary-600">
+                  {t('stats.automation.value')}
+                </div>
                 <div className="text-secondary-600 dark:text-secondary-400">
-                  Tasks Automated
+                  {t('stats.automation.label')}
                 </div>
               </div>
               <div className="text-center col-span-2 md:col-span-1">
-                <div className="text-3xl font-bold text-primary-600">∞</div>
+                <div className="text-3xl font-bold text-primary-600">
+                  {t('stats.openSource.value')}
+                </div>
                 <div className="text-secondary-600 dark:text-secondary-400">
-                  Open Source Contributions
+                  {t('stats.openSource.label')}
                 </div>
               </div>
             </motion.div>
@@ -173,7 +177,7 @@ const Hero = () => {
               >
                 <Image
                   src="/johlju-profile.jpg"
-                  alt="Johan Ljunggren profile image"
+                  alt={t('altText')}
                   width={600}
                   height={800}
                   className="rounded-2xl shadow-2xl"

@@ -37,5 +37,31 @@
   "language": {
     "english": "Engelska",
     "swedish": "Svenska"
+  },
+  "hero": {
+    "badge": "Automation & DevOps Excellens",
+    "title": "Effektivisera Ditt",
+    "titleHighlight": "Utvecklings",
+    "titleEnd": "Arbetsflöde",
+    "description": "Professionella konsulttjänster som automatiserar repetitiva uppgifter för utvecklare och IT-proffs. Öka produktiviteten med PowerShell DSC, DevOps-lösningar och bidrag till öppen källkod.",
+    "buttons": {
+      "startProject": "Starta Ditt Projekt",
+      "exploreServices": "Utforska Tjänster"
+    },
+    "stats": {
+      "experience": {
+        "value": "30+",
+        "label": "År av Erfarenhet"
+      },
+      "automation": {
+        "value": "100+",
+        "label": "Automatiserade Uppgifter"
+      },
+      "openSource": {
+        "value": "∞",
+        "label": "Bidrag till Öppen Källkod"
+      }
+    },
+    "altText": "Johan Ljunggrens profilbild"
   }
 }

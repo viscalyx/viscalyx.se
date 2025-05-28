@@ -37,5 +37,31 @@
   "language": {
     "english": "English",
     "swedish": "Swedish"
+  },
+  "hero": {
+    "badge": "Automation & DevOps Excellence",
+    "title": "Streamline Your",
+    "titleHighlight": "Development",
+    "titleEnd": "Workflow",
+    "description": "Professional consulting services that automate repetitive tasks for developers and IT professionals. Boost productivity with PowerShell DSC, DevOps solutions, and open-source contributions.",
+    "buttons": {
+      "startProject": "Start Your Project",
+      "exploreServices": "Explore Services"
+    },
+    "stats": {
+      "experience": {
+        "value": "30+",
+        "label": "Years Experience"
+      },
+      "automation": {
+        "value": "100+",
+        "label": "Tasks Automated"
+      },
+      "openSource": {
+        "value": "∞",
+        "label": "Open Source Contributions"
+      }
+    },
+    "altText": "Johan Ljunggren profile image"
   }
 }
