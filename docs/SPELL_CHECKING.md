@@ -123,7 +123,35 @@ npx cspell app/page.tsx --show-context --show-suggestions
 
 ## Language Extensions
 
-For multi-language projects, install additional dictionaries:
+This project supports multi-language spell checking:
+
+### Swedish Support
+Swedish spell checking is enabled for:
+- Files in the Swedish dictionary (`lib/dictionaries/sv.ts`)
+- Files with `sv` in the filename
+- Files with `swedish` in the filename
+
+The configuration includes:
+```bash
+npm install --save-dev @cspell/dict-sv
+```
+
+Configuration in `.cspell.json`:
+```json
+{
+  "dictionaries": ["sv"],
+  "overrides": [
+    {
+      "filename": "**/dictionaries/sv.ts",
+      "language": "sv",
+      "dictionaries": ["sv", "en"]
+    }
+  ]
+}
+```
+
+### Additional Language Support
+For other languages, install additional dictionaries:
 
 ```bash
 npm install --save-dev @cspell/dict-spanish @cspell/dict-french

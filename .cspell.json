@@ -300,6 +300,8 @@
     "johlju",
     "viscalyx"
   ],
+  "import": ["@cspell/dict-sv/cspell-ext.json"],
+  "dictionaries": ["sv"],
   "flagWords": [
     "hte",
     "teh",
@@ -360,6 +362,19 @@
     {
       "filename": "**/*.json",
       "ignoreRegExpList": ["/\"[^\"]*\":\\s*\"[^\"]*\"/g"]
+    },
+    {
+      "filename": "**/dictionaries/*.ts",
+      "ignoreRegExpList": [
+        "/^\\s*[a-zA-Z][a-zA-Z0-9]*:/gm",
+        "/^\\s*\\/\\/.*/gm",
+        "/^\\s*export\\s+.*$/gm"
+      ]
+    },
+    {
+      "filename": "**/dictionaries/sv.ts",
+      "language": "sv",
+      "dictionaries": ["sv", "en"]
     }
   ],
   "useGitignore": true,
