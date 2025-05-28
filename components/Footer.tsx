@@ -11,18 +11,23 @@ import {
 } from './SocialIcons'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('footer')
+  const tNav = useTranslations('navigation')
+  const locale = useLocale()
 
   const handleNavigation = (href: string) => {
     // Check if it's a section link (starts with #)
     if (href.startsWith('#')) {
       // If we're not on the home page, navigate to home first
-      if (pathname !== '/') {
-        router.push(`/${href}`)
+      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
+      if (currentPath !== '/') {
+        router.push(`/${locale}/${href}`)
       } else {
         // We're already on home page, just scroll to section
         const element = document.querySelector(href)
@@ -39,30 +44,31 @@ const Footer = () => {
         // External link
         window.open(href, '_blank', 'noopener noreferrer')
       } else {
-        // Internal page navigation
-        router.push(href)
+        // Internal page navigation - preserve locale
+        const cleanHref = href.startsWith('/') ? href : `/${href}`
+        router.push(`/${locale}${cleanHref}`)
       }
     }
   }
 
   const footerLinks = {
     company: [
-      { name: 'About Us', href: '#about' },
-      { name: 'Services', href: '#services' },
-      { name: 'Expertise', href: '#expertise' },
-      { name: 'Open Source', href: '#open-source' },
+      { name: t('aboutUs'), href: '#about' },
+      { name: tNav('services'), href: '#services' },
+      { name: t('expertise'), href: '#expertise' },
+      { name: tNav('openSource'), href: '#open-source' },
     ],
     resources: [
-      { name: 'Blog', href: '/blog' },
-      { name: 'Case Studies', href: '/case-studies' },
-      { name: 'Documentation', href: '#' },
-      { name: 'Community', href: '#' },
+      { name: tNav('blog'), href: '/blog' },
+      { name: tNav('caseStudies'), href: '/case-studies' },
+      { name: t('documentation'), href: '#' },
+      { name: t('community'), href: '#' },
     ],
     support: [
-      { name: 'Contact Us', href: '#contact' },
-      { name: 'FAQ', href: '#' },
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
+      { name: t('contactUs'), href: '#contact' },
+      { name: t('faq'), href: '#' },
+      { name: t('privacyPolicy'), href: '/privacy' },
+      { name: t('termsOfService'), href: '/terms' },
     ],
   }
 
@@ -117,10 +123,7 @@ const Footer = () => {
                 Viscalyx
               </h3>
               <p className="text-secondary-300 leading-relaxed">
-                Empowering organizations through intelligent automation. We
-                deliver cutting-edge solutions that transform workflows and
-                boost productivity for developers and IT professionals
-                worldwide.
+                {t('companyDescription')}
               </p>
             </div>
 
@@ -149,7 +152,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="text-lg font-semibold mb-6">Company</h4>
+            <h4 className="text-lg font-semibold mb-6">{t('company')}</h4>
             <ul className="space-y-3">
               {footerLinks.company.map(link => (
                 <li key={link.name}>
@@ -204,7 +207,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h4 className="text-lg font-semibold mb-6">Support</h4>
+            <h4 className="text-lg font-semibold mb-6">{t('support')}</h4>
             <ul className="space-y-3">
               {footerLinks.support.map(link => (
                 <li key={link.name}>
@@ -239,18 +242,15 @@ const Footer = () => {
         >
           <div className="max-w-md mx-auto text-center lg:text-left lg:max-w-none lg:flex lg:items-center lg:justify-between">
             <div className="lg:max-w-xl">
-              <h4 className="text-xl font-semibold mb-2">Stay Updated</h4>
-              <p className="text-secondary-300">
-                Get the latest insights on automation, DevOps, and open-source
-                contributions.
-              </p>
+              <h4 className="text-xl font-semibold mb-2">{t('stayUpdated')}</h4>
+              <p className="text-secondary-300">{t('newsletterText')}</p>
             </div>
 
             <div className="mt-6 lg:mt-0 lg:flex-shrink-0">
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('emailPlaceholder')}
                   className="px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white placeholder-secondary-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent min-w-0 flex-1"
                 />
                 <motion.button
@@ -258,7 +258,7 @@ const Footer = () => {
                   whileTap={{ scale: 0.95 }}
                   className="btn-primary whitespace-nowrap"
                 >
-                  Subscribe
+                  {t('subscribe')}
                 </motion.button>
               </div>
             </div>
@@ -277,11 +277,11 @@ const Footer = () => {
             className="flex flex-col sm:flex-row justify-between items-center"
           >
             <p className="text-secondary-400 text-sm">
-              © {currentYear} Viscalyx. All rights reserved.
+              © {currentYear} Viscalyx. {t('allRightsReserved')}
             </p>
 
             <div className="flex items-center mt-4 sm:mt-0 text-secondary-400 text-sm">
-              <span>Made with</span>
+              <span>{t('madeWith')}</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
@@ -289,7 +289,7 @@ const Footer = () => {
               >
                 <Heart className="w-4 h-4 text-red-500 fill-current" />
               </motion.div>
-              <span>for the developer community</span>
+              <span>{t('forDeveloperCommunity')}</span>
             </div>
           </motion.div>
         </div>

@@ -1,0 +1,36 @@
+{
+  "navigation": {
+    "about": "Om oss",
+    "services": "Tjänster",
+    "caseStudies": "Fallstudier",
+    "blog": "Blogg",
+    "openSource": "Öppen källkod",
+    "contact": "Kontakt",
+    "getStarted": "Kom igång"
+  },
+  "footer": {
+    "company": "Företag",
+    "aboutUs": "Om oss",
+    "expertise": "Expertis",
+    "resources": "Resurser",
+    "documentation": "Dokumentation",
+    "community": "Gemenskap",
+    "support": "Support",
+    "contactUs": "Kontakta oss",
+    "faq": "Vanliga frågor",
+    "privacyPolicy": "Integritetspolicy",
+    "termsOfService": "Användarvillkor",
+    "stayUpdated": "Håll dig uppdaterad",
+    "newsletterText": "Få de senaste insikterna om automation, DevOps och bidrag till öppen källkod.",
+    "emailPlaceholder": "Ange din e-postadress",
+    "subscribe": "Prenumerera",
+    "allRightsReserved": "Alla rättigheter förbehållna.",
+    "madeWith": "Gjord med",
+    "forDeveloperCommunity": "för utvecklargemenskapen",
+    "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
+  },
+  "language": {
+    "english": "Engelska",
+    "swedish": "Svenska"
+  }
+}

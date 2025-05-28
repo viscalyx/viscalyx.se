@@ -4,15 +4,19 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
+import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
 import Image from 'next/image'
 import ThemeToggle from './ThemeToggle'
+import LanguageSwitcher from './LanguageSwitcher'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('navigation')
+  const locale = useLocale()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,8 +32,9 @@ const Header = () => {
     // Check if it's a section link (starts with #)
     if (href.startsWith('#')) {
       // If we're not on the home page, navigate to home first
-      if (pathname !== '/') {
-        router.push(`/${href}`)
+      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
+      if (currentPath !== '/') {
+        router.push(`/${locale}/${href}`)
       } else {
         // We're already on home page, just scroll to section
         const element = document.querySelector(href)
@@ -38,18 +43,19 @@ const Header = () => {
         }
       }
     } else {
-      // Regular page navigation
-      router.push(href)
+      // Regular page navigation - preserve locale
+      const cleanHref = href.startsWith('/') ? href : `/${href}`
+      router.push(`/${locale}${cleanHref}`)
     }
   }
 
   const menuItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Case Studies', href: '/case-studies' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Open Source', href: '#open-source' },
-    { name: 'Contact', href: '#contact' },
+    { name: t('about'), href: '#about' },
+    { name: t('services'), href: '#services' },
+    { name: t('caseStudies'), href: '/case-studies' },
+    { name: t('blog'), href: '/blog' },
+    { name: t('openSource'), href: '#open-source' },
+    { name: t('contact'), href: '#contact' },
   ]
 
   return (
@@ -65,7 +71,7 @@ const Header = () => {
       <nav className="container-custom section-padding py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href={`/${locale}`} className="flex items-center space-x-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
@@ -96,6 +102,7 @@ const Header = () => {
                 {item.name}
               </motion.button>
             ))}
+            <LanguageSwitcher />
             <ThemeToggle />
             <motion.button
               onClick={() => handleNavigation('#contact', 'Contact')}
@@ -104,12 +111,13 @@ const Header = () => {
               transition={{ delay: 0.5 }}
               className="btn-primary"
             >
-              Get Started
+              {t('getStarted')}
             </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -152,7 +160,7 @@ const Header = () => {
                     onClick={() => handleNavigation('#contact', 'Contact')}
                     className="btn-primary w-full text-center block"
                   >
-                    Get Started
+                    {t('getStarted')}
                   </button>
                 </div>
               </div>

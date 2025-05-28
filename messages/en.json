@@ -1,0 +1,36 @@
+{
+  "navigation": {
+    "about": "About",
+    "services": "Services",
+    "caseStudies": "Case Studies",
+    "blog": "Blog",
+    "openSource": "Open Source",
+    "contact": "Contact",
+    "getStarted": "Get Started"
+  },
+  "footer": {
+    "company": "Company",
+    "aboutUs": "About Us",
+    "expertise": "Expertise",
+    "resources": "Resources",
+    "documentation": "Documentation",
+    "community": "Community",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "faq": "FAQ",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "stayUpdated": "Stay Updated",
+    "newsletterText": "Get the latest insights on automation, DevOps, and open-source contributions.",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "allRightsReserved": "All rights reserved.",
+    "madeWith": "Made with",
+    "forDeveloperCommunity": "for the developer community",
+    "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide."
+  },
+  "language": {
+    "english": "English",
+    "swedish": "Swedish"
+  }
+}
