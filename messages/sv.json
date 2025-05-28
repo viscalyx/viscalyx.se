@@ -63,5 +63,41 @@
       }
     },
     "altText": "Johan Ljunggrens profilbild"
+  },
+  "about": {
+    "badge": "Om Viscalyx",
+    "title": "Ger Organisationer Kraft Genom",
+    "titleHighlight": "Smart Automation",
+    "description1": "Viscalyx är ett specialiserat konsultföretag som fokuserar på att transformera hur utvecklare och IT-proffs arbetar. Som enskild näringsidkare tillhandahåller vi personaliserade, högkvalitativa automationslösningar som eliminerar repetitiva uppgifter och effektiviserar komplexa arbetsflöden.",
+    "description2": "Vår expertis sträcker sig över PowerShell Desired State Configuration (DSC), DevOps-automation och bidrag till projekt med öppen källkod som gynnar hela utvecklargemenskapen. Vi tror på att bygga lösningar som inte bara löser omedelbara problem utan också skapar bestående värde.",
+    "values": {
+      "precision": {
+        "title": "Precision & Excellens",
+        "description": "Varje automationslösning skapas med noggrann uppmärksamhet på detaljer och testas grundligt."
+      },
+      "clientCentric": {
+        "title": "Kundfokuserat Tillvägagångssätt",
+        "description": "Förstå dina unika utmaningar för att leverera skräddarsydda lösningar som passar ditt arbetsflöde."
+      },
+      "innovation": {
+        "title": "Innovation Först",
+        "description": "Utnyttja banbrytande teknologier och bästa praxis för att lösa komplexa problem."
+      },
+      "openSource": {
+        "title": "Engagemang för Öppen Källkod",
+        "description": "Aktivt bidra till gemenskapen och dela kunskap genom projekt med öppen källkod."
+      }
+    },
+    "visualAlt": "Utvecklare som arbetar med automation",
+    "stats": {
+      "taskReduction": {
+        "value": "98%",
+        "label": "Uppgiftsminskning"
+      },
+      "automation": {
+        "value": "24/7",
+        "label": "Automation"
+      }
+    }
   }
 }
