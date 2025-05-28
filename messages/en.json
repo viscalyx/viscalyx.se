@@ -6,7 +6,12 @@
     "blog": "Blog",
     "openSource": "Open Source",
     "contact": "Contact",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "settings": {
+      "title": "Settings",
+      "language": "Language",
+      "theme": "Theme"
+    }
   },
   "footer": {
     "company": "Company",

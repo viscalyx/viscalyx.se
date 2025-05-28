@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Settings } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
@@ -13,6 +13,9 @@ import LanguageSwitcher from './LanguageSwitcher'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const settingsRef = useRef<HTMLDivElement>(null)
+  const mobileSettingsRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations('navigation')
@@ -25,6 +28,32 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Handle click outside settings dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isSettingsOpen) {
+        const target = event.target as HTMLElement
+
+        const isOutsideDesktopSettings =
+          settingsRef.current && !settingsRef.current.contains(target)
+        const isOutsideMobileSettings =
+          mobileSettingsRef.current &&
+          !mobileSettingsRef.current.contains(target)
+
+        // Close settings if click is outside the settings container
+        const isDesktop = window.innerWidth >= 768 // md breakpoint
+        if (isDesktop && isOutsideDesktopSettings) {
+          setIsSettingsOpen(false)
+        } else if (!isDesktop && isOutsideMobileSettings) {
+          setIsSettingsOpen(false)
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isSettingsOpen])
 
   const handleNavigation = (href: string, name: string) => {
     setIsMenuOpen(false)
@@ -102,8 +131,50 @@ const Header = () => {
                 {item.name}
               </motion.button>
             ))}
-            <LanguageSwitcher />
-            <ThemeToggle />
+
+            {/* Settings Dropdown */}
+            <div className="relative" ref={settingsRef}>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/70 transition-colors"
+              >
+                <Settings className="h-5 w-5" />
+              </motion.button>
+
+              <AnimatePresence>
+                {isSettingsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 mt-2 w-64 bg-white dark:bg-secondary-800 rounded-lg shadow-xl border border-secondary-200 dark:border-secondary-700 py-2 z-10"
+                  >
+                    <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
+                      {t('settings.title')}
+                    </div>
+
+                    <div className="p-3 space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                          {t('settings.language')}
+                        </label>
+                        <LanguageSwitcher />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                          {t('settings.theme')}
+                        </label>
+                        <ThemeToggle />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <motion.button
               onClick={() => handleNavigation('#contact', 'Contact')}
               initial={{ opacity: 0, y: -20 }}
@@ -117,8 +188,41 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
-            <LanguageSwitcher />
-            <ThemeToggle />
+            <div className="relative" ref={mobileSettingsRef}>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+              >
+                <Settings className="h-5 w-5" />
+              </motion.button>
+
+              <AnimatePresence>
+                {isSettingsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute right-0 mt-2 w-56 bg-white dark:bg-secondary-800 rounded-lg shadow-xl border border-secondary-200 dark:border-secondary-700 py-2 z-10"
+                  >
+                    <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
+                      {t('settings.title')}
+                    </div>
+
+                    <div className="p-3 space-y-4">
+                      <div>
+                        <LanguageSwitcher />
+                      </div>
+
+                      <div>
+                        <ThemeToggle />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}

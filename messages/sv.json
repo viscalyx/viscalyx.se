@@ -6,7 +6,12 @@
     "blog": "Blogg",
     "openSource": "Öppen källkod",
     "contact": "Kontakt",
-    "getStarted": "Kom igång"
+    "getStarted": "Kom igång",
+    "settings": {
+      "title": "Inställningar",
+      "language": "Språk",
+      "theme": "Tema"
+    }
   },
   "footer": {
     "company": "Företag",

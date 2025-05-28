@@ -4,10 +4,11 @@ import { useLocale, useTranslations } from 'next-intl'
 import { useRouter, usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
@@ -19,6 +20,22 @@ const LanguageSwitcher = () => {
   ]
 
   const currentLanguage = languages.find(lang => lang.code === locale)
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
   // Ensure the component re-renders when locale changes
   useEffect(() => {
@@ -33,7 +50,7 @@ const LanguageSwitcher = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -68,10 +85,6 @@ const LanguageSwitcher = () => {
             </button>
           ))}
         </motion.div>
-      )}
-
-      {isOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
       )}
     </div>
   )
