@@ -81,6 +81,67 @@ const CaseStudiesPage = () => {
       ).map(result => `${result.metric} ${result.description}`),
       teamSize: '12 people', // This could be added to translations if needed
     },
+    {
+      slug: 'security-automation',
+      title: t('cases.security-automation.title'),
+      client: t('cases.security-automation.client'),
+      industry: t('cases.security-automation.industry'),
+      challenge: t('cases.security-automation.challenge'),
+      solution: t('cases.security-automation.solution'),
+      technologies: t.raw('cases.security-automation.technologies') as string[],
+      duration: t('cases.security-automation.duration'),
+      image:
+        'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop&crop=center',
+      results: (
+        t.raw('cases.security-automation.results') as Array<{
+          metric: string
+          description: string
+        }>
+      ).map(result => `${result.metric} ${result.description}`),
+      teamSize: '6 people', // This could be added to translations if needed
+    },
+    {
+      slug: 'data-analytics-pipeline',
+      title: t('cases.data-analytics-pipeline.title'),
+      client: t('cases.data-analytics-pipeline.client'),
+      industry: t('cases.data-analytics-pipeline.industry'),
+      challenge: t('cases.data-analytics-pipeline.challenge'),
+      solution: t('cases.data-analytics-pipeline.solution'),
+      technologies: t.raw(
+        'cases.data-analytics-pipeline.technologies'
+      ) as string[],
+      duration: t('cases.data-analytics-pipeline.duration'),
+      image:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center',
+      results: (
+        t.raw('cases.data-analytics-pipeline.results') as Array<{
+          metric: string
+          description: string
+        }>
+      ).map(result => `${result.metric} ${result.description}`),
+      teamSize: '10 people', // This could be added to translations if needed
+    },
+    {
+      slug: 'infrastructure-optimization',
+      title: t('cases.infrastructure-optimization.title'),
+      client: t('cases.infrastructure-optimization.client'),
+      industry: t('cases.infrastructure-optimization.industry'),
+      challenge: t('cases.infrastructure-optimization.challenge'),
+      solution: t('cases.infrastructure-optimization.solution'),
+      technologies: t.raw(
+        'cases.infrastructure-optimization.technologies'
+      ) as string[],
+      duration: t('cases.infrastructure-optimization.duration'),
+      image:
+        'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center',
+      results: (
+        t.raw('cases.infrastructure-optimization.results') as Array<{
+          metric: string
+          description: string
+        }>
+      ).map(result => `${result.metric} ${result.description}`),
+      teamSize: '4 people', // This could be added to translations if needed
+    },
   ]
 
   return (

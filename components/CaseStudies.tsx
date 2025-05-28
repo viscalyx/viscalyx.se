@@ -94,12 +94,78 @@ const CaseStudies = () => {
       duration: t('cases.2.duration'),
       teamSize: t('cases.2.teamSize'),
     },
+    {
+      title: t('cases.3.title'),
+      client: t('cases.3.client'),
+      industry: t('cases.3.industry'),
+      challenge: t('cases.3.challenge'),
+      solution: t('cases.3.solution'),
+      results: [
+        t('cases.3.results.0'),
+        t('cases.3.results.1'),
+        t('cases.3.results.2'),
+        t('cases.3.results.3'),
+      ],
+      technologies: [
+        t('cases.3.technologies.0'),
+        t('cases.3.technologies.1'),
+        t('cases.3.technologies.2'),
+        t('cases.3.technologies.3'),
+      ],
+      duration: t('cases.3.duration'),
+      teamSize: t('cases.3.teamSize'),
+    },
+    {
+      title: t('cases.4.title'),
+      client: t('cases.4.client'),
+      industry: t('cases.4.industry'),
+      challenge: t('cases.4.challenge'),
+      solution: t('cases.4.solution'),
+      results: [
+        t('cases.4.results.0'),
+        t('cases.4.results.1'),
+        t('cases.4.results.2'),
+        t('cases.4.results.3'),
+      ],
+      technologies: [
+        t('cases.4.technologies.0'),
+        t('cases.4.technologies.1'),
+        t('cases.4.technologies.2'),
+        t('cases.4.technologies.3'),
+      ],
+      duration: t('cases.4.duration'),
+      teamSize: t('cases.4.teamSize'),
+    },
+    {
+      title: t('cases.5.title'),
+      client: t('cases.5.client'),
+      industry: t('cases.5.industry'),
+      challenge: t('cases.5.challenge'),
+      solution: t('cases.5.solution'),
+      results: [
+        t('cases.5.results.0'),
+        t('cases.5.results.1'),
+        t('cases.5.results.2'),
+        t('cases.5.results.3'),
+      ],
+      technologies: [
+        t('cases.5.technologies.0'),
+        t('cases.5.technologies.1'),
+        t('cases.5.technologies.2'),
+        t('cases.5.technologies.3'),
+      ],
+      duration: t('cases.5.duration'),
+      teamSize: t('cases.5.teamSize'),
+    },
   ]
 
   const images = [
     'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&crop=center',
     'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center',
     'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop&crop=center',
+    'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&h=400&fit=crop&crop=center',
+    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=center',
+    'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop&crop=center',
   ]
 
   return (

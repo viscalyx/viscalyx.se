@@ -456,6 +456,69 @@
         "technologies": ["AWS", "Terraform", "Jenkins", "Ansible"],
         "duration": "8 months",
         "teamSize": "12 people"
+      },
+      {
+        "title": "Security Automation Framework",
+        "client": "Global Cybersecurity Firm",
+        "industry": "Cybersecurity",
+        "challenge": "Manual threat detection and response processes couldn't handle increasing attack volumes",
+        "solution": "Developed comprehensive security automation framework with automated threat detection and response",
+        "results": [
+          "85% faster incident response",
+          "95% reduction in false positives",
+          "24/7 automated monitoring",
+          "$3M annual savings"
+        ],
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Sentinel",
+          "Microsoft Defender",
+          "Azure Logic Apps"
+        ],
+        "duration": "5 months",
+        "teamSize": "6 people"
+      },
+      {
+        "title": "Data Analytics Pipeline Automation",
+        "client": "E-commerce Retail Giant",
+        "industry": "E-commerce",
+        "challenge": "Processing massive volumes of customer data led to delayed insights and missed opportunities",
+        "solution": "Architected automated data pipeline for real-time processing and visualization",
+        "results": [
+          "10TB+ daily processing capacity",
+          "95% faster time-to-insights",
+          "60% improvement in data accuracy",
+          "$5M additional revenue"
+        ],
+        "technologies": [
+          "Azure Data Factory",
+          "PowerShell DSC",
+          "Azure Synapse Analytics",
+          "Power BI"
+        ],
+        "duration": "7 months",
+        "teamSize": "10 people"
+      },
+      {
+        "title": "Infrastructure Cost Optimization",
+        "client": "Growing SaaS Startup",
+        "industry": "Software as a Service",
+        "challenge": "Escalating cloud costs and performance issues threatened profitability and customer satisfaction",
+        "solution": "Performed complete infrastructure assessment and implemented automated scaling and optimization",
+        "results": [
+          "65% reduction in infrastructure costs",
+          "40% improved application performance",
+          "99.9% service availability",
+          "Automated scaling implemented"
+        ],
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Cost Management",
+          "Azure Monitor",
+          "Terraform"
+        ],
+        "duration": "3 months",
+        "teamSize": "4 people"
       }
     ],
     "cta": {
@@ -572,6 +635,99 @@
           "text": "Viscalyx made our cloud migration seamless. Their expertise in automation ensured minimal downtime and maximum efficiency.",
           "author": "Jennifer Rodriguez",
           "role": "IT Director"
+        }
+      },
+      "security-automation": {
+        "title": "Security Automation Framework",
+        "client": "Global Cybersecurity Firm",
+        "industry": "Cybersecurity",
+        "duration": "5 months",
+        "date": "2024",
+        "overview": "Implementation of automated security monitoring and incident response system, reducing security response time by 85%.",
+        "challenge": "The cybersecurity firm needed to automate their threat detection and response processes to handle increasing attack volumes while maintaining accuracy and reducing false positives.",
+        "solution": "We developed a comprehensive security automation framework using PowerShell DSC, Azure Sentinel, and custom PowerShell modules for automated threat detection, analysis, and response.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Sentinel",
+          "Microsoft Defender",
+          "Azure Logic Apps",
+          "PowerBI"
+        ],
+        "results": [
+          { "metric": "85%", "description": "Faster incident response time" },
+          { "metric": "70%", "description": "Reduction in false positives" },
+          { "metric": "24/7", "description": "Automated threat monitoring" },
+          { "metric": "95%", "description": "Threat detection accuracy" }
+        ],
+        "testimonial": {
+          "text": "The security automation framework Viscalyx built has revolutionized our incident response capabilities. We can now detect and respond to threats in real-time.",
+          "author": "Alex Martinez",
+          "role": "Security Operations Manager"
+        }
+      },
+      "data-analytics-pipeline": {
+        "title": "Data Analytics Pipeline Automation",
+        "client": "E-commerce Retail Giant",
+        "industry": "E-commerce",
+        "duration": "7 months",
+        "date": "2023",
+        "overview": "Built scalable data processing pipeline handling 10TB+ daily, enabling real-time analytics and business intelligence.",
+        "challenge": "The e-commerce company struggled with processing massive volumes of customer data, product analytics, and sales metrics, leading to delayed insights and missed business opportunities.",
+        "solution": "We architected and implemented a fully automated data pipeline using Azure Data Factory, PowerShell DSC, and Azure Synapse Analytics for real-time data processing and visualization.",
+        "technologies": [
+          "Azure Data Factory",
+          "PowerShell DSC",
+          "Azure Synapse Analytics",
+          "Power BI",
+          "Azure Functions"
+        ],
+        "results": [
+          {
+            "metric": "10TB+",
+            "description": "Daily data processing capacity"
+          },
+          { "metric": "95%", "description": "Faster time-to-insights" },
+          { "metric": "60%", "description": "Improvement in data accuracy" },
+          { "metric": "$5M", "description": "Additional revenue from insights" }
+        ],
+        "testimonial": {
+          "text": "Viscalyx's data pipeline automation transformed how we understand our customers. Real-time insights have directly contributed to millions in additional revenue.",
+          "author": "Maria Rodriguez",
+          "role": "Chief Data Officer"
+        }
+      },
+      "infrastructure-optimization": {
+        "title": "Infrastructure Cost Optimization",
+        "client": "Growing SaaS Startup",
+        "industry": "Software as a Service",
+        "duration": "3 months",
+        "date": "2024",
+        "overview": "Comprehensive infrastructure audit and optimization resulting in 65% cost reduction while improving performance and scalability.",
+        "challenge": "A fast-growing SaaS startup was facing escalating cloud costs and performance issues that threatened their profitability and customer satisfaction.",
+        "solution": "We performed a complete infrastructure assessment and implemented automated scaling, resource optimization, and cost monitoring using PowerShell DSC and Azure automation tools.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Cost Management",
+          "Azure Monitor",
+          "Terraform",
+          "Azure Advisor"
+        ],
+        "results": [
+          {
+            "metric": "65%",
+            "description": "Reduction in infrastructure costs"
+          },
+          {
+            "metric": "40%",
+            "description": "Improved application performance"
+          },
+          { "metric": "99.9%", "description": "Service availability achieved" },
+          { "metric": "Auto", "description": "Scaling implemented" }
+        ],
+        "testimonial": {
+          "text": "Viscalyx's infrastructure optimization saved our startup. The cost savings allowed us to reinvest in growth while delivering better performance to our customers.",
+          "author": "David Kim",
+          "role": "Founder & CEO"
         }
       }
     }

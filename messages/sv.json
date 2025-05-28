@@ -456,6 +456,69 @@
         "technologies": ["AWS", "Terraform", "Jenkins", "Ansible"],
         "duration": "8 månader",
         "teamSize": "12 personer"
+      },
+      {
+        "title": "Säkerhetsautomatiseringsramverk",
+        "client": "Global Cybersäkerhetsföretag",
+        "industry": "Cybersäkerhet",
+        "challenge": "Manuella hotidentifierings- och responsprocesser kunde inte hantera ökande attackvolymer",
+        "solution": "Utvecklade omfattande säkerhetsautomatiseringsramverk med automatiserad hotidentifiering och respons",
+        "results": [
+          "85% snabbare incidentrespons",
+          "95% minskning av falska positiva",
+          "24/7 automatiserad övervakning",
+          "30 miljoner kronor årliga besparingar"
+        ],
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Sentinel",
+          "Microsoft Defender",
+          "Azure Logic Apps"
+        ],
+        "duration": "5 månader",
+        "teamSize": "6 personer"
+      },
+      {
+        "title": "Automation av Dataanalyspipeline",
+        "client": "E-handelsdetaljhandelsjätte",
+        "industry": "E-handel",
+        "challenge": "Bearbetning av enorma volymer kunddata ledde till försenade insikter och missade möjligheter",
+        "solution": "Arkitekterade automatiserad datapipeline för realtidsbearbetning och visualisering",
+        "results": [
+          "10TB+ daglig bearbetningskapacitet",
+          "95% snabbare tid till insikter",
+          "60% förbättring av datanoggrannhet",
+          "50 miljoner kronor ytterligare intäkter"
+        ],
+        "technologies": [
+          "Azure Data Factory",
+          "PowerShell DSC",
+          "Azure Synapse Analytics",
+          "Power BI"
+        ],
+        "duration": "7 månader",
+        "teamSize": "10 personer"
+      },
+      {
+        "title": "Optimering av Infrastrukturkostnader",
+        "client": "Växande SaaS-startup",
+        "industry": "Programvara som Tjänst",
+        "challenge": "Eskalerande molnkostnader och prestandaproblem hotade lönsamhet och kundnöjdhet",
+        "solution": "Genomförde komplett infrastrukturbedömning och implementerade automatiserad skalning och optimering",
+        "results": [
+          "65% minskning av infrastrukturkostnader",
+          "40% förbättrad applikationsprestanda",
+          "99,9% tjänstetillgänglighet",
+          "Automatiserad skalning implementerad"
+        ],
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Cost Management",
+          "Azure Monitor",
+          "Terraform"
+        ],
+        "duration": "3 månader",
+        "teamSize": "4 personer"
       }
     ],
     "cta": {
@@ -575,6 +638,102 @@
           "text": "Viscalyx gjorde vår molnmigration sömlös. Deras expertis inom automatisering säkerställde minimal drifttid och maximal effektivitet.",
           "author": "Jennifer Rodriguez",
           "role": "IT-direktör"
+        }
+      },
+      "security-automation": {
+        "title": "Säkerhetsautomatiseringsramverk",
+        "client": "Globalt Cybersäkerhetsföretag",
+        "industry": "Cybersäkerhet",
+        "duration": "5 månader",
+        "date": "2024",
+        "overview": "Implementering av automatiserat säkerhetsövervakning och incidentresponssystem, vilket minskar säkerhetsresponsstiden med 85%.",
+        "challenge": "Cybersäkerhetsföretaget behövde automatisera sina hotdetekterings- och responsprocesser för att hantera ökande attackvolymer samtidigt som de bibehöll noggrannhet och minskade falska positiva.",
+        "solution": "Vi utvecklade ett omfattande säkerhetsautomatiseringsramverk med PowerShell DSC, Azure Sentinel och anpassade PowerShell-moduler för automatiserad hotdetektion, analys och respons.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Sentinel",
+          "Microsoft Defender",
+          "Azure Logic Apps",
+          "PowerBI"
+        ],
+        "results": [
+          { "metric": "85%", "description": "Snabbare incidentresponsstid" },
+          { "metric": "70%", "description": "Minskning av falska positiva" },
+          { "metric": "24/7", "description": "Automatiserad hotövervakning" },
+          { "metric": "95%", "description": "Hotdetekteringsnoggrannhet" }
+        ],
+        "testimonial": {
+          "text": "Säkerhetsautomatiseringsramverket som Viscalyx byggde har revolutionerat våra incidentresponsförmågor. Vi kan nu upptäcka och svara på hot i realtid.",
+          "author": "Alex Martinez",
+          "role": "Säkerhetsoperationschef"
+        }
+      },
+      "data-analytics-pipeline": {
+        "title": "Dataanalytikpipeline-automatisering",
+        "client": "E-handelsjätte",
+        "industry": "E-handel",
+        "duration": "7 månader",
+        "date": "2023",
+        "overview": "Byggde skalbar databehandlingspipeline som hanterar 10TB+ dagligen, vilket möjliggör realtidsanalys och business intelligence.",
+        "challenge": "E-handelsföretaget kämpade med att bearbeta enorma volymer av kunddata, produktanalys och försäljningsmått, vilket ledde till försenade insikter och missade affärsmöjligheter.",
+        "solution": "Vi arkitekterade och implementerade en fullt automatiserad datapipeline med Azure Data Factory, PowerShell DSC och Azure Synapse Analytics för realtidsbearbetning och visualisering.",
+        "technologies": [
+          "Azure Data Factory",
+          "PowerShell DSC",
+          "Azure Synapse Analytics",
+          "Power BI",
+          "Azure Functions"
+        ],
+        "results": [
+          {
+            "metric": "10TB+",
+            "description": "Daglig databehandlingskapacitet"
+          },
+          { "metric": "95%", "description": "Snabbare tid till insikter" },
+          { "metric": "60%", "description": "Förbättring av datanoggrannhet" },
+          {
+            "metric": "5M$",
+            "description": "Ytterligare intäkter från insikter"
+          }
+        ],
+        "testimonial": {
+          "text": "Viscalyx datapipeline-automatisering transformerade hur vi förstår våra kunder. Realtidsinsikter har direkt bidragit till miljoner i ytterligare intäkter.",
+          "author": "Maria Rodriguez",
+          "role": "Chefsdataansvarig"
+        }
+      },
+      "infrastructure-optimization": {
+        "title": "Infrastrukturkostnadsoptimering",
+        "client": "Växande SaaS Startup",
+        "industry": "Programvara som Tjänst",
+        "duration": "3 månader",
+        "date": "2024",
+        "overview": "Omfattande infrastrukturrevsion och optimering som resulterade i 65% kostnadsminskning samtidigt som prestanda och skalbarhet förbättrades.",
+        "challenge": "En snabbt växande SaaS startup stod inför eskalerande molnkostnader och prestandaproblem som hotade deras lönsamhet och kundnöjdhet.",
+        "solution": "Vi genomförde en komplett infrastrukturbedömning och implementerade automatiserad skalning, resursoptimering och kostnadsövervakning med PowerShell DSC och Azure-automatiseringsverktyg.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Cost Management",
+          "Azure Monitor",
+          "Terraform",
+          "Azure Advisor"
+        ],
+        "results": [
+          {
+            "metric": "65%",
+            "description": "Minskning av infrastrukturkostnader"
+          },
+          {
+            "metric": "40%",
+            "description": "Förbättrad applikationsprestanda"
+          },
+          { "metric": "99.9%", "description": "Tjänstetillgänglighet uppnådd" },
+          { "metric": "Auto", "description": "Skalning implementerad" }
+        ],
+        "testimonial": {
+          "text": "Viscalyx infrastrukturoptimering räddade vår startup. Kostnadsbesparingarna gjorde det möjligt för oss att återinvestera i tillväxt samtidigt som vi levererade bättre prestanda till våra kunder.",
+          "author": "David Kim",
+          "role": "Grundare & VD"
         }
       }
     }

@@ -15,6 +15,9 @@ export function generateStaticParams() {
     'enterprise-automation-platform',
     'devops-transformation',
     'cloud-migration',
+    'security-automation',
+    'data-analytics-pipeline',
+    'infrastructure-optimization',
   ]
   return slugs.map(slug => ({
     slug: slug,
@@ -62,7 +65,13 @@ export default async function CaseStudyDetail({
         ? 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&crop=center'
         : slug === 'devops-transformation'
           ? 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&h=600&fit=crop&crop=center'
-          : 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center',
+          : slug === 'cloud-migration'
+            ? 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&crop=center'
+            : slug === 'security-automation'
+              ? 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop&crop=center'
+              : slug === 'data-analytics-pipeline'
+                ? 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center'
+                : 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center',
   }
 
   return (
