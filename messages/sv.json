@@ -464,5 +464,139 @@
       "startProject": "Starta ditt projekt",
       "viewAll": "Visa alla fallstudier"
     }
+  },
+  "caseStudyDetails": {
+    "backToList": "Tillbaka till Fallstudier",
+    "projectInfo": "Projektinfo",
+    "industry": "Bransch",
+    "duration": "Varaktighet",
+    "year": "År",
+    "challenge": "Utmaningen",
+    "solution": "Vår Lösning",
+    "technologiesUsed": "Använda Teknologier",
+    "keyResults": "Nyckelresultat",
+    "cta": {
+      "title": "Redo att Transformera Din Verksamhet?",
+      "description": "Låt oss diskutera hur vi kan hjälpa till att automatisera dina processer och driva resultat.",
+      "button": "Kom Igång"
+    },
+    "cases": {
+      "enterprise-automation-platform": {
+        "title": "Företagsautomationsplattform",
+        "client": "Fortune 500 Finansiella Tjänster",
+        "industry": "Finansiella Tjänster",
+        "duration": "6 månader",
+        "date": "2024",
+        "overview": "Komplett automatisering av manuella processer över flera avdelningar, vilket minskar driftskostnaderna med 60% och förbättrar effektiviteten.",
+        "challenge": "Kunden kämpade med manuella, tidskrävande processer inom sina verksamhets-, efterlevnads- och rapporteringsavdelningar. Detta ledde till höga driftskostnader, mänskliga fel och försenade rapporteringscykler.",
+        "solution": "Vi implementerade en omfattande automationsplattform med PowerShell DSC, Azure DevOps och anpassade arbetsflöden för att automatisera infrastrukturbereitstellung, efterlevnadskontroller och rapportgenerering.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure DevOps",
+          "Azure Automation",
+          "Power Platform",
+          "REST APIs"
+        ],
+        "results": [
+          { "metric": "60%", "description": "Minskning av driftskostnader" },
+          { "metric": "90%", "description": "Minskning av manuella fel" },
+          { "metric": "75%", "description": "Snabbare rapporteringscykler" },
+          { "metric": "40", "description": "Sparade timmar per vecka" }
+        ],
+        "testimonial": {
+          "text": "Viscalyx transformerade vår verksamhet helt. Automationsplattformen de byggde har sparat oss hundratals timmar och avsevärt minskat våra driftskostnader.",
+          "author": "Sarah Johnson",
+          "role": "Operationsdirektör"
+        }
+      },
+      "devops-transformation": {
+        "title": "DevOps-Transformation",
+        "client": "Hälsoteknologi Startup",
+        "industry": "Hälsoteknologi",
+        "duration": "4 månader",
+        "date": "2024",
+        "overview": "Komplett DevOps-transformation som möjliggör snabbare distributioner, förbättrad tillförlitlighet och skalbar infrastruktur.",
+        "challenge": "En växande hälsoteknologi startup behövde skala sina utvecklingsoperationer samtidigt som de upprätthöll HIPAA-efterlevnad och säkerställde noll-driftstopp distributioner.",
+        "solution": "Vi implementerade en komplett CI/CD-pipeline med automatiserad testning, efterlevnadskontroller och blue-green distributioner med Azure DevOps och PowerShell DSC.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure DevOps",
+          "Docker",
+          "Kubernetes",
+          "Terraform"
+        ],
+        "results": [
+          { "metric": "10x", "description": "Snabbare distributionscykler" },
+          { "metric": "99.9%", "description": "Systemdrifttid uppnådd" },
+          { "metric": "100%", "description": "HIPAA-efterlevnad bibehållen" },
+          {
+            "metric": "50%",
+            "description": "Minskning av distributionsproblem"
+          }
+        ],
+        "testimonial": {
+          "text": "DevOps-transformationen som Viscalyx levererade överträffade våra förväntningar. Vi gick från veckovisa distributioner till flera distributioner per dag utan driftstopp.",
+          "author": "Dr. Michael Chen",
+          "role": "CTO"
+        }
+      },
+      "cloud-migration": {
+        "title": "Molnmigration & Modernisering",
+        "client": "Tillverkningskorporation",
+        "industry": "Tillverkning",
+        "duration": "8 månader",
+        "date": "2023",
+        "overview": "Framgångsrik migration av äldre system till Azure-molnet med automatiserad skalning och katastrofåterställning.",
+        "challenge": "Äldre lokala infrastrukturer begränsade skalbarheten och ökade underhållskostnaderna. Kunden behövde en modern, skalbar lösning.",
+        "solution": "Vi designade och implementerade en fasad migration till Azure med automatiserad infrastrukturprovisionering, övervakning och katastrofåterställning med PowerShell DSC och Azure Resource Manager.",
+        "technologies": [
+          "PowerShell DSC",
+          "Azure Resource Manager",
+          "Azure Monitor",
+          "Logic Apps",
+          "SQL Database"
+        ],
+        "results": [
+          {
+            "metric": "45%",
+            "description": "Minskning av infrastrukturkostnader"
+          },
+          { "metric": "3x", "description": "Förbättrad applikationsprestanda" },
+          {
+            "metric": "24/7",
+            "description": "Automatiserad övervakning implementerad"
+          },
+          {
+            "metric": "99.95%",
+            "description": "Katastrofåterställning SLA uppnådd"
+          }
+        ],
+        "testimonial": {
+          "text": "Viscalyx gjorde vår molnmigration sömlös. Deras expertis inom automatisering säkerställde minimal drifttid och maximal effektivitet.",
+          "author": "Jennifer Rodriguez",
+          "role": "IT-direktör"
+        }
+      }
+    }
+  },
+  "caseStudiesListing": {
+    "hero": {
+      "title": "Framgångs",
+      "titleHighlight": "Berättelser",
+      "description": "Upptäck hur vi har hjälpt organisationer inom olika branscher att transformera sina verksamheter med intelligenta automationslösningar."
+    },
+    "content": {
+      "challenge": "Utmaning",
+      "solution": "Lösning",
+      "keyResults": "Nyckelresultat",
+      "technologies": "Teknologier",
+      "readFullCase": "Läs Fullständig Fallstudie"
+    },
+    "cta": {
+      "title": "Redo att Transformera Din Organisation?",
+      "description": "Varje framgångsrik automationsresa börjar med att förstå dina unika utmaningar. Låt oss diskutera hur vi kan hjälpa dig att uppnå liknande resultat.",
+      "startProject": "Starta Ditt Projekt",
+      "learnMore": "Läs Mer"
+    }
   }
 }
