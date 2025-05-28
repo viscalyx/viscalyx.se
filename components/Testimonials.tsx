@@ -4,54 +4,52 @@ import { motion } from 'framer-motion'
 import { Quote, Star, ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const t = useTranslations('testimonials')
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
-      role: 'DevOps Engineer',
-      company: 'TechCorp Solutions',
+      name: t('clients.0.name'),
+      role: t('clients.0.role'),
+      company: t('clients.0.company'),
       image:
         'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&crop=face',
-      content:
-        'Viscalyx transformed our deployment pipeline completely. What used to take hours now happens in minutes. Their automation expertise is unmatched.',
+      content: t('clients.0.content'),
       rating: 5,
-      project: 'CI/CD Pipeline Automation',
+      project: t('clients.0.project'),
     },
     {
-      name: 'Michael Chen',
-      role: 'Senior Software Engineer',
-      company: 'Innovation Labs',
+      name: t('clients.1.name'),
+      role: t('clients.1.role'),
+      company: t('clients.1.company'),
       image:
         'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face',
-      content:
-        'The PowerShell DSC implementations by Viscalyx saved us months of manual configuration work. Incredible attention to detail and technical depth.',
+      content: t('clients.1.content'),
       rating: 5,
-      project: 'Infrastructure as Code',
+      project: t('clients.1.project'),
     },
     {
-      name: 'Emily Rodriguez',
-      role: 'IT Director',
-      company: 'Global Finance Inc',
+      name: t('clients.2.name'),
+      role: t('clients.2.role'),
+      company: t('clients.2.company'),
       image:
         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&crop=face',
-      content:
-        "Working with Viscalyx was a game-changer. They didn't just deliver automation - they taught our team best practices that we continue to use today.",
+      content: t('clients.2.content'),
       rating: 5,
-      project: 'Enterprise Automation Platform',
+      project: t('clients.2.project'),
     },
     {
-      name: 'David Kim',
-      role: 'Cloud Architect',
-      company: 'StartupVenture',
+      name: t('clients.3.name'),
+      role: t('clients.3.role'),
+      company: t('clients.3.company'),
       image:
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=120&h=120&fit=crop&crop=face',
-      content:
-        'The open-source contributions and knowledge sharing approach of Viscalyx shows their commitment to the community. True professionals.',
+      content: t('clients.3.content'),
       rating: 5,
-      project: 'Cloud Migration Automation',
+      project: t('clients.3.project'),
     },
   ]
 
@@ -76,11 +74,11 @@ const Testimonials = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-            What Our <span className="text-gradient">Clients Say</span>
+            {t('title')}{' '}
+            <span className="text-gradient">{t('titleHighlight')}</span>
           </h2>
           <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
-            Don't just take our word for it. Here's what industry professionals
-            say about working with Viscalyx.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -110,7 +108,7 @@ const Testimonials = () => {
 
             {/* Content */}
             <blockquote className="text-xl md:text-2xl text-secondary-700 dark:text-secondary-300 leading-relaxed mb-8 italic">
-              "{testimonials[currentIndex].content}"
+              &ldquo;{testimonials[currentIndex].content}&rdquo;
             </blockquote>
 
             {/* Author Info */}
@@ -154,7 +152,7 @@ const Testimonials = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="bg-white dark:bg-secondary-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
-              aria-label="Previous testimonial"
+              aria-label={t('navigation.previous')}
             >
               <ArrowLeft className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
             </motion.button>
@@ -170,7 +168,7 @@ const Testimonials = () => {
                       ? 'bg-primary-600 dark:bg-primary-400'
                       : 'bg-secondary-300 dark:bg-secondary-600 hover:bg-secondary-400 dark:hover:bg-secondary-500'
                   }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
+                  aria-label={`${t('navigation.goTo')} ${index + 1}`}
                 />
               ))}
             </div>
@@ -180,7 +178,7 @@ const Testimonials = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="bg-white dark:bg-secondary-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
-              aria-label="Next testimonial"
+              aria-label={t('navigation.next')}
             >
               <ArrowRight className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
             </motion.button>
@@ -196,10 +194,22 @@ const Testimonials = () => {
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16"
         >
           {[
-            { number: '50+', label: 'Happy Clients' },
-            { number: '200+', label: 'Projects Delivered' },
-            { number: '99%', label: 'Client Satisfaction' },
-            { number: '24/7', label: 'Support Available' },
+            {
+              number: t('stats.happyClients.value'),
+              label: t('stats.happyClients.label'),
+            },
+            {
+              number: t('stats.projectsDelivered.value'),
+              label: t('stats.projectsDelivered.label'),
+            },
+            {
+              number: t('stats.clientSatisfaction.value'),
+              label: t('stats.clientSatisfaction.label'),
+            },
+            {
+              number: t('stats.supportAvailable.value'),
+              label: t('stats.supportAvailable.label'),
+            },
           ].map(stat => (
             <div key={stat.label} className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
