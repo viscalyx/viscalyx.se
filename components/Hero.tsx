@@ -172,8 +172,8 @@ const Hero = () => {
                 className="relative"
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face"
-                  alt="Professional consultant"
+                  src="/johlju-profile.jpg"
+                  alt="Johan Ljunggren profile image"
                   width={600}
                   height={800}
                   className="rounded-2xl shadow-2xl"
