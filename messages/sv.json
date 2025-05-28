@@ -99,5 +99,80 @@
         "label": "Automation"
       }
     }
+  },
+  "services": {
+    "badge": "Våra Tjänster",
+    "title": "Omfattande Automation",
+    "titleHighlight": "Lösningar",
+    "description": "Från enkel uppgiftsautomation till komplexa DevOps-pipelines levererar vi lösningar som transformerar hur ditt team arbetar och skalar era operationer effektivt.",
+    "items": {
+      "taskAutomation": {
+        "title": "Uppgiftsautomation",
+        "description": "Eliminera repetitiva manuella processer med intelligenta automationslösningar skräddarsydda för dina specifika arbetsflödesbehov.",
+        "features": [
+          "Anpassade PowerShell-skript",
+          "Arbetsflödesoptimering",
+          "Processdokumentation",
+          "Felhantering och loggning"
+        ]
+      },
+      "devOpsSolutions": {
+        "title": "DevOps-lösningar",
+        "description": "Effektivisera din utvecklingspipeline med moderna DevOps-metoder och infrastrukturautomation.",
+        "features": [
+          "CI/CD-pipelinekonfiguration",
+          "Infrastruktur som kod",
+          "Containerdistribution",
+          "Övervakning och varningar"
+        ]
+      },
+      "powershellDsc": {
+        "title": "PowerShell DSC",
+        "description": "Implementera Desired State Configuration för konsekvent och tillförlitlig systemhantering över din infrastruktur.",
+        "features": [
+          "Konfigurationshantering",
+          "Efterlevnadsövervakning",
+          "Avvikelsedetektering",
+          "Automatiserad åtgärd"
+        ]
+      },
+      "securityAutomation": {
+        "title": "Säkerhetsautomation",
+        "description": "Förbättra din säkerhetsställning med automatiserade säkerhetskontroller, efterlevnadsövervakning och hotrespons.",
+        "features": [
+          "Säkerhetsskanning",
+          "Efterlevnadsrevision",
+          "Sårbarhetsbedömning",
+          "Incidentrespons"
+        ]
+      },
+      "dataManagement": {
+        "title": "Datahantering",
+        "description": "Automatisera databehandling, säkerhetskopieringsstrategier och databasunderhållsuppgifter för förbättrad tillförlitlighet.",
+        "features": [
+          "Automatiserade säkerhetskopior",
+          "Datamigrering",
+          "Databasoptimering",
+          "Rapportautomation"
+        ]
+      },
+      "performanceOptimization": {
+        "title": "Prestationsoptimering",
+        "description": "Identifiera flaskhalsar och implementera lösningar för att dramatiskt förbättra system- och applikationsprestanda.",
+        "features": [
+          "Prestandaanalys",
+          "Resursoptimering",
+          "Skalbarhetplanering",
+          "Övervakningskonfiguration"
+        ]
+      }
+    },
+    "learnMore": "Läs mer",
+    "bottomCta": {
+      "title": "Redo att transformera ditt arbetsflöde?",
+      "description": "Låt oss diskutera hur vi kan automatisera dina mest tidskrävande uppgifter och effektivisera era operationer. Få en gratis konsultation för att utforska möjligheterna.",
+      "consultation": "Få gratis konsultation",
+      "expertise": "Se vår expertis"
+    }
   }
 }

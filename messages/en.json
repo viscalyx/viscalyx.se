@@ -99,5 +99,80 @@
         "label": "Automation"
       }
     }
+  },
+  "services": {
+    "badge": "Our Services",
+    "title": "Comprehensive Automation",
+    "titleHighlight": "Solutions",
+    "description": "From simple task automation to complex DevOps pipelines, we deliver solutions that transform how your team works and scales your operations efficiently.",
+    "items": {
+      "taskAutomation": {
+        "title": "Task Automation",
+        "description": "Eliminate repetitive manual processes with intelligent automation solutions tailored to your specific workflow needs.",
+        "features": [
+          "Custom PowerShell Scripts",
+          "Workflow Optimization",
+          "Process Documentation",
+          "Error Handling & Logging"
+        ]
+      },
+      "devOpsSolutions": {
+        "title": "DevOps Solutions",
+        "description": "Streamline your development pipeline with modern DevOps practices and infrastructure automation.",
+        "features": [
+          "CI/CD Pipeline Setup",
+          "Infrastructure as Code",
+          "Container Deployment",
+          "Monitoring & Alerting"
+        ]
+      },
+      "powershellDsc": {
+        "title": "PowerShell DSC",
+        "description": "Implement Desired State Configuration for consistent and reliable system management across your infrastructure.",
+        "features": [
+          "Configuration Management",
+          "Compliance Monitoring",
+          "Drift Detection",
+          "Automated Remediation"
+        ]
+      },
+      "securityAutomation": {
+        "title": "Security Automation",
+        "description": "Enhance your security posture with automated security checks, compliance monitoring, and threat response.",
+        "features": [
+          "Security Scanning",
+          "Compliance Auditing",
+          "Vulnerability Assessment",
+          "Incident Response"
+        ]
+      },
+      "dataManagement": {
+        "title": "Data Management",
+        "description": "Automate data processing, backup strategies, and database maintenance tasks for improved reliability.",
+        "features": [
+          "Automated Backups",
+          "Data Migration",
+          "Database Optimization",
+          "Reporting Automation"
+        ]
+      },
+      "performanceOptimization": {
+        "title": "Performance Optimization",
+        "description": "Identify bottlenecks and implement solutions to dramatically improve system and application performance.",
+        "features": [
+          "Performance Analysis",
+          "Resource Optimization",
+          "Scalability Planning",
+          "Monitoring Setup"
+        ]
+      }
+    },
+    "learnMore": "Learn More",
+    "bottomCta": {
+      "title": "Ready to Transform Your Workflow?",
+      "description": "Let's discuss how we can automate your most time-consuming tasks and streamline your operations. Get a free consultation to explore the possibilities.",
+      "consultation": "Get Free Consultation",
+      "expertise": "View Our Expertise"
+    }
   }
 }

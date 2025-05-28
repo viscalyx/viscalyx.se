@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import {
   Cog,
   Server,
@@ -20,6 +21,7 @@ const Services = () => {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('services')
 
   const handleNavigation = (href: string) => {
     // Check if it's a section link (starts with #)
@@ -43,79 +45,73 @@ const Services = () => {
   const services = [
     {
       icon: Cog,
-      title: 'Task Automation',
-      description:
-        'Eliminate repetitive manual processes with intelligent automation solutions tailored to your specific workflow needs.',
+      title: t('items.taskAutomation.title'),
+      description: t('items.taskAutomation.description'),
       features: [
-        'Custom PowerShell Scripts',
-        'Workflow Optimization',
-        'Process Documentation',
-        'Error Handling & Logging',
+        t('items.taskAutomation.features.0'),
+        t('items.taskAutomation.features.1'),
+        t('items.taskAutomation.features.2'),
+        t('items.taskAutomation.features.3'),
       ],
       color: 'primary',
     },
     {
       icon: Server,
-      title: 'DevOps Solutions',
-      description:
-        'Streamline your development pipeline with modern DevOps practices and infrastructure automation.',
+      title: t('items.devOpsSolutions.title'),
+      description: t('items.devOpsSolutions.description'),
       features: [
-        'CI/CD Pipeline Setup',
-        'Infrastructure as Code',
-        'Container Deployment',
-        'Monitoring & Alerting',
+        t('items.devOpsSolutions.features.0'),
+        t('items.devOpsSolutions.features.1'),
+        t('items.devOpsSolutions.features.2'),
+        t('items.devOpsSolutions.features.3'),
       ],
       color: 'secondary',
     },
     {
       icon: GitBranch,
-      title: 'PowerShell DSC',
-      description:
-        'Implement Desired State Configuration for consistent and reliable system management across your infrastructure.',
+      title: t('items.powershellDsc.title'),
+      description: t('items.powershellDsc.description'),
       features: [
-        'Configuration Management',
-        'Compliance Monitoring',
-        'Drift Detection',
-        'Automated Remediation',
+        t('items.powershellDsc.features.0'),
+        t('items.powershellDsc.features.1'),
+        t('items.powershellDsc.features.2'),
+        t('items.powershellDsc.features.3'),
       ],
       color: 'primary',
     },
     {
       icon: Shield,
-      title: 'Security Automation',
-      description:
-        'Enhance your security posture with automated security checks, compliance monitoring, and threat response.',
+      title: t('items.securityAutomation.title'),
+      description: t('items.securityAutomation.description'),
       features: [
-        'Security Scanning',
-        'Compliance Auditing',
-        'Vulnerability Assessment',
-        'Incident Response',
+        t('items.securityAutomation.features.0'),
+        t('items.securityAutomation.features.1'),
+        t('items.securityAutomation.features.2'),
+        t('items.securityAutomation.features.3'),
       ],
       color: 'secondary',
     },
     {
       icon: Database,
-      title: 'Data Management',
-      description:
-        'Automate data processing, backup strategies, and database maintenance tasks for improved reliability.',
+      title: t('items.dataManagement.title'),
+      description: t('items.dataManagement.description'),
       features: [
-        'Automated Backups',
-        'Data Migration',
-        'Database Optimization',
-        'Reporting Automation',
+        t('items.dataManagement.features.0'),
+        t('items.dataManagement.features.1'),
+        t('items.dataManagement.features.2'),
+        t('items.dataManagement.features.3'),
       ],
       color: 'primary',
     },
     {
       icon: Zap,
-      title: 'Performance Optimization',
-      description:
-        'Identify bottlenecks and implement solutions to dramatically improve system and application performance.',
+      title: t('items.performanceOptimization.title'),
+      description: t('items.performanceOptimization.description'),
       features: [
-        'Performance Analysis',
-        'Resource Optimization',
-        'Scalability Planning',
-        'Monitoring Setup',
+        t('items.performanceOptimization.features.0'),
+        t('items.performanceOptimization.features.1'),
+        t('items.performanceOptimization.features.2'),
+        t('items.performanceOptimization.features.3'),
       ],
       color: 'secondary',
     },
@@ -132,16 +128,14 @@ const Services = () => {
           className="text-center mb-16"
         >
           <span className="text-primary-600 dark:text-primary-400 font-semibold text-lg">
-            Our Services
+            {t('badge')}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2 mb-6">
-            Comprehensive Automation
-            <span className="text-gradient block">Solutions</span>
+            {t('title')}
+            <span className="text-gradient block">{t('titleHighlight')}</span>
           </h2>
           <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto leading-relaxed">
-            From simple task automation to complex DevOps pipelines, we deliver
-            solutions that transform how your team works and scales your
-            operations efficiently.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -201,7 +195,7 @@ const Services = () => {
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-secondary-50 dark:bg-secondary-700 hover:bg-primary-600 text-secondary-700 dark:text-secondary-200 hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center group/btn"
               >
-                Learn More
+                {t('learnMore')}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
               </motion.button>
             </motion.div>
@@ -217,12 +211,10 @@ const Services = () => {
         >
           <div className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg border border-secondary-100 dark:border-secondary-700 max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-              Ready to Transform Your Workflow?
+              {t('bottomCta.title')}
             </h3>
             <p className="text-secondary-600 dark:text-secondary-400 mb-6 max-w-2xl mx-auto">
-              Let's discuss how we can automate your most time-consuming tasks
-              and streamline your operations. Get a free consultation to explore
-              the possibilities.
+              {t('bottomCta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
@@ -231,7 +223,7 @@ const Services = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary inline-flex items-center justify-center"
               >
-                Get Free Consultation
+                {t('bottomCta.consultation')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
               <motion.button
@@ -240,7 +232,7 @@ const Services = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary inline-flex items-center justify-center"
               >
-                View Our Expertise
+                {t('bottomCta.expertise')}
               </motion.button>
             </div>
           </div>
