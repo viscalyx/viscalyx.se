@@ -751,5 +751,46 @@
       "startProject": "Start Your Project",
       "learnMore": "Learn More"
     }
+  },
+  "blog": {
+    "hero": {
+      "title": "Insights &",
+      "titleHighlight": "Knowledge",
+      "description": "Stay updated with the latest trends, best practices, and insights in automation, DevOps, and open-source development."
+    },
+    "featuredPost": {
+      "title": "Featured Article"
+    },
+    "categories": {
+      "all": "All"
+    },
+    "post": {
+      "readFullArticle": "Read Full Article",
+      "readMore": "Read More",
+      "backToBlog": "Back to Blog",
+      "share": "Share:",
+      "tableOfContents": "Table of Contents",
+      "relatedArticles": "Related Articles",
+      "tags": "Tags",
+      "authorBio": {
+        "name": "Johan Ljunggren",
+        "title": "Founder and Lead Consultant at Viscalyx",
+        "description": "Johan is a passionate automation expert with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. He's an active contributor to the PowerShell DSC Community and helps organizations worldwide streamline their infrastructure management."
+      },
+      "socialLinks": {
+        "linkedin": "LinkedIn",
+        "github": "GitHub",
+        "twitter": "Twitter"
+      }
+    },
+    "loadMore": "Load More Articles",
+    "fallback": {
+      "featuredPost": {
+        "title": "Welcome to My Blog",
+        "excerpt": "This is a placeholder for your featured blog post. Add markdown files to the content/blog directory to see your actual blog posts here.",
+        "author": "Your Name",
+        "category": "Blog"
+      }
+    }
   }
 }

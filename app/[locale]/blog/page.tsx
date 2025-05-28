@@ -1,14 +1,39 @@
+'use client'
+
 import { Calendar, Clock, User, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 
-// This will be a server component to fetch blog posts at build time
-const BlogPage = async () => {
-  const allPosts = await getAllPosts()
-  const featuredPost = await getFeaturedPost()
+const BlogPage = () => {
+  const t = useTranslations('blog')
+  const [allPosts, setAllPosts] = useState<any[]>([])
+  const [featuredPost, setFeaturedPost] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('/api/blog')
+        if (response.ok) {
+          const data = await response.json()
+          setAllPosts(data.allPosts || [])
+          setFeaturedPost(data.featuredPost)
+        } else {
+          console.error('Failed to fetch blog posts')
+        }
+      } catch (error) {
+        console.error('Error fetching blog posts:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
 
   /**
    * Default Featured Post Template
@@ -26,15 +51,14 @@ const BlogPage = async () => {
    * will automatically become the featured post.
    */
   const defaultFeaturedPost = {
-    title: 'Welcome to My Blog',
-    excerpt:
-      'This is a placeholder for your featured blog post. Add markdown files to the content/blog directory to see your actual blog posts here.',
-    author: 'Your Name',
+    title: t('fallback.featuredPost.title'),
+    excerpt: t('fallback.featuredPost.excerpt'),
+    author: t('fallback.featuredPost.author'),
     date: new Date().toISOString().split('T')[0], // Current date
     readTime: '5 min read',
     image:
       'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=400&fit=crop&crop=center',
-    category: 'Blog',
+    category: t('fallback.featuredPost.category'),
     slug: 'welcome-to-my-blog',
   }
 
@@ -62,7 +86,7 @@ const BlogPage = async () => {
    *   slug: "blog-post-slug"
    * }
    */
-  const defaultBlogPosts: Awaited<ReturnType<typeof getAllPosts>> = []
+  const defaultBlogPosts: any[] = []
 
   // Use markdown posts if available, otherwise fall back to default posts
   const displayFeaturedPost = featuredPost || defaultFeaturedPost
@@ -72,9 +96,25 @@ const BlogPage = async () => {
   // Get unique categories from all posts
   const categories = [
     displayFeaturedPost.category,
-    ...displayBlogPosts.map(post => post.category),
+    ...displayBlogPosts.map((post: any) => post.category),
   ].filter(Boolean)
-  const allCategories = ['All', ...Array.from(new Set(categories))]
+  const allCategories = [
+    t('categories.all'),
+    ...Array.from(new Set(categories)),
+  ]
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-secondary-600 dark:text-secondary-400">
+            Loading blog posts...
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
@@ -85,11 +125,11 @@ const BlogPage = async () => {
         <div className="container-custom">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-              Insights & <span className="text-gradient">Knowledge</span>
+              {t('hero.title')}{' '}
+              <span className="text-gradient">{t('hero.titleHighlight')}</span>
             </h1>
             <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-8">
-              Stay updated with the latest trends, best practices, and insights
-              in automation, DevOps, and open-source development.
+              {t('hero.description')}
             </p>
           </div>
         </div>
@@ -100,7 +140,7 @@ const BlogPage = async () => {
         <div className="container-custom">
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-8">
-              Featured Article
+              {t('featuredPost.title')}
             </h2>
 
             <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
@@ -143,7 +183,7 @@ const BlogPage = async () => {
                     href={`/blog/${displayFeaturedPost.slug}`}
                     className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium group"
                   >
-                    Read Full Article
+                    {t('post.readFullArticle')}
                     <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
@@ -163,7 +203,7 @@ const BlogPage = async () => {
                 <button
                   key={category}
                   className={`px-4 py-2 rounded-full transition-colors duration-200 ${
-                    category === 'All'
+                    category === t('categories.all')
                       ? 'bg-primary-600 dark:bg-primary-500 text-white'
                       : 'bg-white dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
@@ -216,7 +256,7 @@ const BlogPage = async () => {
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium group"
                   >
-                    Read More
+                    {t('post.readMore')}
                     <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
@@ -226,7 +266,7 @@ const BlogPage = async () => {
 
           {/* Load More */}
           <div className="text-center mt-12">
-            <button className="btn-primary">Load More Articles</button>
+            <button className="btn-primary">{t('loadMore')}</button>
           </div>
         </div>
       </section>

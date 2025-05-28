@@ -1,3 +1,5 @@
+'use client'
+
 import {
   ArrowLeft,
   Calendar,
@@ -9,10 +11,11 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import TableOfContents from '@/components/TableOfContents'
-import { getPostBySlug, getAllPosts, getRelatedPosts } from '@/lib/blog'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
@@ -102,26 +105,63 @@ function addHeadingIds(htmlContent: string): string {
   )
 }
 
-const BlogPost = async ({ params }: BlogPostPageProps) => {
-  // Await params in Next.js 15+
-  const { slug } = await params
+const BlogPost = ({ params }: BlogPostPageProps) => {
+  const t = useTranslations('blog')
+  const [post, setPost] = useState<any>(null)
+  const [relatedPosts, setRelatedPosts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Get the blog post from markdown
-  const post = await getPostBySlug(slug)
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        // Await params in Next.js 15+
+        const { slug } = await params
 
-  if (!post) {
-    // If markdown post not found, use fallback data for existing slugs
-    const fallbackPost = getFallbackPost(slug)
-    if (!fallbackPost) {
-      notFound()
+        const response = await fetch(`/api/blog/${slug}`)
+
+        if (response.ok) {
+          const data = await response.json()
+          setPost(data.post)
+          setRelatedPosts(data.relatedPosts || [])
+        } else if (response.status === 404) {
+          // If markdown post not found, use fallback data for existing slugs
+          const fallbackPost = getFallbackPost(slug)
+          if (!fallbackPost) {
+            notFound()
+          }
+          setPost(fallbackPost)
+          setRelatedPosts([])
+        } else {
+          console.error('Failed to fetch blog post')
+          notFound()
+        }
+      } catch (error) {
+        console.error('Error fetching blog post:', error)
+        notFound()
+      } finally {
+        setLoading(false)
+      }
     }
-    return <BlogPostContent post={fallbackPost} relatedPosts={[]} />
+
+    fetchPost()
+  }, [params])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-secondary-600">Loading blog post...</p>
+        </div>
+      </div>
+    )
   }
 
-  // Get related posts
-  const relatedPosts = await getRelatedPosts(post.slug, post.category)
+  if (!post) {
+    notFound()
+  }
 
-  return <BlogPostContent post={post} relatedPosts={relatedPosts} />
+  return <BlogPostContent post={post} relatedPosts={relatedPosts} t={t} />
 }
 
 // Fallback data for existing blog posts that don't have markdown files yet
@@ -182,9 +222,10 @@ function getFallbackPost(slug: string) {
 interface BlogPostContentProps {
   post: any
   relatedPosts: any[]
+  t: any
 }
 
-const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
+const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
   // Extract table of contents and add IDs to headings
   const tableOfContents = extractTableOfContents(post.content)
   const contentWithIds = addHeadingIds(post.content)
@@ -202,7 +243,7 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
               className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-              Back to Blog
+              {t('post.backToBlog')}
             </Link>
 
             <div className="max-w-4xl">
@@ -232,7 +273,7 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
               </div>
 
               <div className="flex items-center space-x-4">
-                <span className="text-secondary-600">Share:</span>
+                <span className="text-secondary-600">{t('post.share')}</span>
                 <button className="bg-white p-2 rounded-lg shadow hover:shadow-md transition-shadow">
                   <Share2 className="w-4 h-4 text-secondary-600" />
                 </button>
@@ -267,7 +308,7 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900">
                       <div className="flex items-center">
                         <BookOpen className="w-5 h-5 mr-2" />
-                        Table of Contents
+                        {t('post.tableOfContents')}
                       </div>
                       <svg
                         className="w-5 h-5 transition-transform group-open:rotate-180"
@@ -321,34 +362,29 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-secondary-900 mb-2">
-                      Johan Ljunggren
+                      {t('post.authorBio.name')}
                     </h3>
                     <p className="text-secondary-600 mb-4">
-                      Founder and Lead Consultant at Viscalyx. Johan is a
-                      passionate automation expert with over 8 years of
-                      experience in DevOps, PowerShell DSC, and open-source
-                      development. He's an active contributor to the PowerShell
-                      DSC Community and helps organizations worldwide streamline
-                      their infrastructure management.
+                      {t('post.authorBio.description')}
                     </p>
                     <div className="flex space-x-4">
                       <a
                         href="#"
                         className="text-primary-600 hover:text-primary-700"
                       >
-                        LinkedIn
+                        {t('post.socialLinks.linkedin')}
                       </a>
                       <a
                         href="#"
                         className="text-primary-600 hover:text-primary-700"
                       >
-                        GitHub
+                        {t('post.socialLinks.github')}
                       </a>
                       <a
                         href="#"
                         className="text-primary-600 hover:text-primary-700"
                       >
-                        Twitter
+                        {t('post.socialLinks.twitter')}
                       </a>
                     </div>
                   </div>
@@ -363,7 +399,7 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                   <div className="bg-white rounded-xl shadow-lg p-6">
                     <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
                       <BookOpen className="w-5 h-5 mr-2" />
-                      Table of Contents
+                      {t('post.tableOfContents')}
                     </h3>
                     <div className="max-h-80 overflow-y-auto">
                       <TableOfContents items={tableOfContents} />
@@ -374,7 +410,7 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
                 {/* Related Posts */}
                 <div className="bg-white rounded-xl shadow-lg p-6">
                   <h3 className="text-lg font-bold text-secondary-900 mb-4">
-                    Related Articles
+                    {t('post.relatedArticles')}
                   </h3>
                   <div className="space-y-4">
                     {relatedPosts.map(relatedPost => (
@@ -409,14 +445,6 @@ const BlogPostContent = ({ post, relatedPosts }: BlogPostContentProps) => {
       <Footer />
     </div>
   )
-}
-
-// Generate static paths for all blog posts
-export async function generateStaticParams() {
-  const posts = await getAllPosts()
-  return posts.map(post => ({
-    slug: post.slug,
-  }))
 }
 
 export default BlogPost

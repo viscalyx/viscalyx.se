@@ -757,5 +757,46 @@
       "startProject": "Starta Ditt Projekt",
       "learnMore": "Läs Mer"
     }
+  },
+  "blog": {
+    "hero": {
+      "title": "Insikter &",
+      "titleHighlight": "Kunskap",
+      "description": "Håll dig uppdaterad med de senaste trenderna, bästa praxis och insikterna inom automation, DevOps och utveckling av öppen källkod."
+    },
+    "featuredPost": {
+      "title": "Utvald Artikel"
+    },
+    "categories": {
+      "all": "Alla"
+    },
+    "post": {
+      "readFullArticle": "Läs Hela Artikeln",
+      "readMore": "Läs Mer",
+      "backToBlog": "Tillbaka till Blogg",
+      "share": "Dela:",
+      "tableOfContents": "Innehållsförteckning",
+      "relatedArticles": "Relaterade Artiklar",
+      "tags": "Taggar",
+      "authorBio": {
+        "name": "Johan Ljunggren",
+        "title": "Grundare och Ledande Konsult på Viscalyx",
+        "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av öppen källkod. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering."
+      },
+      "socialLinks": {
+        "linkedin": "LinkedIn",
+        "github": "GitHub",
+        "twitter": "Twitter"
+      }
+    },
+    "loadMore": "Ladda Fler Artiklar",
+    "fallback": {
+      "featuredPost": {
+        "title": "Välkommen till Min Blogg",
+        "excerpt": "Detta är en platshållare för din utvalda blogginlägg. Lägg till markdown-filer i content/blog-katalogen för att se dina faktiska blogginlägg här.",
+        "author": "Ditt Namn",
+        "category": "Blogg"
+      }
+    }
   }
 }
