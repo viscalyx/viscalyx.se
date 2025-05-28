@@ -3,10 +3,10 @@ import { getPostBySlug, getRelatedPosts } from '@/lib/blog'
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params
+    const { slug } = await params
 
     const post = await getPostBySlug(slug)
 
