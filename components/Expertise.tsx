@@ -14,38 +14,65 @@ import {
   Layers,
 } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 const Expertise = () => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const t = useTranslations('expertise')
 
   const technologies = [
-    { name: 'PowerShell', level: 95, icon: Terminal, color: 'bg-blue-500' },
     {
-      name: 'PowerShell DSC',
+      name: t('technologies.powershell'),
+      level: 95,
+      icon: Terminal,
+      color: 'bg-blue-500',
+    },
+    {
+      name: t('technologies.powershellDsc'),
       level: 92,
       icon: Settings,
       color: 'bg-indigo-500',
     },
-    { name: 'Azure DevOps', level: 88, icon: Cloud, color: 'bg-sky-500' },
-    { name: 'Docker', level: 85, icon: Layers, color: 'bg-cyan-500' },
-    { name: 'Git & GitHub', level: 90, icon: Code, color: 'bg-gray-700' },
-    { name: 'SQL Server', level: 82, icon: Database, color: 'bg-red-500' },
-    { name: 'Security', level: 86, icon: Shield, color: 'bg-green-500' },
     {
-      name: 'Performance',
+      name: t('technologies.azureDevOps'),
+      level: 88,
+      icon: Cloud,
+      color: 'bg-sky-500',
+    },
+    {
+      name: t('technologies.docker'),
+      level: 85,
+      icon: Layers,
+      color: 'bg-cyan-500',
+    },
+    {
+      name: t('technologies.gitGithub'),
+      level: 90,
+      icon: Code,
+      color: 'bg-gray-700',
+    },
+    {
+      name: t('technologies.sqlServer'),
+      level: 82,
+      icon: Database,
+      color: 'bg-red-500',
+    },
+    {
+      name: t('technologies.security'),
+      level: 86,
+      icon: Shield,
+      color: 'bg-green-500',
+    },
+    {
+      name: t('technologies.performance'),
       level: 89,
       icon: TrendingUp,
       color: 'bg-purple-500',
     },
   ]
 
-  const certifications = [
-    'Microsoft Certified: Azure Administrator',
-    'PowerShell DSC Specialist',
-    'DevOps Foundation Certified',
-    'ITIL v4 Foundation',
-  ]
+  const certifications: string[] = t.raw('certificationsList')
 
   return (
     <section
@@ -62,16 +89,16 @@ const Expertise = () => {
           className="text-center mb-16"
         >
           <span className="text-primary-600 dark:text-primary-400 font-semibold text-lg">
-            Technical Expertise
+            {t('badge')}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2 mb-6">
-            Deep Technical Knowledge
-            <span className="text-gradient block">Proven Results</span>
+            {t('subtitle')}
+            <span className="text-gradient block">
+              {t('subtitleHighlight')}
+            </span>
           </h2>
           <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto leading-relaxed">
-            Years of hands-on experience with cutting-edge technologies and
-            methodologies, combined with a commitment to continuous learning and
-            industry best practices.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -85,7 +112,7 @@ const Expertise = () => {
           >
             <div>
               <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-8">
-                Core Technologies
+                {t('title')}
               </h3>
               <div className="space-y-6">
                 {technologies.map((tech, index) => (
@@ -138,7 +165,7 @@ const Expertise = () => {
               className="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-800/50 rounded-2xl p-6"
             >
               <h4 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-                Certifications & Credentials
+                {t('certifications.title')}
               </h4>
               <div className="space-y-3">
                 {certifications.map((cert, index) => (
@@ -179,7 +206,7 @@ const Expertise = () => {
               >
                 <Image
                   src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop"
-                  alt="Developer workspace with multiple monitors"
+                  alt={t('imageAlt')}
                   width={600}
                   height={400}
                   className="rounded-2xl shadow-xl"
@@ -195,13 +222,13 @@ const Expertise = () => {
               >
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                    5+
+                    {t('stats.experience.value')}
                   </div>
                   <div className="text-sm text-secondary-600 dark:text-secondary-400">
-                    Years Experience
+                    {t('stats.experience.label')}
                   </div>
                   <div className="text-xs text-secondary-500 dark:text-secondary-500 mt-1">
-                    in Automation
+                    {t('stats.experience.sublabel')}
                   </div>
                 </div>
               </motion.div>
@@ -219,10 +246,10 @@ const Expertise = () => {
                 className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                  50+
+                  {t('stats.projects.value')}
                 </div>
                 <div className="text-sm text-secondary-600 dark:text-secondary-400">
-                  Projects Completed
+                  {t('stats.projects.label')}
                 </div>
               </motion.div>
 
@@ -233,10 +260,10 @@ const Expertise = () => {
                 className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                  100%
+                  {t('stats.satisfaction.value')}
                 </div>
                 <div className="text-sm text-secondary-600 dark:text-secondary-400">
-                  Client Satisfaction
+                  {t('stats.satisfaction.label')}
                 </div>
               </motion.div>
 
@@ -247,10 +274,10 @@ const Expertise = () => {
                 className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                  24/7
+                  {t('stats.uptime.value')}
                 </div>
                 <div className="text-sm text-secondary-600 dark:text-secondary-400">
-                  System Uptime
+                  {t('stats.uptime.label')}
                 </div>
               </motion.div>
 
@@ -261,10 +288,10 @@ const Expertise = () => {
                 className="bg-white dark:bg-secondary-800 border border-secondary-100 dark:border-secondary-700 rounded-xl p-4 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">
-                  ∞
+                  {t('stats.openSource.value')}
                 </div>
                 <div className="text-sm text-secondary-600 dark:text-secondary-400">
-                  Open Source
+                  {t('stats.openSource.label')}
                 </div>
               </motion.div>
             </div>
@@ -277,11 +304,9 @@ const Expertise = () => {
               className="bg-gradient-to-r from-primary-600 to-secondary-700 text-white rounded-2xl p-6"
             >
               <blockquote className="text-lg font-medium leading-relaxed">
-                "Automation isn't just about saving time—it's about enabling
-                teams to focus on what truly matters: innovation and strategic
-                growth."
+                "{t('quote.text')}"
               </blockquote>
-              <div className="mt-4 text-primary-100">— Viscalyx Philosophy</div>
+              <div className="mt-4 text-primary-100">— {t('quote.author')}</div>
             </motion.div>
           </motion.div>
         </div>
