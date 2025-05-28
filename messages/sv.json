@@ -346,5 +346,52 @@
       "description": "Boka en gratis 30-minuters konsultation för att diskutera dina automationsbehov.",
       "button": "Boka samtal"
     }
+  },
+  "openSource": {
+    "title": "Bidrag till Öppen",
+    "titleHighlight": "Källkod",
+    "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med öppen källkod hjälper till att främja automation och DevOps-praxis världen över.",
+    "stats": {
+      "projects": {
+        "value": "50+",
+        "label": "Projekt med Öppen Källkod"
+      },
+      "stars": {
+        "value": "5.2k",
+        "label": "GitHub-stjärnor"
+      },
+      "members": {
+        "value": "12k+",
+        "label": "Gemenskapsmedlemmar"
+      },
+      "years": {
+        "value": "8+",
+        "label": "År av Bidrag"
+      }
+    },
+    "projects": {
+      "powershellDsc": {
+        "name": "PowerShell DSC Community",
+        "description": "Aktiv bidragsgivare till PowerShell Desired State Configuration resurser och moduler",
+        "language": "PowerShell"
+      },
+      "dscResourceKit": {
+        "name": "DSC Resource Kit",
+        "description": "Omfattande samling av DSC-resurser för Windows-konfigurationshantering",
+        "language": "PowerShell"
+      },
+      "automationToolkits": {
+        "name": "Automation Toolkits",
+        "description": "Moderna automationsverktyg och ramverk för DevOps-proffs",
+        "language": "TypeScript"
+      }
+    },
+    "viewProject": "Visa projekt",
+    "cta": {
+      "title": "Gå med i vår gemenskap för öppen källkod",
+      "description": "Samarbeta med oss på banbrytande automationsverktyg och bidra till projekt som påverkar tusentals utvecklare världen över.",
+      "followGithub": "Följ på GitHub",
+      "collaborate": "Samarbeta med oss"
+    }
   }
 }

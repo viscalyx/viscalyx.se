@@ -346,5 +346,52 @@
       "description": "Schedule a free 30-minute consultation to discuss your automation needs.",
       "button": "Schedule Call"
     }
+  },
+  "openSource": {
+    "title": "Open Source",
+    "titleHighlight": "Contributions",
+    "description": "We believe in giving back to the community. Our active contributions to open-source projects help advance automation and DevOps practices worldwide.",
+    "stats": {
+      "projects": {
+        "value": "50+",
+        "label": "Open Source Projects"
+      },
+      "stars": {
+        "value": "5.2k",
+        "label": "GitHub Stars"
+      },
+      "members": {
+        "value": "12k+",
+        "label": "Community Members"
+      },
+      "years": {
+        "value": "8+",
+        "label": "Years Contributing"
+      }
+    },
+    "projects": {
+      "powershellDsc": {
+        "name": "PowerShell DSC Community",
+        "description": "Active contributor to PowerShell Desired State Configuration resources and modules",
+        "language": "PowerShell"
+      },
+      "dscResourceKit": {
+        "name": "DSC Resource Kit",
+        "description": "Comprehensive collection of DSC resources for Windows configuration management",
+        "language": "PowerShell"
+      },
+      "automationToolkits": {
+        "name": "Automation Toolkits",
+        "description": "Modern automation tools and frameworks for DevOps professionals",
+        "language": "TypeScript"
+      }
+    },
+    "viewProject": "View Project",
+    "cta": {
+      "title": "Join Our Open Source Community",
+      "description": "Collaborate with us on cutting-edge automation tools and contribute to projects that impact thousands of developers worldwide.",
+      "followGithub": "Follow on GitHub",
+      "collaborate": "Collaborate With Us"
+    }
   }
 }

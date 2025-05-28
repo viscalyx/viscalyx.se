@@ -4,10 +4,12 @@ import { motion } from 'framer-motion'
 import { Github, Star, Users, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 const OpenSource = () => {
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('openSource')
 
   const handleNavigation = (href: string) => {
     // Check if it's a section link (starts with #)
@@ -33,30 +35,27 @@ const OpenSource = () => {
   }
   const contributions = [
     {
-      name: 'PowerShell DSC Community',
-      description:
-        'Active contributor to PowerShell Desired State Configuration resources and modules',
-      language: 'PowerShell',
+      name: t('projects.powershellDsc.name'),
+      description: t('projects.powershellDsc.description'),
+      language: t('projects.powershellDsc.language'),
       stars: '2.5k',
       link: 'https://github.com/dsccommunity',
       image:
         'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop&crop=center',
     },
     {
-      name: 'DSC Resource Kit',
-      description:
-        'Comprehensive collection of DSC resources for Windows configuration management',
-      language: 'PowerShell',
+      name: t('projects.dscResourceKit.name'),
+      description: t('projects.dscResourceKit.description'),
+      language: t('projects.dscResourceKit.language'),
       stars: '1.8k',
       link: 'https://github.com/PowerShell/DscResources',
       image:
         'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400&h=300&fit=crop&crop=center',
     },
     {
-      name: 'Automation Toolkits',
-      description:
-        'Modern automation tools and frameworks for DevOps professionals',
-      language: 'TypeScript',
+      name: t('projects.automationToolkits.name'),
+      description: t('projects.automationToolkits.description'),
+      language: t('projects.automationToolkits.language'),
       stars: '892',
       link: '#',
       image:
@@ -65,10 +64,10 @@ const OpenSource = () => {
   ]
 
   const stats = [
-    { label: 'Open Source Projects', value: '50+' },
-    { label: 'GitHub Stars', value: '5.2k' },
-    { label: 'Community Members', value: '12k+' },
-    { label: 'Years Contributing', value: '8+' },
+    { label: t('stats.projects.label'), value: t('stats.projects.value') },
+    { label: t('stats.stars.label'), value: t('stats.stars.value') },
+    { label: t('stats.members.label'), value: t('stats.members.value') },
+    { label: t('stats.years.label'), value: t('stats.years.value') },
   ]
 
   return (
@@ -85,12 +84,11 @@ const OpenSource = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-            Open Source <span className="text-gradient">Contributions</span>
+            {t('title')}{' '}
+            <span className="text-gradient">{t('titleHighlight')}</span>
           </h2>
           <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
-            We believe in giving back to the community. Our active contributions
-            to open-source projects help advance automation and DevOps practices
-            worldwide.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -176,7 +174,7 @@ const OpenSource = () => {
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                   >
-                    View Project
+                    {t('viewProject')}
                     <ExternalLink className="w-4 h-4 ml-1" />
                   </motion.a>
                 </div>
@@ -195,12 +193,10 @@ const OpenSource = () => {
         >
           <div className="bg-primary-600 rounded-2xl p-8 md:p-12 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Join Our Open Source Community
+              {t('cta.title')}
             </h3>
             <p className="text-primary-100 mb-8 max-w-2xl mx-auto">
-              Collaborate with us on cutting-edge automation tools and
-              contribute to projects that impact thousands of developers
-              worldwide.
+              {t('cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
@@ -212,7 +208,7 @@ const OpenSource = () => {
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
               >
                 <Github className="w-5 h-5 mr-2" />
-                Follow on GitHub
+                {t('cta.followGithub')}
               </motion.a>
               <motion.button
                 onClick={() => handleNavigation('#contact')}
@@ -221,7 +217,7 @@ const OpenSource = () => {
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
               >
                 <Users className="w-5 h-5 mr-2" />
-                Collaborate With Us
+                {t('cta.collaborate')}
               </motion.button>
             </div>
           </div>
