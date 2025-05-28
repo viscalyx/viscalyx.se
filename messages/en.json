@@ -393,5 +393,76 @@
       "followGithub": "Follow on GitHub",
       "collaborate": "Collaborate With Us"
     }
+  },
+  "caseStudies": {
+    "title": "Success",
+    "titleHighlight": "Stories",
+    "description": "Real results from real clients. See how we've helped organizations transform their operations through intelligent automation.",
+    "clientLabel": "Client:",
+    "challengeTitle": "Challenge",
+    "solutionTitle": "Solution",
+    "keyResultsTitle": "Key Results",
+    "technologiesTitle": "Technologies Used",
+    "cases": [
+      {
+        "title": "Global E-commerce Platform Automation",
+        "client": "Fortune 500 Retail Company",
+        "industry": "E-commerce",
+        "challenge": "Manual deployment processes causing 4-hour downtimes",
+        "solution": "Implemented CI/CD pipeline with automated testing and rollback capabilities",
+        "results": [
+          "99.9% uptime improvement",
+          "4 hours to 15 minutes deployment time",
+          "80% reduction in deployment errors",
+          "$2M annual savings"
+        ],
+        "technologies": [
+          "Azure DevOps",
+          "PowerShell DSC",
+          "Kubernetes",
+          "Terraform"
+        ],
+        "duration": "6 months",
+        "teamSize": "8 people"
+      },
+      {
+        "title": "Healthcare Data Processing Automation",
+        "client": "Regional Healthcare Network",
+        "industry": "Healthcare",
+        "challenge": "Manual patient data processing taking 8 hours daily",
+        "solution": "Built automated data pipeline with compliance and security controls",
+        "results": [
+          "95% processing time reduction",
+          "100% HIPAA compliance maintained",
+          "Zero data loss incidents",
+          "24/7 automated monitoring"
+        ],
+        "technologies": ["Python", "Apache Airflow", "PostgreSQL", "Docker"],
+        "duration": "4 months",
+        "teamSize": "5 people"
+      },
+      {
+        "title": "Financial Services Infrastructure Modernization",
+        "client": "Investment Management Firm",
+        "industry": "Financial Services",
+        "challenge": "Legacy infrastructure limiting scalability and compliance",
+        "solution": "Migrated to cloud-native architecture with automated compliance checks",
+        "results": [
+          "10x infrastructure scalability",
+          "60% cost reduction",
+          "Automated compliance reporting",
+          "99.99% availability SLA"
+        ],
+        "technologies": ["AWS", "Terraform", "Jenkins", "Ansible"],
+        "duration": "8 months",
+        "teamSize": "12 people"
+      }
+    ],
+    "cta": {
+      "title": "Ready to Write Your Success Story?",
+      "description": "Let's discuss how we can help transform your organization with intelligent automation solutions tailored to your specific needs.",
+      "startProject": "Start Your Project",
+      "viewAll": "View All Case Studies"
+    }
   }
 }

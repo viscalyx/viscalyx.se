@@ -393,5 +393,76 @@
       "followGithub": "Följ på GitHub",
       "collaborate": "Samarbeta med oss"
     }
+  },
+  "caseStudies": {
+    "title": "Framgångs",
+    "titleHighlight": "Berättelser",
+    "description": "Verkliga resultat från verkliga kunder. Se hur vi har hjälpt organisationer att transformera sina verksamheter genom intelligent automation.",
+    "clientLabel": "Kund:",
+    "challengeTitle": "Utmaning",
+    "solutionTitle": "Lösning",
+    "keyResultsTitle": "Nyckelresultat",
+    "technologiesTitle": "Teknologier som används",
+    "cases": [
+      {
+        "title": "Global E-handelsplattform Automation",
+        "client": "Fortune 500 Detaljhandelsföretag",
+        "industry": "E-handel",
+        "challenge": "Manuella distributionsprocesser som orsakar 4 timmars driftstopp",
+        "solution": "Implementerade CI/CD-pipeline med automatiserad testning och återställningsmöjligheter",
+        "results": [
+          "99,9% förbättring av drifttid",
+          "4 timmar till 15 minuters distributionstid",
+          "80% minskning av distributionsfel",
+          "2 miljoner dollar årliga besparingar"
+        ],
+        "technologies": [
+          "Azure DevOps",
+          "PowerShell DSC",
+          "Kubernetes",
+          "Terraform"
+        ],
+        "duration": "6 månader",
+        "teamSize": "8 personer"
+      },
+      {
+        "title": "Automation av Vårddata Bearbetning",
+        "client": "Regionalt Vårdnätverk",
+        "industry": "Hälsovård",
+        "challenge": "Manuell patientdatabearbetning som tar 8 timmar dagligen",
+        "solution": "Byggde automatiserad data-pipeline med efterlevnads- och säkerhetskontroller",
+        "results": [
+          "95% minskning av bearbetningstid",
+          "100% HIPAA-efterlevnad bibehållen",
+          "Noll dataförlustincidenter",
+          "24/7 automatiserad övervakning"
+        ],
+        "technologies": ["Python", "Apache Airflow", "PostgreSQL", "Docker"],
+        "duration": "4 månader",
+        "teamSize": "5 personer"
+      },
+      {
+        "title": "Modernisering av Finansiella Tjänsters Infrastruktur",
+        "client": "Investeringsförvaltningsföretag",
+        "industry": "Finansiella Tjänster",
+        "challenge": "Legacy-infrastruktur som begränsar skalbarhet och efterlevnad",
+        "solution": "Migrerade till molnbaserad arkitektur med automatiserade efterlevnadskontroller",
+        "results": [
+          "10x infrastrukturskalbarhet",
+          "60% kostnadsminskning",
+          "Automatiserad efterlevnadsrapportering",
+          "99,99% tillgänglighets-SLA"
+        ],
+        "technologies": ["AWS", "Terraform", "Jenkins", "Ansible"],
+        "duration": "8 månader",
+        "teamSize": "12 personer"
+      }
+    ],
+    "cta": {
+      "title": "Redo att skriva din framgångsberättelse?",
+      "description": "Låt oss diskutera hur vi kan hjälpa till att transformera din organisation med intelligenta automationslösningar skräddarsydda för dina specifika behov.",
+      "startProject": "Starta ditt projekt",
+      "viewAll": "Visa alla fallstudier"
+    }
   }
 }
