@@ -55,7 +55,7 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isSettingsOpen])
 
-  const handleNavigation = (href: string, name: string) => {
+  const handleNavigation = (href: string) => {
     setIsMenuOpen(false)
 
     // Check if it's a section link (starts with #)
@@ -121,7 +121,7 @@ const Header = () => {
             {menuItems.map((item, index) => (
               <motion.button
                 key={item.name}
-                onClick={() => handleNavigation(item.href, item.name)}
+                onClick={() => handleNavigation(item.href)}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
@@ -176,7 +176,7 @@ const Header = () => {
             </div>
 
             <motion.button
-              onClick={() => handleNavigation('#contact', 'Contact')}
+              onClick={() => handleNavigation('#contact')}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
@@ -250,7 +250,7 @@ const Header = () => {
                 {menuItems.map((item, index) => (
                   <motion.button
                     key={item.name}
-                    onClick={() => handleNavigation(item.href, item.name)}
+                    onClick={() => handleNavigation(item.href)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -261,7 +261,7 @@ const Header = () => {
                 ))}
                 <div className="px-6 pt-2">
                   <button
-                    onClick={() => handleNavigation('#contact', 'Contact')}
+                    onClick={() => handleNavigation('#contact')}
                     className="btn-primary w-full text-center block"
                   >
                     {t('getStarted')}

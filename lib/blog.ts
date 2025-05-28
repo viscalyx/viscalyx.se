@@ -39,7 +39,7 @@ export function getAllPostSlugs(): string[] {
     return fileNames
       .filter(fileName => fileName.endsWith('.md'))
       .map(fileName => fileName.replace(/\.md$/, ''))
-  } catch (error) {
+  } catch {
     console.warn('Blog directory not found, returning empty array')
     return []
   }
@@ -101,6 +101,7 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
   for (const slug of slugs) {
     const post = await getPostData(slug)
     if (post) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { content, ...metadata } = post
       posts.push(metadata)
     }

@@ -304,7 +304,7 @@ const Expertise = () => {
               className="bg-gradient-to-r from-primary-600 to-secondary-700 text-white rounded-2xl p-6"
             >
               <blockquote className="text-lg font-medium leading-relaxed">
-                "{t('quote.text')}"
+                &ldquo;{t('quote.text')}&rdquo;
               </blockquote>
               <div className="mt-4 text-primary-100">— {t('quote.author')}</div>
             </motion.div>

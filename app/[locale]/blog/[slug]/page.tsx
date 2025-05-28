@@ -28,6 +28,18 @@ interface TocItem {
   level: number
 }
 
+interface BlogPost {
+  title: string
+  author: string
+  date: string
+  readTime: string
+  image: string
+  category: string
+  slug: string
+  tags: string[]
+  content: string
+}
+
 // Function to extract headings from HTML content and create table of contents
 function extractTableOfContents(htmlContent: string): TocItem[] {
   // Create a temporary DOM element to parse the HTML
@@ -107,8 +119,8 @@ function addHeadingIds(htmlContent: string): string {
 
 const BlogPost = ({ params }: BlogPostPageProps) => {
   const t = useTranslations('blog')
-  const [post, setPost] = useState<any>(null)
-  const [relatedPosts, setRelatedPosts] = useState<any[]>([])
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -165,8 +177,8 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 }
 
 // Fallback data for existing blog posts that don't have markdown files yet
-function getFallbackPost(slug: string) {
-  const fallbackPosts: { [key: string]: any } = {
+function getFallbackPost(slug: string): BlogPost | null {
+  const fallbackPosts: { [key: string]: BlogPost } = {
     template: {
       title: 'Blog Post Template',
       content: `<h1>Blog Post Template</h1>
@@ -220,9 +232,9 @@ function getFallbackPost(slug: string) {
 }
 
 interface BlogPostContentProps {
-  post: any
-  relatedPosts: any[]
-  t: any
+  post: BlogPost
+  relatedPosts: BlogPost[]
+  t: (key: string) => string
 }
 
 const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {

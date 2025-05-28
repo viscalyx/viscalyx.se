@@ -8,10 +8,22 @@ import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
+interface BlogPostMeta {
+  title: string
+  excerpt: string
+  author: string
+  date: string
+  readTime: string
+  image: string
+  category: string
+  slug: string
+  tags?: string[]
+}
+
 const BlogPage = () => {
   const t = useTranslations('blog')
-  const [allPosts, setAllPosts] = useState<any[]>([])
-  const [featuredPost, setFeaturedPost] = useState<any>(null)
+  const [allPosts, setAllPosts] = useState<BlogPostMeta[]>([])
+  const [featuredPost, setFeaturedPost] = useState<BlogPostMeta | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -86,7 +98,7 @@ const BlogPage = () => {
    *   slug: "blog-post-slug"
    * }
    */
-  const defaultBlogPosts: any[] = []
+  const defaultBlogPosts: BlogPostMeta[] = []
 
   // Use markdown posts if available, otherwise fall back to default posts
   const displayFeaturedPost = featuredPost || defaultFeaturedPost
@@ -96,7 +108,7 @@ const BlogPage = () => {
   // Get unique categories from all posts
   const categories = [
     displayFeaturedPost.category,
-    ...displayBlogPosts.map((post: any) => post.category),
+    ...displayBlogPosts.map((post: BlogPostMeta) => post.category),
   ].filter(Boolean)
   const allCategories = [
     t('categories.all'),
@@ -216,7 +228,7 @@ const BlogPage = () => {
 
           {/* Posts Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayBlogPosts.map((post: any, index: number) => (
+            {displayBlogPosts.map((post: BlogPostMeta) => (
               <article
                 key={post.slug}
                 className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
