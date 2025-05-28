@@ -286,5 +286,65 @@
         "label": "Support tillgänglig"
       }
     }
+  },
+  "contact": {
+    "title": "Låt oss starta din",
+    "titleHighlight": "Automationsresa",
+    "description": "Redo att transformera dina arbetsflöden? Kontakta oss idag och upptäck hur vi kan hjälpa till att automatisera dina processer och öka produktiviteten.",
+    "form": {
+      "title": "Skicka oss ett meddelande",
+      "successMessage": "Tack! Vi hör av oss snart.",
+      "fields": {
+        "name": {
+          "label": "Fullständigt namn *",
+          "placeholder": "Johan Svensson"
+        },
+        "email": {
+          "label": "E-postadress *",
+          "placeholder": "johan@foretag.se"
+        },
+        "company": {
+          "label": "Företag",
+          "placeholder": "Ditt företag"
+        },
+        "message": {
+          "label": "Meddelande *",
+          "placeholder": "Berätta om dina automationsbehov..."
+        }
+      },
+      "submitButton": "Skicka meddelande"
+    },
+    "info": {
+      "email": {
+        "title": "E-post",
+        "details": "hello@viscalyx.com",
+        "description": "Skicka oss ett e-postmeddelande när som helst"
+      },
+      "phone": {
+        "title": "Telefon",
+        "details": "+1 (555) 123-4567",
+        "description": "Mån-fre från 08:00 till 18:00"
+      },
+      "location": {
+        "title": "Plats",
+        "details": "Distans världen över",
+        "description": "Vi arbetar med kunder globalt"
+      },
+      "responseTime": {
+        "title": "Svarstid",
+        "details": "Inom 24 timmar",
+        "description": "Snabb hantering garanterad"
+      }
+    },
+    "consultation": {
+      "imageAlt": "Professionell konsultation",
+      "title": "Redo att komma igång?",
+      "description": "Låt oss diskutera dina automationsbehov"
+    },
+    "quickCall": {
+      "title": "Föredrar du ett snabbt samtal?",
+      "description": "Boka en gratis 30-minuters konsultation för att diskutera dina automationsbehov.",
+      "button": "Boka samtal"
+    }
   }
 }

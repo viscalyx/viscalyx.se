@@ -4,8 +4,10 @@ import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, Clock, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 const Contact = () => {
+  const t = useTranslations('contact')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,27 +34,27 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: Mail,
-      title: 'Email',
-      details: 'hello@viscalyx.com',
-      description: 'Send us an email anytime',
+      title: t('info.email.title'),
+      details: t('info.email.details'),
+      description: t('info.email.description'),
     },
     {
       icon: Phone,
-      title: 'Phone',
-      details: '+1 (555) 123-4567',
-      description: 'Mon-Fri from 8am to 6pm',
+      title: t('info.phone.title'),
+      details: t('info.phone.details'),
+      description: t('info.phone.description'),
     },
     {
       icon: MapPin,
-      title: 'Location',
-      details: 'Remote Worldwide',
-      description: 'We work with clients globally',
+      title: t('info.location.title'),
+      details: t('info.location.details'),
+      description: t('info.location.description'),
     },
     {
       icon: Clock,
-      title: 'Response Time',
-      details: 'Within 24 hours',
-      description: 'Quick turnaround guaranteed',
+      title: t('info.responseTime.title'),
+      details: t('info.responseTime.details'),
+      description: t('info.responseTime.description'),
     },
   ]
 
@@ -70,13 +72,11 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-            Let's Start Your{' '}
-            <span className="text-gradient">Automation Journey</span>
+            {t('title')}{' '}
+            <span className="text-gradient">{t('titleHighlight')}</span>
           </h2>
           <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
-            Ready to transform your workflows? Get in touch with us today and
-            discover how we can help automate your processes and boost
-            productivity.
+            {t('description')}
           </p>
         </motion.div>
 
@@ -89,7 +89,7 @@ const Contact = () => {
             className="bg-secondary-50 dark:bg-secondary-800 rounded-2xl p-8"
           >
             <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-              Send us a message
+              {t('form.title')}
             </h3>
 
             {isSubmitted && (
@@ -100,7 +100,7 @@ const Contact = () => {
               >
                 <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mr-3" />
                 <span className="text-green-800 dark:text-green-300">
-                  Thank you! We'll get back to you soon.
+                  {t('form.successMessage')}
                 </span>
               </motion.div>
             )}
@@ -112,7 +112,7 @@ const Contact = () => {
                     htmlFor="name"
                     className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                   >
-                    Full Name *
+                    {t('form.fields.name.label')}
                   </label>
                   <input
                     type="text"
@@ -122,7 +122,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
-                    placeholder="John Doe"
+                    placeholder={t('form.fields.name.placeholder')}
                   />
                 </div>
                 <div>
@@ -131,7 +131,7 @@ const Contact = () => {
                     htmlFor="email"
                     className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                   >
-                    Email Address *
+                    {t('form.fields.email.label')}
                   </label>
                   <input
                     type="email"
@@ -141,7 +141,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
-                    placeholder="john@company.com"
+                    placeholder={t('form.fields.email.placeholder')}
                   />
                 </div>
               </div>
@@ -151,7 +151,7 @@ const Contact = () => {
                   htmlFor="company"
                   className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                 >
-                  Company
+                  {t('form.fields.company.label')}
                 </label>
                 <input
                   type="text"
@@ -160,7 +160,7 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
-                  placeholder="Your Company"
+                  placeholder={t('form.fields.company.placeholder')}
                 />
               </div>
 
@@ -169,7 +169,7 @@ const Contact = () => {
                   htmlFor="message"
                   className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
                 >
-                  Message *
+                  {t('form.fields.message.label')}
                 </label>
                 <textarea
                   id="message"
@@ -179,7 +179,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-none text-secondary-900 dark:text-secondary-100"
-                  placeholder="Tell us about your automation needs..."
+                  placeholder={t('form.fields.message.placeholder')}
                 />
               </div>
 
@@ -190,7 +190,7 @@ const Contact = () => {
                 className="w-full btn-primary flex items-center justify-center"
               >
                 <Send className="w-5 h-5 mr-2" />
-                Send Message
+                {t('form.submitButton')}
               </motion.button>
             </form>
           </motion.div>
@@ -205,7 +205,7 @@ const Contact = () => {
             <div className="relative h-64 rounded-2xl overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop&crop=center"
-                alt="Professional consultation"
+                alt={t('consultation.imageAlt')}
                 fill
                 className="object-cover"
               />
@@ -213,10 +213,10 @@ const Contact = () => {
               <div className="absolute inset-0 flex items-center justify-center text-white text-center p-8">
                 <div>
                   <h4 className="text-2xl font-bold mb-2">
-                    Ready to Get Started?
+                    {t('consultation.title')}
                   </h4>
                   <p className="text-primary-100">
-                    Let's discuss your automation needs
+                    {t('consultation.description')}
                   </p>
                 </div>
               </div>
@@ -257,17 +257,16 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl p-8 text-white text-center"
             >
-              <h4 className="text-xl font-bold mb-3">Prefer a quick call?</h4>
+              <h4 className="text-xl font-bold mb-3">{t('quickCall.title')}</h4>
               <p className="text-primary-100 mb-6">
-                Schedule a free 30-minute consultation to discuss your
-                automation needs.
+                {t('quickCall.description')}
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg hover:bg-primary-50 transition-colors duration-200"
               >
-                Schedule Call
+                {t('quickCall.button')}
               </motion.button>
             </motion.div>
           </motion.div>

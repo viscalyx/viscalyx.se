@@ -286,5 +286,65 @@
         "label": "Support Available"
       }
     }
+  },
+  "contact": {
+    "title": "Let's Start Your",
+    "titleHighlight": "Automation Journey",
+    "description": "Ready to transform your workflows? Get in touch with us today and discover how we can help automate your processes and boost productivity.",
+    "form": {
+      "title": "Send us a message",
+      "successMessage": "Thank you! We'll get back to you soon.",
+      "fields": {
+        "name": {
+          "label": "Full Name *",
+          "placeholder": "John Doe"
+        },
+        "email": {
+          "label": "Email Address *",
+          "placeholder": "john@company.com"
+        },
+        "company": {
+          "label": "Company",
+          "placeholder": "Your Company"
+        },
+        "message": {
+          "label": "Message *",
+          "placeholder": "Tell us about your automation needs..."
+        }
+      },
+      "submitButton": "Send Message"
+    },
+    "info": {
+      "email": {
+        "title": "Email",
+        "details": "hello@viscalyx.com",
+        "description": "Send us an email anytime"
+      },
+      "phone": {
+        "title": "Phone",
+        "details": "+1 (555) 123-4567",
+        "description": "Mon-Fri from 8am to 6pm"
+      },
+      "location": {
+        "title": "Location",
+        "details": "Remote Worldwide",
+        "description": "We work with clients globally"
+      },
+      "responseTime": {
+        "title": "Response Time",
+        "details": "Within 24 hours",
+        "description": "Quick turnaround guaranteed"
+      }
+    },
+    "consultation": {
+      "imageAlt": "Professional consultation",
+      "title": "Ready to Get Started?",
+      "description": "Let's discuss your automation needs"
+    },
+    "quickCall": {
+      "title": "Prefer a quick call?",
+      "description": "Schedule a free 30-minute consultation to discuss your automation needs.",
+      "button": "Schedule Call"
+    }
   }
 }
