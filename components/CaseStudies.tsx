@@ -41,16 +41,16 @@ const CaseStudies = () => {
         t('cases.0.results.0'),
         t('cases.0.results.1'),
         t('cases.0.results.2'),
-        t('cases.0.results.3')
+        t('cases.0.results.3'),
       ],
       technologies: [
         t('cases.0.technologies.0'),
         t('cases.0.technologies.1'),
         t('cases.0.technologies.2'),
-        t('cases.0.technologies.3')
+        t('cases.0.technologies.3'),
       ],
       duration: t('cases.0.duration'),
-      teamSize: t('cases.0.teamSize')
+      teamSize: t('cases.0.teamSize'),
     },
     {
       title: t('cases.1.title'),
@@ -62,16 +62,16 @@ const CaseStudies = () => {
         t('cases.1.results.0'),
         t('cases.1.results.1'),
         t('cases.1.results.2'),
-        t('cases.1.results.3')
+        t('cases.1.results.3'),
       ],
       technologies: [
         t('cases.1.technologies.0'),
         t('cases.1.technologies.1'),
         t('cases.1.technologies.2'),
-        t('cases.1.technologies.3')
+        t('cases.1.technologies.3'),
       ],
       duration: t('cases.1.duration'),
-      teamSize: t('cases.1.teamSize')
+      teamSize: t('cases.1.teamSize'),
     },
     {
       title: t('cases.2.title'),
@@ -83,17 +83,17 @@ const CaseStudies = () => {
         t('cases.2.results.0'),
         t('cases.2.results.1'),
         t('cases.2.results.2'),
-        t('cases.2.results.3')
+        t('cases.2.results.3'),
       ],
       technologies: [
         t('cases.2.technologies.0'),
         t('cases.2.technologies.1'),
         t('cases.2.technologies.2'),
-        t('cases.2.technologies.3')
+        t('cases.2.technologies.3'),
       ],
       duration: t('cases.2.duration'),
-      teamSize: t('cases.2.teamSize')
-    }
+      teamSize: t('cases.2.teamSize'),
+    },
   ]
 
   const images = [
@@ -113,7 +113,8 @@ const CaseStudies = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-            {t('title')} <span className="text-gradient">{t('titleHighlight')}</span>
+            {t('title')}{' '}
+            <span className="text-gradient">{t('titleHighlight')}</span>
           </h2>
           <p className="text-xl text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
             {t('description')}
