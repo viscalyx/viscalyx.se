@@ -160,10 +160,12 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-secondary-600">Loading blog post...</p>
+          <p className="text-secondary-600 dark:text-secondary-400">
+            Loading blog post...
+          </p>
         </div>
       </div>
     )
@@ -243,11 +245,11 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
   const contentWithIds = addHeadingIds(post.content)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-secondary-50">
+      <section className="pt-32 pb-16 bg-secondary-50 dark:bg-secondary-800">
         <div className="container-custom">
           <div>
             <Link
@@ -265,11 +267,11 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold text-secondary-900 mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
                 {post.title}
               </h1>
 
-              <div className="flex items-center text-secondary-600 mb-8">
+              <div className="flex items-center text-secondary-600 dark:text-secondary-400 mb-8">
                 <div className="flex items-center mr-6">
                   <User className="w-4 h-4 mr-2" />
                   {post.author}
@@ -285,9 +287,11 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
               </div>
 
               <div className="flex items-center space-x-4">
-                <span className="text-secondary-600">{t('post.share')}</span>
-                <button className="bg-white p-2 rounded-lg shadow hover:shadow-md transition-shadow">
-                  <Share2 className="w-4 h-4 text-secondary-600" />
+                <span className="text-secondary-600 dark:text-secondary-400">
+                  {t('post.share')}
+                </span>
+                <button className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700">
+                  <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
               </div>
             </div>
@@ -315,15 +319,15 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
             <div className="lg:col-span-3">
               {/* Mobile Table of Contents */}
               {tableOfContents.length > 0 && (
-                <div className="lg:hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div className="lg:hidden bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8 border border-secondary-100 dark:border-secondary-700">
                   <details className="group">
-                    <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900">
+                    <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
                       <div className="flex items-center">
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
                       </div>
                       <svg
-                        className="w-5 h-5 transition-transform group-open:rotate-180"
+                        className="w-5 h-5 transition-transform group-open:rotate-180 text-secondary-600 dark:text-secondary-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -343,7 +347,7 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
                 </div>
               )}
 
-              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 prose-p:text-secondary-700 prose-a:text-primary-600 prose-code:text-primary-600 prose-pre:bg-secondary-50 prose-headings:scroll-mt-24">
+              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 dark:prose-headings:text-secondary-100 prose-p:text-secondary-700 dark:prose-p:text-secondary-300 prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-code:text-primary-600 dark:prose-code:text-primary-400 prose-pre:bg-secondary-50 dark:prose-pre:bg-secondary-800 prose-headings:scroll-mt-24">
                 <div
                   dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
@@ -351,14 +355,14 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
               </div>
 
               {/* Tags */}
-              <div className="mt-12 pt-8 border-t border-secondary-200">
+              <div className="mt-12 pt-8 border-t border-secondary-200 dark:border-secondary-700">
                 {' '}
                 <div className="flex items-center flex-wrap gap-3">
-                  <Tag className="w-4 h-4 text-secondary-500" />
+                  <Tag className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                   {post.tags.map((tag: string) => (
                     <span
                       key={tag}
-                      className="bg-secondary-100 text-secondary-700 px-3 py-1 rounded-full text-sm hover:bg-primary-100 hover:text-primary-700 cursor-pointer transition-colors"
+                      className="bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm hover:bg-primary-100 dark:hover:bg-primary-800 hover:text-primary-700 dark:hover:text-primary-300 cursor-pointer transition-colors"
                     >
                       {tag}
                     </span>
@@ -367,34 +371,34 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
               </div>
 
               {/* Author Bio */}
-              <div className="mt-12 p-8 bg-secondary-50 rounded-xl">
+              <div className="mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
                 <div className="flex items-start space-x-4">
-                  <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  <div className="w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     JL
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-secondary-900 mb-2">
+                    <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
                       {t('post.authorBio.name')}
                     </h3>
-                    <p className="text-secondary-600 mb-4">
+                    <p className="text-secondary-600 dark:text-secondary-400 mb-4">
                       {t('post.authorBio.description')}
                     </p>
                     <div className="flex space-x-4">
                       <a
                         href="#"
-                        className="text-primary-600 hover:text-primary-700"
+                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
                       >
                         {t('post.socialLinks.linkedin')}
                       </a>
                       <a
                         href="#"
-                        className="text-primary-600 hover:text-primary-700"
+                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
                       >
                         {t('post.socialLinks.github')}
                       </a>
                       <a
                         href="#"
-                        className="text-primary-600 hover:text-primary-700"
+                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
                       >
                         {t('post.socialLinks.twitter')}
                       </a>
@@ -408,8 +412,8 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
               <div className="sticky top-8 space-y-8 max-h-[calc(100vh-4rem)] overflow-y-auto hidden lg:block">
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
-                  <div className="bg-white rounded-xl shadow-lg p-6">
-                    <h3 className="text-lg font-bold text-secondary-900 mb-4 flex items-center">
+                  <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
+                    <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center">
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h3>
@@ -420,8 +424,8 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
                 )}
 
                 {/* Related Posts */}
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <h3 className="text-lg font-bold text-secondary-900 mb-4">
+                <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
+                  <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4">
                     {t('post.relatedArticles')}
                   </h3>
                   <div className="space-y-4">
@@ -440,7 +444,7 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
                           />
                         </div>
                         <div>
-                          <h4 className="text-sm font-medium text-secondary-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                          <h4 className="text-sm font-medium text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
                             {relatedPost.title}
                           </h4>
                         </div>

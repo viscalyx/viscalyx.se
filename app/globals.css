@@ -129,11 +129,11 @@
   }
 
   .prose pre {
-    @apply bg-secondary-900 dark:bg-secondary-950 text-white p-4 rounded-lg overflow-x-auto my-6;
+    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
   }
 
   .prose pre code {
-    @apply bg-transparent text-white p-0;
+    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-0;
   }
 
   .prose a {
