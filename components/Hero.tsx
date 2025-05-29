@@ -5,11 +5,64 @@ import { ArrowRight, Sparkles, Zap, Code } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useState, useEffect } from 'react'
 
 const Hero = () => {
   const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations('hero')
+
+  // Images representing productivity, automation, and business processes
+  const heroImages = [
+    {
+      src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=800&fit=crop&crop=faces&auto=format&q=80',
+      alt: 'Team collaboration and productivity',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
+      alt: 'Business automation and technology',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
+      alt: 'Data analysis and business intelligence',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
+      alt: 'Professional workflow and processes',
+    },
+  ]
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [imageLoadErrors, setImageLoadErrors] = useState<boolean[]>(
+    new Array(heroImages.length).fill(false)
+  )
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
+    new Array(heroImages.length).fill(false)
+  )
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % heroImages.length)
+    }, 4000) // Change image every 4 seconds
+
+    return () => clearInterval(interval)
+  }, [heroImages.length])
+
+  const handleImageError = (index: number) => {
+    setImageLoadErrors(prev => {
+      const newErrors = [...prev]
+      newErrors[index] = true
+      return newErrors
+    })
+  }
+
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded(prev => {
+      const newLoaded = [...prev]
+      newLoaded[index] = true
+      return newLoaded
+    })
+  }
 
   const handleNavigation = (href: string) => {
     // Check if it's a section link (starts with #)
@@ -175,17 +228,61 @@ const Hero = () => {
                 }}
                 className="relative"
               >
-                <Image
-                  src="/johlju-profile.jpg"
-                  alt={t('altText')}
-                  width={600}
-                  height={800}
-                  className="rounded-2xl shadow-2xl"
-                  priority
-                />
+                <div className="relative overflow-hidden rounded-2xl aspect-[3/4] w-full max-w-md mx-auto">
+                  {heroImages.map((image, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: index === currentImageIndex ? 1 : 0,
+                        scale: index === currentImageIndex ? 1 : 1.05,
+                      }}
+                      transition={{
+                        duration: 1,
+                        ease: 'easeInOut',
+                      }}
+                      className={`absolute inset-0 ${index === currentImageIndex ? 'z-10' : 'z-0'}`}
+                    >
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className={`rounded-2xl shadow-2xl object-cover transition-opacity duration-300 ${
+                          imagesLoaded[index] ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        priority={index === 0}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                        onError={() => handleImageError(index)}
+                        onLoad={() => handleImageLoad(index)}
+                      />
+
+                      {/* Loading placeholder */}
+                      {!imagesLoaded[index] && !imageLoadErrors[index] && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                        </div>
+                      )}
+
+                      {/* Error fallback */}
+                      {imageLoadErrors[index] && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-800 dark:to-primary-900 rounded-2xl flex items-center justify-center">
+                          <div className="text-center">
+                            <Code className="h-16 w-16 text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+                            <p className="text-primary-700 dark:text-primary-300 font-medium">
+                              {image.alt}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+
+                  {/* Image overlay for better contrast with floating elements */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl z-20" />
+                </div>
 
                 {/* Floating Elements */}
-                <motion.div
+                {/* <motion.div
                   animate={{
                     rotate: [0, 360],
                     y: [0, -10, 0],
@@ -194,12 +291,12 @@ const Hero = () => {
                     rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
                     y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
                   }}
-                  className="absolute -top-6 -right-6 bg-primary-600 p-4 rounded-2xl shadow-lg"
+                  className="absolute -top-6 -right-6 bg-primary-600 p-4 rounded-2xl shadow-lg z-30"
                 >
                   <Code className="h-8 w-8 text-white" />
-                </motion.div>
+                </motion.div> */}
 
-                <motion.div
+                {/* <motion.div
                   animate={{
                     rotate: [360, 0],
                     y: [0, 10, 0],
@@ -208,10 +305,27 @@ const Hero = () => {
                     rotate: { duration: 15, repeat: Infinity, ease: 'linear' },
                     y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
                   }}
-                  className="absolute -bottom-6 -left-6 bg-secondary-800 p-4 rounded-2xl shadow-lg"
+                  className="absolute -bottom-6 -left-6 bg-secondary-800 p-4 rounded-2xl shadow-lg z-30"
                 >
                   <Zap className="h-8 w-8 text-white" />
-                </motion.div>
+                </motion.div> */}
+
+                {/* Image indicators */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
+                  {heroImages.map((_, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentImageIndex
+                          ? 'bg-white shadow-lg'
+                          : 'bg-white/50 hover:bg-white/70'
+                      }`}
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                    />
+                  ))}
+                </div>
               </motion.div>
             </div>
 
