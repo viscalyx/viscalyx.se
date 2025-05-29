@@ -5,7 +5,7 @@
     "team": "Team",
     "caseStudies": "Fallstudier",
     "blog": "Blogg",
-    "openSource": "Öppen källkod",
+    "openSource": "Open source",
     "contact": "Kontakt",
     "getStarted": "Kom igång",
     "settings": {
@@ -27,7 +27,7 @@
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",
     "stayUpdated": "Håll dig uppdaterad",
-    "newsletterText": "Få de senaste insikterna om automation, DevOps och bidrag till öppen källkod.",
+    "newsletterText": "Få de senaste insikterna om automation, DevOps och bidrag till open source.",
     "emailPlaceholder": "Ange din e-postadress",
     "subscribe": "Prenumerera",
     "allRightsReserved": "Alla rättigheter förbehållna.",
@@ -44,7 +44,7 @@
     "title": "Effektivisera Ditt",
     "titleHighlight": "Utvecklings",
     "titleEnd": "Arbetsflöde",
-    "description": "Professionella konsulttjänster som automatiserar repetitiva uppgifter för utvecklare och IT-proffs. Öka produktiviteten med PowerShell DSC, DevOps-lösningar och bidrag till öppen källkod.",
+    "description": "Professionella konsulttjänster som automatiserar repetitiva uppgifter för utvecklare och IT-proffs. Öka produktiviteten med PowerShell DSC, DevOps-lösningar och bidrag till open source.",
     "buttons": {
       "startProject": "Starta Ditt Projekt",
       "exploreServices": "Utforska Tjänster"
@@ -60,7 +60,7 @@
       },
       "openSource": {
         "value": "∞",
-        "label": "Bidrag till Öppen Källkod"
+        "label": "Bidrag till Open Source"
       }
     },
     "altText": "Johan Ljunggrens profilbild"
@@ -70,7 +70,7 @@
     "title": "Ger Organisationer Kraft Genom",
     "titleHighlight": "Smart Automation",
     "description1": "Viscalyx är ett specialiserat konsultföretag som fokuserar på att transformera hur utvecklare och IT-proffs arbetar. Som enskild näringsidkare tillhandahåller vi personaliserade, högkvalitativa automationslösningar som eliminerar repetitiva uppgifter och effektiviserar komplexa arbetsflöden.",
-    "description2": "Vår expertis sträcker sig över PowerShell Desired State Configuration (DSC), DevOps-automation och bidrag till projekt med öppen källkod som gynnar hela utvecklargemenskapen. Vi tror på att bygga lösningar som inte bara löser omedelbara problem utan också skapar bestående värde.",
+    "description2": "Vår expertis sträcker sig över PowerShell Desired State Configuration (DSC), DevOps-automation och bidrag till projekt med open source som gynnar hela utvecklargemenskapen. Vi tror på att bygga lösningar som inte bara löser omedelbara problem utan också skapar bestående värde.",
     "values": {
       "precision": {
         "title": "Precision & Excellens",
@@ -85,8 +85,8 @@
         "description": "Utnyttja banbrytande teknologier och bästa praxis för att lösa komplexa problem."
       },
       "openSource": {
-        "title": "Engagemang för Öppen Källkod",
-        "description": "Aktivt bidra till gemenskapen och dela kunskap genom projekt med öppen källkod."
+        "title": "Engagemang för Open Source",
+        "description": "Aktivt bidra till gemenskapen och dela kunskap genom projekt med open source."
       }
     },
     "visualAlt": "Utvecklare som arbetar med automation",
@@ -104,13 +104,14 @@
   "team": {
     "badge": "Träffa vårt team",
     "title": "Personerna bakom Viscalyx",
-    "description": "Träffa de engagerade professionella som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
+    "description": "Träffa de engagerade experterna som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
     "specialties": "Specialiteter",
+    "learnMore": "Läs mer",
     "members": {
       "johlju": {
         "role": "Grundare & Huvudkonsult",
-        "bio": "Passionerad automationsexpert med över 30 års erfarenhet inom IT. Specialiserad inom PowerShell DSC, DevOps och bidrag till öppen källkod. Dedikerad till att hjälpa organisationer effektivisera sina utvecklingsarbetsflöden.",
-        "specialties": ["PowerShell DSC", "DevOps", "Azure", "Öppen Källkod"]
+        "bio": "Passionerad automationsexpert med över 30 års erfarenhet inom IT. Specialiserad inom PowerShell DSC, DevOps och bidrag till open source. Dedikerad till att hjälpa organisationer effektivisera sina utvecklingsarbetsflöden.",
+        "specialties": ["PowerShell DSC", "DevOps", "Azure", "Open Source"]
       },
       "sonja": {
         "role": "Innehållsstrateg & Expert på Sociala Medier",
@@ -127,6 +128,19 @@
       "title": "Gå med i vårt växande team",
       "description": "Vi letar alltid efter begåvade individer som delar vår passion för automation och excellens. Låt oss bygga framtiden för utvecklingsarbetsflöden tillsammans.",
       "button": "Kontakta oss"
+    }
+  },
+  "teamMember": {
+    "backToTeam": "← Tillbaka till team",
+    "aboutTitle": "Om",
+    "connectTitle": "Kontakta mig",
+    "members": {
+      "johlju": {
+        "biography": "Johan Ljunggren är en erfaren IT-expert med över tre decennier av mångsidig erfarenhet inom IT-branschen. Med start i  traditionell systemadministration har han bemästrat övergången till moderna DevOps-metoder, molntjänster och infrastruktur-som-kod. Hans expertis sträcker sig från att hantera komplexa IT-infrastrukturer och utveckla applikationer på företagsnivå till att utforma strategiska IT-arkitekturer. Johan har spelat en nyckelroll i att designa hållbara, säkra och kostnadseffektiva lösningar som ligger i linje med organisatoriska mål, främst inom hälso- och sjukvård.\n\nGenom sin karriär har Johan bidragit i olika roller så som systemtekniker, utvecklare, mjukvaruarkitekt och enterprise arkitekt. Han har bidragit till projekt för stora kunder och har en stark bakgrund inom systemintegration, infrastrukturhantering och mjukvaruarkitektur.\n\nJohan är inte bara tekniskt skicklig utan också en proaktiv och detaljorienterad teamspelare. Han håller sig uppdaterad med branschens trender och teknologier, med ett nuvarande fokus på integration och arkitekturstrategi för vårdsystem. Utöver sina professionella roller har han en aktiv roll och bidrar till den globala PowerShell DSC open source-gemenskapen. Han har bidragit till många open source-projekt som används av utvecklare världen över.\n\nJohan tillför en unik kombination av teknisk djupkunskap och praktisk erfarenhet till varje uppdrag. Hans förmåga att översätta komplexa tekniska koncept till affärsnytta hjälper organisationer att förstå den verkliga påverkan av automation. Han implementerar inte bara lösningar - han utbildar team, etablerar hållbara metoder och säkerställer långsiktig framgång."
+      },
+      "testsson": {
+        "biography": "Test tillför ett nytt perspektiv på teknisk kommunikation med en bakgrund inom digital marknadsföring, innehållsskapande och community-hantering. Hennes erfarenhet sträcker sig från traditionella marknadsföringsbyråer till tech-startups, där hon upptäckte sin passion för att göra komplexa tekniska koncept tillgängliga för olika målgrupper.\n\nSpecialiserad på visuell berättelse och sociala medier-strategi utmärker sig Test på att skapa övertygande berättelser kring tekniska produkter och tjänster. Hennes expertis inom innehållsstrategi hjälper till att överbrygga klyftan mellan tekniska team och deras målgrupper, vilket säkerställer att komplexa automationslösningar kommuniceras tydligt och effektivt till intressenter på alla nivåer.\n\nTests unika förmåga att humanisera teknik gör henne ovärderlig för tekniska organisationer som vill förbättra sin marknadsnärvaro. Hon förvandlar torr teknisk dokumentation till engagerande innehåll, bygger communities kring produkter och hjälper team att kommunicera sitt värdeerbjudande effektivt. Hennes arbete säkerställer att teknisk excellens översätts till affärstillväxt och kundengagemang."
+      }
     }
   },
   "services": {
@@ -249,7 +263,7 @@
       },
       "openSource": {
         "value": "∞",
-        "label": "Öppen Källkod"
+        "label": "Open Source"
       }
     },
     "imageAlt": "Utvecklararbetsplats med flera skärmar",
@@ -293,7 +307,7 @@
         "name": "David Kim",
         "role": "Molnarkitekt",
         "company": "StartupVenture",
-        "content": "Bidragen till öppen källkod och kunskapsdelningsmetoden hos Viscalyx visar deras engagemang för gemenskapen. Riktiga proffs.",
+        "content": "Bidragen till open source och kunskapsdelningsmetoden hos Viscalyx visar deras engagemang för gemenskapen. Riktiga proffs.",
         "project": "Molnmigrering Automation"
       }
     ],
@@ -379,11 +393,11 @@
   "openSource": {
     "title": "Bidrag till Öppen",
     "titleHighlight": "Källkod",
-    "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med öppen källkod hjälper till att främja automation och DevOps-praxis världen över.",
+    "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med open source hjälper till att främja automation och DevOps-praxis världen över.",
     "stats": {
       "projects": {
         "value": "50+",
-        "label": "Projekt med Öppen Källkod"
+        "label": "Projekt med Open Source"
       },
       "stars": {
         "value": "5.2k",
@@ -417,7 +431,7 @@
     },
     "viewProject": "Visa projekt",
     "cta": {
-      "title": "Gå med i vår gemenskap för öppen källkod",
+      "title": "Gå med i vår gemenskap för open source",
       "description": "Samarbeta med oss på banbrytande automationsverktyg och bidra till projekt som påverkar tusentals utvecklare världen över.",
       "followGithub": "Följ på GitHub",
       "collaborate": "Samarbeta med oss"
@@ -791,7 +805,7 @@
     "hero": {
       "title": "Insikter &",
       "titleHighlight": "Kunskap",
-      "description": "Håll dig uppdaterad med de senaste trenderna, bästa praxis och insikterna inom automation, DevOps och utveckling av öppen källkod."
+      "description": "Håll dig uppdaterad med de senaste trenderna, bästa praxis och insikterna inom automation, DevOps och utveckling av open source."
     },
     "featuredPost": {
       "title": "Utvald Artikel"
@@ -810,7 +824,7 @@
       "authorBio": {
         "name": "Johan Ljunggren",
         "title": "Grundare och Ledande Konsult på Viscalyx",
-        "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av öppen källkod. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering."
+        "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av open source. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering."
       },
       "socialLinks": {
         "linkedin": "LinkedIn",

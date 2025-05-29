@@ -106,6 +106,7 @@
     "title": "The People Behind Viscalyx",
     "description": "Meet the dedicated professionals who drive innovation and deliver exceptional automation solutions for our clients worldwide.",
     "specialties": "Specialties",
+    "learnMore": "Learn More",
     "members": {
       "johlju": {
         "role": "Founder & Lead Consultant",
@@ -127,6 +128,19 @@
       "title": "Join Our Growing Team",
       "description": "We're always looking for talented individuals who share our passion for automation and excellence. Let's build the future of development workflows together.",
       "button": "Get In Touch"
+    }
+  },
+  "teamMember": {
+    "backToTeam": "← Back to Team",
+    "aboutTitle": "About",
+    "connectTitle": "Connect With Me",
+    "members": {
+      "johlju": {
+        "biography": "Johan Ljunggren is a seasoned IT professional with over three decades of diverse experience in the IT industry. Starting from traditional system administration, he has mastered the transition to modern DevOps practices, cloud computing, and infrastructure as code. His expertise now spans everything from managing complex IT infrastructures and developing enterprise-level applications to crafting strategic IT architectures. Johan has played a key role in designing sustainable, secure, and cost-effective solutions that align with organizational goals, primarily within health care IT.\n\nThroughout his career, Johan has contributed in various roles including system technician, developer, software architect, and enterprise architect. He has contributed to projects for major clients, and has a strong background in systems integration, infrastructure management, and software architecture.\n\nJohan is not only technically skilled but also a proactive and detail-oriented team player. He stays up to date with industry trends and technologies, with a current focus on integration and architectural strategy for healthcare systems. Outside of his professional roles, he is an active contributor and maintainer in the global PowerShell DSC open source community. He has contributed to numerous open source projects used by developers worldwide.\n\nJohan brings a unique combination of technical depth and practical experience to every engagement. His ability to translate complex technical concepts into business value helps organizations understand the true impact of automation. He doesn't just implement solutions - he educates teams, establishes sustainable practices, and ensures long-term success."
+      },
+      "testsson": {
+        "biography": "Test brings a fresh perspective to technical communication with a background in digital marketing, content creation, and community management. Her experience spans from traditional marketing agencies to tech startups, where she discovered her passion for making complex technical concepts accessible to diverse audiences.\n\nSpecializing in visual storytelling and social media strategy, Test excels at creating compelling narratives around technical products and services. Her expertise in content strategy helps bridge the gap between technical teams and their audiences, ensuring that complex automation solutions are communicated clearly and effectively to stakeholders at all levels.\n\nTest's unique ability to humanize technology makes her invaluable to technical organizations looking to improve their market presence. She transforms dry technical documentation into engaging content, builds communities around products, and helps teams communicate their value proposition effectively. Her work ensures that technical excellence translates into business growth and customer engagement."
+      }
     }
   },
   "services": {

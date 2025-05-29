@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { Mail, MapPin, ArrowRight, Camera } from 'lucide-react'
+import Link from 'next/link'
+import { Mail, MapPin, ArrowRight, Camera, User } from 'lucide-react'
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -239,7 +240,7 @@ const Team = () => {
                 </div>
 
                 {/* Social Links */}
-                <div className="flex flex-col items-center space-y-3">
+                <div className="flex flex-col items-center space-y-3 mb-6">
                   {Array.from(
                     { length: Math.ceil(member.socialLinks.length / 5) },
                     (_, rowIndex) => (
@@ -274,6 +275,27 @@ const Team = () => {
                       </div>
                     )
                   )}
+                </div>
+
+                {/* Learn More Button */}
+                <div className="text-center">
+                  <Link href={`/team/${member.id}`}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors group"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      {t('learnMore')}
+                      <motion.div
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="ml-2"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </motion.div>
+                    </motion.div>
+                  </Link>
                 </div>
               </motion.div>
             </motion.div>
