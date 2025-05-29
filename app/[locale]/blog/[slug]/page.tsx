@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import TableOfContents from '@/components/TableOfContents'
+import ReadingProgress from '@/components/ReadingProgress'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
@@ -247,6 +248,11 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
+      <ReadingProgress
+        target=".markdown-content"
+        endTarget=".author-bio"
+        readingProgressText={t('post.readingProgress')}
+      />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50 dark:bg-secondary-800">
@@ -371,7 +377,7 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
               </div>
 
               {/* Author Bio */}
-              <div className="mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
+              <div className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
                 <div className="flex items-start space-x-4">
                   <div className="w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
                     JL
