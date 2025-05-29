@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import Image from 'next/image'
-import Link from 'next/link'
-import { Mail, MapPin, ArrowRight, Camera, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Mail, MapPin, ArrowRight, Camera } from 'lucide-react'
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -20,6 +20,12 @@ import {
 
 const Team = () => {
   const t = useTranslations('team')
+  const locale = useLocale()
+  const router = useRouter()
+
+  const handleCardClick = (memberId: string) => {
+    router.push(`/${locale}/team/${memberId}`)
+  }
 
   const teamMembers = [
     {
@@ -58,7 +64,7 @@ const Team = () => {
         },
         {
           name: 'Discord',
-          href: 'https://discord.gg/dsccommunity',
+          href: 'https://discord.com/users/562649782665871360',
           icon: DiscordIcon,
         },
         {
@@ -184,7 +190,8 @@ const Team = () => {
             >
               <motion.div
                 variants={cardVariants}
-                className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full"
+                onClick={() => handleCardClick(member.id)}
+                className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
               >
                 {/* Profile Image */}
                 <div className="relative mb-6">
@@ -264,6 +271,7 @@ const Team = () => {
                                   ? undefined
                                   : 'noopener noreferrer'
                               }
+                              onClick={e => e.stopPropagation()}
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.95 }}
                               className="p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
@@ -275,27 +283,6 @@ const Team = () => {
                       </div>
                     )
                   )}
-                </div>
-
-                {/* Learn More Button */}
-                <div className="text-center">
-                  <Link href={`/team/${member.id}`}>
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors group"
-                    >
-                      <User className="h-4 w-4 mr-2" />
-                      {t('learnMore')}
-                      <motion.div
-                        animate={{ x: [0, 4, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        className="ml-2"
-                      >
-                        <ArrowRight className="h-4 w-4" />
-                      </motion.div>
-                    </motion.div>
-                  </Link>
                 </div>
               </motion.div>
             </motion.div>

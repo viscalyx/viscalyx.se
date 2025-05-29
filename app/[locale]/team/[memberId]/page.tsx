@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, MapPin, Mail, User } from 'lucide-react'
+import { ArrowLeft, MapPin, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -31,7 +31,7 @@ type TeamMember = {
   socialLinks: Array<{
     name: string
     href: string
-    icon: any
+    icon: React.ComponentType<{ className?: string }>
   }>
 }
 
