@@ -415,7 +415,7 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
             </div>{' '}
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="sticky top-8 space-y-8 max-h-[calc(100vh-4rem)] overflow-y-auto hidden lg:block">
+              <div className="sticky top-24 space-y-8 max-h-[calc(100vh-8rem)] overflow-y-auto hidden lg:block">
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
