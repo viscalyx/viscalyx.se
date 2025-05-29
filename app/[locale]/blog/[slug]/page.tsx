@@ -19,7 +19,7 @@ import TableOfContents from '@/components/TableOfContents'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 interface TocItem {

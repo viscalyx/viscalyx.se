@@ -81,6 +81,7 @@ const Header = () => {
   const menuItems = [
     { name: t('about'), href: '#about' },
     { name: t('services'), href: '#services' },
+    { name: t('team'), href: '/team' },
     { name: t('caseStudies'), href: '/case-studies' },
     { name: t('blog'), href: '/blog' },
     { name: t('openSource'), href: '#open-source' },

@@ -2,6 +2,7 @@
   "navigation": {
     "about": "About",
     "services": "Services",
+    "team": "Team",
     "caseStudies": "Case Studies",
     "blog": "Blog",
     "openSource": "Open Source",
@@ -98,6 +99,34 @@
         "value": "24/7",
         "label": "Automation"
       }
+    }
+  },
+  "team": {
+    "badge": "Meet Our Team",
+    "title": "The People Behind Viscalyx",
+    "description": "Meet the dedicated professionals who drive innovation and deliver exceptional automation solutions for our clients worldwide.",
+    "specialties": "Specialties",
+    "members": {
+      "johlju": {
+        "role": "Founder & Lead Consultant",
+        "bio": "Passionate automation expert with over 30 years of experience in IT. Specialized in PowerShell DSC, DevOps, and open-source contributions. Dedicated to helping organizations streamline their development workflows.",
+        "specialties": ["PowerShell DSC", "DevOps", "Azure", "Open Source"]
+      },
+      "sonja": {
+        "role": "Content Strategist & Social Media Expert",
+        "bio": "Creative content strategist and social media expert who brings technical concepts to life through engaging visual storytelling and community building.",
+        "specialties": [
+          "Content Strategy",
+          "Social Media",
+          "Visual Storytelling",
+          "Community Building"
+        ]
+      }
+    },
+    "joinTeam": {
+      "title": "Join Our Growing Team",
+      "description": "We're always looking for talented individuals who share our passion for automation and excellence. Let's build the future of development workflows together.",
+      "button": "Get In Touch"
     }
   },
   "services": {

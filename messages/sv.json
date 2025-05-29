@@ -2,6 +2,7 @@
   "navigation": {
     "about": "Om oss",
     "services": "Tjänster",
+    "team": "Team",
     "caseStudies": "Fallstudier",
     "blog": "Blogg",
     "openSource": "Öppen källkod",
@@ -98,6 +99,34 @@
         "value": "24/7",
         "label": "Automation"
       }
+    }
+  },
+  "team": {
+    "badge": "Träffa vårt team",
+    "title": "Personerna bakom Viscalyx",
+    "description": "Träffa de engagerade professionella som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
+    "specialties": "Specialiteter",
+    "members": {
+      "johlju": {
+        "role": "Grundare & Huvudkonsult",
+        "bio": "Passionerad automationsexpert med över 30 års erfarenhet inom IT. Specialiserad inom PowerShell DSC, DevOps och bidrag till öppen källkod. Dedikerad till att hjälpa organisationer effektivisera sina utvecklingsarbetsflöden.",
+        "specialties": ["PowerShell DSC", "DevOps", "Azure", "Öppen Källkod"]
+      },
+      "sonja": {
+        "role": "Innehållsstrateg & Expert på Sociala Medier",
+        "bio": "Kreativ innehållsstrateg och expert på sociala medier som förverkligar tekniska koncept genom engagerande visuell berättelse och community-byggande.",
+        "specialties": [
+          "Innehållsstrategi",
+          "Sociala Medier",
+          "Visuell Berättelse",
+          "Community-byggande"
+        ]
+      }
+    },
+    "joinTeam": {
+      "title": "Gå med i vårt växande team",
+      "description": "Vi letar alltid efter begåvade individer som delar vår passion för automation och excellens. Låt oss bygga framtiden för utvecklingsarbetsflöden tillsammans.",
+      "button": "Kontakta oss"
     }
   },
   "services": {
