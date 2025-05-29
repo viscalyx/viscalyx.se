@@ -15,8 +15,6 @@ tags:
 readTime: '10 min read'
 ---
 
-{% include toc %}
-
 <!-- markdownlint-disable MD002 -->
 
 ## Abstract
