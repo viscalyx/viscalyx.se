@@ -334,15 +334,6 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="w-1 h-16 bg-gradient-to-b from-primary-600 to-transparent rounded-full" />
-      </motion.div>
     </section>
   )
 }
