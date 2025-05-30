@@ -1,5 +1,7 @@
 # Viscalyx Website
 
+![Work in Progress](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow?style=for-the-badge)
+
 The official website for Viscalyx, built with Next.js and featuring blog content, team information, and case studies.
 
 ## Features
