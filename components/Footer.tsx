@@ -100,7 +100,7 @@ const Footer = () => {
     },
     {
       name: 'Email',
-      href: 'mailto:hello@viscalyx.com',
+      href: 'mailto:hello@viscalyx.se',
       icon: Mail,
     },
   ]
