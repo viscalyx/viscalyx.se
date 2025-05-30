@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    // Code formatting and linting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // Spell checking
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-swedish",
+
+    // React and Next.js
+    "bradlc.vscode-tailwindcss",
+
+    // Markdown support (using Prettier for formatting)
+    //"davidanson.vscode-markdownlint",
+
+    // Auto-complete and IntelliSense
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+
+    // HTML/CSS/Tailwind
+    //"formulahendry.auto-rename-tag",
+    //"pranaygp.vscode-css-peek",
+
+    // i18n support
+    //"lokalise.i18n-ally",
+
+    // Productivity
+    "gruntfuggly.todo-tree",
+    "usernamehw.errorlens"
+  ]
+}
