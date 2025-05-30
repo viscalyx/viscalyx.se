@@ -1,5 +1,5 @@
-# Use the official Node.js 20 LTS image as base
-FROM node:20-bullseye
+# Use the official Node.js 22 LTS image as base
+FROM node:22-bullseye
 
 # Install system dependencies and tools in a single layer
 RUN apt-get update && \
