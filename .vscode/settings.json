@@ -1,0 +1,59 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+
+  // Code Spell Checker Configuration
+  "cSpell.enabled": true,
+  "cSpell.enabledFileTypes": {
+    "markdown": true,
+    "typescript": true,
+    "typescriptreact": true,
+    "javascript": true,
+    "javascriptreact": true,
+    "json": true,
+    "jsonc": true,
+    "yaml": true,
+    "yml": true
+  },
+  "cSpell.showStatus": true,
+  "cSpell.showSuggestions": true,
+  "cSpell.diagnosticLevel": "Warning",
+  "cSpell.checkLimit": 500,
+  "cSpell.spellCheckDelayMs": 50,
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "cSpell.enabled": true,
+    "cSpell.diagnosticLevel": "Warning"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "cSpell.enabled": true,
+    "cSpell.diagnosticLevel": "Warning"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "cSpell.enabled": true,
+    "cSpell.diagnosticLevel": "Error"
+  }
+}
