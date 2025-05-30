@@ -18,7 +18,10 @@
     "clean": "rm -rf .next out",
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
-    "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint"
+    "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.1.0",
