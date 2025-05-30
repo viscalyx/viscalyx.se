@@ -35,46 +35,20 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        // Essential extensions
-        "ms-vscode.vscode-typescript-next",
-        "bradlc.vscode-tailwindcss",
+        // Essential for devcontainer functionality
+        "ms-vscode-remote.remote-containers",
+        "ms-azuretools.vscode-docker",
+
+        // Extensions from .vscode/extensions.json
         "esbenp.prettier-vscode",
-        "ms-vscode.vscode-eslint",
-        "formulahendry.auto-rename-tag",
-        "christian-kohler.path-intellisense",
-        "ms-vscode.vscode-json",
-
-        // React and Next.js
-        "ms-vscode.vscode-react-refactor",
-        "burkeholland.simple-react-snippets",
-        "dsznajder.es7-react-js-snippets",
-
-        // Markdown and documentation
-        "yzhang.markdown-all-in-one",
-        "davidanson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-swedish",
-
-        // Git and collaboration
-        "mhutchie.git-graph",
-        "eamodio.gitlens",
-        "github.vscode-pull-request-github",
-
-        // Productivity
-        "ms-vscode.live-server",
-        "ms-vscode.vscode-thunder-client",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.path-intellisense",
+        "christian-kohler.npm-intellisense",
         "gruntfuggly.todo-tree",
-        "aaron-bond.better-comments",
-        "usernamehw.errorlens",
-        "oderwat.indent-rainbow",
-
-        // Theme and UI
-        "pkief.material-icon-theme",
-        "zhuangtongfa.material-theme",
-
-        // Docker and DevContainer
-        "ms-vscode-remote.remote-containers",
-        "ms-azuretools.vscode-docker"
+        "usernamehw.errorlens"
       ],
       "settings": {
         // Editor settings
@@ -95,7 +69,7 @@
         "editor.guides.bracketPairs": true,
 
         // File settings
-        "files.autoSave": "onDelay",
+        "files.autoSave": "afterDelay",
         "files.autoSaveDelay": 1000,
         "files.trimTrailingWhitespace": true,
         "files.insertFinalNewline": true,
@@ -146,14 +120,14 @@
 
         // Spell checker settings
         "cSpell.language": "en,sv",
-        "cSpell.enableFiletypes": [
-          "typescript",
-          "typescriptreact",
-          "javascript",
-          "javascriptreact",
-          "markdown",
-          "json"
-        ],
+        "cSpell.enabledFileTypes": {
+          "typescript": true,
+          "typescriptreact": true,
+          "javascript": true,
+          "javascriptreact": true,
+          "markdown": true,
+          "json": true
+        },
         "cSpell.words": [
           "viscalyx",
           "johlju",
@@ -181,10 +155,6 @@
           "typescript": "html",
           "typescriptreact": "html"
         },
-
-        // Live Server settings
-        "liveServer.settings.donotShowInfoMsg": true,
-        "liveServer.settings.donotVerifyTags": true,
 
         // Explorer settings
         "explorer.compactFolders": false,
