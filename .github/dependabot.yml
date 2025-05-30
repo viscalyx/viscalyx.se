@@ -8,7 +8,7 @@ updates:
     ignore:
       # Ignore TailwindCSS major version 4+ (stay on v3.x)
       - dependency-name: 'tailwindcss'
-        versions: ['[4.0.0,)']
+        versions: ['>=4.0.0']
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: 'github-actions'
