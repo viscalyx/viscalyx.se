@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Zap, Code } from 'lucide-react'
+import { ArrowRight, Sparkles, Code } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
@@ -280,35 +280,6 @@ const Hero = () => {
                   {/* Image overlay for better contrast with floating elements */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl z-20" />
                 </div>
-
-                {/* Floating Elements */}
-                {/* <motion.div
-                  animate={{
-                    rotate: [0, 360],
-                    y: [0, -10, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 20, repeat: Infinity, ease: 'linear' },
-                    y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-                  }}
-                  className="absolute -top-6 -right-6 bg-primary-600 p-4 rounded-2xl shadow-lg z-30"
-                >
-                  <Code className="h-8 w-8 text-white" />
-                </motion.div> */}
-
-                {/* <motion.div
-                  animate={{
-                    rotate: [360, 0],
-                    y: [0, 10, 0],
-                  }}
-                  transition={{
-                    rotate: { duration: 15, repeat: Infinity, ease: 'linear' },
-                    y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
-                  }}
-                  className="absolute -bottom-6 -left-6 bg-secondary-800 p-4 rounded-2xl shadow-lg z-30"
-                >
-                  <Zap className="h-8 w-8 text-white" />
-                </motion.div> */}
 
                 {/* Image indicators */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
