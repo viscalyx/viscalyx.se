@@ -8,6 +8,11 @@
     "DevOps",
     "Ljunggren",
     "Johan",
+    "esbenp",
+    "dbaeumer",
+    "bradlc",
+    "gruntfuggly",
+    "usernamehw",
 
     // Technical terms - DevOps & Infrastructure
     "Kubernetes",
@@ -45,6 +50,7 @@
     "vnet",
     "westeurope",
     "nosniff",
+    "devcontainers",
 
     // PowerShell DSC specific
     "DSC",
