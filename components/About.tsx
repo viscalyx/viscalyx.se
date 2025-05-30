@@ -147,7 +147,7 @@ const About = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-8 -left-8 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700"
+                className="absolute -bottom-8 -left-8 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20"
               >
                 <div className="flex items-center space-x-4">
                   <div className="text-center">
