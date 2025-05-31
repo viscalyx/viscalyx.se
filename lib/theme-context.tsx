@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 type Theme = 'light' | 'dark' | 'system'
 
 // Custom hook to handle initialization-guarded effects
-function useInitializedEffect(
+function useEffectWhenInitialized(
   effect: React.EffectCallback,
   deps: React.DependencyList,
   isInitialized: boolean
@@ -58,7 +58,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setIsInitialized(true)
   }, [])
 
-  useInitializedEffect(
+  useEffectWhenInitialized(
     () => {
       const updateResolvedTheme = () => {
         if (theme === 'system') {
@@ -85,7 +85,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     isInitialized
   )
 
-  useInitializedEffect(
+  useEffectWhenInitialized(
     () => {
       // Apply theme to document
       const root = document.documentElement
