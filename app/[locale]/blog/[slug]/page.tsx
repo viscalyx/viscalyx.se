@@ -42,6 +42,17 @@ interface BlogPost {
   content: string
 }
 
+// Helper function to create URL-friendly slugs from text
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Collapse consecutive hyphens
+    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+    .trim()
+}
+
 // Function to extract headings from HTML content and create table of contents
 function extractTableOfContents(htmlContent: string): TocItem[] {
   // Create a temporary DOM element to parse the HTML
@@ -57,13 +68,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
         allowedTags: [],
         allowedAttributes: {},
       }).trim() // Sanitize HTML content
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Collapse consecutive hyphens
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -82,13 +87,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
     return headings.map(heading => {
       const text = heading.textContent || ''
       const level = parseInt(heading.tagName.charAt(1))
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Collapse consecutive hyphens
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -108,13 +107,7 @@ function addHeadingIds(htmlContent: string): string {
         allowedTags: [],
         allowedAttributes: {},
       }).trim()
-      const id = cleanText
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Collapse consecutive hyphens
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const id = slugify(cleanText)
 
       // Ensure the id is not empty
       const finalId =
