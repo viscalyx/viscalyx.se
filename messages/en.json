@@ -809,6 +809,7 @@
       "all": "All"
     },
     "post": {
+      "loadingBlogPost": "Showing blog post...",
       "backToBlog": "Back to Blog",
       "share": "Share:",
       "tableOfContents": "Table of Contents",
