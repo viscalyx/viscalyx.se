@@ -4,9 +4,27 @@ const matter = require('gray-matter')
 const { remark } = require('remark')
 const remarkHtml = require('remark-html').default
 const remarkGfm = require('remark-gfm').default
+const sanitizeHtml = require('sanitize-html')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
+
+// HTML sanitization options - extend defaults with blog-specific needs
+const sanitizeOptions = {
+  // Use default allowed tags and attributes as base
+  ...sanitizeHtml.defaults,
+  // Extend allowed attributes to support table of contents navigation
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    // Allow id attributes on headings for table of contents
+    h1: ['id'],
+    h2: ['id'],
+    h3: ['id'],
+    h4: ['id'],
+    h5: ['id'],
+    h6: ['id'],
+  },
+}
 
 async function buildBlogData() {
   console.log('Building blog data for production...')
@@ -46,7 +64,10 @@ async function buildBlogData() {
           .use(remarkHtml)
           .process(content)
 
-        const contentHtml = processedContent.toString()
+        const rawContentHtml = processedContent.toString()
+
+        // Sanitize the HTML to prevent XSS attacks using default options
+        const contentHtml = sanitizeHtml(rawContentHtml, sanitizeOptions)
 
         // Extract category from tags if not explicitly set
         const category = data.category || data.tags?.[0] || 'General'
@@ -89,7 +110,7 @@ async function buildBlogData() {
     // Write the blog data to a JSON file
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))
     console.log(`✓ Blog data written to ${outputPath}`)
-    console.log(`✓ Built ${posts.length} blog posts`)
+    console.log(`✓ Built ${posts.length} blog posts with HTML sanitization`)
   } catch (error) {
     console.error('Error building blog data:', error)
     process.exit(1)
