@@ -78,14 +78,14 @@ export function getAllPostSlugs(): string[] {
 }
 
 // Get blog post data by slug
-export async function getPostData(slug: string): Promise<BlogPost | null> {
+export function getPostData(slug: string): BlogPost | null {
   const validatedData = getValidatedBlogData()
   const post = validatedData.posts.find(p => p.slug === slug)
   return post || null
 }
 
 // Alias for getPostData for consistency
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export function getPostBySlug(slug: string): BlogPost | null {
   return getPostData(slug)
 }
 
