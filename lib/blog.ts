@@ -30,45 +30,53 @@ interface BlogData {
   slugs: string[]
 }
 
+// Type representing the raw structure we expect from JSON before validation
+// We use unknown for the top-level since JSON imports are not strongly typed
+type RawBlogData = {
+  posts: unknown
+  slugs: unknown
+}
+
 // Type guard to validate if object is a valid BlogPost
-function isBlogPost(obj: any): obj is BlogPost {
+function isBlogPost(obj: unknown): obj is BlogPost {
+  if (typeof obj !== 'object' || obj === null) {
+    return false
+  }
+
+  const post = obj as Record<string, unknown>
   return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    typeof obj.slug === 'string' &&
-    typeof obj.title === 'string' &&
-    typeof obj.date === 'string' &&
-    typeof obj.author === 'string' &&
-    typeof obj.excerpt === 'string' &&
-    typeof obj.image === 'string' &&
-    Array.isArray(obj.tags) &&
-    obj.tags.every((tag: any) => typeof tag === 'string') &&
-    typeof obj.readTime === 'string' &&
-    (obj.category === undefined || typeof obj.category === 'string') &&
-    typeof obj.content === 'string'
+    typeof post.slug === 'string' &&
+    typeof post.title === 'string' &&
+    typeof post.date === 'string' &&
+    typeof post.author === 'string' &&
+    typeof post.excerpt === 'string' &&
+    typeof post.image === 'string' &&
+    Array.isArray(post.tags) &&
+    post.tags.every(tag => typeof tag === 'string') &&
+    typeof post.readTime === 'string' &&
+    (post.category === undefined || typeof post.category === 'string') &&
+    typeof post.content === 'string'
   )
 }
 
 // Type guard to validate if the imported JSON has the expected BlogData structure
-function isBlogData(obj: any): obj is BlogData {
+function isBlogData(obj: RawBlogData): obj is BlogData {
   return (
-    typeof obj === 'object' &&
-    obj !== null &&
     Array.isArray(obj.posts) &&
-    obj.posts.every(isBlogPost) &&
+    obj.posts.every(post => isBlogPost(post)) &&
     Array.isArray(obj.slugs) &&
-    obj.slugs.every((slug: any) => typeof slug === 'string')
+    obj.slugs.every(slug => typeof slug === 'string')
   )
 }
 
 // Validate the imported blog data
 function getValidatedBlogData(): BlogData {
-  if (!isBlogData(blogData)) {
+  if (!isBlogData(blogData as RawBlogData)) {
     throw new Error(
       'Invalid blog data structure: Expected object with "posts" array of BlogPost objects and "slugs" array of strings'
     )
   }
-  return blogData
+  return blogData as BlogData
 }
 
 // Get all blog post slugs for static generation
