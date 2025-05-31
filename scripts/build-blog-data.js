@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require('node:fs')
+const path = require('node:path')
 const matter = require('gray-matter')
 const { remark } = require('remark')
 const remarkHtml = require('remark-html').default
