@@ -53,7 +53,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
       const level = parseInt(match[1])
-      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove any HTML tags
+      const text = sanitizeHtml(match[2], { allowedTags: [], allowedAttributes: {} }).trim() // Sanitize HTML content
       const id = text
         .toLowerCase()
         .replace(/[^\w\s-]/g, '')
@@ -81,9 +81,9 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
       const level = parseInt(heading.tagName.charAt(1))
       const id = text
         .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
+        .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Collapse consecutive hyphens
         .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
         .trim()
 
