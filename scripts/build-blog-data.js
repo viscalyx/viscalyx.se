@@ -18,7 +18,7 @@ async function buildBlogData() {
       const emptyData = {
         posts: [],
         slugs: [],
-        lastBuilt: new Date().toISOString()
+        lastBuilt: new Date().toISOString(),
       }
       fs.writeFileSync(outputPath, JSON.stringify(emptyData, null, 2))
       return
@@ -26,7 +26,7 @@ async function buildBlogData() {
 
     const fileNames = fs.readdirSync(postsDirectory)
     const markdownFiles = fileNames.filter(fileName => fileName.endsWith('.md'))
-    
+
     console.log(`Found ${markdownFiles.length} blog posts`)
 
     const posts = []
@@ -35,7 +35,7 @@ async function buildBlogData() {
     for (const fileName of markdownFiles) {
       const slug = fileName.replace(/\.md$/, '')
       const fullPath = path.join(postsDirectory, fileName)
-      
+
       try {
         const fileContents = fs.readFileSync(fullPath, 'utf8')
         const { data, content } = matter(fileContents)
@@ -49,7 +49,8 @@ async function buildBlogData() {
         const contentHtml = processedContent.toString()
 
         // Extract category from tags if not explicitly set
-        const category = data.category || (data.tags && data.tags[0]) || 'General'
+        const category =
+          data.category || (data.tags && data.tags[0]) || 'General'
 
         const post = {
           slug,
@@ -57,7 +58,9 @@ async function buildBlogData() {
           date: data.date || new Date().toISOString().split('T')[0],
           author: data.author || 'Unknown Author',
           excerpt: data.excerpt || '',
-          image: data.image || 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
+          image:
+            data.image ||
+            'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
           tags: data.tags || [],
           readTime: data.readTime || '5 min read',
           category,
@@ -66,7 +69,7 @@ async function buildBlogData() {
 
         posts.push(post)
         slugs.push(slug)
-        
+
         console.log(`✓ Processed: ${slug}`)
       } catch (error) {
         console.error(`Error processing ${fileName}:`, error)
@@ -74,19 +77,20 @@ async function buildBlogData() {
     }
 
     // Sort posts by date (newest first)
-    posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    posts.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
 
     const blogData = {
       posts,
       slugs,
-      lastBuilt: new Date().toISOString()
+      lastBuilt: new Date().toISOString(),
     }
 
     // Write the blog data to a JSON file
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))
     console.log(`✓ Blog data written to ${outputPath}`)
     console.log(`✓ Built ${posts.length} blog posts`)
-
   } catch (error) {
     console.error('Error building blog data:', error)
     process.exit(1)
