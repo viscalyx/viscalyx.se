@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, Clock, User, ArrowRight } from 'lucide-react'
+import { Calendar, Clock, User } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
@@ -50,7 +50,7 @@ const BlogPage = () => {
     }
 
     fetchPosts()
-  }, [])
+  }, [t])
 
   // Initialize selected category once translations are available
   useEffect(() => {
