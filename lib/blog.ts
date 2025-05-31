@@ -98,7 +98,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
 }
 
 // Get all blog posts metadata (for listing pages)
-export async function getAllPosts(): Promise<BlogPostMetadata[]> {
+export function getAllPosts(): BlogPostMetadata[] {
   const validatedData = getValidatedBlogData()
   return validatedData.posts.map(post => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -109,7 +109,7 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
 
 // Get featured post (most recent)
 export async function getFeaturedPost(): Promise<BlogPostMetadata | null> {
-  const posts = await getAllPosts()
+  const posts = getAllPosts()
   return posts.length > 0 ? posts[0] : null
 }
 
@@ -119,7 +119,7 @@ export async function getRelatedPosts(
   category?: string,
   limit: number = 3
 ): Promise<BlogPostMetadata[]> {
-  const allPosts = await getAllPosts()
+  const allPosts = getAllPosts()
 
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
 

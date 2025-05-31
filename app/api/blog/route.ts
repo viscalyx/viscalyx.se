@@ -3,10 +3,8 @@ import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 
 export async function GET() {
   try {
-    const [allPosts, featuredPost] = await Promise.all([
-      getAllPosts(),
-      getFeaturedPost(),
-    ])
+    const allPosts = getAllPosts()
+    const featuredPost = await getFeaturedPost()
 
     return NextResponse.json({
       allPosts,

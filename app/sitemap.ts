@@ -5,7 +5,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://viscalyx.com'
 
   // Get all blog posts
-  const posts = await getAllPosts()
+  const posts = getAllPosts()
 
   // Static pages
   const staticPages = [
