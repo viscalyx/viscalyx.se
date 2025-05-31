@@ -301,7 +301,11 @@ const BlogPage = () => {
           {/* Load More */}
           {hasMorePosts && (
             <div className="text-center mt-12">
-              <button className="btn-primary" onClick={loadMorePosts}>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={loadMorePosts}
+              >
                 {t('loadMore')}
               </button>
             </div>
