@@ -95,8 +95,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.classList.remove('dark')
       }
 
-      // Save to localStorage
-      localStorage.setItem('theme', theme)
+      // Save to localStorage with error handling
+      try {
+        localStorage.setItem('theme', theme)
+      } catch (error) {
+        console.error('Failed to save theme to localStorage:', error)
+      }
     },
     [theme, resolvedTheme],
     isInitialized
