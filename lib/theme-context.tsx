@@ -4,6 +4,18 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 type Theme = 'light' | 'dark' | 'system'
 
+// Custom hook to handle initialization-guarded effects
+function useInitializedEffect(
+  effect: React.EffectCallback,
+  deps: React.DependencyList,
+  isInitialized: boolean
+) {
+  useEffect(() => {
+    if (!isInitialized) return
+    return effect()
+  }, [isInitialized, ...deps])
+}
+
 interface ThemeContextType {
   theme: Theme
   setTheme: (theme: Theme) => void
@@ -26,6 +38,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         : 'system'
 
     // Check current class on document to sync with blocking script
+    // This syncs with an inline blocking script that should be placed in the <head>
+    // to prevent FOUC (Flash of Unstyled Content). The script applies the theme
+    // immediately before React hydration. For CSP compliance, consider using
+    // nonce or hash-based CSP directives for the inline script, or move theme
+    // application to a separate .js file if strict CSP is required.
     const isDarkApplied = document.documentElement.classList.contains('dark')
 
     // Determine initial resolved theme based on current state
@@ -41,44 +58,49 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setIsInitialized(true)
   }, [])
 
-  useEffect(() => {
-    if (!isInitialized) return
-
-    const updateResolvedTheme = () => {
-      if (theme === 'system') {
-        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-          .matches
-          ? 'dark'
-          : 'light'
-        setResolvedTheme(systemTheme)
-      } else {
-        setResolvedTheme(theme as 'light' | 'dark')
+  useInitializedEffect(
+    () => {
+      const updateResolvedTheme = () => {
+        if (theme === 'system') {
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+            .matches
+            ? 'dark'
+            : 'light'
+          setResolvedTheme(systemTheme)
+        } else {
+          setResolvedTheme(theme as 'light' | 'dark')
+        }
       }
-    }
 
-    updateResolvedTheme()
+      updateResolvedTheme()
 
-    if (theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      mediaQuery.addEventListener('change', updateResolvedTheme)
-      return () => mediaQuery.removeEventListener('change', updateResolvedTheme)
-    }
-  }, [theme, isInitialized])
+      if (theme === 'system') {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+        mediaQuery.addEventListener('change', updateResolvedTheme)
+        return () =>
+          mediaQuery.removeEventListener('change', updateResolvedTheme)
+      }
+    },
+    [theme],
+    isInitialized
+  )
 
-  useEffect(() => {
-    if (!isInitialized) return
+  useInitializedEffect(
+    () => {
+      // Apply theme to document
+      const root = document.documentElement
+      if (resolvedTheme === 'dark') {
+        root.classList.add('dark')
+      } else {
+        root.classList.remove('dark')
+      }
 
-    // Apply theme to document
-    const root = document.documentElement
-    if (resolvedTheme === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-
-    // Save to localStorage
-    localStorage.setItem('theme', theme)
-  }, [theme, resolvedTheme, isInitialized])
+      // Save to localStorage
+      localStorage.setItem('theme', theme)
+    },
+    [theme, resolvedTheme],
+    isInitialized
+  )
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme)
