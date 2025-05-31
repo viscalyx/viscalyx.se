@@ -803,6 +803,7 @@
   },
   "blog": {
     "loadingBlogPosts": "Läser in alla blogginlägg...",
+    "loadMore": "Ladda Fler Artiklar",
     "hero": {
       "title": "Insikter &",
       "titleHighlight": "Kunskap",
@@ -833,7 +834,6 @@
         "twitter": "Twitter"
       }
     },
-    "loadMore": "Ladda Fler Artiklar",
     "fallback": {
       "featuredPost": {
         "title": "Välkommen till Min Blogg",

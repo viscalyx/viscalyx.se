@@ -797,6 +797,7 @@
   },
   "blog": {
     "loadingBlogPosts": "Loading blog posts...",
+    "loadMore": "Load More Articles",
     "hero": {
       "title": "Insights &",
       "titleHighlight": "Knowledge",
@@ -827,7 +828,6 @@
         "twitter": "Twitter"
       }
     },
-    "loadMore": "Load More Articles",
     "fallback": {
       "featuredPost": {
         "title": "Welcome to My Blog",
