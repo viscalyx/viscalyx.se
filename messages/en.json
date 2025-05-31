@@ -796,6 +796,8 @@
     }
   },
   "blog": {
+    "loadingBlogPosts": "Loading blog posts...",
+    "loadMore": "Load More Articles",
     "hero": {
       "title": "Insights &",
       "titleHighlight": "Knowledge",
@@ -808,8 +810,7 @@
       "all": "All"
     },
     "post": {
-      "readFullArticle": "Read Full Article",
-      "readMore": "Read More",
+      "loadingBlogPost": "Showing blog post...",
       "backToBlog": "Back to Blog",
       "share": "Share:",
       "tableOfContents": "Table of Contents",
@@ -827,7 +828,6 @@
         "twitter": "Twitter"
       }
     },
-    "loadMore": "Load More Articles",
     "fallback": {
       "featuredPost": {
         "title": "Welcome to My Blog",

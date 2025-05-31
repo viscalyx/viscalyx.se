@@ -1,11 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { remark } from 'remark'
-import html from 'remark-html'
-import remarkGfm from 'remark-gfm'
-
-const postsDirectory = path.join(process.cwd(), 'content/blog')
+import blogData from './blog-data.json'
 
 export interface BlogPost {
   slug: string
@@ -32,100 +25,79 @@ export interface BlogPostMetadata {
   category?: string
 }
 
+interface BlogData {
+  posts: BlogPost[]
+  slugs: string[]
+}
+
+// Since we have a .d.ts file for blog-data.json, TypeScript knows the structure
+// We only need minimal validation to ensure runtime safety
+function validateBlogData(data: typeof blogData): BlogData {
+  // Basic runtime validation to catch any JSON corruption or build issues
+  if (!data || typeof data !== 'object') {
+    throw new Error('Blog data is not an object')
+  }
+
+  if (!Array.isArray(data.posts)) {
+    throw new Error('Blog data posts is not an array')
+  }
+
+  if (!Array.isArray(data.slugs)) {
+    throw new Error('Blog data slugs is not an array')
+  }
+
+  return {
+    posts: data.posts,
+    slugs: data.slugs,
+  }
+}
+
+// Validate the imported blog data
+function getValidatedBlogData(): BlogData {
+  return validateBlogData(blogData)
+}
+
 // Get all blog post slugs for static generation
 export function getAllPostSlugs(): string[] {
-  try {
-    const fileNames = fs.readdirSync(postsDirectory)
-    return fileNames
-      .filter(fileName => fileName.endsWith('.md'))
-      .map(fileName => fileName.replace(/\.md$/, ''))
-  } catch {
-    console.warn('Blog directory not found, returning empty array')
-    return []
-  }
+  const validatedData = getValidatedBlogData()
+  return validatedData.slugs
 }
 
 // Get blog post data by slug
-export async function getPostData(slug: string): Promise<BlogPost | null> {
-  try {
-    const fullPath = path.join(postsDirectory, `${slug}.md`)
-
-    if (!fs.existsSync(fullPath)) {
-      return null
-    }
-
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
-
-    // Process markdown content to HTML
-    const processedContent = await remark()
-      .use(remarkGfm)
-      .use(html, { sanitize: false })
-      .process(content)
-
-    const contentHtml = processedContent.toString()
-
-    // Extract category from tags if not explicitly set
-    const category = data.category || (data.tags && data.tags[0]) || 'General'
-
-    return {
-      slug,
-      title: data.title || 'Untitled',
-      date: data.date || new Date().toISOString().split('T')[0],
-      author: data.author || 'Unknown Author',
-      excerpt: data.excerpt || '',
-      image:
-        data.image ||
-        'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
-      tags: data.tags || [],
-      readTime: data.readTime || '5 min read',
-      category,
-      content: contentHtml,
-    }
-  } catch (error) {
-    console.error(`Error reading blog post ${slug}:`, error)
-    return null
-  }
+export function getPostData(slug: string): BlogPost | null {
+  const validatedData = getValidatedBlogData()
+  const post = validatedData.posts.find(p => p.slug === slug)
+  return post || null
 }
 
 // Alias for getPostData for consistency
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export function getPostBySlug(slug: string): BlogPost | null {
   return getPostData(slug)
 }
 
 // Get all blog posts metadata (for listing pages)
-export async function getAllPosts(): Promise<BlogPostMetadata[]> {
-  const slugs = getAllPostSlugs()
-  const posts: BlogPostMetadata[] = []
-
-  for (const slug of slugs) {
-    const post = await getPostData(slug)
-    if (post) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { content, ...metadata } = post
-      posts.push(metadata)
-    }
-  }
-
-  // Sort posts by date (newest first)
-  return posts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+export function getAllPosts() {
+  const validatedData = getValidatedBlogData()
+  return validatedData.posts.map(post => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { content, ...metadata } = post
+    return metadata
+  })
 }
 
 // Get featured post (most recent)
-export async function getFeaturedPost(): Promise<BlogPostMetadata | null> {
-  const posts = await getAllPosts()
+export function getFeaturedPost(): BlogPostMetadata | null {
+  const posts = getAllPosts()
   return posts.length > 0 ? posts[0] : null
 }
 
 // Get related posts by tags or category
-export async function getRelatedPosts(
+export function getRelatedPosts(
   currentSlug: string,
   category?: string,
   limit: number = 3
-): Promise<BlogPostMetadata[]> {
-  const allPosts = await getAllPosts()
+): BlogPostMetadata[] {
+  const allPosts = getAllPosts()
 
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
 
