@@ -15,16 +15,35 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('system')
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    // Load theme from localStorage
+    // Load theme from localStorage and get initial resolved theme
     const savedTheme = localStorage.getItem('theme') as Theme
-    if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-      setTheme(savedTheme)
+    const validTheme =
+      savedTheme && ['light', 'dark', 'system'].includes(savedTheme)
+        ? savedTheme
+        : 'system'
+
+    // Check current class on document to sync with blocking script
+    const isDarkApplied = document.documentElement.classList.contains('dark')
+
+    // Determine initial resolved theme based on current state
+    let initialResolvedTheme: 'light' | 'dark'
+    if (isDarkApplied) {
+      initialResolvedTheme = 'dark'
+    } else {
+      initialResolvedTheme = 'light'
     }
+
+    setTheme(validTheme)
+    setResolvedTheme(initialResolvedTheme)
+    setIsInitialized(true)
   }, [])
 
   useEffect(() => {
+    if (!isInitialized) return
+
     const updateResolvedTheme = () => {
       if (theme === 'system') {
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
@@ -44,9 +63,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       mediaQuery.addEventListener('change', updateResolvedTheme)
       return () => mediaQuery.removeEventListener('change', updateResolvedTheme)
     }
-  }, [theme])
+  }, [theme, isInitialized])
 
   useEffect(() => {
+    if (!isInitialized) return
+
     // Apply theme to document
     const root = document.documentElement
     if (resolvedTheme === 'dark') {
@@ -57,7 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     // Save to localStorage
     localStorage.setItem('theme', theme)
-  }, [theme, resolvedTheme])
+  }, [theme, resolvedTheme, isInitialized])
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme)
