@@ -42,6 +42,17 @@ interface BlogPost {
   content: string
 }
 
+// Helper function to create URL-friendly slugs from text
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Collapse consecutive hyphens
+    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+    .trim()
+}
+
 // Function to extract headings from HTML content and create table of contents
 function extractTableOfContents(htmlContent: string): TocItem[] {
   // Create a temporary DOM element to parse the HTML
@@ -53,14 +64,11 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
       const level = parseInt(match[1])
-      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove any HTML tags
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const text = sanitizeHtml(match[2], {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim() // Sanitize HTML content
+      const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -79,13 +87,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
     return headings.map(heading => {
       const text = heading.textContent || ''
       const level = parseInt(heading.tagName.charAt(1))
-      const id = text
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -96,28 +98,48 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
   }
 }
 
-// Function to add IDs to headings in HTML content
-function addHeadingIds(htmlContent: string): string {
-  return htmlContent.replace(
+// Function to sanitize HTML content and add IDs to headings in one pass
+function sanitizeAndAddHeadingIds(htmlContent: string): string {
+  // Use sanitize-html defaults with minimal customization for heading IDs
+  const sanitizeOptions = {
+    // Allow id attributes on headings for table of contents navigation
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      h1: ['id'],
+      h2: ['id'],
+      h3: ['id'],
+      h4: ['id'],
+      h5: ['id'],
+      h6: ['id'],
+    },
+  }
+
+  // First sanitize the HTML to remove unsafe content
+  const sanitizedHtml = sanitizeHtml(htmlContent, sanitizeOptions)
+
+  // Then add IDs to headings in the sanitized content
+  return sanitizedHtml.replace(
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
+      // Sanitize the text content to generate clean IDs
       const cleanText = sanitizeHtml(text, {
         allowedTags: [],
         allowedAttributes: {},
       }).trim()
-      const id = cleanText
-        .toLowerCase()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-        .trim()
+      const id = slugify(cleanText)
 
       // Ensure the id is not empty
       const finalId =
         id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
 
-      return `<h${level}${attributes} id="${finalId}">${text}</h${level}>`
+      // Check if id attribute already exists in attributes
+      const hasId = /\bid\s*=/i.test(attributes)
+      const finalAttributes = hasId
+        ? attributes
+        : `${attributes} id="${finalId}"`
+
+      // Return the heading with sanitized content and proper ID
+      return `<h${level}${finalAttributes}>${text}</h${level}>`
     }
   )
 }
@@ -245,9 +267,10 @@ interface BlogPostContentProps {
 }
 
 const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
-  // Extract table of contents and add IDs to headings
-  const tableOfContents = extractTableOfContents(post.content)
-  const contentWithIds = addHeadingIds(post.content)
+  // Sanitize content and add IDs to headings in one pass
+  const sanitizedContent = sanitizeAndAddHeadingIds(post.content)
+  // Extract table of contents from the sanitized content
+  const tableOfContents = extractTableOfContents(sanitizedContent)
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
@@ -359,7 +382,7 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
 
               <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 dark:prose-headings:text-secondary-100 prose-p:text-secondary-700 dark:prose-p:text-secondary-300 prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-code:text-primary-600 dark:prose-code:text-primary-400 prose-pre:bg-secondary-50 dark:prose-pre:bg-secondary-800 prose-headings:scroll-mt-24">
                 <div
-                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
+                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                   className="markdown-content"
                 />
               </div>
