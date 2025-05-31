@@ -1,9 +1,6 @@
 const fs = require('node:fs')
 const path = require('node:path')
 const matter = require('gray-matter')
-const { remark } = require('remark')
-const remarkHtml = require('remark-html').default
-const remarkGfm = require('remark-gfm').default
 const sanitizeHtml = require('sanitize-html')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
@@ -59,6 +56,11 @@ async function buildBlogData() {
   console.log('Building blog data for production...')
 
   try {
+    // Dynamically import ES modules
+    const { remark } = await import('remark')
+    const { default: remarkHtml } = await import('remark-html')
+    const { default: remarkGfm } = await import('remark-gfm')
+
     // Check if content directory exists
     if (!fs.existsSync(postsDirectory)) {
       console.warn('Blog content directory not found, creating empty blog data')
