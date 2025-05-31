@@ -1,6 +1,12 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from 'react'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -28,6 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('system')
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
   const [isInitialized, setIsInitialized] = useState(false)
+  const mediaQueryRef = useRef<MediaQueryList | null>(null)
 
   useEffect(() => {
     // Helper function to validate theme value
@@ -69,12 +76,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffectWhenInitialized(
     () => {
+      // Initialize media query ref if not already done
+      if (!mediaQueryRef.current) {
+        mediaQueryRef.current = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        )
+      }
+
+      const mediaQuery = mediaQueryRef.current
+
       const updateResolvedTheme = () => {
         if (theme === 'system') {
-          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-            .matches
-            ? 'dark'
-            : 'light'
+          const systemTheme = mediaQuery.matches ? 'dark' : 'light'
           setResolvedTheme(systemTheme)
         } else {
           setResolvedTheme(theme as 'light' | 'dark')
@@ -84,10 +97,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       updateResolvedTheme()
 
       if (theme === 'system') {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
         mediaQuery.addEventListener('change', updateResolvedTheme)
-        return () =>
+        return () => {
           mediaQuery.removeEventListener('change', updateResolvedTheme)
+        }
       }
     },
     [theme],
