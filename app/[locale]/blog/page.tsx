@@ -25,7 +25,7 @@ const BlogPage = () => {
   const [allPosts, setAllPosts] = useState<BlogPostMeta[]>([])
   const [featuredPost, setFeaturedPost] = useState<BlogPostMeta | null>(null)
   const [loading, setLoading] = useState(true)
-  const [postsPerPage] = useState(6) // Number of posts to show initially and load more
+  const postsPerPage = 6 // Number of posts to show initially and load more
   const [visiblePosts, setVisiblePosts] = useState(6)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
 
