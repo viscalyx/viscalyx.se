@@ -25,6 +25,8 @@ const BlogPage = () => {
   const [allPosts, setAllPosts] = useState<BlogPostMeta[]>([])
   const [featuredPost, setFeaturedPost] = useState<BlogPostMeta | null>(null)
   const [loading, setLoading] = useState(true)
+  const [postsPerPage] = useState(6) // Number of posts to show initially and load more
+  const [visiblePosts, setVisiblePosts] = useState(6)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -102,13 +104,23 @@ const BlogPage = () => {
 
   // Use markdown posts if available, otherwise fall back to default posts
   const displayFeaturedPost = featuredPost || defaultFeaturedPost
-  const displayBlogPosts =
+  const allDisplayPosts =
     allPosts.length > 0 ? allPosts.slice(1) : defaultBlogPosts
+  const displayBlogPosts = allDisplayPosts.slice(0, visiblePosts)
+
+  // Check if there are more posts to load
+  const hasMorePosts = allDisplayPosts.length > visiblePosts
+
+  const loadMorePosts = () => {
+    setVisiblePosts(prev =>
+      Math.min(prev + postsPerPage, allDisplayPosts.length)
+    )
+  }
 
   // Get unique categories from all posts
   const categories = [
     displayFeaturedPost.category,
-    ...displayBlogPosts.map((post: BlogPostMeta) => post.category),
+    ...allDisplayPosts.map((post: BlogPostMeta) => post.category),
   ].filter(Boolean)
   const allCategories = [
     t('categories.all'),
@@ -121,7 +133,7 @@ const BlogPage = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
           <p className="text-secondary-600 dark:text-secondary-400">
-            Loading blog posts...
+            {t('loadingBlogPosts')}
           </p>
         </div>
       </div>
@@ -155,52 +167,46 @@ const BlogPage = () => {
               {t('featuredPost.title')}
             </h2>
 
-            <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-shadow duration-300">
-              <div className="grid lg:grid-cols-2">
-                <div className="relative h-64 lg:h-full">
-                  <Image
-                    src={displayFeaturedPost.image}
-                    alt={displayFeaturedPost.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {displayFeaturedPost.category}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm mb-4">
-                    <User className="w-4 h-4 mr-2" />
-                    {displayFeaturedPost.author}
-                    <span className="mx-3">•</span>
-                    <Calendar className="w-4 h-4 mr-2" />
-                    {new Date(displayFeaturedPost.date).toLocaleDateString()}
-                    <span className="mx-3">•</span>
-                    <Clock className="w-4 h-4 mr-2" />
-                    {displayFeaturedPost.readTime}
+            <Link href={`/blog/${displayFeaturedPost.slug}`} className="block">
+              <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 transform">
+                <div className="grid lg:grid-cols-2">
+                  <div className="relative h-64 lg:h-full">
+                    <Image
+                      src={displayFeaturedPost.image}
+                      alt={displayFeaturedPost.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        {displayFeaturedPost.category}
+                      </span>
+                    </div>
                   </div>
 
-                  <h3 className="text-2xl lg:text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
-                    {displayFeaturedPost.title}
-                  </h3>
+                  <div className="p-8 lg:p-12 flex flex-col justify-center">
+                    <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm mb-4">
+                      <User className="w-4 h-4 mr-2" />
+                      {displayFeaturedPost.author}
+                      <span className="mx-3">•</span>
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {new Date(displayFeaturedPost.date).toLocaleDateString()}
+                      <span className="mx-3">•</span>
+                      <Clock className="w-4 h-4 mr-2" />
+                      {displayFeaturedPost.readTime}
+                    </div>
 
-                  <p className="text-secondary-600 dark:text-secondary-400 mb-6 leading-relaxed">
-                    {displayFeaturedPost.excerpt}
-                  </p>
+                    <h3 className="text-2xl lg:text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+                      {displayFeaturedPost.title}
+                    </h3>
 
-                  <Link
-                    href={`/blog/${displayFeaturedPost.slug}`}
-                    className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium group"
-                  >
-                    {t('post.readFullArticle')}
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
+                    <p className="text-secondary-600 dark:text-secondary-400 leading-relaxed">
+                      {displayFeaturedPost.excerpt}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -229,57 +235,56 @@ const BlogPage = () => {
           {/* Posts Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayBlogPosts.map((post: BlogPostMeta) => (
-              <article
+              <Link
                 key={post.slug}
-                className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
+                href={`/blog/${post.slug}`}
+                className="block"
               >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-primary-600 text-white px-2 py-1 rounded text-xs font-medium">
-                      {post.category}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    {new Date(post.date).toLocaleDateString()}
-                    <span className="mx-2">•</span>
-                    <Clock className="w-3 h-3 mr-1" />
-                    {post.readTime}
+                <article className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:-translate-y-2 transform">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-primary-600 text-white px-2 py-1 rounded text-xs font-medium">
+                        {post.category}
+                      </span>
+                    </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2">
-                    {post.title}
-                  </h3>
+                  <div className="p-6">
+                    <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {new Date(post.date).toLocaleDateString()}
+                      <span className="mx-2">•</span>
+                      <Clock className="w-3 h-3 mr-1" />
+                      {post.readTime}
+                    </div>
 
-                  <p className="text-secondary-600 dark:text-secondary-400 text-sm mb-4 line-clamp-3">
-                    {post.excerpt}
-                  </p>
+                    <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300 line-clamp-2">
+                      {post.title}
+                    </h3>
 
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium group"
-                  >
-                    {t('post.readMore')}
-                    <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </article>
+                    <p className="text-secondary-600 dark:text-secondary-400 text-sm line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
 
           {/* Load More */}
-          <div className="text-center mt-12">
-            <button className="btn-primary">{t('loadMore')}</button>
-          </div>
+          {hasMorePosts && (
+            <div className="text-center mt-12">
+              <button className="btn-primary" onClick={loadMorePosts}>
+                {t('loadMore')}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

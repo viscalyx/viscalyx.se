@@ -796,6 +796,7 @@
     }
   },
   "blog": {
+    "loadingBlogPosts": "Loading blog posts...",
     "hero": {
       "title": "Insights &",
       "titleHighlight": "Knowledge",
@@ -808,8 +809,6 @@
       "all": "All"
     },
     "post": {
-      "readFullArticle": "Read Full Article",
-      "readMore": "Read More",
       "backToBlog": "Back to Blog",
       "share": "Share:",
       "tableOfContents": "Table of Contents",

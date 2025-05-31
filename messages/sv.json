@@ -802,6 +802,7 @@
     }
   },
   "blog": {
+    "loadingBlogPosts": "Läser in blogginlägg...",
     "hero": {
       "title": "Insikter &",
       "titleHighlight": "Kunskap",
@@ -814,8 +815,6 @@
       "all": "Alla"
     },
     "post": {
-      "readFullArticle": "Läs Hela Artikeln",
-      "readMore": "Läs Mer",
       "backToBlog": "Tillbaka till Blogg",
       "share": "Dela:",
       "tableOfContents": "Innehållsförteckning",
