@@ -120,13 +120,38 @@ async function buildBlogData() {
       }
     }
 
-    // Sort posts by date (newest first)
-    posts.sort(
+    // Filter posts with valid dates and handle posts with invalid dates
+    const postsWithValidDates = []
+    const postsWithInvalidDates = []
+
+    posts.forEach(post => {
+      if (post.date && !isNaN(new Date(post.date).getTime())) {
+        postsWithValidDates.push(post)
+      } else {
+        // Posts with invalid or missing dates go to the end
+        postsWithInvalidDates.push(post)
+        if (!post.date) {
+          console.warn(
+            `Post "${post.slug}" has no date and will be placed at the end`
+          )
+        } else {
+          console.warn(
+            `Post "${post.slug}" has invalid date "${post.date}" and will be placed at the end`
+          )
+        }
+      }
+    })
+
+    // Sort posts with valid dates by date (newest first)
+    postsWithValidDates.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
 
+    // Combine sorted valid posts with invalid date posts at the end
+    const sortedPosts = [...postsWithValidDates, ...postsWithInvalidDates]
+
     const blogData = {
-      posts,
+      posts: sortedPosts,
       slugs,
       lastBuilt: new Date().toISOString(),
     }
@@ -140,7 +165,12 @@ async function buildBlogData() {
     // Write the blog data to a JSON file
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))
     console.log(`✓ Blog data written to ${outputPath}`)
-    console.log(`✓ Built ${posts.length} blog posts with HTML sanitization`)
+    console.log(
+      `✓ Built ${sortedPosts.length} blog posts with HTML sanitization`
+    )
+    console.log(
+      `✓ Posts with valid dates: ${postsWithValidDates.length}, posts with invalid dates: ${postsWithInvalidDates.length}`
+    )
   } catch (error) {
     console.error('Error building blog data:', error)
     process.exit(1)
