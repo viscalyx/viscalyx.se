@@ -27,6 +27,7 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true)
   const [postsPerPage] = useState(6) // Number of posts to show initially and load more
   const [visiblePosts, setVisiblePosts] = useState(6)
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -36,6 +37,8 @@ const BlogPage = () => {
           const data = await response.json()
           setAllPosts(data.allPosts || [])
           setFeaturedPost(data.featuredPost)
+          // Set the initial selected category to "All"
+          setSelectedCategory(t('categories.all'))
         } else {
           console.error('Failed to fetch blog posts')
         }
@@ -48,6 +51,13 @@ const BlogPage = () => {
 
     fetchPosts()
   }, [])
+
+  // Initialize selected category once translations are available
+  useEffect(() => {
+    if (!selectedCategory && t('categories.all')) {
+      setSelectedCategory(t('categories.all'))
+    }
+  }, [selectedCategory, t])
 
   /**
    * Default Featured Post Template
@@ -104,17 +114,29 @@ const BlogPage = () => {
 
   // Use markdown posts if available, otherwise fall back to default posts
   const displayFeaturedPost = featuredPost || defaultFeaturedPost
-  const allDisplayPosts =
-    allPosts.length > 0 ? allPosts.slice(1) : defaultBlogPosts
-  const displayBlogPosts = allDisplayPosts.slice(0, visiblePosts)
+  const allDisplayPosts = allPosts.length > 0 ? allPosts : defaultBlogPosts
+
+  // Filter posts based on selected category
+  const filteredPosts =
+    selectedCategory === t('categories.all')
+      ? allDisplayPosts
+      : allDisplayPosts.filter(
+          (post: BlogPostMeta) => post.category === selectedCategory
+        )
+
+  const displayBlogPosts = filteredPosts.slice(0, visiblePosts)
 
   // Check if there are more posts to load
-  const hasMorePosts = allDisplayPosts.length > visiblePosts
+  const hasMorePosts = filteredPosts.length > visiblePosts
 
   const loadMorePosts = () => {
-    setVisiblePosts(prev =>
-      Math.min(prev + postsPerPage, allDisplayPosts.length)
-    )
+    setVisiblePosts(prev => Math.min(prev + postsPerPage, filteredPosts.length))
+  }
+
+  // Handle category filter change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    setVisiblePosts(postsPerPage) // Reset visible posts when category changes
   }
 
   // Get unique categories from all posts
@@ -220,8 +242,9 @@ const BlogPage = () => {
               {allCategories.map(category => (
                 <button
                   key={category}
+                  onClick={() => handleCategoryChange(category)}
                   className={`px-4 py-2 rounded-full transition-colors duration-200 ${
-                    category === t('categories.all')
+                    category === selectedCategory
                       ? 'bg-primary-600 dark:bg-primary-500 text-white'
                       : 'bg-white dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
