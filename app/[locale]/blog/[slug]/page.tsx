@@ -1,5 +1,6 @@
 'use client'
 
+import sanitizeHtml from 'sanitize-html'
 import {
   ArrowLeft,
   Calendar,
@@ -100,7 +101,10 @@ function addHeadingIds(htmlContent: string): string {
   return htmlContent.replace(
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
-      const cleanText = text.replace(/<[^>]*>/g, '').trim()
+      const cleanText = sanitizeHtml(text, {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim()
       const id = cleanText
         .toLowerCase()
         .replace(/[^\w\s-]/g, '')
