@@ -25,14 +25,62 @@ export interface BlogPostMetadata {
   category?: string
 }
 
+interface BlogData {
+  posts: BlogPost[]
+  slugs: string[]
+}
+
+// Type guard to validate if object is a valid BlogPost
+function isBlogPost(obj: any): obj is BlogPost {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    typeof obj.slug === 'string' &&
+    typeof obj.title === 'string' &&
+    typeof obj.date === 'string' &&
+    typeof obj.author === 'string' &&
+    typeof obj.excerpt === 'string' &&
+    typeof obj.image === 'string' &&
+    Array.isArray(obj.tags) &&
+    obj.tags.every((tag: any) => typeof tag === 'string') &&
+    typeof obj.readTime === 'string' &&
+    (obj.category === undefined || typeof obj.category === 'string') &&
+    typeof obj.content === 'string'
+  )
+}
+
+// Type guard to validate if the imported JSON has the expected BlogData structure
+function isBlogData(obj: any): obj is BlogData {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    Array.isArray(obj.posts) &&
+    obj.posts.every(isBlogPost) &&
+    Array.isArray(obj.slugs) &&
+    obj.slugs.every((slug: any) => typeof slug === 'string')
+  )
+}
+
+// Validate the imported blog data
+function getValidatedBlogData(): BlogData {
+  if (!isBlogData(blogData)) {
+    throw new Error(
+      'Invalid blog data structure: Expected object with "posts" array of BlogPost objects and "slugs" array of strings'
+    )
+  }
+  return blogData
+}
+
 // Get all blog post slugs for static generation
 export function getAllPostSlugs(): string[] {
-  return blogData.slugs || []
+  const validatedData = getValidatedBlogData()
+  return validatedData.slugs
 }
 
 // Get blog post data by slug
 export async function getPostData(slug: string): Promise<BlogPost | null> {
-  const post = blogData.posts.find(p => p.slug === slug)
+  const validatedData = getValidatedBlogData()
+  const post = validatedData.posts.find(p => p.slug === slug)
   return post || null
 }
 
@@ -43,7 +91,8 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
 // Get all blog posts metadata (for listing pages)
 export async function getAllPosts(): Promise<BlogPostMetadata[]> {
-  return blogData.posts.map(post => {
+  const validatedData = getValidatedBlogData()
+  return validatedData.posts.map(post => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { content, ...metadata } = post
     return metadata
