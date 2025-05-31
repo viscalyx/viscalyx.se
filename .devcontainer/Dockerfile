@@ -34,14 +34,7 @@ RUN groupadd --gid $USER_GID $USERNAME && \
 USER root
 RUN chsh -s /bin/zsh $USERNAME && \
     npm install -g \
-        npm@latest \
-        typescript \
-        ts-node \
-        nodemon \
-        prettier \
-        eslint \
-        @typescript-eslint/parser \
-        @typescript-eslint/eslint-plugin
+        npm@latest
 
 # Set the working directory and configure workspace
 WORKDIR /workspace
