@@ -131,6 +131,12 @@ async function buildBlogData() {
       lastBuilt: new Date().toISOString(),
     }
 
+    // Ensure the output directory exists before writing the file
+    const outputDir = path.dirname(outputPath)
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true })
+    }
+
     // Write the blog data to a JSON file
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))
     console.log(`✓ Blog data written to ${outputPath}`)
