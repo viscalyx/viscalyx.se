@@ -30,12 +30,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    // Load theme from localStorage and get initial resolved theme
-    const savedTheme = localStorage.getItem('theme') as Theme
-    const validTheme =
-      savedTheme && ['light', 'dark', 'system'].includes(savedTheme)
-        ? savedTheme
-        : 'system'
+    // Helper function to validate theme value
+    const isValidTheme = (value: string | null): value is Theme => {
+      return value !== null && ['light', 'dark', 'system'].includes(value)
+    }
+
+    // Load theme from localStorage with error handling
+    let savedTheme: string | null = null
+    try {
+      savedTheme = localStorage.getItem('theme')
+    } catch (error) {
+      console.error('Failed to access localStorage for theme:', error)
+    }
+
+    // Validate and set theme with proper type safety
+    const validTheme: Theme = isValidTheme(savedTheme) ? savedTheme : 'system'
 
     // Check current class on document to sync with blocking script
     // This syncs with an inline blocking script that should be placed in the <head>
