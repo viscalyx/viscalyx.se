@@ -50,13 +50,6 @@ const BlogPage = () => {
     fetchPosts()
   }, [t])
 
-  // Initialize selected category once translations are available
-  useEffect(() => {
-    if (!selectedCategory && t('categories.all')) {
-      setSelectedCategory(t('categories.all'))
-    }
-  }, [selectedCategory, t])
-
   /**
    * Default Featured Post Template
    *
@@ -116,7 +109,7 @@ const BlogPage = () => {
 
   // Filter posts based on selected category
   const filteredPosts =
-    selectedCategory === t('categories.all')
+    selectedCategory === t('categories.all') || selectedCategory === ''
       ? allDisplayPosts
       : allDisplayPosts.filter(
           (post: BlogPostMeta) => post.category === selectedCategory
@@ -242,7 +235,9 @@ const BlogPage = () => {
                   key={category}
                   onClick={() => handleCategoryChange(category)}
                   className={`px-4 py-2 rounded-full transition-colors duration-200 ${
-                    category === selectedCategory
+                    category === selectedCategory ||
+                    (selectedCategory === '' &&
+                      category === t('categories.all'))
                       ? 'bg-primary-600 dark:bg-primary-500 text-white'
                       : 'bg-white dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
                   }`}
