@@ -11,9 +11,9 @@ const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
 
 // Function to calculate reading time based on word count
 function calculateReadingTime(content) {
-  // Remove HTML tags and extra whitespace for accurate word count
-  const textContent = content
-    .replace(/<[^>]*>/g, '')
+  // Sanitize HTML first, then extract text content for accurate word count
+  const sanitizedContent = sanitizeHtml(content, textOnlySanitizeOptions)
+  const textContent = sanitizedContent
     .replace(/\s+/g, ' ')
     .trim()
 
@@ -49,6 +49,12 @@ const sanitizeOptions = {
     h5: ['id'],
     h6: ['id'],
   },
+}
+
+// Sanitization options for text extraction (strips all HTML)
+const textOnlySanitizeOptions = {
+  allowedTags: [],
+  allowedAttributes: {},
 }
 
 async function buildBlogData() {
