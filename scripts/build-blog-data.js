@@ -69,13 +69,37 @@ async function buildBlogData() {
         // Sanitize the HTML to prevent XSS attacks using default options
         const contentHtml = sanitizeHtml(rawContentHtml, sanitizeOptions)
 
+        // Validate date field
+        const validateDate = dateString => {
+          if (!dateString) return false
+          const date = new Date(dateString)
+          return (
+            !isNaN(date.getTime()) && dateString.match(/^\d{4}-\d{2}-\d{2}/)
+          )
+        }
+
+        let validatedDate = null
+        if (data.date) {
+          if (validateDate(data.date)) {
+            validatedDate = data.date
+          } else {
+            console.warn(
+              `Invalid date format in ${fileName}: "${data.date}". Expected YYYY-MM-DD format.`
+            )
+          }
+        } else {
+          console.warn(
+            `Missing date field in ${fileName}. Consider adding a date in YYYY-MM-DD format.`
+          )
+        }
+
         // Extract category from tags if not explicitly set
         const category = data.category || data.tags?.[0] || 'General'
 
         const post = {
           slug,
           title: data.title || 'Untitled',
-          date: data.date || new Date().toISOString().split('T')[0],
+          date: validatedDate,
           author: data.author || 'Unknown Author',
           excerpt: data.excerpt || '',
           image:
