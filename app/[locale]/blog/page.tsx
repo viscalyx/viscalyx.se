@@ -48,7 +48,7 @@ const BlogPage = () => {
     }
 
     fetchPosts()
-  }, [t])
+  }, [])
 
   /**
    * Default Featured Post Template
