@@ -19,7 +19,8 @@ function useEffectWhenInitialized(
   useEffect(() => {
     if (!isInitialized) return
     return effect()
-  }, [isInitialized, ...deps])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialized, effect, ...deps])
 }
 
 interface ThemeContextType {
