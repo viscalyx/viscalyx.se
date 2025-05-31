@@ -37,8 +37,6 @@ const BlogPage = () => {
           const data = await response.json()
           setAllPosts(data.allPosts || [])
           setFeaturedPost(data.featuredPost)
-          // Set the initial selected category to "All"
-          setSelectedCategory(t('categories.all'))
         } else {
           console.error('Failed to fetch blog posts')
         }
