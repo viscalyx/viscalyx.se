@@ -76,7 +76,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
 }
 
 // Get all blog posts metadata (for listing pages)
-export function getAllPosts(): BlogPostMetadata[] {
+export function getAllPosts() {
   const validatedData = getValidatedBlogData()
   return validatedData.posts.map(post => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
