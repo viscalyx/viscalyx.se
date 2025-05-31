@@ -49,8 +49,7 @@ async function buildBlogData() {
         const contentHtml = processedContent.toString()
 
         // Extract category from tags if not explicitly set
-        const category =
-          data.category || (data.tags && data.tags[0]) || 'General'
+        const category = data.category || data.tags?.[0] || 'General'
 
         const post = {
           slug,
