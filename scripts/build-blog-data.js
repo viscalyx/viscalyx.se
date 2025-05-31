@@ -9,6 +9,31 @@ const sanitizeHtml = require('sanitize-html')
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
 
+// Function to calculate reading time based on word count
+function calculateReadingTime(content) {
+  // Remove HTML tags and extra whitespace for accurate word count
+  const textContent = content
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  // Count words by splitting on whitespace
+  const wordCount = textContent
+    .split(' ')
+    .filter(word => word.length > 0).length
+
+  // Average reading speed: 225 words per minute (middle of 200-250 range)
+  const wordsPerMinute = 225
+  const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute)
+
+  // Return formatted string
+  if (readingTimeMinutes === 1) {
+    return '1 min read'
+  } else {
+    return `${readingTimeMinutes} min read`
+  }
+}
+
 // HTML sanitization options - extend defaults with blog-specific needs
 const sanitizeOptions = {
   // Use default allowed tags and attributes as base
@@ -96,6 +121,9 @@ async function buildBlogData() {
         // Extract category from tags if not explicitly set
         const category = data.category || data.tags?.[0] || 'General'
 
+        // Calculate reading time based on content word count
+        const calculatedReadTime = calculateReadingTime(contentHtml)
+
         const post = {
           slug,
           title: data.title || 'Untitled',
@@ -106,7 +134,7 @@ async function buildBlogData() {
             data.image ||
             'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
           tags: data.tags || [],
-          readTime: data.readTime || '5 min read',
+          readTime: data.readTime || calculatedReadTime,
           category,
           content: contentHtml,
         }
