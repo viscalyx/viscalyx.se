@@ -13,9 +13,7 @@ const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
 function calculateReadingTime(content) {
   // Sanitize HTML first, then extract text content for accurate word count
   const sanitizedContent = sanitizeHtml(content, textOnlySanitizeOptions)
-  const textContent = sanitizedContent
-    .replace(/\s+/g, ' ')
-    .trim()
+  const textContent = sanitizedContent.replace(/\s+/g, ' ').trim()
 
   // Count words by splitting on whitespace
   const wordCount = textContent
@@ -105,7 +103,7 @@ async function buildBlogData() {
           if (!dateString) return false
           const date = new Date(dateString)
           return (
-            !isNaN(date.getTime()) && dateString.match(/^\d{4}-\d{2}-\d{2}/)
+            !isNaN(date.getTime()) && dateString.match(/^\d{4}-\d{2}-\d{2}$/)
           )
         }
 
