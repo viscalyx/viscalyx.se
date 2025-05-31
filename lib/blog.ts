@@ -30,53 +30,31 @@ interface BlogData {
   slugs: string[]
 }
 
-// Type representing the raw structure we expect from JSON before validation
-// We use unknown for the top-level since JSON imports are not strongly typed
-type RawBlogData = {
-  posts: unknown
-  slugs: unknown
-}
-
-// Type guard to validate if object is a valid BlogPost
-function isBlogPost(obj: unknown): obj is BlogPost {
-  if (typeof obj !== 'object' || obj === null) {
-    return false
+// Since we have a .d.ts file for blog-data.json, TypeScript knows the structure
+// We only need minimal validation to ensure runtime safety
+function validateBlogData(data: typeof blogData): BlogData {
+  // Basic runtime validation to catch any JSON corruption or build issues
+  if (!data || typeof data !== 'object') {
+    throw new Error('Blog data is not an object')
   }
 
-  const post = obj as Record<string, unknown>
-  return (
-    typeof post.slug === 'string' &&
-    typeof post.title === 'string' &&
-    typeof post.date === 'string' &&
-    typeof post.author === 'string' &&
-    typeof post.excerpt === 'string' &&
-    typeof post.image === 'string' &&
-    Array.isArray(post.tags) &&
-    post.tags.every(tag => typeof tag === 'string') &&
-    typeof post.readTime === 'string' &&
-    (post.category === undefined || typeof post.category === 'string') &&
-    typeof post.content === 'string'
-  )
-}
+  if (!Array.isArray(data.posts)) {
+    throw new Error('Blog data posts is not an array')
+  }
 
-// Type guard to validate if the imported JSON has the expected BlogData structure
-function isBlogData(obj: RawBlogData): obj is BlogData {
-  return (
-    Array.isArray(obj.posts) &&
-    obj.posts.every(post => isBlogPost(post)) &&
-    Array.isArray(obj.slugs) &&
-    obj.slugs.every(slug => typeof slug === 'string')
-  )
+  if (!Array.isArray(data.slugs)) {
+    throw new Error('Blog data slugs is not an array')
+  }
+
+  return {
+    posts: data.posts,
+    slugs: data.slugs,
+  }
 }
 
 // Validate the imported blog data
 function getValidatedBlogData(): BlogData {
-  if (!isBlogData(blogData as RawBlogData)) {
-    throw new Error(
-      'Invalid blog data structure: Expected object with "posts" array of BlogPost objects and "slugs" array of strings'
-    )
-  }
-  return blogData as BlogData
+  return validateBlogData(blogData)
 }
 
 // Get all blog post slugs for static generation
@@ -108,17 +86,17 @@ export function getAllPosts(): BlogPostMetadata[] {
 }
 
 // Get featured post (most recent)
-export async function getFeaturedPost(): Promise<BlogPostMetadata | null> {
+export function getFeaturedPost(): BlogPostMetadata | null {
   const posts = getAllPosts()
   return posts.length > 0 ? posts[0] : null
 }
 
 // Get related posts by tags or category
-export async function getRelatedPosts(
+export function getRelatedPosts(
   currentSlug: string,
   category?: string,
   limit: number = 3
-): Promise<BlogPostMetadata[]> {
+): BlogPostMetadata[] {
   const allPosts = getAllPosts()
 
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
