@@ -34,7 +34,7 @@ export default function TermsPage() {
               {t('subtitle')}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}: {new Date().toLocaleDateString()}
+              {t('lastUpdated')}: {formatDate(new Date())}
             </p>
           </motion.div>
         </div>
