@@ -18,6 +18,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import TableOfContents from '@/components/TableOfContents'
 import ReadingProgress from '@/components/ReadingProgress'
+import { useBlogAnalytics } from '@/lib/analytics'
 import { notFound } from 'next/navigation'
 
 interface BlogPostPageProps {
@@ -40,6 +41,11 @@ interface BlogPost {
   slug: string
   tags: string[]
   content: string
+}
+
+interface BlogApiResponse {
+  post: BlogPost
+  relatedPosts: BlogPost[]
 }
 
 // Helper function to create URL-friendly slugs from text
@@ -160,7 +166,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
         const response = await fetch(`/api/blog/${slug}`)
 
         if (response.ok) {
-          const data = await response.json()
+          const data: BlogApiResponse = await response.json()
           setPost(data.post)
           setRelatedPosts(data.relatedPosts || [])
         } else if (response.status === 404) {
@@ -285,6 +291,13 @@ const BlogPostContent = ({
   const sanitizedContent = sanitizeAndAddHeadingIds(post.content)
   // Extract table of contents from the sanitized content
   const tableOfContents = extractTableOfContents(sanitizedContent)
+
+  // Track blog analytics
+  useBlogAnalytics({
+    slug: post.slug,
+    category: post.category,
+    title: post.title,
+  })
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">

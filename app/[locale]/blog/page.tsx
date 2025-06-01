@@ -20,6 +20,11 @@ interface BlogPostMeta {
   tags?: string[]
 }
 
+interface BlogListApiResponse {
+  allPosts: BlogPostMeta[]
+  featuredPost: BlogPostMeta | null
+}
+
 const BlogPage = () => {
   const t = useTranslations('blog')
   const format = useFormatter()
@@ -35,7 +40,7 @@ const BlogPage = () => {
       try {
         const response = await fetch('/api/blog')
         if (response.ok) {
-          const data = await response.json()
+          const data: BlogListApiResponse = await response.json()
           setAllPosts(data.allPosts || [])
           setFeaturedPost(data.featuredPost)
         } else {
