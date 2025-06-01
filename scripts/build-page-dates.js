@@ -16,14 +16,17 @@ function getFileLastModified(filePath) {
     const result = execSync(command, {
       encoding: 'utf8',
       cwd: process.cwd(),
-      stdio: ['pipe', 'pipe', 'ignore'] // Suppress stderr
+      stdio: ['pipe', 'pipe', 'ignore'], // Suppress stderr
     }).trim()
 
     if (result) {
       return new Date(result).toISOString()
     }
   } catch (error) {
-    console.warn(`Could not get last modified date for ${filePath}:`, error.message)
+    console.warn(
+      `Could not get last modified date for ${filePath}:`,
+      error.message
+    )
   }
 
   // Fallback to a reasonable default date for static pages
