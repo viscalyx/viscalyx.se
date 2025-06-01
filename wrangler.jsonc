@@ -6,5 +6,11 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
-  }
+  },
+  "analytics_engine_datasets": [
+    {
+      "binding": "viscalyx_se",
+      "dataset": "viscalyx-se"
+    }
+  ]
 }

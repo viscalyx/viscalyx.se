@@ -1,15 +1,32 @@
 import { NextResponse } from 'next/server'
-import { getPostBySlug, getRelatedPosts } from '@/lib/blog'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 
-// Analytics tracking function
-function trackBlogRead(slug: string, category: string, request: Request) {
+interface BlogReadEvent {
+  slug: string
+  category: string
+  title: string
+  readProgress?: number
+  timeSpent?: number
+}
+
+export async function POST(request: Request) {
   try {
+    const body: BlogReadEvent = await request.json()
+
+    // Validate required fields
+    if (!body.slug || !body.category || !body.title) {
+      return NextResponse.json(
+        { error: 'Missing required fields: slug, category, and title' },
+        { status: 400 }
+      )
+    }
+
     // Get request metadata for analytics
     const userAgent = request.headers.get('user-agent') || 'unknown'
     const referer = request.headers.get('referer') || 'direct'
     // cSpell:ignore ipcountry
     const country = request.headers.get('cf-ipcountry') || 'unknown'
+    const clientIP = request.headers.get('cf-connecting-ip') || 'unknown'
 
     // Create a unique request ID for sampling
     const requestId = crypto.randomUUID()
@@ -20,15 +37,19 @@ function trackBlogRead(slug: string, category: string, request: Request) {
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [
-            slug, // blob1: Article slug
-            category, // blob2: Article category
+            body.slug, // blob1: Article slug
+            body.category, // blob2: Article category
             country, // blob3: Country from Cloudflare
             referer, // blob4: Referrer
             userAgent.substring(0, 100), // blob5: User agent (truncated)
+            body.title.substring(0, 100), // blob6: Article title (truncated)
+            clientIP, // blob7: Client IP (for unique visitors)
           ],
           doubles: [
             1, // double1: Read count (always 1)
-            Date.now(), // double2: Timestamp in milliseconds
+            body.readProgress || 0, // double2: Read progress percentage
+            body.timeSpent || 0, // double3: Time spent on page (seconds)
+            Date.now(), // double4: Timestamp in milliseconds
           ],
           indexes: [requestId], // index1: Unique request ID for sampling
         })
@@ -40,39 +61,12 @@ function trackBlogRead(slug: string, category: string, request: Request) {
         contextError
       )
     }
+
+    return NextResponse.json({ success: true })
   } catch (error) {
-    // Don't fail the request if analytics fails
-    console.warn('Analytics tracking failed:', error)
-  }
-}
-
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  try {
-    const { slug } = await params
-
-    const post = getPostBySlug(slug)
-
-    if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
-    }
-
-    // Track the blog read event
-    // cSpell:ignore uncategorized
-    trackBlogRead(slug, post.category || 'uncategorized', request)
-
-    const relatedPosts = await getRelatedPosts(post.slug, post.category)
-
-    return NextResponse.json({
-      post,
-      relatedPosts,
-    })
-  } catch (error) {
-    console.error('Error fetching blog post:', error)
+    console.error('Error tracking blog read:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch blog post' },
+      { error: 'Failed to track blog read' },
       { status: 500 }
     )
   }
