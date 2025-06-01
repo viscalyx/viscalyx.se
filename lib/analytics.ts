@@ -54,29 +54,41 @@ export function useBlogAnalytics(
   useEffect(() => {
     if (!trackReadProgress && !trackTimeSpent) return
 
+    let throttleTimer: NodeJS.Timeout | null = null
+
     const handleScroll = () => {
       if (!trackReadProgress) return
 
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      const documentHeight =
-        document.documentElement.scrollHeight - window.innerHeight
-      const scrollProgress = Math.min((scrollTop / documentHeight) * 100, 100)
+      if (throttleTimer) return
 
-      // Track the maximum scroll progress
-      maxScrollProgress.current = Math.max(
-        maxScrollProgress.current,
-        scrollProgress
-      )
+      throttleTimer = setTimeout(() => {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop
+        const documentHeight =
+          document.documentElement.scrollHeight - window.innerHeight
+        const scrollProgress = Math.min((scrollTop / documentHeight) * 100, 100)
 
-      // Track when user reaches the progress threshold
-      if (!hasTrackedProgress.current && scrollProgress >= progressThreshold) {
-        hasTrackedProgress.current = true
-        const timeSpent = trackTimeSpent
-          ? Math.round((Date.now() - startTime.current) / 1000)
-          : undefined
+        // Track the maximum scroll progress
+        maxScrollProgress.current = Math.max(
+          maxScrollProgress.current,
+          scrollProgress
+        )
 
-        trackEvent(scrollProgress, timeSpent)
-      }
+        // Track when user reaches the progress threshold
+        if (
+          !hasTrackedProgress.current &&
+          scrollProgress >= progressThreshold
+        ) {
+          hasTrackedProgress.current = true
+          const timeSpent = trackTimeSpent
+            ? Math.round((Date.now() - startTime.current) / 1000)
+            : undefined
+
+          trackEvent(scrollProgress, timeSpent)
+        }
+
+        throttleTimer = null
+      }, 100) // Throttle to run at most every 100ms
     }
 
     const handleBeforeUnload = () => {
@@ -116,6 +128,9 @@ export function useBlogAnalytics(
 
     return () => {
       clearTimeout(timeoutId)
+      if (throttleTimer) {
+        clearTimeout(throttleTimer)
+      }
       if (trackReadProgress) {
         window.removeEventListener('scroll', handleScroll)
       }
