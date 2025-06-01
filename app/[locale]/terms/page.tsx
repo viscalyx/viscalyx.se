@@ -136,10 +136,10 @@ export default function TermsPage() {
               <p className="text-secondary-600 dark:text-secondary-400">
                 <strong>{t('sections.contact.email')}:</strong>{' '}
                 <a
-                  href="mailto:legal@viscalyx.com"
+                  href={`mailto:${t('sections.contact.emailAddress')}`}
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
-                  legal@viscalyx.com
+                  {t('sections.contact.emailAddress')}
                 </a>
               </p>
             </motion.div>

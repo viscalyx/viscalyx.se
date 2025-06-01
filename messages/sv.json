@@ -953,7 +953,8 @@
       "contact": {
         "title": "Kontaktinformation",
         "description": "Om du har några frågor om dessa användarvillkor, vänligen kontakta oss:",
-        "email": "E-post"
+        "email": "E-post",
+        "emailAddress": "legal@viscalyx.com"
       }
     }
   }

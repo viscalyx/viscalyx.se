@@ -947,7 +947,8 @@
       "contact": {
         "title": "Contact Information",
         "description": "If you have any questions about these Terms of Service, please contact us:",
-        "email": "Email"
+        "email": "Email",
+        "emailAddress": "legal@viscalyx.com"
       }
     }
   }
