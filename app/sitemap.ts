@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Get all blog posts
   const posts = getAllPosts()
-  
+
   // Get actual last modified dates for static pages
   const staticPageDates = getStaticPageDates()
 
