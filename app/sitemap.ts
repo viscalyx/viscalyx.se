@@ -27,18 +27,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/privacy`,
+    ...['en', 'sv'].map(locale => ({
+      url: `${baseUrl}/${locale}/privacy`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
       priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
+    })),
+    ...['en', 'sv'].map(locale => ({
+      url: `${baseUrl}/${locale}/terms`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
       priority: 0.3,
-    },
+    })),
   ]
 
   // Dynamic blog pages
