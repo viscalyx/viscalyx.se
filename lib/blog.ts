@@ -60,7 +60,12 @@ function getValidatedBlogData(): BlogData {
 // Get all blog post slugs for static generation
 export function getAllPostSlugs(): string[] {
   const validatedData = getValidatedBlogData()
-  return validatedData.slugs
+  const allSlugs = validatedData.slugs
+
+  // Filter out template slug only if there are more than 1 slug
+  return allSlugs.length > 1
+    ? allSlugs.filter(slug => slug !== 'template')
+    : allSlugs
 }
 
 // Get blog post data by slug
@@ -78,16 +83,21 @@ export function getPostBySlug(slug: string): BlogPost | null {
 // Get all blog posts metadata (for listing pages)
 export function getAllPosts() {
   const validatedData = getValidatedBlogData()
-  return validatedData.posts.map(post => {
+  const allPosts = validatedData.posts.map(post => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { content, ...metadata } = post
     return metadata
   })
+
+  // Filter out template post only if there are more than 1 post
+  return allPosts.length > 1
+    ? allPosts.filter(post => post.slug !== 'template')
+    : allPosts
 }
 
 // Get featured post (most recent)
 export function getFeaturedPost(): BlogPostMetadata | null {
-  const posts = getAllPosts()
+  const posts = getAllPosts() // This now automatically filters out template when other posts exist
   return posts.length > 0 ? posts[0] : null
 }
 
@@ -97,8 +107,7 @@ export function getRelatedPosts(
   category?: string,
   limit: number = 3
 ): BlogPostMetadata[] {
-  const allPosts = getAllPosts()
-
+  const allPosts = getAllPosts() // This now automatically filters out template when other posts exist
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
 
   // If category is provided, find posts with matching category or tags
