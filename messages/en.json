@@ -836,5 +836,119 @@
         "category": "Blog"
       }
     }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "How we collect, use, and protect your information",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "informationWeCollect": {
+        "title": "Information We Collect",
+        "description": "We collect information you provide directly to us and information we collect automatically when you use our services:",
+        "items": [
+          "Contact information (name, email address, phone number)",
+          "Professional information (company, job title, industry)",
+          "Website usage data and analytics",
+          "Communication preferences and feedback"
+        ]
+      },
+      "howWeUse": {
+        "title": "How We Use Your Information",
+        "description": "We use the information we collect to:",
+        "items": [
+          "Provide and improve our services",
+          "Communicate with you about our services",
+          "Send you newsletters and marketing communications (with your consent)",
+          "Analyze website usage and improve user experience"
+        ]
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "description": "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction."
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "description": "We use cookies and similar technologies to enhance your browsing experience, analyze website traffic, and personalize content. You can control cookie settings through your browser preferences."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "description": "We may use third-party services for analytics and marketing purposes:",
+        "items": [
+          "Cloudflare Analytics for website performance and security",
+          "Email service providers for communications"
+        ]
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "description": "You have the right to:",
+        "items": [
+          "Access and review your personal information",
+          "Request correction of inaccurate data",
+          "Request deletion of your personal information",
+          "Opt-out of marketing communications"
+        ]
+      },
+      "contact": {
+        "title": "Contact Us",
+        "description": "If you have any questions about this Privacy Policy, please contact us:",
+        "email": "Email"
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "subtitle": "Terms and conditions for using our services",
+    "lastUpdated": "Last updated",
+    "sections": {
+      "agreement": {
+        "title": "Agreement to Terms",
+        "description": "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement."
+      },
+      "services": {
+        "title": "Our Services",
+        "description": "Viscalyx provides consulting services including:",
+        "items": [
+          "DevOps and automation consulting",
+          "Infrastructure as Code (IaC) solutions",
+          "Cloud migration and optimization",
+          "Custom software development and integration"
+        ]
+      },
+      "userResponsibilities": {
+        "title": "User Responsibilities",
+        "description": "You agree to:",
+        "items": [
+          "Provide accurate and complete information",
+          "Use our services for lawful purposes only",
+          "Respect intellectual property rights",
+          "Not attempt to interfere with our systems or security"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "description": "All content, trademarks, and intellectual property on this website are owned by Viscalyx or our licensors. You may not use our intellectual property without explicit written permission."
+      },
+      "limitationOfLiability": {
+        "title": "Limitation of Liability",
+        "description": "Viscalyx shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services."
+      },
+      "termination": {
+        "title": "Termination",
+        "description": "We reserve the right to terminate or suspend access to our services at any time, without prior notice, for conduct that we believe violates these Terms of Service."
+      },
+      "governingLaw": {
+        "title": "Governing Law",
+        "description": "These terms shall be governed and construed in accordance with the laws of Sweden, without regard to its conflict of law provisions."
+      },
+      "changes": {
+        "title": "Changes to Terms",
+        "description": "We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this website."
+      },
+      "contact": {
+        "title": "Contact Information",
+        "description": "If you have any questions about these Terms of Service, please contact us:",
+        "email": "Email"
+      }
+    }
   }
 }

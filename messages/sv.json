@@ -842,5 +842,119 @@
         "category": "Blogg"
       }
     }
+  },
+  "privacy": {
+    "title": "Integritetspolicy",
+    "subtitle": "Hur vi samlar in, använder och skyddar din information",
+    "lastUpdated": "Senast uppdaterad",
+    "sections": {
+      "informationWeCollect": {
+        "title": "Information Vi Samlar In",
+        "description": "Vi samlar in information som du tillhandahåller direkt till oss och information som vi samlar in automatiskt när du använder våra tjänster:",
+        "items": [
+          "Kontaktinformation (namn, e-postadress, telefonnummer)",
+          "Professionell information (företag, jobbtitel, bransch)",
+          "Webbplatsanvändningsdata och analyser",
+          "Kommunikationspreferenser och feedback"
+        ]
+      },
+      "howWeUse": {
+        "title": "Hur Vi Använder Din Information",
+        "description": "Vi använder informationen vi samlar in för att:",
+        "items": [
+          "Tillhandahålla och förbättra våra tjänster",
+          "Kommunicera med dig om våra tjänster",
+          "Skicka nyhetsbrev och marknadsföringskommunikation (med ditt samtycke)",
+          "Analysera webbplatsanvändning och förbättra användarupplevelsen"
+        ]
+      },
+      "dataSecurity": {
+        "title": "Datasäkerhet",
+        "description": "Vi implementerar lämpliga tekniska och organisatoriska åtgärder för att skydda din personliga information mot obehörig åtkomst, ändring, avslöjande eller förstörelse."
+      },
+      "cookies": {
+        "title": "Cookies och Spårning",
+        "description": "Vi använder cookies och liknande teknologier för att förbättra din surfupplevelse, analysera webbtrafik och personalisera innehåll. Du kan kontrollera cookie-inställningar genom dina webbläsarinställningar."
+      },
+      "thirdParty": {
+        "title": "Tredjepartstjänster",
+        "description": "Vi kan använda tredjepartstjänster för analys och marknadsföring:",
+        "items": [
+          "Cloudflare Analytics för webbplatsens prestanda och säkerhet",
+          "E-posttjänstleverantörer för kommunikation"
+        ]
+      },
+      "yourRights": {
+        "title": "Dina Rättigheter",
+        "description": "Du har rätt att:",
+        "items": [
+          "Få tillgång till och granska din personliga information",
+          "Begära korrigering av felaktig data",
+          "Begära radering av din personliga information",
+          "Välja bort marknadsföringskommunikation"
+        ]
+      },
+      "contact": {
+        "title": "Kontakta Oss",
+        "description": "Om du har några frågor om denna integritetspolicy, vänligen kontakta oss:",
+        "email": "E-post"
+      }
+    }
+  },
+  "terms": {
+    "title": "Användarvillkor",
+    "subtitle": "Villkor för användning av våra tjänster",
+    "lastUpdated": "Senast uppdaterad",
+    "sections": {
+      "agreement": {
+        "title": "Godkännande av Villkor",
+        "description": "Genom att komma åt och använda denna webbplats accepterar och godkänner du att vara bunden av villkoren i detta avtal."
+      },
+      "services": {
+        "title": "Våra Tjänster",
+        "description": "Viscalyx tillhandahåller konsulttjänster inklusive:",
+        "items": [
+          "DevOps och automationskonsultation",
+          "Infrastructure as Code (IaC) lösningar",
+          "Molnmigrering och optimering",
+          "Anpassad mjukvaruutveckling och integration"
+        ]
+      },
+      "userResponsibilities": {
+        "title": "Användaransvar",
+        "description": "Du samtycker till att:",
+        "items": [
+          "Tillhandahålla korrekt och fullständig information",
+          "Använda våra tjänster endast för lagliga ändamål",
+          "Respektera immateriella rättigheter",
+          "Inte försöka störa våra system eller säkerhet"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "Immateriella Rättigheter",
+        "description": "Allt innehåll, varumärken och immateriella rättigheter på denna webbplats ägs av Viscalyx eller våra licensgivare. Du får inte använda vår immateriella egendom utan uttryckligt skriftligt tillstånd."
+      },
+      "limitationOfLiability": {
+        "title": "Ansvarsbegränsning",
+        "description": "Viscalyx ska inte vara ansvarig för några indirekta, tillfälliga, särskilda, följdskador eller straffskador som uppstår från din användning av våra tjänster."
+      },
+      "termination": {
+        "title": "Uppsägning",
+        "description": "Vi förbehåller oss rätten att avsluta eller stänga av tillgången till våra tjänster när som helst, utan förvarning, för beteende som vi anser bryter mot dessa användarvillkor."
+      },
+      "governingLaw": {
+        "title": "Tillämplig Lag",
+        "description": "Dessa villkor ska styras och tolkas i enlighet med svensk lag, utan hänsyn till dess bestämmelser om lagkonflikter."
+      },
+      "changes": {
+        "title": "Ändringar av Villkor",
+        "description": "Vi förbehåller oss rätten att ändra dessa villkor när som helst. Ändringar träder i kraft omedelbart när de publiceras på denna webbplats."
+      },
+      "contact": {
+        "title": "Kontaktinformation",
+        "description": "Om du har några frågor om dessa användarvillkor, vänligen kontakta oss:",
+        "email": "E-post"
+      }
+    }
   }
 }
