@@ -207,7 +207,7 @@ const BlogPage = () => {
                       {format.dateTime(new Date(displayFeaturedPost.date), {
                         year: 'numeric',
                         month: 'short',
-                        day: 'numeric'
+                        day: 'numeric',
                       })}
                       <span className="mx-3">•</span>
                       <Clock className="w-4 h-4 mr-2" />
@@ -282,7 +282,7 @@ const BlogPage = () => {
                       {format.dateTime(new Date(post.date), {
                         year: 'numeric',
                         month: 'short',
-                        day: 'numeric'
+                        day: 'numeric',
                       })}
                       <span className="mx-2">•</span>
                       <Clock className="w-3 h-3 mr-1" />

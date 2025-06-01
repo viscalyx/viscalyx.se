@@ -39,10 +39,11 @@ export default function TermsPage() {
               {t('subtitle')}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}: {format.dateTime(staticPageDates.terms, {
+              {t('lastUpdated')}:{' '}
+              {format.dateTime(staticPageDates.terms, {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </p>
           </motion.div>

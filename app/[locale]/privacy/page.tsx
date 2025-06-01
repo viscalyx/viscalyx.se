@@ -39,10 +39,11 @@ export default function PrivacyPage() {
               {t('subtitle')}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}: {format.dateTime(staticPageDates.privacy, {
+              {t('lastUpdated')}:{' '}
+              {format.dateTime(staticPageDates.privacy, {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
               })}
             </p>
           </motion.div>

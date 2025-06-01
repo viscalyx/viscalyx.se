@@ -4,7 +4,7 @@ import pageDatesData from './page-dates.json'
  * Get last modified dates for specific static pages
  * These dates are automatically generated from Git history during build time
  * via the scripts/build-page-dates.js script
- * 
+ *
  * To update these dates:
  * 1. Run: npm run build:page-dates
  * 2. This will read Git commit history and update lib/page-dates.json

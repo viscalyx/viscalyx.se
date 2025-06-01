@@ -29,12 +29,14 @@ The application uses actual Git commit dates for static pages instead of always 
 ### 4. Usage
 
 **In Sitemap (`app/sitemap.ts`):**
+
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use staticPageDates.privacy, staticPageDates.terms, etc.
 ```
 
 **In Pages (`app/[locale]/privacy/page.tsx`, etc.):**
+
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use format.dateTime(staticPageDates.privacy, {...})
@@ -43,6 +45,7 @@ const staticPageDates = getStaticPageDates()
 ## Build Process Integration
 
 The page dates are built automatically as part of:
+
 - `npm run dev`
 - `npm run build`
 - `npm run preview`
@@ -51,6 +54,7 @@ The page dates are built automatically as part of:
 ## Manual Update
 
 To manually update page dates:
+
 ```bash
 npm run build:page-dates
 ```
