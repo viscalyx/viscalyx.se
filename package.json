@@ -4,9 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "npm run build:blog && next dev",
-    "build": "npm run build:blog && next build",
+    "dev": "npm run build:blog && npm run build:page-dates && next dev",
+    "build": "npm run build:blog && npm run build:page-dates && next build",
     "build:blog": "node scripts/build-blog-data.js",
+    "build:page-dates": "node scripts/build-page-dates.js",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -20,8 +21,8 @@
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
     "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint",
-    "preview": "npm run build:blog && opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "npm run build:blog && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {

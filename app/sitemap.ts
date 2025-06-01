@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
+import { getStaticPageDates } from '@/lib/file-dates'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://viscalyx.com'
@@ -7,26 +8,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all blog posts
   const posts = getAllPosts()
 
+  // Get actual last modified dates for static pages
+  const staticPageDates = getStaticPageDates()
+
   // Static pages
   const staticPages = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: staticPageDates.home,
       changeFrequency: 'monthly' as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: staticPageDates.blog,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/case-studies`,
-      lastModified: new Date(),
+      lastModified: staticPageDates.caseStudies,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
+    ...['en', 'sv'].map(locale => ({
+      url: `${baseUrl}/${locale}/privacy`,
+      lastModified: staticPageDates.privacy,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    })),
+    ...['en', 'sv'].map(locale => ({
+      url: `${baseUrl}/${locale}/terms`,
+      lastModified: staticPageDates.terms,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    })),
   ]
 
   // Dynamic blog pages

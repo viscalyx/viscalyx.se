@@ -211,5 +211,6 @@ tramp
 ehthumbs.db
 Thumbs.db
 
-# Generated blog data during production build
+# Generated data during production build
 lib/blog-data.json
+lib/page-dates.json

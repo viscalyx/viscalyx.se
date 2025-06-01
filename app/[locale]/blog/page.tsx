@@ -3,7 +3,7 @@
 import { Calendar, Clock, User } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -22,6 +22,7 @@ interface BlogPostMeta {
 
 const BlogPage = () => {
   const t = useTranslations('blog')
+  const format = useFormatter()
   const [allPosts, setAllPosts] = useState<BlogPostMeta[]>([])
   const [featuredPost, setFeaturedPost] = useState<BlogPostMeta | null>(null)
   const [loading, setLoading] = useState(true)
@@ -203,7 +204,11 @@ const BlogPage = () => {
                       {displayFeaturedPost.author}
                       <span className="mx-3">•</span>
                       <Calendar className="w-4 h-4 mr-2" />
-                      {new Date(displayFeaturedPost.date).toLocaleDateString()}
+                      {format.dateTime(new Date(displayFeaturedPost.date), {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
                       <span className="mx-3">•</span>
                       <Clock className="w-4 h-4 mr-2" />
                       {displayFeaturedPost.readTime}
@@ -274,7 +279,11 @@ const BlogPage = () => {
                   <div className="p-6">
                     <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
                       <Calendar className="w-3 h-3 mr-1" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {format.dateTime(new Date(post.date), {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
                       <span className="mx-2">•</span>
                       <Clock className="w-3 h-3 mr-1" />
                       {post.readTime}

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -146,6 +146,7 @@ function sanitizeAndAddHeadingIds(htmlContent: string): string {
 
 const BlogPost = ({ params }: BlogPostPageProps) => {
   const t = useTranslations('blog')
+  const format = useFormatter()
   const [post, setPost] = useState<BlogPost | null>(null)
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -202,7 +203,14 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
     notFound()
   }
 
-  return <BlogPostContent post={post} relatedPosts={relatedPosts} t={t} />
+  return (
+    <BlogPostContent
+      post={post}
+      relatedPosts={relatedPosts}
+      t={t}
+      format={format}
+    />
+  )
 }
 
 // Fallback data for existing blog posts that don't have markdown files yet
@@ -264,9 +272,15 @@ interface BlogPostContentProps {
   post: BlogPost
   relatedPosts: BlogPost[]
   t: (key: string) => string
+  format: ReturnType<typeof import('next-intl').useFormatter>
 }
 
-const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
+const BlogPostContent = ({
+  post,
+  relatedPosts,
+  t,
+  format,
+}: BlogPostContentProps) => {
   // Sanitize content and add IDs to headings in one pass
   const sanitizedContent = sanitizeAndAddHeadingIds(post.content)
   // Extract table of contents from the sanitized content
@@ -311,7 +325,11 @@ const BlogPostContent = ({ post, relatedPosts, t }: BlogPostContentProps) => {
                 </div>
                 <div className="flex items-center mr-6">
                   <Calendar className="w-4 h-4 mr-2" />
-                  {new Date(post.date).toLocaleDateString()}
+                  {format.dateTime(new Date(post.date), {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
