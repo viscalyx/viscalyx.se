@@ -30,7 +30,7 @@ function getFileLastModified(filePath) {
   }
 
   // Fallback to a reasonable default date for static pages
-  return new Date('2025-06-01T09:37:24.000Z').toISOString()
+  return new Date('2024-01-01T00:00:00.000Z').toISOString()
 }
 
 /**
