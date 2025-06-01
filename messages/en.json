@@ -891,7 +891,8 @@
       "contact": {
         "title": "Contact Us",
         "description": "If you have any questions about this Privacy Policy, please contact us:",
-        "email": "Email"
+        "email": "Email",
+        "emailAddress": "privacy@viscalyx.se"
       }
     }
   },

@@ -897,7 +897,8 @@
       "contact": {
         "title": "Kontakta Oss",
         "description": "Om du har några frågor om denna integritetspolicy, vänligen kontakta oss:",
-        "email": "E-post"
+        "email": "E-post",
+        "emailAddress": "privacy@viscalyx.se"
       }
     }
   },

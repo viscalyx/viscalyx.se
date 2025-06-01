@@ -140,10 +140,10 @@ export default function PrivacyPage() {
               <p className="text-secondary-600 dark:text-secondary-400">
                 <strong>{t('sections.contact.email')}:</strong>{' '}
                 <a
-                  href="mailto:privacy@viscalyx.se"
+                  href={`mailto:${t('sections.contact.emailAddress')}`}
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
-                  privacy@viscalyx.se
+                  {t('sections.contact.emailAddress')}
                 </a>
               </p>
             </motion.div>
