@@ -1,13 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useFormatter } from 'next-intl'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ScrollToTop from '@/components/ScrollToTop'
 
 export default function PrivacyPage() {
   const t = useTranslations('privacy')
+  const format = useFormatter()
 
   return (
     <motion.main
@@ -34,7 +35,11 @@ export default function PrivacyPage() {
               {t('subtitle')}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}: {new Date().toLocaleDateString()}
+              {t('lastUpdated')}: {format.dateTime(new Date(), {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
             </p>
           </motion.div>
         </div>
