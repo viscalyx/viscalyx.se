@@ -5,6 +5,10 @@ import { useTranslations, useFormatter } from 'next-intl'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ScrollToTop from '@/components/ScrollToTop'
+import { getStaticPageDates } from '@/lib/file-dates'
+
+// Get the actual last modified date
+const staticPageDates = getStaticPageDates()
 
 export default function TermsPage() {
   const t = useTranslations('terms')
@@ -35,7 +39,7 @@ export default function TermsPage() {
               {t('subtitle')}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}: {format.dateTime(new Date(), {
+              {t('lastUpdated')}: {format.dateTime(staticPageDates.terms, {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
