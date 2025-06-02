@@ -5,10 +5,10 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=${env:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind"
+    "source=//./pipe/openssh-ssh-agent,target=/ssh-agent.sock,type=bind"
   ],
   "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent.sock",
+    "SSH_AUTH_SOCK": "npipe:////./pipe/openssh-ssh-agent",
     "NODE_ENV": "development",
     "NEXT_TELEMETRY_DISABLED": "1"
   },
