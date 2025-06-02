@@ -9,7 +9,7 @@ services:
       # Mount the root folder that contains .git
       - ..:/workspace:cached
     # Override the workspace ownership in the container
-    command: bash -c "sudo chown -R vscode:vscode /workspace 2>/dev/null || true && sleep infinity"
+    command: bash -c "sleep infinity"
     # Set environment variables
     environment:
       - NODE_ENV=development

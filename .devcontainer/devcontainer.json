@@ -223,7 +223,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "sudo chown -R vscode:vscode /workspace && npm install && npm run build",
+  "postCreateCommand": "npm install",
 
   // Set environment variables
   "containerEnv": {
