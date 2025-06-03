@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run build:blog && npm run build:page-dates && next dev",
-    "build": "npm run build:blog && npm run build:page-dates && NODE_ENV=production next build",
+    "build": "npm run build:blog && npm run build:page-dates && cross-env NODE_ENV=production next build",
     "build:blog": "node scripts/build-blog-data.js",
     "build:page-dates": "node scripts/build-page-dates.js",
     "start": "next start",
@@ -44,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "cspell": "^9.0.2",
     "eslint": "^9.27.0",
     "eslint-config-next": "15.3.3",
