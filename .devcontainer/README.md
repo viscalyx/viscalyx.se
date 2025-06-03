@@ -140,7 +140,7 @@ The container runs as the `vscode` user with UID 1000. If you encounter permissi
 
 ### SSH Agent and SSH Keys
 
-**On the Host**
+#### On the Host
 
 ```bash
 # Check if ssh-agent is running and list loaded SSH keys
@@ -162,7 +162,7 @@ ssh-add ~/.ssh/id_rsa
 ssh-add -l
 ```
 
-**Verifying Services on Windows Host**
+#### Verifying Services on Windows Host
 
 Open PowerShell as Administrator and run:
 
@@ -178,7 +178,7 @@ Set-Service ssh-agent -StartupType Automatic
 Start-Service ssh-agent
 ```
 
-**In the DevContainer**
+#### In the DevContainer
 
 ```bash
 # Inside the container, list forwarded SSH keys
@@ -187,20 +187,20 @@ ssh-add -l
 
 ### GPG Keys
 
-**On the Host**
+#### On the Host
 
 ```bash
 # List secret GPG keys available
 gpg --list-secret-keys
 ```
 
-**Using Kleopatra (Windows Host)**
+#### Using Kleopatra (Windows Host)
 
 1. Open the Kleopatra application.
 2. In the top menu, select **View → Secret Keys** (or enable the "Secret Keys" filter).
 3. Confirm your GPG key appears and is valid (check expiration date and usage flags).
 
-**GPG Agent (Gpg4win)**
+#### GPG Agent (Gpg4win)
 
 Gpg4win does not install a Windows service for `gpg-agent`. To ensure the agent is running, either launch Kleopatra:
 
@@ -220,7 +220,7 @@ gpgconf --launch gpg-agent
 
 Once Kleopatra is running, the GPG agent starts automatically. You can verify it by looking for `gpg-agent.exe` in Task Manager.
 
-**In the DevContainer**
+#### In the DevContainer
 
 ```bash
 # Inside the container, list secret GPG keys
@@ -242,5 +242,5 @@ When adding new tools or changing the configuration:
 
 1. Test the changes locally
 2. Update this README if needed
-3. Ensure the container builds and runs correctly
+3. Ensure the container builds and runs correctly on both Windows, Linux and macOS
 4. Document any new features or requirements
