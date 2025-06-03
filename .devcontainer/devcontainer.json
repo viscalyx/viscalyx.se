@@ -4,6 +4,14 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+  "mounts": [
+    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent.sock",
+    "NODE_ENV": "development",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
 
   // Features to add to the dev container
   "features": {
@@ -223,13 +231,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "sudo chown -R vscode:vscode /workspace && npm install && npm run build",
-
-  // Set environment variables
-  "containerEnv": {
-    "NODE_ENV": "development",
-    "NEXT_TELEMETRY_DISABLED": "1"
-  },
+  "postCreateCommand": "npm install",
 
   // Configure remote user
   "remoteUser": "vscode"

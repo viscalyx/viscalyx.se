@@ -138,6 +138,95 @@ The container runs as the `vscode` user with UID 1000. If you encounter permissi
 1. Check that your host user has appropriate permissions
 2. Rebuild the container if needed
 
+### SSH Agent and SSH Keys
+
+#### On the Host
+
+```bash
+# Check if ssh-agent is running and list loaded SSH keys
+ssh-add -l
+```
+
+- If you see an error about connecting to the agent, start it and add your key:
+
+```bash
+# Start ssh-agent
+eval "$(ssh-agent -s)"
+# Add your SSH private key (adjust path as needed)
+ssh-add ~/.ssh/id_rsa
+```
+
+- Confirm keys are loaded:
+
+```bash
+ssh-add -l
+```
+
+#### Verifying Services on Windows Host
+
+Open PowerShell as Administrator and run:
+
+```powershell
+# Check SSH Agent service status
+Get-Service -Name ssh-agent
+```
+
+- If the ssh-agent service is not running, start it:
+
+```powershell
+Set-Service ssh-agent -StartupType Automatic
+Start-Service ssh-agent
+```
+
+#### In the DevContainer
+
+```bash
+# Inside the container, list forwarded SSH keys
+ssh-add -l
+```
+
+### GPG Keys
+
+#### On the Host
+
+```bash
+# List secret GPG keys available
+gpg --list-secret-keys
+```
+
+#### Using Kleopatra (Windows Host)
+
+1. Open the Kleopatra application.
+2. In the top menu, select **View → Secret Keys** (or enable the "Secret Keys" filter).
+3. Confirm your GPG key appears and is valid (check expiration date and usage flags).
+
+#### GPG Agent (Gpg4win)
+
+Gpg4win does not install a Windows service for `gpg-agent`. To ensure the agent is running, either launch Kleopatra:
+
+- **From Start Menu**: search for **Kleopatra** and open it.
+- **Or in PowerShell**:
+
+  ```powershell
+  Start-Process "C:\Program Files (x86)\Gpg4win\bin\kleopatra.exe"
+  ```
+
+or can be launched manually:
+
+```powershell
+# Launch GPG agent
+gpgconf --launch gpg-agent
+```
+
+Once Kleopatra is running, the GPG agent starts automatically. You can verify it by looking for `gpg-agent.exe` in Task Manager.
+
+#### In the DevContainer
+
+```bash
+# Inside the container, list secret GPG keys
+gpg --list-secret-keys
+```
+
 ## Benefits
 
 - **Consistency**: Every contributor gets the exact same environment
@@ -153,5 +242,5 @@ When adding new tools or changing the configuration:
 
 1. Test the changes locally
 2. Update this README if needed
-3. Ensure the container builds and runs correctly
+3. Ensure the container builds and runs correctly on both Windows, Linux and macOS
 4. Document any new features or requirements

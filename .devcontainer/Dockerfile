@@ -5,6 +5,7 @@ FROM node:24-bullseye
 RUN apt-get update && \
     apt-get install -y \
         git \
+        gh \
         curl \
         wget \
         unzip \
@@ -47,6 +48,7 @@ USER $USERNAME
 
 # Install Oh My Zsh and configure git in final user context
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
+    sed -i 's/plugins=(git)/plugins=(git gh npm)/' ~/.zshrc && \
     git config --global --add safe.directory /workspace
 
 # Set default shell to zsh
