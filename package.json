@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run build:blog && npm run build:page-dates && next dev",
-    "build": "npm run build:blog && npm run build:page-dates && next build",
+    "build": "npm run build:blog && npm run build:page-dates && NODE_ENV=production next build",
     "build:blog": "node scripts/build-blog-data.js",
     "build:page-dates": "node scripts/build-page-dates.js",
     "start": "next start",

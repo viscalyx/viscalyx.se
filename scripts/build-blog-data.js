@@ -53,7 +53,7 @@ const textOnlySanitizeOptions = {
 }
 
 async function buildBlogData() {
-  console.log('Building blog data for production...')
+  console.log('Building blog data...')
 
   try {
     // Dynamically import ES modules
