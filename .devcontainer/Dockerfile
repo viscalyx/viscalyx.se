@@ -5,7 +5,6 @@ FROM node:24-bullseye
 RUN apt-get update && \
     apt-get install -y \
         git \
-        gh \
         curl \
         wget \
         unzip \
