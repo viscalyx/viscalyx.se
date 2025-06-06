@@ -22,7 +22,7 @@ RUN apt-get update && \
 WORKDIR /workspace
 
 # Further user and shell configuration is provided by the devcontainer "common-utils" feature
-RUN git config --global --add safe.directory /workspace
+RUN git config --system --add safe.directory /workspace
 
 # Expose the ports that Next.js and Wrangler typically uses
 EXPOSE 3000 3001 8787
