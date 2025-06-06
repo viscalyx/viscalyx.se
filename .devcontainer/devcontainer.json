@@ -218,7 +218,7 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally
-  "forwardPorts": [3000, 3001],
+  "forwardPorts": [3000, 3001, 8787],
   "portsAttributes": {
     "3000": {
       "label": "Next.js Dev Server",
@@ -226,7 +226,11 @@
     },
     "3001": {
       "label": "Next.js Preview",
-      "onAutoForward": "silent"
+      "onAutoForward": "notify"
+    },
+    "8787": {
+      "label": "Cloudflare Workers Preview",
+      "onAutoForward": "notify"
     }
   },
 

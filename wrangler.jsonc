@@ -12,5 +12,16 @@
       "binding": "viscalyx_se",
       "dataset": "viscalyx-se"
     }
-  ]
+  ],
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#local-development-settings
+  // Development server configuration for preview modem, for more info: npx wrangler dev --help
+  "dev": {
+    "ip": "0.0.0.0",
+    "port": 8787,
+    // "local_protocol": "http",
+    // "inspector_port": 9229,
+    // "live_reload": true,
+    // "show_interactive_dev_session": true,
+    "log_level": "info"
+  }
 }

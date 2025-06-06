@@ -16,5 +16,6 @@ services:
     ports:
       - '3000:3000'
       - '3001:3001'
+      - '8787:8787'
     # Use the default shell
     user: vscode
