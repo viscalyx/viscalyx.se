@@ -27,6 +27,10 @@
 
     // Productivity
     "gruntfuggly.todo-tree",
-    "usernamehw.errorlens"
+    "usernamehw.errorlens",
+
+    // GitHub Copilot
+    "GitHub.copilot",
+    "GitHub.copilot-chat"
   ]
 }
