@@ -12,9 +12,13 @@
       "binding": "viscalyx_se",
       "dataset": "viscalyx-se"
     }
-  ],
-  "dev": {
-    "host": "0.0.0.0",
-    "port": 8787
-  }
+  ]
+  //,
+  // // https://developers.cloudflare.com/workers/wrangler/configuration/#local-development-settings
+  // // Need to specify the actual IP here for it to work in a container, we handle that in the preview-script instead
+  // "dev": {
+  //   "ip": "172.18.0.2",
+  //   "host": "0.0.0.0",
+  //   "port": 8787
+  // }
 }
