@@ -56,7 +56,9 @@
         "christian-kohler.path-intellisense",
         "christian-kohler.npm-intellisense",
         "gruntfuggly.todo-tree",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
       ],
       "settings": {
         // Editor settings
