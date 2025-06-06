@@ -53,8 +53,8 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 # Set default shell to zsh
 ENV SHELL=/bin/zsh
 
-# Expose the ports that Next.js typically uses
-EXPOSE 3000 3001
+# Expose the ports that Next.js and Wrangler typically uses
+EXPOSE 3000 3001 8787
 
 # Keep container running
 CMD ["sleep", "infinity"]
