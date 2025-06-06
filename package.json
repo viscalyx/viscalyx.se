@@ -21,7 +21,7 @@
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
     "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint",
-    "preview": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare preview -- --host 0.0.0.0 --port 8787 --ip $(hostname -I | awk '{print $1}')",
+    "preview": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
