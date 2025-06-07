@@ -1,0 +1,741 @@
+# Contributing to Viscalyx.se
+
+First off, thank you for considering contributing to Viscalyx.se! We welcome contributions of all kinds, from bug fixes and documentation improvements to new features. This document provides guidelines to help you get started.
+
+If you haven't already, please read the main [README.md](../README.md) for an overview of the project.
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Development](#development)
+- [Development Workflow](#development-workflow)
+  - [Branching Strategy](#branching-strategy)
+  - [Running the App Locally](#running-the-app-locally)
+  - [Building the App](#building-the-app)
+  - [Linting and Formatting](#linting-and-formatting)
+  - [Type Checking](#type-checking)
+- [Making Changes](#making-changes)
+  - [Code Structure Overview](#code-structure-overview)
+  - [Adding New Content](#adding-new-content)
+    - [Blog Posts](#blog-posts)
+    - [Static Pages](#static-pages)
+    - [Internationalization (i18n)](#internationalization-i18n)
+  - [Component Development](#component-development)
+  - [Styling](#styling)
+- [Submitting Contributions](#submitting-contributions)
+  - [Commit Messages](#commit-messages)
+  - [Pull Request (PR) Process](#pull-request-pr-process)
+  - [Code Review](#code-review)
+- [SSH Agent Setup](#ssh-agent-setup)
+- [Spell Checking Setup](#spell-checking-setup)
+- [Cloudflare Scripts Documentation](#cloudflare-scripts-documentation)
+- [Page Dates Management](#page-dates-management)
+- [Code of Conduct](#code-of-conduct)
+- [Reporting Bugs](#reporting-bugs)
+- [Asking for Help](#asking-for-help)
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (LTS version recommended, check `.nvmrc` if available or `package.json` engines field)
+- [npm](https://www.npmjs.com/) (usually comes with Node.js)
+- [Git](https://git-scm.com/)
+
+## Getting Started
+
+1.  **Fork the repository**: Click the "Fork" button on the GitHub repository page.
+2.  **Clone your fork**:
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
+    cd viscalyx.se
+    ```
+3.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Development Workflow
+
+### Branching Strategy
+
+We use a simple branching strategy:
+
+1.  Create a new branch for each feature or bug fix from the `main` branch.
+2.  Name your branches descriptively, e.g., `feature/add-contact-form` or `fix/header-layout-issue`.
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+
+### Running the App Locally
+
+To start the development server:
+
+```bash
+npm run dev
+```
+
+This command will also run `build:blog` and `build:page-dates` scripts. The application will be available at `http://localhost:3000`.
+
+### Building the App
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+This command ensures all necessary build steps, including blog data and page dates generation, are executed.
+
+### Linting and Formatting
+
+This project uses ESLint for linting and Prettier for code formatting.
+
+- **Check for linting and formatting errors**:
+  ```bash
+  npm run lint
+  npm run format:check
+  ```
+- **Fix linting errors automatically**:
+  ```bash
+  npm run lint:fix
+  ```
+- **Format code automatically**:
+  ```bash
+  npm run format
+  ```
+
+We recommend installing the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) VS Code extensions for a better development experience.
+
+### Type Checking
+
+This project uses TypeScript. To check for type errors:
+
+```bash
+npm run type-check
+```
+
+## Making Changes
+
+### Code Structure Overview
+
+A brief overview of the main directories:
+
+- `app/`: Contains the core application logic, pages, layouts, and API routes using Next.js App Router.
+  - `app/[locale]/`: Locale-specific pages.
+  - `app/api/`: API route handlers.
+- `components/`: Reusable React components.
+- `content/`: Markdown files for blog posts and potentially other content.
+- `lib/`: Utility functions, data handling (like `blog.ts`, `file-dates.ts`), and context providers.
+- `messages/`: JSON files for internationalization (i18n).
+- `public/`: Static assets like images and fonts.
+- `scripts/`: Build scripts, e.g., for generating blog data or page dates.
+
+### Adding New Content
+
+#### Blog Posts
+
+1.  Create a new Markdown file (e.g., `my-new-post.md`) in the `content/blog/` directory.
+2.  Follow the frontmatter structure of existing blog posts (see `content/blog/template.md` if available). Essential fields usually include `title`, `date`, `author`, `excerpt`, and `tags`.
+3.  Write your content in Markdown.
+4.  After adding or modifying a blog post, regenerate the blog data:
+    ```bash
+    npm run build:blog
+    ```
+    This script updates `lib/blog-data.json`, which is used to list and display blog posts. `npm run dev` also runs this script.
+
+#### Static Pages
+
+This project manages "last modified" dates for static pages using Git commit history. To add a new static page and track its last modified date:
+
+1.  Create your new page component within the `app/[locale]/` directory structure (e.g., `app/[locale]/new-page/page.tsx`).
+2.  Update the `scripts/build-page-dates.js` file:
+    - Add your new page to the `pagePaths` object, mapping a key (e.g., `newPage`) to its file path.
+3.  Update the `lib/file-dates.ts` file:
+    - Add a corresponding property for your new page to the `PageDates` interface and the return object of the `getStaticPageDates()` function.
+4.  Update the TypeScript declaration file `lib/page-dates.json.d.ts` to include the new page key.
+5.  Run the script to update the dates (or rely on `npm run dev`/`build`):
+    ```bash
+    npm run build:page-dates
+    ```
+
+#### Internationalization (i18n)
+
+The website supports English (`en`) and Swedish (`sv`). Text strings are managed in JSON files:
+
+- `messages/en.json` for English
+- `messages/sv.json` for Swedish
+
+When adding new user-facing text:
+
+1.  Add a unique key and its translation to both `en.json` and `sv.json`.
+2.  Use the `useTranslations` hook from `next-intl` in your components to display translated strings. Refer to existing components for usage examples.
+
+### Component Development
+
+- Create new components in the `components/` directory.
+- Ensure components are well-structured, reusable, and follow React best practices.
+- Use TypeScript for type safety.
+
+### Styling
+
+- Styling is primarily done using [Tailwind CSS](https://tailwindcss.com/).
+- Global styles are defined in `app/globals.css`.
+- Component-specific styles can be achieved using Tailwind utility classes directly in the JSX.
+
+## Submitting Contributions
+
+### Commit Messages
+
+Please follow these general guidelines for commit messages:
+
+- Keep them concise and descriptive.
+- Use the present tense (e.g., "Add feature" not "Added feature").
+- If your changes address a specific issue, reference it in the commit message (e.g., `fix: resolve issue #123`).
+- Consider following the [Conventional Commits](https://www.conventionalcommits.org/) specification for more structured commit messages, though it's not strictly enforced.
+
+Example:
+
+```
+feat: add user profile page
+```
+
+```
+fix: correct typo in contact form validation
+```
+
+```
+docs: update contributing guidelines for blog posts
+```
+
+### Pull Request (PR) Process
+
+1.  Ensure your local branch is up-to-date with the `main` branch of the upstream repository.
+2.  Push your changes to your forked repository.
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+3.  Go to the original `viscalyx.se` repository on GitHub and create a new Pull Request from your forked branch.
+4.  Provide a clear title and description for your PR:
+    - Summarize the changes made.
+    - Explain the "why" behind your changes.
+    - Link to any relevant issues (e.g., "Closes #123").
+5.  Ensure all automated checks (GitHub Actions for linting, spell check, build, etc.) pass. If they fail, please address the issues in your branch.
+
+### Code Review
+
+- Once a PR is submitted, project maintainers will review your changes.
+- Be prepared to discuss your changes and make adjustments based on feedback.
+- After approval and all checks pass, your PR will be merged.
+
+## SSH Agent Setup
+
+This project supports forwarding your SSH agent into the dev container cross-platform. The default `devcontainer.json` uses:
+
+```jsonc
+"mounts": [
+  "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind,consistency=cached"
+],
+"containerEnv": {
+  "SSH_AUTH_SOCK": "/ssh-agent.sock"
+}
+```
+
+### macOS / Linux
+
+Typically your login shell exports `SSH_AUTH_SOCK` automatically. If not:
+
+1. Start the agent and add your key:
+
+   ```bash
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_rsa
+   ```
+
+2. Verify `echo $SSH_AUTH_SOCK` is set.
+
+### Windows (PowerShell)
+
+1. Ensure the **OpenSSH Authentication Agent** service is running:
+
+   ```powershell
+   Start-Service ssh-agent
+   ```
+
+2. Add the named pipe to your user environment so VS Code picks it up:
+
+   ```powershell
+   [Environment]::SetEnvironmentVariable(
+     "SSH_AUTH_SOCK",
+     "//./pipe/openssh-ssh-agent",
+     "User"
+   )
+   ```
+
+3. Logout and back in and the make sure it is available with:
+
+   ```powershell
+   ls env:ssh*
+   ```
+
+After this, `${localEnv:SSH_AUTH_SOCK}` will resolve correctly on all platforms.
+
+## Spell Checking Setup
+
+This project uses [Code Spell Checker (cspell)](https://cspell.org/) for automated spell checking across all code files, markdown content, and documentation.
+
+### Configuration
+
+#### VS Code Integration
+
+- **Extension**: Code Spell Checker is configured in `.vscode/settings.json`
+- **Real-time checking**: Spelling errors are highlighted as you type
+- **Custom dictionary**: Technical terms are pre-configured in `.cspell.json`
+
+#### Files Checked
+
+- TypeScript/JavaScript files (`.ts`, `.tsx`, `.js`, `.jsx`)
+- Markdown files (`.md`)
+- JSON configuration files
+- YAML files
+
+#### Custom Dictionary
+
+The `.cspell.json` file includes:
+
+- Company names (Viscalyx, etc.)
+- Technical terms (DevOps, Kubernetes, PowerShell DSC, etc.)
+- Framework names (Next.js, React, Azure, AWS, etc.)
+- Common abbreviations and acronyms
+
+### Usage
+
+#### NPM Scripts
+
+```bash
+# Check all files for spelling errors
+npm run spell:check
+
+# Interactive spell checking with suggestions
+npm run spell:fix
+
+# Check specific files
+npx cspell "app/**/*.tsx"
+```
+
+#### VS Code Commands
+
+- `Ctrl/Cmd + Shift + P` → "Spell: Add Words to Dictionary"
+- Right-click on misspelled word → "Add to Dictionary"
+- `F1` → "Spell: Check Current Document"
+
+#### Adding New Words
+
+1. **VS Code**: Right-click on the word → "Add to User Dictionary" or "Add to Workspace Dictionary"
+2. **Manual**: Add words to the `words` array in `.cspell.json`
+3. **Project-specific**: Words added via VS Code are automatically saved to `.cspell.json`
+
+### Automation
+
+#### GitHub Actions
+
+- Spell checking runs automatically on all pull requests
+- Builds fail if spelling errors are found
+- Comments are added to PRs with spelling issues
+
+#### Pre-commit Integration (Optional)
+
+To add spell checking to pre-commit hooks, add this to your pre-commit script:
+
+```bash
+#!/bin/sh
+npm run spell:check
+if [ $? -ne 0 ]; then
+  echo "❌ Spell check failed. Please fix spelling errors before committing."
+  exit 1
+fi
+```
+
+### Ignoring False Positives
+
+#### Temporary Ignore
+
+Add `// cspell:disable-next-line` above the line with the "misspelled" word:
+
+```typescript
+// cspell:disable-next-line
+const specialTechnicalTerm = \'someUniqueApiName\'
+```
+
+#### Ignore Entire File
+
+Add to the top of the file:
+
+```
+// cspell:disable
+```
+
+#### Ignore Specific Words in File
+
+```typescript
+// cspell:ignore specialword anothertechterm
+```
+
+### Configuration Details
+
+#### Ignored Patterns
+
+The spell checker automatically ignores:
+
+- URLs and email addresses
+- Hexadecimal color codes
+- UUIDs
+- CSS measurements (px, rem, em, %)
+- Import/require statements
+- Code blocks in markdown
+- File paths and technical identifiers
+
+#### File Exclusions
+
+- `node_modules/`
+- `.next/` and build directories
+- Lock files (`package-lock.json`, `yarn.lock`)
+- Binary and generated files
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **False Positives**: Add legitimate technical terms to `.cspell.json`
+2. **Performance**: Adjust `checkLimit` in `.cspell.json` for large files
+3. **Languages**: Add language-specific dictionaries if needed
+
+#### Debugging
+
+```bash
+# Verbose output to see what\'s being checked
+npx cspell "**/*.md" --verbose
+
+# Check a specific file with full details
+npx cspell app/page.tsx --show-context --show-suggestions
+```
+
+### Language Extensions
+
+This project supports multi-language spell checking:
+
+#### Swedish Support
+
+Swedish spell checking is enabled for:
+
+- Files in the Swedish dictionary (`lib/dictionaries/sv.ts`)
+- Files with `sv` in the filename
+- Files with `swedish` in the filename
+
+The configuration includes:
+
+```bash
+npm install --save-dev @cspell/dict-sv
+```
+
+Configuration in `.cspell.json`:
+
+```json
+{
+  "dictionaries": ["sv"],
+  "overrides": [
+    {
+      "filename": "**/dictionaries/sv.ts",
+      "language": "sv",
+      "dictionaries": ["sv", "en"]
+    }
+  ]
+}
+```
+
+#### Additional Language Support
+
+For other languages, install additional dictionaries:
+
+```bash
+npm install --save-dev @cspell/dict-spanish @cspell/dict-french
+```
+
+Then add to `.cspell.json`:
+
+```json
+{
+  "dictionaries": ["spanish", "french"]
+}
+```
+
+### Best Practices
+
+1. **Review before adding**: Don\'t blindly add misspelled words to the dictionary
+2. **Keep dictionary clean**: Periodically review custom words
+3. **Use consistent naming**: Follow project conventions for technical terms
+4. **Document decisions**: Add comments in `.cspell.json` for unusual words
+5. **Team alignment**: Ensure all team members use the same VS Code settings
+
+## Cloudflare Scripts Documentation
+
+This document describes the Cloudflare-specific scripts in `package.json` that enable deployment to Cloudflare Workers using the OpenNext adapter.
+
+### Scripts Overview
+
+#### `preview`
+
+```bash
+npm run preview
+```
+
+**Command**: `opennextjs-cloudflare build && opennextjs-cloudflare preview`
+
+**Purpose**: Tests and previews your Next.js application using the Cloudflare adapter in a local environment that simulates the Cloudflare Workers runtime.
+
+**What it does**:
+
+1. **Build**: Compiles your Next.js application for Cloudflare Workers using the OpenNext adapter
+2. **Preview**: Starts a local server that mimics the Cloudflare Workers environment
+
+**When to use**:
+
+- Before deploying to production to ensure your app works correctly in the Cloudflare Workers environment
+- For integration testing with Cloudflare-specific features
+- To verify that your application behaves correctly with the OpenNext adapter
+
+**Difference from `dev`**:
+
+- `npm run dev` uses the Next.js development server for fast development
+- `npm run preview` uses the Cloudflare adapter to simulate the production environment
+
+#### `deploy`
+
+```bash
+npm run deploy
+```
+
+**Command**: `opennextjs-cloudflare build && opennextjs-cloudflare deploy`
+
+**Purpose**: Builds and deploys your Next.js application to Cloudflare Workers.
+
+**What it does**:
+
+1. **Build**: Compiles your Next.js application for Cloudflare Workers
+2. **Deploy**: Uploads and deploys the application to your Cloudflare Workers environment
+
+**Deployment targets**:
+
+- `*.workers.dev` subdomain (default)
+- Custom domain (if configured)
+
+**Requirements**:
+
+- Wrangler CLI must be authenticated with Cloudflare
+- Proper `wrangler.jsonc` configuration file
+
+#### `cf-typegen`
+
+```bash
+npm run cf-typegen
+```
+
+**Command**: `wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts`
+
+**Purpose**: Generates TypeScript type definitions for Cloudflare environment variables and bindings.
+
+**What it does**:
+
+- Creates a `cloudflare-env.d.ts` file with TypeScript interfaces
+- Provides type safety for Cloudflare-specific environment variables
+- Includes types for bindings like R2, KV, D1, etc.
+
+**When to use**:
+
+- After adding new environment variables in `wrangler.jsonc`
+- When setting up new Cloudflare bindings
+- To maintain type safety in TypeScript projects
+
+### Development Workflow
+
+#### Local Development
+
+```bash
+npm run dev
+```
+
+Use the standard Next.js development server for the best developer experience with hot reloading.
+
+#### Testing with Cloudflare Environment
+
+```bash
+npm run preview
+```
+
+Test your application in an environment that simulates Cloudflare Workers before deploying.
+
+#### Production Deployment
+
+```bash
+npm run deploy
+```
+
+Deploy your application to Cloudflare Workers.
+
+#### Type Generation
+
+```bash
+npm run cf-typegen
+```
+
+Generate TypeScript types for Cloudflare bindings and environment variables.
+
+### Configuration Files
+
+These scripts work in conjunction with:
+
+- **`wrangler.jsonc`**: Cloudflare Workers configuration
+- **`open-next.config.ts`**: OpenNext adapter configuration
+- **`cloudflare-env.d.ts`**: Generated TypeScript types (created by `cf-typegen`)
+
+### Required Dependencies
+
+The following packages enable these scripts:
+
+```json
+{
+  "dependencies": {
+    "@opennextjs/cloudflare": "^1.1.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.18.0"
+  }
+}
+```
+
+### Additional Resources
+
+- [Cloudflare Next.js Guide](https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/)
+- [OpenNext Documentation](https://opennext.js.org/cloudflare)
+- [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
+
+## Page Dates Management
+
+This document explains how page last modified dates are managed in the sitemap and individual pages.
+
+### Overview
+
+The application uses actual Git commit dates for static pages instead of always using the current date (`new Date()`). This improves SEO accuracy by providing real last modified timestamps.
+
+### How It Works
+
+#### 1. Build Script (`scripts/build-page-dates.js`)
+
+- Reads Git history to find the last commit date for each static page
+- Generates `lib/page-dates.json` with ISO date strings
+- Runs during the build process via `npm run build:page-dates`
+
+#### 2. Data File (`lib/page-dates.json`)
+
+- Contains last modified dates for all static pages
+- Format: `{ "pageName": "2025-06-01T09:37:24.000Z" }`
+- Generated automatically, not manually edited
+
+#### 3. Utility Function (`lib/file-dates.ts`)
+
+- Exports `getStaticPageDates()` function
+- Reads from `page-dates.json` and converts to Date objects
+- Works in all environments including Cloudflare Workers
+
+#### 4. Usage
+
+**In Sitemap (`app/sitemap.ts`):**
+
+```typescript
+const staticPageDates = getStaticPageDates()
+// Use staticPageDates.privacy, staticPageDates.terms, etc.
+```
+
+**In Pages (`app/[locale]/privacy/page.tsx`, etc.):**
+
+```typescript
+const staticPageDates = getStaticPageDates()
+// Use format.dateTime(staticPageDates.privacy, {...})
+```
+
+### Build Process Integration
+
+The page dates are built automatically as part of:
+
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run deploy`
+
+### Manual Update
+
+To manually update page dates:
+
+```bash
+npm run build:page-dates
+```
+
+### Tracked Pages
+
+- **home**: `app/[locale]/page.tsx`
+- **blog**: `app/[locale]/blog/page.tsx`
+- **caseStudies**: `app/[locale]/case-studies/page.tsx`
+- **privacy**: `app/[locale]/privacy/page.tsx`
+- **terms**: `app/[locale]/terms/page.tsx`
+
+### Benefits
+
+1. **SEO Accuracy**: Real last modified dates instead of current date
+2. **Environment Compatibility**: Works in Cloudflare Workers and other serverless environments
+3. **Automatic Updates**: Dates update when files are actually modified
+4. **Build-time Generation**: No runtime Git commands or file system access needed
+
+### Adding New Pages
+
+To track a new static page:
+
+1. Add it to the `pageDates` object in `scripts/build-page-dates.js`
+2. Add the corresponding property to the return object in `lib/file-dates.ts`
+3. Update the TypeScript declaration in `lib/page-dates.json.d.ts`
+
+## Code of Conduct
+
+This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior as outlined in the Code of Conduct.
+
+## Reporting Bugs
+
+If you find a bug, please report it by creating an issue on the GitHub repository. Provide as much detail as possible:
+
+- Steps to reproduce the bug.
+- Expected behavior.
+- Actual behavior.
+- Screenshots or error messages, if applicable.
+- Your environment (browser, OS, Node.js version).
+
+## Asking for Help
+
+If you have questions or need help with your contribution, feel free to:
+
+- Create an issue on GitHub, labeling it as a "question".
+- Clearly describe the problem you're facing or the information you need.
+
+Thank you for contributing to Viscalyx.se!
