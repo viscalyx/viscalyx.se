@@ -2,7 +2,7 @@
 
 First off, thank you for considering contributing to Viscalyx.se! We welcome contributions of all kinds, from bug fixes and documentation improvements to new features. This document provides guidelines to help you get started.
 
-If you haven't already, please read the main [README.md](../README.md) for an overview of the project.
+If you haven't already, please read the main [README.md](README.md) for an overview of the project.
 
 ## Table of Contents
 
@@ -276,7 +276,7 @@ Typically your login shell exports `SSH_AUTH_SOCK` automatically. If not:
    Start-Service ssh-agent
    ```
 
-2. Add the named pipe to your user environment so VS Code picks it up:
+2. Add the named pipe to your user environment, so VS Code picks it up:
 
    ```powershell
    [Environment]::SetEnvironmentVariable(
@@ -286,7 +286,7 @@ Typically your login shell exports `SSH_AUTH_SOCK` automatically. If not:
    )
    ```
 
-3. Logout and back in and the make sure it is available with:
+3. Logout and back in, then make sure it is available with:
 
    ```powershell
    ls env:ssh*
