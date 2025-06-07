@@ -1,3 +1,6 @@
+const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
+initOpenNextCloudflareForDev()
+
 const withNextIntl = require('next-intl/plugin')('./i18n.ts')
 
 /** @type {import('next').NextConfig} */
