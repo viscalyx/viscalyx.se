@@ -15,24 +15,12 @@ The official website for Viscalyx, built with Next.js and featuring blog content
 
 ## Tech Stack
 
-- **Framework**: Next.js 14+ with App Router
+- **Framework**: Next.js 15+ with App Router
 - **Styling**: Tailwind CSS
 - **Internationalization**: next-intl
 - **Content**: Markdown files
 - **TypeScript**: Full type safety
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-```
+- **Deployment**: Cloudflare
 
 ## License
 
@@ -49,3 +37,5 @@ The MIT License allows you to freely use the blog content and website source cod
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues and pull requests.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to set up your environment and contribute to the project.
