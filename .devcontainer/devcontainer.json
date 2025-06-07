@@ -15,16 +15,16 @@
 
   // Features to add to the dev container
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "nodeGitTagPrefix": "v",
-      "version": "24"
-    },
-    "ghcr.io/devcontainers/features/git:1": {
-      "ppa": true,
-      "version": "latest"
-    },
+    // "ghcr.io/devcontainers/features/node:1": {
+    //   "nodeGitTagPrefix": "v",
+    //   "version": "24"
+    // },
+    // "ghcr.io/devcontainers/features/git:1": {
+    //   "ppa": true,
+    //   "version": "latest"
+    // },
     "ghcr.io/devcontainers/features/github-cli:1": {
-      "installDirectlyFromGitHubRelease": true,
+      "installDirectlyFromGitHubRelease": false,
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -56,7 +56,9 @@
         "christian-kohler.path-intellisense",
         "christian-kohler.npm-intellisense",
         "gruntfuggly.todo-tree",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
       ],
       "settings": {
         // Editor settings
@@ -221,11 +223,11 @@
   "forwardPorts": [3000, 3001, 8787],
   "portsAttributes": {
     "3000": {
-      "label": "Next.js Dev Server",
+      "label": "Next.js Dev Server 1",
       "onAutoForward": "notify"
     },
     "3001": {
-      "label": "Next.js Preview",
+      "label": "Next.js Dev Server 2",
       "onAutoForward": "notify"
     },
     "8787": {
@@ -235,7 +237,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "sudo npm install -g npm@latest && npm install",
 
   // Configure remote user
   "remoteUser": "vscode"
