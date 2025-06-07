@@ -1,6 +1,6 @@
 # License for Specific Assets
 
-Copyright (c) 2025 Viscalyx. All Rights Reserved.
+Copyright (c) 2025 Viscalyx. All rights reserved.
 
 The assets detailed below, primarily located within the `public/` directory, are protected by copyright and are **not** licensed under the MIT License that covers the software components of this project.
 
@@ -8,15 +8,16 @@ The assets detailed below, primarily located within the `public/` directory, are
 
 The following types of assets are **All Rights Reserved**. You may not use, reproduce, distribute, or modify these assets without explicit prior written permission from Viscalyx:
 
-1.  **Logos**: Any and all versions of the Viscalyx logo, including but not limited to:
+1. **Logos**: Any and all versions of the Viscalyx logo, including but not limited to:
 
-    - `public/viscalyx_logo.svg`
-    - `public/viscalyx_logo_128x128.png`
-    - Other variations of the Viscalyx logo found within the project.
+   - `public/viscalyx_logo.svg`
+   - `public/viscalyx_logo_128x128.png`
+   - Other variations of the Viscalyx logo found within the project.
 
-2.  **Photographs of Identifiable Individuals**: Any photographs depicting identifiable persons, including but not limited to:
-    - `public/johlju-profile.jpg`
-    - Other photographs of team members or individuals associated with Viscalyx.
+2. **Photographs of Identifiable Individuals**: Any photographs depicting identifiable persons, including but not limited to:
+
+   - `public/johlju-profile.jpg`
+   - Other photographs of team members or individuals associated with Viscalyx.
 
 ## Other Assets in `public/` Directory
 
