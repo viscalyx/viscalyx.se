@@ -214,3 +214,5 @@ Thumbs.db
 # Generated data during production build
 lib/blog-data.json
 lib/page-dates.json
+
+.wrangler
