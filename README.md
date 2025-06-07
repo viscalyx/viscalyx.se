@@ -36,15 +36,19 @@ npm run build
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project's source code is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Specific assets such as logos and photographs of identifiable individuals are subject to different licensing terms. Please refer to the [LICENSE-ASSETS.md](LICENSE-ASSETS.md) file for details on the licensing of these assets.
 
 ### Content Usage
 
-- **Blog posts and articles**: Free to use, share, and adapt under MIT License
-- **Source code**: Open source under MIT License
-- **Personal/team information**: Please respect privacy when reusing content
+- **Blog posts and articles**: Free to use, share, and adapt under the MIT License (see [LICENSE](LICENSE)).
+- **Source code**: Open source under the MIT License (see [LICENSE](LICENSE)).
+- **Logos and Profile Photos**: All Rights Reserved. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md) for details.
+- **Other Assets in `public/` directory**: All Rights Reserved, unless otherwise specified. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
+- **Personal/team information**: Please respect privacy when reusing content.
 
-The MIT License allows you to freely use the blog content and website source code while ensuring proper attribution to Viscalyx.
+The MIT License allows you to freely use the blog content and website source code while ensuring proper attribution to Viscalyx. Other assets are subject to the terms outlined in `LICENSE-ASSETS.md`.
 
 ## Contributing
 
