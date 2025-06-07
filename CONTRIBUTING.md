@@ -69,7 +69,11 @@ Before you begin, ensure you have the following installed:
 ## Getting Started
 
 1. **Fork the repository**: Click the "Fork" button on the GitHub repository page.
-2. **Clone your fork**:
+   <<<<<<< HEAD
+2. # **Clone your fork**:
+3. **Clone your fork**:
+
+   > > > > > > > 02502da (fix: improve formatting and consistency in contributing guidelines)
 
    ```bash
    git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
