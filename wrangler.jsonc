@@ -17,11 +17,10 @@
   // Development server configuration for preview modem, for more info: npx wrangler dev --help
   "dev": {
     "ip": "0.0.0.0",
-    "port": 8787,
+    "port": 8787
     // "local_protocol": "http",
     // "inspector_port": 9229,
     // "live_reload": true,
-    // "show_interactive_dev_session": true,
-    "log_level": "info"
+    // "show_interactive_dev_session": true
   }
 }
