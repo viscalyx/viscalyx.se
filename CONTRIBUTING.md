@@ -45,18 +45,19 @@ Before you begin, ensure you have the following installed:
 
 ## Getting Started
 
-1.  **Fork the repository**: Click the "Fork" button on the GitHub repository page.
-2.  **Clone your fork**:
+1. **Fork the repository**: Click the "Fork" button on the GitHub repository page.
+1. **Clone your fork**:
 
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
-    cd viscalyx.se
-    ```
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
+   cd viscalyx.se
+   ```
 
-3.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
+1. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
 
 ## Development
 
@@ -77,11 +78,12 @@ npm run build
 
 We use a simple branching strategy:
 
-1.  Create a new branch for each feature or bug fix from the `main` branch.
-2.  Name your branches descriptively, e.g., `feature/add-contact-form` or `fix/header-layout-issue`.
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
+1. Create a new branch for each feature or bug fix from the `main` branch.
+1. Name your branches descriptively, e.g., `feature/add-contact-form` or `fix/header-layout-issue`.
+
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
 ### Running the App Locally
 
@@ -108,15 +110,20 @@ This command ensures all necessary build steps, including blog data and page dat
 This project uses ESLint for linting and Prettier for code formatting.
 
 - **Check for linting and formatting errors**:
+
   ```bash
   npm run lint
   npm run format:check
   ```
+
 - **Fix linting errors automatically**:
+
   ```bash
   npm run lint:fix
   ```
+
 - **Format code automatically**:
+
   ```bash
   npm run format
   ```
@@ -151,29 +158,32 @@ A brief overview of the main directories:
 
 #### Blog Posts
 
-1.  Create a new Markdown file (e.g., `my-new-post.md`) in the `content/blog/` directory.
-2.  Follow the frontmatter structure of existing blog posts (see `content/blog/template.md` if available). Essential fields usually include `title`, `date`, `author`, `excerpt`, and `tags`.
-3.  Write your content in Markdown.
-4.  After adding or modifying a blog post, regenerate the blog data:
-    ```bash
-    npm run build:blog
-    ```
-    This script updates `lib/blog-data.json`, which is used to list and display blog posts. `npm run dev` also runs this script.
+1. Create a new Markdown file (e.g., `my-new-post.md`) in the `content/blog/` directory.
+1. Follow the frontmatter structure of existing blog posts (see `content/blog/template.md` if available). Essential fields usually include `title`, `date`, `author`, `excerpt`, and `tags`.
+1. Write your content in Markdown.
+1. After adding or modifying a blog post, regenerate the blog data:
+
+   ```bash
+   npm run build:blog
+   ```
+
+   This script updates `lib/blog-data.json`, which is used to list and display blog posts. `npm run dev` also runs this script.
 
 #### Static Pages
 
 This project manages "last modified" dates for static pages using Git commit history. To add a new static page and track its last modified date:
 
-1.  Create your new page component within the `app/[locale]/` directory structure (e.g., `app/[locale]/new-page/page.tsx`).
-2.  Update the `scripts/build-page-dates.js` file:
-    - Add your new page to the `pagePaths` object, mapping a key (e.g., `newPage`) to its file path.
-3.  Update the `lib/file-dates.ts` file:
-    - Add a corresponding property for your new page to the `PageDates` interface and the return object of the `getStaticPageDates()` function.
-4.  Update the TypeScript declaration file `lib/page-dates.json.d.ts` to include the new page key.
-5.  Run the script to update the dates (or rely on `npm run dev`/`build`):
-    ```bash
-    npm run build:page-dates
-    ```
+1. Create your new page component within the `app/[locale]/` directory structure (e.g., `app/[locale]/new-page/page.tsx`).
+1. Update the `scripts/build-page-dates.js` file:
+   - Add your new page to the `pagePaths` object, mapping a key (e.g., `newPage`) to its file path.
+1. Update the `lib/file-dates.ts` file:
+   - Add a corresponding property for your new page to the `PageDates` interface and the return object of the `getStaticPageDates()` function.
+1. Update the TypeScript declaration file `lib/page-dates.json.d.ts` to include the new page key.
+1. Run the script to update the dates (or rely on `npm run dev`/`build`):
+
+   ```bash
+   npm run build:page-dates
+   ```
 
 #### Internationalization (i18n)
 
@@ -184,8 +194,8 @@ The website supports English (`en`) and Swedish (`sv`). Text strings are managed
 
 When adding new user-facing text:
 
-1.  Add a unique key and its translation to both `en.json` and `sv.json`.
-2.  Use the `useTranslations` hook from `next-intl` in your components to display translated strings. Refer to existing components for usage examples.
+1. Add a unique key and its translation to both `en.json` and `sv.json`.
+1. Use the `useTranslations` hook from `next-intl` in your components to display translated strings. Refer to existing components for usage examples.
 
 ### Component Development
 
@@ -226,17 +236,22 @@ docs: update contributing guidelines for blog posts
 
 ### Pull Request (PR) Process
 
-1.  Ensure your local branch is up-to-date with the `main` branch of the upstream repository.
-2.  Push your changes to your forked repository.
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-3.  Go to the original `viscalyx.se` repository on GitHub and create a new Pull Request from your forked branch.
-4.  Provide a clear title and description for your PR:
-    - Summarize the changes made.
-    - Explain the "why" behind your changes.
-    - Link to any relevant issues (e.g., "Closes #123").
-5.  Ensure all automated checks (GitHub Actions for linting, spell check, build, etc.) pass. If they fail, please address the issues in your branch.
+1. Ensure your local branch is up-to-date with the `main` branch of the
+   upstream repository.
+1. Push your changes to your forked repository.
+
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+1. Go to the original `viscalyx.se` repository on GitHub and create a
+   new Pull Request from your forked branch.
+1. Provide a clear title and description for your PR:
+   - Summarize the changes made.
+   - Explain the "why" behind your changes.
+   - Link to any relevant issues (e.g., "Closes #123").
+1. Ensure all automated checks (GitHub Actions for linting, spell check,
+   build, etc.) pass. If they fail, please address the issues in your branch.
 
 ### Code Review
 
@@ -387,7 +402,7 @@ const specialTechnicalTerm = \'someUniqueApiName\'
 
 Add to the top of the file:
 
-```
+```text
 // cspell:disable
 ```
 
@@ -572,13 +587,7 @@ npm run cf-typegen
 - When setting up new Cloudflare bindings
 - To maintain type safety in TypeScript projects
 
-### Development Workflow
-
-#### Local Development
-
-```bash
-npm run dev
-```
+### Testing Workflow
 
 Use the standard Next.js development server for the best developer experience with hot reloading.
 
