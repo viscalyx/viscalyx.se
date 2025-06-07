@@ -47,10 +47,12 @@ Before you begin, ensure you have the following installed:
 
 1.  **Fork the repository**: Click the "Fork" button on the GitHub repository page.
 2.  **Clone your fork**:
+
     ```bash
     git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
     cd viscalyx.se
     ```
+
 3.  **Install dependencies**:
     ```bash
     npm install
