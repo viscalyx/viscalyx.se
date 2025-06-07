@@ -212,15 +212,15 @@ Please follow these general guidelines for commit messages:
 
 Example:
 
-```
+```text
 feat: add user profile page
 ```
 
-```
+```text
 fix: correct typo in contact form validation
 ```
 
-```
+```text
 docs: update contributing guidelines for blog posts
 ```
 
@@ -288,7 +288,7 @@ Typically your login shell exports `SSH_AUTH_SOCK` automatically. If not:
    )
    ```
 
-3. Logout and back in, then make sure it is available with:
+3. Log out, then log back in, and verify it’s available by running:
 
    ```powershell
    ls env:ssh*
