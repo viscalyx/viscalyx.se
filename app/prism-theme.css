@@ -168,9 +168,38 @@
   color: #9ca3af;
 }
 
-/* Ensure relative positioning for language labels */
+/* Copy button positioning and styling */
+.blog-content pre[class*='language-'] .copy-button-container {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+}
+
+/* Adjust language label when copy button is present */
+.blog-content pre[class*='language-']:has(.copy-button-container):before {
+  right: 3.5rem; /* Move language label left to make room for copy button */
+}
+
+/* Fallback for browsers that don't support :has() selector */
+.blog-content pre[class*='language-'] .copy-button-container + * ::before,
+.blog-content pre[class*='language-']:before {
+  right: 0.5rem; /* Default position */
+}
+
+.blog-content pre[class*='language-'].has-copy-button:before {
+  right: 3.5rem; /* When copy button exists */
+}
+
+/* Ensure code blocks are relatively positioned for absolute children */
 .blog-content pre[class*='language-'] {
   position: relative;
+  overflow: visible;
+}
+
+/* Make sure copy button stays visible on hover */
+.blog-content pre[class*='language-']:hover .copy-button-container {
+  opacity: 1;
 }
 
 /* Bold and italic styling */

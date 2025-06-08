@@ -485,6 +485,19 @@ To modify syntax highlighting colors:
 - **Build script**: Code highlighting is handled in `scripts/build-blog-data.js`
 - **HTML sanitization**: Updated to allow syntax highlighting classes and spans
 - **Performance**: No client-side JavaScript required for syntax highlighting
+- **Copy functionality**: Each code block includes a copy-to-clipboard button for easy code sharing
+
+**Copy-to-Clipboard Feature:**
+
+All code blocks automatically include a copy button in the top-right corner that allows readers to quickly copy code snippets. The feature:
+
+- Uses the modern `navigator.clipboard.writeText()` API with fallback support
+- Provides visual feedback when content is copied
+- Includes hover tooltips for better accessibility
+- Automatically positions alongside language labels
+- Works with all supported programming languages
+
+The copy functionality is implemented client-side using React components while preserving the server-side rendering benefits.
 
 The implementation ensures fast loading times and consistent rendering across all devices.
 
