@@ -31,7 +31,7 @@ export const CheckmarkIcon: React.FC<BlogIconProps> = ({
 }) => (
   <svg
     role="img"
-    aria-label="Checkmark icon"
+    aria-label="Copied to clipboard"
     viewBox="0 0 24 24"
     className={className}
     fill="currentColor"
@@ -46,7 +46,7 @@ export const ChevronUpIcon: React.FC<BlogIconProps> = ({
 }) => (
   <svg
     role="img"
-    aria-label="Chevron up icon"
+    aria-label="Scroll up"
     viewBox="0 0 24 24"
     className={className}
     fill="none"
@@ -65,7 +65,7 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = ({
 }) => (
   <svg
     role="img"
-    aria-label="Chevron down icon"
+    aria-label="Scroll down"
     viewBox="0 0 24 24"
     className={className}
     fill="none"
