@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Check } from 'lucide-react'
+import { CopyIcon, CheckmarkIcon } from './BlogIcons'
 
 interface CopyButtonProps {
   text: string
@@ -51,9 +51,9 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
       aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
     >
       {copied ? (
-        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+        <CheckmarkIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
       ) : (
-        <Copy className="w-4 h-4 text-gray-600 dark:text-gray-300 group-hover:text-gray-800 dark:group-hover:text-gray-100 transition-colors" />
+        <CopyIcon className="w-4 h-4 text-gray-600 dark:text-gray-300 group-hover:text-gray-800 dark:group-hover:text-gray-100 transition-colors" />
       )}
 
       {/* Tooltip */}
