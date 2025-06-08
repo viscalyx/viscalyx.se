@@ -70,7 +70,6 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
         if (isAboveView || isBelowView) {
           // Scroll to center the active item in the ToC container
-          const containerScrollTop = container.scrollTop
           const buttonOffsetTop = activeButton.offsetTop
           const containerHeight = container.clientHeight
           const buttonHeight = activeButton.offsetHeight
