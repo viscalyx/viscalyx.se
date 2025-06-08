@@ -215,4 +215,4 @@ Thumbs.db
 lib/blog-data.json
 lib/page-dates.json
 
-.wrangler
+.wrangler/
