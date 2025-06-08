@@ -50,14 +50,14 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
+          // {
+          //   key: 'Content-Security-Policy',
+          //   value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
+          // },
+          // {
+          //   key: 'X-XSS-Protection',
+          //   value: '1; mode=block',
+          // },
         ],
       },
     ]
