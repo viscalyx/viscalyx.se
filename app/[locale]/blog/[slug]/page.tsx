@@ -34,7 +34,7 @@ interface TocItem {
 interface BlogPost {
   title: string
   author: string
-  date: string
+  date: string | null
   readTime: string
   image: string
   category: string
@@ -145,10 +145,10 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
         if (response.ok) {
           const data: BlogApiResponse = await response.json()
           // Normalize missing or invalid post date
-          const normalizedDate =
+          const normalizedDate: string | null =
             data.post.date && !isNaN(Date.parse(data.post.date))
               ? data.post.date
-              : '1970-01-01'
+              : null
           setPost({ ...data.post, date: normalizedDate })
           setRelatedPosts(data.relatedPosts || [])
         } else if (response.status === 404) {
@@ -323,11 +323,13 @@ const BlogPostContent = ({
                 </div>
                 <div className="flex items-center mr-6">
                   <Calendar className="w-4 h-4 mr-2" />
-                  {format.dateTime(new Date(post.date), {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
+                  {post.date
+                    ? format.dateTime(new Date(post.date), {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                    : '—'}
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
