@@ -31,3 +31,37 @@ export const CheckmarkIcon: React.FC<BlogIconProps> = ({
     <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
   </svg>
 )
+
+// ChevronUp Icon - Stroke style for scroll indicators
+export const ChevronUpIcon: React.FC<BlogIconProps> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m18 15-6-6-6 6" />
+  </svg>
+)
+
+// ChevronDown Icon - Stroke style for scroll indicators
+export const ChevronDownIcon: React.FC<BlogIconProps> = ({
+  className = 'w-4 h-4',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+)
