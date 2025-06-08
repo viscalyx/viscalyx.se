@@ -10,6 +10,8 @@ export const CopyIcon: React.FC<BlogIconProps> = ({
   className = 'w-4 h-4',
 }) => (
   <svg
+    role="img"
+    aria-label="Copy icon"
     viewBox="0 0 24 24"
     className={className}
     fill="none"
@@ -27,7 +29,13 @@ export const CopyIcon: React.FC<BlogIconProps> = ({
 export const CheckmarkIcon: React.FC<BlogIconProps> = ({
   className = 'w-4 h-4',
 }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+  <svg
+    role="img"
+    aria-label="Checkmark icon"
+    viewBox="0 0 24 24"
+    className={className}
+    fill="currentColor"
+  >
     <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
   </svg>
 )
@@ -37,6 +45,8 @@ export const ChevronUpIcon: React.FC<BlogIconProps> = ({
   className = 'w-4 h-4',
 }) => (
   <svg
+    role="img"
+    aria-label="Chevron up icon"
     viewBox="0 0 24 24"
     className={className}
     fill="none"
@@ -54,6 +64,8 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = ({
   className = 'w-4 h-4',
 }) => (
   <svg
+    role="img"
+    aria-label="Chevron down icon"
     viewBox="0 0 24 24"
     className={className}
     fill="none"
