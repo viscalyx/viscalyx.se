@@ -384,7 +384,7 @@ const BlogPostContent = ({
                         />
                       </svg>
                     </summary>
-                    <div className="mt-4">
+                    <div className="mt-4 max-h-64 overflow-y-auto toc-scrollable">
                       <TableOfContents items={tableOfContents} />
                     </div>
                   </details>
@@ -462,7 +462,7 @@ const BlogPostContent = ({
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h3>
-                    <div className="max-h-80 overflow-y-auto">
+                    <div className="max-h-80 overflow-y-auto toc-scrollable">
                       <TableOfContents items={tableOfContents} />
                     </div>
                   </div>
