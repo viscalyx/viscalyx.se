@@ -399,6 +399,7 @@ const BlogPostContent = ({
               )}
 
               <div className="blog-content prose prose-lg max-w-none">
+                {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
                 <div
                   dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
