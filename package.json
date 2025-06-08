@@ -31,9 +31,14 @@
     "lucide-react": "^0.511.0",
     "next": "^15.3.3",
     "next-intl": "^4.1.0",
+    "prismjs": "^1.30.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "sanitize-html": "^2.17.0"
+    "rehype-prism-plus": "^2.0.1",
+    "rehype-stringify": "^10.0.1",
+    "remark-rehype": "^11.1.2",
+    "sanitize-html": "^2.17.0",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@cspell/dict-sv": "^2.3.0",

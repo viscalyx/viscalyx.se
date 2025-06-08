@@ -33,7 +33,7 @@ function calculateReadingTime(content) {
 const sanitizeOptions = {
   // Use default allowed tags and attributes as base
   ...sanitizeHtml.defaults,
-  // Extend allowed attributes to support table of contents navigation
+  // Extend allowed attributes to support table of contents navigation and syntax highlighting
   allowedAttributes: {
     ...sanitizeHtml.defaults.allowedAttributes,
     // Allow id attributes on headings for table of contents
@@ -43,7 +43,19 @@ const sanitizeOptions = {
     h4: ['id'],
     h5: ['id'],
     h6: ['id'],
+    // Allow class attributes for syntax highlighting
+    code: ['class'],
+    pre: ['class', 'data-language'],
+    span: ['class'],
+    div: ['class'],
+    // Allow data attributes for Prism.js functionality
+    '*': ['data-*'],
   },
+  // Allow additional tags that Prism.js might use
+  allowedTags: [
+    ...sanitizeHtml.defaults.allowedTags,
+    'span', // Prism.js uses spans for syntax highlighting
+  ],
 }
 
 // Sanitization options for text extraction (strips all HTML)
@@ -60,6 +72,10 @@ async function buildBlogData() {
     const { remark } = await import('remark')
     const { default: remarkHtml } = await import('remark-html')
     const { default: remarkGfm } = await import('remark-gfm')
+    const { default: remarkRehype } = await import('remark-rehype')
+    const { default: rehypePrismPlus } = await import('rehype-prism-plus')
+    const { default: rehypeStringify } = await import('rehype-stringify')
+    const { visit } = await import('unist-util-visit')
 
     // Check if content directory exists
     if (!fs.existsSync(postsDirectory)) {
@@ -89,10 +105,38 @@ async function buildBlogData() {
         const fileContents = fs.readFileSync(fullPath, 'utf8')
         const { data, content } = matter(fileContents)
 
-        // Process markdown content to HTML
+        // Process markdown content to HTML with syntax highlighting
         const processedContent = await remark()
           .use(remarkGfm)
-          .use(remarkHtml)
+          .use(remarkRehype)
+          .use(rehypePrismPlus, {
+            showLineNumbers: false,
+            ignoreMissing: true,
+          })
+          .use(() => {
+            // Custom plugin to add data-language attribute for CSS language labels
+            return tree => {
+              visit(tree, 'element', node => {
+                if (node.tagName === 'pre' && node.properties.className) {
+                  const classNames = Array.isArray(node.properties.className)
+                    ? node.properties.className
+                    : [node.properties.className]
+
+                  const languageClass = classNames.find(
+                    className =>
+                      typeof className === 'string' &&
+                      className.startsWith('language-')
+                  )
+
+                  if (languageClass) {
+                    const language = languageClass.replace('language-', '')
+                    node.properties.dataLanguage = language
+                  }
+                }
+              })
+            }
+          })
+          .use(rehypeStringify)
           .process(content)
 
         const rawContentHtml = processedContent.toString()

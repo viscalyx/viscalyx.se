@@ -133,8 +133,18 @@
     @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
   }
 
+  /* Higher specificity for Prism.js code blocks to ensure backgrounds are preserved */
+  .blog-content pre[class*='language-'] {
+    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
+  }
+
   .blog-content pre code {
     @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-0;
+  }
+
+  /* Higher specificity for Prism.js code elements */
+  .blog-content pre[class*='language-'] code[class*='language-'] {
+    @apply bg-transparent text-secondary-900 dark:text-white p-0;
   }
 
   .blog-content a {

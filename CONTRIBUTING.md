@@ -423,6 +423,71 @@ You can now easily create different blog post styles by combining modifiers:
 <div className="blog-content blog-content-colorful blog-content-accent-headings prose prose-lg max-w-none">
 ```
 
+#### Syntax Highlighting
+
+The blog system includes automatic syntax highlighting for code blocks using Prism.js. This feature works with 200+ programming languages and automatically adapts to the current theme.
+
+**Using Syntax Highlighting:**
+
+1. **Standard Code Blocks**: Simply use triple backticks with a language identifier:
+
+   ````markdown
+   ```javascript
+   const greeting = 'Hello, World!'
+   console.log(greeting)
+   ```
+   ````
+
+   ```powershell
+   Get-Process | Where-Object { $_.CPU -gt 100 }
+   ```
+
+2. **Supported Languages**: The system supports all major programming languages including:
+
+   - **PowerShell** (`powershell`, `ps1`)
+   - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
+   - **Python** (`python`, `py`)
+   - **Bash/Shell** (`bash`, `shell`, `sh`)
+   - **HTML/CSS** (`html`, `css`)
+   - **JSON/YAML** (`json`, `yaml`)
+   - And many more...
+
+3. **Theme Integration**: Syntax highlighting automatically adapts to light/dark themes using the same color palette as the rest of the site.
+
+4. **Language Labels**: Code blocks automatically display language labels in the top-right corner for better readability.
+
+**Customizing Syntax Highlighting:**
+
+The syntax highlighting styles are defined in `app/prism-theme.css`. The implementation:
+
+- Uses the Tailwind CSS color palette for consistency
+- Preserves existing blog content backgrounds
+- Supports both light and dark themes
+- Includes PowerShell-specific token styling
+
+To modify syntax highlighting colors:
+
+```css
+/* Light theme colors */
+.token.keyword {
+  color: #2563eb; /* blue-600 */
+}
+
+/* Dark theme colors */
+.dark .token.keyword {
+  color: #60a5fa; /* blue-400 */
+}
+```
+
+**Technical Implementation:**
+
+- **Server-side processing**: Syntax highlighting is applied during the build process using `rehype-prism-plus`
+- **Build script**: Code highlighting is handled in `scripts/build-blog-data.js`
+- **HTML sanitization**: Updated to allow syntax highlighting classes and spans
+- **Performance**: No client-side JavaScript required for syntax highlighting
+
+The implementation ensures fast loading times and consistent rendering across all devices.
+
 ## Submitting Contributions
 
 ### Commit Messages

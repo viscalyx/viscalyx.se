@@ -106,9 +106,9 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
 // Function to sanitize HTML content and add IDs to headings in one pass
 function sanitizeAndAddHeadingIds(htmlContent: string): string {
-  // Use sanitize-html defaults with minimal customization for heading IDs
+  // Sanitization options that preserve Prism.js syntax highlighting
   const sanitizeOptions = {
-    // Allow id attributes on headings for table of contents navigation
+    // Allow class attributes for Prism.js syntax highlighting
     allowedAttributes: {
       ...sanitizeHtml.defaults.allowedAttributes,
       h1: ['id'],
@@ -117,7 +117,18 @@ function sanitizeAndAddHeadingIds(htmlContent: string): string {
       h4: ['id'],
       h5: ['id'],
       h6: ['id'],
+      // Allow Prism.js classes and attributes
+      pre: ['class', 'data-language'],
+      code: ['class'],
+      span: ['class'],
+      // Allow data attributes for Prism.js functionality
+      '*': ['data-*'],
     },
+    // Allow additional tags that Prism.js uses
+    allowedTags: [
+      ...sanitizeHtml.defaults.allowedTags,
+      'span', // Prism.js uses spans for syntax highlighting
+    ],
   }
 
   // First sanitize the HTML to remove unsafe content
