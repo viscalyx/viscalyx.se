@@ -5,12 +5,9 @@
 .blog-content pre[class*='language-'] {
   /* Let globals.css handle the container styling */
   margin: 0;
+  margin-top: 2rem;
+  position: relative;
   overflow: visible;
-}
-
-.blog-content code[class*='language-'] {
-  /* Let globals.css handle the background */
-  background: transparent !important;
 }
 
 /* Syntax highlighting tokens - Light theme */
@@ -178,13 +175,6 @@
   background: #0c0a09; /* Match dark code block background color */
   border-color: #374151;
   box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.3);
-}
-
-/* Ensure code blocks have space for the tab and proper positioning */
-.blog-content pre[class*='language-'] {
-  margin-top: 2rem;
-  position: relative;
-  overflow: visible;
 }
 
 /* Copy button positioned inside the code block at top-right */
