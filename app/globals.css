@@ -102,22 +102,12 @@
   }
 
   .blog-content pre {
-    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
-    border: 1px solid #d1d5db; /* Match tab border color */
-  }
-
-  .dark .blog-content pre {
-    border-color: #374151; /* Match tab border color in dark mode */
+    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-200 dark:border-secondary-700;
   }
 
   /* Higher specificity for Prism.js code blocks to ensure backgrounds are preserved */
   .blog-content pre[class*='language-'] {
-    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
-    border: 1px solid #d1d5db; /* Match tab border color */
-  }
-
-  .dark .blog-content pre[class*='language-'] {
-    border-color: #374151; /* Match tab border color in dark mode */
+    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-200 dark:border-secondary-700;
   }
 
   .blog-content pre code {
