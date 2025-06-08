@@ -194,6 +194,7 @@ const CaseStudiesPage = () => {
                       src={study.image}
                       alt={study.title}
                       fill
+                      sizes="100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

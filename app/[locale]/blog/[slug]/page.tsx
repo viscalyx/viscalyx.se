@@ -356,6 +356,7 @@ const BlogPostContent = ({
           src={post.image}
           alt={post.title}
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -493,6 +494,7 @@ const BlogPostContent = ({
                             src={relatedPost.image}
                             alt={relatedPost.title}
                             fill
+                            sizes="64px"
                             className="object-cover transition-transform group-hover:scale-110"
                           />
                         </div>

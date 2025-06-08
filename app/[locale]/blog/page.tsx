@@ -213,6 +213,7 @@ const BlogPage = () => {
                       src={displayFeaturedPost.image}
                       alt={displayFeaturedPost.title}
                       fill
+                      sizes="100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute top-4 left-4">
