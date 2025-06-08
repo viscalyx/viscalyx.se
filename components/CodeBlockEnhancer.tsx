@@ -4,55 +4,68 @@ import { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import CopyButton from './CopyButton'
 
-export default function CodeBlockEnhancer() {
+interface CodeBlockEnhancerProps {
+  contentLoaded?: boolean
+}
+
+export default function CodeBlockEnhancer({ contentLoaded = true }: CodeBlockEnhancerProps) {
   useEffect(() => {
-    // Find all code blocks and add copy buttons
-    const codeBlocks = document.querySelectorAll(
-      '.blog-content pre[class*="language-"]'
-    )
+    // Only run if content is loaded
+    if (!contentLoaded) return
 
-    codeBlocks.forEach(block => {
-      // Skip if copy button already exists
-      if (block.querySelector('.copy-button-container')) {
-        return
-      }
+    const addCopyButtons = () => {
+      // Find all code blocks and add copy buttons
+      const codeBlocks = document.querySelectorAll(
+        '.blog-content pre[class*="language-"]'
+      )
 
-      // Get the code content
-      const codeElement = block.querySelector('code')
-      if (!codeElement) return
+      codeBlocks.forEach(block => {
+        // Skip if copy button already exists
+        if (block.querySelector('.copy-button-container')) {
+          return
+        }
 
-      const codeText = codeElement.textContent || ''
+        // Get the code content
+        const codeElement = block.querySelector('code')
+        if (!codeElement) return
 
-      // Create container for the copy button
-      const copyContainer = document.createElement('div')
-      copyContainer.className = 'copy-button-container'
+        const codeText = codeElement.textContent || ''
 
-      // Position the parent relatively if not already
-      const blockElement = block as HTMLElement
-      if (
-        !blockElement.style.position &&
-        !window.getComputedStyle(blockElement).position.includes('relative')
-      ) {
-        blockElement.style.position = 'relative'
-      }
+        // Create container for the copy button
+        const copyContainer = document.createElement('div')
+        copyContainer.className = 'copy-button-container'
 
-      // Add class to help with CSS targeting
-      blockElement.classList.add('has-copy-button')
+        // Position the parent relatively if not already
+        const blockElement = block as HTMLElement
+        if (
+          !blockElement.style.position &&
+          !window.getComputedStyle(blockElement).position.includes('relative')
+        ) {
+          blockElement.style.position = 'relative'
+        }
 
-      // Insert the copy button container
-      block.appendChild(copyContainer)
+        // Add class to help with CSS targeting
+        blockElement.classList.add('has-copy-button')
 
-      // Render the React component into the container
-      const root = createRoot(copyContainer)
-      root.render(<CopyButton text={codeText} />)
-    })
+        // Insert the copy button container
+        block.appendChild(copyContainer)
 
-    // Cleanup function to remove copy buttons when component unmounts
+        // Render the React component into the container
+        const root = createRoot(copyContainer)
+        root.render(<CopyButton text={codeText} />)
+      })
+    }
+
+    // Small delay to ensure DOM rendering is complete
+    const timer = setTimeout(addCopyButtons, 50)
+
+    // Cleanup function
     return () => {
+      clearTimeout(timer)
       const copyContainers = document.querySelectorAll('.copy-button-container')
       copyContainers.forEach(container => container.remove())
     }
-  }, [])
+  }, [contentLoaded])
 
   // This component doesn't render anything visible itself
   return null
