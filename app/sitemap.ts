@@ -45,13 +45,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]
 
-  // Dynamic blog pages
-  const blogPages = posts.map(post => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
+  // Dynamic blog pages (filter out posts without valid dates)
+  const blogPages = posts
+    .filter(post => post.date)
+    .map(post => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
 
   /**
    * Fallback blog posts that don't have markdown files yet
