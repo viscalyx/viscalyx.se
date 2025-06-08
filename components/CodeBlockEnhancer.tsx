@@ -41,7 +41,7 @@ export default function CodeBlockEnhancer({
         const blockElement = block as HTMLElement
         if (
           !blockElement.style.position &&
-          !window.getComputedStyle(blockElement).position.includes('relative')
+          window.getComputedStyle(blockElement).position !== 'relative'
         ) {
           blockElement.style.position = 'relative'
         }
