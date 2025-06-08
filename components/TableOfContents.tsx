@@ -153,6 +153,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
             }`}
           >
             <button
+              type="button"
               onClick={() => handleClick(item.id)}
               data-id={item.id}
               className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
