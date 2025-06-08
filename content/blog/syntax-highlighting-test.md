@@ -630,60 +630,6 @@ ENV PORT 3000
 CMD ["node", "server.js"]
 ```
 
-## Markdown Example
-
-````markdown
-````markdown
-# Markdown Example
-
-This is a **markdown** document with various elements.
-
-## Features
-
-- _Italic text_
-- **Bold text**
-- ~~Strikethrough text~~
-- `Inline code`
-
-### Code Block
-
-```javascript
-function hello() {
-  console.log('Hello, World!')
-}
-```
-````
-
-### Links and Images
-
-[Visit GitHub](https://github.com)
-
-![Alt text](image.jpg 'Image title')
-
-### Tables
-
-| Name    | Age | City     |
-| ------- | --- | -------- |
-| Alice   | 25  | New York |
-| Bob     | 30  | London   |
-| Charlie | 35  | Paris    |
-
-### Blockquote
-
-> This is a blockquote.
-> It can span multiple lines.
-
-### Task List
-
-- [x] Completed task
-- [ ] Incomplete task
-- [ ] Another incomplete task
-
-```
-
-```
-````
-
 ## Regex Example
 
 ```regex
@@ -1042,4 +988,8 @@ top_students <- students %>%
 
 print("Top 10 Students by GPA:")
 print(top_students)
+```
+
+```
+
 ```
