@@ -15,6 +15,9 @@ export default function CodeBlockEnhancer({
     // Only run if content is loaded
     if (!contentLoaded) return
 
+    // Track containers created by this instance
+    const createdContainers: HTMLElement[] = []
+
     const addCopyButtons = () => {
       // Find all code blocks and add copy buttons
       const codeBlocks = document.querySelectorAll(
@@ -36,6 +39,9 @@ export default function CodeBlockEnhancer({
         // Create container for the copy button
         const copyContainer = document.createElement('div')
         copyContainer.className = 'copy-button-container'
+
+        // Track this container for cleanup
+        createdContainers.push(copyContainer)
 
         // Position the parent relatively if not already
         const blockElement = block as HTMLElement
@@ -64,8 +70,8 @@ export default function CodeBlockEnhancer({
     // Cleanup function
     return () => {
       clearTimeout(timer)
-      const copyContainers = document.querySelectorAll('.copy-button-container')
-      copyContainers.forEach(container => container.remove())
+      // Remove only containers created by this instance
+      createdContainers.forEach(container => container.remove())
     }
   }, [contentLoaded])
 
