@@ -442,7 +442,7 @@ The blog system includes automatic syntax highlighting for code blocks using Pri
    Get-Process | Where-Object { $_.CPU -gt 100 }
    ```
 
-2. **Supported Languages**: The system supports all major programming languages including:
+2. **Supported Languages**: The system supports all major programming languages, including:
 
    - **PowerShell** (`powershell`, `ps1`)
    - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
@@ -497,7 +497,7 @@ All code blocks automatically include a copy button in the top-right corner that
 - Automatically positions alongside language labels
 - Works with all supported programming languages
 
-The copy functionality is implemented client-side using React components while preserving the server-side rendering benefits.
+The copy functionality is implemented client-side using React components, while preserving the server-side rendering benefits.
 
 The implementation ensures fast loading times and consistent rendering across all devices.
 
