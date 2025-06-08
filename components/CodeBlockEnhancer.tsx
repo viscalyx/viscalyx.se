@@ -8,7 +8,9 @@ interface CodeBlockEnhancerProps {
   contentLoaded?: boolean
 }
 
-export default function CodeBlockEnhancer({ contentLoaded = true }: CodeBlockEnhancerProps) {
+export default function CodeBlockEnhancer({
+  contentLoaded = true,
+}: CodeBlockEnhancerProps) {
   useEffect(() => {
     // Only run if content is loaded
     if (!contentLoaded) return
