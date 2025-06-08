@@ -120,6 +120,7 @@ const Contact = () => {
                     name="name"
                     required
                     value={formData.name}
+                    autoComplete="on"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                     placeholder={t('form.fields.name.placeholder')}
@@ -139,6 +140,7 @@ const Contact = () => {
                     name="email"
                     required
                     value={formData.email}
+                    autoComplete="on"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                     placeholder={t('form.fields.email.placeholder')}
@@ -158,6 +160,7 @@ const Contact = () => {
                   id="company"
                   name="company"
                   value={formData.company}
+                  autoComplete="on"
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                   placeholder={t('form.fields.company.placeholder')}
