@@ -190,6 +190,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
     <BlogPostContent
       post={post}
       relatedPosts={relatedPosts}
+      loading={loading}
       t={t}
       format={format}
     />
@@ -254,6 +255,7 @@ function getFallbackPost(slug: string): BlogPost | null {
 interface BlogPostContentProps {
   post: BlogPost
   relatedPosts: BlogPost[]
+  loading: boolean
   t: (key: string) => string
   format: ReturnType<typeof import('next-intl').useFormatter>
 }
@@ -261,6 +263,7 @@ interface BlogPostContentProps {
 const BlogPostContent = ({
   post,
   relatedPosts,
+  loading,
   t,
   format,
 }: BlogPostContentProps) => {
@@ -393,7 +396,7 @@ const BlogPostContent = ({
                   dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
                 />
-                <CodeBlockEnhancer />
+                <CodeBlockEnhancer contentLoaded={!loading && !!post} />
               </div>
 
               {/* Tags */}
