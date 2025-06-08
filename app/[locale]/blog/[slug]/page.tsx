@@ -17,6 +17,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import TableOfContents from '@/components/TableOfContents'
 import ReadingProgress from '@/components/ReadingProgress'
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import { useBlogAnalytics } from '@/lib/analytics'
 import { notFound } from 'next/navigation'
 
@@ -392,6 +393,7 @@ const BlogPostContent = ({
                   dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
                 />
+                <CodeBlockEnhancer />
               </div>
 
               {/* Tags */}
