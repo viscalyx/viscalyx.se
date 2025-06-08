@@ -17,7 +17,7 @@
  */
 export function normalizeDate(
   dateString?: string,
-  fallbackDate: string = '1970-01-01'
+  fallbackDate = '1970-01-01'
 ): string {
   return dateString && !isNaN(Date.parse(dateString))
     ? dateString
