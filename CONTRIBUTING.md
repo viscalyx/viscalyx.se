@@ -250,7 +250,7 @@ The blog content uses a simplified CSS architecture designed to make customizati
 
 **Quick Start:**
 
-1. **Base Blog Content**: All blog posts use the `.blog-content` class which provides consistent styling for all content elements.
+1. **Base Blog Content**: All blog posts use the `.blog-content` class, which provides consistent styling for all content elements.
 
 2. **Simple Customization**: Apply modifier classes to change blog appearance:
 
