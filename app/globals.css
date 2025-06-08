@@ -82,61 +82,81 @@
     overflow: hidden;
   }
 
-  .prose {
+  /* Simplified Blog Content Styles - Easy to Modify */
+  .blog-content {
     @apply text-secondary-700 dark:text-secondary-300 leading-relaxed;
   }
 
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4,
-  .prose h5,
-  .prose h6 {
-    @apply text-secondary-900 dark:text-secondary-100 font-bold;
+  .blog-content h1,
+  .blog-content h2,
+  .blog-content h3,
+  .blog-content h4,
+  .blog-content h5,
+  .blog-content h6 {
+    @apply text-secondary-900 dark:text-secondary-100 font-bold scroll-mt-24;
   }
 
-  .prose h1 {
+  .blog-content h1 {
     @apply text-4xl mb-6 mt-8;
   }
 
-  .prose h2 {
+  .blog-content h2 {
     @apply text-3xl mb-4 mt-8;
   }
 
-  .prose h3 {
+  .blog-content h3 {
     @apply text-2xl mb-3 mt-6;
   }
 
-  .prose p {
+  .blog-content p {
     @apply mb-4;
   }
 
-  .prose ul,
-  .prose ol {
+  .blog-content ul,
+  .blog-content ol {
     @apply mb-4 ml-6;
   }
 
-  .prose li {
+  .blog-content li {
     @apply mb-2;
   }
 
-  .prose blockquote {
+  .blog-content blockquote {
     @apply border-l-4 border-primary-300 dark:border-primary-600 pl-4 italic text-secondary-600 dark:text-secondary-400 my-6;
   }
 
-  .prose code {
+  .blog-content code {
     @apply bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded text-sm;
   }
 
-  .prose pre {
+  .blog-content pre {
     @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6;
   }
 
-  .prose pre code {
+  .blog-content pre code {
     @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-0;
   }
 
-  .prose a {
+  .blog-content a {
     @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline;
+  }
+
+  /* Easy-to-modify blog examples - Now you can easily customize! */
+  .blog-content-large-text h2 {
+    @apply text-4xl;
+  }
+
+  .blog-content-accent-headings h1,
+  .blog-content-accent-headings h2,
+  .blog-content-accent-headings h3 {
+    @apply text-primary-600 dark:text-primary-400;
+  }
+
+  .blog-content-spaced p {
+    @apply mb-8;
+  }
+
+  .blog-content-colorful blockquote {
+    @apply bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
   }
 }

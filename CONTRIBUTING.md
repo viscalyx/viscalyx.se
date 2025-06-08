@@ -244,6 +244,185 @@ When adding new user-facing text:
 - Global styles are defined in `app/globals.css`.
 - Component-specific styles can be achieved using Tailwind utility classes directly in the JSX.
 
+#### Blog Content Styling
+
+The blog content uses a simplified CSS architecture designed to make customization easy for contributors.
+
+**Quick Start:**
+
+1. **Base Blog Content**: All blog posts use the `.blog-content` class which provides consistent styling for all content elements.
+
+2. **Simple Customization**: Apply modifier classes to change blog appearance:
+
+   ```tsx
+   // Default styling
+   <div className="blog-content prose prose-lg max-w-none">
+     {content}
+   </div>
+
+   // With accent-colored headings
+   <div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
+     {content}
+   </div>
+   ```
+
+3. **Available Modifier Classes**:
+
+   - `.blog-content-accent-headings` - Primary color headings
+   - `.blog-content-large-text` - Larger H2 headings
+   - `.blog-content-spaced` - More paragraph spacing
+   - `.blog-content-colorful` - Gradient blockquotes
+
+4. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
+
+   ```css
+   .blog-content-custom {
+     /* Your custom styles here */
+   }
+
+   .blog-content-custom h1 {
+     /* Custom H1 styling */
+   }
+   ```
+
+**Key Benefits:**
+
+- **Simple**: Easy to understand and modify
+- **Maintainable**: Clean separation of concerns
+- **Flexible**: Mix and match modifiers as needed
+- **Consistent**: All elements styled uniformly
+
+**Common Tasks:**
+
+- **Change heading colors**: Use `.blog-content-accent-headings` or create a custom modifier
+- **Adjust spacing**: Use `.blog-content-spaced` or modify paragraph margins in a custom class
+- **Style code blocks**: Modify `.blog-content pre` and `.blog-content code` rules
+- **Customize blockquotes**: Use `.blog-content-colorful` or create custom blockquote styles
+
+The architecture is meant to be a clean and easily customizable approach.
+
+#### Easy Customization Examples
+
+To make all H2 headings larger:
+
+```css
+.blog-content-large-text h2 {
+  @apply text-4xl;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-large-text prose prose-lg max-w-none">
+```
+
+To make headings use the primary color:
+
+```css
+.blog-content-accent-headings h1,
+.blog-content-accent-headings h2,
+.blog-content-accent-headings h3 {
+  @apply text-primary-600 dark:text-primary-400;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
+```
+
+To add more space between paragraphs:
+
+```css
+.blog-content-spaced p {
+  @apply mb-8;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-spaced prose prose-lg max-w-none">
+```
+
+To make blockquotes more visually appealing:
+
+```css
+.blog-content-colorful blockquote {
+  @apply bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-colorful prose prose-lg max-w-none">
+```
+
+#### Changing Heading Colors
+
+1. Open `app/globals.css`
+2. Find the `.blog-content h1, .blog-content h2, ...` section
+3. Modify the `@apply` directive:
+
+```css
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+  @apply text-red-600 dark:text-red-400 font-bold scroll-mt-24; /* Changed to red */
+}
+```
+
+#### Changing Code Block Styling
+
+To change code block background:
+
+```css
+.blog-content pre {
+  @apply bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto my-6; /* Terminal style */
+}
+```
+
+#### Changing Link Colors
+
+To change link styling:
+
+```css
+.blog-content a {
+  @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 no-underline hover:underline; /* Blue links with hover underline */
+}
+```
+
+#### Adding Custom Typography
+
+To add different font weights or sizes:
+
+```css
+.blog-content h1 {
+  @apply text-5xl font-black mb-8 mt-10; /* Larger, bolder H1 */
+}
+
+.blog-content p {
+  @apply mb-6 text-lg; /* Larger paragraph text */
+}
+```
+
+#### Creating Blog Variations
+
+You can now easily create different blog post styles by combining modifiers:
+
+##### Modern Tech Blog Style
+
+```tsx
+<div className="blog-content blog-content-accent-headings blog-content-large-text prose prose-lg max-w-none">
+```
+
+##### Spacious Reading Style
+
+```tsx
+<div className="blog-content blog-content-spaced prose prose-lg max-w-none">
+```
+
+##### Colorful Feature Style
+
+```tsx
+<div className="blog-content blog-content-colorful blog-content-accent-headings prose prose-lg max-w-none">
+```
+
 ## Submitting Contributions
 
 ### Commit Messages

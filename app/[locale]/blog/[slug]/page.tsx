@@ -411,7 +411,7 @@ const BlogPostContent = ({
                 </div>
               )}
 
-              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 dark:prose-headings:text-secondary-100 prose-p:text-secondary-700 dark:prose-p:text-secondary-300 prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-code:text-primary-600 dark:prose-code:text-primary-400 prose-pre:bg-secondary-50 dark:prose-pre:bg-secondary-800 prose-headings:scroll-mt-24">
+              <div className="blog-content prose prose-lg max-w-none">
                 <div
                   dangerouslySetInnerHTML={{ __html: sanitizedContent }}
                   className="markdown-content"
