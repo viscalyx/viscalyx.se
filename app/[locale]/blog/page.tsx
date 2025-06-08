@@ -41,8 +41,25 @@ const BlogPage = () => {
         const response = await fetch('/api/blog')
         if (response.ok) {
           const data: BlogListApiResponse = await response.json()
-          setAllPosts(data.allPosts || [])
-          setFeaturedPost(data.featuredPost)
+          // Normalize missing or invalid dates to default
+          const normalizedPosts = (data.allPosts || []).map(post => ({
+            ...post,
+            date: post.date && !isNaN(Date.parse(post.date))
+              ? post.date
+              : '1970-01-01'
+          }))
+          setAllPosts(normalizedPosts)
+          // Determine featured post, normalize date
+          let featured = data.featuredPost
+          if (!featured || !featured.date || isNaN(Date.parse(featured.date))) {
+            featured = normalizedPosts[0] || null
+          }
+          if (featured) {
+            featured.date = featured.date && !isNaN(Date.parse(featured.date))
+              ? featured.date
+              : '1970-01-01'
+          }
+          setFeaturedPost(featured)
         } else {
           console.error('Failed to fetch blog posts')
         }

@@ -144,7 +144,12 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 
         if (response.ok) {
           const data: BlogApiResponse = await response.json()
-          setPost(data.post)
+          // Normalize missing or invalid post date
+          const normalizedDate =
+            data.post.date && !isNaN(Date.parse(data.post.date))
+              ? data.post.date
+              : '1970-01-01'
+          setPost({ ...data.post, date: normalizedDate })
           setRelatedPosts(data.relatedPosts || [])
         } else if (response.status === 404) {
           // If markdown post not found, use fallback data for existing slugs
