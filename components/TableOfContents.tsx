@@ -13,7 +13,10 @@ interface TableOfContentsProps {
   maxHeight?: 'sm' | 'lg' // sm for mobile (max-h-64), lg for desktop (max-h-80)
 }
 
-const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'lg' }) => {
+const TableOfContents: React.FC<TableOfContentsProps> = ({
+  items,
+  maxHeight = 'lg',
+}) => {
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
@@ -55,29 +58,30 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'l
       const activeButton = scrollContainerRef.current.querySelector(
         `button[data-id="${activeId}"]`
       ) as HTMLElement
-      
+
       if (activeButton) {
         const container = scrollContainerRef.current
         const containerRect = container.getBoundingClientRect()
         const buttonRect = activeButton.getBoundingClientRect()
-        
+
         // Check if the active button is outside the visible area
         const isAboveView = buttonRect.top < containerRect.top
         const isBelowView = buttonRect.bottom > containerRect.bottom
-        
+
         if (isAboveView || isBelowView) {
           // Scroll to center the active item in the ToC container
           const containerScrollTop = container.scrollTop
           const buttonOffsetTop = activeButton.offsetTop
           const containerHeight = container.clientHeight
           const buttonHeight = activeButton.offsetHeight
-          
+
           // Calculate scroll position to center the active item
-          const scrollToPosition = buttonOffsetTop - (containerHeight / 2) + (buttonHeight / 2)
-          
+          const scrollToPosition =
+            buttonOffsetTop - containerHeight / 2 + buttonHeight / 2
+
           container.scrollTo({
             top: scrollToPosition,
-            behavior: 'smooth'
+            behavior: 'smooth',
           })
         }
       }
@@ -88,11 +92,12 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'l
   useEffect(() => {
     const checkScrollIndicators = () => {
       if (scrollContainerRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current
-        
+        const { scrollTop, scrollHeight, clientHeight } =
+          scrollContainerRef.current
+
         const canScrollUpValue = scrollTop > 0
         const canScrollDownValue = scrollTop < scrollHeight - clientHeight - 1
-        
+
         setCanScrollUp(canScrollUpValue)
         setCanScrollDown(canScrollDownValue)
       }
@@ -102,14 +107,14 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'l
     if (scrollContainer) {
       // Check initially
       checkScrollIndicators()
-      
+
       // Add scroll listener
       scrollContainer.addEventListener('scroll', checkScrollIndicators)
-      
+
       // Check on resize
       const resizeObserver = new ResizeObserver(checkScrollIndicators)
       resizeObserver.observe(scrollContainer)
-      
+
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollIndicators)
         resizeObserver.disconnect()
@@ -135,9 +140,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'l
           <ChevronUpIcon className="w-4 h-4 text-secondary-400 dark:text-secondary-500 mt-0.5 scroll-indicator" />
         </div>
       )}
-      
+
       {/* Scrollable content */}
-      <div 
+      <div
         ref={scrollContainerRef}
         className={`space-y-1 toc-scrollable ${heightClass} overflow-y-auto`}
       >
@@ -162,7 +167,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ items, maxHeight = 'l
           </div>
         ))}
       </div>
-      
+
       {/* Bottom scroll indicator */}
       {canScrollDown && (
         <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-end justify-center">

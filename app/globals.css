@@ -184,7 +184,7 @@
   .toc-scrollable {
     /* Show scrollbar always when content overflows */
     overflow-y: auto;
-    
+
     /* Firefox */
     scrollbar-width: thin;
     scrollbar-color: rgb(156 163 175) transparent; /* gray-400 for scrollbar thumb */
@@ -230,7 +230,8 @@
   }
 
   @keyframes scrollPulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.6;
     }
     50% {
