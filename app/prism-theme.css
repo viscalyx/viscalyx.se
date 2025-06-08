@@ -193,6 +193,8 @@
   top: 0.75rem;
   right: 0.75rem;
   z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 /* Make sure copy button stays visible on hover */
