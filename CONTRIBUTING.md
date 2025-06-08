@@ -248,10 +248,9 @@ When adding new user-facing text:
 
 The blog content uses a simplified CSS architecture designed to make customization easy for contributors.
 
-**Quick Start:**
+**Quick Start**:
 
 1. **Base Blog Content**: All blog posts use the `.blog-content` class, which provides consistent styling for all content elements.
-
 2. **Simple Customization**: Apply modifier classes to change blog appearance:
 
    ```tsx
