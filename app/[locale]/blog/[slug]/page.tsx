@@ -1,6 +1,5 @@
 'use client'
 
-import sanitizeHtml from 'sanitize-html'
 import {
   ArrowLeft,
   Calendar,
@@ -70,10 +69,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
       const level = parseInt(match[1])
-      const text = sanitizeHtml(match[2], {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim() // Sanitize HTML content
+      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove HTML tags
       const id = slugify(text)
 
       // Ensure the id is not empty
@@ -104,45 +100,14 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
   }
 }
 
-// Function to sanitize HTML content and add IDs to headings in one pass
-function sanitizeAndAddHeadingIds(htmlContent: string): string {
-  // Sanitization options that preserve Prism.js syntax highlighting
-  const sanitizeOptions = {
-    // Allow class attributes for Prism.js syntax highlighting
-    allowedAttributes: {
-      ...sanitizeHtml.defaults.allowedAttributes,
-      h1: ['id'],
-      h2: ['id'],
-      h3: ['id'],
-      h4: ['id'],
-      h5: ['id'],
-      h6: ['id'],
-      // Allow Prism.js classes and attributes
-      pre: ['class', 'data-language'],
-      code: ['class'],
-      span: ['class'],
-      // Allow data attributes for Prism.js functionality
-      '*': ['data-*'],
-    },
-    // Allow additional tags that Prism.js uses
-    allowedTags: [
-      ...sanitizeHtml.defaults.allowedTags,
-      'span', // Prism.js uses spans for syntax highlighting
-    ],
-  }
-
-  // First sanitize the HTML to remove unsafe content
-  const sanitizedHtml = sanitizeHtml(htmlContent, sanitizeOptions)
-
-  // Then add IDs to headings in the sanitized content
-  return sanitizedHtml.replace(
+// Function to add IDs to headings (content is already sanitized at build time)
+function addHeadingIds(htmlContent: string): string {
+  // Add IDs to headings for table of contents navigation
+  return htmlContent.replace(
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
-      // Sanitize the text content to generate clean IDs
-      const cleanText = sanitizeHtml(text, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
+      // Extract clean text content for ID generation
+      const cleanText = text.replace(/<[^>]*>/g, '').trim()
       const id = slugify(cleanText)
 
       // Ensure the id is not empty
@@ -155,7 +120,7 @@ function sanitizeAndAddHeadingIds(htmlContent: string): string {
         ? attributes
         : `${attributes} id="${finalId}"`
 
-      // Return the heading with sanitized content and proper ID
+      // Return the heading with proper ID
       return `<h${level}${finalAttributes}>${text}</h${level}>`
     }
   )
@@ -298,10 +263,10 @@ const BlogPostContent = ({
   t,
   format,
 }: BlogPostContentProps) => {
-  // Sanitize content and add IDs to headings in one pass
-  const sanitizedContent = sanitizeAndAddHeadingIds(post.content)
-  // Extract table of contents from the sanitized content
-  const tableOfContents = extractTableOfContents(sanitizedContent)
+  // Add IDs to headings for table of contents navigation
+  const contentWithIds = addHeadingIds(post.content)
+  // Extract table of contents from the content
+  const tableOfContents = extractTableOfContents(contentWithIds)
 
   // Track blog analytics
   useBlogAnalytics({
@@ -424,7 +389,7 @@ const BlogPostContent = ({
 
               <div className="blog-content prose prose-lg max-w-none">
                 <div
-                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
                 />
               </div>
