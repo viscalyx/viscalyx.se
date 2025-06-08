@@ -8,8 +8,6 @@ category: 'Testing'
 readTime: '1 min read'
 ---
 
-# Syntax Highlighting Test
-
 This article tests various code blocks with different languages and ensures syntax highlighting works as expected without altering the current design or background colors.
 
 ## JavaScript Example
