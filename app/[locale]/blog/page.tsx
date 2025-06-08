@@ -7,6 +7,7 @@ import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { normalizeDate } from '@/lib/date-utils'
 
 interface BlogPostMeta {
   title: string
@@ -44,22 +45,13 @@ const BlogPage = () => {
           // Normalize missing or invalid dates to default
           const normalizedPosts = (data.allPosts || []).map(post => ({
             ...post,
-            date:
-              post.date && !isNaN(Date.parse(post.date))
-                ? post.date
-                : '1970-01-01',
+            date: normalizeDate(post.date),
           }))
           setAllPosts(normalizedPosts)
-          // Determine featured post, normalize date
-          let featured = data.featuredPost
+          // Determine featured post
+          let featured = data.featuredPost ? { ...data.featuredPost } : null
           if (!featured || !featured.date || isNaN(Date.parse(featured.date))) {
             featured = normalizedPosts[0] || null
-          }
-          if (featured) {
-            featured.date =
-              featured.date && !isNaN(Date.parse(featured.date))
-                ? featured.date
-                : '1970-01-01'
           }
           setFeaturedPost(featured)
         } else {
