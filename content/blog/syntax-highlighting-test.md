@@ -987,7 +987,3 @@ top_students <- students %>%
 print("Top 10 Students by GPA:")
 print(top_students)
 ```
-
-```
-
-```
