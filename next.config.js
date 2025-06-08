@@ -1,5 +1,9 @@
 const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
-initOpenNextCloudflareForDev()
+
+// Only initialize OpenNext Cloudflare for development/non-production environments
+if (process.env.NODE_ENV !== 'production') {
+  initOpenNextCloudflareForDev()
+}
 
 const withNextIntl = require('next-intl/plugin')('./i18n.ts')
 
