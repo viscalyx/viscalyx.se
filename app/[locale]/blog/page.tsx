@@ -44,9 +44,10 @@ const BlogPage = () => {
           // Normalize missing or invalid dates to default
           const normalizedPosts = (data.allPosts || []).map(post => ({
             ...post,
-            date: post.date && !isNaN(Date.parse(post.date))
-              ? post.date
-              : '1970-01-01'
+            date:
+              post.date && !isNaN(Date.parse(post.date))
+                ? post.date
+                : '1970-01-01',
           }))
           setAllPosts(normalizedPosts)
           // Determine featured post, normalize date
@@ -55,9 +56,10 @@ const BlogPage = () => {
             featured = normalizedPosts[0] || null
           }
           if (featured) {
-            featured.date = featured.date && !isNaN(Date.parse(featured.date))
-              ? featured.date
-              : '1970-01-01'
+            featured.date =
+              featured.date && !isNaN(Date.parse(featured.date))
+                ? featured.date
+                : '1970-01-01'
           }
           setFeaturedPost(featured)
         } else {
