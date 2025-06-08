@@ -50,7 +50,7 @@ function validateBlogData(data: typeof blogData): BlogData {
   const posts: BlogPost[] = data.posts.map(p => ({
     slug: p.slug,
     title: p.title,
-    date: typeof p.date === 'string' ? p.date : '',
+    date: typeof p.date === 'string' ? p.date : '1970-01-01',
     author: p.author,
     excerpt: p.excerpt,
     image: p.image,
