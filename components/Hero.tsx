@@ -250,7 +250,7 @@ const Hero = () => {
                         className={`rounded-2xl shadow-2xl object-cover transition-opacity duration-300 ${
                           imagesLoaded[index] ? 'opacity-100' : 'opacity-0'
                         }`}
-                        priority
+                        priority={index === 0}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                         onError={() => handleImageError(index)}
                         onLoad={() => handleImageLoad(index)}
