@@ -3,7 +3,7 @@ import blogData from './blog-data.json'
 export interface BlogPost {
   slug: string
   title: string
-  date: string
+  date?: string
   author: string
   excerpt: string
   image: string
@@ -16,7 +16,7 @@ export interface BlogPost {
 export interface BlogPostMetadata {
   slug: string
   title: string
-  date: string
+  date?: string
   author: string
   excerpt: string
   image: string
@@ -50,13 +50,13 @@ function validateBlogData(data: typeof blogData): BlogData {
   const posts: BlogPost[] = data.posts.map(p => ({
     slug: p.slug,
     title: p.title,
-    date: typeof p.date === 'string' ? p.date : '1970-01-01',
+    date: typeof p.date === 'string' ? p.date : undefined,
     author: p.author,
     excerpt: p.excerpt,
     image: p.image,
     tags: Array.isArray(p.tags) ? p.tags.map(t => String(t)) : [],
     readTime: p.readTime,
-    category: p.category,
+    category: typeof p.category === 'string' ? p.category : undefined,
     content: p.content,
   }))
   return {

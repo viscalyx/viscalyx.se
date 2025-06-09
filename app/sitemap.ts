@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
 import { getStaticPageDates } from '@/lib/file-dates'
+import { normalizeDate } from '@/lib/date-utils'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://viscalyx.com'
@@ -48,8 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Dynamic blog pages (filter out posts without valid dates)
   const blogPages = posts.map(post => {
     // Normalize missing or invalid dates to default
-    const dateStr =
-      post.date && !isNaN(Date.parse(post.date)) ? post.date : '1970-01-01'
+    const dateStr = normalizeDate(post.date, 'No date provided')
     return {
       url: `${baseUrl}/blog/${post.slug}`,
       lastModified: new Date(dateStr),
