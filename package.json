@@ -17,13 +17,13 @@
     "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",
     "spell:check": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --no-progress",
     "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
-    "clean": "rm -rf .next out",
     "analyze": "ANALYZE=true npm run build",
     "export": "next export",
     "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint",
     "preview": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "prebuild": "rimraf .next out"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.1.0",
@@ -57,6 +57,7 @@
     "remark-html": "^16.0.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "wrangler": "^4.18.0"
+    "wrangler": "^4.18.0",
+    "rimraf": "^6.0.1"
   }
 }
