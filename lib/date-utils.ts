@@ -18,22 +18,26 @@
  */
 export function normalizeDate(
   dateString?: string,
-  fallbackDate?: Date | string
+  fallbackValue?: Date | string
 ): string {
   const parsedDate = dateString ? new Date(dateString) : undefined
-  if (isValidDate(parsedDate)) {
-    return getISODate(parsedDate as Date)
+  if (parsedDate && isValidDate(parsedDate)) {
+    return getISODate(parsedDate)
   }
   // Normalize fallbackDate into a Date, defaulting to epoch start date if missing or invalid
   let fbDateObj: string
-  if (fallbackDate === undefined) {
+  if (fallbackValue === undefined) {
     fbDateObj = getISODate(new Date(0)) // Unix epoch start date
-  } else if (typeof fallbackDate === 'string') {
-    fbDateObj = isValidDate(fallbackDate)
-      ? getISODate(new Date(fallbackDate))
-      : fallbackDate
+  } else if (typeof fallbackValue === 'string') {
+    // If fallbackValue is a string, check if it's a valid date string, if so fetch the ISO date
+    fbDateObj =
+      fallbackValue && isValidDate(fallbackValue)
+        ? getISODate(new Date(fallbackValue))
+        : // Output the value the user passed even if it is not a dateString, e.g. 'Not valid date'
+          fallbackValue
   } else {
-    fbDateObj = getISODate(fallbackDate)
+    // If fallbackValue is a date, fetch the ISO date
+    fbDateObj = getISODate(fallbackValue)
   }
   return fbDateObj
 }
