@@ -49,8 +49,7 @@ describe('date-utils', () => {
     const systemDate = new Date('2025-06-09T00:00:00Z')
 
     beforeAll(() => {
-      // @ts-expect-error jest.useFakeTimers modern mode not recognized by current types
-      jest.useFakeTimers('modern')
+      jest.useFakeTimers({ advanceTimers: true })
       jest.setSystemTime(systemDate)
     })
 
