@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Settings } from 'lucide-react'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -16,7 +16,6 @@ const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const settingsRef = useRef<HTMLDivElement>(null)
   const mobileSettingsRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations('navigation')
   const locale = useLocale()
@@ -55,26 +54,36 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isSettingsOpen])
 
-  const handleNavigation = (href: string) => {
-    setIsMenuOpen(false)
-
-    // Check if it's a section link (starts with #)
+  // Helper function to generate proper URLs for links
+  const getHrefUrl = (href: string) => {
     if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
+      // For section links, link to home page with hash
+      return `/${locale}/${href}`
+    } else {
+      // Regular page navigation - preserve locale
+      const cleanHref = href.startsWith('/') ? href : `/${href}`
+      return `/${locale}${cleanHref}`
+    }
+  }
+
+  // Handle click for section links that need smooth scrolling
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    // Only prevent default and handle custom logic for section links on the same page
+    if (href.startsWith('#')) {
       const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
-      if (currentPath !== '/') {
-        router.push(`/${locale}/${href}`)
-      } else {
-        // We're already on home page, just scroll to section
+      if (currentPath === '/') {
+        e.preventDefault()
+        setIsMenuOpen(false)
         const element = document.querySelector(href)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
     } else {
-      // Regular page navigation - preserve locale
-      const cleanHref = href.startsWith('/') ? href : `/${href}`
-      router.push(`/${locale}${cleanHref}`)
+      setIsMenuOpen(false)
     }
   }
 
@@ -120,17 +129,21 @@ const Header = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => (
-              <motion.button
+              <motion.div
                 key={item.name}
-                onClick={() => handleNavigation(item.href)}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 bg-transparent border-none cursor-pointer"
               >
-                {item.name}
-              </motion.button>
+                <Link
+                  href={getHrefUrl(item.href)}
+                  onClick={e => handleLinkClick(e, item.href)}
+                  className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
             ))}
 
             {/* Settings Dropdown */}
@@ -176,15 +189,19 @@ const Header = () => {
               </AnimatePresence>
             </div>
 
-            <motion.button
-              onClick={() => handleNavigation('#contact')}
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="btn-primary"
             >
-              {t('getStarted')}
-            </motion.button>
+              <Link
+                href={getHrefUrl('#contact')}
+                onClick={e => handleLinkClick(e, '#contact')}
+                className="btn-primary inline-block"
+              >
+                {t('getStarted')}
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -249,24 +266,29 @@ const Header = () => {
             >
               <div className="py-4 space-y-2">
                 {menuItems.map((item, index) => (
-                  <motion.button
+                  <motion.div
                     key={item.name}
-                    onClick={() => handleNavigation(item.href)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 bg-transparent border-none cursor-pointer"
                   >
-                    {item.name}
-                  </motion.button>
+                    <Link
+                      href={getHrefUrl(item.href)}
+                      onClick={e => handleLinkClick(e, item.href)}
+                      className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 ))}
                 <div className="px-6 pt-2">
-                  <button
-                    onClick={() => handleNavigation('#contact')}
+                  <Link
+                    href={getHrefUrl('#contact')}
+                    onClick={e => handleLinkClick(e, '#contact')}
                     className="btn-primary w-full text-center block"
                   >
                     {t('getStarted')}
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>

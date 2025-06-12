@@ -118,7 +118,8 @@ const Testimonials = () => {
                   <Image
                     src={testimonials[currentIndex].image}
                     alt={testimonials[currentIndex].name}
-                    fill
+                    width={64}
+                    height={64}
                     className="object-cover"
                   />
                 </div>

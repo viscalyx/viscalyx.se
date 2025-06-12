@@ -7,6 +7,7 @@ import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { normalizeDate, getCurrentDateISO } from '@/lib/date-utils'
 
 interface BlogPostMeta {
   title: string
@@ -41,8 +42,18 @@ const BlogPage = () => {
         const response = await fetch('/api/blog')
         if (response.ok) {
           const data: BlogListApiResponse = await response.json()
-          setAllPosts(data.allPosts || [])
-          setFeaturedPost(data.featuredPost)
+          // Normalize missing or invalid dates to default
+          const normalizedPosts = (data.allPosts || []).map(post => ({
+            ...post,
+            date: normalizeDate(post.date, 'No date provided'),
+          }))
+          setAllPosts(normalizedPosts)
+          // Determine featured post
+          let featured = data.featuredPost ? { ...data.featuredPost } : null
+          if (!featured || !featured.date || isNaN(Date.parse(featured.date))) {
+            featured = normalizedPosts[0] || null
+          }
+          setFeaturedPost(featured)
         } else {
           console.error('Failed to fetch blog posts')
         }
@@ -75,7 +86,7 @@ const BlogPage = () => {
     title: t('fallback.featuredPost.title'),
     excerpt: t('fallback.featuredPost.excerpt'),
     author: t('fallback.featuredPost.author'),
-    date: new Date().toISOString().split('T')[0], // Current date
+    date: getCurrentDateISO(), // Current date
     readTime: '5 min read',
     image:
       'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=400&fit=crop&crop=center',
@@ -194,6 +205,7 @@ const BlogPage = () => {
                       src={displayFeaturedPost.image}
                       alt={displayFeaturedPost.title}
                       fill
+                      sizes="100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute top-4 left-4">
@@ -284,11 +296,7 @@ const BlogPage = () => {
                   <div className="p-6">
                     <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
                       <Calendar className="w-3 h-3 mr-1" />
-                      {format.dateTime(new Date(post.date), {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
+                      {post.date}
                       <span className="mx-2">•</span>
                       <Clock className="w-3 h-3 mr-1" />
                       {post.readTime}

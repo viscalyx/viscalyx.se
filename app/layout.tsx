@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
+import './prism-theme.css'
 import { metadata } from './metadata'
 import { ThemeProvider } from '../lib/theme-context'
 
@@ -25,10 +26,10 @@ export default async function RootLayout({ children, params }: Props) {
                 try {
                   // Check localStorage for saved theme
                   const savedTheme = localStorage.getItem('theme');
-                  
+
                   // Determine the theme to apply
                   let shouldUseDark = false;
-                  
+
                   if (savedTheme === 'dark') {
                     shouldUseDark = true;
                   } else if (savedTheme === 'light') {
@@ -37,7 +38,7 @@ export default async function RootLayout({ children, params }: Props) {
                     // Default to 'system' - check user's OS preference
                     shouldUseDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                   }
-                  
+
                   // Apply the theme immediately to prevent FOUC
                   if (shouldUseDark) {
                     document.documentElement.classList.add('dark');

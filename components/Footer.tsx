@@ -249,7 +249,9 @@ const Footer = () => {
             <div className="mt-6 lg:mt-0 lg:flex-shrink-0">
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
+                  id="newsletter-email"
                   type="email"
+                  autoComplete="email"
                   placeholder={t('emailPlaceholder')}
                   className="px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white placeholder-secondary-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent min-w-0 flex-1"
                 />

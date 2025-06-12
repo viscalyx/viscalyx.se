@@ -244,6 +244,262 @@ When adding new user-facing text:
 - Global styles are defined in `app/globals.css`.
 - Component-specific styles can be achieved using Tailwind utility classes directly in the JSX.
 
+#### Blog Content Styling
+
+The blog content uses a simplified CSS architecture designed to make customization easy for contributors.
+
+**Quick Start**:
+
+1. **Base Blog Content**: All blog posts use the `.blog-content` class, which provides consistent styling for all content elements.
+2. **Simple Customization**: Apply modifier classes to change blog appearance:
+
+   ```tsx
+   // Default styling
+   <div className="blog-content prose prose-lg max-w-none">
+     {content}
+   </div>
+
+   // With accent-colored headings
+   <div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
+     {content}
+   </div>
+   ```
+
+3. **Available Modifier Classes**:
+
+   - `.blog-content-accent-headings` - Primary color headings
+   - `.blog-content-large-text` - Larger H2 headings
+   - `.blog-content-spaced` - More paragraph spacing
+   - `.blog-content-colorful` - Gradient blockquotes
+
+4. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
+
+   ```css
+   .blog-content-custom {
+     /* Your custom styles here */
+   }
+
+   .blog-content-custom h1 {
+     /* Custom H1 styling */
+   }
+   ```
+
+**Key Benefits:**
+
+- **Simple**: Easy to understand and modify
+- **Maintainable**: Clean separation of concerns
+- **Flexible**: Mix and match modifiers as needed
+- **Consistent**: All elements styled uniformly
+
+**Common Tasks:**
+
+- **Change heading colors**: Use `.blog-content-accent-headings` or create a custom modifier
+- **Adjust spacing**: Use `.blog-content-spaced` or modify paragraph margins in a custom class
+- **Style code blocks**: Modify `.blog-content pre` and `.blog-content code` rules
+- **Customize blockquotes**: Use `.blog-content-colorful` or create custom blockquote styles
+
+The architecture is meant to be a clean and easily customizable approach.
+
+#### Easy Customization Examples
+
+To make all H2 headings larger:
+
+```css
+.blog-content-large-text h2 {
+  @apply text-4xl;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-large-text prose prose-lg max-w-none">
+```
+
+To make headings use the primary color:
+
+```css
+.blog-content-accent-headings h1,
+.blog-content-accent-headings h2,
+.blog-content-accent-headings h3 {
+  @apply text-primary-600 dark:text-primary-400;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
+```
+
+To add more space between paragraphs:
+
+```css
+.blog-content-spaced p {
+  @apply mb-8;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-spaced prose prose-lg max-w-none">
+```
+
+To make blockquotes more visually appealing:
+
+```css
+.blog-content-colorful blockquote {
+  @apply bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
+}
+```
+
+```tsx
+<div className="blog-content blog-content-colorful prose prose-lg max-w-none">
+```
+
+#### Changing Heading Colors
+
+1. Open `app/globals.css`
+2. Find the `.blog-content h1, .blog-content h2, ...` section
+3. Modify the `@apply` directive:
+
+```css
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+  @apply text-red-600 dark:text-red-400 font-bold scroll-mt-24; /* Changed to red */
+}
+```
+
+#### Changing Code Block Styling
+
+To change code block background:
+
+```css
+.blog-content pre {
+  @apply bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto my-6; /* Terminal style */
+}
+```
+
+#### Changing Link Colors
+
+To change link styling:
+
+```css
+.blog-content a {
+  @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 no-underline hover:underline; /* Blue links with hover underline */
+}
+```
+
+#### Adding Custom Typography
+
+To add different font weights or sizes:
+
+```css
+.blog-content h1 {
+  @apply text-5xl font-black mb-8 mt-10; /* Larger, bolder H1 */
+}
+
+.blog-content p {
+  @apply mb-6 text-lg; /* Larger paragraph text */
+}
+```
+
+#### Creating Blog Variations
+
+You can now easily create different blog post styles by combining modifiers:
+
+##### Modern Tech Blog Style
+
+```tsx
+<div className="blog-content blog-content-accent-headings blog-content-large-text prose prose-lg max-w-none">
+```
+
+##### Spacious Reading Style
+
+```tsx
+<div className="blog-content blog-content-spaced prose prose-lg max-w-none">
+```
+
+##### Colorful Feature Style
+
+```tsx
+<div className="blog-content blog-content-colorful blog-content-accent-headings prose prose-lg max-w-none">
+```
+
+#### Syntax Highlighting
+
+The blog system includes automatic syntax highlighting for code blocks using Prism.js. This feature works with 200+ programming languages and automatically adapts to the current theme.
+
+**Using Syntax Highlighting:**
+
+1. **Standard Code Blocks**: Simply use triple backticks with a language identifier:
+
+   ````markdown
+   ```javascript
+   const greeting = 'Hello, World!'
+   console.log(greeting)
+   ```
+   ````
+
+   ```powershell
+   Get-Process | Where-Object { $_.CPU -gt 100 }
+   ```
+
+2. **Supported Languages**: The system supports all major programming languages, including:
+
+   - **PowerShell** (`powershell`, `ps1`)
+   - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
+   - **Python** (`python`, `py`)
+   - **Bash/Shell** (`bash`, `shell`, `sh`)
+   - **HTML/CSS** (`html`, `css`)
+   - **JSON/YAML** (`json`, `yaml`)
+   - And many more...
+
+3. **Theme Integration**: Syntax highlighting automatically adapts to light/dark themes using the same color palette as the rest of the site.
+
+4. **Language Labels**: Code blocks automatically display language labels in the top-right corner for better readability.
+
+**Customizing Syntax Highlighting:**
+
+The syntax highlighting styles are defined in `app/prism-theme.css`. The implementation:
+
+- Uses the Tailwind CSS color palette for consistency
+- Preserves existing blog content backgrounds
+- Supports both light and dark themes
+- Includes PowerShell-specific token styling
+
+To modify syntax highlighting colors:
+
+```css
+/* Light theme colors */
+.token.keyword {
+  color: #2563eb; /* blue-600 */
+}
+
+/* Dark theme colors */
+.dark .token.keyword {
+  color: #60a5fa; /* blue-400 */
+}
+```
+
+**Technical Implementation:**
+
+- **Server-side processing**: Syntax highlighting is applied during the build process using `rehype-prism-plus`
+- **Build script**: Code highlighting is handled in `scripts/build-blog-data.js`
+- **HTML sanitization**: Updated to allow syntax highlighting classes and spans
+- **Performance**: No client-side JavaScript required for syntax highlighting
+- **Copy functionality**: Each code block includes a copy-to-clipboard button for easy code sharing
+
+**Copy-to-Clipboard Feature:**
+
+All code blocks automatically include a copy button in the top-right corner that allows readers to quickly copy code snippets. The feature:
+
+- Uses the modern `navigator.clipboard.writeText()` API with fallback support
+- Provides visual feedback when content is copied
+- Includes hover tooltips for better accessibility
+- Automatically positions alongside language labels
+- Works with all supported programming languages
+
+The copy functionality is implemented client-side using React components, while preserving the server-side rendering benefits.
+
+The implementation ensures fast loading times and consistent rendering across all devices.
+
 ## Submitting Contributions
 
 ### Commit Messages
