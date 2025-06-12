@@ -241,8 +241,8 @@
   "postCreateCommand": "sudo npm install -g npm@latest && npm install",
 
   // Use 'postStartCommand' to run commands after the container starts and every time it starts
-  // This ensures the git configuration for gpg.ssh.program is set for the vscode user
-  "postStartCommand": "git config --global gpg.ssh.program ssh-keygen",
+  // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly
+  "postStartCommand": "git config --global --unset gpg.ssh.program",
 
   // Configure remote user
   "remoteUser": "vscode"
