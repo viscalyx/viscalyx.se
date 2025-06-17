@@ -7,7 +7,7 @@
  * Supports fallback as a Date or date string.
  *
  * @param dateString - The date string to normalize (optional)
- * @param fallbackDate - The fallback date to use if the input is invalid (Date or string, defaults to Unix epoch)
+ * @param fallbackValue - The fallback date to use if the input is invalid (Date or string, defaults to Unix epoch)
  * @returns A valid ISO date string or the fallback date
  *
  * @example
