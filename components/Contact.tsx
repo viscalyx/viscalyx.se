@@ -160,7 +160,7 @@ const Contact = () => {
                   id="company"
                   name="company"
                   value={formData.company}
-                  autoComplete="email"
+                  autoComplete="organization-name"
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white dark:bg-secondary-700 border border-secondary-200 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-secondary-900 dark:text-secondary-100"
                   placeholder={t('form.fields.company.placeholder')}
