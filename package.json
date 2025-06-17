@@ -26,7 +26,8 @@
     "preview": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run build:blog && npm run build:page-dates && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "prebuild": "rimraf .next out"
+    "prebuild": "rimraf .next out",
+    "prepreview": "rimraf .open-next"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.1.0",
