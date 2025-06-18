@@ -82,7 +82,7 @@ const Header = () => {
   ) => {
     // Only prevent default and handle custom logic for section links on the same page
     if (href.startsWith('#')) {
-      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
+      const currentPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
       if (currentPath === '/') {
         e.preventDefault()
         setIsMenuOpen(false)
