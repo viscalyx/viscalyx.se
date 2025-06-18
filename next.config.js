@@ -1,7 +1,14 @@
 // Only initialize OpenNext Cloudflare for development/non-production environments
 if (process.env.NODE_ENV !== 'production') {
-  const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
-  initOpenNextCloudflareForDev()
+  try {
+    const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
+    initOpenNextCloudflareForDev()
+  } catch (error) {
+    console.warn(
+      'Warning: Failed to load @opennextjs/cloudflare module:',
+      error.message
+    )
+  }
 }
 
 const withNextIntl = require('next-intl/plugin')('./i18n.ts')
