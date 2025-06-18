@@ -110,13 +110,18 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       // Add scroll listener
       scrollContainer.addEventListener('scroll', checkScrollIndicators)
 
-      // Check on resize
-      const resizeObserver = new ResizeObserver(checkScrollIndicators)
-      resizeObserver.observe(scrollContainer)
+      // Check on resize (only if ResizeObserver is supported)
+      let resizeObserver: ResizeObserver | null = null
+      if (typeof ResizeObserver !== 'undefined') {
+        resizeObserver = new ResizeObserver(checkScrollIndicators)
+        resizeObserver.observe(scrollContainer)
+      }
 
       return () => {
         scrollContainer.removeEventListener('scroll', checkScrollIndicators)
-        resizeObserver.disconnect()
+        if (resizeObserver) {
+          resizeObserver.disconnect()
+        }
       }
     }
   }, [items])
