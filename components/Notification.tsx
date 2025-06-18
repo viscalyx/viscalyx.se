@@ -44,9 +44,9 @@
  * Note: Remember to update documentation and examples once this component is integrated into the application.
  */
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
 
 interface NotificationProps {
   type: 'success' | 'error' | 'warning' | 'info'
