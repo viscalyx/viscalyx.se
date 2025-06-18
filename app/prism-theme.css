@@ -20,19 +20,21 @@
   --highlight-line-bg: rgba(59, 130, 246, 0.1); /* blue with opacity */
 }
 
-.dark {
-  /* Dark theme colors */
-  --token-comment: #9ca3af; /* gray-400 */
-  --token-punctuation: #d1d5db; /* gray-300 */
-  --token-property: #f87171; /* red-400 */
-  --token-selector: #34d399; /* green-400 */
-  --token-operator: #fbbf24; /* amber-400 */
-  --token-keyword: #60a5fa; /* blue-400 */
-  --token-function: #a78bfa; /* violet-400 */
-  --token-variable: #fb923c; /* orange-400 */
-  --token-powershell-variable: #60a5fa; /* blue-400 */
-  --token-powershell-cmdlet: #a78bfa; /* violet-400 */
-  --token-powershell-parameter: #34d399; /* green-400 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme colors */
+    --token-comment: #9ca3af; /* gray-400 */
+    --token-punctuation: #d1d5db; /* gray-300 */
+    --token-property: #f87171; /* red-400 */
+    --token-selector: #34d399; /* green-400 */
+    --token-operator: #fbbf24; /* amber-400 */
+    --token-keyword: #60a5fa; /* blue-400 */
+    --token-function: #a78bfa; /* violet-400 */
+    --token-variable: #fb923c; /* orange-400 */
+    --token-powershell-variable: #60a5fa; /* blue-400 */
+    --token-powershell-cmdlet: #a78bfa; /* violet-400 */
+    --token-powershell-parameter: #34d399; /* green-400 */
+  }
 }
 
 /* Base code styling - work with existing backgrounds from globals.css */
