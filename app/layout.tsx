@@ -1,10 +1,7 @@
-import { Inter } from 'next/font/google'
-import './globals.css'
-import './prism-theme.css'
-import { metadata } from './metadata'
 import { ThemeProvider } from '../lib/theme-context'
-
-const inter = Inter({ subsets: ['latin', 'latin-ext'] })
+import './globals.css'
+import { metadata } from './metadata'
+import './prism-theme.css'
 
 export { metadata }
 
@@ -19,6 +16,10 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
       <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -54,7 +55,7 @@ export default async function RootLayout({ children, params }: Props) {
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className="font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
