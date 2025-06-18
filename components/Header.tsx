@@ -104,13 +104,13 @@ const Header = () => {
       // Check if we're on the home page (with or without hash)
       if (currentPath === '/' || currentPath === '') {
         e.preventDefault()
-        // Add a small delay to ensure menu closes before scrolling
-        setTimeout(() => {
+        // Ensure DOM has updated after menu closes before scrolling
+        requestAnimationFrame(() => {
           const element = document.querySelector(href)
           if (element) {
             element.scrollIntoView({ behavior: 'smooth' })
           }
-        }, 100)
+        })
       }
     }
   }
