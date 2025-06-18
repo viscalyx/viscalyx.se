@@ -144,12 +144,11 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   }
 
   return (
-    <nav 
+    <nav
       className="relative"
-      {...(headingId 
+      {...(headingId
         ? { 'aria-labelledby': headingId }
-        : { 'aria-label': 'Table of contents' }
-      )}
+        : { 'aria-label': 'Table of contents' })}
     >
       {/* Top scroll indicator */}
       {canScrollUp && (

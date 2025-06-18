@@ -1,25 +1,25 @@
 'use client'
 
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import ReadingProgress from '@/components/ReadingProgress'
+import TableOfContents from '@/components/TableOfContents'
+import { useBlogAnalytics } from '@/lib/analytics'
 import {
   ArrowLeft,
+  BookOpen,
   Calendar,
   Clock,
-  User,
   Share2,
-  BookOpen,
   Tag,
+  User,
 } from 'lucide-react'
-import Link from 'next/link'
+import { useFormatter, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { useTranslations, useFormatter } from 'next-intl'
-import { useEffect, useState } from 'react'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import TableOfContents from '@/components/TableOfContents'
-import ReadingProgress from '@/components/ReadingProgress'
-import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
-import { useBlogAnalytics } from '@/lib/analytics'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -374,7 +374,10 @@ const BlogPostContent = ({
                 <div className="lg:hidden bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8 border border-secondary-100 dark:border-secondary-700">
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
-                      <div id="toc-heading-mobile" className="flex items-center">
+                      <div
+                        id="toc-heading-mobile"
+                        className="flex items-center"
+                      >
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
                       </div>
@@ -393,9 +396,9 @@ const BlogPostContent = ({
                       </svg>
                     </summary>
                     <div className="mt-4">
-                      <TableOfContents 
-                        items={tableOfContents} 
-                        maxHeight="sm" 
+                      <TableOfContents
+                        items={tableOfContents}
+                        maxHeight="sm"
                         headingId="toc-heading-mobile"
                       />
                     </div>
@@ -471,17 +474,17 @@ const BlogPostContent = ({
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                    <h3 
-                      id="toc-heading" 
+                    <h3
+                      id="toc-heading"
                       className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
                     >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h3>
                     <div>
-                      <TableOfContents 
-                        items={tableOfContents} 
-                        maxHeight="lg" 
+                      <TableOfContents
+                        items={tableOfContents}
+                        maxHeight="lg"
                         headingId="toc-heading"
                       />
                     </div>
