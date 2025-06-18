@@ -1,7 +1,14 @@
+import { Inter } from 'next/font/google'
 import { ThemeProvider } from '../lib/theme-context'
 import './globals.css'
 import { metadata } from './metadata'
 import './prism-theme.css'
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+})
 
 export { metadata }
 
@@ -14,12 +21,12 @@ export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params
 
   return (
-    <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`scroll-smooth ${inter.className}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
