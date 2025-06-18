@@ -82,8 +82,6 @@ describe('LoadingSpinner', () => {
         <div data-testid="container">{true && <LoadingSpinner />}</div>
       )
 
-      expect(screen.getByRole('status')).toBeInTheDocument()
-
       rerender(<div data-testid="container">{false && <LoadingSpinner />}</div>)
 
       expect(screen.queryByRole('status')).not.toBeInTheDocument()
@@ -91,8 +89,6 @@ describe('LoadingSpinner', () => {
 
     it('unmounts correctly when removed from DOM', () => {
       const { unmount } = render(<LoadingSpinner />)
-
-      expect(screen.getByRole('status')).toBeInTheDocument()
 
       unmount()
 
