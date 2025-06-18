@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import LoadingSpinner from '../LoadingSpinner'
 
 describe('LoadingSpinner', () => {
-
   it('renders an accessible spinner', () => {
     render(<LoadingSpinner />)
     const spinner = screen.getByRole('status', { name: /loading/i })
@@ -13,7 +12,7 @@ describe('LoadingSpinner', () => {
     render(<LoadingSpinner />)
     const spinner = screen.getByRole('status')
     const icon = spinner.querySelector('svg')
-    
+
     expect(spinner).toBeInTheDocument()
     expect(icon).toHaveClass('w-6', 'h-6', 'text-primary-600', 'animate-spin')
   })
@@ -23,7 +22,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner size="sm" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('w-4', 'h-4')
     })
 
@@ -31,7 +30,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner size="md" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('w-6', 'h-6')
     })
 
@@ -39,7 +38,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner size="lg" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('w-8', 'h-8')
     })
   })
@@ -49,7 +48,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('text-primary-600')
     })
 
@@ -57,7 +56,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner color="white" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('text-white')
     })
 
@@ -65,7 +64,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner color="secondary" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('text-secondary-600')
     })
   })
@@ -74,35 +73,29 @@ describe('LoadingSpinner', () => {
     it('is present in DOM when rendered (loading state)', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
-      
+
       expect(spinner).toBeInTheDocument()
     })
 
     it('can be conditionally rendered based on loading state', () => {
       const { rerender } = render(
-        <div data-testid="container">
-          {true && <LoadingSpinner />}
-        </div>
+        <div data-testid="container">{true && <LoadingSpinner />}</div>
       )
-      
+
       expect(screen.getByRole('status')).toBeInTheDocument()
-      
-      rerender(
-        <div data-testid="container">
-          {false && <LoadingSpinner />}
-        </div>
-      )
-      
+
+      rerender(<div data-testid="container">{false && <LoadingSpinner />}</div>)
+
       expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('unmounts correctly when removed from DOM', () => {
       const { unmount } = render(<LoadingSpinner />)
-      
+
       expect(screen.getByRole('status')).toBeInTheDocument()
-      
+
       unmount()
-      
+
       expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
   })
@@ -111,7 +104,7 @@ describe('LoadingSpinner', () => {
     it('has correct ARIA attributes', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
-      
+
       expect(spinner).toHaveAttribute('role', 'status')
       expect(spinner).toHaveAttribute('aria-label', 'Loading')
     })
@@ -119,7 +112,7 @@ describe('LoadingSpinner', () => {
     it('is announced by screen readers', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByLabelText(/loading/i)
-      
+
       expect(spinner).toBeInTheDocument()
     })
   })
@@ -128,7 +121,7 @@ describe('LoadingSpinner', () => {
     it('has correct container classes', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
-      
+
       expect(spinner).toHaveClass('flex', 'items-center', 'justify-center')
     })
 
@@ -136,7 +129,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('animate-spin')
     })
 
@@ -144,7 +137,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toBeInTheDocument()
       expect(icon).toBeInstanceOf(SVGElement)
     })
@@ -155,7 +148,7 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner size="lg" color="white" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
+
       expect(icon).toHaveClass('w-8', 'h-8', 'text-white', 'animate-spin')
     })
 
@@ -163,8 +156,13 @@ describe('LoadingSpinner', () => {
       render(<LoadingSpinner size="sm" color="secondary" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
-      
-      expect(icon).toHaveClass('w-4', 'h-4', 'text-secondary-600', 'animate-spin')
+
+      expect(icon).toHaveClass(
+        'w-4',
+        'h-4',
+        'text-secondary-600',
+        'animate-spin'
+      )
     })
   })
 })

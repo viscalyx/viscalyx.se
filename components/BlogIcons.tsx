@@ -41,39 +41,39 @@ export const CheckmarkIcon: React.FC<BlogIconProps> = ({
 )
 
 // ChevronUp Icon - Stroke style for scroll indicators
-export const ChevronUpIcon: React.FC<BlogIconProps> = memo(({
-  className = 'w-4 h-4',
-}) => (
-  <svg
-    role="img"
-    aria-label="Scroll up"
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m18 15-6-6-6 6" />
-  </svg>
-))
+export const ChevronUpIcon: React.FC<BlogIconProps> = memo(
+  ({ className = 'w-4 h-4' }) => (
+    <svg
+      role="img"
+      aria-label="Scroll up"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  )
+)
 
 // ChevronDown Icon - Stroke style for scroll indicators
-export const ChevronDownIcon: React.FC<BlogIconProps> = memo(({
-  className = 'w-4 h-4',
-}) => (
-  <svg
-    role="img"
-    aria-label="Scroll down"
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-))
+export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
+  ({ className = 'w-4 h-4' }) => (
+    <svg
+      role="img"
+      aria-label="Scroll down"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  )
+)
