@@ -137,7 +137,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   }
 
   return (
-    <nav className="relative" aria-label="Table of contents" role="navigation">
+    <nav className="relative" aria-label="Table of contents">
       {/* Top scroll indicator */}
       {canScrollUp && (
         <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-start justify-center">
@@ -150,7 +150,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         ref={scrollContainerRef}
         className={`toc-scrollable ${heightClass} overflow-y-auto`}
       >
-        <ul className="space-y-1" role="list">
+        <ul className="space-y-1">
           {items.map((item, index) => (
             <li
               key={index}
