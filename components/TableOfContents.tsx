@@ -162,6 +162,8 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         ref={scrollContainerRef}
         className={`toc-scrollable ${heightClass} overflow-y-auto`}
         tabIndex={0}
+        role="region"
+        aria-label="Scrollable table of contents"
       >
         <ul className="space-y-1">
           {items.map((item, index) => (
