@@ -59,7 +59,11 @@ function validateBlogData(data: typeof blogData): BlogData {
     excerpt: p.excerpt,
     image: p.image,
     tags: Array.isArray(p.tags)
-      ? Array.from(new Set(p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase())))
+      ? Array.from(
+          new Set(
+            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase())
+          )
+        )
       : [],
     readTime: p.readTime,
     category: typeof p.category === 'string' ? p.category : undefined,
