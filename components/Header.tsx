@@ -56,6 +56,11 @@ const Header = () => {
 
   // Helper function to generate proper URLs for links
   const getHrefUrl = (href: string) => {
+    // Check if it's an absolute URL (external link)
+    if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) {
+      return href
+    }
+    
     if (href.startsWith('#')) {
       // For section links, link to home page with hash
       return `/${locale}${href}`
