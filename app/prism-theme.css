@@ -1,6 +1,37 @@
 /* Custom Prism.js theme that preserves existing background colors */
 /* and adds syntax highlighting that works with dark/light themes */
 
+/* CSS custom properties for token colors */
+:root {
+  /* Light theme colors */
+  --token-comment: #6b7280; /* gray-500 */
+  --token-punctuation: #374151; /* gray-700 */
+  --token-property: #dc2626; /* red-600 */
+  --token-selector: #059669; /* green-600 */
+  --token-operator: #d97706; /* amber-600 */
+  --token-keyword: #2563eb; /* blue-600 */
+  --token-function: #7c3aed; /* violet-600 */
+  --token-variable: #ea580c; /* orange-600 */
+  --token-powershell-variable: #2563eb; /* blue-600 */
+  --token-powershell-cmdlet: #7c3aed; /* violet-600 */
+  --token-powershell-parameter: #059669; /* green-600 */
+}
+
+.dark {
+  /* Dark theme colors */
+  --token-comment: #9ca3af; /* gray-400 */
+  --token-punctuation: #d1d5db; /* gray-300 */
+  --token-property: #f87171; /* red-400 */
+  --token-selector: #34d399; /* green-400 */
+  --token-operator: #fbbf24; /* amber-400 */
+  --token-keyword: #60a5fa; /* blue-400 */
+  --token-function: #a78bfa; /* violet-400 */
+  --token-variable: #fb923c; /* orange-400 */
+  --token-powershell-variable: #60a5fa; /* blue-400 */
+  --token-powershell-cmdlet: #a78bfa; /* violet-400 */
+  --token-powershell-parameter: #34d399; /* green-400 */
+}
+
 /* Base code styling - work with existing backgrounds from globals.css */
 .blog-content pre[class*='language-'] {
   /* Let globals.css handle the container styling */
@@ -15,11 +46,11 @@
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #6b7280; /* gray-500 */
+  color: var(--token-comment);
 }
 
 .token.punctuation {
-  color: #374151; /* gray-700 */
+  color: var(--token-punctuation);
 }
 
 .token.property,
@@ -29,7 +60,7 @@
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: #dc2626; /* red-600 */
+  color: var(--token-property);
 }
 
 .token.selector,
@@ -38,7 +69,7 @@
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: #059669; /* green-600 */
+  color: var(--token-selector);
 }
 
 .token.operator,
@@ -46,37 +77,37 @@
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #d97706; /* amber-600 */
+  color: var(--token-operator);
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-  color: #2563eb; /* blue-600 */
+  color: var(--token-keyword);
 }
 
 .token.function,
 .token.class-name {
-  color: #7c3aed; /* violet-600 */
+  color: var(--token-function);
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-  color: #ea580c; /* orange-600 */
+  color: var(--token-variable);
 }
 
 /* PowerShell specific tokens */
 .token.powershell-variable {
-  color: #2563eb; /* blue-600 */
+  color: var(--token-powershell-variable);
 }
 
 .token.powershell-cmdlet {
-  color: #7c3aed; /* violet-600 */
+  color: var(--token-powershell-cmdlet);
 }
 
 .token.powershell-parameter {
-  color: #059669; /* green-600 */
+  color: var(--token-powershell-parameter);
 }
 
 /* Dark theme syntax highlighting */
@@ -84,11 +115,11 @@
 .dark .token.prolog,
 .dark .token.doctype,
 .dark .token.cdata {
-  color: #9ca3af; /* gray-400 */
+  color: var(--token-comment);
 }
 
 .dark .token.punctuation {
-  color: #d1d5db; /* gray-300 */
+  color: var(--token-punctuation);
 }
 
 .dark .token.property,
@@ -98,7 +129,7 @@
 .dark .token.constant,
 .dark .token.symbol,
 .dark .token.deleted {
-  color: #f87171; /* red-400 */
+  color: var(--token-property);
 }
 
 .dark .token.selector,
@@ -107,7 +138,7 @@
 .dark .token.char,
 .dark .token.builtin,
 .dark .token.inserted {
-  color: #34d399; /* green-400 */
+  color: var(--token-selector);
 }
 
 .dark .token.operator,
@@ -115,37 +146,37 @@
 .dark .token.url,
 .dark .language-css .token.string,
 .dark .style .token.string {
-  color: #fbbf24; /* amber-400 */
+  color: var(--token-operator);
 }
 
 .dark .token.atrule,
 .dark .token.attr-value,
 .dark .token.keyword {
-  color: #60a5fa; /* blue-400 */
+  color: var(--token-keyword);
 }
 
 .dark .token.function,
 .dark .token.class-name {
-  color: #a78bfa; /* violet-400 */
+  color: var(--token-function);
 }
 
 .dark .token.regex,
 .dark .token.important,
 .dark .token.variable {
-  color: #fb923c; /* orange-400 */
+  color: var(--token-variable);
 }
 
 /* PowerShell specific tokens - Dark theme */
 .dark .token.powershell-variable {
-  color: #60a5fa; /* blue-400 */
+  color: var(--token-powershell-variable);
 }
 
 .dark .token.powershell-cmdlet {
-  color: #a78bfa; /* violet-400 */
+  color: var(--token-powershell-cmdlet);
 }
 
 .dark .token.powershell-parameter {
-  color: #34d399; /* green-400 */
+  color: var(--token-powershell-parameter);
 }
 
 /* Language label styling - Tab design above code block */
