@@ -1,10 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Star, Users, ExternalLink } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { ExternalLink, Star, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
+import { GitHubIcon } from './SocialIcons'
 
 const OpenSource = () => {
   const router = useRouter()
@@ -135,11 +136,12 @@ const OpenSource = () => {
                   src={project.image}
                   alt={project.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
-                  <Github className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
+                  <GitHubIcon className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
                 </div>
               </div>
 
@@ -207,7 +209,7 @@ const OpenSource = () => {
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
               >
-                <Github className="w-5 h-5 mr-2" />
+                <GitHubIcon className="w-5 h-5 mr-2" />
                 {t('cta.followGithub')}
               </motion.a>
               <motion.button

@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Quote, Star, ArrowLeft, ArrowRight } from 'lucide-react'
-import { useState } from 'react'
-import Image from 'next/image'
+import { ArrowLeft, ArrowRight, Quote, Star } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { useState } from 'react'
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -114,14 +114,13 @@ const Testimonials = () => {
             {/* Author Info */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src={testimonials[currentIndex].image}
-                    alt={testimonials[currentIndex].name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <Image
+                  src={testimonials[currentIndex].image}
+                  alt={testimonials[currentIndex].name}
+                  width={64}
+                  height={64}
+                  className="rounded-full object-cover mr-4"
+                />
                 <div>
                   <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100">
                     {testimonials[currentIndex].name}

@@ -115,6 +115,7 @@ export default async function CaseStudyDetail({
                 src={caseStudy.image}
                 alt={caseStudy.title}
                 fill
+                sizes="100vw"
                 className="object-cover"
               />
             </div>

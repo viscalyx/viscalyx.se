@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Settings } from 'lucide-react'
-import { useRouter, usePathname } from 'next/navigation'
-import { useTranslations, useLocale } from 'next-intl'
-import Link from 'next/link'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, Settings, X } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import ThemeToggle from './ThemeToggle'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
+import { locales } from '../i18n'
 import LanguageSwitcher from './LanguageSwitcher'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,7 +17,6 @@ const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const settingsRef = useRef<HTMLDivElement>(null)
   const mobileSettingsRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations('navigation')
   const locale = useLocale()
@@ -55,26 +55,68 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isSettingsOpen])
 
-  const handleNavigation = (href: string) => {
-    setIsMenuOpen(false)
+  // Helper function to generate proper URLs for links
+  const getHrefUrl = (href: string) => {
+    // Enhanced absolute URL detection using regex to cover all protocols
+    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
 
-    // Check if it's a section link (starts with #)
+    // Check if it's an absolute URL (external link) or special protocols
+    if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
+      return href
+    }
+
     if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
-      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
-      if (currentPath !== '/') {
-        router.push(`/${locale}/${href}`)
-      } else {
-        // We're already on home page, just scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
+      // For section links, link to home page with hash
+      return `/${locale}${href}`
     } else {
       // Regular page navigation - preserve locale
       const cleanHref = href.startsWith('/') ? href : `/${href}`
-      router.push(`/${locale}${cleanHref}`)
+
+      // Check if the path already starts with a locale prefix to avoid duplication
+      const pathSegments = cleanHref.split('/').filter(Boolean)
+      const firstSegment = pathSegments[0]
+
+      // Normalize the first segment by converting to lowercase and trimming slashes
+      const normalizedFirstSegment = firstSegment
+        ?.toLowerCase()
+        .replace(/\/$/, '')
+
+      if (
+        normalizedFirstSegment &&
+        locales.includes(normalizedFirstSegment as (typeof locales)[number])
+      ) {
+        // Path already has a locale, return as-is
+        return cleanHref
+      } else {
+        // Add locale prefix, ensuring no double slashes
+        return `/${locale}${cleanHref}`
+      }
+    }
+  }
+
+  // Handle click for section links that need smooth scrolling
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    // Always close the mobile menu when any link is clicked
+    setIsMenuOpen(false)
+
+    // Handle section links on the same page (home page)
+    if (href.startsWith('#')) {
+      // Remove locale from path and check if we're on the home page
+      const currentPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
+      // Check if we're on the home page (with or without hash)
+      if (currentPath === '/' || currentPath === '') {
+        e.preventDefault()
+        // Ensure DOM has updated after menu closes before scrolling
+        requestAnimationFrame(() => {
+          const element = document.querySelector(href)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        })
+      }
     }
   }
 
@@ -119,19 +161,23 @@ const Header = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item, index) => (
-              <motion.button
-                key={item.name}
-                onClick={() => handleNavigation(item.href)}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 bg-transparent border-none cursor-pointer"
-              >
-                {item.name}
-              </motion.button>
-            ))}
+            {menuItems.map((item, index) => {
+              const MotionLink = motion(Link)
+              return (
+                <MotionLink
+                  key={item.name}
+                  href={getHrefUrl(item.href)}
+                  onClick={e => handleLinkClick(e, item.href)}
+                  className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {item.name}
+                </MotionLink>
+              )
+            })}
 
             {/* Settings Dropdown */}
             <div className="relative" ref={settingsRef}>
@@ -176,15 +222,19 @@ const Header = () => {
               </AnimatePresence>
             </div>
 
-            <motion.button
-              onClick={() => handleNavigation('#contact')}
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="btn-primary"
             >
-              {t('getStarted')}
-            </motion.button>
+              <Link
+                href={getHrefUrl('#contact')}
+                onClick={e => handleLinkClick(e, '#contact')}
+                className="btn-primary inline-block"
+              >
+                {t('getStarted')}
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -249,24 +299,29 @@ const Header = () => {
             >
               <div className="py-4 space-y-2">
                 {menuItems.map((item, index) => (
-                  <motion.button
+                  <motion.div
                     key={item.name}
-                    onClick={() => handleNavigation(item.href)}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 bg-transparent border-none cursor-pointer"
                   >
-                    {item.name}
-                  </motion.button>
+                    <Link
+                      href={getHrefUrl(item.href)}
+                      onClick={e => handleLinkClick(e, item.href)}
+                      className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 ))}
                 <div className="px-6 pt-2">
-                  <button
-                    onClick={() => handleNavigation('#contact')}
+                  <Link
+                    href={getHrefUrl('#contact')}
+                    onClick={e => handleLinkClick(e, '#contact')}
                     className="btn-primary w-full text-center block"
                   >
                     {t('getStarted')}
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>

@@ -1,9 +1,14 @@
 import { Inter } from 'next/font/google'
+import { ThemeProvider } from '../lib/theme-context'
 import './globals.css'
 import { metadata } from './metadata'
-import { ThemeProvider } from '../lib/theme-context'
+import './prism-theme.css'
 
-const inter = Inter({ subsets: ['latin', 'latin-ext'] })
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+})
 
 export { metadata }
 
@@ -16,7 +21,11 @@ export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params
 
   return (
-    <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`scroll-smooth ${inter.className}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -25,10 +34,10 @@ export default async function RootLayout({ children, params }: Props) {
                 try {
                   // Check localStorage for saved theme
                   const savedTheme = localStorage.getItem('theme');
-                  
+
                   // Determine the theme to apply
                   let shouldUseDark = false;
-                  
+
                   if (savedTheme === 'dark') {
                     shouldUseDark = true;
                   } else if (savedTheme === 'light') {
@@ -37,7 +46,7 @@ export default async function RootLayout({ children, params }: Props) {
                     // Default to 'system' - check user's OS preference
                     shouldUseDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                   }
-                  
+
                   // Apply the theme immediately to prevent FOUC
                   if (shouldUseDark) {
                     document.documentElement.classList.add('dark');
@@ -53,7 +62,7 @@ export default async function RootLayout({ children, params }: Props) {
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className="font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

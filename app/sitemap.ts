@@ -1,6 +1,7 @@
-import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
+import { normalizeDate } from '@/lib/date-utils'
 import { getStaticPageDates } from '@/lib/file-dates'
+import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://viscalyx.com'
@@ -45,13 +46,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]
 
-  // Dynamic blog pages
-  const blogPages = posts.map(post => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
+  // Dynamic blog pages (filter out posts without valid dates)
+  const blogPages = posts.map(post => {
+    // Normalize missing or invalid dates to default
+    const dateStr = normalizeDate(post.date)
+    return {
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(dateStr),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }
+  })
 
   /**
    * Fallback blog posts that don't have markdown files yet

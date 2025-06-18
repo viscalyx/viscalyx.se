@@ -1,25 +1,26 @@
 'use client'
 
-import sanitizeHtml from 'sanitize-html'
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import ReadingProgress from '@/components/ReadingProgress'
+import TableOfContents from '@/components/TableOfContents'
+import { useBlogAnalytics } from '@/lib/analytics'
 import {
   ArrowLeft,
+  BookOpen,
   Calendar,
   Clock,
-  User,
   Share2,
-  BookOpen,
   Tag,
+  User,
 } from 'lucide-react'
-import Link from 'next/link'
+import { useFormatter, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { useTranslations, useFormatter } from 'next-intl'
-import { useEffect, useState } from 'react'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import TableOfContents from '@/components/TableOfContents'
-import ReadingProgress from '@/components/ReadingProgress'
-import { useBlogAnalytics } from '@/lib/analytics'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -34,7 +35,7 @@ interface TocItem {
 interface BlogPost {
   title: string
   author: string
-  date: string
+  date: string | null
   readTime: string
   image: string
   category: string
@@ -70,10 +71,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
       const level = parseInt(match[1])
-      const text = sanitizeHtml(match[2], {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim() // Sanitize HTML content
+      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove HTML tags
       const id = slugify(text)
 
       // Ensure the id is not empty
@@ -104,34 +102,14 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
   }
 }
 
-// Function to sanitize HTML content and add IDs to headings in one pass
-function sanitizeAndAddHeadingIds(htmlContent: string): string {
-  // Use sanitize-html defaults with minimal customization for heading IDs
-  const sanitizeOptions = {
-    // Allow id attributes on headings for table of contents navigation
-    allowedAttributes: {
-      ...sanitizeHtml.defaults.allowedAttributes,
-      h1: ['id'],
-      h2: ['id'],
-      h3: ['id'],
-      h4: ['id'],
-      h5: ['id'],
-      h6: ['id'],
-    },
-  }
-
-  // First sanitize the HTML to remove unsafe content
-  const sanitizedHtml = sanitizeHtml(htmlContent, sanitizeOptions)
-
-  // Then add IDs to headings in the sanitized content
-  return sanitizedHtml.replace(
+// Function to add IDs to headings (content is already sanitized at build time)
+function addHeadingIds(htmlContent: string): string {
+  // Add IDs to headings for table of contents navigation
+  return htmlContent.replace(
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
-      // Sanitize the text content to generate clean IDs
-      const cleanText = sanitizeHtml(text, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
+      // Extract clean text content for ID generation
+      const cleanText = text.replace(/<[^>]*>/g, '').trim()
       const id = slugify(cleanText)
 
       // Ensure the id is not empty
@@ -144,7 +122,7 @@ function sanitizeAndAddHeadingIds(htmlContent: string): string {
         ? attributes
         : `${attributes} id="${finalId}"`
 
-      // Return the heading with sanitized content and proper ID
+      // Return the heading with proper ID
       return `<h${level}${finalAttributes}>${text}</h${level}>`
     }
   )
@@ -167,7 +145,12 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 
         if (response.ok) {
           const data: BlogApiResponse = await response.json()
-          setPost(data.post)
+          // Normalize missing or invalid post date
+          const normalizedDate: string | null =
+            data.post.date && !isNaN(Date.parse(data.post.date))
+              ? data.post.date
+              : null
+          setPost({ ...data.post, date: normalizedDate })
           setRelatedPosts(data.relatedPosts || [])
         } else if (response.status === 404) {
           // If markdown post not found, use fallback data for existing slugs
@@ -196,8 +179,8 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
     return (
       <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-secondary-600 dark:text-secondary-400">
+          <LoadingSpinner size="lg" />
+          <p className="text-secondary-600 dark:text-secondary-400 mt-4">
             {t('post.loadingBlogPost')}
           </p>
         </div>
@@ -213,6 +196,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
     <BlogPostContent
       post={post}
       relatedPosts={relatedPosts}
+      loading={loading}
       t={t}
       format={format}
     />
@@ -277,6 +261,7 @@ function getFallbackPost(slug: string): BlogPost | null {
 interface BlogPostContentProps {
   post: BlogPost
   relatedPosts: BlogPost[]
+  loading: boolean
   t: (key: string) => string
   format: ReturnType<typeof import('next-intl').useFormatter>
 }
@@ -284,13 +269,14 @@ interface BlogPostContentProps {
 const BlogPostContent = ({
   post,
   relatedPosts,
+  loading,
   t,
   format,
 }: BlogPostContentProps) => {
-  // Sanitize content and add IDs to headings in one pass
-  const sanitizedContent = sanitizeAndAddHeadingIds(post.content)
-  // Extract table of contents from the sanitized content
-  const tableOfContents = extractTableOfContents(sanitizedContent)
+  // Add IDs to headings for table of contents navigation
+  const contentWithIds = addHeadingIds(post.content)
+  // Extract table of contents from the content
+  const tableOfContents = extractTableOfContents(contentWithIds)
 
   // Track blog analytics
   useBlogAnalytics({
@@ -338,11 +324,13 @@ const BlogPostContent = ({
                 </div>
                 <div className="flex items-center mr-6">
                   <Calendar className="w-4 h-4 mr-2" />
-                  {format.dateTime(new Date(post.date), {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
+                  {post.date
+                    ? format.dateTime(new Date(post.date), {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })
+                    : '—'}
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
@@ -369,6 +357,7 @@ const BlogPostContent = ({
           src={post.image}
           alt={post.title}
           fill
+          sizes="100vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -386,7 +375,10 @@ const BlogPostContent = ({
                 <div className="lg:hidden bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8 border border-secondary-100 dark:border-secondary-700">
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
-                      <div className="flex items-center">
+                      <div
+                        id="toc-heading-mobile"
+                        className="flex items-center"
+                      >
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
                       </div>
@@ -405,17 +397,23 @@ const BlogPostContent = ({
                       </svg>
                     </summary>
                     <div className="mt-4">
-                      <TableOfContents items={tableOfContents} />
+                      <TableOfContents
+                        items={tableOfContents}
+                        maxHeight="sm"
+                        headingId="toc-heading-mobile"
+                      />
                     </div>
                   </details>
                 </div>
               )}
 
-              <div className="prose prose-lg max-w-none prose-headings:text-secondary-900 dark:prose-headings:text-secondary-100 prose-p:text-secondary-700 dark:prose-p:text-secondary-300 prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-code:text-primary-600 dark:prose-code:text-primary-400 prose-pre:bg-secondary-50 dark:prose-pre:bg-secondary-800 prose-headings:scroll-mt-24">
+              <div className="blog-content prose prose-lg max-w-none">
+                {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
                 <div
-                  dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
                   className="markdown-content"
                 />
+                <CodeBlockEnhancer contentLoaded={!loading && !!post} />
               </div>
 
               {/* Tags */}
@@ -477,12 +475,19 @@ const BlogPostContent = ({
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                    <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center">
+                    <h3
+                      id="toc-heading"
+                      className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
+                    >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h3>
-                    <div className="max-h-80 overflow-y-auto">
-                      <TableOfContents items={tableOfContents} />
+                    <div>
+                      <TableOfContents
+                        items={tableOfContents}
+                        maxHeight="lg"
+                        headingId="toc-heading"
+                      />
                     </div>
                   </div>
                 )}
@@ -504,6 +509,7 @@ const BlogPostContent = ({
                             src={relatedPost.image}
                             alt={relatedPost.title}
                             fill
+                            sizes="64px"
                             className="object-cover transition-transform group-hover:scale-110"
                           />
                         </div>

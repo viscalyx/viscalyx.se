@@ -1,9 +1,10 @@
 import blogData from './blog-data.json'
+import { isValidDate, normalizeDate } from './date-utils'
 
 export interface BlogPost {
   slug: string
   title: string
-  date: string
+  date?: string
   author: string
   excerpt: string
   image: string
@@ -16,7 +17,7 @@ export interface BlogPost {
 export interface BlogPostMetadata {
   slug: string
   title: string
-  date: string
+  date?: string
   author: string
   excerpt: string
   image: string
@@ -46,8 +47,30 @@ function validateBlogData(data: typeof blogData): BlogData {
     throw new Error('Blog data slugs is not an array')
   }
 
+  // Sanitize posts to match BlogPost interface
+  const posts: BlogPost[] = data.posts.map(p => ({
+    slug: p.slug,
+    title: p.title,
+    date:
+      typeof p.date === 'string' && isValidDate(p.date)
+        ? normalizeDate(p.date)
+        : undefined,
+    author: p.author,
+    excerpt: p.excerpt,
+    image: p.image,
+    tags: Array.isArray(p.tags)
+      ? Array.from(
+          new Set(
+            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase())
+          )
+        )
+      : [],
+    readTime: p.readTime,
+    category: typeof p.category === 'string' ? p.category : undefined,
+    content: p.content,
+  }))
   return {
-    posts: data.posts,
+    posts,
     slugs: data.slugs,
   }
 }

@@ -1,3 +1,16 @@
+// Only initialize OpenNext Cloudflare for development/non-production environments
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
+    initOpenNextCloudflareForDev()
+  } catch (error) {
+    console.warn(
+      'Warning: Failed to load @opennextjs/cloudflare module:',
+      error.message
+    )
+  }
+}
+
 const withNextIntl = require('next-intl/plugin')('./i18n.ts')
 
 /** @type {import('next').NextConfig} */
@@ -43,6 +56,14 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          // {
+          //   key: 'Content-Security-Policy',
+          //   value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
+          // },
+          // {
+          //   key: 'X-XSS-Protection',
+          //   value: '1; mode=block',
+          // },
         ],
       },
     ]
