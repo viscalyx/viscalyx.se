@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { locales } from '../i18n'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 
@@ -56,12 +57,11 @@ const Header = () => {
 
   // Helper function to generate proper URLs for links
   const getHrefUrl = (href: string) => {
-    // Check if it's an absolute URL (external link)
-    if (
-      href.startsWith('http://') ||
-      href.startsWith('https://') ||
-      href.startsWith('mailto:')
-    ) {
+    // Enhanced absolute URL detection using regex to cover all protocols
+    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
+
+    // Check if it's an absolute URL (external link) or special protocols
+    if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
       return href
     }
 
@@ -70,8 +70,19 @@ const Header = () => {
       return `/${locale}${href}`
     } else {
       // Regular page navigation - preserve locale
-      const cleanHref = href.startsWith('/') ? href : `/${href}`
-      return `/${locale}${cleanHref}`
+      let cleanHref = href.startsWith('/') ? href : `/${href}`
+
+      // Check if the path already starts with a locale prefix to avoid duplication
+      const pathSegments = cleanHref.split('/').filter(Boolean)
+      const firstSegment = pathSegments[0]
+
+      if (locales.includes(firstSegment as any)) {
+        // Path already has a locale, return as-is
+        return cleanHref
+      } else {
+        // Add locale prefix, ensuring no double slashes
+        return `/${locale}${cleanHref}`
+      }
     }
   }
 
@@ -82,7 +93,7 @@ const Header = () => {
   ) => {
     // Always close the mobile menu when any link is clicked
     setIsMenuOpen(false)
-    
+
     // Handle section links on the same page (home page)
     if (href.startsWith('#')) {
       // Remove locale from path and check if we're on the home page
@@ -143,7 +154,7 @@ const Header = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => {
-              const MotionLink = motion(Link);
+              const MotionLink = motion(Link)
               return (
                 <MotionLink
                   key={item.name}
@@ -157,7 +168,7 @@ const Header = () => {
                 >
                   {item.name}
                 </MotionLink>
-              );
+              )
             })}
 
             {/* Settings Dropdown */}
