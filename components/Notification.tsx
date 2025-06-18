@@ -1,8 +1,43 @@
 'use client'
 
+/**
+ * Notification Component
+ *
+ * A reusable toast notification component that displays temporary messages to users.
+ * This component provides visual feedback for user actions and system events.
+ *
+ * Features:
+ * - Four notification types: success, error, warning, info
+ * - Auto-dismissal with configurable duration
+ * - Manual dismissal with close button
+ * - Smooth animations using Framer Motion
+ * - Fixed positioning (top-right corner)
+ * - Responsive design with proper color schemes
+ *
+ * Potential Use Cases:
+ * - Contact form submission feedback
+ * - Newsletter signup confirmations
+ * - Error handling and user alerts
+ * - Loading states and process completion
+ * - General user action confirmations
+ *
+ * Usage Example:
+ * ```tsx
+ * <Notification
+ *   type="success"
+ *   title="Success!"
+ *   message="Your message has been sent successfully."
+ *   duration={5000}
+ *   onClose={() => setShowNotification(false)}
+ * />
+ * ```
+ *
+ * Note: This component is currently not used in the application but is ready for integration.
+ */
+
 import { motion } from 'framer-motion'
-import { X, AlertCircle, CheckCircle, Info, AlertTriangle } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface NotificationProps {
   type: 'success' | 'error' | 'warning' | 'info'
