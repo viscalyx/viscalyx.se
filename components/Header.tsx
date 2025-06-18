@@ -83,15 +83,20 @@ const Header = () => {
     // Always close the mobile menu when any link is clicked
     setIsMenuOpen(false)
     
-    // Only prevent default and handle custom logic for section links on the same page
+    // Handle section links on the same page (home page)
     if (href.startsWith('#')) {
+      // Remove locale from path and check if we're on the home page
       const currentPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
-      if (currentPath === '/') {
+      // Check if we're on the home page (with or without hash)
+      if (currentPath === '/' || currentPath === '') {
         e.preventDefault()
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
+        // Add a small delay to ensure menu closes before scrolling
+        setTimeout(() => {
+          const element = document.querySelector(href)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        }, 100)
       }
     }
   }
