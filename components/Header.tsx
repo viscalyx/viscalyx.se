@@ -1,14 +1,14 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Settings } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-import { useTranslations, useLocale } from 'next-intl'
-import Link from 'next/link'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, Settings, X } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import ThemeToggle from './ThemeToggle'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -57,10 +57,14 @@ const Header = () => {
   // Helper function to generate proper URLs for links
   const getHrefUrl = (href: string) => {
     // Check if it's an absolute URL (external link)
-    if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) {
+    if (
+      href.startsWith('http://') ||
+      href.startsWith('https://') ||
+      href.startsWith('mailto:')
+    ) {
       return href
     }
-    
+
     if (href.startsWith('#')) {
       // For section links, link to home page with hash
       return `/${locale}${href}`
