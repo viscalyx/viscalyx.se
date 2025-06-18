@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TocItem {
@@ -88,20 +88,25 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   }, [activeId])
 
   // Check scroll indicators
-  useEffect(() => {
-    const checkScrollIndicators = () => {
-      if (scrollContainerRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } =
-          scrollContainerRef.current
+  const checkScrollIndicators = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } =
+        scrollContainerRef.current
 
-        const canScrollUpValue = scrollTop > 0
-        const canScrollDownValue = scrollTop < scrollHeight - clientHeight - 1
+      const canScrollUpValue = scrollTop > 0
+      const canScrollDownValue = scrollTop < scrollHeight - clientHeight - 1
 
-        setCanScrollUp(canScrollUpValue)
-        setCanScrollDown(canScrollDownValue)
-      }
+      // Only update state if values have changed to prevent unnecessary re-renders
+      setCanScrollUp(prev =>
+        prev !== canScrollUpValue ? canScrollUpValue : prev
+      )
+      setCanScrollDown(prev =>
+        prev !== canScrollDownValue ? canScrollDownValue : prev
+      )
     }
+  }, [])
 
+  useEffect(() => {
     const scrollContainer = scrollContainerRef.current
     if (scrollContainer) {
       // Check initially
@@ -124,7 +129,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         }
       }
     }
-  }, [items])
+  }, [items, checkScrollIndicators])
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
