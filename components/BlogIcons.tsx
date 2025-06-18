@@ -1,5 +1,5 @@
 // Optimized blog icons using currentColor
-import React from 'react'
+import React, { memo } from 'react'
 
 interface BlogIconProps {
   className?: string
@@ -41,7 +41,7 @@ export const CheckmarkIcon: React.FC<BlogIconProps> = ({
 )
 
 // ChevronUp Icon - Stroke style for scroll indicators
-export const ChevronUpIcon: React.FC<BlogIconProps> = ({
+export const ChevronUpIcon: React.FC<BlogIconProps> = memo(({
   className = 'w-4 h-4',
 }) => (
   <svg
@@ -57,10 +57,10 @@ export const ChevronUpIcon: React.FC<BlogIconProps> = ({
   >
     <path d="m18 15-6-6-6 6" />
   </svg>
-)
+))
 
 // ChevronDown Icon - Stroke style for scroll indicators
-export const ChevronDownIcon: React.FC<BlogIconProps> = ({
+export const ChevronDownIcon: React.FC<BlogIconProps> = memo(({
   className = 'w-4 h-4',
 }) => (
   <svg
@@ -76,4 +76,4 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = ({
   >
     <path d="m6 9 6 6 6-6" />
   </svg>
-)
+))
