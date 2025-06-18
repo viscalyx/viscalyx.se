@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Star, Users, ExternalLink } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { ExternalLink, Github, Star, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
 
 const OpenSource = () => {
   const router = useRouter()
@@ -135,7 +135,7 @@ const OpenSource = () => {
                   src={project.image}
                   alt={project.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
