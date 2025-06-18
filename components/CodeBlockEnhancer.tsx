@@ -62,7 +62,7 @@ export default function CodeBlockEnhancer({
         // Render the React component into the container
         const root = createRoot(copyContainer)
         root.render(<CopyButton text={codeText} />)
-        
+
         // Store the root reference for proper cleanup
         roots.set(copyContainer, root)
       })
