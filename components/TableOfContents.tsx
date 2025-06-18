@@ -1,6 +1,6 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
-import { ChevronUpIcon, ChevronDownIcon } from './BlogIcons'
+import React, { useEffect, useRef, useState } from 'react'
+import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TocItem {
   id: string
@@ -132,7 +132,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   }
 
   return (
-    <div className="relative">
+    <nav className="relative" aria-label="Table of contents" role="navigation">
       {/* Top scroll indicator */}
       {canScrollUp && (
         <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-start justify-center">
@@ -143,29 +143,32 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       {/* Scrollable content */}
       <div
         ref={scrollContainerRef}
-        className={`space-y-1 toc-scrollable ${heightClass} overflow-y-auto`}
+        className={`toc-scrollable ${heightClass} overflow-y-auto`}
       >
-        {items.map((item, index) => (
-          <div
-            key={index}
-            className={`${
-              item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
-            }`}
-          >
-            <button
-              type="button"
-              onClick={() => handleClick(item.id)}
-              data-id={item.id}
-              className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
-                activeId === item.id
-                  ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'
-                  : 'text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400'
+        <ul className="space-y-1" role="list">
+          {items.map((item, index) => (
+            <li
+              key={index}
+              className={`${
+                item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
               }`}
             >
-              <span className="text-sm leading-relaxed">{item.text}</span>
-            </button>
-          </div>
-        ))}
+              <button
+                type="button"
+                onClick={() => handleClick(item.id)}
+                data-id={item.id}
+                className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
+                  activeId === item.id
+                    ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'
+                    : 'text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400'
+                }`}
+                aria-current={activeId === item.id ? 'location' : undefined}
+              >
+                <span className="text-sm leading-relaxed">{item.text}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Bottom scroll indicator */}
@@ -174,7 +177,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
           <ChevronDownIcon className="w-4 h-4 text-secondary-400 dark:text-secondary-500 mb-0.5 scroll-indicator" />
         </div>
       )}
-    </div>
+    </nav>
   )
 }
 
