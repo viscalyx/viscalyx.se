@@ -77,3 +77,7 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
     </svg>
   )
 )
+
+// Add display names for memoized icons to satisfy react/display-name rule
+ChevronUpIcon.displayName = 'ChevronUpIcon'
+ChevronDownIcon.displayName = 'ChevronDownIcon'
