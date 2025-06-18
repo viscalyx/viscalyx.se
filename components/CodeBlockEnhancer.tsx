@@ -74,15 +74,40 @@ export default function CodeBlockEnhancer({
     // Cleanup function
     return () => {
       clearTimeout(timer)
-      // Unmount React roots and remove containers created by this instance
-      createdContainers.forEach(container => {
-        const root = roots.get(container)
-        if (root) {
-          root.unmount()
-          roots.delete(container)
-        }
-        container.remove()
-      })
+      // Mark for cleanup but defer actual unmounting
+      const cleanupRoots = () => {
+        createdContainers.forEach(container => {
+          const root = roots.get(container)
+          if (root && container.isConnected) {
+            try {
+              // Use requestIdleCallback if available, otherwise fallback to setTimeout
+              if (
+                typeof window !== 'undefined' &&
+                'requestIdleCallback' in window
+              ) {
+                window.requestIdleCallback(() => {
+                  root.unmount()
+                  roots.delete(container)
+                })
+              } else {
+                setTimeout(() => {
+                  root.unmount()
+                  roots.delete(container)
+                }, 0)
+              }
+            } catch (error) {
+              console.warn('Error unmounting React root:', error)
+              roots.delete(container)
+            }
+          }
+          if (container.parentNode) {
+            container.remove()
+          }
+        })
+      }
+
+      // Use queueMicrotask to defer the cleanup
+      queueMicrotask(cleanupRoots)
     }
   }, [contentLoaded])
 
