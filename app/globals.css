@@ -135,19 +135,19 @@
   }
 
   .toc-scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(156 163 175); /* gray-400 */
+    @apply bg-secondary-400;
     border-radius: 4px;
     border: 1px solid transparent;
     background-clip: content-box;
   }
 
   .toc-scrollable::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(107 114 128); /* gray-500 */
+    @apply bg-secondary-500;
   }
 
   /* Dark mode scrollbar */
   .dark .toc-scrollable {
-    scrollbar-color: rgb(75 85 99) transparent; /* gray-600 for dark mode */
+    scrollbar-color: theme('colors.secondary.600') transparent;
   }
 
   .dark .toc-scrollable::-webkit-scrollbar-thumb {
