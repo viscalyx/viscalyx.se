@@ -75,8 +75,11 @@ const Header = () => {
       // Check if the path already starts with a locale prefix to avoid duplication
       const pathSegments = cleanHref.split('/').filter(Boolean)
       const firstSegment = pathSegments[0]
+      
+      // Normalize the first segment by converting to lowercase and trimming slashes
+      const normalizedFirstSegment = firstSegment?.toLowerCase().replace(/\/$/, '')
 
-      if (locales.includes(firstSegment as (typeof locales)[number])) {
+      if (normalizedFirstSegment && locales.includes(normalizedFirstSegment as (typeof locales)[number])) {
         // Path already has a locale, return as-is
         return cleanHref
       } else {
