@@ -44,29 +44,22 @@ describe('LoadingSpinner', () => {
   })
 
   describe('color prop', () => {
-    it('renders primary color by default', () => {
-      render(<LoadingSpinner />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
+    test.each([
+      { propColor: undefined, expectedClass: 'text-primary-600' },
+      { propColor: 'white', expectedClass: 'text-white' },
+      { propColor: 'secondary', expectedClass: 'text-secondary-600' },
+    ])(
+      'renders $expectedClass when color is $propColor',
+      ({ propColor, expectedClass }) => {
+        const props: Record<string, any> = {}
+        if (propColor) props.color = propColor
+        render(<LoadingSpinner {...props} />)
+        const spinner = screen.getByRole('status')
+        const icon = spinner.querySelector('svg')
 
-      expect(icon).toHaveClass('text-primary-600')
-    })
-
-    it('renders white color when color is white', () => {
-      render(<LoadingSpinner color="white" />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
-
-      expect(icon).toHaveClass('text-white')
-    })
-
-    it('renders secondary color when color is secondary', () => {
-      render(<LoadingSpinner color="secondary" />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
-
-      expect(icon).toHaveClass('text-secondary-600')
-    })
+        expect(icon).toHaveClass(expectedClass)
+      }
+    )
   })
 
   describe('loading states', () => {
