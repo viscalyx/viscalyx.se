@@ -70,7 +70,6 @@ async function buildBlogData() {
   try {
     // Dynamically import ES modules
     const { remark } = await import('remark')
-    const { default: remarkHtml } = await import('remark-html')
     const { default: remarkGfm } = await import('remark-gfm')
     const { default: remarkRehype } = await import('remark-rehype')
     const { default: rehypePrismPlus } = await import('rehype-prism-plus')
