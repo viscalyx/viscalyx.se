@@ -33,6 +33,7 @@ const LoadingSpinner = ({
       className="flex items-center justify-center"
     >
       <Loader2
+        data-icon="loader-2"
         className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`}
       />
     </motion.div>

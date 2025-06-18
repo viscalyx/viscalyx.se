@@ -135,7 +135,7 @@ describe('LoadingSpinner', () => {
       const icon = spinner.querySelector('svg')
 
       expect(icon).toBeInTheDocument()
-      expect(icon).toBeInstanceOf(SVGElement)
+      expect(icon).toHaveAttribute('data-icon', 'loader-2')
     })
   })
 
