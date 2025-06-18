@@ -15,6 +15,9 @@
   --token-powershell-variable: #2563eb; /* blue-600 */
   --token-powershell-cmdlet: #7c3aed; /* violet-600 */
   --token-powershell-parameter: #059669; /* green-600 */
+
+  /* Highlight line background */
+  --highlight-line-bg: rgba(59, 130, 246, 0.1); /* blue with opacity */
 }
 
 .dark {
@@ -240,12 +243,12 @@
 
 /* Line highlighting for code examples */
 .highlight-line {
-  background-color: rgba(59, 130, 246, 0.1); /* blue with opacity */
+  background-color: var(--highlight-line-bg);
   display: block;
   margin: 0 -1rem;
   padding: 0 1rem;
 }
 
 .dark .highlight-line {
-  background-color: rgba(96, 165, 250, 0.1); /* blue-400 with opacity */
+  --highlight-line-bg: rgba(96, 165, 250, 0.1); /* blue-400 with opacity */
 }
