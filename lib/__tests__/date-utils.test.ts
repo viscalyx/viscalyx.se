@@ -43,17 +43,22 @@ describe('date-utils', () => {
     it('returns custom fallback for empty string', () => {
       expect(normalizeDate('', '2024-01-01')).toBe('2024-01-01')
     })
+
+    it('returns ISO string of Date fallback for invalid input when fallback is Date object', () => {
+      const fallbackDate = new Date('2024-01-01')
+      expect(normalizeDate('invalid', fallbackDate)).toBe('2024-01-01')
+    })
   })
 
   describe('getCurrentDateISO', () => {
     const systemDate = new Date('2025-06-09T00:00:00Z')
 
-    beforeAll(() => {
+    beforeEach(() => {
       jest.useFakeTimers({ advanceTimers: true })
       jest.setSystemTime(systemDate)
     })
 
-    afterAll(() => {
+    afterEach(() => {
       jest.useRealTimers()
     })
 
