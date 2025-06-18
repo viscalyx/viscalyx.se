@@ -70,13 +70,13 @@ const Header = () => {
       return `/${locale}${href}`
     } else {
       // Regular page navigation - preserve locale
-      let cleanHref = href.startsWith('/') ? href : `/${href}`
+      const cleanHref = href.startsWith('/') ? href : `/${href}`
 
       // Check if the path already starts with a locale prefix to avoid duplication
       const pathSegments = cleanHref.split('/').filter(Boolean)
       const firstSegment = pathSegments[0]
 
-      if (locales.includes(firstSegment as any)) {
+      if (locales.includes(firstSegment as (typeof locales)[number])) {
         // Path already has a locale, return as-is
         return cleanHref
       } else {
