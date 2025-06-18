@@ -3,6 +3,8 @@
 /**
  * Notification Component
  *
+ * Note: This component is currently not used in the application but is ready for integration.
+ *
  * A reusable toast notification component that displays temporary messages to users.
  * This component provides visual feedback for user actions and system events.
  *
@@ -32,7 +34,14 @@
  * />
  * ```
  *
- * Note: This component is currently not used in the application but is ready for integration.
+ * @param type - The type of notification to display ('success' | 'error' | 'warning' | 'info')
+ * @param title - The title text displayed prominently in the notification
+ * @param message - The detailed message content shown below the title
+ * @param duration - Optional duration in milliseconds before auto-dismissal (defaults to auto-dismiss behavior)
+ * @param onClose - Optional callback function triggered when the notification is closed
+ * @returns A React element representing the notification toast component
+ *
+ * Note: Remember to update documentation and examples once this component is integrated into the application.
  */
 
 import { motion } from 'framer-motion'
