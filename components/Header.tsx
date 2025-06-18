@@ -80,19 +80,19 @@ const Header = () => {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
+    // Always close the mobile menu when any link is clicked
+    setIsMenuOpen(false)
+    
     // Only prevent default and handle custom logic for section links on the same page
     if (href.startsWith('#')) {
       const currentPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
       if (currentPath === '/') {
         e.preventDefault()
-        setIsMenuOpen(false)
         const element = document.querySelector(href)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
-    } else {
-      setIsMenuOpen(false)
     }
   }
 
