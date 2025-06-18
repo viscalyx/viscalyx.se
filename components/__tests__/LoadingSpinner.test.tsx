@@ -18,29 +18,20 @@ describe('LoadingSpinner', () => {
   })
 
   describe('size prop', () => {
-    it('renders small spinner when size is sm', () => {
-      render(<LoadingSpinner size="sm" />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
+    test.each<{ size: 'sm' | 'md' | 'lg'; classes: string[] }>([
+      { size: 'sm', classes: ['w-4', 'h-4'] },
+      { size: 'md', classes: ['w-6', 'h-6'] },
+      { size: 'lg', classes: ['w-8', 'h-8'] },
+    ])(
+      'renders spinner with correct classes for size %s',
+      ({ size, classes }) => {
+        render(<LoadingSpinner size={size} />)
+        const spinner = screen.getByRole('status')
+        const icon = spinner.querySelector('svg')
 
-      expect(icon).toHaveClass('w-4', 'h-4')
-    })
-
-    it('renders medium spinner when size is md', () => {
-      render(<LoadingSpinner size="md" />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
-
-      expect(icon).toHaveClass('w-6', 'h-6')
-    })
-
-    it('renders large spinner when size is lg', () => {
-      render(<LoadingSpinner size="lg" />)
-      const spinner = screen.getByRole('status')
-      const icon = spinner.querySelector('svg')
-
-      expect(icon).toHaveClass('w-8', 'h-8')
-    })
+        expect(icon).toHaveClass(...classes)
+      }
+    )
   })
 
   describe('color prop', () => {
