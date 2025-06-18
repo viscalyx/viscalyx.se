@@ -11,11 +11,13 @@ interface TocItem {
 interface TableOfContentsProps {
   items: TocItem[]
   maxHeight?: 'sm' | 'lg' // sm for mobile (max-h-64), lg for desktop (max-h-80)
+  headingId?: string // ID of the heading element that labels this table of contents
 }
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({
   items,
   maxHeight = 'lg',
+  headingId,
 }) => {
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
@@ -142,7 +144,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   }
 
   return (
-    <nav className="relative" aria-label="Table of contents">
+    <nav 
+      className="relative"
+      {...(headingId 
+        ? { 'aria-labelledby': headingId }
+        : { 'aria-label': 'Table of contents' }
+      )}
+    >
       {/* Top scroll indicator */}
       {canScrollUp && (
         <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-start justify-center">

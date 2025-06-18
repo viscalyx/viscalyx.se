@@ -374,7 +374,7 @@ const BlogPostContent = ({
                 <div className="lg:hidden bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8 border border-secondary-100 dark:border-secondary-700">
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
-                      <div className="flex items-center">
+                      <div id="toc-heading-mobile" className="flex items-center">
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
                       </div>
@@ -393,7 +393,11 @@ const BlogPostContent = ({
                       </svg>
                     </summary>
                     <div className="mt-4">
-                      <TableOfContents items={tableOfContents} maxHeight="sm" />
+                      <TableOfContents 
+                        items={tableOfContents} 
+                        maxHeight="sm" 
+                        headingId="toc-heading-mobile"
+                      />
                     </div>
                   </details>
                 </div>
@@ -467,12 +471,19 @@ const BlogPostContent = ({
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                    <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center">
+                    <h3 
+                      id="toc-heading" 
+                      className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
+                    >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h3>
                     <div>
-                      <TableOfContents items={tableOfContents} maxHeight="lg" />
+                      <TableOfContents 
+                        items={tableOfContents} 
+                        maxHeight="lg" 
+                        headingId="toc-heading"
+                      />
                     </div>
                   </div>
                 )}
