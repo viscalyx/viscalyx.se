@@ -7,6 +7,7 @@ import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { normalizeDate, getCurrentDateISO } from '@/lib/date-utils'
 
 interface BlogPostMeta {
@@ -161,8 +162,8 @@ const BlogPage = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-secondary-600 dark:text-secondary-400">
+          <LoadingSpinner size="lg" />
+          <p className="text-secondary-600 dark:text-secondary-400 mt-4">
             {t('loadingBlogPosts')}
           </p>
         </div>
