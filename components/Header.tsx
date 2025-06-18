@@ -58,7 +58,7 @@ const Header = () => {
   const getHrefUrl = (href: string) => {
     if (href.startsWith('#')) {
       // For section links, link to home page with hash
-      return `/${locale}/${href}`
+      return `/${locale}${href}`
     } else {
       // Regular page navigation - preserve locale
       const cleanHref = href.startsWith('/') ? href : `/${href}`
