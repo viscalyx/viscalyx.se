@@ -142,23 +142,23 @@ const Header = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <Link
+            {menuItems.map((item, index) => {
+              const MotionLink = motion(Link);
+              return (
+                <MotionLink
+                  key={item.name}
                   href={getHrefUrl(item.href)}
                   onClick={e => handleLinkClick(e, item.href)}
                   className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
                 >
                   {item.name}
-                </Link>
-              </motion.div>
-            ))}
+                </MotionLink>
+              );
+            })}
 
             {/* Settings Dropdown */}
             <div className="relative" ref={settingsRef}>
