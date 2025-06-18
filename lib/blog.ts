@@ -1,4 +1,5 @@
 import blogData from './blog-data.json'
+import { isValidDate, normalizeDate } from './date-utils'
 
 export interface BlogPost {
   slug: string
@@ -50,11 +51,16 @@ function validateBlogData(data: typeof blogData): BlogData {
   const posts: BlogPost[] = data.posts.map(p => ({
     slug: p.slug,
     title: p.title,
-    date: typeof p.date === 'string' ? p.date : undefined,
+    date:
+      typeof p.date === 'string' && isValidDate(p.date)
+        ? normalizeDate(p.date)
+        : undefined,
     author: p.author,
     excerpt: p.excerpt,
     image: p.image,
-    tags: Array.isArray(p.tags) ? p.tags.map(t => String(t)) : [],
+    tags: Array.isArray(p.tags)
+      ? p.tags.filter(t => typeof t === 'string')
+      : [],
     readTime: p.readTime,
     category: typeof p.category === 'string' ? p.category : undefined,
     content: p.content,
