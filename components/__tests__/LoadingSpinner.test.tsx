@@ -81,19 +81,13 @@ describe('LoadingSpinner', () => {
   })
 
   describe('accessibility', () => {
-    it('has correct ARIA attributes', () => {
+    it('has correct ARIA attributes and is announced to screen readers', () => {
       render(<LoadingSpinner />)
-      const spinner = screen.getByRole('status')
-
-      expect(spinner).toHaveAttribute('role', 'status')
-      expect(spinner).toHaveAttribute('aria-label', 'Loading')
-    })
-
-    it('is announced by screen readers', () => {
-      render(<LoadingSpinner />)
-      const spinner = screen.getByLabelText(/loading/i)
+      const spinner = screen.getByRole('status', { name: /loading/i })
 
       expect(spinner).toBeInTheDocument()
+      expect(spinner).toHaveAttribute('role', 'status')
+      expect(spinner).toHaveAttribute('aria-label', 'Loading')
     })
   })
 
