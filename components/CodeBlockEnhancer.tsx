@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, type Root } from 'react-dom/client'
 import CopyButton from './CopyButton'
 
 interface CodeBlockEnhancerProps {
@@ -17,6 +17,7 @@ export default function CodeBlockEnhancer({
 
     // Track containers created by this instance
     const createdContainers: HTMLElement[] = []
+    const roots = new Map<HTMLElement, Root>()
 
     const addCopyButtons = () => {
       // Find all code blocks and add copy buttons
@@ -61,6 +62,9 @@ export default function CodeBlockEnhancer({
         // Render the React component into the container
         const root = createRoot(copyContainer)
         root.render(<CopyButton text={codeText} />)
+        
+        // Store the root reference for proper cleanup
+        roots.set(copyContainer, root)
       })
     }
 
@@ -70,8 +74,15 @@ export default function CodeBlockEnhancer({
     // Cleanup function
     return () => {
       clearTimeout(timer)
-      // Remove only containers created by this instance
-      createdContainers.forEach(container => container.remove())
+      // Unmount React roots and remove containers created by this instance
+      createdContainers.forEach(container => {
+        const root = roots.get(container)
+        if (root) {
+          root.unmount()
+          roots.delete(container)
+        }
+        container.remove()
+      })
     }
   }, [contentLoaded])
 
