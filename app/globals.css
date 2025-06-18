@@ -52,47 +52,25 @@
     -webkit-backdrop-filter: blur(10px);
   }
 
-  /* Simplified Blog Content Styles - Easy to Modify */
+  /* Blog Content Styles - Optimized for Typography Plugin */
+  /* Override prose defaults with custom colors and behavior */
   .blog-content {
-    @apply text-secondary-700 dark:text-secondary-300 leading-relaxed;
+    @apply text-secondary-700 dark:text-secondary-300;
   }
 
+  /* Headings - Override prose defaults with scroll behavior and custom colors */
   .blog-content h1,
   .blog-content h2,
   .blog-content h3,
   .blog-content h4,
   .blog-content h5,
   .blog-content h6 {
-    @apply text-secondary-900 dark:text-secondary-100 font-bold scroll-mt-24;
+    @apply text-secondary-900 dark:text-secondary-100 scroll-mt-24;
   }
 
-  .blog-content h1 {
-    @apply text-4xl mb-6 mt-8;
-  }
-
-  .blog-content h2 {
-    @apply text-3xl mb-4 mt-8;
-  }
-
-  .blog-content h3 {
-    @apply text-2xl mb-3 mt-6;
-  }
-
-  .blog-content p {
-    @apply mb-4;
-  }
-
-  .blog-content ul,
-  .blog-content ol {
-    @apply mb-4 ml-6;
-  }
-
-  .blog-content li {
-    @apply mb-2;
-  }
-
+  /* Custom blockquote styling to match site theme */
   .blog-content blockquote {
-    @apply border-l-4 border-primary-300 dark:border-primary-600 pl-4 italic text-secondary-600 dark:text-secondary-400 my-6;
+    @apply border-l-4 border-primary-300 dark:border-primary-600 pl-4 italic text-secondary-600 dark:text-secondary-400;
   }
 
   .blog-content code {

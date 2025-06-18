@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.1.0",
+    "@tailwindcss/typography": "^0.5.16",
     "framer-motion": "^12.15.0",
     "lucide-react": "^0.511.0",
     "next": "^15.3.3",
@@ -66,10 +67,10 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.17",
     "ts-jest": "^29.3.4",
     "typescript": "^5.8.3",
-    "wrangler": "^4.18.0",
-    "rimraf": "^6.0.1"
+    "wrangler": "^4.18.0"
   }
 }
