@@ -222,6 +222,12 @@
   opacity: 1;
 }
 
+/* Make copy button visible when focused for keyboard accessibility */
+.blog-content pre[class*='language-'] .copy-button-container:focus,
+.blog-content pre[class*='language-'] .copy-button-container:focus-within {
+  opacity: 1;
+}
+
 /* Bold and italic styling */
 .token.important,
 .token.bold {
