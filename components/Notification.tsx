@@ -115,7 +115,8 @@ const Notification = ({
   }
 
   const Icon = icons[type]
-  const colorScheme = colors[type]
+  // Ensure colorScheme is always defined, default to 'info'
+  const colorScheme = colors[type] ?? colors.info
 
   if (!isVisible) return null
 
