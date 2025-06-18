@@ -161,6 +161,7 @@
   /* Scroll indicator animations */
   .scroll-indicator {
     animation: scrollPulse 2s ease-in-out infinite;
+    will-change: opacity;
   }
 
   @keyframes scrollPulse {
