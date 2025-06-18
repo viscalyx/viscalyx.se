@@ -1,4 +1,4 @@
-import { normalizeDate, isValidDate, getCurrentDateISO } from '../date-utils'
+import { getCurrentDateISO, isValidDate, normalizeDate } from '../date-utils'
 
 describe('date-utils', () => {
   describe('isValidDate', () => {
@@ -42,6 +42,10 @@ describe('date-utils', () => {
 
     it('returns custom fallback for empty string', () => {
       expect(normalizeDate('', '2024-01-01')).toBe('2024-01-01')
+    })
+
+    it('returns custom fallback string as is when fallback is not a valid date', () => {
+      expect(normalizeDate('', 'not-a-date')).toBe('not-a-date')
     })
 
     it('returns ISO string of Date fallback for invalid input when fallback is Date object', () => {
