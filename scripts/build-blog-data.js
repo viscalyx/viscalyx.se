@@ -129,7 +129,7 @@ async function buildBlogData() {
 
                   if (languageClass) {
                     const language = languageClass.replace('language-', '')
-                    node.properties.dataLanguage = language
+                    node.properties['data-language'] = language
                   }
                 }
               })
