@@ -123,7 +123,10 @@ const OpenSource = () => {
         {/* Projects */}
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
           {contributions.map((project, index) => (
-            <li key={project.name} className="overflow-hidden rounded-xl shadow-lg">
+            <li
+              key={project.name}
+              className="overflow-hidden rounded-xl shadow-lg"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
