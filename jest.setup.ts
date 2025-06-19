@@ -7,11 +7,29 @@ jest.mock('framer-motion', () => {
   return {
     motion: {
       div: (props: any) => {
-        const { children, layoutId, initial, animate, transition, whileHover, whileTap, ...rest } = props
+        const {
+          children,
+          layoutId,
+          initial,
+          animate,
+          transition,
+          whileHover,
+          whileTap,
+          ...rest
+        } = props
         return createElement('div', rest, children)
       },
       button: (props: any) => {
-        const { children, layoutId, initial, animate, transition, whileHover, whileTap, ...rest } = props
+        const {
+          children,
+          layoutId,
+          initial,
+          animate,
+          transition,
+          whileHover,
+          whileTap,
+          ...rest
+        } = props
         return createElement('button', rest, children)
       },
     },
