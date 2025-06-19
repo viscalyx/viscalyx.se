@@ -17,8 +17,15 @@ jest.mock('framer-motion', () => {
   const React = require('react')
   const motion: Record<string, any> = {}
   ;['div', 'button', 'span', 'h2', 'p'].forEach(tag => {
-    motion[tag] = ({ children, initial, animate, transition, whileHover, whileTap, ...props }: any) =>
-      React.createElement(tag, props, children)
+    motion[tag] = ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      whileTap,
+      ...props
+    }: any) => React.createElement(tag, props, children)
   })
   return { motion, useInView: () => true }
 })
