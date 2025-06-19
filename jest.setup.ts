@@ -34,6 +34,7 @@ jest.mock('next/image', () => {
   const React = require('react')
   return {
     __esModule: true,
-    default: ({ src, alt, fill, ...rest }: any) => React.createElement('img', { src, alt, ...rest }),
+    default: ({ src, alt, fill, ...rest }: any) =>
+      React.createElement('img', { src, alt, ...rest }),
   }
 })
