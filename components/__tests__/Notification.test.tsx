@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import Notification from '../Notification'
+type NotificationType = 'success' | 'error' | 'warning' | 'info'
 
 jest.mock('lucide-react', () => {
   const React = require('react')
@@ -114,7 +115,7 @@ it('calls onClose when close button is clicked', () => {
   jest.useRealTimers()
 })
 
-it.each([
+it.each<[NotificationType, string, string, string]>([
   ['success', 'bg-green-50', 'border-green-200', 'CheckCircle'],
   ['error', 'bg-red-50', 'border-red-200', 'AlertCircle'],
   ['warning', 'bg-yellow-50', 'border-yellow-200', 'AlertTriangle'],
@@ -124,7 +125,7 @@ it.each([
   (type, bg, border, iconTestId) => {
     const { container } = render(
       <Notification
-        type={type as any}
+        type={type}
         title="Styled"
         message="Styled Message"
         duration={0}
