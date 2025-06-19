@@ -123,7 +123,7 @@ const OpenSource = () => {
         </motion.div>
 
         {/* Projects */}
-        <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
+        <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {contributions.map((project, index) => (
             <li
               key={project.name}
