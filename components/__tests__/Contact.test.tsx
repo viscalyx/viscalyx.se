@@ -84,7 +84,8 @@ describe('Contact component', () => {
   it('shows and hides success message on form submit', () => {
     const { container } = render(<Contact />)
     // Submit the form
-    const form = container.querySelector('form')!
+    const form = screen.getByTestId('contact-form')
+    expect(form).toBeInTheDocument()
     fireEvent.submit(form)
 
     // Success message appears
