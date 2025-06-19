@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import type { AnimatePresenceProps } from 'framer-motion'
 import React from 'react' // Import React
 import About from '../About'
 
@@ -23,7 +24,7 @@ jest.mock('framer-motion', () => {
   return {
     motion,
     useInView: () => true,
-    AnimatePresence: (props: React.PropsWithChildren<{}>) =>
+    AnimatePresence: (props: React.PropsWithChildren<AnimatePresenceProps>) =>
       React.createElement(React.Fragment, null, props.children),
   }
 })
