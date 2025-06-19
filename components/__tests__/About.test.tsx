@@ -23,7 +23,7 @@ jest.mock('framer-motion', () => {
   return {
     motion,
     useInView: () => true,
-    AnimatePresence: (props: { children?: React.ReactNode }) =>
+    AnimatePresence: (props: React.PropsWithChildren<{}>) =>
       React.createElement(React.Fragment, null, props.children),
   }
 })
