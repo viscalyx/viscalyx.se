@@ -12,5 +12,16 @@
     "browser": true,
     "node": true,
     "es6": true
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/__tests__/**/*.{ts,tsx,js,jsx}",
+        "**/?(*.)+(spec|test).{ts,tsx,js,jsx}"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
