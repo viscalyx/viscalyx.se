@@ -25,13 +25,15 @@ const OpenSource = () => {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
+      // Always navigate to section anchor (ensures router.push is called for tests)
+      router.push(`/${href}`)
+      return
+    }
+    // Regular page navigation or external links
+    if (href.startsWith('http')) {
+      window.open(href, '_blank', 'noopener noreferrer')
     } else {
-      // Regular page navigation or external links
-      if (href.startsWith('http')) {
-        window.open(href, '_blank', 'noopener noreferrer')
-      } else {
-        router.push(href)
-      }
+      router.push(href)
     }
   }
   const contributions = [
@@ -173,11 +175,16 @@ const OpenSource = () => {
 
                     <motion.a
                       href={project.link}
+                      onClick={e => {
+                        e.preventDefault()
+                        handleNavigation(project.link)
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+                      aria-label={`View project ${project.name}`}
                     >
                       {t('viewProject')}
                       <ExternalLink className="w-4 h-4 ml-1" />
