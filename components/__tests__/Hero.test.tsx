@@ -32,10 +32,25 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock next/image
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: ({ src, alt }: any) => <img src={src} alt={alt} />,
-}))
+jest.mock('next/image', () => {
+  const React = require('react')
+  return {
+    __esModule: true,
+    default: ({
+      src,
+      alt,
+      fill,
+      priority,
+      ...props
+    }: {
+      src: string
+      alt: string
+      fill?: boolean
+      priority?: boolean
+      [key: string]: any
+    }) => <img src={src} alt={alt} {...props} />,
+  }
+})
 
 describe('Hero component', () => {
   it('renders badge, title and navigation elements', () => {
