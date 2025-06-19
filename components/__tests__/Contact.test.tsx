@@ -46,7 +46,21 @@ jest.mock('lucide-react', () => {
 
 // Suppress framer-motion animation prop warnings
 beforeAll(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
+  const originalError = console.error
+  jest.spyOn(console, 'error').mockImplementation((...args) => {
+    const firstArg = args[0]
+    // Only suppress specific React warnings
+    if (
+      typeof firstArg === 'string' &&
+      ((firstArg.includes('React does not recognize the') &&
+        firstArg.includes('prop on a DOM element.')) ||
+        firstArg.includes('non-boolean attribute'))
+    ) {
+      return
+    }
+    // For other errors, call the original console.error
+    originalError(...args)
+  })
 })
 
 describe('Contact component', () => {
