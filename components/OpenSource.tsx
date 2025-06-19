@@ -167,7 +167,7 @@ const OpenSource = () => {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-primary-500 dark:bg-primary-400 rounded-full" />
                       <span className="text-sm text-secondary-600 dark:text-secondary-400">
                         {project.language}
                       </span>
