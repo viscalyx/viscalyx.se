@@ -1,17 +1,21 @@
 import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import React from 'react'
 import Notification from '../Notification'
 
 jest.mock('lucide-react', () => {
   const React = require('react')
   return {
-    Info: (props: any) => <svg {...props} data-testid="Info" />,
-    X: (props: any) => <svg {...props} data-testid="X" />,
-    CheckCircle: (props: any) => <svg {...props} data-testid="CheckCircle" />,
-    AlertCircle: (props: any) => <svg {...props} data-testid="AlertCircle" />,
-    AlertTriangle: (props: any) => (
-      <svg {...props} data-testid="AlertTriangle" />
-    ),
+    Info: (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement('svg', { 'data-testid': 'Info', ...props }),
+    X: (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement('svg', { 'data-testid': 'X', ...props }),
+    CheckCircle: (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement('svg', { 'data-testid': 'CheckCircle', ...props }),
+    AlertCircle: (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement('svg', { 'data-testid': 'AlertCircle', ...props }),
+    AlertTriangle: (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement('svg', { 'data-testid': 'AlertTriangle', ...props }),
   }
 })
 

@@ -42,7 +42,7 @@ describe('LoadingSpinner', () => {
     ])(
       'renders $expectedClass when color is $propColor',
       ({ propColor, expectedClass }) => {
-        const props: Record<string, any> = {}
+        const props: Record<string, unknown> = {}
         if (propColor) props.color = propColor
         render(<LoadingSpinner {...props} />)
         const spinner = screen.getByRole('status')

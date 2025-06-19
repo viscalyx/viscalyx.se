@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import React from 'react'
 import Contact from '../Contact'
 
 // Mock translations
@@ -8,25 +9,21 @@ jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
 // Mock next/image
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ src, alt, ...props }: any) => (
-    <img src={src} alt={alt} {...props} />
-  ),
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) =>
+    React.createElement('img', props),
 }))
 
 // Mock framer-motion to filter out animation props
 jest.mock('framer-motion', () => {
   const React = require('react')
-  const motion: Record<string, any> = {}
+  const motion: Record<
+    string,
+    React.FC<React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }>
+  > = {}
   ;['div', 'button'].forEach(tag => {
-    motion[tag] = ({
-      children,
-      initial,
-      whileHover,
-      whileTap,
-      viewport,
-      transition,
-      ...props
-    }: any) => React.createElement(tag, props, children)
+    motion[tag] = (
+      props: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }
+    ) => React.createElement(tag, props, props.children)
   })
   return { motion }
 })
@@ -35,10 +32,14 @@ jest.mock('framer-motion', () => {
 jest.mock('lucide-react', () => {
   const React = require('react')
   const icons = ['Mail', 'Phone', 'MapPin', 'Send', 'Clock', 'CheckCircle']
-  const exportObj: any = {}
+  const exportObj: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {}
   icons.forEach(name => {
-    exportObj[name] = ({ children, className, ...props }: any) =>
-      React.createElement('svg', { 'data-testid': name, className }, children)
+    exportObj[name] = (props: React.SVGProps<SVGSVGElement>) =>
+      React.createElement(
+        'svg',
+        { 'data-testid': name, ...props },
+        props.children
+      )
   })
   return exportObj
 })

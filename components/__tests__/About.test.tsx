@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import React from 'react' // Import React
 import About from '../About'
 
 // Mock translations
@@ -10,23 +11,28 @@ jest.mock('next-intl', () => ({
 // Mock framer-motion to filter out animation props and provide necessary tags
 jest.mock('framer-motion', () => {
   const React = require('react')
-  const motion: Record<string, any> = {}
+  const motion: Record<
+    string,
+    React.FC<React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }>
+  > = {}
   ;['div', 'span', 'h2', 'p'].forEach(tag => {
-    motion[tag] = ({ children, ...props }: any) =>
-      React.createElement(tag, props, children)
+    motion[tag] = (
+      props: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }
+    ) => React.createElement(tag, props, props.children)
   })
   return {
     motion,
     useInView: () => true,
-    AnimatePresence: ({ children }: any) =>
-      React.createElement(React.Fragment, null, children),
+    AnimatePresence: (props: { children?: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, props.children),
   }
 })
 
 // Mock next/image
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ src, alt }: any) => <img src={src} alt={alt} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) =>
+    React.createElement('img', props),
 }))
 
 describe('About component', () => {
