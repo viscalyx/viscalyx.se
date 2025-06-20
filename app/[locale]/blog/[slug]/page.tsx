@@ -125,7 +125,7 @@ function addHeadingIds(htmlContent: string): string {
         id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
 
       // Check if id attribute already exists in attributes
-      const hasId = /\bid\s*=\s*/i.test(attributes)
+      const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
       const finalAttributes = hasId
         ? attributes
         : `${attributes} id="${finalId}"`
