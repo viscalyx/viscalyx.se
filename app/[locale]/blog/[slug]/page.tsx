@@ -71,7 +71,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
     let match
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
-      const level = parseInt(match[1])
+      const level = Number.parseInt(match[1])
       const raw = match[2]
       const text = sanitizeHtml(raw, {
         allowedTags: [],
@@ -95,7 +95,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     return headings.map(heading => {
       const text = heading.textContent || ''
-      const level = parseInt(heading.tagName.charAt(1))
+      const level = Number.parseInt(heading.tagName.charAt(1))
       const id = slugify(text)
 
       // Ensure the id is not empty
