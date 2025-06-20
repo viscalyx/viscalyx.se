@@ -21,6 +21,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import sanitizeHtml from 'sanitize-html'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -64,19 +65,23 @@ function slugify(text: string): string {
 function extractTableOfContents(htmlContent: string): TocItem[] {
   // Create a temporary DOM element to parse the HTML
   if (typeof window === 'undefined') {
-    // Server-side: use a simple regex approach
+    // Server-side: use sanitize-html for text extraction
     const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
     const headings: TocItem[] = []
     let match
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
-      const level = parseInt(match[1])
-      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove HTML tags
+      const level = Number.parseInt(match[1])
+      const raw = match[2]
+      const text = sanitizeHtml(raw, {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim()
       const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
-        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
 
       headings.push({ id: finalId, text, level })
     }
@@ -90,12 +95,12 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
 
     return headings.map(heading => {
       const text = heading.textContent || ''
-      const level = parseInt(heading.tagName.charAt(1))
+      const level = Number.parseInt(heading.tagName.charAt(1))
       const id = slugify(text)
 
       // Ensure the id is not empty
       const finalId =
-        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
 
       return { id: finalId, text, level }
     })
@@ -108,16 +113,19 @@ function addHeadingIds(htmlContent: string): string {
   return htmlContent.replace(
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
-      // Extract clean text content for ID generation
-      const cleanText = text.replace(/<[^>]*>/g, '').trim()
-      const id = slugify(cleanText)
+      // Extract clean text content using sanitize-html
+      const cleaned = sanitizeHtml(text, {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim()
+      const id = slugify(cleaned)
 
       // Ensure the id is not empty
       const finalId =
-        id || `heading-${level}-${Math.random().toString(36).substr(2, 9)}`
+        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
 
       // Check if id attribute already exists in attributes
-      const hasId = /\bid\s*=/i.test(attributes)
+      const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
       const finalAttributes = hasId
         ? attributes
         : `${attributes} id="${finalId}"`
