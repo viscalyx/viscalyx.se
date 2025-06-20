@@ -52,9 +52,13 @@ beforeAll(() => {
     // Only suppress specific React warnings
     if (
       typeof firstArg === 'string' &&
+      // React unrecognized framer-motion prop warnings
       ((firstArg.includes('React does not recognize the') &&
         firstArg.includes('prop on a DOM element.')) ||
-        firstArg.includes('non-boolean attribute'))
+        // non-boolean attribute fill warnings
+        firstArg.includes('non-boolean attribute') ||
+        // catch any Received ... fill variations
+        (firstArg.includes('Received') && firstArg.includes('fill')))
     ) {
       return
     }
