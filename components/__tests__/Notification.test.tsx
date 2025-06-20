@@ -132,7 +132,9 @@ it.each<[NotificationType, string, string, string]>([
         onClose={() => {}}
       />
     )
-    const wrapper = container.firstChild as HTMLElement
+    const firstChild = container.firstChild
+    expect(firstChild).not.toBeNull()
+    const wrapper = firstChild as HTMLElement
     expect(wrapper).toHaveClass(bg)
     expect(wrapper).toHaveClass(border)
     expect(screen.getByTestId(iconTestId)).toBeInTheDocument()
