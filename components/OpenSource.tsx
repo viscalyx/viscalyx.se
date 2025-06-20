@@ -176,8 +176,12 @@ const OpenSource = () => {
                     <motion.a
                       href={project.link}
                       onClick={e => {
-                        e.preventDefault()
-                        handleNavigation(project.link)
+                        const mouseEvent = e.nativeEvent as MouseEvent
+                        // Only handle left-click mouse events
+                        if (mouseEvent.button === 0) {
+                          e.preventDefault()
+                          handleNavigation(project.link)
+                        }
                       }}
                       target="_blank"
                       rel="noopener noreferrer"
