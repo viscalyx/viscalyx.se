@@ -66,7 +66,7 @@ describe('LanguageSwitcher component', () => {
     const toggleButton = screen.getByRole('button')
     fireEvent.click(toggleButton)
 
-    const swedishButton = screen.getAllByRole('button')[2]
+    const swedishButton = screen.getByRole('button', { name: /Swedish/i })
     fireEvent.click(swedishButton)
     expect(pushMock).toHaveBeenCalledWith('/sv/test')
   })
