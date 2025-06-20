@@ -25,8 +25,6 @@ const OpenSource = () => {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
-      // Always navigate to section anchor (ensures router.push is called for tests)
-      router.push(`/${href}`)
       return
     }
     // Regular page navigation or external links
