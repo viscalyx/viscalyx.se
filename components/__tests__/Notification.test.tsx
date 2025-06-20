@@ -94,25 +94,27 @@ describe('auto-dismissal behavior', () => {
   })
 })
 
-it('calls onClose when close button is clicked', () => {
-  jest.useFakeTimers()
-  const onClose = jest.fn()
-  render(
-    <Notification
-      type="info"
-      title="Click Close"
-      message="Click Message"
-      duration={0}
-      onClose={onClose}
-    />
-  )
-  fireEvent.click(screen.getByTestId('X'))
-  // advance past animation delay for manual close
-  act(() => {
-    jest.advanceTimersByTime(300)
+describe('manual close behavior', () => {
+  it('calls onClose when close button is clicked', () => {
+    jest.useFakeTimers()
+    const onClose = jest.fn()
+    render(
+      <Notification
+        type="info"
+        title="Click Close"
+        message="Click Message"
+        duration={0}
+        onClose={onClose}
+      />
+    )
+    fireEvent.click(screen.getByTestId('X'))
+    // advance past animation delay for manual close
+    act(() => {
+      jest.advanceTimersByTime(300)
+    })
+    expect(onClose).toHaveBeenCalledTimes(1)
+    jest.useRealTimers()
   })
-  expect(onClose).toHaveBeenCalledTimes(1)
-  jest.useRealTimers()
 })
 
 it.each<[NotificationType, string, string, string]>([
