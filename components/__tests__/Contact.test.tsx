@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import Contact from '../Contact'
+import { suppressConsoleErrors } from './suppressConsoleErrors'
 
 // Mock translations
 jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
@@ -46,25 +47,7 @@ jest.mock('lucide-react', () => {
 
 // Suppress framer-motion animation prop warnings
 beforeAll(() => {
-  const originalError = console.error
-  jest.spyOn(console, 'error').mockImplementation((...args) => {
-    const firstArg = args[0]
-    // Only suppress specific React warnings
-    if (
-      typeof firstArg === 'string' &&
-      // React unrecognized framer-motion prop warnings
-      ((firstArg.includes('React does not recognize the') &&
-        firstArg.includes('prop on a DOM element.')) ||
-        // non-boolean attribute fill warnings
-        firstArg.includes('non-boolean attribute') ||
-        // catch any Received ... fill variations
-        (firstArg.includes('Received') && firstArg.includes('fill')))
-    ) {
-      return
-    }
-    // For other errors, call the original console.error
-    originalError(...args)
-  })
+  suppressConsoleErrors()
 })
 
 describe('Contact component', () => {

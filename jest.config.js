@@ -5,7 +5,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testMatch: [
-    '<rootDir>/**/__tests__/**/*.+(ts|tsx|js|jsx)',
+    '<rootDir>/**/__tests__/**/*.+(spec|test).+(ts|tsx|js|jsx)',
     '<rootDir>/**/*.+(spec|test).+(ts|tsx|js|jsx)',
   ],
   moduleNameMapper: {
