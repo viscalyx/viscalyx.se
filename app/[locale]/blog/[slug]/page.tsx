@@ -109,7 +109,12 @@ function addHeadingIds(htmlContent: string): string {
     /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
       // Extract clean text content for ID generation
-      const cleanText = text.replace(/<[^>]*>/g, '').trim()
+      let cleanText = text
+      let previous
+      do {
+        previous = cleanText
+        cleanText = cleanText.replace(/<[^>]*>/g, '').trim()
+      } while (cleanText !== previous)
       const id = slugify(cleanText)
 
       // Ensure the id is not empty
