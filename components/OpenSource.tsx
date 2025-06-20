@@ -176,10 +176,9 @@ const OpenSource = () => {
 
                     <motion.a
                       href={project.link}
-                      onClick={e => {
-                        const mouseEvent = e.nativeEvent as MouseEvent
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         // Only handle left-click mouse events
-                        if (mouseEvent.button === 0) {
+                        if (e.button === 0) {
                           e.preventDefault()
                           handleNavigation(project.link)
                         }
