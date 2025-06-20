@@ -37,30 +37,37 @@ jest.mock('next/image', () => ({
 }))
 
 describe('About component', () => {
-  it('renders section with id and main headings', () => {
-    const { container } = render(<About />)
+  let container: HTMLElement
 
-    const section = container.querySelector('section#about')
-    expect(section).toBeInTheDocument()
+  beforeEach(() => {
+    container = render(<About />).container
+  })
 
-    // Badge and titles
+  it('renders section with id "about"', () => {
+    expect(container.querySelector('section#about')).toBeInTheDocument()
+  })
+
+  it('renders badge and titles', () => {
     expect(screen.getByText('badge')).toBeInTheDocument()
     expect(screen.getByText('title')).toBeInTheDocument()
     expect(screen.getByText('titleHighlight')).toBeInTheDocument()
+  })
 
-    // Four value items
+  it('renders four value item headings', () => {
     const headings = screen.getAllByRole('heading', { level: 3 })
     expect(headings).toHaveLength(4)
+  })
 
-    // Image and alt
+  it('renders image with correct src and alt attributes', () => {
     const image = container.querySelector('img')
     expect(image).toHaveAttribute(
       'src',
       expect.stringContaining('unsplash.com')
     )
     expect(image).toHaveAttribute('alt', 'visualAlt')
+  })
 
-    // Stats values
+  it('renders stats values', () => {
     expect(screen.getByText('stats.taskReduction.value')).toBeInTheDocument()
     expect(screen.getByText('stats.automation.value')).toBeInTheDocument()
   })
