@@ -46,7 +46,7 @@
 
 import { motion } from 'framer-motion'
 import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface NotificationProps {
   type: 'success' | 'error' | 'warning' | 'info'
@@ -64,15 +64,20 @@ const Notification = ({
   onClose,
 }: NotificationProps) => {
   const [isVisible, setIsVisible] = useState(true)
+  // Refs to track auto-hide and close timers
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (duration > 0) {
-      const timer = setTimeout(() => {
+      hideTimeoutRef.current = setTimeout(() => {
         setIsVisible(false)
-        setTimeout(() => onClose?.(), 300)
+        closeTimeoutRef.current = setTimeout(() => onClose?.(), 300)
       }, duration)
-
-      return () => clearTimeout(timer)
+    }
+    return () => {
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current)
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
     }
   }, [duration, onClose])
 
@@ -115,6 +120,7 @@ const Notification = ({
   }
 
   const Icon = icons[type]
+  // Ensure colorScheme is always defined based on the type
   const colorScheme = colors[type]
 
   if (!isVisible) return null
@@ -139,7 +145,10 @@ const Notification = ({
         <button
           onClick={() => {
             setIsVisible(false)
-            setTimeout(() => onClose?.(), 300)
+            // Clear any existing timers before scheduling close
+            if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current)
+            if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
+            closeTimeoutRef.current = setTimeout(() => onClose?.(), 300)
           }}
           className={`ml-3 ${colorScheme.icon} hover:opacity-70 transition-opacity`}
         >

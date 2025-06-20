@@ -25,13 +25,13 @@ const OpenSource = () => {
           element.scrollIntoView({ behavior: 'smooth' })
         }
       }
+      return
+    }
+    // Regular page navigation or external links
+    if (href.startsWith('http')) {
+      window.open(href, '_blank', 'noopener noreferrer')
     } else {
-      // Regular page navigation or external links
-      if (href.startsWith('http')) {
-        window.open(href, '_blank', 'noopener noreferrer')
-      } else {
-        router.push(href)
-      }
+      router.push(href)
     }
   }
   const contributions = [
@@ -121,69 +121,84 @@ const OpenSource = () => {
         </motion.div>
 
         {/* Projects */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ul
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          aria-label="Open source projects"
+        >
           {contributions.map((project, index) => (
-            <motion.div
+            <li
               key={project.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg overflow-hidden card-hover group"
+              className="overflow-hidden rounded-xl shadow-lg"
             >
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
-                  <GitHubIcon className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    {project.name}
-                  </h3>
-                  <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm">
-                    <Star className="w-4 h-4 mr-1" />
-                    {project.stars}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white dark:bg-secondary-800 rounded-xl overflow-hidden card-hover group"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
+                    <GitHubIcon className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
                   </div>
                 </div>
 
-                <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-                  {project.description}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-primary-500 dark:bg-primary-400 rounded-full"></div>
-                    <span className="text-sm text-secondary-600 dark:text-secondary-400">
-                      {project.language}
-                    </span>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {project.name}
+                    </h3>
+                    <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm">
+                      <Star className="w-4 h-4 mr-1" />
+                      {project.stars}
+                    </div>
                   </div>
 
-                  <motion.a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
-                  >
-                    {t('viewProject')}
-                    <ExternalLink className="w-4 h-4 ml-1" />
-                  </motion.a>
+                  <p className="text-secondary-600 dark:text-secondary-400 mb-4">
+                    {project.description}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-primary-500 dark:bg-primary-400 rounded-full" />
+                      <span className="text-sm text-secondary-600 dark:text-secondary-400">
+                        {project.language}
+                      </span>
+                    </div>
+
+                    <motion.a
+                      href={project.link}
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                        // Only handle left-click mouse events
+                        if (e.button === 0) {
+                          e.preventDefault()
+                          handleNavigation(project.link)
+                        }
+                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+                      aria-label={`View project ${project.name}`}
+                    >
+                      {t('viewProject')}
+                      <ExternalLink className="w-4 h-4 ml-1" />
+                    </motion.a>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         {/* Call to Action */}
         <motion.div

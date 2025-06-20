@@ -28,9 +28,12 @@ const LoadingSpinner = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      role="status"
+      aria-label="Loading"
       className="flex items-center justify-center"
     >
       <Loader2
+        data-icon="loader-2"
         className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`}
       />
     </motion.div>

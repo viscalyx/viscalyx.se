@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, Clock, CheckCircle } from 'lucide-react'
-import { useState } from 'react'
-import Image from 'next/image'
+import { CheckCircle, Clock, Mail, MapPin, Phone, Send } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { useState } from 'react'
 
 const Contact = () => {
   const t = useTranslations('contact')
@@ -105,7 +105,11 @@ const Contact = () => {
               </motion.div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form
+              data-testid="contact-form"
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label
