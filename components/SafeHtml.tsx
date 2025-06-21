@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import sanitizeHtml from 'sanitize-html'
 
 interface Props {
@@ -49,7 +50,10 @@ const sanitizeOptions = {
 }
 
 export default function SafeHtml({ html, className }: Props) {
-  const sanitized = sanitizeHtml(html, sanitizeOptions)
+  const sanitized = useMemo(() => {
+    return sanitizeHtml(html, sanitizeOptions)
+  }, [html])
+
   return (
     <div
       className={className}
