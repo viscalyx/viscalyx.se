@@ -17,6 +17,8 @@ module.exports = {
     'app/**/*.{ts,tsx}',
     'components/**/*.{ts,tsx}',
     'lib/**/*.{ts,tsx}',
+    'scripts/**/*.{js,ts}',
+    '!scripts/**/*.test.{js,ts}',
   ],
   coverageThreshold: {
     global: { branches: 20, functions: 20, lines: 20, statements: 20 },
