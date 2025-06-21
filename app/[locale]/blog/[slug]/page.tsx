@@ -5,6 +5,7 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ReadingProgress from '@/components/ReadingProgress'
+import SafeHtml from '@/components/SafeHtml'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import {
@@ -416,11 +417,8 @@ const BlogPostContent = ({
               )}
 
               <div className="blog-content prose prose-lg max-w-none">
-                {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
-                <div
-                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
-                  className="markdown-content"
-                />
+                {/* Apply DOMPurify runtime sanitization via SafeHtml for extra safety */}
+                <SafeHtml html={contentWithIds} className="markdown-content" />
                 <CodeBlockEnhancer contentLoaded={!loading && !!post} />
               </div>
 
