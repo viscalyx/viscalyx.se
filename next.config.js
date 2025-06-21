@@ -15,29 +15,6 @@ const withNextIntl = require('next-intl/plugin')('./i18n.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Exclude Node.js modules from client-side bundle
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        net: false,
-        tls: false,
-        fs: false,
-        child_process: false,
-        http: false,
-        https: false,
-        url: false,
-        path: false,
-        crypto: false,
-        stream: false,
-        util: false,
-        zlib: false,
-        events: false,
-        buffer: false,
-      }
-    }
-    return config
-  },
   images: {
     remotePatterns: [
       {
