@@ -162,7 +162,7 @@ const Header = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => {
-              const MotionLink = motion(Link)
+              const MotionLink = motion.create(Link)
               return (
                 <MotionLink
                   key={item.name}
