@@ -6,6 +6,7 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ReadingProgress from '@/components/ReadingProgress'
+import SafeHtml from '@/components/SafeHtml'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import {
