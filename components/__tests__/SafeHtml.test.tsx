@@ -1,30 +1,16 @@
 import { render } from '@testing-library/react'
 import SafeHtml from '../SafeHtml'
 
-// Mock DOMPurify to return a simplified sanitize function for testing
-jest.mock('dompurify', () => ({
+// Mock sanitize-html to return a simplified sanitize function for testing
+jest.mock('sanitize-html', () => ({
   __esModule: true,
-  default: jest.fn(() => ({
-    sanitize: jest.fn((html: string) => {
-      // Simple mock that removes <script> tags but keeps other content
-      return html.replace(
-        /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-        ''
-      )
-    }),
-  })),
-}))
-
-// Mock JSDOM
-jest.mock('jsdom', () => ({
-  JSDOM: jest.fn().mockImplementation(() => ({
-    window: {
-      document: {
-        createElement: jest.fn(),
-        createDocumentFragment: jest.fn(),
-      },
-    },
-  })),
+  default: jest.fn((html: string) => {
+    // Simple mock that removes <script> tags but keeps other content
+    return html.replace(
+      /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+      ''
+    )
+  }),
 }))
 
 describe('SafeHtml', () => {
@@ -67,17 +53,9 @@ describe('SafeHtml', () => {
     expect(container.innerHTML).toBe('<div></div>')
   })
 
-  it('works in server-side environment', () => {
-    // Temporarily mock window as undefined to simulate server environment
-    const originalWindow = global.window
-    // @ts-ignore
-    delete global.window
-
+  it('works consistently across environments', () => {
     const { container } = render(<SafeHtml html={safeHtml} />)
     expect(container.firstChild).toBeInTheDocument()
     expect(container.innerHTML).toContain('This is safe content')
-
-    // Restore window
-    global.window = originalWindow
   })
 })
