@@ -27,11 +27,11 @@ Regular blockquotes without the special syntax still work as before:
 
 ```markdown
 > [!QUOTE]
-> "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems." - Common advice from experienced developers
+> The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems
 ```
 
 > [!QUOTE]
-> "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems." - Common advice from experienced developers
+> The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems.
 
 ## GitHub-style Blockquotes
 
