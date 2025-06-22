@@ -98,7 +98,7 @@
   /* Alert titles */
   .blog-content .github-alert-title {
     @apply font-bold mb-3 flex items-center gap-2;
-    margin: 0 !important;
+    margin-top: 0 !important;
   }
 
   /* Alert content */
