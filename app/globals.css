@@ -97,10 +97,28 @@
     @apply my-6 rounded-lg border-l-4 p-4 bg-secondary-50 dark:bg-secondary-800;
   }
 
-  /* Alert titles */
-  .blog-content .github-alert-title {
+  /* Common alert-title and icon styles */
+  .blog-content .github-alert .github-alert-title {
     @apply font-bold mb-3 flex items-center gap-2;
     margin-top: 0 !important;
+  }
+  .blog-content .github-alert .github-alert-title::before {
+    content: '';
+    @apply alert-icon;
+  }
+
+  /* Important alert variant */
+  .blog-content .github-alert-important {
+    @apply border-purple-500;
+  }
+  .blog-content .github-alert-important .github-alert-title {
+    @apply text-purple-600 dark:text-purple-400;
+  }
+  .blog-content .github-alert-important .github-alert-title::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
+  }
+  .dark .blog-content .github-alert-important .github-alert-title::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
   }
 
   /* Alert content */
@@ -128,13 +146,6 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-  }
-
-  /* Add icons using CSS pseudo-elements */
-  .blog-content .github-alert-title::before {
-    content: '';
-    @apply alert-icon;
-    /* background-size, repeat, and position moved to alert-icon utility */
   }
 
   /* Note - Blue with info icon */
@@ -176,19 +187,12 @@
   /* Important - Purple with exclamation in speech bubble */
   .blog-content .github-alert-important {
     @apply border-purple-500;
+    /* Define icon URLs as CSS variables */
+    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
+    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
   }
-
   .blog-content .github-alert-important .github-alert-title {
     @apply text-purple-600 dark:text-purple-400;
-  }
-
-  .blog-content .github-alert-important .github-alert-title::before {
-    /* Report/important icon */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-  }
-
-  .dark .blog-content .github-alert-important .github-alert-title::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
   }
 
   /* Warning - Orange/Yellow with triangle exclamation */
