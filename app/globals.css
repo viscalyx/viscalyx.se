@@ -201,22 +201,19 @@
     color: var(--alert-title-color-dark) !important;
   }
 
-  /* Caution - Red with octagon stop sign */
+  /* Caution alert variant */
   .blog-content .github-alert-caution {
-    @apply border-red-500;
+    /* Remove @apply since border-color is set by variable */
+    --alert-border-color: #ef4444; /* red-500 */
+    --alert-title-color-light: #dc2626; /* red-600 */
+    --alert-title-color-dark: #f87171; /* red-400 */
+    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc2626'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
+    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f87171' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
   }
 
-  .blog-content .github-alert-caution .github-alert-title {
-    @apply text-red-600 dark:text-red-400;
-  }
-
-  .blog-content .github-alert-caution .github-alert-title::before {
-    /* Octagonal stop sign with exclamation point */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc2626' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
-  }
-
-  .dark .blog-content .github-alert-caution .github-alert-title::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f87171' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
+  /* Dark mode title color override */
+  .dark .blog-content .github-alert-caution .github-alert-title {
+    color: var(--alert-title-color-dark) !important;
   }
 
   /* Quote - Styled like regular blockquote but with visible quote marks */
