@@ -108,7 +108,7 @@
   }
   .blog-content .github-alert .github-alert-title::before {
     content: '';
-    @apply alert-icon;
+    @apply github-alert-icon;
     /* Use CSS variable for icon */
     background-image: var(--alert-icon-light);
   }
@@ -151,7 +151,7 @@
   }
 
   /* Utility for alert icons */
-  .alert-icon {
+  .github-alert-icon {
     @apply w-5 h-5 mr-2 inline-block;
     background-size: contain;
     background-repeat: no-repeat;
