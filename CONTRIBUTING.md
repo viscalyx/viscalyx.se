@@ -956,7 +956,7 @@ The blog data build process (`scripts/build-blog-data.js`) uses the `sanitize-ht
 
 These tests verify that the sanitization configuration properly prevents XSS attacks while preserving legitimate content:
 
-**XSS Prevention Tests**
+##### XSS Prevention Tests
 
 - **Script Tag Removal**: Ensures `<script>` tags and their content are completely removed
 - **Event Handler Removal**: Removes dangerous event handlers like `onclick`, `onload`, etc.
@@ -965,7 +965,7 @@ These tests verify that the sanitization configuration properly prevents XSS att
 - **Iframe/Embed Blocking**: Prevents potentially dangerous embedded content
 - **Data Attribute Handling**: Verifies data attributes are handled safely
 
-**Content Preservation Tests**
+##### Content Preservation Tests
 
 - **Basic HTML Formatting**: Ensures standard HTML tags like `<h1>`, `<p>`, `<strong>`, `<em>` are preserved
 - **Syntax Highlighting**: Verifies that code syntax highlighting classes and attributes are maintained
@@ -973,7 +973,7 @@ These tests verify that the sanitization configuration properly prevents XSS att
 - **Safe Links**: Confirms that legitimate URLs (https, mailto, relative paths) work correctly
 - **Image Handling**: Documents the current restrictive image policy
 
-**Edge Case Testing**
+##### Edge Case Testing
 
 - **Empty Content**: Handles null, undefined, and empty strings safely
 - **Malformed HTML**: Gracefully processes badly formed HTML
@@ -983,7 +983,7 @@ These tests verify that the sanitization configuration properly prevents XSS att
 
 These tests run the actual build script with malicious content to verify end-to-end security:
 
-**Full Build Process Testing**
+##### Full Build Process Testing
 
 - **Malicious Content Removal**: Creates actual blog posts with XSS attempts and verifies they're sanitized
 - **Syntax Highlighting Preservation**: Ensures code blocks maintain their highlighting after processing
