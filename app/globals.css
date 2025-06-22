@@ -119,10 +119,15 @@
     margin-bottom: 0;
   }
 
+  /* Utility for alert icons */
+  .alert-icon {
+    @apply w-5 h-5 mr-2 inline-block;
+  }
+
   /* Add icons using CSS pseudo-elements */
   .blog-content .github-alert-title::before {
     content: '';
-    @apply w-5 h-5 mr-2 inline-block;
+    @apply alert-icon;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
