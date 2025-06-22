@@ -109,7 +109,7 @@ async function buildBlogData() {
           .use(remarkGfm)
           .use(() => {
             // GitHub alerts plugin - inline implementation
-            return (tree) => {
+            return tree => {
               visit(tree, 'blockquote', (node, index, parent) => {
                 // Check if this blockquote contains a GitHub alert pattern
                 const firstChild = node.children[0]
@@ -123,7 +123,9 @@ async function buildBlogData() {
                 }
 
                 // Check for GitHub alert pattern: [!TYPE]
-                const alertMatch = firstTextNode.value.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/)
+                const alertMatch = firstTextNode.value.match(
+                  /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]/
+                )
                 if (!alertMatch) {
                   return
                 }
@@ -132,19 +134,32 @@ async function buildBlogData() {
                 const ALERT_TYPES = {
                   NOTE: { className: 'github-alert-note', title: 'Note' },
                   TIP: { className: 'github-alert-tip', title: 'Tip' },
-                  IMPORTANT: { className: 'github-alert-important', title: 'Important' },
-                  WARNING: { className: 'github-alert-warning', title: 'Warning' },
-                  CAUTION: { className: 'github-alert-caution', title: 'Caution' }
+                  IMPORTANT: {
+                    className: 'github-alert-important',
+                    title: 'Important',
+                  },
+                  WARNING: {
+                    className: 'github-alert-warning',
+                    title: 'Warning',
+                  },
+                  CAUTION: {
+                    className: 'github-alert-caution',
+                    title: 'Caution',
+                  },
+                  QUOTE: { className: 'github-alert-quote', title: 'Quote' },
                 }
-                
+
                 const alertConfig = ALERT_TYPES[alertType]
                 if (!alertConfig) {
                   return
                 }
 
                 // Remove the [!TYPE] from the text
-                const remainingText = firstTextNode.value.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/, '')
-                
+                const remainingText = firstTextNode.value.replace(
+                  /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/,
+                  ''
+                )
+
                 // Update the text node or remove it if empty
                 if (remainingText.trim()) {
                   firstTextNode.value = remainingText
@@ -162,7 +177,7 @@ async function buildBlogData() {
                 node.data.hName = 'div'
                 node.data.hProperties = {
                   className: ['github-alert', alertConfig.className],
-                  'data-alert-type': alertType.toLowerCase()
+                  'data-alert-type': alertType.toLowerCase(),
                 }
 
                 // Create title element
@@ -171,8 +186,8 @@ async function buildBlogData() {
                   children: [{ type: 'text', value: alertConfig.title }],
                   data: {
                     hName: 'div',
-                    hProperties: { className: ['github-alert-title'] }
-                  }
+                    hProperties: { className: ['github-alert-title'] },
+                  },
                 }
 
                 // Create content wrapper
@@ -181,8 +196,8 @@ async function buildBlogData() {
                   children: [...node.children],
                   data: {
                     hName: 'div',
-                    hProperties: { className: ['github-alert-content'] }
-                  }
+                    hProperties: { className: ['github-alert-content'] },
+                  },
                 }
 
                 // Replace children with structured content

@@ -218,6 +218,55 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f87171' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
   }
 
+  /* Quote - Styled like regular blockquote but with visible quote marks */
+  .blog-content .github-alert-quote {
+    /* Override alert styling to match regular blockquotes */
+    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400;
+    background: transparent !important;
+    border-radius: 0 !important;
+    margin: 1.6em 0 !important;
+    padding: 0 0 0 1em !important;
+    quotes: '\201C' '\201D' '\2018' '\2019';
+  }
+
+  /* Hide the title for quote alerts */
+  .blog-content .github-alert-quote .github-alert-title {
+    display: none !important;
+  }
+
+  /* Style the content like a regular blockquote */
+  .blog-content .github-alert-quote .github-alert-content {
+    @apply text-secondary-600 dark:text-secondary-400;
+    font-style: italic !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p {
+    @apply text-secondary-600 dark:text-secondary-400;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Add quote marks specifically for QUOTE alerts */
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:first-of-type::before {
+    content: open-quote;
+  }
+
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:last-of-type::after {
+    content: close-quote;
+  }
+
   .blog-content code {
     @apply bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded text-sm;
   }
