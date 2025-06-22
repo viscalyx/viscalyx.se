@@ -80,7 +80,7 @@ function processGitHubAlert(node) {
 
   // Check for GitHub alert pattern: [!TYPE]
   const alertMatch = firstTextNode.value.match(
-    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]/
+    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/
   )
   if (!alertMatch) {
     return false
@@ -92,11 +92,8 @@ function processGitHubAlert(node) {
     return false
   }
 
-  // Remove the [!TYPE] from the text
-  const remainingText = firstTextNode.value.replace(
-    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/,
-    ''
-  )
+  // Remove the [!TYPE] from the text using the match result
+  const remainingText = firstTextNode.value.slice(alertMatch[0].length)
 
   // Update the text node or remove it if empty
   if (remainingText.trim()) {
