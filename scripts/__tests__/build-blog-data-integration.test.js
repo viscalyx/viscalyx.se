@@ -7,7 +7,7 @@
 
 const fs = require('node:fs')
 const path = require('node:path')
-const { execSync } = require('child_process')
+const { execSync } = require('node:child_process')
 
 // Test utilities
 const createTempDir = () => {
@@ -407,7 +407,7 @@ This conclusion paragraph wraps up the content and should also be included in th
         expect(post.readTime).toMatch(/\d+ min read/)
 
         // Extract the number of minutes
-        const minutes = parseInt(post.readTime.match(/(\d+) min/)[1])
+        const minutes = Number.parseInt(post.readTime.match(/(\d+) min/)[1])
 
         // The post has substantial content, should be more than 1 minute
         // but not excessive since malicious content should be excluded
