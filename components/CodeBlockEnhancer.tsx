@@ -20,51 +20,46 @@ export default function CodeBlockEnhancer({
     const roots = new Map<HTMLElement, Root>()
 
     const addCopyButtons = () => {
-      // Find all code blocks and add copy buttons
-      const codeBlocks = document.querySelectorAll(
-        '.blog-content pre[class*="language-"]'
-      )
+      // Use build-time wrappers: '.code-block-wrapper' contains <pre> and label
+      const wrappers = Array.from(
+        document.querySelectorAll('.blog-content .code-block-wrapper')
+      ) as HTMLElement[]
 
-      codeBlocks.forEach(block => {
-        // Skip if copy button already exists
-        if (block.querySelector('.copy-button-container')) {
-          return
+      wrappers.forEach(wrapper => {
+        // Only process once per wrapper
+        if (wrapper.dataset.enhanced === 'true') return
+        wrapper.dataset.enhanced = 'true'
+
+        // Find the <pre> element
+        const pre = wrapper.querySelector(
+          'pre[class*="language-"]'
+        ) as HTMLElement | null
+        if (!pre) return
+
+        // Wrap <pre> in scroll wrapper if not already
+        let scrollWrapper = wrapper.querySelector(
+          '.code-scroll-wrapper'
+        ) as HTMLElement | null
+        if (!scrollWrapper) {
+          scrollWrapper = document.createElement('div')
+          scrollWrapper.className = 'code-scroll-wrapper'
+          wrapper.insertBefore(scrollWrapper, pre)
+          scrollWrapper.appendChild(pre)
         }
 
-        // Get the code content
-        const codeElement = block.querySelector('code')
-        if (!codeElement) return
-
-        const codeText = codeElement.textContent || ''
-
-        // Create container for the copy button
-        const copyContainer = document.createElement('div')
-        copyContainer.className = 'copy-button-container'
-
-        // Track this container for cleanup
-        createdContainers.push(copyContainer)
-
-        // Position the parent relatively if not already
-        const blockElement = block as HTMLElement
-        if (
-          !blockElement.style.position &&
-          window.getComputedStyle(blockElement).position !== 'relative'
-        ) {
-          blockElement.style.position = 'relative'
+        // Insert copy button into wrapper
+        const codeElement = pre.querySelector('code')
+        if (codeElement) {
+          const text = codeElement.textContent || ''
+          const copyContainer = document.createElement('div')
+          copyContainer.className = 'copy-button-container'
+          // append to scrollWrapper so the button overlays inside the code block
+          scrollWrapper.appendChild(copyContainer)
+          createdContainers.push(copyContainer)
+          const root = createRoot(copyContainer)
+          root.render(<CopyButton text={text} />)
+          roots.set(copyContainer, root)
         }
-
-        // Add class to help with CSS targeting
-        blockElement.classList.add('has-copy-button')
-
-        // Insert the copy button container
-        block.appendChild(copyContainer)
-
-        // Render the React component into the container
-        const root = createRoot(copyContainer)
-        root.render(<CopyButton text={codeText} />)
-
-        // Store the root reference for proper cleanup
-        roots.set(copyContainer, root)
       })
     }
 
