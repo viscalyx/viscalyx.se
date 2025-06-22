@@ -219,7 +219,7 @@
   /* Quote - Styled like regular blockquote but with visible quote marks */
   .blog-content .github-alert-quote {
     /* Override alert styling to match regular blockquotes */
-    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400 bg-transparent my-6 p-0 rounded-none;
+    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400 bg-secondary-200 dark:bg-secondary-950 my-6 p-0 rounded-none;
   }
 
   /* Hide the title for quote alerts */
