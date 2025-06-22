@@ -124,4 +124,4 @@ Alerts can contain multiple paragraphs and even other markdown elements:
 >
 > Use this for detailed explanations that require more context.
 
-The blockqoute handles inline code-blocks, e.g. `npm install`.
+The blockquote handles inline code-blocks, e.g. `npm install`.
