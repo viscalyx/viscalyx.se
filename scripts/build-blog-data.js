@@ -48,7 +48,7 @@ const sanitizeOptions = {
     code: ['class'],
     pre: ['class', 'data-language'],
     span: ['class'],
-    div: ['class', 'data-alert-type', 'data-alert-icon', 'data-alert-title'],
+    div: ['class', 'data-alert-type'],
     // Allow data attributes for Prism.js functionality
     '*': ['data-*'],
   },
