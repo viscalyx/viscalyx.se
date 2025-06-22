@@ -219,12 +219,7 @@
   /* Quote - Styled like regular blockquote but with visible quote marks */
   .blog-content .github-alert-quote {
     /* Override alert styling to match regular blockquotes */
-    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400;
-    background: transparent !important;
-    border-radius: 0 !important;
-    margin: 1.6em 0 !important;
-    padding: 0 0 0 1em !important;
-    quotes: '\201C' '\201D' '\2018' '\2019';
+    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400 bg-transparent my-6 p-0 rounded-none;
   }
 
   /* Hide the title for quote alerts */
