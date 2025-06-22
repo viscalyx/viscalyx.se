@@ -465,7 +465,7 @@ This paragraph contains <strong>bold text</strong> and <em>italic text</em>.
     })
 
     test('should handle very long content', () => {
-      const longContent = '<p>' + 'A'.repeat(10000) + '</p>'
+      const longContent = `<p>${'A'.repeat(10000)}</p>`
       const sanitized = sanitizeHtml(longContent, sanitizeOptions)
 
       expect(sanitized).toContain('<p>')
