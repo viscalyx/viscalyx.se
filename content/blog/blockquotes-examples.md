@@ -9,8 +9,6 @@ category: 'Documentation'
 readTime: '3 min read'
 ---
 
-# GitHub Alerts Examples
-
 This post demonstrates the new regular blockquote and GitHub-style markdown alerts that support different types with distinct colors and icons.
 
 ## Regular Blockquotes
