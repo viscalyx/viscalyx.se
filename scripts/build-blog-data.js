@@ -115,24 +115,50 @@ async function buildBlogData() {
             ignoreMissing: true,
           })
           .use(() => {
-            // Custom plugin to add data-language attribute for CSS language labels
+            // Wrap code blocks in a container with static language label
             return tree => {
               visit(tree, 'element', node => {
-                if (node.tagName === 'pre' && node.properties.className) {
+                // Only process unwrapped <pre> nodes
+                if (
+                  node.tagName === 'pre' &&
+                  node.properties.className &&
+                  !node.properties['data-processed']
+                ) {
+                  // Mark this node as processed to avoid recursion
+                  node.properties['data-processed'] = true
+
                   const classNames = Array.isArray(node.properties.className)
                     ? node.properties.className
                     : [node.properties.className]
-
                   const languageClass = classNames.find(
-                    className =>
-                      typeof className === 'string' &&
-                      className.startsWith('language-')
+                    c => typeof c === 'string' && c.startsWith('language-')
                   )
+                  if (!languageClass) return
+                  const language = languageClass.replace('language-', '')
 
-                  if (languageClass) {
-                    const language = languageClass.replace('language-', '')
-                    node.properties['data-language'] = language
+                  // Build label element
+                  const labelElement = {
+                    type: 'element',
+                    tagName: 'div',
+                    properties: { className: ['code-language-label'] },
+                    children: [{ type: 'text', value: language.toUpperCase() }],
                   }
+
+                  // Clone original pre node for nesting and mark processed
+                  const preNode = {
+                    type: 'element',
+                    tagName: 'pre',
+                    properties: { ...node.properties, 'data-processed': true },
+                    children: node.children,
+                  }
+
+                  // Replace original node with wrapper div
+                  node.tagName = 'div'
+                  node.properties = {
+                    className: ['code-block-wrapper'],
+                    'data-language': language,
+                  }
+                  node.children = [labelElement, preNode]
                 }
               })
             }
