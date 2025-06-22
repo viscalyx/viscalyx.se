@@ -261,10 +261,13 @@
   .blog-content
     .github-alert-quote
     .github-alert-content
-    p:first-of-type::before {
+    p:first-of-type::before,
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:last-of-type::after {
     content: open-quote;
   }
-
   .blog-content
     .github-alert-quote
     .github-alert-content
