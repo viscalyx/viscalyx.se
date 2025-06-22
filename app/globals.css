@@ -116,19 +116,23 @@
   .dark .blog-content .github-alert .github-alert-title::before {
     background-image: var(--alert-icon-dark);
   }
+  /* Generic dark mode title color override for all alert types */
+  .dark .blog-content .github-alert .github-alert-title {
+    color: var(--alert-title-color-dark) !important;
+  }
+  /* The following per-variant dark title overrides are now redundant and can be removed:
+       .dark .blog-content .github-alert-warning .github-alert-title { color: var(--alert-title-color-dark) !important; }
+       .dark .blog-content .github-alert-caution .github-alert-title { color: var(--alert-title-color-dark) !important; }
+     */
 
   /* Important alert variant */
   .blog-content .github-alert-important {
     @apply border-purple-500;
-  }
-  .blog-content .github-alert-important .github-alert-title {
-    @apply text-purple-600 dark:text-purple-400;
-  }
-  .blog-content .github-alert-important .github-alert-title::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-  }
-  .dark .blog-content .github-alert-important .github-alert-title::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
+    --alert-border-color: #a855f7; /* purple-500 */
+    --alert-title-color-light: #7c3aed; /* purple-600 */
+    --alert-title-color-dark: #a78bfa; /* purple-400 */
+    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
+    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
   }
 
   /* Alert content */
@@ -179,12 +183,11 @@
   /* Important - Purple with exclamation in speech bubble */
   .blog-content .github-alert-important {
     @apply border-purple-500;
-    /* Define icon URLs as CSS variables */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
+    --alert-border-color: #a855f7; /* purple-500 */
+    --alert-title-color-light: #7c3aed; /* purple-600 */
+    --alert-title-color-dark: #a78bfa; /* purple-400 */
+    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
     --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-  }
-  .blog-content .github-alert-important .github-alert-title {
-    @apply text-purple-600 dark:text-purple-400;
   }
 
   /* Warning - Orange/Yellow with triangle exclamation */
