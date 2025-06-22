@@ -271,6 +271,26 @@
     @apply bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded text-sm;
   }
 
+  /* Remove graphical backticks added by prose plugin */
+  .blog-content code::before,
+  .blog-content code::after {
+    content: none !important;
+  }
+
+  /* Ensure inline code in blockquotes and alerts has better contrast */
+  .blog-content blockquote code,
+  .blog-content .github-alert code {
+    @apply bg-white dark:bg-secondary-900 text-secondary-900 dark:text-secondary-100 border border-secondary-300 dark:border-secondary-600;
+  }
+
+  /* Also remove prose backticks specifically for blockquote and alert code */
+  .blog-content blockquote code::before,
+  .blog-content blockquote code::after,
+  .blog-content .github-alert code::before,
+  .blog-content .github-alert code::after {
+    content: none !important;
+  }
+
   /* Code block styling */
   .blog-content pre,
   .blog-content pre[class*='language-'] {
