@@ -39,7 +39,7 @@ You can use the following alert types in your markdown:
 
 ```markdown
 > [!NOTE]
-> Highlights information that users should take into account, even when skimming.
+> Highlights information that users should consider, even when skimming.
 ```
 
 > [!NOTE]
@@ -91,7 +91,7 @@ You can use the following alert types in your markdown:
 ### Configuration Notes
 
 > [!NOTE]
-> Make sure to backup your configuration files before making any changes. This will allow you to restore your settings if something goes wrong.
+> Make sure to back up your configuration files before making any changes. This will allow you to restore your settings if something goes wrong.
 
 ### Performance Tips
 
