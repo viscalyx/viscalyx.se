@@ -2,7 +2,7 @@
 title: 'Blockquotes Examples'
 date: '2025-06-22'
 author: 'Johan Ljunggren'
-excerpt: 'Demonstrating the possible blockquote style markdown.'
+excerpt: 'Demonstrates available blockquote styles in Markdown.'
 image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=600&fit=crop&crop=center'
 tags: ['GitHub', 'Markdown', 'Alerts', 'Examples']
 category: 'Documentation'
@@ -25,7 +25,7 @@ Regular blockquotes without the special syntax still work as before:
 
 ```markdown
 > [!QUOTE]
-> The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems
+> The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems.
 ```
 
 > [!QUOTE]
