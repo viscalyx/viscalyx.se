@@ -124,4 +124,125 @@ describe('SafeHtml', () => {
     )
     expect(undefinedContainer.firstChild).toBeInTheDocument()
   })
+
+  describe('custom sanitizeOptions', () => {
+    it('allows custom tags when specified in sanitizeOptions', () => {
+      const htmlWithCustomTag = '<section><p>Content in section</p></section>'
+      const customOptions = {
+        allowedTags: ['section', 'p'],
+      }
+
+      const { container } = render(
+        <SafeHtml html={htmlWithCustomTag} sanitizeOptions={customOptions} />
+      )
+      const html = container.innerHTML
+
+      // Should preserve custom allowed tag
+      expect(html).toContain('<section>')
+      expect(html).toContain('</section>')
+      expect(html).toContain('<p>Content in section</p>')
+    })
+
+    it('overrides default tags when custom allowedTags is provided', () => {
+      const htmlWithMixedTags =
+        '<div><p>Paragraph</p><strong>Bold</strong></div>'
+      const customOptions = {
+        allowedTags: ['p'], // Only allow p tags, should override defaults
+      }
+
+      const { container } = render(
+        <SafeHtml html={htmlWithMixedTags} sanitizeOptions={customOptions} />
+      )
+      const html = container.innerHTML
+
+      // Should preserve allowed tag
+      expect(html).toContain('<p>Paragraph</p>')
+
+      // Should remove disallowed tags but preserve content
+      // The input div and strong should be removed, but our component wrapper div remains
+      expect(html).toBe('<div><p>Paragraph</p>Bold</div>')
+    })
+
+    it('allows custom attributes when specified in sanitizeOptions', () => {
+      const htmlWithCustomAttr = '<div data-test="value"><p>Content</p></div>'
+      const customOptions = {
+        allowedAttributes: {
+          '*': ['data-test', 'class'], // Allow data-test on all elements
+        },
+      }
+
+      const { container } = render(
+        <SafeHtml html={htmlWithCustomAttr} sanitizeOptions={customOptions} />
+      )
+      const html = container.innerHTML
+
+      // Should preserve custom allowed attribute
+      expect(html).toContain('data-test="value"')
+    })
+
+    it('merges custom allowedAttributes with defaults', () => {
+      const htmlWithDefaultAndCustom =
+        '<p class="text">Default</p><div data-custom="value">Custom</div>'
+      const customOptions = {
+        allowedTags: ['p', 'div'], // Need to include both tags
+        allowedAttributes: {
+          '*': ['data-custom'], // Add custom attribute, should merge with default class
+        },
+      }
+
+      const { container } = render(
+        <SafeHtml
+          html={htmlWithDefaultAndCustom}
+          sanitizeOptions={customOptions}
+        />
+      )
+      const html = container.innerHTML
+
+      // Custom attribute should work
+      expect(html).toContain('data-custom="value"')
+
+      // Default attributes should still work (class is in defaults)
+      expect(html).toContain('class="text"')
+
+      // Verify the full structure
+      expect(html).toContain('<p class="text">Default</p>')
+      expect(html).toContain('<div data-custom="value">Custom</div>')
+    })
+
+    it('allows custom schemes when specified', () => {
+      const htmlWithCustomScheme =
+        '<a href="custom://example.com">Custom Link</a>'
+      const customOptions = {
+        allowedSchemes: ['custom', 'http', 'https'], // Allow custom scheme
+      }
+
+      const { container } = render(
+        <SafeHtml html={htmlWithCustomScheme} sanitizeOptions={customOptions} />
+      )
+      const html = container.innerHTML
+
+      // Should preserve custom scheme
+      expect(html).toContain('href="custom://example.com"')
+    })
+
+    it('maintains default behavior when no custom options provided', () => {
+      const standardHtml =
+        '<p>Standard content</p><script>alert("xss")</script>'
+
+      const { container: defaultContainer } = render(
+        <SafeHtml html={standardHtml} />
+      )
+
+      const { container: explicitContainer } = render(
+        <SafeHtml html={standardHtml} sanitizeOptions={{}} />
+      )
+
+      // Both should behave the same
+      expect(defaultContainer.innerHTML).toBe(explicitContainer.innerHTML)
+
+      // Should preserve safe content and remove scripts
+      expect(defaultContainer.innerHTML).toContain('<p>Standard content</p>')
+      expect(defaultContainer.innerHTML).not.toContain('<script>')
+    })
+  })
 })
