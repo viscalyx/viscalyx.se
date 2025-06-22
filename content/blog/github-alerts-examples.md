@@ -17,6 +17,10 @@ This post demonstrates the new regular blockquote and GitHub-style markdown aler
 
 Regular blockquotes without the special syntax still work as before:
 
+```markdown
+> This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
+```
+
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
 
 ## GitHub-style Blockquotes
@@ -33,14 +37,34 @@ You can use the following alert types in your markdown:
 > [!NOTE]
 > Highlights information that users should take into account, even when skimming.
 
+```markdown
 > [!TIP]
 > Optional information to help a user be more successful.
+```
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+```markdown
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+```
 
 > [!IMPORTANT]
 > Crucial information necessary for users to succeed.
 
+```markdown
 > [!WARNING]
 > Critical content demanding immediate user attention due to potential risks.
+```
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+```markdown
+> [!CAUTION]
+> Negative potential consequences of an action.
+```
 
 > [!CAUTION]
 > Negative potential consequences of an action.
