@@ -86,7 +86,7 @@ You can use the following alert types in your markdown:
 ### Quotations with Visual Quote Marks
 
 > [!QUOTE]
-> "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems. Start small, be consistent, and don't be afraid to make mistakes – they're part of the learning process." - Common advice from experienced developers
+> The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems. Start small, be consistent, and don't be afraid to make mistakes – they're part of the learning process.
 
 ### Configuration Notes
 
