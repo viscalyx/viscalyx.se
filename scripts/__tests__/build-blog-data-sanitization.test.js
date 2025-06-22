@@ -456,8 +456,7 @@ This paragraph contains <strong>bold text</strong> and <em>italic text</em>.
     })
 
     test('should handle deeply nested content', () => {
-      const deeplyNested =
-        '<div>'.repeat(100) + 'Content' + '</div>'.repeat(100)
+      const deeplyNested = `${'<div>'.repeat(100)}Content${'</div>'.repeat(100)}`
       const sanitized = sanitizeHtml(deeplyNested, sanitizeOptions)
 
       expect(sanitized).toContain('Content')
