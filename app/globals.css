@@ -245,6 +245,52 @@
   .blog-content pre,
   .blog-content pre[class*='language-'] {
     @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-200 dark:border-secondary-700;
+    position: relative;
+  }
+
+  /* Prevent the language label from being clipped by pre overflow */
+  .blog-content pre[class*='language-'] {
+    overflow-x: auto !important; /* allow horizontal scrolling */
+    overflow-y: visible !important; /* prevent vertical clipping of label */
+    position: relative !important; /* ensure label positioning works */
+  }
+
+  /* Ensure proper spacing for language labels */
+  .blog-content pre[class*='language-'][data-language] {
+    margin-top: 3rem; /* Extra space for the language label */
+  }
+
+  /* Language label as DOM element - higher specificity than prism-theme.css */
+  .blog-content pre[class*='language-'] .code-language-label {
+    position: absolute !important;
+    top: -2rem !important;
+    right: 1rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    @apply text-secondary-700 dark:text-secondary-200;
+    @apply bg-secondary-200 dark:bg-secondary-950;
+    @apply border border-secondary-300 dark:border-secondary-600;
+    border-bottom: none !important;
+    padding: 0.375rem 0.75rem 0.5rem 0.75rem !important;
+    border-radius: 0.375rem 0.375rem 0 0 !important;
+    letter-spacing: 0.05em !important;
+    z-index: 10 !important; /* Higher than pseudo-element */
+    white-space: nowrap !important;
+    /* Tab effect - connect to code block */
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+    /* Ensure it stays above the code block */
+    pointer-events: none !important;
+    /* Make sure it's always visible */
+    display: block !important;
+  }
+
+  .dark .blog-content pre[class*='language-'] .code-language-label {
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Hide pseudo-element when DOM element exists */
+  .blog-content pre[class*='language-']:has(.code-language-label)::before {
+    display: none !important;
   }
 
   /* Higher specificity for Prism.js code elements */
@@ -314,5 +360,48 @@
     50% {
       opacity: 1;
     }
+  }
+
+  /* ===== Decoupled code block wrapper under .blog-content ===== */
+  .blog-content .code-block-wrapper {
+    position: relative;
+    margin: 2rem 0;
+    padding-top: 2rem; /* space for language label */
+  }
+
+  /* Inner scroll container holds the <pre> and allows horizontal scroll */
+  .blog-content .code-block-wrapper .code-scroll-wrapper {
+    position: relative;
+  }
+
+  /* Copy button positioned inside scrollable area */
+  .blog-content .code-block-wrapper .code-scroll-wrapper .copy-button-container {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 20;
+  }
+
+  /* Language label styling */
+  .blog-content .code-block-wrapper .code-language-label {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    transform: translateY(-100%);
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--color-code-label-bg, #e5e7eb);
+    color: var(--color-code-label-text, #374151);
+    border: 1px solid var(--color-code-label-border, #d1d5db);
+    border-bottom: none;
+    padding: 0.375rem 0.75rem 0.5rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .dark .blog-content .code-block-wrapper .code-language-label {
+    background: #0c0a09;
+    color: #e5e7eb;
   }
 }
