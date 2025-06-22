@@ -123,3 +123,5 @@ Alerts can contain multiple paragraphs and even other markdown elements:
 > It can contain **bold text**, _italic text_, and even code snippets like `npm install`.
 >
 > Use this for detailed explanations that require more context.
+
+The blockqoute handles inline code-blocks, e.g. `npm install`.
