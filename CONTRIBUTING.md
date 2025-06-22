@@ -503,9 +503,46 @@ All code blocks automatically include a copy button in the top-right corner that
 - Automatically positions alongside language labels
 - Works with all supported programming languages
 
-The copy functionality is implemented client-side using React components, while preserving the server-side rendering benefits.
-
 The implementation ensures fast loading times and consistent rendering across all devices.
+
+#### GitHub-Style Alerts
+
+The blog system supports GitHub-style alerts for special content callouts. These provide visual emphasis with distinct colors and icons:
+
+**Using GitHub Alerts:**
+
+```markdown
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+> [!CAUTION]
+> Negative potential consequences of an action.
+```
+
+**Alert Types:**
+
+- **NOTE** (Blue with info icon): General information and explanations
+- **TIP** (Green with lightbulb icon): Helpful suggestions and best practices
+- **IMPORTANT** (Purple with speech bubble icon): Critical information for success
+- **WARNING** (Orange with triangle icon): Potential risks and cautions
+- **CAUTION** (Red with octagon icon): Dangerous operations or breaking changes
+
+**When to Use:**
+
+- Use GitHub alerts for content that needs special attention
+- Use regular blockquotes for quotes, citations, and general emphasis
+- Choose the alert type based on the urgency and type of information
+
+The alerts are processed during the build phase and include proper semantic HTML for accessibility.
 
 ## Submitting Contributions
 
