@@ -153,7 +153,7 @@
   }
 
   /* Note variant - centralized via attribute selector */
-  .blog-content .github-alert[data-alert-type="note"] {
+  .blog-content .github-alert[data-alert-type='note'] {
     --alert-border-color: #3b82f6; /* blue-500 */
     --alert-title-color-light: #2563eb; /* blue-600 */
     --alert-title-color-dark: #60a5fa; /* blue-400 */
@@ -208,7 +208,7 @@
   }
 
   /* Note variant - centralized via attribute selector */
-  .blog-content .github-alert[data-alert-type="note"] {
+  .blog-content .github-alert[data-alert-type='note'] {
     --alert-border-color: #3b82f6; /* blue-500 */
     --alert-title-color-light: #2563eb; /* blue-600 */
     --alert-title-color-dark: #60a5fa; /* blue-400 */
