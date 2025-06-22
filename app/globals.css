@@ -116,7 +116,7 @@
   }
 
   .blog-content .github-alert-content p:last-child {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 
   /* Utility for alert icons */
