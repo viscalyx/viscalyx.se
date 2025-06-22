@@ -32,6 +32,32 @@ const createMockBlogPost = (filename, content) => {
   return tempDir
 }
 
+const copyBuildScript = tempDir => {
+  // Copy the build script
+  const buildScriptPath = path.join(__dirname, '..', 'build-blog-data.js')
+  const tempBuildScript = path.join(tempDir, 'build-blog-data.js')
+  fs.copyFileSync(buildScriptPath, tempBuildScript)
+
+  // Copy the plugins directory
+  const pluginsDir = path.join(__dirname, '..', 'plugins')
+  const tempPluginsDir = path.join(tempDir, 'plugins')
+
+  if (fs.existsSync(pluginsDir)) {
+    fs.mkdirSync(tempPluginsDir, { recursive: true })
+
+    // Copy all files in the plugins directory
+    const pluginFiles = fs.readdirSync(pluginsDir)
+    pluginFiles.forEach(file => {
+      const srcPath = path.join(pluginsDir, file)
+      const destPath = path.join(tempPluginsDir, file)
+
+      if (fs.statSync(srcPath).isFile()) {
+        fs.copyFileSync(srcPath, destPath)
+      }
+    })
+  }
+}
+
 describe('Build Blog Data Integration Tests', () => {
   let originalCwd
   let tempDir
@@ -80,10 +106,8 @@ Normal **bold** and *italic* text should work fine.
 
       tempDir = createMockBlogPost('security-test.md', maliciousPost)
 
-      // Copy the build script to temp directory for isolated testing
-      const buildScriptPath = path.join(__dirname, '..', 'build-blog-data.js')
-      const tempBuildScript = path.join(tempDir, 'build-blog-data.js')
-      fs.copyFileSync(buildScriptPath, tempBuildScript)
+      // Copy the build script and plugins to temp directory for isolated testing
+      copyBuildScript(tempDir)
 
       // Change to temp directory and run the build script
       process.chdir(tempDir)
@@ -176,9 +200,7 @@ const users: User[] = [
 
       tempDir = createMockBlogPost('code-test.md', codePost)
 
-      const buildScriptPath = path.join(__dirname, '..', 'build-blog-data.js')
-      const tempBuildScript = path.join(tempDir, 'build-blog-data.js')
-      fs.copyFileSync(buildScriptPath, tempBuildScript)
+      copyBuildScript(tempDir)
 
       process.chdir(tempDir)
 
@@ -292,9 +314,7 @@ But styling should be removed while preserving the rest.
         fs.writeFileSync(path.join(blogDir, post.filename), post.content)
       })
 
-      const buildScriptPath = path.join(__dirname, '..', 'build-blog-data.js')
-      const tempBuildScript = path.join(tempDir, 'build-blog-data.js')
-      fs.copyFileSync(buildScriptPath, tempBuildScript)
+      copyBuildScript(tempDir)
 
       process.chdir(tempDir)
 
@@ -388,9 +408,7 @@ This conclusion paragraph wraps up the content and should also be included in th
         postWithMaliciousContent
       )
 
-      const buildScriptPath = path.join(__dirname, '..', 'build-blog-data.js')
-      const tempBuildScript = path.join(tempDir, 'build-blog-data.js')
-      fs.copyFileSync(buildScriptPath, tempBuildScript)
+      copyBuildScript(tempDir)
 
       process.chdir(tempDir)
 

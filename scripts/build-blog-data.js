@@ -2,6 +2,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const matter = require('gray-matter')
 const sanitizeHtml = require('sanitize-html')
+const remarkBlockquoteTypes = require('./plugins/blockquote-types')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -107,104 +108,7 @@ async function buildBlogData() {
         // Process markdown content to HTML with syntax highlighting
         const processedContent = await remark()
           .use(remarkGfm)
-          .use(() => {
-            // GitHub alerts plugin - inline implementation
-            return tree => {
-              visit(tree, 'blockquote', (node, index, parent) => {
-                // Check if this blockquote contains a GitHub alert pattern
-                const firstChild = node.children[0]
-                if (!firstChild || firstChild.type !== 'paragraph') {
-                  return
-                }
-
-                const firstTextNode = firstChild.children[0]
-                if (!firstTextNode || firstTextNode.type !== 'text') {
-                  return
-                }
-
-                // Check for GitHub alert pattern: [!TYPE]
-                const alertMatch = firstTextNode.value.match(
-                  /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]/
-                )
-                if (!alertMatch) {
-                  return
-                }
-
-                const alertType = alertMatch[1]
-                const ALERT_TYPES = {
-                  NOTE: { className: 'github-alert-note', title: 'Note' },
-                  TIP: { className: 'github-alert-tip', title: 'Tip' },
-                  IMPORTANT: {
-                    className: 'github-alert-important',
-                    title: 'Important',
-                  },
-                  WARNING: {
-                    className: 'github-alert-warning',
-                    title: 'Warning',
-                  },
-                  CAUTION: {
-                    className: 'github-alert-caution',
-                    title: 'Caution',
-                  },
-                  QUOTE: { className: 'github-alert-quote', title: 'Quote' },
-                }
-
-                const alertConfig = ALERT_TYPES[alertType]
-                if (!alertConfig) {
-                  return
-                }
-
-                // Remove the [!TYPE] from the text
-                const remainingText = firstTextNode.value.replace(
-                  /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/,
-                  ''
-                )
-
-                // Update the text node or remove it if empty
-                if (remainingText.trim()) {
-                  firstTextNode.value = remainingText
-                } else {
-                  // Remove the entire text node if it's now empty
-                  firstChild.children.shift()
-                  // If the paragraph is now empty, remove it too
-                  if (firstChild.children.length === 0) {
-                    node.children.shift()
-                  }
-                }
-
-                // Transform the blockquote node to have alert classes and data attributes
-                node.data = node.data || {}
-                node.data.hName = 'div'
-                node.data.hProperties = {
-                  className: ['github-alert', alertConfig.className],
-                  'data-alert-type': alertType.toLowerCase(),
-                }
-
-                // Create title element
-                const titleElement = {
-                  type: 'paragraph',
-                  children: [{ type: 'text', value: alertConfig.title }],
-                  data: {
-                    hName: 'div',
-                    hProperties: { className: ['github-alert-title'] },
-                  },
-                }
-
-                // Create content wrapper
-                const contentWrapper = {
-                  type: 'blockquote',
-                  children: [...node.children],
-                  data: {
-                    hName: 'div',
-                    hProperties: { className: ['github-alert-content'] },
-                  },
-                }
-
-                // Replace children with structured content
-                node.children = [titleElement, contentWrapper]
-              })
-            }
-          })
+          .use(() => remarkBlockquoteTypes(visit))
           .use(remarkRehype)
           .use(rehypePrismPlus, {
             showLineNumbers: false,
