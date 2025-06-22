@@ -994,10 +994,15 @@ Test cases for horizontal scrolling when code lines are very long:
 
 ```javascript
 // Very long JavaScript line example
-const veryLongVariableName = "This is an extremely long string that should definitely cause horizontal scrolling in the code block when displayed in a web browser because it contains way more text than can fit in a normal width container and should demonstrate the horizontal scrollbar functionality that we just implemented for code blocks";
+const veryLongVariableName =
+  'This is an extremely long string that should definitely cause horizontal scrolling in the code block when displayed in a web browser because it contains way more text than can fit in a normal width container and should demonstrate the horizontal scrollbar functionality that we just implemented for code blocks'
 
 // Another long line with method chaining
-const result = someVeryLongObjectNameWithManyProperties.methodWithAVeryLongName().anotherMethodWithAnEvenLongerName().yetAnotherMethodThatHasAnExtremelyLongNameForDemonstrationPurposes().finalMethod();
+const result = someVeryLongObjectNameWithManyProperties
+  .methodWithAVeryLongName()
+  .anotherMethodWithAnEvenLongerName()
+  .yetAnotherMethodThatHasAnExtremelyLongNameForDemonstrationPurposes()
+  .finalMethod()
 ```
 
 ```bash
