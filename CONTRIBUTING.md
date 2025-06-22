@@ -1142,7 +1142,7 @@ Ensure that:
 If security tests fail:
 
 1. **Check Recent Changes**: Review recent modifications to the build script or sanitization config
-2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are up to date
+2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are up-to-date
 3. **Review Error Messages**: Test failures indicate specific security vulnerabilities
 4. **Test Manually**: Create test blog posts with suspicious content to verify behavior
 
@@ -1150,7 +1150,7 @@ If security tests fail:
 
 If tests are slow:
 
-1. **Check Content Size**: Very large test content can slow down processing
+1. **Check Content Size**: Exceptionally large test content can slow down processing
 2. **Review Complexity**: Deeply nested HTML can cause performance issues
 3. **Monitor Resources**: Integration tests create temporary files and directories
 
