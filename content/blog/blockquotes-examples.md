@@ -1,8 +1,8 @@
 ---
-title: 'GitHub Alerts Examples'
+title: 'Blockquotes Examples'
 date: '2025-06-22'
 author: 'Johan Ljunggren'
-excerpt: 'Demonstrating the new GitHub-style markdown alerts with icons and colors for NOTE, TIP, IMPORTANT, WARNING, and CAUTION.'
+excerpt: 'Demonstrating the possible blockquote style markdown.'
 image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=600&fit=crop&crop=center'
 tags: ['GitHub', 'Markdown', 'Alerts', 'Examples']
 category: 'Documentation'
@@ -22,6 +22,16 @@ Regular blockquotes without the special syntax still work as before:
 ```
 
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
+
+## Quote Blockquotes
+
+```markdown
+> [!QUOTE]
+> "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems." - Common advice from experienced developers
+```
+
+> [!QUOTE]
+> "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems." - Common advice from experienced developers
 
 ## GitHub-style Blockquotes
 
@@ -73,6 +83,11 @@ You can use the following alert types in your markdown:
 
 ### Regular
 
+> This is a regular blockquote without quote marks, perfect for general emphasis or citations where you don't want the traditional quotation styling.
+
+### Quotations with Visual Quote Marks
+
+> [!QUOTE]
 > "The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems. Start small, be consistent, and don't be afraid to make mistakes – they're part of the learning process." - Common advice from experienced developers
 
 ### Configuration Notes
