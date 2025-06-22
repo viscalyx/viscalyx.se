@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* stylelint-disable at-rule-no-unknown */
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -112,7 +114,8 @@
 
   .blog-content .github-alert-content p {
     @apply text-secondary-700 dark:text-secondary-300;
-    margin-bottom: 0.75rem;
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply mb-3;
   }
 
   .blog-content .github-alert-content p:last-child {
