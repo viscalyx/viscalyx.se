@@ -122,15 +122,16 @@
   /* Utility for alert icons */
   .alert-icon {
     @apply w-5 h-5 mr-2 inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   /* Add icons using CSS pseudo-elements */
   .blog-content .github-alert-title::before {
     content: '';
     @apply alert-icon;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    /* background-size, repeat, and position moved to alert-icon utility */
   }
 
   /* Note - Blue with info icon */
