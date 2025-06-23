@@ -52,8 +52,8 @@
     -webkit-backdrop-filter: blur(10px);
   }
 
-  /* Utility for alert icons */
-  .github-alert-icon {
+  /* Utility for alert icons - scoped to blog content */
+  .blog-content .github-alert-icon {
     @apply w-5 h-5 mr-2 inline-block;
     background-color: currentColor;
     /* Light mode icon mask */
