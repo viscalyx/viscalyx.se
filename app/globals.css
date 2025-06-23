@@ -144,14 +144,6 @@
     @apply mb-0;
   }
 
-  /* Utility for alert icons */
-  .github-alert-icon {
-    @apply w-5 h-5 mr-2 inline-block;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
   /* Note variant - centralized via attribute selector */
   .blog-content .github-alert[data-alert-type='note'] {
     --alert-border-color: #3b82f6; /* blue-500 */
