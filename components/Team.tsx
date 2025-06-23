@@ -1,21 +1,20 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useTranslations, useLocale } from 'next-intl'
+import { motion, Variants } from 'framer-motion'
+import { ArrowRight, Camera, Mail, MapPin } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Mail, MapPin, ArrowRight, Camera } from 'lucide-react'
 import {
-  GitHubIcon,
-  LinkedInIcon,
-  XIcon,
   BlueskyIcon,
-  MastodonIcon,
-  InstagramIcon,
   //StackOverflowIcon,
   //YouTubeIcon,
   DiscordIcon,
-  //SlackIcon,
+  GitHubIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  MastodonIcon,
+  XIcon,
 } from './SocialIcons'
 
 const Team = () => {
@@ -107,7 +106,7 @@ const Team = () => {
     // Add more team members here as the company grows
   ]
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -118,24 +117,24 @@ const Team = () => {
     },
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut',
+        ease: [0.04, 0.62, 0.23, 0.98], // Custom easeOut curve
       },
     },
   }
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hover: {
       y: -10,
       transition: {
         duration: 0.3,
-        ease: 'easeInOut',
+        ease: [0.42, 0, 0.58, 1], // Custom easeInOut curve
       },
     },
   }

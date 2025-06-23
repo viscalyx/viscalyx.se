@@ -1,24 +1,24 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useTranslations } from 'next-intl'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { ArrowLeft, MapPin, Mail } from 'lucide-react'
-import Link from 'next/link'
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import {
-  GitHubIcon,
-  LinkedInIcon,
-  XIcon,
   BlueskyIcon,
-  MastodonIcon,
-  InstagramIcon,
   DiscordIcon,
+  GitHubIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  MastodonIcon,
+  XIcon,
 } from '@/components/SocialIcons'
+import { motion, Variants } from 'framer-motion'
+import { ArrowLeft, Mail, MapPin } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 type TeamMember = {
   id: string
@@ -150,7 +150,7 @@ export default function TeamMemberPage({ params }: Props) {
     notFound()
   }
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -161,26 +161,26 @@ export default function TeamMemberPage({ params }: Props) {
     },
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut',
+        ease: [0.04, 0.62, 0.23, 0.98], // Custom easeOut curve
       },
     },
   }
 
-  const imageVariants = {
+  const imageVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
         duration: 0.8,
-        ease: 'easeOut',
+        ease: [0.04, 0.62, 0.23, 0.98], // Custom easeOut curve
       },
     },
   }
