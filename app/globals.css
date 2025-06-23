@@ -164,7 +164,6 @@
 
   /* Important - Purple with exclamation in speech bubble */
   .blog-content .github-alert-important {
-    @apply border-purple-500;
     --alert-border-color: #a855f7; /* purple-500 */
     --alert-title-color-light: #7c3aed; /* purple-600 */
     --alert-title-color-dark: #a78bfa; /* purple-400 */
@@ -219,7 +218,6 @@
 
   /* Important - Purple with exclamation in speech bubble */
   .blog-content .github-alert-important {
-    @apply border-purple-500;
     --alert-border-color: #a855f7; /* purple-500 */
     --alert-title-color-light: #7c3aed; /* purple-600 */
     --alert-title-color-dark: #a78bfa; /* purple-400 */
@@ -296,6 +294,7 @@
     p:last-of-type::after {
     content: open-quote;
   }
+
   .blog-content
     .github-alert-quote
     .github-alert-content
