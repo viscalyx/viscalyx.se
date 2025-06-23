@@ -208,12 +208,11 @@
   }
 
   .blog-content .github-alert-quote .github-alert-content p {
-    @apply text-secondary-600 dark:text-secondary-400;
-    margin-bottom: 0.75rem;
+    @apply text-secondary-600 dark:text-secondary-400 mb-3;
   }
 
   .blog-content .github-alert-quote .github-alert-content p:last-child {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 
   /* Add quote marks specifically for QUOTE alerts */
