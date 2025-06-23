@@ -169,22 +169,12 @@
     --alert-title-color-dark: #fb923c; /* orange-400 */
   }
 
-  /* Dark mode title color override for warning */
-  .dark .blog-content .github-alert-warning .github-alert-title {
-    color: var(--alert-title-color-dark) !important;
-  }
-
   /* Caution alert variant */
   .blog-content .github-alert-caution {
     /* Remove @apply since border-color is set by variable */
     --alert-border-color: #ef4444; /* red-500 */
     --alert-title-color-light: #dc2626; /* red-600 */
     --alert-title-color-dark: #f87171; /* red-400 */
-  }
-
-  /* Dark mode title color override */
-  .dark .blog-content .github-alert-caution .github-alert-title {
-    color: var(--alert-title-color-dark) !important;
   }
 
   /* Quote - Styled like regular blockquote but with visible quote marks */
