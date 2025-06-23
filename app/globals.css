@@ -211,19 +211,11 @@
     @apply text-secondary-600 dark:text-secondary-400 mb-3;
   }
 
-  .blog-content .github-alert-quote .github-alert-content p:last-child {
-    @apply mb-0;
-  }
-
   /* Add quote marks specifically for QUOTE alerts */
   .blog-content
     .github-alert-quote
     .github-alert-content
-    p:first-of-type::before,
-  .blog-content
-    .github-alert-quote
-    .github-alert-content
-    p:last-of-type::after {
+    p:first-of-type::before {
     content: open-quote;
   }
 
