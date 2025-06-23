@@ -194,7 +194,6 @@ both methods.
 
 1. Login in to the [Azure Portal](https://portal.azure.com).
 1. Create the Azure Active Directory application account.
-
    1. Go to **Azure Active Directory**.
       _I assume you are in the correct directory, if not, change to the correct directory_.
    1. Click on **App registrations**.
@@ -234,7 +233,6 @@ both methods.
       Tenant ID looks something like this; '84a06b73-5842-4d03-8123-ee27708b7f36'.
 1. Copy the **Subscription ID** and save this somewhere. We need this in a later
    step.
-
    1. Go to **Subscriptions** (same place as Azure Active Directory)
 
       > **Note:** If you don't see subscriptions in the list, then you need to
@@ -274,7 +272,6 @@ account and give the application account Contributor permission on the subscript
 1. Start a PowerShell session and change the directory to the location where you
    save the script file 'New-AzureServicePrincipal.ps1'.
 1. If you already know your subscription id, skip to the next step.
-
    1. Run the following in the PowerShell session
 
       ```powershell
@@ -287,7 +284,6 @@ account and give the application account Contributor permission on the subscript
       Subscription ID looks something like this; '4de0edba-1816-4f9b-880f-db90ee863d11'.
 
 1. Run the following in the PowerShell session.
-
    - Change variable `$azureActiveDirectoryApplicationName` to something descriptive.
 
      > **Note:** The application name is only for your records, it will only show
@@ -378,7 +374,6 @@ appveyor.yml file and add them to your AppVeyor account.
    ```
 
 1. Add the environment variables to the AppVeyor project settings.
-
    1. If you just did the previous section, then you should have the correct page
       already up and can skip this step.
       1. Go to the [Project tab](https://ci.appveyor.com/projects).
@@ -386,7 +381,6 @@ appveyor.yml file and add them to your AppVeyor account.
    1. Click on Settings.
    1. Click on Environment.
    1. Add environment variable 'TenantID'.
-
       1. Under **Environment variables**, click **Add variable**.
       1. In the _Name_ field, type **TenantId**.
       1. In the _Value_ field, type the value for tenant id that you save in the
@@ -401,7 +395,6 @@ appveyor.yml file and add them to your AppVeyor account.
 
    1. Repeat the previous step for the following environment variables, and make
       sure to secure each value. Use the values you saved in the previous steps.
-
       - SubscriptionID
       - ApplicationID
       - ApplicationPassword

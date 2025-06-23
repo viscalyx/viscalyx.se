@@ -33,13 +33,11 @@ This directory contains the complete development container setup for the Viscaly
 ## Quick Start
 
 1. **Prerequisites**
-
    - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
    - Install [VS Code](https://code.visualstudio.com/)
    - Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 2. **Open in DevContainer**
-
    - Clone the repository
    - Open the project in VS Code
    - When prompted, click "Reopen in Container" or use the Command Palette (`Cmd+Shift+P`) and select "Dev Containers: Reopen in Container"

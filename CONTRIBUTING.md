@@ -89,7 +89,6 @@ To ensure a consistent development environment, this project supports VS Code De
 
 1. **Install the Remote - Containers extension**: If you haven't already, install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the VS Code Marketplace.
 2. **Reopen in Container**:
-
    - Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`).
    - Type `Remote-Containers: Reopen in Container` and select it.
    - VS Code will build the development container. This may take a few minutes the first time.
@@ -273,7 +272,6 @@ The blog content uses a simplified CSS architecture designed to make customizati
    ```
 
 3. **Available Modifier Classes**:
-
    - `.blog-content-accent-headings` - Primary color headings
    - `.blog-content-large-text` - Larger H2 headings
    - `.blog-content-spaced` - More paragraph spacing
@@ -449,7 +447,6 @@ The blog system includes automatic syntax highlighting for code blocks using Pri
    ```
 
 2. **Supported Languages**: The system supports all major programming languages, including:
-
    - **PowerShell** (`powershell`, `ps1`)
    - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
    - **Python** (`python`, `py`)
