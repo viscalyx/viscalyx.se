@@ -14,6 +14,12 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
   contentKey,
 }) => {
   useEffect(() => {
+    // Store references to created roots for cleanup
+    const roots: Array<{
+      root: ReturnType<typeof createRoot>
+      container: Element
+    }> = []
+
     // Use a timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {
       // First, clean up any existing icon containers to avoid duplicates
@@ -47,12 +53,32 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
           // Render the React icon component into the container
           const root = createRoot(iconContainer)
           root.render(<AlertIcon type={iconType} className="w-5 h-5" />)
+
+          // Store the root reference for cleanup
+          roots.push({ root, container: iconContainer })
         }
       })
     }, 50) // Small delay to ensure DOM is updated
 
     return () => {
       clearTimeout(timeoutId)
+
+      // Clean up all React roots to prevent memory leaks
+      // Use setTimeout to defer unmounting and avoid race conditions
+      setTimeout(() => {
+        roots.forEach(({ root, container }) => {
+          try {
+            root.unmount()
+            // Remove the container from DOM if it still exists
+            if (container.parentNode) {
+              container.parentNode.removeChild(container)
+            }
+          } catch (error) {
+            // Silently handle unmount errors (e.g., if already unmounted)
+            console.warn('Error unmounting AlertIcon root:', error)
+          }
+        })
+      }, 0)
     }
   }, [contentKey]) // Depend on contentKey to re-run when content changes
 
