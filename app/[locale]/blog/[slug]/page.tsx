@@ -419,9 +419,9 @@ const BlogPostContent = ({
 
               <div className="blog-content prose prose-lg max-w-none">
                 <AlertIconInjector contentKey={post.slug}>
-                  {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
-                  <div
-                    dangerouslySetInnerHTML={{ __html: contentWithIds }}
+                  {/* Apply runtime sanitization via SafeHtml for defense-in-depth security */}
+                  <SafeHtml
+                    html={contentWithIds}
                     className="markdown-content"
                   />
                   <CodeBlockEnhancer contentLoaded={!loading && !!post} />
