@@ -417,7 +417,7 @@ const BlogPostContent = ({
               )}
 
               <div className="blog-content prose prose-lg max-w-none">
-                <AlertIconInjector>
+                <AlertIconInjector contentKey={post.slug}>
                   {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
                   <div
                     dangerouslySetInnerHTML={{ __html: contentWithIds }}

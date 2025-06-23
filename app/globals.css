@@ -131,9 +131,7 @@
   }
 
   .blog-content .github-alert-content p {
-    @apply text-secondary-700 dark:text-secondary-300;
-    /* stylelint-disable-next-line at-rule-no-unknown */
-    @apply mb-3;
+    @apply text-secondary-700 dark:text-secondary-300 mb-3;
   }
 
   .blog-content .github-alert-content p:last-child {
@@ -198,6 +196,10 @@
 
   .blog-content .github-alert-quote .github-alert-content p {
     @apply text-secondary-600 dark:text-secondary-400 mb-3;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p:last-child {
+    @apply mb-0;
   }
 
   /* Add quote marks specifically for QUOTE alerts */
