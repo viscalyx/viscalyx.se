@@ -103,7 +103,7 @@
   .blog-content .github-alert {
     @apply my-6 rounded-lg border-l-4 p-4 bg-secondary-50 dark:bg-secondary-800;
     /* Use CSS variable for border color */
-    border-color: var(--alert-border-color);
+    border-color: var(--alert-border-color, theme('colors.gray.200'));
   }
 
   /* Common alert-title styles */
