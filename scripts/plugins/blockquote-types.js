@@ -37,13 +37,16 @@ function transformBlockquoteToAlert(node, alertType, alertConfig) {
     'data-alert-type': alertType.toLowerCase(),
   }
 
-  // Create title element
+  // Create title element with data attributes for icon injection
   const titleElement = {
     type: 'paragraph',
     children: [{ type: 'text', value: alertConfig.title }],
     data: {
       hName: 'div',
-      hProperties: { className: ['github-alert-title'] },
+      hProperties: {
+        className: ['github-alert-title'],
+        'data-alert-icon': alertType.toLowerCase(),
+      },
     },
   }
 

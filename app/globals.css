@@ -1,8 +1,6 @@
-/* stylelint-disable at-rule-no-unknown */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* stylelint-enable at-rule-no-unknown */
 
 @layer base {
   html {
@@ -54,6 +52,15 @@
     -webkit-backdrop-filter: blur(10px);
   }
 
+  /* Utility for alert icons */
+  .github-alert-icon {
+    @apply w-5 h-5 mr-2 inline-block;
+    background-color: currentColor;
+    /* Light mode icon mask */
+    mask: var(--alert-icon-light) no-repeat center/contain;
+    -webkit-mask: var(--alert-icon-light) no-repeat center/contain;
+  }
+
   /* Blog Content Styles - Optimized for Typography Plugin */
   /* Override prose defaults with custom colors and behavior */
   .blog-content {
@@ -99,22 +106,12 @@
     border-color: var(--alert-border-color);
   }
 
-  /* Common alert-title and icon styles */
+  /* Common alert-title styles */
   .blog-content .github-alert .github-alert-title {
     @apply font-bold mb-3 flex items-center gap-2;
     margin-top: 0 !important;
     /* Use CSS variable for title color */
     color: var(--alert-title-color-light);
-  }
-  .blog-content .github-alert .github-alert-title::before {
-    content: '';
-    @apply github-alert-icon;
-    /* Use CSS variable for icon */
-    background-image: var(--alert-icon-light);
-  }
-  /* Dark mode icon override */
-  .dark .blog-content .github-alert .github-alert-title::before {
-    background-image: var(--alert-icon-dark);
   }
   /* Generic dark mode title color override for all alert types */
   .dark .blog-content .github-alert .github-alert-title {
@@ -149,17 +146,13 @@
     --alert-border-color: #3b82f6; /* blue-500 */
     --alert-title-color-light: #2563eb; /* blue-600 */
     --alert-title-color-dark: #60a5fa; /* blue-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23059' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2360a5fa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
   }
 
-  /* Tip variant - set CSS variables for border, title color, and icons */
+  /* Tip variant - set CSS variables for border, title color */
   .blog-content .github-alert-tip {
     --alert-border-color: #10b981; /* green-500 */
     --alert-title-color-light: #16a34a; /* green-600 */
     --alert-title-color-dark: #34d399; /* green-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23059669'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2334d399'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'/%3E%3C/svg%3E");
   }
 
   /* Important - Purple with exclamation in speech bubble */
@@ -167,62 +160,6 @@
     --alert-border-color: #a855f7; /* purple-500 */
     --alert-title-color-light: #7c3aed; /* purple-600 */
     --alert-title-color-dark: #a78bfa; /* purple-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-  }
-
-  /* Alert content */
-  .blog-content .github-alert-content {
-    @apply text-secondary-700 dark:text-secondary-300;
-    font-style: normal;
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .blog-content .github-alert-content p {
-    @apply text-secondary-700 dark:text-secondary-300;
-    /* stylelint-disable-next-line at-rule-no-unknown */
-    @apply mb-3;
-  }
-
-  .blog-content .github-alert-content p:last-child {
-    @apply mb-0;
-  }
-
-  /* Utility for alert icons */
-  .github-alert-icon {
-    @apply w-5 h-5 mr-2 inline-block;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  /* Note variant - centralized via attribute selector */
-  .blog-content .github-alert[data-alert-type='note'] {
-    --alert-border-color: #3b82f6; /* blue-500 */
-    --alert-title-color-light: #2563eb; /* blue-600 */
-    --alert-title-color-dark: #60a5fa; /* blue-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23059' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2360a5fa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
-  }
-
-  /* Tip variant - set CSS variables for border, title color, and icons */
-  .blog-content .github-alert-tip {
-    --alert-border-color: #10b981; /* green-500 */
-    --alert-title-color-light: #16a34a; /* green-600 */
-    --alert-title-color-dark: #34d399; /* green-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23059669'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2334d399'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'/%3E%3C/svg%3E");
-  }
-
-  /* Important - Purple with exclamation in speech bubble */
-  .blog-content .github-alert-important {
-    --alert-border-color: #a855f7; /* purple-500 */
-    --alert-title-color-light: #7c3aed; /* purple-600 */
-    --alert-title-color-dark: #a78bfa; /* purple-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237c3aed'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z'/%3E%3C/svg%3E");
   }
 
   /* Warning - Orange/Yellow with triangle exclamation */
@@ -230,8 +167,6 @@
     --alert-border-color: #f97316; /* orange-500 */
     --alert-title-color-light: #d97706; /* orange-600 */
     --alert-title-color-dark: #fb923c; /* orange-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d97706' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fb923c' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z'/%3E%3C/svg%3E");
   }
 
   /* Dark mode title color override for warning */
@@ -245,8 +180,6 @@
     --alert-border-color: #ef4444; /* red-500 */
     --alert-title-color-light: #dc2626; /* red-600 */
     --alert-title-color-dark: #f87171; /* red-400 */
-    --alert-icon-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23dc2626'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
-    --alert-icon-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f87171' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.111 2.889A3 3 0 0110.5 2h3a3 3 0 012.389.889L20.111 7.11A3 3 0 0121 9.5v5a3 3 0 01-.889 2.389L15.889 21.11A3 3 0 0113.5 22h-3a3 3 0 01-2.389-.889L3.889 16.89A3 3 0 013 14.5v-5a3 3 0 01.889-2.389L8.111 2.889z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01'/%3E%3C/svg%3E");
   }
 
   /* Dark mode title color override */

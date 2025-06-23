@@ -1,5 +1,6 @@
 'use client'
 
+import AlertIconInjector from '@/components/AlertIconInjector'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -416,12 +417,14 @@ const BlogPostContent = ({
               )}
 
               <div className="blog-content prose prose-lg max-w-none">
-                {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
-                <div
-                  dangerouslySetInnerHTML={{ __html: contentWithIds }}
-                  className="markdown-content"
-                />
-                <CodeBlockEnhancer contentLoaded={!loading && !!post} />
+                <AlertIconInjector>
+                  {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: contentWithIds }}
+                    className="markdown-content"
+                  />
+                  <CodeBlockEnhancer contentLoaded={!loading && !!post} />
+                </AlertIconInjector>
               </div>
 
               {/* Tags */}
