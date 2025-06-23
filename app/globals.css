@@ -108,8 +108,7 @@
 
   /* Common alert-title styles */
   .blog-content .github-alert .github-alert-title {
-    @apply font-bold mb-3 flex items-center gap-2;
-    margin-top: 0 !important;
+    @apply font-bold mb-3 flex items-center gap-2 mt-0;
     /* Use CSS variable for title color */
     color: var(--alert-title-color-light);
   }
