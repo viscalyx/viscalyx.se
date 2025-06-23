@@ -80,7 +80,7 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
   )
 )
 
-// Caution icon component for alerts
+// Note icon component for informational content
 export const NoteIcon: React.FC<BlogIconProps> = memo(
   ({ className = 'w-5 h-5' }) => (
     <svg
@@ -100,6 +100,7 @@ export const NoteIcon: React.FC<BlogIconProps> = memo(
 )
 NoteIcon.displayName = 'NoteIcon'
 
+// Tip icon component for helpful suggestions
 export const TipIcon: React.FC<BlogIconProps> = memo(
   ({ className = 'w-5 h-5' }) => (
     <svg
@@ -119,6 +120,7 @@ export const TipIcon: React.FC<BlogIconProps> = memo(
 )
 TipIcon.displayName = 'TipIcon'
 
+// Important icon component for critical information
 export const ImportantIcon: React.FC<BlogIconProps> = memo(
   ({ className = 'w-5 h-5' }) => (
     <svg
@@ -138,6 +140,7 @@ export const ImportantIcon: React.FC<BlogIconProps> = memo(
 )
 ImportantIcon.displayName = 'ImportantIcon'
 
+// Warning icon component for warning alerts
 export const WarningIcon: React.FC<BlogIconProps> = memo(
   ({ className = 'w-5 h-5' }) => (
     <svg
@@ -157,6 +160,7 @@ export const WarningIcon: React.FC<BlogIconProps> = memo(
 )
 WarningIcon.displayName = 'WarningIcon'
 
+// Caution icon component for caution alerts
 export const CautionIcon: React.FC<BlogIconProps> = memo(
   ({ className = 'w-5 h-5' }) => (
     <svg
