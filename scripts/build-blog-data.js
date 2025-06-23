@@ -2,6 +2,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const matter = require('gray-matter')
 const sanitizeHtml = require('sanitize-html')
+const remarkBlockquoteTypes = require('./plugins/blockquote-types')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -47,7 +48,7 @@ const sanitizeOptions = {
     code: ['class'],
     pre: ['class', 'data-language'],
     span: ['class'],
-    div: ['class'],
+    div: ['class', 'data-alert-type'],
     // Allow data attributes for Prism.js functionality
     '*': ['data-*'],
   },
@@ -107,6 +108,7 @@ async function buildBlogData() {
         // Process markdown content to HTML with syntax highlighting
         const processedContent = await remark()
           .use(remarkGfm)
+          .use(() => remarkBlockquoteTypes(visit))
           .use(remarkRehype)
           .use(rehypePrismPlus, {
             showLineNumbers: false,

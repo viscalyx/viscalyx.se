@@ -52,6 +52,15 @@
     -webkit-backdrop-filter: blur(10px);
   }
 
+  /* Utility for alert icons - scoped to blog content */
+  .blog-content .github-alert-icon {
+    @apply w-5 h-5 mr-2 inline-block;
+    background-color: currentColor;
+    /* Light mode icon mask */
+    mask: var(--alert-icon-light) no-repeat center/contain;
+    -webkit-mask: var(--alert-icon-light) no-repeat center/contain;
+  }
+
   /* Blog Content Styles - Optimized for Typography Plugin */
   /* Override prose defaults with custom colors and behavior */
   .blog-content {
@@ -68,13 +77,168 @@
     @apply text-secondary-900 dark:text-secondary-100 scroll-mt-24;
   }
 
+  /* Ensure bold and italic text use normal text colors */
+  .blog-content strong,
+  .blog-content b {
+    @apply text-secondary-700 dark:text-secondary-300 font-bold;
+  }
+
+  .blog-content em,
+  .blog-content i {
+    @apply text-secondary-700 dark:text-secondary-300 italic;
+  }
+
   /* Custom blockquote styling to match site theme */
   .blog-content blockquote {
     @apply border-l-4 border-primary-300 dark:border-primary-600 pl-4 italic text-secondary-600 dark:text-secondary-400;
   }
 
+  /* Remove quote marks from standard blockquotes */
+  .blog-content blockquote p:first-of-type::before,
+  .blog-content blockquote p:last-of-type::after {
+    content: none;
+  }
+
+  /* GitHub-style alerts/blockquotes */
+  .blog-content .github-alert {
+    @apply my-6 rounded-lg border-l-4 p-4 bg-secondary-50 dark:bg-secondary-800;
+    /* Use CSS variable for border color */
+    border-color: var(--alert-border-color, theme('colors.gray.200'));
+  }
+
+  /* Common alert-title styles */
+  .blog-content .github-alert .github-alert-title {
+    @apply font-bold mb-3 flex items-center gap-2 mt-0;
+    /* Use CSS variable for title color */
+    color: var(--alert-title-color-light);
+  }
+  /* Generic dark mode title color override for all alert types */
+  .dark .blog-content .github-alert .github-alert-title {
+    color: var(--alert-title-color-dark) !important;
+  }
+  /* The following per-variant dark title overrides are now redundant and can be removed:
+       .dark .blog-content .github-alert-warning .github-alert-title { color: var(--alert-title-color-dark) !important; }
+       .dark .blog-content .github-alert-caution .github-alert-title { color: var(--alert-title-color-dark) !important; }
+     */
+
+  /* Alert content */
+  .blog-content .github-alert-content {
+    @apply text-secondary-700 dark:text-secondary-300;
+    font-style: normal;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .blog-content .github-alert-content p {
+    @apply text-secondary-700 dark:text-secondary-300 mb-3;
+  }
+
+  .blog-content .github-alert-content p:last-child {
+    @apply mb-0;
+  }
+
+  /* Note variant - centralized via attribute selector */
+  .blog-content .github-alert[data-alert-type='note'] {
+    --alert-border-color: #3b82f6; /* blue-500 */
+    --alert-title-color-light: #2563eb; /* blue-600 */
+    --alert-title-color-dark: #60a5fa; /* blue-400 */
+  }
+
+  /* Tip variant - set CSS variables for border, title color */
+  .blog-content .github-alert-tip {
+    --alert-border-color: #10b981; /* green-500 */
+    --alert-title-color-light: #16a34a; /* green-600 */
+    --alert-title-color-dark: #34d399; /* green-400 */
+  }
+
+  /* Important - Purple with exclamation in speech bubble */
+  .blog-content .github-alert-important {
+    --alert-border-color: #a855f7; /* purple-500 */
+    --alert-title-color-light: #7c3aed; /* purple-600 */
+    --alert-title-color-dark: #a78bfa; /* purple-400 */
+  }
+
+  /* Warning - Orange/Yellow with triangle exclamation */
+  .blog-content .github-alert-warning {
+    --alert-border-color: #f97316; /* orange-500 */
+    --alert-title-color-light: #d97706; /* orange-600 */
+    --alert-title-color-dark: #fb923c; /* orange-400 */
+  }
+
+  /* Caution alert variant */
+  .blog-content .github-alert-caution {
+    /* Remove @apply since border-color is set by variable */
+    --alert-border-color: #ef4444; /* red-500 */
+    --alert-title-color-light: #dc2626; /* red-600 */
+    --alert-title-color-dark: #f87171; /* red-400 */
+  }
+
+  /* Quote - Styled like regular blockquote but with visible quote marks */
+  .blog-content .github-alert-quote {
+    /* Override alert styling to match regular blockquotes */
+    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400 bg-transparent dark:bg-transparent my-6 p-0 rounded-none;
+  }
+
+  /* Hide the title for quote alerts */
+  .blog-content .github-alert-quote .github-alert-title {
+    display: none !important;
+  }
+
+  /* Style the content like a regular blockquote */
+  .blog-content .github-alert-quote .github-alert-content {
+    @apply text-secondary-600 dark:text-secondary-400;
+    font-style: italic !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p {
+    @apply text-secondary-600 dark:text-secondary-400 mb-3;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p:last-child {
+    @apply mb-0;
+  }
+
+  /* Add quote marks specifically for QUOTE alerts */
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:first-of-type::before {
+    content: open-quote;
+  }
+
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:last-of-type::after {
+    content: close-quote;
+  }
+
   .blog-content code {
     @apply bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded text-sm;
+  }
+
+  /* Remove graphical backticks added by prose plugin */
+  .blog-content code::before,
+  .blog-content code::after {
+    content: none !important;
+  }
+
+  /* Ensure inline code in blockquotes and alerts has better contrast */
+  .blog-content blockquote code,
+  .blog-content .github-alert code {
+    @apply bg-white dark:bg-secondary-900 text-secondary-900 dark:text-secondary-100 border border-secondary-300 dark:border-secondary-600;
+  }
+
+  /* Also remove prose backticks specifically for blockquote and alert code */
+  .blog-content blockquote code::before,
+  .blog-content blockquote code::after,
+  .blog-content .github-alert code::before,
+  .blog-content .github-alert code::after {
+    content: none !important;
   }
 
   /* Code block styling */

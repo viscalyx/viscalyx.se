@@ -987,3 +987,31 @@ top_students <- students %>%
 print("Top 10 Students by GPA:")
 print(top_students)
 ```
+
+## Long Line Examples
+
+Test cases for horizontal scrolling when code lines are very long:
+
+```javascript
+// Very long JavaScript line example
+const veryLongVariableName =
+  'This is an extremely long string that should definitely cause horizontal scrolling in the code block when displayed in a web browser because it contains way more text than can fit in a normal width container and should demonstrate the horizontal scrollbar functionality that we just implemented for code blocks'
+
+// Another long line with method chaining
+const result = someVeryLongObjectNameWithManyProperties
+  .methodWithAVeryLongName()
+  .anotherMethodWithAnEvenLongerName()
+  .yetAnotherMethodThatHasAnExtremelyLongNameForDemonstrationPurposes()
+  .finalMethod()
+```
+
+```bash
+# Very long bash command example
+curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer very_long_token_here_that_makes_the_line_extremely_wide_for_testing_purposes" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
+```
+
+```python
+# Very long Python line with many parameters
+def very_long_function_name_for_demonstration_purposes(parameter_one_with_long_name, parameter_two_with_even_longer_name, parameter_three_that_is_ridiculously_long, parameter_four_for_good_measure, parameter_five_just_because):
+    return f"This function has a very long signature that should cause horizontal scrolling: {parameter_one_with_long_name}, {parameter_two_with_even_longer_name}, {parameter_three_that_is_ridiculously_long}"
+```

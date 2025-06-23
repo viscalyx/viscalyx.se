@@ -46,6 +46,13 @@ If you haven't already, please read the main [README.md](README.md) for an overv
   - [Configuration Files](#configuration-files)
   - [Required Dependencies](#required-dependencies)
   - [Additional Resources](#additional-resources)
+- [Security Testing](#security-testing)
+  - [Overview](#security-overview)
+  - [Security Test Components](#security-test-components)
+  - [Running Security Tests](#running-security-tests)
+  - [Security Configuration](#security-configuration)
+  - [Security Recommendations](#security-recommendations)
+  - [Troubleshooting Security Tests](#troubleshooting-security-tests)
 - [Page Dates Management](#page-dates-management)
   - [Overview](#overview)
   - [How It Works](#how-it-works)
@@ -496,9 +503,46 @@ All code blocks automatically include a copy button in the top-right corner that
 - Automatically positions alongside language labels
 - Works with all supported programming languages
 
-The copy functionality is implemented client-side using React components, while preserving the server-side rendering benefits.
-
 The implementation ensures fast loading times and consistent rendering across all devices.
+
+#### GitHub-Style Alerts
+
+The blog system supports GitHub-style alerts for special content callouts. These provide visual emphasis with distinct colors and icons:
+
+**Using GitHub Alerts:**
+
+```markdown
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+> [!CAUTION]
+> Negative potential consequences of an action.
+```
+
+**Alert Types:**
+
+- **NOTE** (Blue with info icon): General information and explanations
+- **TIP** (Green with lightbulb icon): Helpful suggestions and best practices
+- **IMPORTANT** (Purple with speech bubble icon): Critical information for success
+- **WARNING** (Orange with triangle icon): Potential risks and cautions
+- **CAUTION** (Red with octagon icon): Dangerous operations or breaking changes
+
+**When to Use:**
+
+- Use GitHub alerts for content that needs special attention
+- Use regular blockquotes for quotes, citations, and general emphasis
+- Choose the alert type based on the urgency and type of information
+
+The alerts are processed during the build phase and include proper semantic HTML for accessibility.
 
 ## Submitting Contributions
 
@@ -934,6 +978,189 @@ The following packages enable these scripts:
 - [Cloudflare Next.js Guide](https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/)
 - [OpenNext Documentation](https://opennext.js.org/cloudflare)
 - [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
+
+## Security Testing
+
+This section explains the security testing approach for the blog data generation process, which handles regular security audits of the build-time sanitization process.
+
+### Security Overview
+
+The blog data build process (`scripts/build-blog-data.js`) uses the `sanitize-html` library to prevent XSS attacks by sanitizing HTML content generated from Markdown. To ensure this sanitization continues to work effectively, we have implemented comprehensive security testing.
+
+### Security Test Components
+
+#### 1. Sanitization Security Tests (`scripts/__tests__/build-blog-data-sanitization.test.js`)
+
+These tests verify that the sanitization configuration properly prevents XSS attacks while preserving legitimate content:
+
+##### XSS Prevention Tests
+
+- **Script Tag Removal**: Ensures `<script>` tags and their content are completely removed
+- **Event Handler Removal**: Removes dangerous event handlers like `onclick`, `onload`, etc.
+- **JavaScript URL Prevention**: Blocks `javascript:` URLs in links and other attributes
+- **Style Tag Removal**: Removes `<style>` tags and inline styles that could contain malicious code
+- **Iframe/Embed Blocking**: Prevents potentially dangerous embedded content
+- **Data Attribute Handling**: Verifies data attributes are handled safely
+
+##### Content Preservation Tests
+
+- **Basic HTML Formatting**: Ensures standard HTML tags like `<h1>`, `<p>`, `<strong>`, `<em>` are preserved
+- **Syntax Highlighting**: Verifies that code syntax highlighting classes and attributes are maintained
+- **Table of Contents**: Ensures heading IDs for navigation are preserved
+- **Safe Links**: Confirms that legitimate URLs (https, mailto, relative paths) work correctly
+- **Image Handling**: Documents the current restrictive image policy
+
+##### Edge Case Testing
+
+- **Empty Content**: Handles null, undefined, and empty strings safely
+- **Malformed HTML**: Gracefully processes badly formed HTML
+- **Large Content**: Handles very long content without performance issues
+
+#### 2. Integration Security Tests (`scripts/__tests__/build-blog-data-integration.test.js`)
+
+These tests run the actual build script with malicious content to verify end-to-end security:
+
+##### Full Build Process Testing
+
+- **Malicious Content Removal**: Creates actual blog posts with XSS attempts and verifies they're sanitized
+- **Syntax Highlighting Preservation**: Ensures code blocks maintain their highlighting after processing
+- **Multiple Post Handling**: Tests that sanitization works consistently across multiple posts
+- **Reading Time Calculation**: Verifies that malicious content doesn't affect reading time calculations
+
+#### 3. Security Audit Script (`scripts/security-audit.js`)
+
+A convenient script that runs all security tests and provides a comprehensive report:
+
+```bash
+npm run test:security
+```
+
+This script:
+
+- Runs all sanitization tests
+- Runs all integration tests
+- Provides a detailed security audit summary
+- Fails the build if any security tests fail
+
+### Running Security Tests
+
+#### Individual Test Suites
+
+```bash
+# Run sanitization tests only
+npx jest scripts/__tests__/build-blog-data-sanitization.test.js
+
+# Run integration tests only
+npx jest scripts/__tests__/build-blog-data-integration.test.js
+```
+
+#### Full Security Audit
+
+```bash
+npm run test:security
+```
+
+#### As Part of CI/CD
+
+The security tests are included in the main `check` script:
+
+```bash
+npm run check  # Includes type-check, formatting, linting, tests, and security audit
+```
+
+### Security Configuration
+
+#### Current Sanitization Rules
+
+The build script uses these sanitization options:
+
+```javascript
+const sanitizeOptions = {
+  ...sanitizeHtml.defaults,
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    // Table of contents navigation
+    h1: ['id'],
+    h2: ['id'],
+    h3: ['id'],
+    h4: ['id'],
+    h5: ['id'],
+    h6: ['id'],
+    // Syntax highlighting
+    code: ['class'],
+    pre: ['class', 'data-language'],
+    span: ['class'],
+    div: ['class'],
+    // Prism.js data attributes
+    '*': ['data-*'],
+  },
+  allowedTags: [
+    ...sanitizeHtml.defaults.allowedTags,
+    'span', // Required for syntax highlighting
+  ],
+}
+```
+
+#### Notable Security Decisions
+
+1. **No Image Tags**: The current configuration does NOT allow `<img>` tags, as images are likely handled through other mechanisms
+2. **Data Attributes Allowed**: While `data-*` attributes are allowed, they cannot execute JavaScript directly
+3. **Restricted Tag Set**: Only a curated set of HTML tags are allowed, blocking dangerous ones like `<script>`, `<iframe>`, `<object>`, etc.
+
+### Security Recommendations
+
+#### Regular Maintenance
+
+1. **Update Dependencies**: Keep `sanitize-html` updated to latest version
+2. **Review New Attack Vectors**: Periodically review OWASP XSS prevention guidelines
+3. **Monitor Test Results**: Any test failures should be investigated immediately
+4. **Audit Configuration**: Review the sanitization configuration when adding new features
+
+#### Adding New Content Types
+
+When adding new content types or HTML features:
+
+1. Add corresponding security tests first
+2. Update the sanitization configuration carefully
+3. Verify that legitimate content is preserved
+4. Ensure malicious variants are properly blocked
+5. Run the full security audit
+
+#### CI/CD Integration
+
+Ensure that:
+
+- Security tests run on every commit
+- Builds fail if security tests fail
+- Security audit results are preserved for review
+- Dependencies are scanned for vulnerabilities
+
+### Troubleshooting Security Tests
+
+#### Test Failures
+
+If security tests fail:
+
+1. **Check Recent Changes**: Review recent modifications to the build script or sanitization config
+2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are up-to-date
+3. **Review Error Messages**: Test failures indicate specific security vulnerabilities
+4. **Test Manually**: Create test blog posts with suspicious content to verify behavior
+
+#### Performance Issues
+
+If tests are slow:
+
+1. **Check Content Size**: Exceptionally large test content can slow down processing
+2. **Review Complexity**: Deeply nested HTML can cause performance issues
+3. **Monitor Resources**: Integration tests create temporary files and directories
+
+#### False Positives
+
+If legitimate content is being over-sanitized:
+
+1. **Review Sanitization Config**: May need to allow additional tags or attributes
+2. **Update Test Expectations**: Ensure tests match the actual desired behavior
+3. **Consider Alternatives**: Some content might need different handling mechanisms
 
 ## Page Dates Management
 
