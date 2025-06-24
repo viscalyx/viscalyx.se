@@ -123,6 +123,7 @@ export default function TeamMemberPage({ params }: Props) {
     const memberData = getTeamMemberData(memberId)
 
     if (!memberData) {
+      setIsLoading(false)
       router.replace('/404')
       return
     }
