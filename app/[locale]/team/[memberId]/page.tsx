@@ -2,6 +2,7 @@
 
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import LoadingScreen from '@/components/LoadingScreen'
 import ScrollToTop from '@/components/ScrollToTop'
 import {
   BlueskyIcon,
@@ -132,39 +133,11 @@ export default function TeamMemberPage({ params }: Props) {
   }, [memberId, member, router])
 
   if (isLoading) {
-    return (
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center"
-      >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
-            Loading...
-          </p>
-        </div>
-      </motion.main>
-    )
+    return <LoadingScreen />
   }
 
   if (!memberId || !member) {
-    return (
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center"
-      >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
-            Redirecting...
-          </p>
-        </div>
-      </motion.main>
-    )
+    return <LoadingScreen type="redirecting" />
   }
 
   const containerVariants: Variants = {

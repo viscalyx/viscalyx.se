@@ -4,7 +4,7 @@ import AlertIconInjector from '@/components/AlertIconInjector'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import LoadingScreen from '@/components/LoadingScreen'
 import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
@@ -185,16 +185,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
   }, [params])
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="text-secondary-600 dark:text-secondary-400 mt-4">
-            {t('post.loadingBlogPost')}
-          </p>
-        </div>
-      </div>
-    )
+    return <LoadingScreen message={t('post.loadingBlogPost')} />
   }
 
   if (!post) {

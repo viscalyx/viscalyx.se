@@ -7,7 +7,7 @@ import { useTranslations, useFormatter } from 'next-intl'
 import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import LoadingScreen from '@/components/LoadingScreen'
 import { normalizeDate, getCurrentDateISO } from '@/lib/date-utils'
 
 interface BlogPostMeta {
@@ -159,16 +159,7 @@ const BlogPage = () => {
   ]
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="text-secondary-600 dark:text-secondary-400 mt-4">
-            {t('loadingBlogPosts')}
-          </p>
-        </div>
-      </div>
-    )
+    return <LoadingScreen message={t('loadingBlogPosts')} />
   }
 
   return (
