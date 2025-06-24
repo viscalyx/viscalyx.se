@@ -8,12 +8,10 @@ interface LoadingScreenProps {
   type?: 'loading' | 'redirecting'
 }
 
-const LoadingScreen = ({ 
-  message, 
-  type = 'loading' 
-}: LoadingScreenProps) => {
-  const defaultMessage = type === 'redirecting' ? 'Redirecting...' : 'Loading...'
-  
+const LoadingScreen = ({ message, type = 'loading' }: LoadingScreenProps) => {
+  const defaultMessage =
+    type === 'redirecting' ? 'Redirecting...' : 'Loading...'
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
