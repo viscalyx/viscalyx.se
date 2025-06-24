@@ -17,7 +17,7 @@ import { ArrowLeft, Mail, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 type TeamMember = {
@@ -44,6 +44,7 @@ export default function TeamMemberPage({ params }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
   const tGlobal = useTranslations('team')
+  const router = useRouter()
 
   useEffect(() => {
     params.then(({ memberId: id }) => {
@@ -71,7 +72,8 @@ export default function TeamMemberPage({ params }: Props) {
   }
 
   if (!memberId) {
-    notFound()
+    router.push('/404')
+    return null
   }
 
   // Get team member data
@@ -147,7 +149,8 @@ export default function TeamMemberPage({ params }: Props) {
   const member = getTeamMemberData(memberId)
 
   if (!member) {
-    notFound()
+    router.push('/404')
+    return null
   }
 
   const containerVariants: Variants = {
