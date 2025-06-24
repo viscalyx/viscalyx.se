@@ -128,7 +128,7 @@ export default function TeamMemberPage({ params }: Props) {
   // Handle navigation to 404 in useEffect to avoid side effects during render
   useEffect(() => {
     if (memberId && !member) {
-      router.push('/404')
+      router.replace('/404')
     }
   }, [memberId, member, router])
 
@@ -151,7 +151,21 @@ export default function TeamMemberPage({ params }: Props) {
   }
 
   if (!memberId || !member) {
-    return null
+    return (
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex items-center justify-center"
+      >
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
+            Redirecting...
+          </p>
+        </div>
+      </motion.main>
+    )
   }
 
   const containerVariants: Variants = {
