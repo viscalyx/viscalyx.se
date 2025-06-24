@@ -129,7 +129,7 @@ export default function TeamMemberPage({ params }: Props) {
 
     setMember(memberData)
     setIsLoading(false)
-  }, [resolvedParams.memberId, router, tGlobal])
+  }, [resolvedParams.memberId, router])
 
   if (isLoading || !member) {
     return <LoadingScreen />
