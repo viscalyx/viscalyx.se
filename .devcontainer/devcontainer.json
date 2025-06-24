@@ -178,43 +178,7 @@
         // Explorer settings
         "explorer.compactFolders": false,
         "explorer.confirmDelete": false,
-        "explorer.confirmDragAndDrop": false,
-
-        // Language-specific settings
-        "[typescript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true,
-          "cSpell.enabled": true,
-          "cSpell.diagnosticLevel": "Warning"
-        },
-        "[typescriptreact]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true,
-          "cSpell.enabled": true,
-          "cSpell.diagnosticLevel": "Warning"
-        },
-        "[javascript]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true
-        },
-        "[javascriptreact]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true
-        },
-        "[json]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true
-        },
-        "[jsonc]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true
-        },
-        "[markdown]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode",
-          "editor.formatOnSave": true,
-          "cSpell.enabled": true,
-          "cSpell.diagnosticLevel": "Error"
-        }
+        "explorer.confirmDragAndDrop": false
       }
     }
   },
