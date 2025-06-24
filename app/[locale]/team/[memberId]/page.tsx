@@ -46,36 +46,6 @@ export default function TeamMemberPage({ params }: Props) {
   const tGlobal = useTranslations('team')
   const router = useRouter()
 
-  useEffect(() => {
-    params.then(({ memberId: id }) => {
-      setMemberId(id)
-      setIsLoading(false)
-    })
-  }, [params])
-
-  if (isLoading) {
-    return (
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center"
-      >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
-            Loading...
-          </p>
-        </div>
-      </motion.main>
-    )
-  }
-
-  if (!memberId) {
-    router.push('/404')
-    return null
-  }
-
   // Get team member data
   const getTeamMemberData = (id: string): TeamMember | null => {
     const teamMembers: Record<string, TeamMember> = {
@@ -146,10 +116,41 @@ export default function TeamMemberPage({ params }: Props) {
     return teamMembers[id as keyof typeof teamMembers] || null
   }
 
-  const member = getTeamMemberData(memberId)
+  const member = memberId ? getTeamMemberData(memberId) : null
 
-  if (!member) {
-    router.push('/404')
+  useEffect(() => {
+    params.then(({ memberId: id }) => {
+      setMemberId(id)
+      setIsLoading(false)
+    })
+  }, [params])
+
+  // Handle navigation to 404 in useEffect to avoid side effects during render
+  useEffect(() => {
+    if (memberId && !member) {
+      router.push('/404')
+    }
+  }, [memberId, member, router])
+
+  if (isLoading) {
+    return (
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex items-center justify-center"
+      >
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
+            Loading...
+          </p>
+        </div>
+      </motion.main>
+    )
+  }
+
+  if (!memberId || !member) {
     return null
   }
 
