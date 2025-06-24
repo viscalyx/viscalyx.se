@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 type TeamMember = {
   id: string
@@ -40,6 +40,7 @@ type Props = {
 }
 
 export default function TeamMemberPage({ params }: Props) {
+  const resolvedParams = use(params)
   const [memberId, setMemberId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
@@ -119,11 +120,9 @@ export default function TeamMemberPage({ params }: Props) {
   const member = memberId ? getTeamMemberData(memberId) : null
 
   useEffect(() => {
-    params.then(({ memberId: id }) => {
-      setMemberId(id)
-      setIsLoading(false)
-    })
-  }, [params])
+    setMemberId(resolvedParams.memberId)
+    setIsLoading(false)
+  }, [resolvedParams.memberId])
 
   // Handle navigation to 404 in useEffect to avoid side effects during render
   useEffect(() => {
