@@ -142,11 +142,8 @@
           "yaml": true,
           "yml": true
         },
-        "cSpell.showStatus": true,
-        "cSpell.showSuggestions": true,
         "cSpell.diagnosticLevel": "Warning",
         "cSpell.checkLimit": 500,
-        "cSpell.spellCheckDelayMs": 50,
         "cSpell.words": [
           "viscalyx",
           "johlju",
