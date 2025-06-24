@@ -42,6 +42,7 @@ type Props = {
 
 export default function TeamMemberPage({ params }: Props) {
   const resolvedParams = use(params)
+  const [member, setMember] = useState<TeamMember | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
   const tGlobal = useTranslations('team')
@@ -117,25 +118,20 @@ export default function TeamMemberPage({ params }: Props) {
     return teamMembers[id as keyof typeof teamMembers] || null
   }
 
-  const memberId = resolvedParams.memberId
-  const member = getTeamMemberData(memberId)
-
   useEffect(() => {
-    // Redirect to 404 immediately if member data is not found
-    if (!member) {
+    const memberId = resolvedParams.memberId
+    const memberData = getTeamMemberData(memberId)
+
+    if (!memberData) {
       router.replace('/404')
       return
     }
 
+    setMember(memberData)
     setIsLoading(false)
-  }, [member, router])
+  }, [resolvedParams.memberId, router, tGlobal])
 
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
-  // This should not be reached if member is null due to the redirect above
-  if (!member) {
+  if (isLoading || !member) {
     return <LoadingScreen />
   }
 
