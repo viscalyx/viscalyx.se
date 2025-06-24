@@ -42,7 +42,6 @@ type Props = {
 
 export default function TeamMemberPage({ params }: Props) {
   const resolvedParams = use(params)
-  const [memberId, setMemberId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
   const tGlobal = useTranslations('team')
@@ -118,26 +117,26 @@ export default function TeamMemberPage({ params }: Props) {
     return teamMembers[id as keyof typeof teamMembers] || null
   }
 
-  const member = memberId ? getTeamMemberData(memberId) : null
+  const memberId = resolvedParams.memberId
+  const member = getTeamMemberData(memberId)
 
   useEffect(() => {
-    setMemberId(resolvedParams.memberId)
-    setIsLoading(false)
-  }, [resolvedParams.memberId])
-
-  // Handle navigation to 404 in useEffect to avoid side effects during render
-  useEffect(() => {
-    if (memberId && !member) {
+    // Redirect to 404 immediately if member data is not found
+    if (!member) {
       router.replace('/404')
+      return
     }
-  }, [memberId, member, router])
+
+    setIsLoading(false)
+  }, [member, router])
 
   if (isLoading) {
     return <LoadingScreen />
   }
 
-  if (!memberId || !member) {
-    return <LoadingScreen type="redirecting" />
+  // This should not be reached if member is null due to the redirect above
+  if (!member) {
+    return <LoadingScreen />
   }
 
   const containerVariants: Variants = {
