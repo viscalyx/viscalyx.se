@@ -2,6 +2,7 @@
 
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import LoadingScreen from '@/components/LoadingScreen'
 import ScrollToTop from '@/components/ScrollToTop'
 import {
   BlueskyIcon,
@@ -17,8 +18,8 @@ import { ArrowLeft, Mail, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { use, useEffect, useState } from 'react'
 
 type TeamMember = {
   id: string
@@ -40,39 +41,12 @@ type Props = {
 }
 
 export default function TeamMemberPage({ params }: Props) {
-  const [memberId, setMemberId] = useState<string | null>(null)
+  const resolvedParams = use(params)
+  const [member, setMember] = useState<TeamMember | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
   const tGlobal = useTranslations('team')
-
-  useEffect(() => {
-    params.then(({ memberId: id }) => {
-      setMemberId(id)
-      setIsLoading(false)
-    })
-  }, [params])
-
-  if (isLoading) {
-    return (
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="min-h-screen flex items-center justify-center"
-      >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-secondary-600 dark:text-secondary-300">
-            Loading...
-          </p>
-        </div>
-      </motion.main>
-    )
-  }
-
-  if (!memberId) {
-    notFound()
-  }
+  const router = useRouter()
 
   // Get team member data
   const getTeamMemberData = (id: string): TeamMember | null => {
@@ -144,10 +118,22 @@ export default function TeamMemberPage({ params }: Props) {
     return teamMembers[id as keyof typeof teamMembers] || null
   }
 
-  const member = getTeamMemberData(memberId)
+  useEffect(() => {
+    const memberId = resolvedParams.memberId
+    const memberData = getTeamMemberData(memberId)
 
-  if (!member) {
-    notFound()
+    if (!memberData) {
+      setIsLoading(false)
+      router.replace('/404')
+      return
+    }
+
+    setMember(memberData)
+    setIsLoading(false)
+  }, [resolvedParams.memberId, router])
+
+  if (isLoading || !member) {
+    return <LoadingScreen />
   }
 
   const containerVariants: Variants = {
