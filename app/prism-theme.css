@@ -51,10 +51,18 @@
   overflow: visible;
 }
 
-/* Ensure proper spacing for language labels */
+/* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
 .blog-content pre[class*='language-']:has(.code-language-label),
 .blog-content pre[class*='language-'][data-language] {
   margin-top: 3rem; /* Extra space for the language label */
+}
+
+/* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
+.blog-content
+  .code-block-wrapper
+  pre[class*='language-']:has(.code-language-label),
+.blog-content .code-block-wrapper pre[class*='language-'][data-language] {
+  margin-top: 0 !important;
 }
 
 /* Syntax highlighting tokens - Light theme */
