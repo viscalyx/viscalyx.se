@@ -375,7 +375,10 @@
   }
 
   /* Copy button positioned inside scrollable area */
-  .blog-content .code-block-wrapper .code-scroll-wrapper .copy-button-container {
+  .blog-content
+    .code-block-wrapper
+    .code-scroll-wrapper
+    .copy-button-container {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
