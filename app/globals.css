@@ -263,32 +263,36 @@
 
   /* Spacing for language labels is now handled by .code-block-wrapper padding-top */
 
-  /* Language label as DOM element - higher specificity than prism-theme.css */
-  .blog-content pre[class*='language-'] .code-language-label {
-    position: absolute !important;
-    top: -2rem !important;
-    right: 1rem !important;
-    font-size: 0.75rem !important;
-    font-weight: 600 !important;
+  /* Base styles for all code language labels */
+  .blog-content .code-language-label {
+    position: absolute;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     @apply text-secondary-700 dark:text-secondary-200;
     @apply bg-secondary-200 dark:bg-secondary-950;
     @apply border border-secondary-300 dark:border-secondary-600;
-    border-bottom: none !important;
-    padding: 0.375rem 0.75rem 0.5rem 0.75rem !important;
-    border-radius: 0.375rem 0.375rem 0 0 !important;
-    letter-spacing: 0.05em !important;
-    z-index: 10 !important; /* Higher than pseudo-element */
-    white-space: nowrap !important;
+    border-bottom: none;
+    padding: 0.375rem 0.75rem 0.5rem 0.75rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+    letter-spacing: 0.05em;
+    z-index: 10;
+    white-space: nowrap;
     /* Tab effect - connect to code block */
-    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1);
     /* Ensure it stays above the code block */
-    pointer-events: none !important;
+    pointer-events: none;
     /* Make sure it's always visible */
-    display: block !important;
+    display: block;
   }
 
-  .dark .blog-content pre[class*='language-'] .code-language-label {
-    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3) !important;
+  .dark .blog-content .code-language-label {
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* Specific positioning for language labels inside pre elements */
+  .blog-content pre[class*='language-'] .code-language-label {
+    top: -2rem !important; /* Higher specificity than prism-theme.css */
   }
 
   /* Hide pseudo-element when DOM element exists */
@@ -388,26 +392,9 @@
     z-index: 20;
   }
 
-  /* Language label styling */
+  /* Specific positioning for language labels inside code-block-wrapper */
   .blog-content .code-block-wrapper .code-language-label {
-    position: absolute;
     top: 0;
-    right: 1rem;
     transform: translateY(-100%);
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: var(--color-code-label-bg, #e5e7eb);
-    color: var(--color-code-label-text, #374151);
-    border: 1px solid var(--color-code-label-border, #d1d5db);
-    border-bottom: none;
-    padding: 0.375rem 0.75rem 0.5rem;
-    border-radius: 0.375rem 0.375rem 0 0;
-    white-space: nowrap;
-    z-index: 10;
-  }
-
-  .dark .blog-content .code-block-wrapper .code-language-label {
-    background: #0c0a09;
-    color: #e5e7eb;
   }
 }
