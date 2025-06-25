@@ -248,6 +248,12 @@
     position: relative;
   }
 
+  /* Remove top margin for pre elements inside code-block-wrapper to avoid double spacing */
+  .blog-content .code-block-wrapper pre,
+  .blog-content .code-block-wrapper pre[class*='language-'] {
+    margin-top: 0;
+  }
+
   /* Prevent the language label from being clipped by pre overflow */
   .blog-content pre[class*='language-'] {
     overflow-x: auto !important; /* allow horizontal scrolling */
@@ -255,10 +261,7 @@
     position: relative !important; /* ensure label positioning works */
   }
 
-  /* Ensure proper spacing for language labels */
-  .blog-content pre[class*='language-'][data-language] {
-    margin-top: 3rem; /* Extra space for the language label */
-  }
+  /* Spacing for language labels is now handled by .code-block-wrapper padding-top */
 
   /* Language label as DOM element - higher specificity than prism-theme.css */
   .blog-content pre[class*='language-'] .code-language-label {
