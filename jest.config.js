@@ -1,5 +1,5 @@
 /**
- * Jest configuration for the project using ts-jest preset
+ * Jest configuration for the project using @swc/jest for TypeScript transformation
  */
 module.exports = {
   testEnvironment: 'jsdom',
@@ -25,7 +25,7 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
+    '^.+\\.(ts|tsx)$': ['@swc/jest'],
   },
   reporters: [
     'default',

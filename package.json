@@ -48,6 +48,8 @@
   },
   "devDependencies": {
     "@cspell/dict-sv": "^2.3.0",
+    "@swc/core": "^1.12.7",
+    "@swc/jest": "^0.2.38",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
@@ -74,7 +76,6 @@
     "remark-gfm": "^4.0.1",
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.17",
-    "ts-jest": "^29.3.4",
     "typescript": "^5.8.3",
     "wrangler": "^4.20.3"
   }
