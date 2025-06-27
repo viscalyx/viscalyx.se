@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import CopyButton from '../CopyButton'
 
@@ -39,21 +39,24 @@ describe('CopyButton', () => {
   it('resets to original state after timeout', async () => {
     // Use real timers for this test since it involves React state updates
     render(<CopyButton text={text} />)
-    
+
     const button = screen.getByRole('button')
-    
+
     // Click the button
     fireEvent.click(button)
-    
+
     // Wait for clipboard to be called and verify copied state
     await waitFor(() => {
       expect(navigator.clipboard.writeText).toHaveBeenCalled()
       expect(button).toHaveAttribute('title', 'Copied!')
     })
-    
+
     // Wait for the timeout to reset the state (2 seconds + buffer)
-    await waitFor(() => {
-      expect(button).toHaveAttribute('title', 'Copy to clipboard')
-    }, { timeout: 3000 })
+    await waitFor(
+      () => {
+        expect(button).toHaveAttribute('title', 'Copy to clipboard')
+      },
+      { timeout: 3000 }
+    )
   })
 })
