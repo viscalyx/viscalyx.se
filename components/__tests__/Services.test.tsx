@@ -1,19 +1,19 @@
-import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import Services from '../Services'
 
 // Mock next-intl translations
-jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
+vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
 
 // Mock next/navigation
-const pushMock = jest.fn()
-jest.mock('next/navigation', () => ({
+const pushMock = vi.fn()
+vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
   usePathname: () => '/',
 }))
 
 // Mock framer-motion and useInView
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   const motion: Record<string, any> = {}
   ;['div', 'button', 'span', 'h2', 'p'].forEach(tag => {
@@ -31,7 +31,7 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock lucide-react icons
-jest.mock('lucide-react', () => {
+vi.mock('lucide-react', () => {
   const React = require('react')
   const icons = [
     'Cog',

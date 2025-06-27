@@ -1,10 +1,10 @@
-import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import React from 'react'
 import Notification from '../Notification'
 type NotificationType = 'success' | 'error' | 'warning' | 'info'
 
-jest.mock('lucide-react', () => {
+vi.mock('lucide-react', () => {
   const React = require('react')
   return {
     Info: (props: React.SVGProps<SVGSVGElement>) =>
@@ -37,18 +37,18 @@ describe('Notification component', () => {
 
 describe('auto-dismissal behavior', () => {
   beforeEach(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
     act(() => {
-      jest.runOnlyPendingTimers()
+      vi.runOnlyPendingTimers()
     })
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   it('calls onClose after specified duration plus animation delay', () => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     const { container } = render(
       <Notification
         type="info"
@@ -63,20 +63,20 @@ describe('auto-dismissal behavior', () => {
 
     // advance to duration
     act(() => {
-      jest.advanceTimersByTime(100)
+      vi.advanceTimersByTime(100)
     })
     // should be hidden
     expect(container.firstChild).toBeNull()
 
     // advance past animation delay
     act(() => {
-      jest.advanceTimersByTime(300)
+      vi.advanceTimersByTime(300)
     })
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
   it.each([0, -100])('does not auto-dismiss when duration=%d', duration => {
-    const onClose = jest.fn()
+    const onClose = vi.fn()
     const { container } = render(
       <Notification
         type="info"
@@ -87,7 +87,7 @@ describe('auto-dismissal behavior', () => {
       />
     )
     act(() => {
-      jest.advanceTimersByTime(10000)
+      vi.advanceTimersByTime(10000)
     })
     expect(container.firstChild).not.toBeNull()
     expect(onClose).not.toHaveBeenCalled()
@@ -96,8 +96,8 @@ describe('auto-dismissal behavior', () => {
 
 describe('manual close behavior', () => {
   it('calls onClose when close button is clicked', () => {
-    jest.useFakeTimers()
-    const onClose = jest.fn()
+    vi.useFakeTimers()
+    const onClose = vi.fn()
     render(
       <Notification
         type="info"
@@ -110,10 +110,10 @@ describe('manual close behavior', () => {
     fireEvent.click(screen.getByTestId('X'))
     // advance past animation delay for manual close
     act(() => {
-      jest.advanceTimersByTime(300)
+      vi.advanceTimersByTime(300)
     })
     expect(onClose).toHaveBeenCalledTimes(1)
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 })
 

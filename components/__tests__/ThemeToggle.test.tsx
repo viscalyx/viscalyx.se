@@ -1,16 +1,16 @@
-import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import ThemeToggle from '../ThemeToggle'
 
-const setThemeMock = jest.fn()
+const setThemeMock = vi.fn()
 
 // Mock theme context
-jest.mock('../../lib/theme-context', () => ({
+vi.mock('../../lib/theme-context', () => ({
   useTheme: () => ({ theme: 'light', setTheme: setThemeMock }),
 }))
 
 // Mock framer-motion
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   return {
     motion: {

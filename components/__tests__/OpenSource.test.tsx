@@ -1,23 +1,23 @@
-import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { vi, MockedFunction } from 'vitest'
 import * as nextNavigation from 'next/navigation'
 import OpenSource from '../OpenSource'
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  usePathname: jest.fn(),
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
+  usePathname: vi.fn(),
 }))
 
 // Mock translations
-jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
+vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
 
 // Shared router mock for consistent push calls
-const mockRouter = { push: jest.fn(), replace: jest.fn(), refresh: jest.fn() }
+const mockRouter = { push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }
 
 // Reset mocks before each test and set default router and pathname
 beforeEach(() => {
-  ;(nextNavigation.useRouter as jest.Mock).mockReturnValue(mockRouter)
-  ;(nextNavigation.usePathname as jest.Mock).mockReturnValue('/')
-  jest.clearAllMocks()
+  ;(nextNavigation.useRouter as MockedFunction).mockReturnValue(mockRouter)
+  ;(nextNavigation.usePathname as MockedFunction).mockReturnValue('/')
+  vi.clearAllMocks()
 })
 
 describe('OpenSource component', () => {
@@ -35,7 +35,7 @@ describe('OpenSource component', () => {
   })
 
   it('opens external project link on click', () => {
-    window.open = jest.fn()
+    window.open = vi.fn()
     render(<OpenSource />)
     // Select link by accessible label containing space
     const links = screen.getAllByRole('link', { name: /view project/i })
@@ -52,7 +52,7 @@ describe('OpenSource component', () => {
     // Setup a contact anchor in the DOM
     const contactElement = document.createElement('div')
     contactElement.id = 'contact'
-    contactElement.scrollIntoView = jest.fn()
+    contactElement.scrollIntoView = vi.fn()
     document.body.appendChild(contactElement)
     render(<OpenSource />)
     const button = screen.getByRole('button', { name: /collaborate/i })
@@ -64,7 +64,7 @@ describe('OpenSource component', () => {
 
   it('navigates to contact section when clicking collaborate button from other page', () => {
     // Override pathname mock to simulate non-home page
-    ;(nextNavigation.usePathname as jest.Mock).mockReturnValue('/other')
+    ;(nextNavigation.usePathname as MockedFunction).mockReturnValue('/other')
     render(<OpenSource />)
     const button = screen.getByRole('button', { name: /collaborate/i })
     fireEvent.click(button)

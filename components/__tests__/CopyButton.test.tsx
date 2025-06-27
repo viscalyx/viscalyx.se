@@ -1,10 +1,11 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { vi } from 'vitest'
 import CopyButton from '../CopyButton'
 
 // mock clipboard
 Object.assign(navigator, {
   clipboard: {
-    writeText: jest.fn().mockResolvedValue(undefined),
+    writeText: vi.fn().mockResolvedValue(undefined),
   },
 })
 
@@ -36,7 +37,7 @@ describe('CopyButton', () => {
   })
 
   it('resets to original state after 2 seconds', async () => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
     render(<CopyButton text={text} />)
     act(() => {
       fireEvent.click(screen.getByRole('button'))
@@ -46,13 +47,13 @@ describe('CopyButton', () => {
     })
     // Fast-forward 2 seconds inside act
     act(() => {
-      jest.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(2000)
     })
     await waitFor(() => {
       const button = screen.getByRole('button')
       expect(button).toHaveAttribute('title', 'Copy to clipboard')
       expect(button).toHaveAttribute('aria-label', 'Copy code to clipboard')
     })
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 })
