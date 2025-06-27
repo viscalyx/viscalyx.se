@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { vi, MockedFunction } from 'vitest'
 import * as nextNavigation from 'next/navigation'
+import { vi } from 'vitest'
 import OpenSource from '../OpenSource'
+
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
   usePathname: vi.fn(),
@@ -11,12 +12,19 @@ vi.mock('next/navigation', () => ({
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
 
 // Shared router mock for consistent push calls
-const mockRouter = { push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }
+const mockRouter = {
+  push: vi.fn(),
+  replace: vi.fn(),
+  refresh: vi.fn(),
+  back: vi.fn(),
+  forward: vi.fn(),
+  prefetch: vi.fn(),
+}
 
 // Reset mocks before each test and set default router and pathname
 beforeEach(() => {
-  ;(nextNavigation.useRouter as MockedFunction).mockReturnValue(mockRouter)
-  ;(nextNavigation.usePathname as MockedFunction).mockReturnValue('/')
+  vi.mocked(nextNavigation.useRouter).mockReturnValue(mockRouter)
+  vi.mocked(nextNavigation.usePathname).mockReturnValue('/')
   vi.clearAllMocks()
 })
 
@@ -64,7 +72,7 @@ describe('OpenSource component', () => {
 
   it('navigates to contact section when clicking collaborate button from other page', () => {
     // Override pathname mock to simulate non-home page
-    ;(nextNavigation.usePathname as MockedFunction).mockReturnValue('/other')
+    vi.mocked(nextNavigation.usePathname).mockReturnValue('/other')
     render(<OpenSource />)
     const button = screen.getByRole('button', { name: /collaborate/i })
     fireEvent.click(button)
