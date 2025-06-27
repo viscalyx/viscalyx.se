@@ -15,8 +15,8 @@ export default defineConfig({
     
     // Test file patterns (equivalent to Jest's testMatch)
     include: [
-      '**/__tests__/**/*.+(spec|test).+(ts|tsx|js|jsx)',
-      '**/*.+(spec|test).+(ts|tsx|js|jsx)',
+      '**/__tests__/**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
+      '**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
     ],
     
     // Coverage configuration
