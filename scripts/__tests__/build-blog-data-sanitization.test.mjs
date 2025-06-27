@@ -6,11 +6,11 @@
  * formatting and syntax highlighting.
  */
 
-const { vi } = require('vitest')
-const fs = require('node:fs')
-const path = require('node:path')
-const matter = require('gray-matter')
-const sanitizeHtml = require('sanitize-html')
+import { vi } from 'vitest'
+import fs from 'node:fs'
+import path from 'node:path'
+import matter from 'gray-matter'
+import sanitizeHtml from 'sanitize-html'
 
 // Mock the build script functions for testing
 vi.mock('node:fs')
