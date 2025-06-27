@@ -65,7 +65,7 @@ This directory contains the complete development container setup for the Viscaly
 
 - **3000** or **3001** - Next.js development server
 - **8787** - Next.js preview/production server
-- **51204** - VI Test UI server
+- **51204** - Vitest UI server
 
 ## Development Workflow
 

@@ -24,7 +24,7 @@ WORKDIR /workspace
 # Further user and shell configuration is provided by the devcontainer "common-utils" feature
 RUN git config --system --add safe.directory /workspace
 
-# Expose the ports that Next.js and Wrangler typically uses
+# Expose the ports that Next.js, Wrangler, and Vitest typically use
 EXPOSE 3000 3001 8787 51204
 
 # Keep container running
