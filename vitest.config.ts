@@ -19,9 +19,27 @@ export default defineConfig({
       '**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
     ],
 
+    reporters: [
+      'verbose', // Use default reporter for console output
+      [
+        'junit',
+        {
+          outputFile: './test-results/test-results.xml', // Output file for JUnit report
+          suiteName: 'Vitest Tests', // Name of the test suite
+          classNameTemplate: '{filename}', // Template for class names in the report
+          properties: {
+            'api.host': '',
+          }, // Custom properties for the report
+        },
+      ],
+    ],
+
     // Coverage configuration
     coverage: {
+      all: true, // Collect coverage for all files
       provider: 'v8',
+      reportsDirectory: './coverage', // Output coverage reports to ./coverage folder
+      reporter: ['text', 'json', 'html', 'clover', 'lcov'], // Multiple formats including Codecov-compatible ones
       include: [
         'app/**/*.{ts,tsx}',
         'components/**/*.{ts,tsx}',
