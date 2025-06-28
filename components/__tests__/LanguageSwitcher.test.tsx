@@ -1,22 +1,22 @@
-import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import LanguageSwitcher from '../LanguageSwitcher'
 
 // Mock next-intl translations and locale
-jest.mock('next-intl', () => ({
+vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => 'en',
 }))
 
 // Mock next/navigation
-const pushMock = jest.fn()
-jest.mock('next/navigation', () => ({
+const pushMock = vi.fn()
+vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
   usePathname: () => '/en/test',
 }))
 
 // Mock framer-motion
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   return {
     motion: {

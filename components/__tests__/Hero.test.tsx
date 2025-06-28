@@ -1,20 +1,20 @@
-import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import Hero from '../Hero'
 
 // Mock next-intl translations
-jest.mock('next-intl', () => ({
+vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }))
 
 // Mock next/navigation
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: jest.fn() }),
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn() }),
   usePathname: () => '/',
 }))
 
 // Mock framer-motion to filter out animation props
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   const motion: Record<string, any> = {}
   ;['div', 'h1', 'span', 'p', 'button'].forEach(tag => {
@@ -32,7 +32,7 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock next/image
-jest.mock('next/image', () => {
+vi.mock('next/image', () => {
   const React = require('react')
   return {
     __esModule: true,

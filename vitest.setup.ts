@@ -1,8 +1,10 @@
-// jest.setup.ts
-// Setup file for Jest tests
-import '@testing-library/jest-dom'
+// vitest.setup.ts
+// Setup file for Vitest tests
+import '@testing-library/jest-dom/vitest'
+import { vi } from 'vitest'
 
-jest.mock('framer-motion', () => {
+// Mock framer-motion
+vi.mock('framer-motion', () => {
   const { createElement } = require('react')
   const forward = (tag: string) => (props: any) => {
     const {
@@ -30,7 +32,7 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock next/image to render simple img for tests
-jest.mock('next/image', () => {
+vi.mock('next/image', () => {
   const React = require('react')
   return {
     __esModule: true,
@@ -38,3 +40,9 @@ jest.mock('next/image', () => {
       React.createElement('img', { src, alt, ...rest }),
   }
 })
+
+// Mock CSS modules
+vi.mock('**/*.css', () => ({}))
+
+// Mock static assets
+vi.mock('*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')

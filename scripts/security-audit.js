@@ -15,7 +15,7 @@ console.log('🔒 Running security audit for build-time sanitization...\n')
 try {
   // Run the sanitization-specific tests
   const testCommand =
-    'npx jest scripts/__tests__/build-blog-data-sanitization.test.js --verbose'
+    'npx vitest run scripts/__tests__/build-blog-data-sanitization.test.mjs --reporter=verbose'
   console.log('Running sanitization security tests...')
   execSync(testCommand, { stdio: 'inherit', cwd: process.cwd() })
 
@@ -23,7 +23,7 @@ try {
 
   // Run the integration tests
   const integrationTestCommand =
-    'npx jest scripts/__tests__/build-blog-data-integration.test.js --verbose'
+    'npx vitest run scripts/__tests__/build-blog-data-integration.test.js --reporter=verbose'
   console.log('\nRunning integration security tests...')
   execSync(integrationTestCommand, { stdio: 'inherit', cwd: process.cwd() })
 
@@ -55,7 +55,7 @@ try {
     console.log(
       '    • Run "npm install" to ensure all dependencies are installed'
     )
-    console.log('    • Verify Jest is properly installed in package.json')
+    console.log('    • Verify Vitest is properly installed in package.json')
     console.log('    • Check if npx is available in your PATH')
   } else if (combinedError.includes('test') && combinedError.includes('fail')) {
     console.log('  🧪 Test Failure Analysis:')
@@ -101,7 +101,7 @@ try {
   } else if (combinedError.includes('timeout')) {
     console.log('  ⏱️ Timeout Issue:')
     console.log('    • Tests are taking too long - check for infinite loops')
-    console.log('    • Consider increasing Jest timeout configuration')
+    console.log('    • Consider increasing Vitest timeout configuration')
     console.log('    • Review performance of sanitization operations')
   } else if (
     combinedError.includes('memory') ||

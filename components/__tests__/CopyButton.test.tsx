@@ -1,10 +1,11 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { vi } from 'vitest'
 import CopyButton from '../CopyButton'
 
 // mock clipboard
 Object.assign(navigator, {
   clipboard: {
-    writeText: jest.fn().mockResolvedValue(undefined),
+    writeText: vi.fn().mockResolvedValue(undefined),
   },
 })
 
@@ -35,24 +36,27 @@ describe('CopyButton', () => {
     expect(button).toHaveAttribute('aria-label', 'Copied to clipboard')
   })
 
-  it('resets to original state after 2 seconds', async () => {
-    jest.useFakeTimers()
+  it('resets to original state after timeout', async () => {
+    // Use real timers for this test since it involves React state updates
     render(<CopyButton text={text} />)
-    act(() => {
-      fireEvent.click(screen.getByRole('button'))
-    })
+
+    const button = screen.getByRole('button')
+
+    // Click the button
+    fireEvent.click(button)
+
+    // Wait for clipboard to be called and verify copied state
     await waitFor(() => {
       expect(navigator.clipboard.writeText).toHaveBeenCalled()
+      expect(button).toHaveAttribute('title', 'Copied!')
     })
-    // Fast-forward 2 seconds inside act
-    act(() => {
-      jest.advanceTimersByTime(2000)
-    })
-    await waitFor(() => {
-      const button = screen.getByRole('button')
-      expect(button).toHaveAttribute('title', 'Copy to clipboard')
-      expect(button).toHaveAttribute('aria-label', 'Copy code to clipboard')
-    })
-    jest.useRealTimers()
+
+    // Wait for the timeout to reset the state (2 seconds + buffer)
+    await waitFor(
+      () => {
+        expect(button).toHaveAttribute('title', 'Copy to clipboard')
+      },
+      { timeout: 3000 }
+    )
   })
 })

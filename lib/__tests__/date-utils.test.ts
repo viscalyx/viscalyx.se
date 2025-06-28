@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { getCurrentDateISO, isValidDate, normalizeDate } from '../date-utils'
 
 describe('date-utils', () => {
@@ -58,12 +59,12 @@ describe('date-utils', () => {
     const systemDate = new Date('2025-06-09T00:00:00Z')
 
     beforeEach(() => {
-      jest.useFakeTimers({ advanceTimers: true })
-      jest.setSystemTime(systemDate)
+      vi.useFakeTimers()
+      vi.setSystemTime(systemDate)
     })
 
     afterEach(() => {
-      jest.useRealTimers()
+      vi.useRealTimers()
     })
 
     it('returns mocked current date in ISO format', () => {

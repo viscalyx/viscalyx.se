@@ -6,13 +6,14 @@
  * formatting and syntax highlighting.
  */
 
-const fs = require('node:fs')
-const path = require('node:path')
-const matter = require('gray-matter')
-const sanitizeHtml = require('sanitize-html')
+import { vi } from 'vitest'
+import fs from 'node:fs'
+import path from 'node:path'
+import matter from 'gray-matter'
+import sanitizeHtml from 'sanitize-html'
 
 // Mock the build script functions for testing
-jest.mock('node:fs')
+vi.mock('node:fs')
 
 describe('Blog Data Build Sanitization Security Tests', () => {
   let originalConsoleLog
@@ -24,11 +25,11 @@ describe('Blog Data Build Sanitization Security Tests', () => {
     originalConsoleLog = console.log
     originalConsoleWarn = console.warn
     originalConsoleError = console.error
-    console.log = jest.fn()
-    console.warn = jest.fn()
-    console.error = jest.fn()
+    console.log = vi.fn()
+    console.warn = vi.fn()
+    console.error = vi.fn()
 
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {

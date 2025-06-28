@@ -1,7 +1,9 @@
+import { vi } from 'vitest'
+
 // Utility to suppress specific console.error warnings in tests
 export function suppressConsoleErrors(): void {
   const originalError = console.error
-  jest.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+  vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
     const firstArg = args[0]
     if (
       typeof firstArg === 'string' &&

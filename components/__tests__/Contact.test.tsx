@@ -1,21 +1,21 @@
-import '@testing-library/jest-dom'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import React from 'react'
 import Contact from '../Contact'
 import { suppressConsoleErrors } from './suppressConsoleErrors'
 
 // Mock translations
-jest.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
+vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
 
 // Mock next/image
-jest.mock('next/image', () => ({
+vi.mock('next/image', () => ({
   __esModule: true,
   default: (props: React.ImgHTMLAttributes<HTMLImageElement>) =>
     React.createElement('img', props),
 }))
 
 // Mock framer-motion to filter out animation props
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   const motion: Record<
     string,
@@ -30,7 +30,7 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock lucide-react icons by filtering out unwanted props
-jest.mock('lucide-react', () => {
+vi.mock('lucide-react', () => {
   const React = require('react')
   const icons = ['Mail', 'Phone', 'MapPin', 'Send', 'Clock', 'CheckCircle']
   const exportObj: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {}
@@ -52,12 +52,12 @@ beforeAll(() => {
 
 describe('Contact component', () => {
   beforeEach(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
-    jest.runOnlyPendingTimers()
-    jest.useRealTimers()
+    vi.runOnlyPendingTimers()
+    vi.useRealTimers()
   })
 
   it('renders contact section with title, description and form fields', () => {
@@ -94,7 +94,7 @@ describe('Contact component', () => {
     expect(screen.getByTestId('CheckCircle')).toBeInTheDocument()
 
     // Hide after timeout
-    act(() => jest.advanceTimersByTime(3000))
+    act(() => vi.advanceTimersByTime(3000))
     expect(screen.queryByText('form.successMessage')).not.toBeInTheDocument()
   })
 })

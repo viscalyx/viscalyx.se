@@ -1,16 +1,16 @@
-import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import type { AnimatePresenceProps } from 'framer-motion'
 import React from 'react' // Import React
 import About from '../About'
 
 // Mock translations
-jest.mock('next-intl', () => ({
+vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }))
 
 // Mock framer-motion to filter out animation props and provide necessary tags
-jest.mock('framer-motion', () => {
+vi.mock('framer-motion', () => {
   const React = require('react')
   const motion: Record<
     string,
@@ -30,7 +30,7 @@ jest.mock('framer-motion', () => {
 })
 
 // Mock next/image
-jest.mock('next/image', () => ({
+vi.mock('next/image', () => ({
   __esModule: true,
   default: (props: React.ImgHTMLAttributes<HTMLImageElement>) =>
     React.createElement('img', props),
