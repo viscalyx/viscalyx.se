@@ -99,6 +99,16 @@ export default function CodeBlockEnhancer({
             container.remove()
           }
         })
+
+        // Reset enhanced flag on all wrappers to allow re-enhancement on remount
+        const wrappers = Array.from(
+          document.querySelectorAll(
+            '.blog-content .code-block-wrapper[data-enhanced="true"]'
+          )
+        ) as HTMLElement[]
+        wrappers.forEach(wrapper => {
+          delete wrapper.dataset.enhanced
+        })
       }
 
       // Use queueMicrotask to defer the cleanup
