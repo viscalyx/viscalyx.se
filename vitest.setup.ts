@@ -1,6 +1,6 @@
 // vitest.setup.ts
 // Setup file for Vitest tests
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
 import { vi } from 'vitest'
 
 // Mock framer-motion
