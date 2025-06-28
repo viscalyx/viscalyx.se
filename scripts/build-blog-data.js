@@ -150,7 +150,11 @@ async function buildBlogData() {
                   const preNode = {
                     type: 'element',
                     tagName: 'pre',
-                    properties: { ...node.properties, 'data-processed': true },
+                    properties: {
+                      ...node.properties,
+                      'data-processed': true,
+                      'data-language': language,
+                    },
                     children: node.children,
                   }
 
