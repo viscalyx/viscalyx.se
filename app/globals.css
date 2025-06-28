@@ -72,21 +72,7 @@
     box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3);
   }
 
-  /* Specific positioning for language labels inside pre elements */
-  .blog-content pre[class*='language-'] .code-language-label {
-    top: -2rem; /* Removed !important - component layer provides sufficient specificity */
-  }
-
-  /* Specific positioning for language labels inside code-block-wrapper */
-  .blog-content .code-block-wrapper .code-language-label {
-    top: 0;
-    transform: translateY(-100%);
-  }
-
-  /* Hide pseudo-element when DOM element exists */
-  .blog-content pre[class*='language-']:has(.code-language-label)::before {
-    display: none; /* Removed !important - component layer provides sufficient specificity */
-  }
+  /* Specific positioning for language labels - moved to code-block-components.css */
 }
 
 @layer utilities {
@@ -291,20 +277,7 @@
     position: relative;
   }
 
-  /* Remove top margin for pre elements inside code-block-wrapper to avoid double spacing */
-  .blog-content .code-block-wrapper pre,
-  .blog-content .code-block-wrapper pre[class*='language-'] {
-    margin-top: 0;
-  }
-
-  /* Prevent the language label from being clipped by pre overflow */
-  .blog-content pre[class*='language-'] {
-    overflow-x: auto !important; /* allow horizontal scrolling */
-    overflow-y: visible !important; /* prevent vertical clipping of label */
-    position: relative !important; /* ensure label positioning works */
-  }
-
-  /* Spacing for language labels is now handled by .code-block-wrapper padding-top */
+  /* Code block wrapper styles moved to code-block-components.css */
 
   /* Higher specificity for Prism.js code elements */
   .blog-content pre[class*='language-'] code[class*='language-'] {
@@ -375,32 +348,5 @@
     }
   }
 
-  /* ===== Decoupled code block wrapper under .blog-content ===== */
-  .blog-content .code-block-wrapper {
-    position: relative;
-    margin: 2rem 0;
-    padding-top: 2rem; /* space for language label */
-  }
-
-  /* Inner scroll container holds the <pre> and allows horizontal scroll */
-  .blog-content .code-block-wrapper .code-scroll-wrapper {
-    position: relative;
-  }
-
-  /* Copy button positioned inside scrollable area */
-  .blog-content
-    .code-block-wrapper
-    .code-scroll-wrapper
-    .copy-button-container {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 20;
-  }
-
-  /* Specific positioning for language labels inside code-block-wrapper */
-  .blog-content .code-block-wrapper .code-language-label {
-    top: 0;
-    transform: translateY(-100%);
-  }
+  /* ===== Decoupled code block wrapper styles moved to code-block-components.css ===== */
 }

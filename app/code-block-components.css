@@ -1,0 +1,97 @@
+/* Code Block Components
+ * Centralized styles for code block wrappers, scroll containers,
+ * language labels, and copy button positioning.
+ * This prevents duplication across globals.css and prism-theme.css
+ */
+
+/* ===== Code Block Wrapper System ===== */
+
+/* Main wrapper container - provides structure and spacing */
+.blog-content .code-block-wrapper {
+  position: relative;
+  margin: 2rem 0;
+  padding-top: 2rem; /* space for language label */
+}
+
+/* Inner scroll container - handles horizontal scrolling */
+.blog-content .code-block-wrapper .code-scroll-wrapper {
+  position: relative;
+}
+
+/* Remove top margin for pre elements inside wrapper to avoid double spacing */
+.blog-content .code-block-wrapper pre,
+.blog-content .code-block-wrapper pre[class*='language-'] {
+  margin-top: 0;
+}
+
+/* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
+.blog-content pre[class*='language-']:has(.code-language-label),
+.blog-content pre[class*='language-'][data-language] {
+  margin-top: 3rem; /* Extra space for the language label */
+}
+
+/* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
+.blog-content
+  .code-block-wrapper
+  pre[class*='language-']:has(.code-language-label),
+.blog-content .code-block-wrapper pre[class*='language-'][data-language] {
+  margin-top: 0 !important;
+}
+
+/* ===== Language Label Positioning ===== */
+
+/* Language labels for regular pre elements */
+.blog-content pre[class*='language-'] .code-language-label {
+  top: -2rem;
+}
+
+/* Language labels inside wrapper - positioned relative to wrapper */
+.blog-content .code-block-wrapper .code-language-label {
+  top: 0;
+  transform: translateY(-100%);
+}
+
+/* ===== Copy Button Positioning ===== */
+
+/* Copy button for regular pre elements */
+.blog-content pre[class*='language-'] .copy-button-container {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* Copy button inside wrapper - positioned within scroll container */
+.blog-content .code-block-wrapper .code-scroll-wrapper .copy-button-container {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 20;
+}
+
+/* Copy button visibility on hover */
+.blog-content pre[class*='language-']:hover .copy-button-container {
+  opacity: 1;
+}
+
+/* Copy button visibility for keyboard accessibility */
+.blog-content pre[class*='language-'] .copy-button-container:focus,
+.blog-content pre[class*='language-'] .copy-button-container:focus-within {
+  opacity: 1;
+}
+
+/* ===== Code Block Base Styles ===== */
+
+/* Prevent clipping of language labels and copy buttons */
+.blog-content pre[class*='language-'] {
+  overflow-x: auto !important; /* allow horizontal scrolling */
+  overflow-y: visible !important; /* prevent vertical clipping of label */
+  position: relative !important; /* ensure label positioning works */
+}
+
+/* Hide pseudo-element when DOM element exists */
+.blog-content pre[class*='language-']:has(.code-language-label)::before {
+  display: none;
+}

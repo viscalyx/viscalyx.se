@@ -51,19 +51,7 @@
   overflow: visible;
 }
 
-/* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
-.blog-content pre[class*='language-']:has(.code-language-label),
-.blog-content pre[class*='language-'][data-language] {
-  margin-top: 3rem; /* Extra space for the language label */
-}
-
-/* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-.blog-content
-  .code-block-wrapper
-  pre[class*='language-']:has(.code-language-label),
-.blog-content .code-block-wrapper pre[class*='language-'][data-language] {
-  margin-top: 0 !important;
-}
+/* Wrapper-related styles moved to code-block-components.css */
 
 /* Syntax highlighting tokens - Light theme */
 .token.comment,
@@ -274,26 +262,7 @@
   display: none;
 }
 
-/* Copy button positioned inside the code block at top-right */
-.blog-content pre[class*='language-'] .copy-button-container {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-/* Make sure copy button stays visible on hover */
-.blog-content pre[class*='language-']:hover .copy-button-container {
-  opacity: 1;
-}
-
-/* Make copy button visible when focused for keyboard accessibility */
-.blog-content pre[class*='language-'] .copy-button-container:focus,
-.blog-content pre[class*='language-'] .copy-button-container:focus-within {
-  opacity: 1;
-}
+/* Copy button styles moved to code-block-components.css */
 
 /* Bold and italic styling */
 .token.important,
