@@ -14,9 +14,7 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
 
     // Test file patterns (equivalent to Jest's testMatch)
-    include: [
-      '**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
-    ],
+    include: ['**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)'],
 
     reporters: [
       'verbose', // Use default reporter for console output
