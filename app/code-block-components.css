@@ -48,7 +48,7 @@
 /* Language labels inside wrapper - positioned relative to wrapper */
 .blog-content .code-block-wrapper .code-language-label {
   top: 0;
-  transform: translateY(-100%);
+  transform: translateY(-1%); /* negative values move label up */
 }
 
 /* ===== Copy Button Positioning ===== */
