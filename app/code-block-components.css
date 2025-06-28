@@ -69,14 +69,23 @@
   top: 0.75rem;
   right: 0.75rem;
   z-index: 20;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-/* Copy button visibility on hover */
+/* Copy button visibility on hover over code block wrapper */
+.blog-content .code-block-wrapper:hover .copy-button-container {
+  opacity: 1;
+}
+
+/* Copy button visibility on hover over regular pre elements (fallback for non-wrapper code blocks) */
 .blog-content pre[class*='language-']:hover .copy-button-container {
   opacity: 1;
 }
 
 /* Copy button visibility for keyboard accessibility */
+.blog-content .code-block-wrapper .copy-button-container:focus,
+.blog-content .code-block-wrapper .copy-button-container:focus-within,
 .blog-content pre[class*='language-'] .copy-button-container:focus,
 .blog-content pre[class*='language-'] .copy-button-container:focus-within {
   opacity: 1;
