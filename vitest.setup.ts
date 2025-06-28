@@ -42,7 +42,7 @@ vi.mock('next/image', () => {
 })
 
 // Mock CSS modules
-vi.mock('*.css', () => ({}))
+vi.mock('**/*.css', () => ({}))
 
 // Mock static assets
 vi.mock('*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')
