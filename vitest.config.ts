@@ -15,7 +15,6 @@ export default defineConfig({
 
     // Test file patterns (equivalent to Jest's testMatch)
     include: [
-      '**/__tests__/**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
       '**/*.+(spec|test).+(ts|tsx|js|jsx|mjs)',
     ],
 
@@ -25,7 +24,7 @@ export default defineConfig({
         'junit',
         {
           outputFile: './test-results/test-results.xml', // Output file for JUnit report
-          suiteName: 'Vitest Tests', // Name of the test suite
+          suiteName: 'Vitest Tests', // Name of the test suites
           classNameTemplate: '{filename}', // Template for class names in the report
           properties: {
             'api.host': '',
