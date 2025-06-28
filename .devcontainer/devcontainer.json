@@ -58,7 +58,8 @@
         "gruntfuggly.todo-tree",
         "usernamehw.errorlens",
         "GitHub.copilot",
-        "GitHub.copilot-chat"
+        "GitHub.copilot-chat",
+        "vitest.explorer"
       ],
       "settings": {
         // Editor settings

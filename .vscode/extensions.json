@@ -31,6 +31,9 @@
 
     // GitHub Copilot
     "GitHub.copilot",
-    "GitHub.copilot-chat"
+    "GitHub.copilot-chat",
+
+    // Testing
+    "vitest.explorer"
   ]
 }
