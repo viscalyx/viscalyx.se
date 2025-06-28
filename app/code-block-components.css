@@ -91,7 +91,4 @@
   position: relative !important; /* ensure label positioning works */
 }
 
-/* Hide pseudo-element when DOM element exists */
-.blog-content pre[class*='language-']:has(.code-language-label)::before {
-  display: none;
-}
+/* DOM language labels only - CSS pseudo-elements removed */
