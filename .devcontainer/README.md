@@ -64,7 +64,7 @@ This directory contains the complete development container setup for the Viscaly
 ## Available Ports
 
 - **3000** or **3001** - Next.js development server
-- **8787** - Next.js preview/production server
+- **8787** - Cloudflare Wrangler preview / production server
 - **51204** - Vitest UI server
 
 ## Development Workflow
