@@ -141,7 +141,9 @@ async function buildBlogData() {
                     type: 'element',
                     tagName: 'div',
                     properties: { className: ['code-language-label'] },
-                    children: [{ type: 'text', value: language.toLocaleUpperCase() }],
+                    children: [
+                      { type: 'text', value: language.toLocaleUpperCase() },
+                    ],
                   }
 
                   // Clone original pre node for nesting and mark processed
