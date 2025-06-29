@@ -3,7 +3,11 @@
  * - Code block wrappers and scroll containers
  * - Language labels (positioning and styling)
  * - Copy button positioning and interactions
+ * - Code block container backgrounds, padding, borders
+ * - Prism.js specific overrides
  * This consolidates all code block-related styles in one file
+
+ * Note: Inline code styles remain in globals.css as part of typography
  */
 
 /* ===== Code Block Wrapper System ===== */
@@ -142,4 +146,35 @@
   overflow-clip-margin: 1rem; /* prevent label clipping */
 }
 
-/* DOM language labels only - CSS pseudo-elements removed */
+/* ===== Code Block Container Styles ===== */
+
+/* Base styling for code block containers */
+.blog-content pre,
+.blog-content pre[class*='language-'] {
+  background-color: #f9fafb; /* bg-secondary-50 */
+  color: #111827; /* text-secondary-900 */
+  padding: 1rem; /* p-4 */
+  border-radius: 0.5rem; /* rounded-lg */
+  overflow-x: auto; /* overflow-x-auto */
+  margin: 1.5rem 0; /* my-6 */
+  border: 1px solid #f3f4f6; /* border-secondary-100 */
+  position: relative;
+}
+
+.dark .blog-content pre,
+.dark .blog-content pre[class*='language-'] {
+  background-color: #0c0a09; /* dark:bg-secondary-950 */
+  color: #ffffff; /* dark:text-white */
+  border-color: #374151; /* dark:border-secondary-700 */
+}
+
+/* Higher specificity for Prism.js code elements */
+.blog-content pre[class*='language-'] code[class*='language-'] {
+  background: transparent; /* bg-transparent */
+  color: #111827; /* text-secondary-900 */
+  padding: 0; /* p-0 */
+}
+
+.dark .blog-content pre[class*='language-'] code[class*='language-'] {
+  color: #ffffff; /* dark:text-white */
+}

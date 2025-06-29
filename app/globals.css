@@ -243,19 +243,7 @@
     content: none !important;
   }
 
-  /* Code block styling */
-  .blog-content pre,
-  .blog-content pre[class*='language-'] {
-    @apply bg-secondary-50 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-100 dark:border-secondary-700;
-    position: relative;
-  }
-
-  /* Code block wrapper styles moved to code-block-components.css */
-
-  /* Higher specificity for Prism.js code elements */
-  .blog-content pre[class*='language-'] code[class*='language-'] {
-    @apply bg-transparent text-secondary-900 dark:text-white p-0;
-  }
+  /* Code block styling moved to code-block-components.css for better organization */
 
   .blog-content a {
     @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline;
@@ -321,5 +309,5 @@
     }
   }
 
-  /* ===== Decoupled code block wrapper styles moved to code-block-components.css ===== */
+  /* ===== All code block styles moved to code-block-components.css ===== */
 }

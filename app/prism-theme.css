@@ -41,10 +41,9 @@
   }
 }
 
-/* Base code styling - work with existing backgrounds from globals.css */
+/* Base code styling - work with existing backgrounds from code-block-components.css */
 .blog-content pre[class*='language-'] {
-  /* Let globals.css handle the container styling */
-  margin: 2rem 0 0;
+  /* Let code-block-components.css handle the container styling including margin */
   position: relative;
   overflow: visible;
 }
