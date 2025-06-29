@@ -343,7 +343,6 @@
 
   @media (max-width: 768px) {
     .heading-anchor {
-      margin-left: 0.5rem;
       opacity: 1;
     }
   }
