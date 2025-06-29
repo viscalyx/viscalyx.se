@@ -1173,10 +1173,10 @@ class UserRepository:
 
         # Define allowed fields that can be updated directly
         allowed_fields = [
-            'first_name', 'last_name', 'profile_picture', 'bio', 
+            'first_name', 'last_name', 'profile_picture', 'bio',
             'website', 'location', 'phone_number', 'date_of_birth', 'is_active'
         ]
-        
+
         # Update other fields if provided
         for field in allowed_fields:
             if field in update_data:
