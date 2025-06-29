@@ -1,3 +1,4 @@
+import sanitizeHtml from 'sanitize-html'
 import slugify from 'slugify'
 import { describe, expect, it } from 'vitest'
 
@@ -24,7 +25,11 @@ describe('Blog Anchor Links', () => {
 
     while ((match = headingRegex.exec(htmlContent)) !== null) {
       const level = Number.parseInt(match[1])
-      const text = match[2].replace(/<[^>]*>/g, '').trim() // Remove HTML tags
+      const raw = match[2]
+      const text = sanitizeHtml(raw, {
+        allowedTags: [],
+        allowedAttributes: {},
+      }).trim()
       const id = createSlug(text)
       const finalId =
         id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
