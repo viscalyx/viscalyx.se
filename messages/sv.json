@@ -842,6 +842,12 @@
         "twitter": "Twitter"
       }
     },
+    "accessibility": {
+      "anchorLink": {
+        "ariaLabel": "Länk till avsnitt: {heading}",
+        "title": "Kopiera länk till avsnitt: {heading}"
+      }
+    },
     "fallback": {
       "featuredPost": {
         "title": "Välkommen till Min Blogg",
@@ -965,12 +971,6 @@
         "email": "E-post",
         "emailAddress": "legal@viscalyx.se"
       }
-    }
-  },
-  "accessibility": {
-    "anchorLink": {
-      "ariaLabel": "Länk till sektion: {heading}",
-      "title": "Kopiera länk till sektion: {heading}"
     }
   }
 }

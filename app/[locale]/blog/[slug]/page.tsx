@@ -108,13 +108,9 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
           const element = document.getElementById(targetId)
 
           if (element && attempts < maxAttempts) {
-            // Check if element is visible and has proper dimensions
+            // Check if element exists and has proper dimensions
             const rect = element.getBoundingClientRect()
-            const isVisible =
-              rect.width > 0 &&
-              rect.height > 0 &&
-              rect.top >= 0 &&
-              rect.bottom <= window.innerHeight + rect.height
+            const isVisible = rect.width > 0 && rect.height > 0
 
             if (isVisible || attempts > 20) {
               // Force scroll after 20 attempts even if not fully visible
