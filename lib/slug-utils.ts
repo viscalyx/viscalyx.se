@@ -162,15 +162,25 @@ export function extractTableOfContents(
 }
 
 /**
+ * Translation function type for accessibility messages
+ */
+export type TranslationFunction = (
+  key: string,
+  values?: Record<string, string>
+) => string
+
+/**
  * Adds IDs and anchor links to headings in HTML content
  *
  * @param htmlContent - The HTML content to process
- * @param options - Optional slug configuration
+ * @param options - Optional slug configuration or translation function
+ * @param translateFn - Optional translation function for accessibility labels
  * @returns HTML content with IDs and anchor links added to headings
  */
 export function addHeadingIds(
   htmlContent: string,
-  options: SlugOptions = {}
+  options: SlugOptions = {},
+  translateFn?: TranslationFunction
 ): string {
   const usedIds = new Set<string>()
 
@@ -186,8 +196,21 @@ export function addHeadingIds(
       const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
       const finalAttributes = hasId ? attributes : `${attributes} id="${id}"`
 
+      // Generate localized or fallback accessibility labels
+      const ariaLabel = translateFn
+        ? translateFn('accessibility.anchorLink.ariaLabel', {
+            heading: cleanedText,
+          })
+        : `Link to section: ${cleanedText}`
+
+      const title = translateFn
+        ? translateFn('accessibility.anchorLink.title', {
+            heading: cleanedText,
+          })
+        : `Copy link to section: ${cleanedText}`
+
       // Add anchor link functionality with proper class for styling
-      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="Link to this section" title="Copy link to this section">
+      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${ariaLabel}" title="${title}">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
         </svg>

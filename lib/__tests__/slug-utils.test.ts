@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   addHeadingIds,
   createSlug,
@@ -170,13 +170,36 @@ describe('slug-utils', () => {
   })
 
   describe('addHeadingIds', () => {
-    it('adds IDs to headings', () => {
+    it('adds IDs to headings with default accessibility labels', () => {
       const html = '<h2>My Section</h2>'
       const result = addHeadingIds(html)
 
       expect(result).toContain('id="my-section"')
       expect(result).toContain('class="heading-with-anchor"')
       expect(result).toContain('href="#my-section"')
+      expect(result).toContain('aria-label="Link to section: My Section"')
+      expect(result).toContain('title="Copy link to section: My Section"')
+    })
+
+    it('uses localized accessibility labels when translation function provided', () => {
+      const html = '<h2>My Section</h2>'
+      const mockTranslate = vi
+        .fn()
+        .mockReturnValueOnce('Länk till sektion: My Section')
+        .mockReturnValueOnce('Kopiera länk till sektion: My Section')
+
+      const result = addHeadingIds(html, {}, mockTranslate)
+
+      expect(mockTranslate).toHaveBeenCalledWith(
+        'accessibility.anchorLink.ariaLabel',
+        { heading: 'My Section' }
+      )
+      expect(mockTranslate).toHaveBeenCalledWith(
+        'accessibility.anchorLink.title',
+        { heading: 'My Section' }
+      )
+      expect(result).toContain('aria-label="Länk till sektion: My Section"')
+      expect(result).toContain('title="Kopiera länk till sektion: My Section"')
     })
 
     it('handles duplicate headings with unique IDs', () => {

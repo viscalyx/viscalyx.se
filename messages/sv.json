@@ -966,5 +966,11 @@
         "emailAddress": "legal@viscalyx.se"
       }
     }
+  },
+  "accessibility": {
+    "anchorLink": {
+      "ariaLabel": "Länk till sektion: {heading}",
+      "title": "Kopiera länk till sektion: {heading}"
+    }
   }
 }

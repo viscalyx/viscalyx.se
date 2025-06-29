@@ -235,8 +235,8 @@ const BlogPostContent = ({
   t,
   format,
 }: BlogPostContentProps) => {
-  // Add IDs to headings for table of contents navigation
-  const contentWithIds = addHeadingIds(post.content)
+  // Add IDs to headings for table of contents navigation with localized accessibility labels
+  const contentWithIds = addHeadingIds(post.content, {}, t)
   // Extract table of contents from the content
   const tableOfContents = extractTableOfContents(contentWithIds)
 
