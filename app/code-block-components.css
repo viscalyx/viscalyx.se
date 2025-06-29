@@ -85,10 +85,14 @@
 }
 
 /* Copy button visibility for keyboard accessibility */
-.blog-content .code-block-wrapper .copy-button-container:focus,
 .blog-content .code-block-wrapper .copy-button-container:focus-within,
-.blog-content pre[class*='language-'] .copy-button-container:focus,
 .blog-content pre[class*='language-'] .copy-button-container:focus-within {
+  opacity: 1;
+}
+
+/* Copy button visibility when any child in wrapper receives focus */
+.blog-content .code-block-wrapper:focus-within .copy-button-container,
+.blog-content pre[class*='language-']:focus-within .copy-button-container {
   opacity: 1;
 }
 
