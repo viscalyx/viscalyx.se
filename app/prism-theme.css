@@ -41,15 +41,6 @@
   }
 }
 
-/* Base code styling - work with existing backgrounds from code-block-components.css */
-.blog-content pre[class*='language-'] {
-  /* Let code-block-components.css handle the container styling including margin */
-  position: relative;
-  overflow: visible;
-}
-
-/* Wrapper-related styles moved to code-block-components.css */
-
 /* Syntax highlighting tokens - Light theme */
 .token.comment,
 .token.prolog,
@@ -187,11 +178,6 @@
 .dark .token.powershell-parameter {
   color: var(--color-token-powershell-parameter, #34d399);
 }
-
-/* Language label styles centralized in globals.css and code-block-components.css */
-/* DOM language labels maintained by build script */
-
-/* Copy button styles moved to code-block-components.css */
 
 /* Bold and italic styling */
 .token.important,
