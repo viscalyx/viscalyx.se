@@ -1022,14 +1022,10 @@ This section contains a very long code block to test the vertical scrollbar func
 
 ```python
 # Very long Python code block for testing vertical scrollbar
-import os
-import sys
 import json
-import requests
 import datetime
 from typing import List, Dict, Optional, Union, Tuple
 from dataclasses import dataclass
-from pathlib import Path
 
 @dataclass
 class User:
@@ -1080,7 +1076,9 @@ class User:
 class UserRepository:
     def __init__(self, database_url: str):
         self.database_url = database_url
-        self.users: List[User] = []
+        self.users: Dict[int, User] = {}  # Primary storage keyed by user ID
+        self.users_by_username: Dict[str, User] = {}  # Secondary index by username
+        self.users_by_email: Dict[str, User] = {}  # Secondary index by email
         self.connection = None
 
     def connect(self):
@@ -1102,8 +1100,9 @@ class UserRepository:
 
     def create_user(self, user_data: Dict) -> User:
         """Create a new user"""
+        user_id = max(self.users.keys(), default=0) + 1  # Generate next ID
         user = User(
-            id=len(self.users) + 1,
+            id=user_id,
             username=user_data['username'],
             email=user_data['email'],
             first_name=user_data['first_name'],
@@ -1118,41 +1117,35 @@ class UserRepository:
             phone_number=user_data.get('phone_number'),
             date_of_birth=user_data.get('date_of_birth')
         )
-        self.users.append(user)
+        # Store in primary dictionary and secondary indexes
+        self.users[user.id] = user
+        self.users_by_username[user.username] = user
+        self.users_by_email[user.email] = user
         return user
 
     def get_user_by_id(self, user_id: int) -> Optional[User]:
-        """Retrieve user by ID"""
-        for user in self.users:
-            if user.id == user_id:
-                return user
-        return None
+        """Retrieve user by ID - O(1) lookup"""
+        return self.users.get(user_id)
 
     def get_user_by_username(self, username: str) -> Optional[User]:
-        """Retrieve user by username"""
-        for user in self.users:
-            if user.username == username:
-                return user
-        return None
+        """Retrieve user by username - O(1) lookup"""
+        return self.users_by_username.get(username)
 
     def get_user_by_email(self, email: str) -> Optional[User]:
-        """Retrieve user by email"""
-        for user in self.users:
-            if user.email == email:
-                return user
-        return None
+        """Retrieve user by email - O(1) lookup"""
+        return self.users_by_email.get(email)
 
     def get_all_users(self) -> List[User]:
         """Retrieve all users"""
-        return self.users.copy()
+        return list(self.users.values())
 
     def get_active_users(self) -> List[User]:
         """Retrieve all active users"""
-        return [user for user in self.users if user.is_active]
+        return [user for user in self.users.values() if user.is_active]
 
     def get_users_by_location(self, location: str) -> List[User]:
         """Retrieve users by location"""
-        return [user for user in self.users if user.location and user.location.lower() == location.lower()]
+        return [user for user in self.users.values() if user.location and user.location.lower() == location.lower()]
 
     def update_user(self, user_id: int, update_data: Dict) -> Optional[User]:
         """Update user information"""
@@ -1160,29 +1153,34 @@ class UserRepository:
         if not user:
             return None
 
-        # Update fields if provided
-        if 'username' in update_data:
+        # Handle username change - update secondary index
+        if 'username' in update_data and update_data['username'] != user.username:
+            # Remove old username from index
+            del self.users_by_username[user.username]
+            # Update username
             user.username = update_data['username']
-        if 'email' in update_data:
+            # Add new username to index
+            self.users_by_username[user.username] = user
+
+        # Handle email change - update secondary index
+        if 'email' in update_data and update_data['email'] != user.email:
+            # Remove old email from index
+            del self.users_by_email[user.email]
+            # Update email
             user.email = update_data['email']
-        if 'first_name' in update_data:
-            user.first_name = update_data['first_name']
-        if 'last_name' in update_data:
-            user.last_name = update_data['last_name']
-        if 'profile_picture' in update_data:
-            user.profile_picture = update_data['profile_picture']
-        if 'bio' in update_data:
-            user.bio = update_data['bio']
-        if 'website' in update_data:
-            user.website = update_data['website']
-        if 'location' in update_data:
-            user.location = update_data['location']
-        if 'phone_number' in update_data:
-            user.phone_number = update_data['phone_number']
-        if 'date_of_birth' in update_data:
-            user.date_of_birth = update_data['date_of_birth']
-        if 'is_active' in update_data:
-            user.is_active = update_data['is_active']
+            # Add new email to index
+            self.users_by_email[user.email] = user
+
+        # Define allowed fields that can be updated directly
+        allowed_fields = [
+            'first_name', 'last_name', 'profile_picture', 'bio', 
+            'website', 'location', 'phone_number', 'date_of_birth', 'is_active'
+        ]
+        
+        # Update other fields if provided
+        for field in allowed_fields:
+            if field in update_data:
+                setattr(user, field, update_data[field])
 
         user.updated_at = datetime.datetime.now()
         return user
@@ -1191,7 +1189,10 @@ class UserRepository:
         """Delete user by ID"""
         user = self.get_user_by_id(user_id)
         if user:
-            self.users.remove(user)
+            # Remove from all dictionaries
+            del self.users[user.id]
+            del self.users_by_username[user.username]
+            del self.users_by_email[user.email]
             return True
         return False
 
@@ -1208,7 +1209,7 @@ class UserRepository:
         """Search users by name, username, or email"""
         query = query.lower()
         results = []
-        for user in self.users:
+        for user in self.users.values():
             if (query in user.username.lower() or
                 query in user.email.lower() or
                 query in user.first_name.lower() or
@@ -1224,11 +1225,11 @@ class UserRepository:
         inactive_users = total_users - active_users
 
         locations = {}
-        for user in self.users:
+        for user in self.users.values():
             if user.location:
                 locations[user.location] = locations.get(user.location, 0) + 1
 
-        ages = [user.age() for user in self.users if user.age() is not None]
+        ages = [a for a in (u.age() for u in self.users.values()) if a is not None]
         avg_age = sum(ages) / len(ages) if ages else 0
 
         return {
@@ -1237,15 +1238,15 @@ class UserRepository:
             'inactive_users': inactive_users,
             'locations': locations,
             'average_age': round(avg_age, 2),
-            'users_with_bio': len([user for user in self.users if user.bio]),
-            'users_with_website': len([user for user in self.users if user.website]),
-            'users_with_phone': len([user for user in self.users if user.phone_number])
+            'users_with_bio': len([user for user in self.users.values() if user.bio]),
+            'users_with_website': len([user for user in self.users.values() if user.website]),
+            'users_with_phone': len([user for user in self.users.values() if user.phone_number])
         }
 
     def export_users_to_json(self, filename: str) -> bool:
         """Export all users to JSON file"""
         try:
-            users_data = [user.to_dict() for user in self.users]
+            users_data = [user.to_dict() for user in self.users.values()]
             with open(filename, 'w') as f:
                 json.dump(users_data, f, indent=2, default=str)
             print(f"Users exported to {filename}")
@@ -1272,7 +1273,10 @@ class UserRepository:
                 user_data.pop('age', None)
 
                 user = User(**user_data)
-                self.users.append(user)
+                # Store in primary dictionary and secondary indexes
+                self.users[user.id] = user
+                self.users_by_username[user.username] = user
+                self.users_by_email[user.email] = user
 
             print(f"Users imported from {filename}")
             return True
