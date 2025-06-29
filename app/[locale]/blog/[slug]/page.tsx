@@ -22,7 +22,7 @@ import { useFormatter, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -242,6 +242,9 @@ const BlogPostContent = ({
 
   // State for share functionality
   const [shareNotification, setShareNotification] = useState<string>('')
+  const [shareTimeoutId, setShareTimeoutId] = useState<NodeJS.Timeout | null>(
+    null
+  )
 
   // Ref for the content container to scope event listeners
   const contentRef = useRef<HTMLDivElement>(null)
@@ -253,6 +256,21 @@ const BlogPostContent = ({
     title: post.title,
   })
 
+  // Helper function to clear existing timeout and set a new one
+  const setNotificationWithTimeout = useCallback(
+    (message: string) => {
+      // Clear existing timeout if it exists
+      if (shareTimeoutId) {
+        clearTimeout(shareTimeoutId)
+      }
+
+      setShareNotification(message)
+      const newTimeoutId = setTimeout(() => setShareNotification(''), 3000)
+      setShareTimeoutId(newTimeoutId)
+    },
+    [shareTimeoutId]
+  )
+
   // Function to handle sharing/copying URL
   const handleShare = async () => {
     const url = window.location.href
@@ -260,8 +278,7 @@ const BlogPostContent = ({
     // Always try clipboard first as it's more reliable
     try {
       await navigator.clipboard.writeText(url)
-      setShareNotification(t('post.notifications.linkCopied'))
-      setTimeout(() => setShareNotification(''), 3000)
+      setNotificationWithTimeout(t('post.notifications.linkCopied'))
       return
     } catch (clipboardError) {
       console.warn('Clipboard API failed:', clipboardError)
@@ -306,18 +323,25 @@ const BlogPostContent = ({
         document.body.removeChild(textArea)
 
         if (successful) {
-          setShareNotification(t('post.notifications.linkCopied'))
-          setTimeout(() => setShareNotification(''), 3000)
+          setNotificationWithTimeout(t('post.notifications.linkCopied'))
         } else {
           throw new Error('execCommand failed')
         }
       } catch (fallbackError) {
         console.error('All share methods failed:', fallbackError)
-        setShareNotification(t('post.notifications.shareError'))
-        setTimeout(() => setShareNotification(''), 3000)
+        setNotificationWithTimeout(t('post.notifications.shareError'))
       }
     }
   }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutId) {
+        clearTimeout(shareTimeoutId)
+      }
+    }
+  }, [shareTimeoutId])
 
   // Handle anchor link functionality
   useEffect(() => {
@@ -346,12 +370,10 @@ const BlogPostContent = ({
               navigator.clipboard
                 .writeText(fullUrl)
                 .then(() => {
-                  setShareNotification(t('post.notifications.linkCopied'))
-                  setTimeout(() => setShareNotification(''), 2000)
+                  setNotificationWithTimeout(t('post.notifications.linkCopied'))
                 })
                 .catch(() => {
-                  setShareNotification(t('post.notifications.shareError'))
-                  setTimeout(() => setShareNotification(''), 2000)
+                  setNotificationWithTimeout(t('post.notifications.shareError'))
                 })
             }
           }
@@ -371,7 +393,7 @@ const BlogPostContent = ({
         contentElement.removeEventListener('click', handleAnchorClick)
       }
     }
-  }, [t])
+  }, [t, setNotificationWithTimeout])
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
