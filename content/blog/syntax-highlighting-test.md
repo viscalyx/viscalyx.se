@@ -1015,3 +1015,399 @@ curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/fo
 def very_long_function_name_for_demonstration_purposes(parameter_one_with_long_name, parameter_two_with_even_longer_name, parameter_three_that_is_ridiculously_long, parameter_four_for_good_measure, parameter_five_just_because):
     return f"This function has a very long signature that should cause horizontal scrolling: {parameter_one_with_long_name}, {parameter_two_with_even_longer_name}, {parameter_three_that_is_ridiculously_long}"
 ```
+
+## Vertical Scrolling Test
+
+This section contains a very long code block to test the vertical scrollbar functionality:
+
+```python
+# Very long Python code block for testing vertical scrollbar
+import os
+import sys
+import json
+import requests
+import datetime
+from typing import List, Dict, Optional, Union, Tuple
+from dataclasses import dataclass
+from pathlib import Path
+
+@dataclass
+class User:
+    id: int
+    username: str
+    email: str
+    first_name: str
+    last_name: str
+    created_at: datetime.datetime
+    updated_at: datetime.datetime
+    is_active: bool
+    profile_picture: Optional[str] = None
+    bio: Optional[str] = None
+    website: Optional[str] = None
+    location: Optional[str] = None
+    phone_number: Optional[str] = None
+    date_of_birth: Optional[datetime.date] = None
+    
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+    
+    def age(self) -> Optional[int]:
+        if self.date_of_birth:
+            today = datetime.date.today()
+            return today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+        return None
+    
+    def to_dict(self) -> Dict:
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'full_name': self.full_name(),
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            'is_active': self.is_active,
+            'profile_picture': self.profile_picture,
+            'bio': self.bio,
+            'website': self.website,
+            'location': self.location,
+            'phone_number': self.phone_number,
+            'date_of_birth': self.date_of_birth.isoformat() if self.date_of_birth else None,
+            'age': self.age()
+        }
+
+class UserRepository:
+    def __init__(self, database_url: str):
+        self.database_url = database_url
+        self.users: List[User] = []
+        self.connection = None
+        
+    def connect(self):
+        """Establish database connection"""
+        try:
+            # Simulated database connection
+            print(f"Connecting to database: {self.database_url}")
+            self.connection = True
+            return True
+        except Exception as e:
+            print(f"Failed to connect to database: {e}")
+            return False
+    
+    def disconnect(self):
+        """Close database connection"""
+        if self.connection:
+            self.connection = None
+            print("Database connection closed")
+    
+    def create_user(self, user_data: Dict) -> User:
+        """Create a new user"""
+        user = User(
+            id=len(self.users) + 1,
+            username=user_data['username'],
+            email=user_data['email'],
+            first_name=user_data['first_name'],
+            last_name=user_data['last_name'],
+            created_at=datetime.datetime.now(),
+            updated_at=datetime.datetime.now(),
+            is_active=True,
+            profile_picture=user_data.get('profile_picture'),
+            bio=user_data.get('bio'),
+            website=user_data.get('website'),
+            location=user_data.get('location'),
+            phone_number=user_data.get('phone_number'),
+            date_of_birth=user_data.get('date_of_birth')
+        )
+        self.users.append(user)
+        return user
+    
+    def get_user_by_id(self, user_id: int) -> Optional[User]:
+        """Retrieve user by ID"""
+        for user in self.users:
+            if user.id == user_id:
+                return user
+        return None
+    
+    def get_user_by_username(self, username: str) -> Optional[User]:
+        """Retrieve user by username"""
+        for user in self.users:
+            if user.username == username:
+                return user
+        return None
+    
+    def get_user_by_email(self, email: str) -> Optional[User]:
+        """Retrieve user by email"""
+        for user in self.users:
+            if user.email == email:
+                return user
+        return None
+    
+    def get_all_users(self) -> List[User]:
+        """Retrieve all users"""
+        return self.users.copy()
+    
+    def get_active_users(self) -> List[User]:
+        """Retrieve all active users"""
+        return [user for user in self.users if user.is_active]
+    
+    def get_users_by_location(self, location: str) -> List[User]:
+        """Retrieve users by location"""
+        return [user for user in self.users if user.location and user.location.lower() == location.lower()]
+    
+    def update_user(self, user_id: int, update_data: Dict) -> Optional[User]:
+        """Update user information"""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        
+        # Update fields if provided
+        if 'username' in update_data:
+            user.username = update_data['username']
+        if 'email' in update_data:
+            user.email = update_data['email']
+        if 'first_name' in update_data:
+            user.first_name = update_data['first_name']
+        if 'last_name' in update_data:
+            user.last_name = update_data['last_name']
+        if 'profile_picture' in update_data:
+            user.profile_picture = update_data['profile_picture']
+        if 'bio' in update_data:
+            user.bio = update_data['bio']
+        if 'website' in update_data:
+            user.website = update_data['website']
+        if 'location' in update_data:
+            user.location = update_data['location']
+        if 'phone_number' in update_data:
+            user.phone_number = update_data['phone_number']
+        if 'date_of_birth' in update_data:
+            user.date_of_birth = update_data['date_of_birth']
+        if 'is_active' in update_data:
+            user.is_active = update_data['is_active']
+        
+        user.updated_at = datetime.datetime.now()
+        return user
+    
+    def delete_user(self, user_id: int) -> bool:
+        """Delete user by ID"""
+        user = self.get_user_by_id(user_id)
+        if user:
+            self.users.remove(user)
+            return True
+        return False
+    
+    def deactivate_user(self, user_id: int) -> bool:
+        """Deactivate user instead of deleting"""
+        user = self.get_user_by_id(user_id)
+        if user:
+            user.is_active = False
+            user.updated_at = datetime.datetime.now()
+            return True
+        return False
+    
+    def search_users(self, query: str) -> List[User]:
+        """Search users by name, username, or email"""
+        query = query.lower()
+        results = []
+        for user in self.users:
+            if (query in user.username.lower() or 
+                query in user.email.lower() or 
+                query in user.first_name.lower() or 
+                query in user.last_name.lower() or 
+                query in user.full_name().lower()):
+                results.append(user)
+        return results
+    
+    def get_user_statistics(self) -> Dict:
+        """Get user statistics"""
+        total_users = len(self.users)
+        active_users = len(self.get_active_users())
+        inactive_users = total_users - active_users
+        
+        locations = {}
+        for user in self.users:
+            if user.location:
+                locations[user.location] = locations.get(user.location, 0) + 1
+        
+        ages = [user.age() for user in self.users if user.age() is not None]
+        avg_age = sum(ages) / len(ages) if ages else 0
+        
+        return {
+            'total_users': total_users,
+            'active_users': active_users,
+            'inactive_users': inactive_users,
+            'locations': locations,
+            'average_age': round(avg_age, 2),
+            'users_with_bio': len([user for user in self.users if user.bio]),
+            'users_with_website': len([user for user in self.users if user.website]),
+            'users_with_phone': len([user for user in self.users if user.phone_number])
+        }
+    
+    def export_users_to_json(self, filename: str) -> bool:
+        """Export all users to JSON file"""
+        try:
+            users_data = [user.to_dict() for user in self.users]
+            with open(filename, 'w') as f:
+                json.dump(users_data, f, indent=2, default=str)
+            print(f"Users exported to {filename}")
+            return True
+        except Exception as e:
+            print(f"Error exporting users: {e}")
+            return False
+    
+    def import_users_from_json(self, filename: str) -> bool:
+        """Import users from JSON file"""
+        try:
+            with open(filename, 'r') as f:
+                users_data = json.load(f)
+            
+            for user_data in users_data:
+                # Convert string dates back to datetime objects
+                user_data['created_at'] = datetime.datetime.fromisoformat(user_data['created_at'])
+                user_data['updated_at'] = datetime.datetime.fromisoformat(user_data['updated_at'])
+                if user_data.get('date_of_birth'):
+                    user_data['date_of_birth'] = datetime.date.fromisoformat(user_data['date_of_birth'])
+                
+                # Remove computed fields
+                user_data.pop('full_name', None)
+                user_data.pop('age', None)
+                
+                user = User(**user_data)
+                self.users.append(user)
+            
+            print(f"Users imported from {filename}")
+            return True
+        except Exception as e:
+            print(f"Error importing users: {e}")
+            return False
+
+# Example usage and demonstration
+def main():
+    """Main function to demonstrate the UserRepository functionality"""
+    
+    # Initialize repository
+    repo = UserRepository("postgresql://user:pass@localhost/users_db")
+    
+    # Connect to database
+    if not repo.connect():
+        print("Failed to connect to database")
+        return
+    
+    try {
+        # Create sample users
+        sample_users = [
+            {
+                'username': 'johndoe',
+                'email': 'john.doe@example.com',
+                'first_name': 'John',
+                'last_name': 'Doe',
+                'bio': 'Software developer with 5 years of experience',
+                'location': 'New York',
+                'website': 'https://johndoe.dev',
+                'phone_number': '+1-555-0123',
+                'date_of_birth': datetime.date(1990, 5, 15)
+            },
+            {
+                'username': 'janesmith',
+                'email': 'jane.smith@example.com',
+                'first_name': 'Jane',
+                'last_name': 'Smith',
+                'bio': 'UX Designer passionate about creating beautiful interfaces',
+                'location': 'San Francisco',
+                'website': 'https://janesmith.design',
+                'phone_number': '+1-555-0456',
+                'date_of_birth': datetime.date(1988, 12, 3)
+            },
+            {
+                'username': 'bobwilson',
+                'email': 'bob.wilson@example.com',
+                'first_name': 'Bob',
+                'last_name': 'Wilson',
+                'bio': 'Data scientist and machine learning enthusiast',
+                'location': 'New York',
+                'date_of_birth': datetime.date(1992, 8, 20)
+            },
+            {
+                'username': 'alicejohnson',
+                'email': 'alice.johnson@example.com',
+                'first_name': 'Alice',
+                'last_name': 'Johnson',
+                'bio': 'Product manager with a passion for innovation',
+                'location': 'Seattle',
+                'website': 'https://alicejohnson.com',
+                'phone_number': '+1-555-0789',
+                'date_of_birth': datetime.date(1985, 3, 10)
+            }
+        ]
+        
+        # Create users
+        created_users = []
+        for user_data in sample_users:
+            user = repo.create_user(user_data)
+            created_users.append(user)
+            print(f"Created user: {user.full_name()} (@{user.username})")
+        
+        print(f"\nTotal users created: {len(created_users)}")
+        
+        # Demonstrate various queries
+        print("\n=== User Queries ===")
+        
+        # Get user by ID
+        user_1 = repo.get_user_by_id(1)
+        if user_1:
+            print(f"User with ID 1: {user_1.full_name()}")
+        
+        # Get user by username
+        john = repo.get_user_by_username('johndoe')
+        if john:
+            print(f"Found user by username: {john.full_name()}")
+        
+        # Get users by location
+        ny_users = repo.get_users_by_location('New York')
+        print(f"Users in New York: {[user.full_name() for user in ny_users]}")
+        
+        # Search users
+        search_results = repo.search_users('john')
+        print(f"Search results for 'john': {[user.full_name() for user in search_results]}")
+        
+        # Update user
+        update_data = {
+            'bio': 'Senior Software Developer with expertise in Python and web development',
+            'website': 'https://johndoe-dev.com'
+        }
+        updated_user = repo.update_user(1, update_data)
+        if updated_user:
+            print(f"Updated user: {updated_user.username} - {updated_user.bio}")
+        
+        # Get statistics
+        stats = repo.get_user_statistics()
+        print(f"\n=== User Statistics ===")
+        print(f"Total users: {stats['total_users']}")
+        print(f"Active users: {stats['active_users']}")
+        print(f"Average age: {stats['average_age']}")
+        print(f"Location distribution: {stats['locations']}")
+        
+        # Export users
+        export_filename = "users_backup.json"
+        if repo.export_users_to_json(export_filename):
+            print(f"Users exported to {export_filename}")
+        
+        # Deactivate a user
+        if repo.deactivate_user(2):
+            print("User with ID 2 has been deactivated")
+        
+        # Show updated statistics
+        updated_stats = repo.get_user_statistics()
+        print(f"\nUpdated active users: {updated_stats['active_users']}")
+        print(f"Updated inactive users: {updated_stats['inactive_users']}")
+        
+    } catch {
+        Exception as e:
+        print(f"An error occurred: {e}")
+    
+    finally:
+        # Always disconnect
+        repo.disconnect()
+
+if __name__ == "__main__":
+    main()
+```
