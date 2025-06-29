@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== All code block styles moved to code-block-components.css ===== */
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -44,8 +46,6 @@
   .text-gradient {
     @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
   }
-
-  /* Code block styles moved to code-block-components.css for better organization */
 }
 
 @layer utilities {
@@ -243,8 +243,6 @@
     content: none !important;
   }
 
-  /* Code block styling moved to code-block-components.css for better organization */
-
   .blog-content a {
     @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline;
   }
@@ -308,6 +306,4 @@
       opacity: 1;
     }
   }
-
-  /* ===== All code block styles moved to code-block-components.css ===== */
 }
