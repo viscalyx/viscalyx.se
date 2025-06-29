@@ -42,6 +42,7 @@
 
 /* Language labels for regular pre elements */
 .blog-content pre[class*='language-'] .code-language-label {
+  position: absolute;
   top: -2rem;
 }
 
