@@ -119,6 +119,38 @@ class Program
 }
 ```
 
+## C# Example
+
+This second equally named section is to test unique anchoring when section has same names.
+
+```csharp
+// C# example
+using System;
+using System.Collections.Generic;
+
+public class Calculator
+{
+    public double Add(double a, double b)
+    {
+        return a + b;
+    }
+
+    public double Multiply(double a, double b)
+    {
+        return a * b;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var calc = new Calculator();
+        Console.WriteLine($"5 + 3 = {calc.Add(5, 3)}");
+    }
+}
+```
+
 ## Java Example
 
 ```java
