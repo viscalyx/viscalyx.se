@@ -819,10 +819,15 @@
       "loadingBlogPost": "Visar blogginlägg...",
       "backToBlog": "Tillbaka till Blogg",
       "share": "Dela:",
+      "sharePost": "Dela detta inlägg",
       "tableOfContents": "Innehållsförteckning",
       "relatedArticles": "Relaterade Artiklar",
       "readingProgress": "Läsförlopp",
       "tags": "Taggar",
+      "notifications": {
+        "linkCopied": "Länk kopierad till urklipp!",
+        "shareError": "Kunde inte dela. Vänligen försök kopiera länken manuellt."
+      },
       "authorBio": {
         "name": "Johan Ljunggren",
         "title": "Grundare och Ledande Konsult på Viscalyx",

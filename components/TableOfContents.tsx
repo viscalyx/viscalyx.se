@@ -136,6 +136,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
+      // Update URL hash in the address bar
+      window.location.hash = id
+
       element.scrollIntoView({
         behavior: 'smooth',
         block: 'start',

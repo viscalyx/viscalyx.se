@@ -23,6 +23,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import sanitizeHtml from 'sanitize-html'
+import slugify from 'slugify'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -51,15 +52,14 @@ interface BlogApiResponse {
   relatedPosts: BlogPost[]
 }
 
-// Helper function to create URL-friendly slugs from text
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Collapse consecutive hyphens
-    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-    .trim()
+// Configure the slugify function with our preferred options
+const createSlug = (text: string): string => {
+  return slugify(text, {
+    lower: true,
+    strict: false,
+    locale: 'en',
+    trim: true,
+  })
 }
 
 // Function to extract headings from HTML content and create table of contents
@@ -78,7 +78,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
         allowedTags: [],
         allowedAttributes: {},
       }).trim()
-      const id = slugify(text)
+      const id = createSlug(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -97,7 +97,7 @@ function extractTableOfContents(htmlContent: string): TocItem[] {
     return headings.map(heading => {
       const text = heading.textContent || ''
       const level = Number.parseInt(heading.tagName.charAt(1))
-      const id = slugify(text)
+      const id = createSlug(text)
 
       // Ensure the id is not empty
       const finalId =
@@ -119,7 +119,7 @@ function addHeadingIds(htmlContent: string): string {
         allowedTags: [],
         allowedAttributes: {},
       }).trim()
-      const id = slugify(cleaned)
+      const id = createSlug(cleaned)
 
       // Ensure the id is not empty
       const finalId =
@@ -131,8 +131,15 @@ function addHeadingIds(htmlContent: string): string {
         ? attributes
         : `${attributes} id="${finalId}"`
 
-      // Return the heading with proper ID
-      return `<h${level}${finalAttributes}>${text}</h${level}>`
+      // Add anchor link functionality with proper class for styling
+      const anchorLink = `<a href="#${finalId}" class="heading-anchor" aria-label="Link to this section" title="Copy link to this section">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+        </svg>
+      </a>`
+
+      // Return the heading with proper ID and anchor link
+      return `<h${level}${finalAttributes} class="heading-with-anchor">${text}${anchorLink}</h${level}>`
     }
   )
 }
@@ -183,6 +190,28 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 
     fetchPost()
   }, [params])
+
+  // Handle hash fragment navigation on page load
+  useEffect(() => {
+    // Only run on client side and when content is loaded
+    if (typeof window !== 'undefined' && post && !loading) {
+      const hash = window.location.hash
+      if (hash) {
+        // Wait a brief moment for the content to be fully rendered
+        const timeoutId = setTimeout(() => {
+          const element = document.getElementById(hash.substring(1))
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+          }
+        }, 100)
+
+        return () => clearTimeout(timeoutId)
+      }
+    }
+  }, [post, loading])
 
   if (loading) {
     return <LoadingScreen message={t('post.loadingBlogPost')} />
@@ -278,12 +307,123 @@ const BlogPostContent = ({
   // Extract table of contents from the content
   const tableOfContents = extractTableOfContents(contentWithIds)
 
+  // State for share functionality
+  const [shareNotification, setShareNotification] = useState<string>('')
+
   // Track blog analytics
   useBlogAnalytics({
     slug: post.slug,
     category: post.category,
     title: post.title,
   })
+
+  // Function to handle sharing/copying URL
+  const handleShare = async () => {
+    const url = window.location.href
+
+    // Always try clipboard first as it's more reliable
+    try {
+      await navigator.clipboard.writeText(url)
+      setShareNotification(t('post.notifications.linkCopied'))
+      setTimeout(() => setShareNotification(''), 3000)
+      return
+    } catch (clipboardError) {
+      console.warn('Clipboard API failed:', clipboardError)
+      // If clipboard fails, try native share API
+      try {
+        if (navigator.share && navigator.canShare) {
+          const shareData = {
+            title: post.title,
+            text: `Check out this blog post: ${post.title}`,
+            url: url,
+          }
+
+          // Check if the data can be shared
+          if (navigator.canShare(shareData)) {
+            await navigator.share(shareData)
+            return
+          }
+        }
+      } catch (shareError) {
+        console.warn('Native share failed:', shareError)
+      }
+
+      // Final fallback - try to create a temporary input for manual copy
+      try {
+        const textArea = document.createElement('textarea')
+        textArea.value = url
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999999px'
+        textArea.style.top = '-999999px'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        const successful = document.execCommand('copy')
+        document.body.removeChild(textArea)
+
+        if (successful) {
+          setShareNotification(t('post.notifications.linkCopied'))
+          setTimeout(() => setShareNotification(''), 3000)
+        } else {
+          throw new Error('execCommand failed')
+        }
+      } catch (fallbackError) {
+        console.error('All share methods failed:', fallbackError)
+        setShareNotification(t('post.notifications.shareError'))
+        setTimeout(() => setShareNotification(''), 3000)
+      }
+    }
+  }
+
+  // Handle anchor link functionality
+  useEffect(() => {
+    const handleAnchorClick = (e: Event) => {
+      const target = e.target as HTMLAnchorElement
+      if (target.classList.contains('heading-anchor')) {
+        e.preventDefault()
+        const href = target.getAttribute('href')
+        if (href) {
+          const targetId = href.substring(1)
+          const targetElement = document.getElementById(targetId)
+
+          if (targetElement) {
+            // Update URL without triggering navigation
+            window.history.pushState(null, '', href)
+
+            // Scroll to element
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+
+            // Copy link to clipboard
+            const fullUrl = window.location.href
+            if (navigator.clipboard) {
+              navigator.clipboard
+                .writeText(fullUrl)
+                .then(() => {
+                  setShareNotification(t('post.notifications.linkCopied'))
+                  setTimeout(() => setShareNotification(''), 2000)
+                })
+                .catch(() => {
+                  setShareNotification(t('post.notifications.shareError'))
+                  setTimeout(() => setShareNotification(''), 2000)
+                })
+            }
+          }
+        }
+      }
+    }
+
+    // Add event listener
+    document.addEventListener('click', handleAnchorClick)
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('click', handleAnchorClick)
+    }
+  }, [t])
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
@@ -342,9 +482,18 @@ const BlogPostContent = ({
                 <span className="text-secondary-600 dark:text-secondary-400">
                   {t('post.share')}
                 </span>
-                <button className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700">
+                <button
+                  onClick={handleShare}
+                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+                  title={t('post.sharePost')}
+                >
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
+                {shareNotification && (
+                  <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-md">
+                    {shareNotification}
+                  </div>
+                )}
               </div>
             </div>
           </div>
