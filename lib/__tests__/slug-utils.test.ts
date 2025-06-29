@@ -5,6 +5,7 @@ import {
   createSlugId,
   ensureUniqueId,
   extractCleanText,
+  extractTableOfContents,
   extractTableOfContentsClient,
   extractTableOfContentsServer,
   generateFallbackId,
@@ -271,6 +272,73 @@ describe('slug-utils', () => {
       expect(toc).toHaveLength(2)
       expect(toc[0]).toEqual({ id: 'setup', text: 'Setup', level: 2 })
       expect(toc[1]).toEqual({ id: 'setup-1', text: 'Setup', level: 2 })
+    })
+  })
+
+  describe('extractTableOfContents', () => {
+    it('uses server-side implementation when window is undefined', () => {
+      // Mock server environment by deleting global.window
+      const originalWindow = global.window
+      // @ts-expect-error - Intentionally deleting window to simulate server
+      delete global.window
+
+      const html = `
+        <h2>Server Test</h2>
+        <h3>Server Implementation</h3>
+        <h2>Another Section</h2>
+      `
+
+      const toc = extractTableOfContents(html)
+
+      expect(toc).toHaveLength(3)
+      expect(toc[0]).toEqual({
+        id: 'server-test',
+        text: 'Server Test',
+        level: 2,
+      })
+      expect(toc[1]).toEqual({
+        id: 'server-implementation',
+        text: 'Server Implementation',
+        level: 3,
+      })
+      expect(toc[2]).toEqual({
+        id: 'another-section',
+        text: 'Another Section',
+        level: 2,
+      })
+
+      // Restore original window
+      global.window = originalWindow
+    })
+
+    it('uses server-side implementation with custom options when window is undefined', () => {
+      // Mock server environment by deleting global.window
+      const originalWindow = global.window
+      // @ts-expect-error - Intentionally deleting window to simulate server
+      delete global.window
+
+      const html = `
+        <h2>Custom Options Test</h2>
+        <h3>With Options</h3>
+      `
+
+      const options = { lower: false }
+      const toc = extractTableOfContents(html, options)
+
+      expect(toc).toHaveLength(2)
+      expect(toc[0]).toEqual({
+        id: 'Custom-Options-Test',
+        text: 'Custom Options Test',
+        level: 2,
+      })
+      expect(toc[1]).toEqual({
+        id: 'With-Options',
+        text: 'With Options',
+        level: 3,
+      })
+
+      // Restore original window
+      global.window = originalWindow
     })
   })
 })
