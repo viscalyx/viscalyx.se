@@ -1292,7 +1292,7 @@ def main():
         print("Failed to connect to database")
         return
 
-    try {
+    try:
         # Create sample users
         sample_users = [
             {
@@ -1400,8 +1400,7 @@ def main():
         print(f"\nUpdated active users: {updated_stats['active_users']}")
         print(f"Updated inactive users: {updated_stats['inactive_users']}")
 
-    } catch {
-        Exception as e:
+    except Exception as e:
         print(f"An error occurred: {e}")
 
     finally:
