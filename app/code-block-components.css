@@ -104,7 +104,7 @@
   overflow-y: auto !important; /* prevent uncontrolled height growth */
   max-height: 500px; /* limit vertical expansion */
   position: relative !important; /* ensure label positioning works */
-  padding-top: 2.5rem !important; /* extra space for label visibility */
+  padding-top: 1rem !important; /* extra space between code and top of container */
   overflow-clip-margin: 1rem; /* prevent label clipping */
 }
 
