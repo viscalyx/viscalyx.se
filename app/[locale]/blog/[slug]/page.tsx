@@ -392,6 +392,7 @@ const BlogPostContent = ({
                   {t('post.share')}
                 </span>
                 <button
+                  type="button"
                   onClick={handleShare}
                   className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
                   title={t('post.sharePost')}
