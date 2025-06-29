@@ -826,7 +826,10 @@
       "tags": "Taggar",
       "notifications": {
         "linkCopied": "Länk kopierad till urklipp!",
-        "shareError": "Kunde inte dela. Vänligen försök kopiera länken manuellt."
+        "shareError": "Kunde inte dela. Vänligen försök kopiera länken manuellt.",
+        "shareText": "Läs mer: {title}",
+        "shareTextWithExcerpt": "{excerpt}\n\nLäs mer: {title}",
+        "shareTextFallback": "Kolla in detta blogginlägg: {title}"
       },
       "authorBio": {
         "name": "Johan Ljunggren",

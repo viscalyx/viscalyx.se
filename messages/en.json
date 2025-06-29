@@ -820,7 +820,10 @@
       "tags": "Tags",
       "notifications": {
         "linkCopied": "Link copied to clipboard!",
-        "shareError": "Unable to share. Please try copying the link manually."
+        "shareError": "Unable to share. Please try copying the link manually.",
+        "shareText": "Read more: {title}",
+        "shareTextWithExcerpt": "{excerpt}\n\nRead more: {title}",
+        "shareTextFallback": "Check out this blog post: {title}"
       },
       "authorBio": {
         "name": "Johan Ljunggren",

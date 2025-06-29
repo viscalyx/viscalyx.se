@@ -38,6 +38,7 @@ interface BlogPost {
   slug: string
   tags: string[]
   content: string
+  excerpt: string
 }
 
 interface BlogApiResponse {
@@ -211,6 +212,8 @@ function getFallbackPost(slug: string): BlogPost | null {
       category: 'Template',
       tags: ['Template', 'Guide', 'Writing'],
       slug: 'template',
+      excerpt:
+        'A comprehensive template and guide for creating well-structured blog posts with proper formatting, SEO considerations, and engagement strategies.',
     },
   }
 
@@ -267,7 +270,14 @@ const BlogPostContent = ({
         if (navigator.share && navigator.canShare) {
           const shareData = {
             title: post.title,
-            text: `Check out this blog post: ${post.title}`,
+            text: post.excerpt
+              ? t('post.notifications.shareTextWithExcerpt')
+                  .replace('{excerpt}', post.excerpt)
+                  .replace('{title}', post.title)
+              : t('post.notifications.shareTextFallback').replace(
+                  '{title}',
+                  post.title
+                ),
             url: url,
           }
 
