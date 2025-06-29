@@ -19,8 +19,6 @@
   --color-token-powershell-parameter: #059669; /* green-600 */
 
   /* Code UI colors */
-  --color-code-label-bg: #e5e7eb; /* gray-200 */
-  --color-code-label-border: #d1d5db; /* gray-300 */
   --color-highlight-line-bg: rgba(59, 130, 246, 0.1); /* blue with opacity */
 }
 
@@ -41,14 +39,6 @@
     --color-token-powershell-cmdlet: #a78bfa; /* violet-400 */
     --color-token-powershell-parameter: #34d399; /* green-400 */
   }
-}
-
-/* Base code styling - work with existing backgrounds from globals.css */
-.blog-content pre[class*='language-'] {
-  /* Let globals.css handle the container styling */
-  margin: 2rem 0 0;
-  position: relative;
-  overflow: visible;
 }
 
 /* Syntax highlighting tokens - Light theme */
@@ -187,59 +177,6 @@
 
 .dark .token.powershell-parameter {
   color: var(--color-token-powershell-parameter, #34d399);
-}
-
-/* Language label styling - Tab design above code block */
-.blog-content pre[class*='language-']::before {
-  content: attr(data-language);
-  position: absolute;
-  top: -2rem;
-  right: 1rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #374151;
-  background: var(
-    --color-code-label-bg,
-    #e5e7eb
-  ); /* Match code block background color */
-  border: 1px solid var(--color-code-label-border, #d1d5db);
-  border-bottom: none;
-  padding: 0.375rem 0.75rem 0.5rem 0.75rem;
-  border-radius: 0.375rem 0.375rem 0 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  z-index: 5;
-  white-space: nowrap;
-  /* Tab effect - connect to code block */
-  box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.1);
-}
-
-.dark .blog-content pre[class*='language-']::before {
-  color: #e5e7eb;
-  background: #0c0a09; /* Match dark code block background color */
-  border-color: #374151;
-  box-shadow: 0 -1px 3px 0 rgb(0 0 0 / 0.3);
-}
-
-/* Copy button positioned inside the code block at top-right */
-.blog-content pre[class*='language-'] .copy-button-container {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-/* Make sure copy button stays visible on hover */
-.blog-content pre[class*='language-']:hover .copy-button-container {
-  opacity: 1;
-}
-
-/* Make copy button visible when focused for keyboard accessibility */
-.blog-content pre[class*='language-'] .copy-button-container:focus,
-.blog-content pre[class*='language-'] .copy-button-container:focus-within {
-  opacity: 1;
 }
 
 /* Bold and italic styling */
