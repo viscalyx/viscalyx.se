@@ -101,13 +101,13 @@ export default function CodeBlockEnhancer({
         })
 
         // Reset enhanced flag on all wrappers to allow re-enhancement on remount
-        const wrappers = Array.from(
+        const enhancedWrappers = Array.from(
           document.querySelectorAll(
             '.blog-content .code-block-wrapper[data-enhanced="true"]'
           )
         ) as HTMLElement[]
-        wrappers.forEach(wrapper => {
-          wrapper.dataset.enhanced = ''
+        enhancedWrappers.forEach(wrapper => {
+          wrapper.removeAttribute('data-enhanced')
         })
       }
 
