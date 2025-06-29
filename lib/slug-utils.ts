@@ -96,15 +96,17 @@ export function extractTableOfContentsServer(
   htmlContent: string,
   options: SlugOptions = {}
 ): TocItem[] {
-  const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
+  const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h[2-4]>/gi
   const headings: TocItem[] = []
+  const usedIds = new Set<string>()
   let match
 
   while ((match = headingRegex.exec(htmlContent)) !== null) {
     const level = Number.parseInt(match[1])
     const raw = match[2]
     const text = extractCleanText(raw)
-    const id = createSlugId(text, level, options)
+    const baseId = createSlugId(text, level, options)
+    const id = ensureUniqueId(baseId, usedIds)
 
     headings.push({ id, text, level })
   }
@@ -126,11 +128,13 @@ export function extractTableOfContentsClient(
   const parser = new DOMParser()
   const doc = parser.parseFromString(htmlContent, 'text/html')
   const headings = Array.from(doc.querySelectorAll('h2, h3, h4'))
+  const usedIds = new Set<string>()
 
   return headings.map(heading => {
     const text = heading.textContent || ''
     const level = Number.parseInt(heading.tagName.charAt(1))
-    const id = createSlugId(text, level, options)
+    const baseId = createSlugId(text, level, options)
+    const id = ensureUniqueId(baseId, usedIds)
 
     return { id, text, level }
   })
@@ -168,12 +172,15 @@ export function addHeadingIds(
   htmlContent: string,
   options: SlugOptions = {}
 ): string {
+  const usedIds = new Set<string>()
+
   return htmlContent.replace(
-    /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
+    /<h([2-4])([^>]*)>([\s\S]*?)<\/h[2-4]>/gi,
     (match, level, attributes, text) => {
       const levelNum = Number.parseInt(level)
       const cleanedText = extractCleanText(text)
-      const id = createSlugId(cleanedText, levelNum, options)
+      const baseId = createSlugId(cleanedText, levelNum, options)
+      const id = ensureUniqueId(baseId, usedIds)
 
       // Check if id attribute already exists in attributes
       const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
@@ -190,4 +197,29 @@ export function addHeadingIds(
       return `<h${level}${finalAttributes} class="heading-with-anchor">${text}${anchorLink}</h${level}>`
     }
   )
+}
+
+/**
+ * Ensures unique IDs by tracking used IDs and adding counters for duplicates
+ *
+ * @param baseId - The base ID to make unique
+ * @param usedIds - Set of already used IDs
+ * @returns A unique ID with counter suffix if needed
+ */
+export function ensureUniqueId(baseId: string, usedIds: Set<string>): string {
+  if (!usedIds.has(baseId)) {
+    usedIds.add(baseId)
+    return baseId
+  }
+
+  let counter = 1
+  let uniqueId = `${baseId}-${counter}`
+
+  while (usedIds.has(uniqueId)) {
+    counter++
+    uniqueId = `${baseId}-${counter}`
+  }
+
+  usedIds.add(uniqueId)
+  return uniqueId
 }
