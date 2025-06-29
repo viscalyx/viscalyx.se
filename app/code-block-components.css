@@ -44,25 +44,12 @@
   margin-top: 0 !important;
 }
 
-/* ===== Language Label Positioning ===== */
-
-/* Language labels for regular pre elements */
-.blog-content pre[class*='language-'] .code-language-label {
-  position: absolute;
-  top: -2rem;
-}
-
-/* Language labels inside wrapper - positioned relative to wrapper */
-.blog-content .code-block-wrapper .code-language-label {
-  top: 0;
-  transform: translateY(-1%); /* negative values move label up */
-}
-
 /* ===== Language Label Styling ===== */
 
-/* Complete language label styles - consolidated from globals.css */
+/* Complete language label styles - consolidated positioning and styling */
 .blog-content .code-language-label {
   position: absolute;
+  top: -2rem;
   right: 1rem;
   font-size: 0.75rem;
   font-weight: 600;
@@ -88,6 +75,12 @@
   background: #0c0a09; /* dark:bg-secondary-950 */
   border-color: #4b5563; /* dark:border-secondary-600 */
   box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Language labels inside wrapper - only override top position */
+.blog-content .code-block-wrapper .code-language-label {
+  top: 0;
+  transform: translateY(-1%); /* negative values move label up */
 }
 
 /* ===== Copy Button Positioning ===== */
@@ -119,12 +112,6 @@
 
 /* Copy button visibility on hover over regular pre elements (fallback for non-wrapper code blocks) */
 .blog-content pre[class*='language-']:hover .copy-button-container {
-  opacity: 1;
-}
-
-/* Copy button visibility for keyboard accessibility */
-.blog-content .code-block-wrapper .copy-button-container:focus-within,
-.blog-content pre[class*='language-'] .copy-button-container:focus-within {
   opacity: 1;
 }
 
