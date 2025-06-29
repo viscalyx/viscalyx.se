@@ -107,7 +107,7 @@ export default function CodeBlockEnhancer({
           )
         ) as HTMLElement[]
         wrappers.forEach(wrapper => {
-          delete wrapper.dataset.enhanced
+          wrapper.dataset.enhanced = ''
         })
       }
 
