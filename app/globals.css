@@ -273,7 +273,7 @@
   /* Code block styling */
   .blog-content pre,
   .blog-content pre[class*='language-'] {
-    @apply bg-secondary-200 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-200 dark:border-secondary-700;
+    @apply bg-secondary-50 dark:bg-secondary-950 text-secondary-900 dark:text-white p-4 rounded-lg overflow-x-auto my-6 border border-secondary-100 dark:border-secondary-700;
     position: relative;
   }
 
