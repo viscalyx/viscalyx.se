@@ -45,34 +45,7 @@
     @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
   }
 
-  /* Code block language label styles - moved from utilities layer for better specificity */
-  .blog-content .code-language-label {
-    position: absolute;
-    right: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    @apply text-secondary-700 dark:text-secondary-200;
-    @apply bg-secondary-200 dark:bg-secondary-950;
-    @apply border border-secondary-300 dark:border-secondary-600;
-    border-bottom: none;
-    padding: 0.375rem 0.75rem 0.5rem 0.75rem;
-    border-radius: 0.375rem 0.375rem 0 0;
-    letter-spacing: 0.05em;
-    z-index: 10;
-    white-space: nowrap;
-    /* Tab effect - connect to code block */
-    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1);
-    /* Ensure it stays above the code block */
-    pointer-events: none;
-    /* Make sure it's always visible */
-    display: block;
-  }
-
-  .dark .blog-content .code-language-label {
-    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3);
-  }
-
-  /* Specific positioning for language labels - moved to code-block-components.css */
+  /* Code block styles moved to code-block-components.css for better organization */
 }
 
 @layer utilities {
