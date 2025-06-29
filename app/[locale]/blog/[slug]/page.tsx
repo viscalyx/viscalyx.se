@@ -98,18 +98,47 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
     if (typeof window !== 'undefined' && post && !loading) {
       const hash = window.location.hash
       if (hash) {
-        // Wait a brief moment for the content to be fully rendered
-        const timeoutId = setTimeout(() => {
-          const element = document.getElementById(hash.substring(1))
-          if (element) {
-            element.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            })
-          }
-        }, 100)
+        const targetId = hash.substring(1)
+        let rafId: number
+        let attempts = 0
+        const maxAttempts = 100 // Maximum attempts to prevent infinite loop
 
-        return () => clearTimeout(timeoutId)
+        const scrollToElement = () => {
+          const element = document.getElementById(targetId)
+
+          if (element && attempts < maxAttempts) {
+            // Check if element is visible and has proper dimensions
+            const rect = element.getBoundingClientRect()
+            const isVisible =
+              rect.width > 0 &&
+              rect.height > 0 &&
+              rect.top >= 0 &&
+              rect.bottom <= window.innerHeight + rect.height
+
+            if (isVisible || attempts > 20) {
+              // Force scroll after 20 attempts even if not fully visible
+              element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              })
+            } else {
+              attempts++
+              rafId = requestAnimationFrame(scrollToElement)
+            }
+          } else if (attempts < maxAttempts) {
+            attempts++
+            rafId = requestAnimationFrame(scrollToElement)
+          }
+        }
+
+        // Start the scroll attempt
+        rafId = requestAnimationFrame(scrollToElement)
+
+        return () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId)
+          }
+        }
       }
     }
   }, [post, loading])
