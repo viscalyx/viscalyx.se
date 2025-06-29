@@ -101,8 +101,11 @@
 /* Prevent clipping of language labels and copy buttons */
 .blog-content pre[class*='language-'] {
   overflow-x: auto !important; /* allow horizontal scrolling */
-  overflow-y: visible !important; /* prevent vertical clipping of label */
+  overflow-y: auto !important; /* prevent uncontrolled height growth */
+  max-height: 500px; /* limit vertical expansion */
   position: relative !important; /* ensure label positioning works */
+  padding-top: 2.5rem !important; /* extra space for label visibility */
+  overflow-clip-margin: 1rem; /* prevent label clipping */
 }
 
 /* DOM language labels only - CSS pseudo-elements removed */
