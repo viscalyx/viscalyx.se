@@ -8,6 +8,7 @@ import LoadingScreen from '@/components/LoadingScreen'
 import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
+import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
 import {
   ArrowLeft,
   BookOpen,
@@ -22,17 +23,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import sanitizeHtml from 'sanitize-html'
-import slugify from 'slugify'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
-}
-
-interface TocItem {
-  id: string
-  text: string
-  level: number
 }
 
 interface BlogPost {
@@ -50,98 +43,6 @@ interface BlogPost {
 interface BlogApiResponse {
   post: BlogPost
   relatedPosts: BlogPost[]
-}
-
-// Configure the slugify function with our preferred options
-const createSlug = (text: string): string => {
-  return slugify(text, {
-    lower: true,
-    strict: false,
-    locale: 'en',
-    trim: true,
-  })
-}
-
-// Function to extract headings from HTML content and create table of contents
-function extractTableOfContents(htmlContent: string): TocItem[] {
-  // Create a temporary DOM element to parse the HTML
-  if (typeof window === 'undefined') {
-    // Server-side: use sanitize-html for text extraction
-    const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
-    const headings: TocItem[] = []
-    let match
-
-    while ((match = headingRegex.exec(htmlContent)) !== null) {
-      const level = Number.parseInt(match[1])
-      const raw = match[2]
-      const text = sanitizeHtml(raw, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
-      const id = createSlug(text)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      headings.push({ id: finalId, text, level })
-    }
-
-    return headings
-  } else {
-    // Client-side: use DOM parsing (for future hydration)
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(htmlContent, 'text/html')
-    const headings = Array.from(doc.querySelectorAll('h2, h3, h4'))
-
-    return headings.map(heading => {
-      const text = heading.textContent || ''
-      const level = Number.parseInt(heading.tagName.charAt(1))
-      const id = createSlug(text)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      return { id: finalId, text, level }
-    })
-  }
-}
-
-// Function to add IDs to headings (content is already sanitized at build time)
-function addHeadingIds(htmlContent: string): string {
-  // Add IDs to headings for table of contents navigation
-  return htmlContent.replace(
-    /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
-    (match, level, attributes, text) => {
-      // Extract clean text content using sanitize-html
-      const cleaned = sanitizeHtml(text, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
-      const id = createSlug(cleaned)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      // Check if id attribute already exists in attributes
-      const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
-      const finalAttributes = hasId
-        ? attributes
-        : `${attributes} id="${finalId}"`
-
-      // Add anchor link functionality with proper class for styling
-      const anchorLink = `<a href="#${finalId}" class="heading-anchor" aria-label="Link to this section" title="Copy link to this section">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-        </svg>
-      </a>`
-
-      // Return the heading with proper ID and anchor link
-      return `<h${level}${finalAttributes} class="heading-with-anchor">${text}${anchorLink}</h${level}>`
-    }
-  )
 }
 
 const BlogPost = ({ params }: BlogPostPageProps) => {

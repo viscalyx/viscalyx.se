@@ -1,5 +1,10 @@
-import sanitizeHtml from 'sanitize-html'
-import slugify from 'slugify'
+import {
+  createSlug,
+  createSlugId,
+  extractCleanText,
+  extractTableOfContents,
+  generateFallbackId,
+} from '@/lib/slug-utils'
 import { describe, expect, it } from 'vitest'
 
 /**
@@ -7,39 +12,7 @@ import { describe, expect, it } from 'vitest'
  */
 
 describe('Blog Anchor Links', () => {
-  // Helper function to simulate the slugify function from the blog component
-  const createSlug = (text: string): string => {
-    return slugify(text, {
-      lower: true,
-      strict: false,
-      locale: 'en',
-      trim: true,
-    })
-  }
-
-  // Helper function to simulate heading ID extraction
-  function extractTableOfContents(htmlContent: string) {
-    const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
-    const headings: Array<{ id: string; text: string; level: number }> = []
-    let match
-
-    while ((match = headingRegex.exec(htmlContent)) !== null) {
-      const level = Number.parseInt(match[1])
-      const raw = match[2]
-      const text = sanitizeHtml(raw, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
-      const id = createSlug(text)
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-      headings.push({ id: finalId, text, level })
-    }
-
-    return headings
-  }
-
-  describe('slugify function', () => {
+  describe('createSlug function', () => {
     it('should convert text to URL-friendly slugs', () => {
       expect(createSlug('Core Principles')).toBe('core-principles')
       expect(createSlug('Why Infrastructure as Code Matters')).toBe(
@@ -86,6 +59,34 @@ describe('Blog Anchor Links', () => {
     it('should handle non-English characters gracefully', () => {
       // cSpell: disable-next-line
       expect(createSlug('Café & Naïve Résumé')).toBe('cafe-and-naive-resume')
+    })
+  })
+
+  describe('createSlugId function', () => {
+    it('should create slug IDs with fallback for empty content', () => {
+      expect(createSlugId('Core Principles', 2)).toBe('core-principles')
+      expect(createSlugId('', 2)).toMatch(/^heading-2-[a-z0-9]+$/)
+      expect(createSlugId('   ', 3)).toMatch(/^heading-3-[a-z0-9]+$/)
+    })
+  })
+
+  describe('extractCleanText function', () => {
+    it('should extract clean text from HTML', () => {
+      expect(extractCleanText('<strong>Bold Text</strong>')).toBe('Bold Text')
+      expect(extractCleanText('<em>Italic</em> and <code>code</code>')).toBe(
+        'Italic and code'
+      )
+      expect(extractCleanText('  Plain text  ')).toBe('Plain text')
+    })
+  })
+
+  describe('generateFallbackId function', () => {
+    it('should generate unique fallback IDs', () => {
+      const id1 = generateFallbackId(2)
+      const id2 = generateFallbackId(2)
+      expect(id1).toMatch(/^heading-2-[a-z0-9]+$/)
+      expect(id2).toMatch(/^heading-2-[a-z0-9]+$/)
+      expect(id1).not.toBe(id2) // Should be unique
     })
   })
 
