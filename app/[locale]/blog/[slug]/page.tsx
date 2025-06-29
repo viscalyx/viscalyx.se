@@ -22,7 +22,7 @@ import { useFormatter, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -211,6 +211,9 @@ const BlogPostContent = ({
   // State for share functionality
   const [shareNotification, setShareNotification] = useState<string>('')
 
+  // Ref for the content container to scope event listeners
+  const contentRef = useRef<HTMLDivElement>(null)
+
   // Track blog analytics
   useBlogAnalytics({
     slug: post.slug,
@@ -317,12 +320,17 @@ const BlogPostContent = ({
       }
     }
 
-    // Add event listener
-    document.addEventListener('click', handleAnchorClick)
+    // Add event listener to content container only
+    const contentElement = contentRef.current
+    if (contentElement) {
+      contentElement.addEventListener('click', handleAnchorClick)
+    }
 
     // Cleanup
     return () => {
-      document.removeEventListener('click', handleAnchorClick)
+      if (contentElement) {
+        contentElement.removeEventListener('click', handleAnchorClick)
+      }
     }
   }, [t])
 
@@ -457,7 +465,10 @@ const BlogPostContent = ({
                 </div>
               )}
 
-              <div className="blog-content prose prose-lg max-w-none">
+              <div
+                className="blog-content prose prose-lg max-w-none"
+                ref={contentRef}
+              >
                 <AlertIconInjector contentKey={post.slug}>
                   {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
                   <div
