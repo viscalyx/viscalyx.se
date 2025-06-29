@@ -15,8 +15,9 @@ export default function CodeBlockEnhancer({
     // Only run if content is loaded
     if (!contentLoaded) return
 
-    // Track containers created by this instance
+    // Track containers and wrappers created by this instance
     const createdContainers: HTMLElement[] = []
+    const enhancedWrappers: HTMLElement[] = []
     const roots = new Map<HTMLElement, Root>()
 
     const addCopyButtons = () => {
@@ -29,6 +30,7 @@ export default function CodeBlockEnhancer({
         // Only process once per wrapper
         if (wrapper.dataset.enhanced === 'true') return
         wrapper.dataset.enhanced = 'true'
+        enhancedWrappers.push(wrapper)
 
         // Find the <pre> element
         const pre = wrapper.querySelector(
@@ -100,14 +102,12 @@ export default function CodeBlockEnhancer({
           }
         })
 
-        // Reset enhanced flag on all wrappers to allow re-enhancement on remount
-        const enhancedWrappers = Array.from(
-          document.querySelectorAll(
-            '.blog-content .code-block-wrapper[data-enhanced="true"]'
-          )
-        ) as HTMLElement[]
+        // Reset enhanced flag only on wrappers enhanced by this instance
         enhancedWrappers.forEach(wrapper => {
-          wrapper.removeAttribute('data-enhanced')
+          // Only reset if the wrapper still exists in the DOM
+          if (wrapper.isConnected) {
+            wrapper.removeAttribute('data-enhanced')
+          }
         })
       }
 
