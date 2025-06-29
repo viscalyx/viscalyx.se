@@ -58,6 +58,14 @@ jobs:
           path: ./coverage
           retention-days: 7
 
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          fail_ci_if_error: false
+          verbose: true
+
       - name: Comment on PR if checks failed
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
