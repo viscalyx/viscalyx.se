@@ -21,6 +21,13 @@ export interface TocItem {
 }
 
 /**
+ * SVG icon for anchor links - Link/chain icon
+ */
+const ANCHOR_LINK_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+</svg>`
+
+/**
  * Default slug configuration
  */
 const DEFAULT_SLUG_OPTIONS: SlugOptions = {
@@ -211,9 +218,7 @@ export function addHeadingIds(
 
       // Add anchor link functionality with proper class for styling
       const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${ariaLabel}" title="${title}">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-        </svg>
+        ${ANCHOR_LINK_ICON}
       </a>`
 
       // Return the heading with proper ID and anchor link
