@@ -49,7 +49,7 @@ export function createSlug(text: string, options: SlugOptions = {}): string {
  * @returns A unique fallback ID
  */
 export function generateFallbackId(level: number): string {
-  return `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
+  return `heading-${level}-${crypto.randomUUID().replace(/-/g, '')}`
 }
 
 /**
