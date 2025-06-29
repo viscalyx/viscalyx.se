@@ -61,6 +61,13 @@ If you haven't already, please read the main [README.md](README.md) for an overv
   - [Tracked Pages](#tracked-pages)
   - [Benefits](#benefits)
   - [Adding New Pages](#adding-new-pages)
+- [Slug Utilities Documentation](#slug-utilities-documentation)
+  - [Features](#features)
+  - [Usage Examples](#usage-examples)
+  - [API Reference](#api-reference)
+  - [Integration Examples](#integration-examples)
+  - [TypeScript Types](#typescript-types)
+  - [Benefits](#benefits-1)
 - [Code of Conduct](#code-of-conduct)
 - [Reporting Bugs](#reporting-bugs)
 - [Asking for Help](#asking-for-help)
@@ -1242,6 +1249,196 @@ To track a new static page:
 1. Add it to the `pageDates` object in `scripts/build-page-dates.js`
 2. Add the corresponding property to the return object in `lib/file-dates.ts`
 3. Update the TypeScript declaration in `lib/page-dates.json.d.ts`
+
+## Slug Utilities Documentation
+
+This module provides reusable functions for creating URL-friendly slugs and managing table of contents functionality in blog articles.
+
+### Features
+
+- **URL-friendly slug generation** from any text content
+- **Table of contents extraction** from HTML content
+- **Heading ID generation** with automatic fallbacks
+- **Anchor link functionality** for headings
+- **Both server-side and client-side** implementations
+
+### Usage Examples
+
+#### Basic Slug Generation
+
+```typescript
+import { createSlug } from '@/lib/slug-utils'
+
+// Basic usage
+const slug = createSlug('Getting Started with React')
+// Returns: 'getting-started-with-react'
+
+// With custom options
+const slug = createSlug('Custom Slug!', { strict: true })
+// Returns: 'custom-slug'
+```
+
+#### Section ID Generation
+
+```typescript
+import { createSlugId } from '@/lib/slug-utils'
+
+// Generate ID for a heading with fallback
+const id = createSlugId('Introduction to TypeScript', 2)
+// Returns: 'introduction-to-typescript'
+
+// If text is empty, generates fallback
+const id = createSlugId('', 2)
+// Returns: 'heading-2-abc123def' (random suffix)
+```
+
+#### Table of Contents Extraction
+
+```typescript
+import { extractTableOfContents } from '@/lib/slug-utils'
+
+const htmlContent = `
+  <h1>Main Title</h1>
+  <h2>Introduction</h2>
+  <h3>Getting Started</h3>
+  <h2>Advanced Topics</h2>
+`
+
+const toc = extractTableOfContents(htmlContent)
+// Returns:
+// [
+//   { id: 'introduction', text: 'Introduction', level: 2 },
+//   { id: 'getting-started', text: 'Getting Started', level: 3 },
+//   { id: 'advanced-topics', text: 'Advanced Topics', level: 2 }
+// ]
+```
+
+#### Adding Heading IDs and Anchor Links
+
+```typescript
+import { addHeadingIds } from '@/lib/slug-utils'
+
+const htmlContent = `
+  <h2>Getting Started</h2>
+  <h3>Installation</h3>
+`
+
+const processedContent = addHeadingIds(htmlContent)
+// Returns HTML with IDs and anchor links added:
+// <h2 id="getting-started" class="heading-with-anchor">
+//   Getting Started
+//   <a href="#getting-started" class="heading-anchor">...</a>
+// </h2>
+```
+
+### API Reference
+
+#### `createSlug(text: string, options?: SlugOptions): string`
+
+Creates a URL-friendly slug from text.
+
+**Parameters:**
+
+- `text`: The text to convert to a slug
+- `options`: Optional configuration object
+  - `lower`: Convert to lowercase (default: true)
+  - `strict`: Use strict mode (default: false)
+  - `locale`: Locale for conversion (default: 'en')
+  - `trim`: Trim whitespace (default: true)
+
+#### `createSlugId(text: string, level: number, options?: SlugOptions): string`
+
+Creates a slug ID with automatic fallback for empty content.
+
+**Parameters:**
+
+- `text`: The text content to create ID from
+- `level`: The heading level (1-6) for fallback generation
+- `options`: Optional slug configuration
+
+#### `extractTableOfContents(htmlContent: string, options?: SlugOptions): TocItem[]`
+
+Extracts table of contents from HTML content. Works both server-side and client-side.
+
+**Parameters:**
+
+- `htmlContent`: HTML content to extract headings from
+- `options`: Optional slug configuration
+
+**Returns:** Array of `TocItem` objects with `id`, `text`, and `level` properties.
+
+#### `addHeadingIds(htmlContent: string, options?: SlugOptions): string`
+
+Adds IDs and anchor links to headings in HTML content.
+
+**Parameters:**
+
+- `htmlContent`: HTML content to process
+- `options`: Optional slug configuration
+
+**Returns:** Processed HTML with IDs and anchor links added.
+
+### Integration Examples
+
+#### Using with React Components
+
+```typescript
+// In a blog post component
+import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
+
+const BlogPost = ({ content }: { content: string }) => {
+  const contentWithIds = addHeadingIds(content)
+  const tableOfContents = extractTableOfContents(contentWithIds)
+
+  return (
+    <div>
+      <TableOfContents items={tableOfContents} />
+      <div dangerouslySetInnerHTML={{ __html: contentWithIds }} />
+    </div>
+  )
+}
+```
+
+#### Custom Section Anchoring
+
+```typescript
+// For any section that needs anchor functionality
+import { createSlugId } from '@/lib/slug-utils'
+
+const sections = ['About Us', 'Our Services', 'Contact Information']
+
+sections.forEach(sectionTitle => {
+  const anchorId = createSlugId(sectionTitle, 2)
+  // Use anchorId for navigation links
+  console.log(`#${anchorId}`) // #about-us, #our-services, #contact-information
+})
+```
+
+### TypeScript Types
+
+```typescript
+interface TocItem {
+  id: string // The slug ID for the heading
+  text: string // The clean text content
+  level: number // The heading level (2-4)
+}
+
+interface SlugOptions {
+  lower?: boolean // Convert to lowercase
+  strict?: boolean // Use strict character filtering
+  locale?: string // Locale for conversion
+  trim?: boolean // Trim whitespace
+}
+```
+
+### Benefits
+
+1. **Consistency**: All slug generation uses the same configuration and rules
+2. **Reusability**: Functions can be used throughout the application
+3. **Maintainability**: Single source of truth for slug logic
+4. **Testing**: Centralized functions are easier to test
+5. **Performance**: Optimized implementations for both server and client
+6. **Accessibility**: Includes proper ARIA labels and semantic markup
 
 ## Code of Conduct
 

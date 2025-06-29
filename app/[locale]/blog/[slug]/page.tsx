@@ -8,6 +8,7 @@ import LoadingScreen from '@/components/LoadingScreen'
 import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
+import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
 import {
   ArrowLeft,
   BookOpen,
@@ -21,17 +22,10 @@ import { useFormatter, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import sanitizeHtml from 'sanitize-html'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
-}
-
-interface TocItem {
-  id: string
-  text: string
-  level: number
 }
 
 interface BlogPost {
@@ -44,97 +38,12 @@ interface BlogPost {
   slug: string
   tags: string[]
   content: string
+  excerpt: string
 }
 
 interface BlogApiResponse {
   post: BlogPost
   relatedPosts: BlogPost[]
-}
-
-// Helper function to create URL-friendly slugs from text
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric characters except spaces and hyphens
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Collapse consecutive hyphens
-    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-    .trim()
-}
-
-// Function to extract headings from HTML content and create table of contents
-function extractTableOfContents(htmlContent: string): TocItem[] {
-  // Create a temporary DOM element to parse the HTML
-  if (typeof window === 'undefined') {
-    // Server-side: use sanitize-html for text extraction
-    const headingRegex = /<h([2-4])[^>]*>(.*?)<\/h[2-4]>/gi
-    const headings: TocItem[] = []
-    let match
-
-    while ((match = headingRegex.exec(htmlContent)) !== null) {
-      const level = Number.parseInt(match[1])
-      const raw = match[2]
-      const text = sanitizeHtml(raw, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
-      const id = slugify(text)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      headings.push({ id: finalId, text, level })
-    }
-
-    return headings
-  } else {
-    // Client-side: use DOM parsing (for future hydration)
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(htmlContent, 'text/html')
-    const headings = Array.from(doc.querySelectorAll('h2, h3, h4'))
-
-    return headings.map(heading => {
-      const text = heading.textContent || ''
-      const level = Number.parseInt(heading.tagName.charAt(1))
-      const id = slugify(text)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      return { id: finalId, text, level }
-    })
-  }
-}
-
-// Function to add IDs to headings (content is already sanitized at build time)
-function addHeadingIds(htmlContent: string): string {
-  // Add IDs to headings for table of contents navigation
-  return htmlContent.replace(
-    /<h([2-4])([^>]*)>(.*?)<\/h[2-4]>/gi,
-    (match, level, attributes, text) => {
-      // Extract clean text content using sanitize-html
-      const cleaned = sanitizeHtml(text, {
-        allowedTags: [],
-        allowedAttributes: {},
-      }).trim()
-      const id = slugify(cleaned)
-
-      // Ensure the id is not empty
-      const finalId =
-        id || `heading-${level}-${Math.random().toString(36).slice(2, 11)}`
-
-      // Check if id attribute already exists in attributes
-      const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
-      const finalAttributes = hasId
-        ? attributes
-        : `${attributes} id="${finalId}"`
-
-      // Return the heading with proper ID
-      return `<h${level}${finalAttributes}>${text}</h${level}>`
-    }
-  )
 }
 
 const BlogPost = ({ params }: BlogPostPageProps) => {
@@ -183,6 +92,53 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
 
     fetchPost()
   }, [params])
+
+  // Handle hash fragment navigation on page load
+  useEffect(() => {
+    // Only run on client side and when content is loaded
+    if (typeof window !== 'undefined' && post && !loading) {
+      const hash = window.location.hash
+      if (hash) {
+        const targetId = hash.substring(1)
+        let rafId: number
+        let attempts = 0
+        const maxAttempts = 100 // Maximum attempts to prevent infinite loop
+
+        const scrollToElement = () => {
+          const element = document.getElementById(targetId)
+
+          if (element && attempts < maxAttempts) {
+            // Check if element exists and has proper dimensions
+            const rect = element.getBoundingClientRect()
+            const isVisible = rect.width > 0 && rect.height > 0
+
+            if (isVisible || attempts > 20) {
+              // Force scroll after 20 attempts even if not fully visible
+              element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              })
+            } else {
+              attempts++
+              rafId = requestAnimationFrame(scrollToElement)
+            }
+          } else if (attempts < maxAttempts) {
+            attempts++
+            rafId = requestAnimationFrame(scrollToElement)
+          }
+        }
+
+        // Start the scroll attempt
+        rafId = requestAnimationFrame(scrollToElement)
+
+        return () => {
+          if (rafId) {
+            cancelAnimationFrame(rafId)
+          }
+        }
+      }
+    }
+  }, [post, loading])
 
   if (loading) {
     return <LoadingScreen message={t('post.loadingBlogPost')} />
@@ -252,6 +208,8 @@ function getFallbackPost(slug: string): BlogPost | null {
       category: 'Template',
       tags: ['Template', 'Guide', 'Writing'],
       slug: 'template',
+      excerpt:
+        'A comprehensive template and guide for creating well-structured blog posts with proper formatting, SEO considerations, and engagement strategies.',
     },
   }
 
@@ -273,10 +231,19 @@ const BlogPostContent = ({
   t,
   format,
 }: BlogPostContentProps) => {
-  // Add IDs to headings for table of contents navigation
-  const contentWithIds = addHeadingIds(post.content)
+  // Add IDs to headings for table of contents navigation with localized accessibility labels
+  const contentWithIds = addHeadingIds(post.content, {}, t)
   // Extract table of contents from the content
   const tableOfContents = extractTableOfContents(contentWithIds)
+
+  // State for share functionality
+  const [shareNotification, setShareNotification] = useState<string>('')
+  const [shareTimeoutId, setShareTimeoutId] = useState<NodeJS.Timeout | null>(
+    null
+  )
+
+  // Ref for the content container to scope event listeners
+  const contentRef = useRef<HTMLDivElement>(null)
 
   // Track blog analytics
   useBlogAnalytics({
@@ -284,6 +251,145 @@ const BlogPostContent = ({
     category: post.category,
     title: post.title,
   })
+
+  // Helper function to clear existing timeout and set a new one
+  const setNotificationWithTimeout = useCallback(
+    (message: string) => {
+      // Clear existing timeout if it exists
+      if (shareTimeoutId) {
+        clearTimeout(shareTimeoutId)
+      }
+
+      setShareNotification(message)
+      const newTimeoutId = setTimeout(() => setShareNotification(''), 3000)
+      setShareTimeoutId(newTimeoutId)
+    },
+    [shareTimeoutId]
+  )
+
+  // Function to handle sharing/copying URL
+  const handleShare = async () => {
+    const url = window.location.href
+
+    // Always try clipboard first as it's more reliable
+    try {
+      await navigator.clipboard.writeText(url)
+      setNotificationWithTimeout(t('post.notifications.linkCopied'))
+      return
+    } catch (clipboardError) {
+      console.warn('Clipboard API failed:', clipboardError)
+      // If clipboard fails, try native share API
+      try {
+        if (navigator.share && navigator.canShare) {
+          const shareData = {
+            title: post.title,
+            text: post.excerpt
+              ? t('post.notifications.shareTextWithExcerpt')
+                  .replace('{excerpt}', post.excerpt)
+                  .replace('{title}', post.title)
+              : t('post.notifications.shareTextFallback').replace(
+                  '{title}',
+                  post.title
+                ),
+            url: url,
+          }
+
+          // Check if the data can be shared
+          if (navigator.canShare(shareData)) {
+            await navigator.share(shareData)
+            return
+          }
+        }
+      } catch (shareError) {
+        console.warn('Native share failed:', shareError)
+      }
+
+      // Final fallback - try to create a temporary input for manual copy
+      try {
+        const textArea = document.createElement('textarea')
+        textArea.value = url
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999999px'
+        textArea.style.top = '-999999px'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        const successful = document.execCommand('copy')
+        document.body.removeChild(textArea)
+
+        if (successful) {
+          setNotificationWithTimeout(t('post.notifications.linkCopied'))
+        } else {
+          throw new Error('execCommand failed')
+        }
+      } catch (fallbackError) {
+        console.error('All share methods failed:', fallbackError)
+        setNotificationWithTimeout(t('post.notifications.shareError'))
+      }
+    }
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutId) {
+        clearTimeout(shareTimeoutId)
+      }
+    }
+  }, [shareTimeoutId])
+
+  // Handle anchor link functionality
+  useEffect(() => {
+    const handleAnchorClick = (e: Event) => {
+      const target = e.target as HTMLAnchorElement
+      if (target.classList.contains('heading-anchor')) {
+        e.preventDefault()
+        const href = target.getAttribute('href')
+        if (href) {
+          const targetId = href.substring(1)
+          const targetElement = document.getElementById(targetId)
+
+          if (targetElement) {
+            // Update URL without triggering navigation
+            window.history.pushState(null, '', href)
+
+            // Scroll to element
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+
+            // Copy link to clipboard
+            const fullUrl = window.location.href
+            if (navigator.clipboard) {
+              navigator.clipboard
+                .writeText(fullUrl)
+                .then(() => {
+                  setNotificationWithTimeout(t('post.notifications.linkCopied'))
+                })
+                .catch(() => {
+                  setNotificationWithTimeout(t('post.notifications.shareError'))
+                })
+            }
+          }
+        }
+      }
+    }
+
+    // Add event listener to content container only
+    const contentElement = contentRef.current
+    if (contentElement) {
+      contentElement.addEventListener('click', handleAnchorClick)
+    }
+
+    // Cleanup
+    return () => {
+      if (contentElement) {
+        contentElement.removeEventListener('click', handleAnchorClick)
+      }
+    }
+  }, [t, setNotificationWithTimeout])
 
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
@@ -342,9 +448,19 @@ const BlogPostContent = ({
                 <span className="text-secondary-600 dark:text-secondary-400">
                   {t('post.share')}
                 </span>
-                <button className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700">
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+                  title={t('post.sharePost')}
+                >
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
+                {shareNotification && (
+                  <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-md">
+                    {shareNotification}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -407,7 +523,10 @@ const BlogPostContent = ({
                 </div>
               )}
 
-              <div className="blog-content prose prose-lg max-w-none">
+              <div
+                className="blog-content prose prose-lg max-w-none"
+                ref={contentRef}
+              >
                 <AlertIconInjector contentKey={post.slug}>
                   {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
                   <div
