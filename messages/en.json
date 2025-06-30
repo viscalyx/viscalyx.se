@@ -813,10 +813,18 @@
       "loadingBlogPost": "Showing blog post...",
       "backToBlog": "Back to Blog",
       "share": "Share:",
+      "sharePost": "Share this post",
       "tableOfContents": "Table of Contents",
       "relatedArticles": "Related Articles",
       "readingProgress": "Reading Progress",
       "tags": "Tags",
+      "notifications": {
+        "linkCopied": "Link copied to clipboard!",
+        "shareError": "Unable to share. Please try copying the link manually.",
+        "shareText": "Read more: {title}",
+        "shareTextWithExcerpt": "{excerpt}\n\nRead more: {title}",
+        "shareTextFallback": "Check out this blog post: {title}"
+      },
       "authorBio": {
         "name": "Johan Ljunggren",
         "title": "Founder and Lead Consultant at Viscalyx",
@@ -826,6 +834,12 @@
         "linkedin": "LinkedIn",
         "github": "GitHub",
         "twitter": "Twitter"
+      }
+    },
+    "accessibility": {
+      "anchorLink": {
+        "ariaLabel": "Link to section: {heading}",
+        "title": "Copy link to section: {heading}"
       }
     },
     "fallback": {

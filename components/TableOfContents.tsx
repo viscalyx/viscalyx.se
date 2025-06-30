@@ -1,12 +1,7 @@
 'use client'
+import { type TocItem } from '@/lib/slug-utils'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
-
-interface TocItem {
-  id: string
-  text: string
-  level: number
-}
 
 interface TableOfContentsProps {
   items: TocItem[]
@@ -136,6 +131,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
+      // Update URL hash in the address bar
+      window.history.pushState(null, '', `#${id}`)
+
       element.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
