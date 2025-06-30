@@ -320,7 +320,7 @@ describe('BlogPost Page - handleShare and anchor-link functionality', () => {
     originalNavigator = navigator
 
     // Mock window.location
-    delete (window as any).location
+    ;(window as any).location = undefined
     ;(window as any).location = {
       ...originalLocation,
       href: 'https://example.com/blog/test-post',
