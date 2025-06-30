@@ -69,7 +69,7 @@
     "jsdom": "^26.1.0",
     "jsonc-eslint-parser": "^2.4.0",
     "postcss": "^8.5.4",
-    "prettier": "^3.6.0",
+    "prettier": "^3.6.2",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "rimraf": "^6.0.1",
