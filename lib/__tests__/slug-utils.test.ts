@@ -335,10 +335,10 @@ describe('slug-utils', () => {
     })
 
     it('uses server-side implementation with custom options when window is undefined', () => {
-      // Mock server environment by deleting global.window
+      // Mock server environment by setting global.window to undefined
       const originalWindow = global.window
-      // @ts-expect-error - Intentionally deleting window to simulate server
-      delete global.window
+      // @ts-expect-error - Intentionally setting window to undefined to simulate server
+      global.window = undefined
 
       const html = `
         <h2>Custom Options Test</h2>
