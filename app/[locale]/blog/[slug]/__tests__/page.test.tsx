@@ -441,8 +441,6 @@ describe('BlogPost Page - handleShare and anchor-link functionality', () => {
         configurable: true,
       })
 
-      document.execCommand = vi.fn().mockReturnValue(true)
-
       render(<TestBlogPostContent post={mockPost} />)
 
       const shareButton = screen.getByTestId('share-button')
