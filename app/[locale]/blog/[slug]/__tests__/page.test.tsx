@@ -289,7 +289,7 @@ const TestBlogPostContent = ({ post }: { post: typeof mockPost }) => {
 
   return (
     <div>
-      <button data-testid="share-button" onClick={handleShare}>
+      <button type="button" data-testid="share-button" onClick={handleShare}>
         Share
       </button>
       {shareNotification && (
