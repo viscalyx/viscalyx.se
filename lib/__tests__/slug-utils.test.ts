@@ -300,10 +300,10 @@ describe('slug-utils', () => {
 
   describe('extractTableOfContents', () => {
     it('uses server-side implementation when window is undefined', () => {
-      // Mock server environment by deleting global.window
+      // Mock server environment by setting global.window to undefined
       const originalWindow = global.window
-      // @ts-expect-error - Intentionally deleting window to simulate server
-      delete global.window
+      // @ts-expect-error - Intentionally setting window to undefined to simulate server
+      global.window = undefined
 
       const html = `
         <h2>Server Test</h2>
