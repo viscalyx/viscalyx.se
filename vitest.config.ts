@@ -21,7 +21,7 @@ export default defineConfig({
       [
         'junit',
         {
-          outputFile: './test-results/test-results.xml', // Output file for JUnit report
+          outputFile: './test-results/test-results-junit.xml', // Output file for JUnit report
           suiteName: 'Vitest Tests', // Name of the test suites
           classNameTemplate: '{filename}', // Template for class names in the report
         },

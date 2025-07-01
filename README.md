@@ -12,6 +12,8 @@ The official website for Viscalyx, built with Next.js and featuring blog content
 - 👥 Team member profiles
 - 💼 Case studies showcase
 - 🌙 Dark/light theme toggle
+- 📊 Bundle analysis with Codecov
+- 🧪 Comprehensive testing with Vitest
 
 ## Tech Stack
 
@@ -20,7 +22,26 @@ The official website for Viscalyx, built with Next.js and featuring blog content
 - **Internationalization**: next-intl
 - **Content**: Markdown files
 - **TypeScript**: Full type safety
+- **Testing**: Vitest with coverage reporting
+- **Bundle Analysis**: Codecov bundle analysis
 - **Deployment**: Cloudflare
+
+## Development
+
+### Bundle Analysis
+
+This project uses Codecov for bundle analysis to monitor bundle size changes:
+
+- Bundle analysis runs automatically on every build in CI
+- Results are posted as PR comments when bundle size changes
+- View detailed bundle analysis on [Codecov](https://app.codecov.io/gh/viscalyx/viscalyx.se)
+- Run local bundle analysis: `npm run analyze:bundle`
+
+The bundle analysis helps identify:
+
+- Bundle size increases/decreases
+- Module dependencies that affect bundle size
+- Performance impact of code changes
 
 ## License
 

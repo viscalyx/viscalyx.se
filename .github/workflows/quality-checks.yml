@@ -65,11 +65,13 @@ jobs:
           file: ./coverage/lcov.info
           fail_ci_if_error: false
           verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
         if: always() && !cancelled()
         uses: codecov/test-results-action@v1
         with:
+          directory: ./test-results
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Comment on PR if checks failed

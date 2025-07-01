@@ -1,0 +1,79 @@
+# Codecov configuration for viscalyx.se
+# https://docs.codecov.com/docs/codecov-yaml
+
+codecov:
+  require_ci_to_pass: no
+  # main should be the baseline for reporting
+  branch: main
+
+coverage:
+  # Coverage report precision
+  precision: 2
+  # Coverage percentage rounding
+  round: down
+  # Coverage range to consider "good"
+  range: 70..100
+
+  # Status checks configuration
+  status:
+    project:
+      default:
+        target: 20%
+        threshold: 1%
+        if_ci_failed: error
+    patch:
+      default:
+        target: 20%
+        threshold: 2%
+        if_ci_failed: error
+
+# Bundle analysis configuration
+bundle_analysis:
+  # Warning threshold for bundle size increases
+  warning_threshold: '5%'
+  # Status type: "informational" (default), True (fail on threshold), False (disable)
+  status: 'informational'
+
+# PR comment configuration
+comment:
+  # Always post comment even if bundle has not changed, set to true to only post comment if bundle changes.
+  # Set to 'bundle_increase' if you want to post comments only when there are bundle size increases greater than the threshold.
+  require_bundle_changes: false
+  # Minimum bundle change threshold to trigger comment
+  #bundle_change_threshold: '500b'
+  # Layout for PR comments
+  layout: 'reach,diff,flags,tree'
+  behavior: default
+  require_changes: false
+  show_carryforward_flags: true
+
+# Ignore certain paths for coverage
+ignore:
+  - 'src/**/__tests__/**'
+  - 'src/**/__mocks__/**'
+  - 'coverage/**'
+  - 'test-results/**'
+  # - '*.config.js'
+  # - '*.config.ts'
+  # - '*.setup.ts'
+  # - 'scripts/**'
+  - 'public/**'
+  - '.next/**'
+  - 'out/**'
+  - 'node_modules/**'
+
+# GitHub configuration
+github_checks:
+  annotations: true
+
+# Flags for different parts of the codebase
+flags:
+  components:
+    paths:
+      - components/
+  app:
+    paths:
+      - app/
+  lib:
+    paths:
+      - lib/
