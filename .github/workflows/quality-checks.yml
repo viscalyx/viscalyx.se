@@ -72,6 +72,7 @@ jobs:
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          search_dir: ./test-results
 
       - name: Comment on PR if checks failed
         if: failure() && github.event_name == 'pull_request'
