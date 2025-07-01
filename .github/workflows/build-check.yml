@@ -32,6 +32,8 @@ jobs:
         env:
           # Treat warnings as errors during build
           CI: true
+          # Codecov token for bundle analysis (optional, can be tokenless)
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Check build output
         run: |

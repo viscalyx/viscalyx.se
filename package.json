@@ -18,6 +18,7 @@
     "spell:check": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --no-progress",
     "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
     "analyze": "ANALYZE=true npm run build",
+    "analyze:bundle": "CODECOV_TOKEN=${CODECOV_TOKEN} npm run build",
     "export": "next export",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -49,6 +50,7 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
+    "@codecov/nextjs-webpack-plugin": "^1.9.1",
     "@cspell/dict-sv": "^2.3.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
