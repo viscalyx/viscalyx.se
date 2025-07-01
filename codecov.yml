@@ -49,8 +49,8 @@ comment:
 
 # Ignore certain paths for coverage
 ignore:
-  - '**/__tests__/**'
-  - '**/__mocks__/**'
+  - 'src/**/__tests__/**'
+  - 'src/**/__mocks__/**'
   - 'coverage/**'
   - 'test-results/**'
   # - '*.config.js'
