@@ -38,6 +38,7 @@ This project uses Codecov for bundle analysis to monitor bundle size changes:
 - Run local bundle analysis: `npm run analyze:bundle`
 
 The bundle analysis helps identify:
+
 - Bundle size increases/decreases
 - Module dependencies that affect bundle size
 - Performance impact of code changes
