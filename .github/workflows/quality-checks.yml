@@ -71,8 +71,8 @@ jobs:
         if: always() && !cancelled()
         uses: codecov/test-results-action@v1
         with:
+          directory: ./test-results
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./test-results
 
       - name: Comment on PR if checks failed
         if: failure() && github.event_name == 'pull_request'
