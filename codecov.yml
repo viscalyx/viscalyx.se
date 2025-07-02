@@ -21,11 +21,19 @@ coverage:
         target: 20%
         threshold: 1%
         if_ci_failed: error
+        flags:
+          - components
+          - app
+          - lib
     patch:
       default:
         target: 20%
         threshold: 2%
         if_ci_failed: error
+        flags:
+          - components
+          - app
+          - lib
 
 # Bundle analysis configuration
 bundle_analysis:
@@ -48,19 +56,19 @@ comment:
   show_carryforward_flags: true
 
 # Ignore certain paths for coverage
-ignore:
-  - 'src/**/__tests__/**'
-  - 'src/**/__mocks__/**'
-  - 'coverage/**'
-  - 'test-results/**'
-  # - '*.config.js'
-  # - '*.config.ts'
-  # - '*.setup.ts'
-  # - 'scripts/**'
-  - 'public/**'
-  - '.next/**'
-  - 'out/**'
-  - 'node_modules/**'
+# ignore:
+#   - 'src/**/__tests__/**'
+#   - 'src/**/__mocks__/**'
+#   - 'coverage/**'
+#   - 'test-results/**'
+#   - '*.config.js'
+#   - '*.config.ts'
+#   - '*.setup.ts'
+#   - 'scripts/**'
+#   - 'public/**'
+#   - '.next/**'
+#   - 'out/**'
+#   - 'node_modules/**'
 
 # GitHub configuration
 github_checks:
@@ -71,9 +79,12 @@ flags:
   components:
     paths:
       - components/
+    carryforward: true
   app:
     paths:
       - app/
+    carryforward: true
   lib:
     paths:
       - lib/
+    carryforward: true
