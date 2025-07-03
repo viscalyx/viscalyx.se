@@ -1,21 +1,11 @@
 'use client'
 
 import { motion, Variants } from 'framer-motion'
-import { ArrowRight, Camera, Mail, MapPin } from 'lucide-react'
+import { ArrowRight, Camera, MapPin } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import {
-  BlueskyIcon,
-  //StackOverflowIcon,
-  //YouTubeIcon,
-  DiscordIcon,
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  MastodonIcon,
-  XIcon,
-} from './SocialIcons'
+import { getTeamMembers } from '@/lib/team'
 
 const Team = () => {
   const t = useTranslations('team')
@@ -26,85 +16,7 @@ const Team = () => {
     router.push(`/${locale}/team/${memberId}`)
   }
 
-  const teamMembers = [
-    {
-      id: 'johlju',
-      name: 'Johan Ljunggren',
-      role: t('members.johlju.role'),
-      image: '/johlju-profile.jpg',
-      bio: t('members.johlju.bio'),
-      location: 'Sweden',
-      specialties: t.raw('members.johlju.specialties') as string[],
-      socialLinks: [
-        {
-          name: 'Email',
-          href: 'mailto:johan.ljunggren@viscalyx.se',
-          icon: Mail,
-        },
-        {
-          name: 'LinkedIn',
-          href: 'https://linkedin.com/in/johlju',
-          icon: LinkedInIcon,
-        },
-        {
-          name: 'Bluesky',
-          href: 'https://bsky.app/profile/johlju.bsky.social',
-          icon: BlueskyIcon,
-        },
-        {
-          name: 'Mastodon',
-          href: 'https://mastodon.social/@johlju',
-          icon: MastodonIcon,
-        },
-        {
-          name: 'X',
-          href: 'https://twitter.com/johlju',
-          icon: XIcon,
-        },
-        {
-          name: 'Discord',
-          href: 'https://discord.com/users/562649782665871360',
-          icon: DiscordIcon,
-        },
-        {
-          name: 'GitHub',
-          href: 'https://github.com/johlju',
-          icon: GitHubIcon,
-        },
-        // {
-        //   name: 'Stack Overflow',
-        //   href: 'https://stackoverflow.com/users/2397355/johan-ljunggren',
-        //   icon: StackOverflowIcon,
-        // },
-        // {
-        //   name: 'YouTube',
-        //   href: 'https://youtube.com/@johlju',
-        //   icon: YouTubeIcon,
-        // },
-        // {
-        //   name: 'Slack',
-        //   href: 'https://dsccommunity.slack.com',
-        //   icon: SlackIcon,
-        // },
-      ],
-    },
-    {
-      id: 'testsson',
-      name: 'Test Testsson',
-      role: t('members.sonja.role'),
-      bio: t('members.sonja.bio'),
-      location: 'Sweden',
-      specialties: t.raw('members.sonja.specialties') as string[],
-      socialLinks: [
-        {
-          name: 'Instagram',
-          href: 'https://instagram.com/testtestsson99934201',
-          icon: InstagramIcon,
-        },
-      ],
-    },
-    // Add more team members here as the company grows
-  ]
+  const teamMembers = getTeamMembers(t)
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },

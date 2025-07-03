@@ -9,6 +9,7 @@ import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
+import { getTeamMemberByName, getAuthorInitials } from '@/lib/team'
 import {
   ArrowLeft,
   BookOpen,
@@ -235,6 +236,11 @@ const BlogPostContent = ({
   const contentWithIds = addHeadingIds(post.content, {}, t)
   // Extract table of contents from the content
   const tableOfContents = extractTableOfContents(contentWithIds)
+
+  // Get team member data for author
+  const tTeam = useTranslations('team')
+  const teamMember = getTeamMemberByName(post.author, tTeam)
+  const authorInitials = getAuthorInitials(post.author)
 
   // State for share functionality
   const [shareNotification, setShareNotification] = useState<string>('')
@@ -556,36 +562,63 @@ const BlogPostContent = ({
               {/* Author Bio */}
               <div className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
                 <div className="flex items-start space-x-4">
-                  <div className="w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                    JL
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden">
+                    {teamMember?.image ? (
+                      <Image
+                        src={teamMember.image}
+                        alt={teamMember.name}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center">
+                        {authorInitials}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
-                      {t('post.authorBio.name')}
+                      {teamMember ? (
+                        <Link 
+                          href={`/team/${teamMember.id}`}
+                          className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                        >
+                          {teamMember.name}
+                        </Link>
+                      ) : (
+                        post.author
+                      )}
                     </h3>
+                    {teamMember && (
+                      <p className="text-primary-600 dark:text-primary-400 font-medium mb-2">
+                        {teamMember.role}
+                      </p>
+                    )}
                     <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-                      {t('post.authorBio.description')}
+                      {teamMember?.bio || ''}
                     </p>
-                    <div className="flex space-x-4">
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.linkedin')}
-                      </a>
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.github')}
-                      </a>
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.twitter')}
-                      </a>
-                    </div>
+                    {teamMember && teamMember.socialLinks.length > 0 && (
+                      <div className="flex flex-wrap gap-4">
+                        {teamMember.socialLinks.slice(0, 3).map(social => (
+                          <a
+                            key={social.name}
+                            href={social.href}
+                            target={social.href.startsWith('mailto:') ? '_self' : '_blank'}
+                            rel={social.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                          >
+                            {social.name}
+                          </a>
+                        ))}
+                        <Link
+                          href={`/team/${teamMember.id}`}
+                          className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors font-medium"
+                        >
+                          {t('post.authorBio.viewProfile')}
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

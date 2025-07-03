@@ -834,7 +834,8 @@
       "authorBio": {
         "name": "Johan Ljunggren",
         "title": "Grundare och Ledande Konsult på Viscalyx",
-        "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av open source. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering."
+        "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av open source. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering.",
+        "viewProfile": "Visa Profil"
       },
       "socialLinks": {
         "linkedin": "LinkedIn",
