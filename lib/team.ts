@@ -99,17 +99,25 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
 }
 
 // Find team member by ID
-export function getTeamMemberById(id: string, t: TranslationFunction): TeamMember | null {
+export function getTeamMemberById(
+  id: string,
+  t: TranslationFunction
+): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return teamMembers.find(member => member.id === id) || null
 }
 
 // Find team member by name (for blog author matching)
-export function getTeamMemberByName(name: string, t: TranslationFunction): TeamMember | null {
+export function getTeamMemberByName(
+  name: string,
+  t: TranslationFunction
+): TeamMember | null {
   const teamMembers = getTeamMembers(t)
-  return teamMembers.find(member => 
-    member.name.toLowerCase() === name.toLowerCase()
-  ) || null
+  return (
+    teamMembers.find(
+      member => member.name.toLowerCase() === name.toLowerCase()
+    ) || null
+  )
 }
 
 // Generate initials from a name

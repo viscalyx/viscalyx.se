@@ -580,7 +580,7 @@ const BlogPostContent = ({
                   <div>
                     <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
                       {teamMember ? (
-                        <Link 
+                        <Link
                           href={`/team/${teamMember.id}`}
                           className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                         >
@@ -604,8 +604,16 @@ const BlogPostContent = ({
                           <a
                             key={social.name}
                             href={social.href}
-                            target={social.href.startsWith('mailto:') ? '_self' : '_blank'}
-                            rel={social.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                            target={
+                              social.href.startsWith('mailto:')
+                                ? '_self'
+                                : '_blank'
+                            }
+                            rel={
+                              social.href.startsWith('mailto:')
+                                ? undefined
+                                : 'noopener noreferrer'
+                            }
                             className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
                           >
                             {social.name}
