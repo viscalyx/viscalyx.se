@@ -19,7 +19,7 @@ import {
   Tag,
   User,
 } from 'lucide-react'
-import { useFormatter, useTranslations } from 'next-intl'
+import { useFormatter, useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -50,6 +50,7 @@ interface BlogApiResponse {
 const BlogPost = ({ params }: BlogPostPageProps) => {
   const t = useTranslations('blog')
   const format = useFormatter()
+  const locale = useLocale()
   const [post, setPost] = useState<BlogPost | null>(null)
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -156,6 +157,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
       loading={loading}
       t={t}
       format={format}
+      locale={locale}
     />
   )
 }
@@ -223,6 +225,7 @@ interface BlogPostContentProps {
   loading: boolean
   t: (key: string) => string
   format: ReturnType<typeof import('next-intl').useFormatter>
+  locale: string
 }
 
 const BlogPostContent = ({
@@ -231,6 +234,7 @@ const BlogPostContent = ({
   loading,
   t,
   format,
+  locale,
 }: BlogPostContentProps) => {
   // Add IDs to headings for table of contents navigation with localized accessibility labels
   const contentWithIds = addHeadingIds(post.content, {}, t)
@@ -581,7 +585,7 @@ const BlogPostContent = ({
                     <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
                       {teamMember ? (
                         <Link
-                          href={`/team/${teamMember.id}`}
+                          href={`/${locale}/team/${teamMember.id}`}
                           className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                         >
                           {teamMember.name}
