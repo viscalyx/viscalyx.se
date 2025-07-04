@@ -90,25 +90,6 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Verify development tools
-        run: |
-          echo "✅ Verifying development tools..."
-          echo "- node: $(node --version)"
-          echo "- npm: $(npm --version)"
-          echo "- npx: $(npx --version)"
-
-          # Verify project tools are available via npx
-          echo "Project tools available:"
-          echo "- TypeScript: $(npx tsc --version)"
-          echo "- Prettier: $(npx prettier --version)"
-          echo "- ESLint: $(npx eslint --version)"
-          echo "- Vitest: $(npx vitest --version)"
-          echo "- Wrangler: $(npx wrangler --version)"
-          echo "- cSpell: $(npx cspell --version)"
-          echo "- OpenNext: $(npx @opennextjs/cloudflare --version)"
-
-          echo "✅ Development tools verified successfully"
-
       - name: Run initial quality checks
         run: |
           echo "✅ Running initial quality checks..."
