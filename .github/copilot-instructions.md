@@ -18,7 +18,7 @@ This document provides instructions for AI agents working on the Viscalyx.se pro
 ### TypeScript Standards
 
 - Use strict TypeScript settings
-- Prefer explicit typing over `any`
+- Prefer to use explicit typing over `any`
 - Use proper interface definitions for props
 - Follow Next.js 15 and React 19 patterns
 - Use functional components with hooks
