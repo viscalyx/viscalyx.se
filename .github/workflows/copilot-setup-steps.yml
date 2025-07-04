@@ -112,9 +112,9 @@ jobs:
       - name: Verify development tools
         run: |
           echo "✅ Verifying development tools..."
-          node --version
-          npm --version
-          npx --version
+          echo "- node: $(node --version)"
+          echo "- npm: $(npm --version)"
+          echo "- npx: $(npx --version)"
 
           # Verify project tools are available via npx
           echo "Project tools available:"
@@ -124,7 +124,7 @@ jobs:
           echo "- Vitest: $(npx vitest --version)"
           echo "- Wrangler: $(npx wrangler --version)"
           echo "- cSpell: $(npx cspell --version)"
-          echo "- OpenNext: $(npx @opennextjs/cloudflare --version 2>/dev/null || echo 'Available via npx')"
+          echo "- OpenNext: $(npx @opennextjs/cloudflare --version)"
 
           echo "✅ Development tools verified successfully"
 
@@ -132,16 +132,7 @@ jobs:
         run: |
           echo "✅ Running initial quality checks..."
 
-          # Run format check
-          npm run format:check
-
-          # Run spell check
-          npm run spell:check
-
-          # Run lint check
-          npm run lint
-
-          # Run tests
-          npm run test
+          # Run check
+          npm run check
 
           echo "✅ Initial quality checks completed successfully"
