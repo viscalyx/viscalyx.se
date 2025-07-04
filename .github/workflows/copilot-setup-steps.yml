@@ -1,0 +1,147 @@
+name: 'Copilot Setup Steps'
+
+# Automatically run the setup steps when they are changed to allow for easy validation, and
+# allow manual testing through the repository's "Actions" tab
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+      # - package.json
+      # - package-lock.json
+      # - tsconfig.json
+      # - next.config.js
+      # - tailwind.config.js
+      # - vitest.config.ts
+      # - i18n.ts
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+      # - package.json
+      # - package-lock.json
+      # - tsconfig.json
+      # - next.config.js
+      # - tailwind.config.js
+      # - vitest.config.ts
+      # - i18n.ts
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    # Set the permissions to the lowest permissions possible needed for your steps.
+    # Copilot will be given its own token for its operations.
+    permissions:
+      # If you want to clone the repository as part of your setup steps, for example to install dependencies, you'll need the `contents: read` permission. If you don't clone the repository in your setup steps, Copilot will do this for you automatically after the steps complete.
+      contents: read
+
+    # You can define any steps you want, and they will run before the agent starts.
+    # If you do not check out your code, Copilot will do this for you.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup environment for Copilot
+        run: |
+          echo "✅ Setting up environment for Copilot..."
+
+          # Create any necessary directories
+          mkdir -p .open-next
+          mkdir -p test-results
+          mkdir -p coverage
+
+          # Set up environment variables that might be needed
+          echo "NODE_ENV=development" >> $GITHUB_ENV
+          echo "CI=true" >> $GITHUB_ENV
+
+      - name: Build blog data
+        run: npm run build:blog
+
+      - name: Build page dates
+        run: npm run build:page-dates
+
+      - name: Run type check
+        run: npm run type-check
+
+      - name: Verify project structure
+        run: |
+          echo "✅ Verifying project structure..."
+          # Check for key directories
+          test -d "app" || (echo "❌ app directory missing" && exit 1)
+          test -d "components" || (echo "❌ components directory missing" && exit 1)
+          test -d "lib" || (echo "❌ lib directory missing" && exit 1)
+          test -d "content" || (echo "❌ content directory missing" && exit 1)
+          test -d "messages" || (echo "❌ messages directory missing" && exit 1)
+          test -d "public" || (echo "❌ public directory missing" && exit 1)
+
+          # Check for key files
+          test -f "next.config.js" || (echo "❌ next.config.js missing" && exit 1)
+          test -f "tailwind.config.js" || (echo "❌ tailwind.config.js missing" && exit 1)
+          test -f "tsconfig.json" || (echo "❌ tsconfig.json missing" && exit 1)
+          test -f "vitest.config.ts" || (echo "❌ vitest.config.ts missing" && exit 1)
+          test -f "i18n.ts" || (echo "❌ i18n.ts missing" && exit 1)
+
+          # Check for generated files
+          test -f "lib/blog-data.json" || (echo "❌ blog-data.json not generated" && exit 1)
+          test -f "lib/page-dates.json" || (echo "❌ page-dates.json not generated" && exit 1)
+
+          echo "✅ Project structure verified successfully"
+
+      # - name: Cache Next.js build
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       ~/.npm
+      #       ${{ github.workspace }}/.next/cache
+      #     # Generate a new cache whenever packages or source files change.
+      #     key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+      #     # If source files changed but packages didn't, rebuild from a prior cache.
+      #     restore-keys: |
+      #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Verify development tools
+        run: |
+          echo "✅ Verifying development tools..."
+          node --version
+          npm --version
+          npx --version
+
+          # Verify project tools are available via npx
+          echo "Project tools available:"
+          echo "- TypeScript: $(npx tsc --version)"
+          echo "- Prettier: $(npx prettier --version)"
+          echo "- ESLint: $(npx eslint --version)"
+          echo "- Vitest: $(npx vitest --version)"
+          echo "- Wrangler: $(npx wrangler --version)"
+          echo "- cSpell: $(npx cspell --version)"
+          echo "- OpenNext: $(npx @opennextjs/cloudflare --version 2>/dev/null || echo 'Available via npx')"
+
+          echo "✅ Development tools verified successfully"
+
+      - name: Run initial quality checks
+        run: |
+          echo "✅ Running initial quality checks..."
+
+          # Run format check
+          npm run format:check
+
+          # Run spell check
+          npm run spell:check
+
+          # Run lint check
+          npm run lint
+
+          # Run tests
+          npm run test
+
+          echo "✅ Initial quality checks completed successfully"
