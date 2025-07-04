@@ -204,8 +204,6 @@ The Copilot environment is configured via `.github/workflows/copilot-setup-steps
 - Blog data generation and i18n support
 - Cloudflare deployment tools
 
-For detailed information, see [docs/copilot-setup.md](docs/copilot-setup.md).
-
 ## Making Changes
 
 ### Code Structure Overview
