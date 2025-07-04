@@ -51,27 +51,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Setup environment for Copilot
-        run: |
-          echo "✅ Setting up environment for Copilot..."
-
-          # Create any necessary directories
-          mkdir -p .open-next
-          mkdir -p test-results
-          mkdir -p coverage
-
-          # Set up environment variables that might be needed
-          echo "NODE_ENV=development" >> $GITHUB_ENV
-          echo "CI=true" >> $GITHUB_ENV
-
       - name: Build blog data
-        run: npm run build:blog
-
-      - name: Build page dates
-        run: npm run build:page-dates
-
-      - name: Run type check
-        run: npm run type-check
+        run: npm run build:sitedata
 
       - name: Verify project structure
         run: |
