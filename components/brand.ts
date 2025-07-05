@@ -1,10 +1,10 @@
 // Brand showcase components and utilities
-export { default as BrandShowcase } from './BrandShowcase'
+export { default as BrandShowcase } from './brandprofile/BrandShowcase'
 
 // Re-export common brand-related components
+export { default as Footer } from './Footer'
 export { default as Header } from './Header'
 export { default as Hero } from './Hero'
-export { default as Footer } from './Footer'
 export { default as ThemeToggle } from './ThemeToggle'
 
 // Brand-related types

@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import BrandShowcase from '../../../components/BrandShowcase'
+import { BrandShowcase } from '../../../components/brandprofile'
 
 export const metadata: Metadata = {
   title: 'Brand Showcase - Viscalyx',
