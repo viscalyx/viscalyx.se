@@ -582,18 +582,43 @@ const BlogPostContent = ({
                     )}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
-                      {teamMember ? (
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
+                        {teamMember ? (
+                          <Link
+                            href={`/${locale}/team/${teamMember.id}`}
+                            className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                          >
+                            {teamMember.name}
+                          </Link>
+                        ) : (
+                          post.author
+                        )}
+                      </h3>
+                      {teamMember && (
                         <Link
-                          href={`/${locale}/team/${teamMember.id}`}
-                          className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                          href={`/team/${teamMember.id}`}
+                          className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
                         >
-                          {teamMember.name}
+                          <span className="font-medium text-sm underline decoration-1 underline-offset-2">
+                            {t('post.authorBio.viewProfile')}
+                          </span>
+                          <svg
+                            className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
                         </Link>
-                      ) : (
-                        post.author
                       )}
-                    </h3>
+                    </div>
                     {teamMember && (
                       <p className="text-primary-600 dark:text-primary-400 font-medium mb-2">
                         {teamMember.role}
@@ -603,8 +628,8 @@ const BlogPostContent = ({
                       {teamMember?.bio || ''}
                     </p>
                     {teamMember && teamMember.socialLinks.length > 0 && (
-                      <div className="flex flex-wrap gap-4">
-                        {teamMember.socialLinks.slice(0, 3).map(social => (
+                      <div className="flex flex-wrap gap-3">
+                        {teamMember.socialLinks.map(social => (
                           <a
                             key={social.name}
                             href={social.href}
@@ -618,17 +643,13 @@ const BlogPostContent = ({
                                 ? undefined
                                 : 'noopener noreferrer'
                             }
-                            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                            className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            aria-label={social.name}
+                            title={social.name}
                           >
-                            {social.name}
+                            <social.icon className="h-4 w-4" />
                           </a>
                         ))}
-                        <Link
-                          href={`/team/${teamMember.id}`}
-                          className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors font-medium"
-                        >
-                          {t('post.authorBio.viewProfile')}
-                        </Link>
                       </div>
                     )}
                   </div>
