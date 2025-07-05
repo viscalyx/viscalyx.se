@@ -4,10 +4,10 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "npm run build:blog && npm run build:page-dates && next dev",
-    "build": "npm run build:blog && npm run build:page-dates && cross-env NODE_ENV=production next build",
-    "build:blog": "node scripts/build-blog-data.js",
-    "build:page-dates": "node scripts/build-page-dates.js",
+    "predev": "npm run build:sitedata",
+    "dev": "next dev",
+    "prebuild": "npm run clean && npm run build:sitedata",
+    "build": "cross-env NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -17,6 +17,7 @@
     "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",
     "spell:check": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --no-progress",
     "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
+    "clean": "rimraf .next out .open-next",
     "analyze": "ANALYZE=true npm run build",
     "analyze:bundle": "CODECOV_TOKEN=${CODECOV_TOKEN} npm run build",
     "export": "next export",
@@ -26,11 +27,13 @@
     "test:ui": "vitest --ui --api.host=0.0.0.0 --api.port=51204",
     "test:security": "node scripts/security-audit.js",
     "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint && npm run test && npm run test:security",
+    "prepreview": "npm run clean && npm run build:sitedata",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "prebuild": "rimraf .next out",
-    "prepreview": "rimraf .open-next"
+    "build:sitedata": "npm run build:blog && npm run build:page-dates",
+    "build:blog": "node scripts/build-blog-data.js",
+    "build:page-dates": "node scripts/build-page-dates.js"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.3.0",
