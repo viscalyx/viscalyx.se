@@ -573,7 +573,7 @@ const BlogPostContent = ({
                         alt={teamMember.name}
                         width={64}
                         height={64}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-full"
                       />
                     ) : (
                       <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center">
