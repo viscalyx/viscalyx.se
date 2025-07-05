@@ -113,7 +113,7 @@
         "bio": "Passionate automation expert with over 30 years of experience in IT. Specialized in PowerShell DSC, DevOps, and open-source contributions. Dedicated to helping organizations streamline their development workflows.",
         "specialties": ["PowerShell DSC", "DevOps", "Azure", "Open Source"]
       },
-      "sonja": {
+      "testsson": {
         "role": "Content Strategist & Social Media Expert",
         "bio": "Creative content strategist and social media expert who brings technical concepts to life through engaging visual storytelling and community building.",
         "specialties": [
@@ -131,7 +131,7 @@
     }
   },
   "teamMember": {
-    "backToTeam": "← Back to Team",
+    "backToTeam": "Back to Team",
     "aboutTitle": "About",
     "connectTitle": "Connect With Me",
     "members": {
@@ -828,7 +828,8 @@
       "authorBio": {
         "name": "Johan Ljunggren",
         "title": "Founder and Lead Consultant at Viscalyx",
-        "description": "Johan is a passionate automation expert with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. He's an active contributor to the PowerShell DSC Community and helps organizations worldwide streamline their infrastructure management."
+        "description": "Johan is a passionate automation expert with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. He's an active contributor to the PowerShell DSC Community and helps organizations worldwide streamline their infrastructure management.",
+        "viewProfile": "View Profile"
       },
       "socialLinks": {
         "linkedin": "LinkedIn",

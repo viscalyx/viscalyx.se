@@ -9,6 +9,7 @@ import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
+import { getAuthorInitials, getTeamMemberByName } from '@/lib/team'
 import {
   ArrowLeft,
   BookOpen,
@@ -18,7 +19,7 @@ import {
   Tag,
   User,
 } from 'lucide-react'
-import { useFormatter, useTranslations } from 'next-intl'
+import { useFormatter, useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -49,6 +50,7 @@ interface BlogApiResponse {
 const BlogPost = ({ params }: BlogPostPageProps) => {
   const t = useTranslations('blog')
   const format = useFormatter()
+  const locale = useLocale()
   const [post, setPost] = useState<BlogPost | null>(null)
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
@@ -155,6 +157,7 @@ const BlogPost = ({ params }: BlogPostPageProps) => {
       loading={loading}
       t={t}
       format={format}
+      locale={locale}
     />
   )
 }
@@ -222,6 +225,7 @@ interface BlogPostContentProps {
   loading: boolean
   t: (key: string) => string
   format: ReturnType<typeof import('next-intl').useFormatter>
+  locale: string
 }
 
 const BlogPostContent = ({
@@ -230,11 +234,17 @@ const BlogPostContent = ({
   loading,
   t,
   format,
+  locale,
 }: BlogPostContentProps) => {
   // Add IDs to headings for table of contents navigation with localized accessibility labels
   const contentWithIds = addHeadingIds(post.content, {}, t)
   // Extract table of contents from the content
   const tableOfContents = extractTableOfContents(contentWithIds)
+
+  // Get team member data for author
+  const tTeam = useTranslations('team')
+  const teamMember = getTeamMemberByName(post.author, tTeam)
+  const authorInitials = getAuthorInitials(post.author)
 
   // State for share functionality
   const [shareNotification, setShareNotification] = useState<string>('')
@@ -556,36 +566,92 @@ const BlogPostContent = ({
               {/* Author Bio */}
               <div className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
                 <div className="flex items-start space-x-4">
-                  <div className="w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                    JL
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden flex-shrink-0">
+                    {teamMember?.image ? (
+                      <Image
+                        src={teamMember.image}
+                        alt={teamMember.name}
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-cover rounded-full"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center rounded-full">
+                        {authorInitials}
+                      </div>
+                    )}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100 mb-2">
-                      {t('post.authorBio.name')}
-                    </h3>
-                    <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-                      {t('post.authorBio.description')}
-                    </p>
-                    <div className="flex space-x-4">
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.linkedin')}
-                      </a>
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.github')}
-                      </a>
-                      <a
-                        href="#"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
-                      >
-                        {t('post.socialLinks.twitter')}
-                      </a>
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
+                        {teamMember ? (
+                          <Link
+                            href={`/${locale}/team/${teamMember.id}`}
+                            className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                          >
+                            {teamMember.name}
+                          </Link>
+                        ) : (
+                          post.author
+                        )}
+                      </h3>
+                      {teamMember && (
+                        <Link
+                          href={`/team/${teamMember.id}`}
+                          className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
+                        >
+                          <span className="font-medium text-sm underline decoration-1 underline-offset-2">
+                            {t('post.authorBio.viewProfile')}
+                          </span>
+                          <svg
+                            className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </Link>
+                      )}
                     </div>
+                    {teamMember && (
+                      <p className="text-primary-600 dark:text-primary-400 font-medium mb-2">
+                        {teamMember.role}
+                      </p>
+                    )}
+                    <p className="text-secondary-600 dark:text-secondary-400 mb-4">
+                      {teamMember?.bio || ''}
+                    </p>
+                    {teamMember && teamMember.socialLinks.length > 0 && (
+                      <div className="flex flex-wrap gap-3">
+                        {teamMember.socialLinks.map(social => (
+                          <a
+                            key={social.name}
+                            href={social.href}
+                            target={
+                              social.href.startsWith('mailto:')
+                                ? '_self'
+                                : '_blank'
+                            }
+                            rel={
+                              social.href.startsWith('mailto:')
+                                ? undefined
+                                : 'noopener noreferrer'
+                            }
+                            className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            aria-label={social.name}
+                            title={social.name}
+                          >
+                            <social.icon className="h-4 w-4" />
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

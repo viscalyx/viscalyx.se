@@ -4,37 +4,14 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import LoadingScreen from '@/components/LoadingScreen'
 import ScrollToTop from '@/components/ScrollToTop'
-import {
-  BlueskyIcon,
-  DiscordIcon,
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  MastodonIcon,
-  XIcon,
-} from '@/components/SocialIcons'
+import { getTeamMemberById, TeamMember } from '@/lib/team'
 import { motion, Variants } from 'framer-motion'
-import { ArrowLeft, Mail, MapPin } from 'lucide-react'
+import { ArrowLeft, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { use, useCallback, useEffect, useState } from 'react'
-
-type TeamMember = {
-  id: string
-  name: string
-  role: string
-  image?: string
-  bio: string
-  location: string
-  specialties: string[]
-  socialLinks: Array<{
-    name: string
-    href: string
-    icon: React.ComponentType<{ className?: string }>
-  }>
-}
+import { use, useEffect, useState } from 'react'
 
 type Props = {
   params: Promise<{ locale: string; memberId: string }>
@@ -48,82 +25,9 @@ export default function TeamMemberPage({ params }: Props) {
   const tGlobal = useTranslations('team')
   const router = useRouter()
 
-  // Get team member data
-  const getTeamMemberData = useCallback(
-    (id: string): TeamMember | null => {
-      const teamMembers: Record<string, TeamMember> = {
-        johlju: {
-          id: 'johlju',
-          name: 'Johan Ljunggren',
-          role: tGlobal('members.johlju.role'),
-          image: '/johlju-profile.jpg',
-          bio: tGlobal('members.johlju.bio'),
-          location: 'Sweden',
-          specialties: tGlobal.raw('members.johlju.specialties') as string[],
-          socialLinks: [
-            {
-              name: 'Email',
-              href: 'mailto:johan.ljunggren@viscalyx.se',
-              icon: Mail,
-            },
-            {
-              name: 'LinkedIn',
-              href: 'https://linkedin.com/in/johlju',
-              icon: LinkedInIcon,
-            },
-            {
-              name: 'Bluesky',
-              href: 'https://bsky.app/profile/johlju.bsky.social',
-              icon: BlueskyIcon,
-            },
-            {
-              name: 'Mastodon',
-              href: 'https://mastodon.social/@johlju',
-              icon: MastodonIcon,
-            },
-            {
-              name: 'X',
-              href: 'https://twitter.com/johlju',
-              icon: XIcon,
-            },
-            {
-              name: 'Discord',
-              href: 'https://discord.gg/dsccommunity',
-              icon: DiscordIcon,
-            },
-            {
-              name: 'GitHub',
-              href: 'https://github.com/johlju',
-              icon: GitHubIcon,
-            },
-          ],
-        },
-        testsson: {
-          id: 'testsson',
-          name: 'Test Testsson',
-          role: tGlobal('members.sonja.role'),
-          image: undefined, // No image available
-          bio: tGlobal('members.sonja.bio'),
-          location: 'Sweden',
-          specialties: tGlobal.raw('members.sonja.specialties') as string[],
-          socialLinks: [
-            {
-              name: 'Instagram',
-              href: 'https://instagram.com/testtestsson99934201',
-              icon: InstagramIcon,
-            },
-          ],
-        },
-      }
-
-      return teamMembers[id as keyof typeof teamMembers] || null
-    },
-    [tGlobal]
-  )
-
   useEffect(() => {
     const memberId = resolvedParams.memberId
-    const memberData = getTeamMemberData(memberId)
+    const memberData = getTeamMemberById(memberId, tGlobal)
 
     if (!memberData) {
       setIsLoading(false)
@@ -133,7 +37,7 @@ export default function TeamMemberPage({ params }: Props) {
 
     setMember(memberData)
     setIsLoading(false)
-  }, [resolvedParams.memberId, router, getTeamMemberData])
+  }, [resolvedParams.memberId, router, tGlobal])
 
   if (isLoading || !member) {
     return <LoadingScreen />
