@@ -297,4 +297,4 @@ const Navigation = () => (
 - Test on multiple breakpoints
 - Ensure proper container classes are used
 
-For more detailed information, refer to the [Complete Brand Style Guide](../docs/brand-style-guide.md).
+For more detailed information, refer to the [Complete Brand Style Guide](./brand-style-guide.md).
