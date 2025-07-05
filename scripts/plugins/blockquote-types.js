@@ -123,7 +123,7 @@ function processGitHubAlert(node) {
  */
 function remarkBlockquoteTypes(visit) {
   return tree => {
-    visit(tree, 'blockquote', (node, index, parent) => {
+    visit(tree, 'blockquote', node => {
       processGitHubAlert(node)
     })
   }
