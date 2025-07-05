@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
 interface ColorItem {
   name: string
@@ -15,37 +16,88 @@ interface ColorSwatchProps {
   className?: string
 }
 
-const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => (
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className={`group relative ${className}`}
-  >
-    <div
-      className={`w-full h-20 rounded-lg border-2 border-secondary-200 dark:border-secondary-700 ${
-        color.name.includes('50') || color.name.includes('100')
-          ? 'border-secondary-300 dark:border-secondary-600'
-          : ''
-      }`}
-      style={{ backgroundColor: color.hex }}
-    />
-    <div className="mt-2 space-y-1">
-      <p className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
-        {color.name}
-      </p>
-      <p className="text-xs text-secondary-600 dark:text-secondary-400">
-        {color.hex}
-      </p>
-      <p className="text-xs text-secondary-500 dark:text-secondary-500">
-        {color.rgb}
-      </p>
-      {color.usage && (
-        <p className="text-xs text-secondary-600 dark:text-secondary-400 italic">
-          {color.usage}
+const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
+  const [copiedValue, setCopiedValue] = useState<string | null>(null)
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  const handleCopy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopiedValue(value)
+
+      // Reset the copied state after 2 seconds
+      setTimeout(() => {
+        setCopiedValue(null)
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy color: ', err)
+    }
+  }
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className={`group relative ${className}`}
+    >
+      <button
+        onClick={() => handleCopy(color.hex)}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        className="w-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-lg"
+        aria-label={`Copy ${color.name} color ${color.hex}`}
+        tabIndex={0}
+      >
+        <div
+          className={`w-full h-20 rounded-lg border-2 border-secondary-200 dark:border-secondary-700 ${
+            color.name.includes('50') || color.name.includes('100')
+              ? 'border-secondary-300 dark:border-secondary-600'
+              : ''
+          }`}
+          style={{ backgroundColor: color.hex }}
+        />
+
+        {/* Tooltip */}
+        {showTooltip && (
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 dark:bg-gray-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+            {copiedValue ? 'Copied!' : 'Click to copy'}
+          </div>
+        )}
+
+        {/* Copy confirmation */}
+        {copiedValue === color.hex && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+            <span className="text-white text-sm font-medium">Copied!</span>
+          </div>
+        )}
+      </button>
+
+      <div className="mt-2 space-y-1">
+        <p className="text-sm font-medium text-secondary-900 dark:text-secondary-100">
+          {color.name}
         </p>
-      )}
-    </div>
-  </motion.div>
-)
+        <button
+          onClick={() => handleCopy(color.hex)}
+          className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors cursor-pointer"
+          tabIndex={0}
+        >
+          {color.hex}
+        </button>
+        <button
+          onClick={() => handleCopy(color.rgb)}
+          className="text-xs text-secondary-500 dark:text-secondary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors cursor-pointer"
+          tabIndex={0}
+        >
+          {color.rgb}
+        </button>
+        {color.usage && (
+          <p className="text-xs text-secondary-600 dark:text-secondary-400 italic">
+            {color.usage}
+          </p>
+        )}
+      </div>
+    </motion.div>
+  )
+}
 
 const ColorShowcase = () => {
   const t = useTranslations('brandProfile.colorShowcase')
