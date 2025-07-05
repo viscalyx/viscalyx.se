@@ -9,7 +9,7 @@ import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
-import { getTeamMemberByName, getAuthorInitials } from '@/lib/team'
+import { getAuthorInitials, getTeamMemberByName } from '@/lib/team'
 import {
   ArrowLeft,
   BookOpen,
@@ -566,17 +566,17 @@ const BlogPostContent = ({
               {/* Author Bio */}
               <div className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
                 <div className="flex items-start space-x-4">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden flex-shrink-0">
                     {teamMember?.image ? (
                       <Image
                         src={teamMember.image}
                         alt={teamMember.name}
                         width={64}
                         height={64}
-                        className="w-full h-full object-cover rounded-full"
+                        className="w-16 h-16 object-cover rounded-full"
                       />
                     ) : (
-                      <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center">
+                      <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center rounded-full">
                         {authorInitials}
                       </div>
                     )}
