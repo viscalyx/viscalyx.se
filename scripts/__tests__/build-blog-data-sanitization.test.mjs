@@ -6,11 +6,8 @@
  * formatting and syntax highlighting.
  */
 
-import { vi } from 'vitest'
-// import fs from 'node:fs'
-// import path from 'node:path'
-// import matter from 'gray-matter'
 import sanitizeHtml from 'sanitize-html'
+import { vi } from 'vitest'
 
 // Mock the build script functions for testing
 vi.mock('node:fs')
