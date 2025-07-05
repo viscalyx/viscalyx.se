@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import React from 'react'
 import { vi } from 'vitest'
 import AccessibilityShowcase from '../brandprofile/AccessibilityShowcase'
 
@@ -47,7 +48,7 @@ vi.mock('next-intl', () => ({
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
-  Download: ({ className }: any) => (
+  Download: ({ className }: React.SVGProps<SVGSVGElement>) => (
     <span className={className} data-testid="download" />
   ),
 }))
