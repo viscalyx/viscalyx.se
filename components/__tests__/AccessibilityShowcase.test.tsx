@@ -6,44 +6,37 @@ import AccessibilityShowcase from '../brandprofile/AccessibilityShowcase'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: (key: string) => {
-    const translations: Record<string, any> = {
-      'brandProfile.accessibility': {
-        'focusStates.title': 'Focus States',
-        'focusStates.description':
-          'Clear focus indicators for keyboard navigation',
-        'focusStates.buttonText': 'Focusable Button',
-        'focusStates.inputPlaceholder': 'Focus me with Tab',
-        'focusStates.linkText': 'Focusable Link',
-        'colorContrast.title': 'Color Contrast',
-        'colorContrast.description': 'WCAG AA compliant color combinations',
-        'colorContrast.goodContrast': 'Good Contrast',
-        'colorContrast.screenReaderSupport': 'Screen Reader Support',
-        'colorContrast.contrastText':
-          'This text has sufficient contrast ratio (4.5:1+)',
-        'colorContrast.whiteOnPrimary': 'White text on primary background',
-        'colorContrast.ariaText':
-          'All interactive elements include proper ARIA labels',
-        'colorContrast.downloadLabel': 'Download brand guidelines document',
-        'colorContrast.downloadText': 'Download',
-        'semanticHtml.title': 'Semantic HTML',
-        'semanticHtml.description':
-          'Proper heading hierarchy and semantic elements',
-        'semanticHtml.heading1': 'Heading 1 (Main Title)',
-        'semanticHtml.heading2': 'Heading 2 (Section Title)',
-        'semanticHtml.heading3': 'Heading 3 (Subsection)',
-        'semanticHtml.paragraphText':
-          'Regular paragraph text with proper hierarchy and semantic structure.',
-      },
+  useTranslations: (namespace: string) => {
+    // Define typed translations for accessibility showcase
+    const translations: Record<string, string> = {
+      'focusStates.title': 'Focus States',
+      'focusStates.description':
+        'Clear focus indicators for keyboard navigation',
+      'focusStates.buttonText': 'Focusable Button',
+      'focusStates.inputPlaceholder': 'Focus me with Tab',
+      'focusStates.linkText': 'Focusable Link',
+      'colorContrast.title': 'Color Contrast',
+      'colorContrast.description': 'WCAG AA compliant color combinations',
+      'colorContrast.goodContrast': 'Good Contrast',
+      'colorContrast.screenReaderSupport': 'Screen Reader Support',
+      'colorContrast.contrastText':
+        'This text has sufficient contrast ratio (4.5:1+)',
+      'colorContrast.whiteOnPrimary': 'White text on primary background',
+      'colorContrast.ariaText':
+        'All interactive elements include proper ARIA labels',
+      'colorContrast.downloadLabel': 'Download brand guidelines document',
+      'colorContrast.downloadText': 'Download',
+      'semanticHtml.title': 'Semantic HTML',
+      'semanticHtml.description':
+        'Proper heading hierarchy and semantic elements',
+      'semanticHtml.heading1': 'Heading 1 (Main Title)',
+      'semanticHtml.heading2': 'Heading 2 (Section Title)',
+      'semanticHtml.heading3': 'Heading 3 (Subsection)',
+      'semanticHtml.paragraphText':
+        'Regular paragraph text with proper hierarchy and semantic structure.',
     }
-    return (translationKey: string) => {
-      const keys = translationKey.split('.')
-      let value: any = translations[key]
-      for (const k of keys) {
-        value = value?.[k]
-      }
-      return value || translationKey
-    }
+
+    return (key: string): string => translations[key] || key
   },
 }))
 
@@ -58,24 +51,24 @@ describe('AccessibilityShowcase', () => {
   it('renders component with proper structure', () => {
     render(<AccessibilityShowcase />)
 
-    // Check for the presence of translation keys (since our mock returns the keys)
-    expect(screen.getByText('focusStates.title')).toBeInTheDocument()
-    expect(screen.getByText('colorContrast.title')).toBeInTheDocument()
-    expect(screen.getByText('semanticHtml.title')).toBeInTheDocument()
+    // Check for the actual rendered text values
+    expect(screen.getByText('Focus States')).toBeInTheDocument()
+    expect(screen.getByText('Color Contrast')).toBeInTheDocument()
+    expect(screen.getByText('Semantic HTML')).toBeInTheDocument()
   })
 
   it('renders interactive elements', () => {
     render(<AccessibilityShowcase />)
 
-    // Check for buttons, inputs, and links
+    // Check for buttons, inputs, and links using their actual text content
     expect(
-      screen.getByRole('button', { name: 'focusStates.buttonText' })
+      screen.getByRole('button', { name: 'Focusable Button' })
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'colorContrast.downloadLabel' })
+      screen.getByRole('button', { name: 'Download brand guidelines document' })
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'focusStates.linkText' })
+      screen.getByRole('link', { name: 'Focusable Link' })
     ).toBeInTheDocument()
     expect(screen.getByRole('textbox')).toBeInTheDocument()
   })
@@ -83,12 +76,12 @@ describe('AccessibilityShowcase', () => {
   it('renders content with proper translation keys', () => {
     render(<AccessibilityShowcase />)
 
-    // Check for various translation keys being used
-    expect(screen.getByText('focusStates.buttonText')).toBeInTheDocument()
-    expect(screen.getByText('colorContrast.downloadText')).toBeInTheDocument()
-    expect(screen.getByText('semanticHtml.heading1')).toBeInTheDocument()
-    expect(screen.getByText('semanticHtml.heading2')).toBeInTheDocument()
-    expect(screen.getByText('semanticHtml.heading3')).toBeInTheDocument()
+    // Check for various translated text content
+    expect(screen.getByText('Focusable Button')).toBeInTheDocument()
+    expect(screen.getByText('Download')).toBeInTheDocument()
+    expect(screen.getByText('Heading 1 (Main Title)')).toBeInTheDocument()
+    expect(screen.getByText('Heading 2 (Section Title)')).toBeInTheDocument()
+    expect(screen.getByText('Heading 3 (Subsection)')).toBeInTheDocument()
   })
 
   it('renders proper semantic HTML structure', () => {
@@ -112,10 +105,10 @@ describe('AccessibilityShowcase', () => {
       render(<AccessibilityShowcase />)
 
       const focusableButton = screen.getByRole('button', {
-        name: 'focusStates.buttonText',
+        name: 'Focusable Button',
       })
       const downloadButton = screen.getByRole('button', {
-        name: 'colorContrast.downloadLabel',
+        name: 'Download brand guidelines document',
       })
 
       // Click the focusable button
@@ -133,14 +126,14 @@ describe('AccessibilityShowcase', () => {
 
       // Get all interactive elements in expected tab order
       const focusableButton = screen.getByRole('button', {
-        name: 'focusStates.buttonText',
+        name: 'Focusable Button',
       })
       const textInput = screen.getByRole('textbox')
       const focusableLink = screen.getByRole('link', {
-        name: 'focusStates.linkText',
+        name: 'Focusable Link',
       })
       const downloadButton = screen.getByRole('button', {
-        name: 'colorContrast.downloadLabel',
+        name: 'Download brand guidelines document',
       })
 
       // Start from the first interactive element
@@ -184,7 +177,7 @@ describe('AccessibilityShowcase', () => {
       render(<AccessibilityShowcase />)
 
       const focusableLink = screen.getByRole('link', {
-        name: 'focusStates.linkText',
+        name: 'Focusable Link',
       })
 
       // Focus the link via keyboard
@@ -201,14 +194,14 @@ describe('AccessibilityShowcase', () => {
 
       // Get interactive elements
       const focusableButton = screen.getByRole('button', {
-        name: 'focusStates.buttonText',
+        name: 'Focusable Button',
       })
       const textInput = screen.getByRole('textbox')
       const focusableLink = screen.getByRole('link', {
-        name: 'focusStates.linkText',
+        name: 'Focusable Link',
       })
       const downloadButton = screen.getByRole('button', {
-        name: 'colorContrast.downloadLabel',
+        name: 'Download brand guidelines document',
       })
 
       // Start from the last interactive element
@@ -233,10 +226,10 @@ describe('AccessibilityShowcase', () => {
       render(<AccessibilityShowcase />)
 
       const focusableButton = screen.getByRole('button', {
-        name: 'focusStates.buttonText',
+        name: 'Focusable Button',
       })
       const downloadButton = screen.getByRole('button', {
-        name: 'colorContrast.downloadLabel',
+        name: 'Download brand guidelines document',
       })
 
       // Focus and press enter on focusable button
@@ -255,10 +248,10 @@ describe('AccessibilityShowcase', () => {
       render(<AccessibilityShowcase />)
 
       const focusableButton = screen.getByRole('button', {
-        name: 'focusStates.buttonText',
+        name: 'Focusable Button',
       })
       const downloadButton = screen.getByRole('button', {
-        name: 'colorContrast.downloadLabel',
+        name: 'Download brand guidelines document',
       })
 
       // Focus and press space on focusable button
