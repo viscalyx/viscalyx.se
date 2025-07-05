@@ -321,7 +321,7 @@ variable:    #fb923c  /* orange-400 */
 
 ### CSS Organization
 
-```
+```text
 app/
 ├── globals.css              # Global styles, components
 ├── prism-theme.css          # Code syntax highlighting
@@ -332,7 +332,7 @@ tailwind.config.js           # Tailwind configuration
 
 ### Component Structure
 
-```
+```text
 components/
 ├── Header.tsx               # Navigation with logo
 ├── Hero.tsx                 # Hero section with branding
