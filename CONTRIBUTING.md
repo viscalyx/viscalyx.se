@@ -24,6 +24,10 @@ If you haven't already, please read the main [README.md](README.md) for an overv
     - [Internationalization (i18n)](#internationalization-i18n)
   - [Component Development](#component-development)
   - [Styling](#styling)
+- [Brand Guidelines & Visual Style Guide](#brand-guidelines--visual-style-guide)
+  - [Brand Assets](#brand-assets)
+  - [Style Guide](#style-guide)
+  - [Usage Examples](#brand-usage-examples)
 - [Submitting Contributions](#submitting-contributions)
   - [Commit Messages](#commit-messages)
   - [Pull Request (PR) Process](#pull-request-pr-process)
@@ -565,6 +569,36 @@ The blog system supports GitHub-style alerts for special content callouts. These
 - Choose the alert type based on the urgency and type of information
 
 The alerts are processed during the build phase and include proper semantic HTML for accessibility.
+
+## Brand Guidelines & Visual Style Guide
+
+When contributing to Viscalyx.se, it's important to follow our brand guidelines and visual style guide to maintain consistency across the website. Our brand assets and style guidelines are documented in the `/docs` directory and should be referenced when making design-related changes.
+
+### Brand Assets
+
+For information about available brand assets, including logos, icons, and other visual elements, see:
+
+📄 **[Brand Assets README](docs/brand-assets-readme.md)** - Overview of all available brand assets, file formats, and usage guidelines.
+
+### Style Guide
+
+Our comprehensive visual style guide covers colors, typography, spacing, and design principles:
+
+📄 **[Brand Style Guide](docs/brand-style-guide.md)** - Detailed documentation of our visual identity, including color palettes, typography, spacing systems, and design principles.
+
+### Brand Usage Examples
+
+For practical examples of how to implement our brand guidelines in code and design:
+
+📄 **[Brand Usage Examples](docs/brand-usage-examples.md)** - Code examples and implementation patterns for maintaining brand consistency.
+
+**Key Points:**
+
+- Always reference the brand guidelines when adding new visual elements
+- Maintain consistency with existing color schemes and typography
+- Follow the documented spacing and layout principles
+- Ensure any new design elements align with our visual identity
+- When in doubt, check the style guide or ask for guidance in your PR
 
 ## Submitting Contributions
 

@@ -1,17 +1,17 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Mail, ExternalLink, Heart } from 'lucide-react'
+import { ExternalLink, Heart, Mail } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import {
+  BlueskyIcon,
   GitHubIcon,
   LinkedInIcon,
-  XIcon,
-  BlueskyIcon,
   MastodonIcon,
+  XIcon,
 } from './SocialIcons'
-import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
-import { useTranslations, useLocale } from 'next-intl'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -61,7 +61,7 @@ const Footer = () => {
     resources: [
       { name: tNav('blog'), href: '/blog' },
       { name: tNav('caseStudies'), href: '/case-studies' },
-      { name: t('documentation'), href: '#' },
+      { name: t('brandProfile'), href: '/brand-showcase' },
       { name: t('community'), href: '#' },
     ],
     support: [
