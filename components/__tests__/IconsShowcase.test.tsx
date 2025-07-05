@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
-import IconsShowcase from '../IconsShowcase'
+import IconsShowcase from '../brandprofile/IconsShowcase'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -95,7 +95,7 @@ vi.mock('framer-motion', () => ({
 }))
 
 // Mock custom icon components
-vi.mock('../../SocialIcons', () => ({
+vi.mock('../SocialIcons', () => ({
   GitHubIcon: ({ className }: { className?: string }) => (
     <div data-testid="github-icon" className={className} />
   ),
@@ -128,7 +128,7 @@ vi.mock('../../SocialIcons', () => ({
   ),
 }))
 
-vi.mock('../../BlogIcons', () => ({
+vi.mock('../BlogIcons', () => ({
   CopyIcon: ({ className }: { className?: string }) => (
     <div data-testid="copy-icon" className={className} />
   ),

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { vi } from 'vitest'
-import BrandShowcase from '../BrandShowcase'
+import BrandShowcase from '../brandprofile/BrandShowcase'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -62,36 +62,79 @@ vi.mock('lucide-react', () => ({
   Square: ({ size }: any) => <span data-testid="square-icon" />,
   Type: ({ size }: any) => <span data-testid="type-icon" />,
   Sparkles: ({ size }: any) => <span data-testid="sparkles-icon" />,
+  // Icons used by showcase components
+  AlertCircle: ({ size }: any) => <span data-testid="alert-circle-icon" />,
+  AlertTriangle: ({ size }: any) => <span data-testid="alert-triangle-icon" />,
+  ArrowLeft: ({ size }: any) => <span data-testid="arrow-left-icon" />,
+  ArrowRight: ({ size }: any) => <span data-testid="arrow-right-icon" />,
+  ArrowUp: ({ size }: any) => <span data-testid="arrow-up-icon" />,
+  Award: ({ size }: any) => <span data-testid="award-icon" />,
+  BarChart: ({ size }: any) => <span data-testid="bar-chart-icon" />,
+  Camera: ({ size }: any) => <span data-testid="camera-icon" />,
+  Check: ({ size }: any) => <span data-testid="check-icon" />,
+  CheckCircle: ({ size }: any) => <span data-testid="check-circle-icon" />,
+  Circle: ({ size }: any) => <span data-testid="circle-icon" />,
+  Clock: ({ size }: any) => <span data-testid="clock-icon" />,
+  Cloud: ({ size }: any) => <span data-testid="cloud-icon" />,
+  Code: ({ size }: any) => <span data-testid="code-icon" />,
+  Database: ({ size }: any) => <span data-testid="database-icon" />,
+  Download: ({ size }: any) => <span data-testid="download-icon" />,
+  ExternalLink: ({ size }: any) => <span data-testid="external-link-icon" />,
+  GitBranch: ({ size }: any) => <span data-testid="git-branch-icon" />,
+  Globe: ({ size }: any) => <span data-testid="globe-icon" />,
+  Heart: ({ size }: any) => <span data-testid="heart-icon" />,
+  Info: ({ size }: any) => <span data-testid="info-icon" />,
+  Layers: ({ size }: any) => <span data-testid="layers-icon" />,
+  Lightbulb: ({ size }: any) => <span data-testid="lightbulb-icon" />,
+  Loader2: ({ size }: any) => <span data-testid="loader2-icon" />,
+  Mail: ({ size }: any) => <span data-testid="mail-icon" />,
+  MapPin: ({ size }: any) => <span data-testid="map-pin-icon" />,
+  Menu: ({ size }: any) => <span data-testid="menu-icon" />,
+  MessageSquare: ({ size }: any) => <span data-testid="message-square-icon" />,
+  Monitor: ({ size }: any) => <span data-testid="monitor-icon" />,
+  Moon: ({ size }: any) => <span data-testid="moon-icon" />,
+  Phone: ({ size }: any) => <span data-testid="phone-icon" />,
+  Quote: ({ size }: any) => <span data-testid="quote-icon" />,
+  Search: ({ size }: any) => <span data-testid="search-icon" />,
+  Send: ({ size }: any) => <span data-testid="send-icon" />,
+  Settings: ({ size }: any) => <span data-testid="settings-icon" />,
+  Shield: ({ size }: any) => <span data-testid="shield-icon" />,
+  Smartphone: ({ size }: any) => <span data-testid="smartphone-icon" />,
+  Star: ({ size }: any) => <span data-testid="star-icon" />,
+  Sun: ({ size }: any) => <span data-testid="sun-icon" />,
+  Target: ({ size }: any) => <span data-testid="target-icon" />,
+  TrendingUp: ({ size }: any) => <span data-testid="trending-up-icon" />,
+  X: ({ size }: any) => <span data-testid="x-icon" />,
 }))
 
 // Mock the showcase components
-vi.mock('../ColorShowcase', () => ({
+vi.mock('../brandprofile/ColorShowcase', () => ({
   default: () => <div data-testid="color-showcase">Color Showcase Content</div>,
 }))
 
-vi.mock('../TypographyShowcase', () => ({
+vi.mock('../brandprofile/TypographyShowcase', () => ({
   default: () => (
     <div data-testid="typography-showcase">Typography Showcase Content</div>
   ),
 }))
 
-vi.mock('../ComponentsShowcase', () => ({
+vi.mock('../brandprofile/ComponentsShowcase', () => ({
   default: () => (
     <div data-testid="components-showcase">Components Showcase Content</div>
   ),
 }))
 
-vi.mock('../IconsShowcase', () => ({
+vi.mock('../brandprofile/IconsShowcase', () => ({
   default: () => <div data-testid="icons-showcase">Icons Showcase Content</div>,
 }))
 
-vi.mock('../AnimationsShowcase', () => ({
+vi.mock('../brandprofile/AnimationsShowcase', () => ({
   default: () => (
     <div data-testid="animations-showcase">Animations Showcase Content</div>
   ),
 }))
 
-vi.mock('../AccessibilityShowcase', () => ({
+vi.mock('../brandprofile/AccessibilityShowcase', () => ({
   default: () => (
     <div data-testid="accessibility-showcase">
       Accessibility Showcase Content
