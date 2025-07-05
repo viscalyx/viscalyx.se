@@ -4,7 +4,7 @@ This directory contains all brand-related assets and documentation for Viscalyx.
 
 ## 📁 Directory Structure
 
-```
+```text
 docs/
 ├── brand-style-guide.md     # Complete visual style guide
 ├── brand-assets-readme.md   # This file
@@ -70,7 +70,7 @@ className = 'section-padding' // Standard section padding
 - Always use the favicon as the brand mark
 - Pair with "Viscalyx" wordmark in brand font
 - Maintain proper spacing and contrast
-- Use gradient text effect for brand name
+- Use the gradient text effect for the brand name
 
 ### Color Guidelines
 
