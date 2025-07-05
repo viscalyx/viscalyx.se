@@ -83,6 +83,13 @@ import {
   WarningIcon,
 } from '../BlogIcons'
 
+// Interface for icon objects
+interface IconItem {
+  name: string
+  component: React.ComponentType<{ className?: string }>
+  usage: string
+}
+
 const IconsShowcase: React.FC = () => {
   const t = useTranslations('brandProfile')
 
@@ -462,7 +469,11 @@ const IconsShowcase: React.FC = () => {
     ],
   }
 
-  const renderIconGrid = (icons: any[], title: string, description: string) => (
+  const renderIconGrid = (
+    icons: IconItem[],
+    title: string,
+    description: string
+  ) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -572,7 +583,14 @@ const IconsShowcase: React.FC = () => {
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
                     <AlertIcon
-                      type={type as any}
+                      type={
+                        type as
+                          | 'note'
+                          | 'tip'
+                          | 'important'
+                          | 'warning'
+                          | 'caution'
+                      }
                       className="w-5 h-5 text-primary-600 dark:text-primary-400"
                     />
                   </div>

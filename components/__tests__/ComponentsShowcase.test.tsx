@@ -2,6 +2,41 @@ import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import ComponentsShowcase from '../brandprofile/ComponentsShowcase'
 
+// Mock next-intl
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => {
+    const translations = {
+      'buttons.title': 'Buttons',
+      'buttons.description':
+        'Primary and secondary button styles with hover states',
+      'buttons.primary': 'Primary Button',
+      'buttons.secondary': 'Secondary Button',
+      'buttons.disabled': 'Disabled Button',
+      'cards.title': 'Cards',
+      'cards.description': 'Standard card component with hover effects',
+      'cards.cardTitle': 'Card Title',
+      'cards.cardDescription':
+        'This is a sample card component with hover effects and proper spacing.',
+      'cards.anotherCard': 'Another Card',
+      'cards.anotherCardDescription':
+        'Cards maintain consistent styling and responsive behavior.',
+      'alerts.title': 'Alerts',
+      'alerts.description': 'Status indicators and notification styles',
+      'alerts.success': 'Success message',
+      'alerts.warning': 'Warning message',
+      'alerts.error': 'Error message',
+      'alerts.info': 'Info message',
+      'forms.title': 'Forms',
+      'forms.description': 'Input fields and form controls',
+      'forms.emailLabel': 'Email',
+      'forms.emailPlaceholder': 'Enter your email',
+      'forms.messageLabel': 'Message',
+      'forms.messagePlaceholder': 'Your message here',
+    }
+    return translations[key as keyof typeof translations] || key
+  },
+}))
+
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
   AlertCircle: ({ className }: any) => (

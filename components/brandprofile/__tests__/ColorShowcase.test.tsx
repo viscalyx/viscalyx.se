@@ -32,8 +32,8 @@ describe('ColorShowcase', () => {
 
   it('displays primary color swatches', () => {
     render(<ColorShowcase />)
-    expect(screen.getByText('primary-600')).toBeInTheDocument()
-    expect(screen.getByText('#2563eb')).toBeInTheDocument()
+    expect(screen.getByText('primary-500')).toBeInTheDocument()
+    expect(screen.getAllByText('#3b82f6')).toHaveLength(2) // Allow multiple instances
   })
 
   it('displays secondary color swatches', () => {

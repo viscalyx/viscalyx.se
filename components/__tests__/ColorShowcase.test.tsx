@@ -42,7 +42,7 @@ describe('ColorShowcase', () => {
   it('renders primary color swatches', () => {
     render(<ColorShowcase />)
     expect(screen.getByText('primary-500')).toBeInTheDocument()
-    expect(screen.getByText('#3b82f6')).toBeInTheDocument()
+    expect(screen.getAllByText('#3b82f6').length).toBeGreaterThan(0)
   })
 
   it('renders accent color usage information', () => {

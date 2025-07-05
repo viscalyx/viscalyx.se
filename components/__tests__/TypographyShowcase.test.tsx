@@ -30,7 +30,7 @@ describe('TypographyShowcase', () => {
     render(<TypographyShowcase />)
     expect(screen.getByText('text-base')).toBeInTheDocument()
     expect(screen.getByText('16px')).toBeInTheDocument()
-    expect(screen.getByText('Body text')).toBeInTheDocument()
+    expect(screen.getAllByText('Body text')).toHaveLength(2) // Allow multiple instances
   })
 
   it('renders font weight examples', () => {

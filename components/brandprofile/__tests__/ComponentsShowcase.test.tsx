@@ -37,6 +37,13 @@ vi.mock('next-intl', () => ({
   },
 }))
 
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  },
+}))
+
 describe('ComponentsShowcase', () => {
   it('renders all component sections with localized content', () => {
     render(<ComponentsShowcase />)

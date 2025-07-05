@@ -9,6 +9,73 @@ vi.mock('next-intl', () => ({
       'icons.title': 'Icon Library',
       'icons.description':
         'Comprehensive collection of custom and third-party icons used throughout the Viscalyx brand and applications, designed for consistency and optimal performance.',
+      'icons.categories.customSocialIcons.title': 'Custom Social Icons',
+      'icons.categories.customSocialIcons.description':
+        'Custom social platform icons designed for the Viscalyx brand.',
+      'icons.categories.customBlogIcons.title': 'Custom Blog Icons',
+      'icons.categories.customBlogIcons.description':
+        'Icons designed specifically for blog functionality.',
+      'icons.categories.lucideIcons.title': 'Lucide Icons',
+      'icons.categories.lucideIcons.description':
+        'Third-party icons from Lucide React for {category}.',
+      'icons.categories.dynamicAlertIcons.title': 'Dynamic Alert Icons',
+      'icons.categories.dynamicAlertIcons.description':
+        'Icons that change based on alert type.',
+      'icons.usageGuidelines.title': 'Icon Usage Guidelines',
+      'icons.usageGuidelines.customIcons.title': 'Custom Icons',
+      'icons.usageGuidelines.lucideIcons.title': 'Lucide React Icons',
+      'icons.implementationExamples.title': 'Implementation Examples',
+      'icons.implementationExamples.customSocialIcons.title':
+        'Custom Social Icons',
+      'icons.implementationExamples.blogAlertIcons.title': 'Blog Alert Icons',
+      'icons.implementationExamples.lucideReactIcons.title':
+        'Lucide React Icons',
+      'icons.socialIconsUsage.github': 'Footer, Open Source section',
+      'icons.socialIconsUsage.linkedin': 'Footer, Team profiles',
+      'icons.socialIconsUsage.twitter': 'Footer, Social sharing',
+      'icons.socialIconsUsage.bluesky': 'Footer, Social sharing',
+      'icons.socialIconsUsage.mastodon': 'Footer, Social sharing',
+      'icons.socialIconsUsage.stackoverflow': 'Footer, Community links',
+      'icons.socialIconsUsage.youtube': 'Footer, Video content',
+      'icons.socialIconsUsage.discord': 'Footer, Community links',
+      'icons.socialIconsUsage.instagram': 'Footer, Social sharing',
+      'icons.socialIconsUsage.slack': 'Footer, Community links',
+      'icons.blogIconsUsage.copy': 'Code blocks, Copy buttons',
+      'icons.blogIconsUsage.checkmark': 'Success states, Confirmations',
+      'icons.blogIconsUsage.chevronUp': 'Scroll to top, Expandable content',
+      'icons.blogIconsUsage.chevronDown': 'Dropdown menus, Expandable content',
+      'icons.blogIconsUsage.note': 'Alert callouts, Information blocks',
+      'icons.blogIconsUsage.tip': 'Alert callouts, Tips',
+      'icons.blogIconsUsage.important': 'Alert callouts, Important notes',
+      'icons.blogIconsUsage.warning': 'Alert callouts, Warnings',
+      'icons.blogIconsUsage.caution': 'Alert callouts, Cautions',
+      'icons.lucideIconsUsage.menu': 'Header navigation toggle',
+      'icons.lucideIconsUsage.search': 'Search functionality',
+      'icons.lucideIconsUsage.externalLink': 'External links',
+      'icons.lucideIconsUsage.arrowLeft': 'Back navigation',
+      'icons.lucideIconsUsage.arrowRight': 'Forward navigation',
+      'icons.lucideIconsUsage.arrowUp': 'Scroll to top',
+      'icons.lucideIconsUsage.sun': 'Light theme toggle',
+      'icons.lucideIconsUsage.moon': 'Dark theme toggle',
+      'icons.lucideIconsUsage.monitor': 'System theme toggle',
+      'icons.usageGuidelines.customIcons.items.0':
+        'Use currentColor for theme consistency',
+      'icons.usageGuidelines.customIcons.items.1':
+        'Optimized SVG paths for performance',
+      'icons.usageGuidelines.customIcons.items.2':
+        'Consistent sizing with className props',
+      'icons.usageGuidelines.customIcons.items.3':
+        'Semantic roles and aria-labels',
+      'icons.usageGuidelines.customIcons.items.4':
+        'Memoized for React performance',
+      'icons.usageGuidelines.lucideIcons.items.0': 'Tree-shakeable imports',
+      'icons.usageGuidelines.lucideIcons.items.1':
+        'Consistent stroke-width of 2',
+      'icons.usageGuidelines.lucideIcons.items.2':
+        'Standard sizing (w-4 h-4, w-5 h-5)',
+      'icons.usageGuidelines.lucideIcons.items.3':
+        'Semantic naming conventions',
+      'icons.usageGuidelines.lucideIcons.items.4': 'Accessible by default',
     }
     return translations[key] || key
   },
@@ -96,11 +163,13 @@ vi.mock('../../BlogIcons', () => ({
 
 // Mock Lucide React icons
 vi.mock('lucide-react', () => {
-  const createMockIcon =
-    (name: string) =>
-    ({ className }: { className?: string }) => (
+  const createMockIcon = (name: string) => {
+    const MockIcon = ({ className }: { className?: string }) => (
       <div data-testid={`lucide-${name.toLowerCase()}`} className={className} />
     )
+    MockIcon.displayName = `MockIcon${name}`
+    return MockIcon
+  }
 
   return {
     Copy: createMockIcon('copy'),
