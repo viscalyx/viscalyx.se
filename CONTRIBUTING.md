@@ -186,6 +186,24 @@ This project uses TypeScript. To check for type errors:
 npm run type-check
 ```
 
+## GitHub Copilot Support
+
+This project includes a customized development environment for GitHub Copilot's coding agent:
+
+- **Pre-configured Setup**: Automatic dependency installation and project configuration
+- **Quality Assurance**: Built-in linting, formatting, and testing
+- **Development Tools**: All necessary tools pre-installed and ready to use
+- **Project-Specific**: Optimized for Next.js, TypeScript, and Tailwind CSS workflows
+
+The Copilot environment is configured via `.github/workflows/copilot-setup-steps.yml` and includes:
+
+- Node.js 22 with npm caching
+- TypeScript strict mode checking
+- ESLint and Prettier formatting
+- Vitest testing environment
+- Blog data generation and i18n support
+- Cloudflare deployment tools
+
 ## Making Changes
 
 ### Code Structure Overview
