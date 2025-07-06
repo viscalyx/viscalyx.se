@@ -114,20 +114,28 @@ const ComponentsShowcase = () => {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+            <label
+              htmlFor="showcase-email"
+              className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
+            >
               {t('forms.emailLabel')}
             </label>
             <input
+              id="showcase-email"
               type="email"
               className="w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-secondary-100"
               placeholder={t('forms.emailPlaceholder')}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+            <label
+              htmlFor="showcase-message"
+              className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2"
+            >
               {t('forms.messageLabel')}
             </label>
             <textarea
+              id="showcase-message"
               className="w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-secondary-100"
               rows={4}
               placeholder={t('forms.messagePlaceholder')}
