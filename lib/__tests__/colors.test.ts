@@ -26,7 +26,7 @@ describe('colors utility', () => {
     it('should return secondary colors with correct structure', () => {
       const colors = getSecondaryColors()
 
-      expect(colors).toHaveLength(10)
+      expect(colors).toHaveLength(11)
       expect(colors[0]).toHaveProperty('name', 'secondary-50')
       expect(colors[0]).toHaveProperty('hex', '#f8fafc')
       expect(colors[0]).toHaveProperty('rgb', 'rgb(248, 250, 252)')
@@ -63,7 +63,7 @@ describe('colors utility', () => {
       expect(allColors).toHaveProperty('accent')
 
       expect(allColors.primary).toHaveLength(10)
-      expect(allColors.secondary).toHaveLength(10)
+      expect(allColors.secondary).toHaveLength(11)
       expect(allColors.accent).toHaveLength(4)
     })
   })
