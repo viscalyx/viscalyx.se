@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 import { vi } from 'vitest'
 import ComponentsShowcase from '../brandprofile/ComponentsShowcase'
 
@@ -40,16 +41,18 @@ vi.mock('next-intl', () => ({
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
-  AlertCircle: ({ className }: any) => (
+  AlertCircle: ({ className }: React.HTMLAttributes<HTMLSpanElement>) => (
     <span className={className} data-testid="alert-circle" />
   ),
-  Check: ({ className }: any) => (
+  Check: ({ className }: React.HTMLAttributes<HTMLSpanElement>) => (
     <span className={className} data-testid="check" />
   ),
-  Info: ({ className }: any) => (
+  Info: ({ className }: React.HTMLAttributes<HTMLSpanElement>) => (
     <span className={className} data-testid="info" />
   ),
-  X: ({ className }: any) => <span className={className} data-testid="x" />,
+  X: ({ className }: React.HTMLAttributes<HTMLSpanElement>) => (
+    <span className={className} data-testid="x" />
+  ),
 }))
 
 describe('ComponentsShowcase', () => {
