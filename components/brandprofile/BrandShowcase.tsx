@@ -89,13 +89,21 @@ const BrandShowcase = () => {
             transition={{ delay: 0.3 }}
             className="flex justify-center mb-8"
           >
-            <div className="flex space-x-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
+            <div
+              role="tablist"
+              aria-label={t('tabNavigation')}
+              className="flex space-x-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg"
+            >
               {tabs.map(tab => {
                 const Icon = tab.icon
                 return (
                   <button
                     key={tab.id}
+                    id={`tab-${tab.id}`}
                     type="button"
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
+                    aria-controls={`tabpanel-${tab.id}`}
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-200 ${
                       activeTab === tab.id
@@ -117,6 +125,9 @@ const BrandShowcase = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
+            role="tabpanel"
+            id={`tabpanel-${activeTab}`}
+            aria-labelledby={`tab-${activeTab}`}
             className="space-y-12"
           >
             {renderActiveTab()}

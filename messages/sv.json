@@ -977,6 +977,7 @@
   "brandProfile": {
     "title": "Viscalyx Varumärkesprofil",
     "description": "Visuell stilguide och komponentbibliotek för konsekvent varumärkesupplevelse",
+    "tabNavigation": "Varumärkesprofil navigation",
     "tabs": {
       "colors": "Färger",
       "typography": "Typografi",

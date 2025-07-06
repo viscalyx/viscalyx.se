@@ -971,6 +971,7 @@
   "brandProfile": {
     "title": "Viscalyx Brand Profile",
     "description": "Visual style guide and component library for consistent brand experience",
+    "tabNavigation": "Brand profile navigation",
     "tabs": {
       "colors": "Colors",
       "typography": "Typography",
