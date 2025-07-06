@@ -40,7 +40,10 @@ const AccessibilityShowcase = () => {
         description={t('focusStates.description')}
       >
         <div className="space-y-4">
-          <button type="button" className="btn-primary focus:outline-none focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-800">
+          <button
+            type="button"
+            className="btn-primary focus:outline-none focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-800"
+          >
             {t('focusStates.buttonText')}
           </button>
           <input
