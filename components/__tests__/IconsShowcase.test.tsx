@@ -89,8 +89,9 @@ vi.mock('framer-motion', () => ({
       ...props
     }: {
       children: React.ReactNode
-      [key: string]: any
-    }) => <div {...props}>{children}</div>,
+    } & React.HTMLAttributes<HTMLDivElement>) => (
+      <div {...props}>{children}</div>
+    ),
   },
 }))
 
