@@ -15,6 +15,15 @@ vi.mock('next-intl', () => ({
   },
 }))
 
+// Mock framer-motion
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  },
+  useInView: () => true,
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+}))
+
 describe('TypographyShowcase', () => {
   it('renders font sizes section', () => {
     render(<TypographyShowcase />)
