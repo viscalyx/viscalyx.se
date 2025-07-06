@@ -70,6 +70,7 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
           {color.name}
         </p>
         <button
+          type="button"
           onClick={() => handleCopy(color.hex)}
           className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors cursor-pointer"
           tabIndex={0}
@@ -77,6 +78,7 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
           {color.hex}
         </button>
         <button
+          type="button"
           onClick={() => handleCopy(color.rgb)}
           className="text-xs text-secondary-500 dark:text-secondary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors cursor-pointer"
           tabIndex={0}
