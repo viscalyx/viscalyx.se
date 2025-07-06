@@ -9,7 +9,7 @@ Viscalyx.se is a modern web development consultancy focused on automation, produ
 ### Primary Logo
 
 - **Main Logo**: Viscalyx wordmark with accompanying favicon
-- **Favicon**: 32x32px favicon used as brand mark
+- **Favicon**: 32×32 px brand mark
 - **Usage**: Logo should always maintain proper spacing and contrast
 - **Variations**:
   - Light mode: Dark text on light background
