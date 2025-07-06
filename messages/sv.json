@@ -1137,13 +1137,13 @@
     },
     "animationsShowcase": {
       "fadeIn": {
-        "title": "Fade In Animation",
+        "title": "Intonings-animation",
         "description": "Mjuk opacitetsövergång för innehållsavslöjanden",
         "content": "Detta element tonar in mjukt"
       },
       "slideUp": {
-        "title": "Slide Up Animation",
-        "description": "Innehåll glider upp med fade in-effekt",
+        "title": "Glid-upp-animation",
+        "description": "Innehåll glider upp med intonings-effekt",
         "content": "Detta element glider upp underifrån"
       },
       "hoverInteractions": {
