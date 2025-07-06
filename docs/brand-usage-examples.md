@@ -58,8 +58,14 @@ import {
 
 ```tsx
 import { BRAND_COLORS } from '@/components/brand'
+import { ReactNode } from 'react'
 
-const CustomAlert = ({ type, children }) => {
+interface CustomAlertProps {
+  type: 'info' | 'success' | 'warning' | 'error'
+  children: ReactNode
+}
+
+const CustomAlert = ({ type, children }: CustomAlertProps) => {
   const colors = {
     info: 'bg-blue-50 border-blue-200 text-blue-800',
     success: 'bg-green-50 border-green-200 text-green-800',
