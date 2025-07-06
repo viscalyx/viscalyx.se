@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import AnimationsShowcase from '../brandprofile/AnimationsShowcase'
 
@@ -23,9 +23,21 @@ vi.mock('next-intl', () => ({
 }))
 
 // Mock framer-motion
+const mockMotionDiv = vi.fn()
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: (props: any) => {
+      mockMotionDiv(props)
+      const {
+        children,
+        whileHover,
+        initial,
+        animate,
+        transition,
+        ...restProps
+      } = props
+      return <div {...restProps}>{children}</div>
+    },
   },
 }))
 
@@ -43,6 +55,10 @@ vi.mock('lucide-react', () => ({
 }))
 
 describe('AnimationsShowcase', () => {
+  beforeEach(() => {
+    mockMotionDiv.mockClear()
+  })
+
   it('renders fade in animation section', () => {
     render(<AnimationsShowcase />)
     expect(screen.getByText('Fade In Animation')).toBeInTheDocument()
@@ -72,5 +88,189 @@ describe('AnimationsShowcase', () => {
     expect(screen.getByTestId('sparkles')).toBeInTheDocument()
     expect(screen.getByTestId('circle')).toBeInTheDocument()
     expect(screen.getByTestId('square')).toBeInTheDocument()
+  })
+
+  it('applies correct motion props for fade in animation', () => {
+    render(<AnimationsShowcase />)
+
+    // Check that the fade in animation has correct props
+    const fadeInCall = mockMotionDiv.mock.calls.find(
+      call =>
+        call[0].initial &&
+        call[0].initial.opacity === 0 &&
+        call[0].animate &&
+        call[0].animate.opacity === 1
+    )
+
+    expect(fadeInCall).toBeTruthy()
+    expect(fadeInCall?.[0]?.transition?.duration).toBe(0.5)
+  })
+
+  it('applies correct motion props for slide up animation', () => {
+    render(<AnimationsShowcase />)
+
+    // Check that the slide up animation has correct props
+    const slideUpCall = mockMotionDiv.mock.calls.find(
+      call =>
+        call[0].initial &&
+        call[0].initial.opacity === 0 &&
+        call[0].initial.y === 20 &&
+        call[0].animate &&
+        call[0].animate.opacity === 1 &&
+        call[0].animate.y === 0
+    )
+
+    expect(slideUpCall).toBeTruthy()
+    expect(slideUpCall?.[0]?.transition?.duration).toBe(0.5)
+    expect(slideUpCall?.[0]?.transition?.ease).toBe('easeOut')
+  })
+
+  it('applies correct motion props for hover interactions', () => {
+    render(<AnimationsShowcase />)
+
+    // Check scale hover animation
+    const scaleHoverCall = mockMotionDiv.mock.calls.find(
+      call => call[0].whileHover && call[0].whileHover.scale === 1.05
+    )
+    expect(scaleHoverCall).toBeTruthy()
+
+    // Check rotate hover animation
+    const rotateHoverCall = mockMotionDiv.mock.calls.find(
+      call => call[0].whileHover && call[0].whileHover.rotate === 5
+    )
+    expect(rotateHoverCall).toBeTruthy()
+
+    // Check lift hover animation
+    const liftHoverCall = mockMotionDiv.mock.calls.find(
+      call => call[0].whileHover && call[0].whileHover.y === -5
+    )
+    expect(liftHoverCall).toBeTruthy()
+  })
+
+  describe('hover interactions', () => {
+    it('handles hover events on scale interaction element', () => {
+      render(<AnimationsShowcase />)
+
+      // Find the scale hover element by its text content
+      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      expect(scaleElement).toBeInTheDocument()
+
+      // Test hover events
+      fireEvent.mouseEnter(scaleElement!)
+      fireEvent.mouseLeave(scaleElement!)
+
+      // The element should remain accessible after hover events
+      expect(scaleElement).toBeInTheDocument()
+    })
+
+    it('handles hover events on rotate interaction element', () => {
+      render(<AnimationsShowcase />)
+
+      // Find the rotate hover element by its text content
+      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      expect(rotateElement).toBeInTheDocument()
+
+      // Test hover events
+      fireEvent.mouseEnter(rotateElement!)
+      fireEvent.mouseLeave(rotateElement!)
+
+      // The element should remain accessible after hover events
+      expect(rotateElement).toBeInTheDocument()
+    })
+
+    it('handles hover events on lift interaction element', () => {
+      render(<AnimationsShowcase />)
+
+      // Find the lift hover element by its text content
+      const liftElement = screen.getByText('Hover to lift').closest('div')
+      expect(liftElement).toBeInTheDocument()
+
+      // Test hover events
+      fireEvent.mouseEnter(liftElement!)
+      fireEvent.mouseLeave(liftElement!)
+
+      // The element should remain accessible after hover events
+      expect(liftElement).toBeInTheDocument()
+    })
+
+    it('ensures hover elements have proper cursor pointer styling', () => {
+      render(<AnimationsShowcase />)
+
+      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      const liftElement = screen.getByText('Hover to lift').closest('div')
+
+      // Check that all interactive elements have cursor-pointer class
+      expect(scaleElement).toHaveClass('cursor-pointer')
+      expect(rotateElement).toHaveClass('cursor-pointer')
+      expect(liftElement).toHaveClass('cursor-pointer')
+    })
+
+    it('verifies hover elements contain expected icons', () => {
+      render(<AnimationsShowcase />)
+
+      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      const liftElement = screen.getByText('Hover to lift').closest('div')
+
+      // Check that each hover element contains its respective icon
+      expect(scaleElement).toContainElement(screen.getByTestId('sparkles'))
+      expect(rotateElement).toContainElement(screen.getByTestId('circle'))
+      expect(liftElement).toContainElement(screen.getByTestId('square'))
+    })
+
+    it('tests accessibility of hover elements', () => {
+      render(<AnimationsShowcase />)
+
+      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      const liftElement = screen.getByText('Hover to lift').closest('div')
+
+      // Test keyboard accessibility (elements should be focusable)
+      fireEvent.focus(scaleElement!)
+      fireEvent.blur(scaleElement!)
+
+      fireEvent.focus(rotateElement!)
+      fireEvent.blur(rotateElement!)
+
+      fireEvent.focus(liftElement!)
+      fireEvent.blur(liftElement!)
+
+      // Elements should remain accessible after focus events
+      expect(scaleElement).toBeInTheDocument()
+      expect(rotateElement).toBeInTheDocument()
+      expect(liftElement).toBeInTheDocument()
+    })
+
+    it('simulates complete hover interaction flow', () => {
+      render(<AnimationsShowcase />)
+
+      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      const liftElement = screen.getByText('Hover to lift').closest('div')
+
+      // Test multiple hover events in sequence
+      fireEvent.mouseEnter(scaleElement!)
+      fireEvent.mouseLeave(scaleElement!)
+      fireEvent.mouseEnter(rotateElement!)
+      fireEvent.mouseLeave(rotateElement!)
+      fireEvent.mouseEnter(liftElement!)
+      fireEvent.mouseLeave(liftElement!)
+
+      // Test rapid hover events
+      fireEvent.mouseEnter(scaleElement!)
+      fireEvent.mouseEnter(scaleElement!) // Re-enter while already hovering
+      fireEvent.mouseLeave(scaleElement!)
+
+      // All elements should remain functional after extensive interaction
+      expect(scaleElement).toBeInTheDocument()
+      expect(rotateElement).toBeInTheDocument()
+      expect(liftElement).toBeInTheDocument()
+
+      // Verify that hover elements still contain their icons after interaction
+      expect(scaleElement).toContainElement(screen.getByTestId('sparkles'))
+      expect(rotateElement).toContainElement(screen.getByTestId('circle'))
+      expect(liftElement).toContainElement(screen.getByTestId('square'))
+    })
   })
 })
