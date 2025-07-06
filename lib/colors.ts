@@ -13,6 +13,15 @@ export interface ColorItem {
   usage?: string
 }
 
+// Define types for Tailwind color configuration
+export interface ColorPalette {
+  [key: string]: string
+}
+
+export interface ThemeColors {
+  [colorKey: string]: ColorPalette | string | undefined
+}
+
 // Resolve the full Tailwind configuration
 const fullConfig = resolveConfig(tailwindConfig)
 
@@ -37,11 +46,24 @@ const extractColorPalette = (
   colorKey: string,
   fallbackColor: string
 ): ColorItem[] => {
-  const colors = fullConfig.theme?.colors as unknown as Record<string, unknown>
-  const colorPalette = colors?.[colorKey] as Record<string, string>
+  const colors = fullConfig.theme?.colors as unknown as ThemeColors | undefined
 
-  if (!colorPalette || typeof colorPalette !== 'object') {
-    // Fallback to default color if config is not available
+  if (!colors) {
+    console.warn(
+      `Theme colors not found in Tailwind config, using fallback colors`
+    )
+    return [
+      {
+        name: `${colorKey}-500`,
+        hex: fallbackColor,
+        rgb: hexToRgb(fallbackColor),
+      },
+    ]
+  }
+
+  const colorValue = colors[colorKey]
+
+  if (!colorValue) {
     console.warn(
       `${colorKey} colors not found in Tailwind config, using fallback colors`
     )
@@ -54,11 +76,38 @@ const extractColorPalette = (
     ]
   }
 
-  return Object.entries(colorPalette).map(([key, hex]) => ({
-    name: `${colorKey}-${key}`,
-    hex,
-    rgb: hexToRgb(hex),
-  }))
+  // Handle single color (string) vs color palette (object)
+  if (typeof colorValue === 'string') {
+    return [
+      {
+        name: colorKey,
+        hex: colorValue,
+        rgb: hexToRgb(colorValue),
+      },
+    ]
+  }
+
+  // Handle color palette (object)
+  if (typeof colorValue === 'object' && colorValue !== null) {
+    const colorPalette = colorValue as ColorPalette
+    return Object.entries(colorPalette).map(([key, hex]) => ({
+      name: `${colorKey}-${key}`,
+      hex,
+      rgb: hexToRgb(hex),
+    }))
+  }
+
+  // Fallback if color value is neither string nor object
+  console.warn(
+    `${colorKey} color value has unexpected type, using fallback colors`
+  )
+  return [
+    {
+      name: `${colorKey}-500`,
+      hex: fallbackColor,
+      rgb: hexToRgb(fallbackColor),
+    },
+  ]
 }
 
 /**
