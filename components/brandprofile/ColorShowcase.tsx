@@ -34,6 +34,7 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
       className={`group relative ${className}`}
     >
       <button
+        type="button"
         onClick={() => handleCopy(color.hex)}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
