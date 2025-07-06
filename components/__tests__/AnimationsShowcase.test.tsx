@@ -155,9 +155,13 @@ describe('AnimationsShowcase', () => {
       const scaleElement = screen.getByText('Hover to scale').closest('div')
       expect(scaleElement).toBeInTheDocument()
 
-      // Test hover events
-      fireEvent.mouseEnter(scaleElement!)
-      fireEvent.mouseLeave(scaleElement!)
+      // Test hover events with explicit null check
+      if (scaleElement) {
+        fireEvent.mouseEnter(scaleElement)
+        fireEvent.mouseLeave(scaleElement)
+      } else {
+        throw new Error('Scale element not found')
+      }
 
       // The element should remain accessible after hover events
       expect(scaleElement).toBeInTheDocument()
@@ -170,9 +174,13 @@ describe('AnimationsShowcase', () => {
       const rotateElement = screen.getByText('Hover to rotate').closest('div')
       expect(rotateElement).toBeInTheDocument()
 
-      // Test hover events
-      fireEvent.mouseEnter(rotateElement!)
-      fireEvent.mouseLeave(rotateElement!)
+      // Test hover events with explicit null check
+      if (rotateElement) {
+        fireEvent.mouseEnter(rotateElement)
+        fireEvent.mouseLeave(rotateElement)
+      } else {
+        throw new Error('Rotate element not found')
+      }
 
       // The element should remain accessible after hover events
       expect(rotateElement).toBeInTheDocument()
@@ -185,9 +193,13 @@ describe('AnimationsShowcase', () => {
       const liftElement = screen.getByText('Hover to lift').closest('div')
       expect(liftElement).toBeInTheDocument()
 
-      // Test hover events
-      fireEvent.mouseEnter(liftElement!)
-      fireEvent.mouseLeave(liftElement!)
+      // Test hover events with explicit null check
+      if (liftElement) {
+        fireEvent.mouseEnter(liftElement)
+        fireEvent.mouseLeave(liftElement)
+      } else {
+        throw new Error('Lift element not found')
+      }
 
       // The element should remain accessible after hover events
       expect(liftElement).toBeInTheDocument()
@@ -227,14 +239,26 @@ describe('AnimationsShowcase', () => {
       const liftElement = screen.getByText('Hover to lift').closest('div')
 
       // Test keyboard accessibility (elements should be focusable)
-      fireEvent.focus(scaleElement!)
-      fireEvent.blur(scaleElement!)
+      if (scaleElement) {
+        fireEvent.focus(scaleElement)
+        fireEvent.blur(scaleElement)
+      } else {
+        throw new Error('Scale element not found')
+      }
 
-      fireEvent.focus(rotateElement!)
-      fireEvent.blur(rotateElement!)
+      if (rotateElement) {
+        fireEvent.focus(rotateElement)
+        fireEvent.blur(rotateElement)
+      } else {
+        throw new Error('Rotate element not found')
+      }
 
-      fireEvent.focus(liftElement!)
-      fireEvent.blur(liftElement!)
+      if (liftElement) {
+        fireEvent.focus(liftElement)
+        fireEvent.blur(liftElement)
+      } else {
+        throw new Error('Lift element not found')
+      }
 
       // Elements should remain accessible after focus events
       expect(scaleElement).toBeInTheDocument()
@@ -249,18 +273,27 @@ describe('AnimationsShowcase', () => {
       const rotateElement = screen.getByText('Hover to rotate').closest('div')
       const liftElement = screen.getByText('Hover to lift').closest('div')
 
-      // Test multiple hover events in sequence
-      fireEvent.mouseEnter(scaleElement!)
-      fireEvent.mouseLeave(scaleElement!)
-      fireEvent.mouseEnter(rotateElement!)
-      fireEvent.mouseLeave(rotateElement!)
-      fireEvent.mouseEnter(liftElement!)
-      fireEvent.mouseLeave(liftElement!)
+      // Verify all elements exist before testing
+      expect(scaleElement).toBeInTheDocument()
+      expect(rotateElement).toBeInTheDocument()
+      expect(liftElement).toBeInTheDocument()
 
-      // Test rapid hover events
-      fireEvent.mouseEnter(scaleElement!)
-      fireEvent.mouseEnter(scaleElement!) // Re-enter while already hovering
-      fireEvent.mouseLeave(scaleElement!)
+      // Test multiple hover events in sequence with explicit null checks
+      if (scaleElement && rotateElement && liftElement) {
+        fireEvent.mouseEnter(scaleElement)
+        fireEvent.mouseLeave(scaleElement)
+        fireEvent.mouseEnter(rotateElement)
+        fireEvent.mouseLeave(rotateElement)
+        fireEvent.mouseEnter(liftElement)
+        fireEvent.mouseLeave(liftElement)
+
+        // Test rapid hover events
+        fireEvent.mouseEnter(scaleElement)
+        fireEvent.mouseEnter(scaleElement) // Re-enter while already hovering
+        fireEvent.mouseLeave(scaleElement)
+      } else {
+        throw new Error('One or more interactive elements not found')
+      }
 
       // All elements should remain functional after extensive interaction
       expect(scaleElement).toBeInTheDocument()
@@ -268,9 +301,11 @@ describe('AnimationsShowcase', () => {
       expect(liftElement).toBeInTheDocument()
 
       // Verify that hover elements still contain their icons after interaction
-      expect(scaleElement).toContainElement(screen.getByTestId('sparkles'))
-      expect(rotateElement).toContainElement(screen.getByTestId('circle'))
-      expect(liftElement).toContainElement(screen.getByTestId('square'))
+      if (scaleElement && rotateElement && liftElement) {
+        expect(scaleElement).toContainElement(screen.getByTestId('sparkles'))
+        expect(rotateElement).toContainElement(screen.getByTestId('circle'))
+        expect(liftElement).toContainElement(screen.getByTestId('square'))
+      }
     })
   })
 })
