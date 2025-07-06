@@ -3,7 +3,7 @@
 import { getAllColors, type ColorItem } from '@/lib/colors'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ColorSwatchProps {
   color: ColorItem
@@ -13,15 +13,31 @@ interface ColorSwatchProps {
 const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
   const [copiedValue, setCopiedValue] = useState<string | null>(null)
   const [showTooltip, setShowTooltip] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Clean up timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   const handleCopy = async (value: string) => {
     try {
       await navigator.clipboard.writeText(value)
       setCopiedValue(value)
 
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
       // Reset the copied state after 2 seconds
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setCopiedValue(null)
+        timeoutRef.current = null
       }, 2000)
     } catch (err) {
       console.error('Failed to copy color: ', err)
