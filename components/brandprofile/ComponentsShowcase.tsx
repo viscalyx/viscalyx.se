@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import ComponentDemo from './ComponentDemo'
 
 const ComponentsShowcase = () => {
-  const t = useTranslations('componentsShowcase')
+  const t = useTranslations('brandProfile.componentsShowcase')
 
   return (
     <div className="space-y-12">

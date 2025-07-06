@@ -1178,39 +1178,39 @@
         "heading3": "Heading 3 (Subsection)",
         "paragraphText": "Regular paragraph text with proper hierarchy and semantic structure."
       }
-    }
-  },
-  "componentsShowcase": {
-    "buttons": {
-      "title": "Buttons",
-      "description": "Primary and secondary button styles with hover states",
-      "primary": "Primary Button",
-      "secondary": "Secondary Button",
-      "disabled": "Disabled Button"
     },
-    "cards": {
-      "title": "Cards",
-      "description": "Standard card component with hover effects",
-      "cardTitle": "Card Title",
-      "cardDescription": "This is a sample card component with hover effects and proper spacing.",
-      "anotherCard": "Another Card",
-      "anotherCardDescription": "Cards maintain consistent styling and responsive behavior."
-    },
-    "alerts": {
-      "title": "Alerts",
-      "description": "Status indicators and notification styles",
-      "success": "Success message",
-      "warning": "Warning message",
-      "error": "Error message",
-      "info": "Info message"
-    },
-    "forms": {
-      "title": "Forms",
-      "description": "Input fields and form controls",
-      "emailLabel": "Email",
-      "emailPlaceholder": "Enter your email",
-      "messageLabel": "Message",
-      "messagePlaceholder": "Your message here"
+    "componentsShowcase": {
+      "buttons": {
+        "title": "Buttons",
+        "description": "Primary and secondary button styles with hover states",
+        "primary": "Primary Button",
+        "secondary": "Secondary Button",
+        "disabled": "Disabled Button"
+      },
+      "cards": {
+        "title": "Cards",
+        "description": "Standard card component with hover effects",
+        "cardTitle": "Card Title",
+        "cardDescription": "This is a sample card component with hover effects and proper spacing.",
+        "anotherCard": "Another Card",
+        "anotherCardDescription": "Cards maintain consistent styling and responsive behavior."
+      },
+      "alerts": {
+        "title": "Alerts",
+        "description": "Status indicators and notification styles",
+        "success": "Success message",
+        "warning": "Warning message",
+        "error": "Error message",
+        "info": "Info message"
+      },
+      "forms": {
+        "title": "Forms",
+        "description": "Input fields and form controls",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter your email",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Your message here"
+      }
     }
   }
 }

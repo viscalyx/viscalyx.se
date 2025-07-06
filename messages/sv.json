@@ -1184,39 +1184,39 @@
         "heading3": "Rubrik 3 (Undersektion)",
         "paragraphText": "Vanlig paragraftext med korrekt hierarki och semantisk struktur."
       }
-    }
-  },
-  "componentsShowcase": {
-    "buttons": {
-      "title": "Knappar",
-      "description": "Primära och sekundära knappstiler med hover-effekter",
-      "primary": "Primär Knapp",
-      "secondary": "Sekundär Knapp",
-      "disabled": "Inaktiverad Knapp"
     },
-    "cards": {
-      "title": "Kort",
-      "description": "Standard kortkomponent med hover-effekter",
-      "cardTitle": "Korttitel",
-      "cardDescription": "Detta är ett exempel på en kortkomponent med hover-effekter och korrekt avstånd.",
-      "anotherCard": "Ännu Ett Kort",
-      "anotherCardDescription": "Kort bibehåller konsekvent styling och responsivt beteende."
-    },
-    "alerts": {
-      "title": "Aviseringar",
-      "description": "Statusindikatorer och meddelandestilar",
-      "success": "Framgångsmeddelande",
-      "warning": "Varningsmeddelande",
-      "error": "Felmeddelande",
-      "info": "Informationsmeddelande"
-    },
-    "forms": {
-      "title": "Formulär",
-      "description": "Inmatningsfält och formulärkontroller",
-      "emailLabel": "E-post",
-      "emailPlaceholder": "Ange din e-postadress",
-      "messageLabel": "Meddelande",
-      "messagePlaceholder": "Ditt meddelande här"
+    "componentsShowcase": {
+      "buttons": {
+        "title": "Knappar",
+        "description": "Primära och sekundära knappstiler med hover-effekter",
+        "primary": "Primär Knapp",
+        "secondary": "Sekundär Knapp",
+        "disabled": "Inaktiverad Knapp"
+      },
+      "cards": {
+        "title": "Kort",
+        "description": "Standard kortkomponent med hover-effekter",
+        "cardTitle": "Korttitel",
+        "cardDescription": "Detta är ett exempel på en kortkomponent med hover-effekter och korrekt avstånd.",
+        "anotherCard": "Ännu Ett Kort",
+        "anotherCardDescription": "Kort bibehåller konsekvent styling och responsivt beteende."
+      },
+      "alerts": {
+        "title": "Aviseringar",
+        "description": "Statusindikatorer och meddelandestilar",
+        "success": "Framgångsmeddelande",
+        "warning": "Varningsmeddelande",
+        "error": "Felmeddelande",
+        "info": "Informationsmeddelande"
+      },
+      "forms": {
+        "title": "Formulär",
+        "description": "Inmatningsfält och formulärkontroller",
+        "emailLabel": "E-post",
+        "emailPlaceholder": "Ange din e-postadress",
+        "messageLabel": "Meddelande",
+        "messagePlaceholder": "Ditt meddelande här"
+      }
     }
   }
 }
