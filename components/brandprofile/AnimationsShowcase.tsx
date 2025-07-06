@@ -47,66 +47,42 @@ const AnimationsShowcase = () => {
         description={t('hoverInteractions.description')}
       >
         <div className="flex flex-wrap gap-4">
-          <motion.div
+          <motion.button
+            type="button"
             whileHover={{ scale: 1.05 }}
             whileFocus={{ scale: 1.05 }}
-            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900"
-            tabIndex={0}
-            role="button"
+            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900 text-left"
             aria-label={t('hoverInteractions.scaleHover')}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                // Trigger animation by temporarily adding focus state
-                e.currentTarget.focus()
-              }
-            }}
           >
             <Sparkles className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-2" />
             <p className="text-sm text-secondary-700 dark:text-secondary-300">
               {t('hoverInteractions.scaleHover')}
             </p>
-          </motion.div>
-          <motion.div
+          </motion.button>
+          <motion.button
+            type="button"
             whileHover={{ rotate: 5 }}
             whileFocus={{ rotate: 5 }}
-            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900"
-            tabIndex={0}
-            role="button"
+            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900 text-left"
             aria-label={t('hoverInteractions.rotateHover')}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                // Trigger animation by temporarily adding focus state
-                e.currentTarget.focus()
-              }
-            }}
           >
             <Circle className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-2" />
             <p className="text-sm text-secondary-700 dark:text-secondary-300">
               {t('hoverInteractions.rotateHover')}
             </p>
-          </motion.div>
-          <motion.div
+          </motion.button>
+          <motion.button
+            type="button"
             whileHover={{ y: -5 }}
             whileFocus={{ y: -5 }}
-            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900"
-            tabIndex={0}
-            role="button"
+            className="p-4 bg-white dark:bg-secondary-800 rounded-lg border border-secondary-200 dark:border-secondary-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-secondary-900 text-left"
             aria-label={t('hoverInteractions.liftHover')}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                // Trigger animation by temporarily adding focus state
-                e.currentTarget.focus()
-              }
-            }}
           >
             <Square className="w-8 h-8 text-primary-600 dark:text-primary-400 mb-2" />
             <p className="text-sm text-secondary-700 dark:text-secondary-300">
               {t('hoverInteractions.liftHover')}
             </p>
-          </motion.div>
+          </motion.button>
         </div>
       </ComponentDemo>
     </div>

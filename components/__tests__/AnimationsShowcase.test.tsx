@@ -24,6 +24,7 @@ vi.mock('next-intl', () => ({
 
 // Mock framer-motion
 const mockMotionDiv = vi.fn()
+const mockMotionButton = vi.fn()
 vi.mock('framer-motion', () => ({
   motion: {
     div: (props: any) => {
@@ -37,6 +38,19 @@ vi.mock('framer-motion', () => ({
         ...restProps
       } = props
       return <div {...restProps}>{children}</div>
+    },
+    button: (props: any) => {
+      mockMotionButton(props)
+      const {
+        children,
+        whileHover,
+        whileFocus,
+        initial,
+        animate,
+        transition,
+        ...restProps
+      } = props
+      return <button {...restProps}>{children}</button>
     },
   },
 }))
@@ -57,6 +71,7 @@ vi.mock('lucide-react', () => ({
 describe('AnimationsShowcase', () => {
   beforeEach(() => {
     mockMotionDiv.mockClear()
+    mockMotionButton.mockClear()
   })
 
   it('renders fade in animation section', () => {
@@ -129,19 +144,19 @@ describe('AnimationsShowcase', () => {
     render(<AnimationsShowcase />)
 
     // Check scale hover animation
-    const scaleHoverCall = mockMotionDiv.mock.calls.find(
+    const scaleHoverCall = mockMotionButton.mock.calls.find(
       call => call[0].whileHover && call[0].whileHover.scale === 1.05
     )
     expect(scaleHoverCall).toBeTruthy()
 
     // Check rotate hover animation
-    const rotateHoverCall = mockMotionDiv.mock.calls.find(
+    const rotateHoverCall = mockMotionButton.mock.calls.find(
       call => call[0].whileHover && call[0].whileHover.rotate === 5
     )
     expect(rotateHoverCall).toBeTruthy()
 
     // Check lift hover animation
-    const liftHoverCall = mockMotionDiv.mock.calls.find(
+    const liftHoverCall = mockMotionButton.mock.calls.find(
       call => call[0].whileHover && call[0].whileHover.y === -5
     )
     expect(liftHoverCall).toBeTruthy()
@@ -152,7 +167,7 @@ describe('AnimationsShowcase', () => {
       render(<AnimationsShowcase />)
 
       // Find the scale hover element by its text content
-      const scaleElement = screen.getByText('Hover to scale').closest('div')
+      const scaleElement = screen.getByText('Hover to scale').closest('button')
       expect(scaleElement).toBeInTheDocument()
 
       // Test hover events with explicit null check
@@ -171,7 +186,9 @@ describe('AnimationsShowcase', () => {
       render(<AnimationsShowcase />)
 
       // Find the rotate hover element by its text content
-      const rotateElement = screen.getByText('Hover to rotate').closest('div')
+      const rotateElement = screen
+        .getByText('Hover to rotate')
+        .closest('button')
       expect(rotateElement).toBeInTheDocument()
 
       // Test hover events with explicit null check
@@ -190,7 +207,7 @@ describe('AnimationsShowcase', () => {
       render(<AnimationsShowcase />)
 
       // Find the lift hover element by its text content
-      const liftElement = screen.getByText('Hover to lift').closest('div')
+      const liftElement = screen.getByText('Hover to lift').closest('button')
       expect(liftElement).toBeInTheDocument()
 
       // Test hover events with explicit null check
@@ -208,9 +225,11 @@ describe('AnimationsShowcase', () => {
     it('ensures hover elements have proper cursor pointer styling', () => {
       render(<AnimationsShowcase />)
 
-      const scaleElement = screen.getByText('Hover to scale').closest('div')
-      const rotateElement = screen.getByText('Hover to rotate').closest('div')
-      const liftElement = screen.getByText('Hover to lift').closest('div')
+      const scaleElement = screen.getByText('Hover to scale').closest('button')
+      const rotateElement = screen
+        .getByText('Hover to rotate')
+        .closest('button')
+      const liftElement = screen.getByText('Hover to lift').closest('button')
 
       // Check that all interactive elements have cursor-pointer class
       expect(scaleElement).toHaveClass('cursor-pointer')
@@ -221,9 +240,11 @@ describe('AnimationsShowcase', () => {
     it('verifies hover elements contain expected icons', () => {
       render(<AnimationsShowcase />)
 
-      const scaleElement = screen.getByText('Hover to scale').closest('div')
-      const rotateElement = screen.getByText('Hover to rotate').closest('div')
-      const liftElement = screen.getByText('Hover to lift').closest('div')
+      const scaleElement = screen.getByText('Hover to scale').closest('button')
+      const rotateElement = screen
+        .getByText('Hover to rotate')
+        .closest('button')
+      const liftElement = screen.getByText('Hover to lift').closest('button')
 
       // Check that each hover element contains its respective icon
       expect(scaleElement).toContainElement(screen.getByTestId('sparkles'))
@@ -234,9 +255,11 @@ describe('AnimationsShowcase', () => {
     it('tests accessibility of hover elements', () => {
       render(<AnimationsShowcase />)
 
-      const scaleElement = screen.getByText('Hover to scale').closest('div')
-      const rotateElement = screen.getByText('Hover to rotate').closest('div')
-      const liftElement = screen.getByText('Hover to lift').closest('div')
+      const scaleElement = screen.getByText('Hover to scale').closest('button')
+      const rotateElement = screen
+        .getByText('Hover to rotate')
+        .closest('button')
+      const liftElement = screen.getByText('Hover to lift').closest('button')
 
       // Test keyboard accessibility (elements should be focusable)
       if (scaleElement) {
@@ -269,9 +292,11 @@ describe('AnimationsShowcase', () => {
     it('simulates complete hover interaction flow', () => {
       render(<AnimationsShowcase />)
 
-      const scaleElement = screen.getByText('Hover to scale').closest('div')
-      const rotateElement = screen.getByText('Hover to rotate').closest('div')
-      const liftElement = screen.getByText('Hover to lift').closest('div')
+      const scaleElement = screen.getByText('Hover to scale').closest('button')
+      const rotateElement = screen
+        .getByText('Hover to rotate')
+        .closest('button')
+      const liftElement = screen.getByText('Hover to lift').closest('button')
 
       // Verify all elements exist before testing
       expect(scaleElement).toBeInTheDocument()
