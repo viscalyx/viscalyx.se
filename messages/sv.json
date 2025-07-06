@@ -987,8 +987,8 @@
       "accessibility": "Tillgänglighet"
     },
     "colorShowcase": {
-      "primaryColors": "Primärfärger (Blå skala)",
-      "secondaryColors": "Sekundärfärger (Grå skala)",
+      "primaryColors": "Primärfärger (blåskala)",
+      "secondaryColors": "Sekundärfärger (gråskala)",
       "accentColors": "Accentfärger"
     },
     "typographyShowcase": {
