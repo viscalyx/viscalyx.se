@@ -51,12 +51,12 @@ const AccessibilityShowcase = () => {
             className="w-full px-3 py-2 border border-secondary-300 dark:border-secondary-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-secondary-100"
             placeholder={t('focusStates.inputPlaceholder')}
           />
-          <button
-            type="button"
+          <a
+            href="#"
             className="inline-block text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded underline"
           >
             {t('focusStates.linkText')}
-          </button>
+          </a>
         </div>
       </ComponentDemo>
 
