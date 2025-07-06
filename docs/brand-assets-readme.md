@@ -26,41 +26,41 @@ docs/
 
 ```tsx
 // Primary brand colors
-className = 'bg-primary-600 text-white' // Main brand blue
-className = 'bg-secondary-900 text-white' // Dark backgrounds
-className = 'text-primary-600' // Brand blue text
+<div className="bg-primary-600 text-white">Main brand blue</div>
+<div className="bg-secondary-900 text-white">Dark backgrounds</div>
+<span className="text-primary-600">Brand blue text</span>
 
 // Hover states
-className = 'hover:bg-primary-700' // Darker blue on hover
-className = 'hover:text-primary-600' // Brand blue text on hover
+<button className="hover:bg-primary-700">Darker blue on hover</button>
+<a className="hover:text-primary-600">Brand blue text on hover</a>
 ```
 
 #### 2. Typography Patterns
 
 ```tsx
 // Headings with brand gradient
-className = 'text-gradient' // Brand gradient text
-className = 'text-4xl font-bold text-gradient' // Large gradient heading
+<h1 className="text-gradient">Brand gradient text</h1>
+<h1 className="text-4xl font-bold text-gradient">Large gradient heading</h1>
 
 // Body text
-className = 'text-secondary-700 dark:text-secondary-300' // Standard body text
-className = 'text-secondary-900 dark:text-secondary-100' // Heading text
+<p className="text-secondary-700 dark:text-secondary-300">Standard body text</p>
+<h2 className="text-secondary-900 dark:text-secondary-100">Heading text</h2>
 ```
 
 #### 3. Component Patterns
 
 ```tsx
 // Buttons
-className = 'btn-primary' // Primary button style
-className = 'btn-secondary' // Secondary button style
+<button className="btn-primary">Primary button style</button>
+<button className="btn-secondary">Secondary button style</button>
 
 // Cards
-className = 'card-hover' // Card with hover effects
-className = 'bg-white dark:bg-secondary-800 rounded-lg p-6' // Card base
+<div className="card-hover">Card with hover effects</div>
+<div className="bg-white dark:bg-secondary-800 rounded-lg p-6">Card base</div>
 
 // Containers
-className = 'container-custom' // Max-width container
-className = 'section-padding' // Standard section padding
+<div className="container-custom">Max-width container</div>
+<section className="section-padding">Standard section padding</section>
 ```
 
 ## 🎯 Brand Guidelines
