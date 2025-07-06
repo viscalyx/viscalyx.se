@@ -46,6 +46,80 @@ describe('TypographyShowcase', () => {
     ).toHaveLength(9)
   })
 
+  // Accessibility tests for font sizes
+  it('meets minimum font size accessibility standards', () => {
+    const { container } = render(<TypographyShowcase />)
+
+    // Check for presence of accessible font sizes
+    const textSmElements = container.querySelectorAll('.text-sm')
+    expect(textSmElements.length).toBeGreaterThan(0)
+
+    // Verify text-xs is present (though not ideal, it's sometimes used for labels)
+    const textXsElements = container.querySelectorAll('.text-xs')
+    expect(textXsElements.length).toBeGreaterThan(0)
+
+    // Ensure base text size is present for body content
+    const textBaseElements = container.querySelectorAll('.text-base')
+    expect(textBaseElements.length).toBeGreaterThan(0)
+  })
+
+  it('provides adequate font size hierarchy for accessibility', () => {
+    const { container } = render(<TypographyShowcase />)
+
+    // Check for proper font size progression
+    const fontSizeClasses = [
+      'text-xs', // 12px - small labels
+      'text-sm', // 14px - small text
+      'text-base', // 16px - standard body text
+      'text-lg', // 18px - large text
+      'text-xl', // 20px - extra large
+      'text-2xl', // 24px - heading sizes
+      'text-3xl', // 30px
+      'text-4xl', // 36px
+      'text-5xl', // 48px
+    ]
+
+    fontSizeClasses.forEach(sizeClass => {
+      const elements = container.querySelectorAll(`.${sizeClass}`)
+      expect(elements.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('has proper semantic heading hierarchy for accessibility', () => {
+    render(<TypographyShowcase />)
+
+    // Verify h2 headings are present (section titles)
+    const h2Headings = screen.getAllByRole('heading', { level: 2 })
+    expect(h2Headings.length).toBe(2)
+
+    // Ensure all headings have proper structure
+    const allHeadings = screen.getAllByRole('heading')
+    expect(allHeadings.length).toBe(2)
+
+    // Verify no h1 headings exist in this component (it's a showcase component)
+    const h1Headings = screen.queryAllByRole('heading', { level: 1 })
+    expect(h1Headings.length).toBe(0)
+  })
+
+  it('maintains proper heading structure for screen readers', () => {
+    render(<TypographyShowcase />)
+
+    // Check that main section headings are h2 level
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Font Sizes & Hierarchy' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Font Weights' })
+    ).toBeInTheDocument()
+
+    // Verify heading content is descriptive
+    const headings = screen.getAllByRole('heading')
+    headings.forEach(heading => {
+      expect(heading.textContent).toBeTruthy()
+      expect(heading.textContent?.trim().length).toBeGreaterThan(0)
+    })
+  })
+
   // Enhanced accessibility tests
   it('has proper heading hierarchy', () => {
     render(<TypographyShowcase />)
