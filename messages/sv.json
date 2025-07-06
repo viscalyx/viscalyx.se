@@ -19,7 +19,7 @@
     "aboutUs": "Om oss",
     "expertise": "Expertis",
     "resources": "Resurser",
-    "documentation": "Dokumentation",
+    "brandProfile": "Varumärkesprofil",
     "community": "Gemenskap",
     "support": "Support",
     "contactUs": "Kontakta oss",
@@ -971,6 +971,251 @@
         "description": "Om du har några frågor om dessa användarvillkor, vänligen kontakta oss:",
         "email": "E-post",
         "emailAddress": "legal@viscalyx.se"
+      }
+    }
+  },
+  "brandProfile": {
+    "title": "Viscalyx Varumärkesprofil",
+    "description": "Visuell stilguide och komponentbibliotek för konsekvent varumärkesupplevelse",
+    "tabNavigation": "Varumärkesprofil navigation",
+    "tabs": {
+      "colors": "Färger",
+      "typography": "Typografi",
+      "components": "Komponenter",
+      "icons": "Ikoner",
+      "animations": "Animationer",
+      "accessibility": "Tillgänglighet"
+    },
+    "colorShowcase": {
+      "primaryColors": "Primärfärger (blåskala)",
+      "secondaryColors": "Sekundärfärger (gråskala)",
+      "accentColors": "Accentfärger"
+    },
+    "typographyShowcase": {
+      "fontSizes": "Textstorlekar & Hierarki",
+      "fontWeights": "Typsnittsvikter",
+      "sampleText": "Flygande bäckasiner söka hwila på mjuka tuvor",
+      "brandText": "Viscalyx - Modern Webbutveckling"
+    },
+    "icons": {
+      "title": "Ikonbibliotek",
+      "description": "Omfattande samling av anpassade och tredjepartsikoner som används genomgående i Viscalyx varumärke och applikationer, utformade för konsistens och optimal prestanda.",
+      "categories": {
+        "customSocialIcons": {
+          "title": "Anpassade Sociala Ikoner",
+          "description": "Optimerade SVG-ikoner för sociala medieplattformar, som använder currentColor för tema-konsistens."
+        },
+        "customBlogIcons": {
+          "title": "Anpassade Bloggikoner",
+          "description": "Specialiserade ikoner för bloggfunktionalitet, inklusive kopieringsknappar, navigering och innehållsvarningar."
+        },
+        "lucideIcons": {
+          "title": "Lucide-ikoner",
+          "description": "Ikoner från Lucide React som används för {category} genom hela applikationen."
+        },
+        "dynamicAlertIcons": {
+          "title": "Dynamiska Varningsikoner",
+          "description": "AlertIcon-komponenten renderar dynamiskt olika ikoner baserat på varningstypen."
+        }
+      },
+      "usageGuidelines": {
+        "title": "Riktlinjer för Ikonanvändning",
+        "customIcons": {
+          "title": "Anpassade Ikoner",
+          "items": [
+            "Använd currentColor för tema-konsistens",
+            "Optimerade SVG-vägar för prestanda",
+            "Konsekvent storlek med className-props",
+            "Semantiska roller och aria-etiketter",
+            "Memoized för React-prestanda"
+          ]
+        },
+        "lucideIcons": {
+          "title": "Lucide React-ikoner",
+          "items": [
+            "Tree-shakeable imports",
+            "Konsekvent stroke-width på 2",
+            "Standard storlek (w-4 h-4, w-5 h-5)",
+            "Semantiska namnkonventioner",
+            "Tillgängliga som standard"
+          ]
+        }
+      },
+      "implementationExamples": {
+        "title": "Implementeringsexempel",
+        "customSocialIcons": {
+          "title": "Anpassade Sociala Ikoner"
+        },
+        "blogAlertIcons": {
+          "title": "Bloggvarningsikoner"
+        },
+        "lucideReactIcons": {
+          "title": "Lucide React-ikoner"
+        }
+      },
+      "lucideIconsUsage": {
+        "menu": "Rubriknavigering växla",
+        "x": "Stängknappar, Meddelanden",
+        "settings": "Rubrikinställningsmeny",
+        "globe": "Språkväxlare",
+        "arrowUp": "Rulla till toppen-knapp",
+        "arrowLeft": "Rekommendationsnavigering",
+        "arrowRight": "Rekommendationer, Team, Hero CTAs",
+        "sun": "Tema-växla (ljust läge)",
+        "moon": "Tema-växla (mörkt läge)",
+        "monitor": "Tema-växla (systemläge)",
+        "eye": "Varumärkesvisning synlighet",
+        "palette": "Varumärkesvisning färger",
+        "loader2": "Laddningsspinner",
+        "checkCircle": "Framgångstillstånd, Kontaktformulär",
+        "alertCircle": "Meddelanden, Komponentvisning",
+        "alertTriangle": "Varningsmeddelanden",
+        "info": "Informationsmeddelanden",
+        "check": "Komponentvisning bekräftelser",
+        "target": "Om-sektion - mission",
+        "users": "Om-sektion - team, Open source",
+        "lightbulb": "Om-sektion - innovation",
+        "award": "Om-sektion - excellens",
+        "trendingUp": "Fallstudier - tillväxtmätningar",
+        "star": "Rekommendationer, Open source-betyg",
+        "code": "Hero-sektion, Tjänster",
+        "database": "Tjänster - backend-utveckling",
+        "smartphone": "Tjänster - mobilutveckling",
+        "search": "Tjänster - SEO-optimering",
+        "barChart": "Tjänster - analys",
+        "shield": "Tjänster - säkerhet",
+        "zap": "Tjänster - prestanda",
+        "layers": "Tjänster - arkitektur",
+        "gitBranch": "Tjänster - versionskontroll",
+        "cloud": "Tjänster - molnlösningar",
+        "mail": "Kontaktformulär, Sidfot, Teamprofiler",
+        "phone": "Kontaktinformation",
+        "mapPin": "Kontaktplats, Teamplatser",
+        "send": "Kontaktformulär inskickning",
+        "messageSquare": "Kontaktkommunikation",
+        "quote": "Rekommendationssektion",
+        "camera": "Teammedlemsfoton",
+        "externalLink": "Sidfot, Open source-länkar",
+        "download": "Tillgänglighetsvisning",
+        "clock": "Fallstudier - tidslinje",
+        "sparkles": "Hero-sektion, Animationsvisning",
+        "square": "Varumärkesvisning, Animationer",
+        "circle": "Animationsvisning",
+        "type": "Varumärkesvisning typografi",
+        "mousePointer": "Varumärkesvisning interaktioner",
+        "heart": "Sidfot - gjord med kärlek"
+      },
+      "socialIconsUsage": {
+        "github": "Sidfot, Open Source-sektion",
+        "linkedin": "Sidfot, Teamprofiler",
+        "twitter": "Sidfot, Social delning",
+        "bluesky": "Sidfot, Sociala länkar",
+        "mastodon": "Sidfot, Sociala länkar",
+        "stackoverflow": "Sidfot, Professionella länkar",
+        "youtube": "Sidfot, Innehållsdelning",
+        "discord": "Sidfot, Gemenskap",
+        "instagram": "Sidfot, Visuellt innehåll",
+        "slack": "Sidfot, Teamkommunikation"
+      },
+      "blogIconsUsage": {
+        "copy": "Kodblock, Kopieringsknappar",
+        "checkmark": "Framgångstillstånd, Bekräftelser",
+        "chevronUp": "Innehållsförteckning, Navigering",
+        "chevronDown": "Innehållsförteckning, Navigering",
+        "note": "Bloggvarningar, Informationsblock",
+        "tip": "Bloggvarningar, Hjälpsamma förslag",
+        "important": "Bloggvarningar, Kritisk information",
+        "warning": "Bloggvarningar, Varningsmeddelanden",
+        "caution": "Bloggvarningar, Försiktighetsmeddelanden"
+      },
+      "alertTypes": {
+        "note": "Används i blogginnehåll för anteckningsvarningar och callouts.",
+        "tip": "Används i blogginnehåll för tipsvarningar och callouts.",
+        "important": "Används i blogginnehåll för viktiga varningar och callouts.",
+        "warning": "Används i blogginnehåll för varningsvarningar och callouts.",
+        "caution": "Används i blogginnehåll för försiktighetsvarningar och callouts."
+      }
+    },
+    "animationsShowcase": {
+      "fadeIn": {
+        "title": "Intonings-animation",
+        "description": "Mjuk opacitetsövergång för innehållsavslöjanden",
+        "content": "Detta element tonar in mjukt"
+      },
+      "slideUp": {
+        "title": "Glid-upp-animation",
+        "description": "Innehåll glider upp med intonings-effekt",
+        "content": "Detta element glider upp underifrån"
+      },
+      "hoverInteractions": {
+        "title": "Hover-interaktioner",
+        "description": "Interaktiva element med hover-tillstånd",
+        "scaleHover": "Hovra för att skala",
+        "rotateHover": "Hovra för att rotera",
+        "liftHover": "Hovra för att lyfta"
+      }
+    },
+    "accessibility": {
+      "title": "Tillgänglighetsfunktioner",
+      "description": "Omfattande tillgänglighetsfunktioner som säkerställer WCAG AA-efterlevnad och inkluderande användarupplevelse för alla användare",
+      "focusStates": {
+        "title": "Fokustillstånd",
+        "description": "Tydliga fokusindikatorer för tangentbordsnavigering",
+        "buttonText": "Fokuserbar knapp",
+        "inputPlaceholder": "Fokusera mig med Tab",
+        "linkText": "Fokuserbar länk"
+      },
+      "colorContrast": {
+        "title": "Färgkontrast",
+        "description": "WCAG AA-kompatibla färgkombinationer",
+        "goodContrast": "Bra kontrast",
+        "screenReaderSupport": "Skärmläsarstöd",
+        "contrastText": "Denna text har tillräckligt kontrastförhållande (4.5:1+)",
+        "whiteOnPrimary": "Vit text på primär bakgrund",
+        "ariaText": "Alla interaktiva element inkluderar korrekta ARIA-etiketter",
+        "downloadLabel": "Ladda ner varumärkesriktlinjer dokument",
+        "downloadText": "Ladda ner"
+      },
+      "semanticHtml": {
+        "title": "Semantisk HTML",
+        "description": "Korrekt rubrikhierarki och semantiska element",
+        "heading1": "Rubrik 1 (Huvudtitel)",
+        "heading2": "Rubrik 2 (Sektionstitel)",
+        "heading3": "Rubrik 3 (Undersektion)",
+        "paragraphText": "Vanlig paragraftext med korrekt hierarki och semantisk struktur."
+      }
+    },
+    "componentsShowcase": {
+      "buttons": {
+        "title": "Knappar",
+        "description": "Primära och sekundära knappstiler med hover-effekter",
+        "primary": "Primär Knapp",
+        "secondary": "Sekundär Knapp",
+        "disabled": "Inaktiverad Knapp"
+      },
+      "cards": {
+        "title": "Kort",
+        "description": "Standard kortkomponent med hover-effekter",
+        "cardTitle": "Korttitel",
+        "cardDescription": "Detta är ett exempel på en kortkomponent med hover-effekter och korrekt avstånd.",
+        "anotherCard": "Ännu Ett Kort",
+        "anotherCardDescription": "Kort bibehåller konsekvent styling och responsivt beteende."
+      },
+      "alerts": {
+        "title": "Aviseringar",
+        "description": "Statusindikatorer och meddelandestilar",
+        "success": "Framgångsmeddelande",
+        "warning": "Varningsmeddelande",
+        "error": "Felmeddelande",
+        "info": "Informationsmeddelande"
+      },
+      "forms": {
+        "title": "Formulär",
+        "description": "Inmatningsfält och formulärkontroller",
+        "emailLabel": "E-post",
+        "emailPlaceholder": "Ange din e-postadress",
+        "messageLabel": "Meddelande",
+        "messagePlaceholder": "Ditt meddelande här"
       }
     }
   }

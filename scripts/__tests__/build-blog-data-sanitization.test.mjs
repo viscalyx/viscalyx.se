@@ -6,11 +6,8 @@
  * formatting and syntax highlighting.
  */
 
-import { vi } from 'vitest'
-import fs from 'node:fs'
-import path from 'node:path'
-import matter from 'gray-matter'
 import sanitizeHtml from 'sanitize-html'
+import { vi } from 'vitest'
 
 // Mock the build script functions for testing
 vi.mock('node:fs')
@@ -326,40 +323,6 @@ describe('Blog Data Build Sanitization Security Tests', () => {
 
   describe('Integration Test with Mock Blog Post', () => {
     test('should properly sanitize a complete blog post', async () => {
-      // Mock a blog post with various content types
-      const mockMarkdownContent = `---
-title: "Test Blog Post"
-date: "2023-12-01"
-author: "Test Author"
-excerpt: "A test post with various content"
-tags: ["test", "security"]
----
-
-# Introduction
-
-This is a test blog post with various content types.
-
-## Code Example
-
-\`\`\`javascript
-const message = "Hello, World!";
-console.log(message);
-\`\`\`
-
-## Malicious Content Attempt
-
-<script>alert('This should be removed')</script>
-
-## Safe HTML
-
-This paragraph contains <strong>bold text</strong> and <em>italic text</em>.
-
-<div onclick="alert('XSS')">This div should lose its onclick</div>
-`
-
-      // Mock the matter parsing
-      const { data, content } = matter(mockMarkdownContent)
-
       // Mock the remark processing result (simplified)
       const processedHtml = `
         <h1 id="introduction">Introduction</h1>

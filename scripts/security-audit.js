@@ -8,7 +8,6 @@
  */
 
 const { execSync } = require('node:child_process')
-const path = require('node:path')
 
 console.log('🔒 Running security audit for build-time sanitization...\n')
 
