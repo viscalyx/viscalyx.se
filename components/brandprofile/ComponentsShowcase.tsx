@@ -40,9 +40,13 @@ const ComponentsShowcase = () => {
         description={t('buttons.description')}
       >
         <div className="flex flex-wrap gap-4">
-          <button className="btn-primary">{t('buttons.primary')}</button>
-          <button className="btn-secondary">{t('buttons.secondary')}</button>
-          <button className="btn-primary" disabled>
+          <button type="button" className="btn-primary">
+            {t('buttons.primary')}
+          </button>
+          <button type="button" className="btn-secondary">
+            {t('buttons.secondary')}
+          </button>
+          <button type="button" className="btn-primary" disabled>
             {t('buttons.disabled')}
           </button>
         </div>
