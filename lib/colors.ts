@@ -25,39 +25,41 @@ const hexToRgb = (hex: string): string => {
 }
 
 /**
- * Primary color palette - matching the theme variables in globals.css
+ * Primary color palette - Accessible blue scale with enhanced contrast
+ * Designed to meet WCAG AA standards and be distinguishable for color-blind users
  */
 export const getPrimaryColors = (): ColorItem[] => {
   return [
-    { name: 'primary-50', hex: '#eff6ff', rgb: hexToRgb('#eff6ff') },
-    { name: 'primary-100', hex: '#dbeafe', rgb: hexToRgb('#dbeafe') },
-    { name: 'primary-200', hex: '#bfdbfe', rgb: hexToRgb('#bfdbfe') },
-    { name: 'primary-300', hex: '#93c5fd', rgb: hexToRgb('#93c5fd') },
-    { name: 'primary-400', hex: '#60a5fa', rgb: hexToRgb('#60a5fa') },
-    { name: 'primary-500', hex: '#3b82f6', rgb: hexToRgb('#3b82f6') },
-    { name: 'primary-600', hex: '#2563eb', rgb: hexToRgb('#2563eb') },
-    { name: 'primary-700', hex: '#1d4ed8', rgb: hexToRgb('#1d4ed8') },
-    { name: 'primary-800', hex: '#1e40af', rgb: hexToRgb('#1e40af') },
-    { name: 'primary-900', hex: '#1e3a8a', rgb: hexToRgb('#1e3a8a') },
+    { name: 'primary-50', hex: '#f0f9ff', rgb: hexToRgb('#f0f9ff') },
+    { name: 'primary-100', hex: '#e0f2fe', rgb: hexToRgb('#e0f2fe') },
+    { name: 'primary-200', hex: '#bae6fd', rgb: hexToRgb('#bae6fd') },
+    { name: 'primary-300', hex: '#7dd3fc', rgb: hexToRgb('#7dd3fc') },
+    { name: 'primary-400', hex: '#38bdf8', rgb: hexToRgb('#38bdf8') },
+    { name: 'primary-500', hex: '#0ea5e9', rgb: hexToRgb('#0ea5e9') },
+    { name: 'primary-600', hex: '#0277bd', rgb: hexToRgb('#0277bd') },
+    { name: 'primary-700', hex: '#0369a1', rgb: hexToRgb('#0369a1') },
+    { name: 'primary-800', hex: '#075985', rgb: hexToRgb('#075985') },
+    { name: 'primary-900', hex: '#0c4a6e', rgb: hexToRgb('#0c4a6e') },
   ]
 }
 
 /**
- * Secondary color palette - matching the theme variables in globals.css
+ * Secondary color palette - Enhanced gray scale with improved contrast ratios
+ * Optimized for accessibility and color-blind user readability
  */
 export const getSecondaryColors = (): ColorItem[] => {
   return [
-    { name: 'secondary-50', hex: '#f8fafc', rgb: hexToRgb('#f8fafc') },
-    { name: 'secondary-100', hex: '#f1f5f9', rgb: hexToRgb('#f1f5f9') },
-    { name: 'secondary-200', hex: '#e2e8f0', rgb: hexToRgb('#e2e8f0') },
-    { name: 'secondary-300', hex: '#cbd5e1', rgb: hexToRgb('#cbd5e1') },
-    { name: 'secondary-400', hex: '#94a3b8', rgb: hexToRgb('#94a3b8') },
-    { name: 'secondary-500', hex: '#64748b', rgb: hexToRgb('#64748b') },
-    { name: 'secondary-600', hex: '#475569', rgb: hexToRgb('#475569') },
-    { name: 'secondary-700', hex: '#334155', rgb: hexToRgb('#334155') },
-    { name: 'secondary-800', hex: '#1e293b', rgb: hexToRgb('#1e293b') },
-    { name: 'secondary-900', hex: '#0f172a', rgb: hexToRgb('#0f172a') },
-    { name: 'secondary-950', hex: '#020617', rgb: hexToRgb('#020617') },
+    { name: 'secondary-50', hex: '#f9fafb', rgb: hexToRgb('#f9fafb') },
+    { name: 'secondary-100', hex: '#f3f4f6', rgb: hexToRgb('#f3f4f6') },
+    { name: 'secondary-200', hex: '#e5e7eb', rgb: hexToRgb('#e5e7eb') },
+    { name: 'secondary-300', hex: '#d1d5db', rgb: hexToRgb('#d1d5db') },
+    { name: 'secondary-400', hex: '#9ca3af', rgb: hexToRgb('#9ca3af') },
+    { name: 'secondary-500', hex: '#6b7280', rgb: hexToRgb('#6b7280') },
+    { name: 'secondary-600', hex: '#4b5563', rgb: hexToRgb('#4b5563') },
+    { name: 'secondary-700', hex: '#374151', rgb: hexToRgb('#374151') },
+    { name: 'secondary-800', hex: '#1f2937', rgb: hexToRgb('#1f2937') },
+    { name: 'secondary-900', hex: '#111827', rgb: hexToRgb('#111827') },
+    { name: 'secondary-950', hex: '#030712', rgb: hexToRgb('#030712') },
   ]
 }
 
@@ -101,3 +103,145 @@ export const getAllColors = () => ({
   secondary: getSecondaryColors(),
   accent: getAccentColors(),
 })
+
+/**
+ * Color accessibility utilities
+ */
+
+/**
+ * Calculate relative luminance of a color
+ * Based on WCAG guidelines: https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
+ */
+const getRelativeLuminance = (hex: string): number => {
+  const rgb = hexToRgb(hex).match(/\d+/g)
+  if (!rgb) return 0
+
+  const [r, g, b] = rgb.map(val => {
+    const channel = Number.parseInt(val) / 255
+    return channel <= 0.03928
+      ? channel / 12.92
+      : Math.pow((channel + 0.055) / 1.055, 2.4)
+  })
+
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+/**
+ * Calculate contrast ratio between two colors
+ * Returns a ratio from 1 to 21 (higher is better contrast)
+ */
+export const getContrastRatio = (color1: string, color2: string): number => {
+  const lum1 = getRelativeLuminance(color1)
+  const lum2 = getRelativeLuminance(color2)
+  const lighter = Math.max(lum1, lum2)
+  const darker = Math.min(lum1, lum2)
+
+  return (lighter + 0.05) / (darker + 0.05)
+}
+
+/**
+ * Check if color combination meets WCAG contrast requirements
+ */
+export const meetsContrastRequirement = (
+  color1: string,
+  color2: string,
+  level: 'AA' | 'AAA' = 'AA'
+): boolean => {
+  const ratio = getContrastRatio(color1, color2)
+  return level === 'AA' ? ratio >= 4.5 : ratio >= 7
+}
+
+/**
+ * Simulate color vision deficiencies for accessibility testing
+ */
+export const simulateColorBlindness = (
+  hex: string,
+  type: 'protanopia' | 'deuteranopia' | 'tritanopia'
+): string => {
+  const rgb = hexToRgb(hex).match(/\d+/g)
+  if (!rgb) return hex
+
+  let [r, g, b] = rgb.map(val => Number.parseInt(val) / 255)
+
+  // Simplified color blindness simulation matrices
+  // These are approximations for demonstration purposes
+  switch (type) {
+    case 'protanopia': // Red-blind
+      r = 0.567 * r + 0.433 * g
+      g = 0.558 * r + 0.442 * g
+      b = 0.242 * g + 0.758 * b
+      break
+    case 'deuteranopia': // Green-blind
+      r = 0.625 * r + 0.375 * g
+      g = 0.7 * r + 0.3 * g
+      b = 0.3 * g + 0.7 * b
+      break
+    case 'tritanopia': // Blue-blind
+      r = 0.95 * r + 0.05 * g
+      g = 0.433 * g + 0.567 * b
+      b = 0.475 * g + 0.525 * b
+      break
+  }
+
+  // Convert back to hex
+  const toHex = (val: number) =>
+    Math.round(val * 255)
+      .toString(16)
+      .padStart(2, '0')
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
+
+/**
+ * Get accessibility information for a color palette
+ */
+export const getAccessibilityInfo = () => {
+  const primary = getPrimaryColors()
+  const secondary = getSecondaryColors()
+
+  return {
+    contrastTests: [
+      {
+        name: 'Primary 600 on White',
+        foreground: primary[6].hex, // primary-600
+        background: '#ffffff',
+        ratio: getContrastRatio(primary[6].hex, '#ffffff'),
+        passes: meetsContrastRequirement(primary[6].hex, '#ffffff'),
+      },
+      {
+        name: 'Primary 600 on Secondary 50',
+        foreground: primary[6].hex,
+        background: secondary[0].hex,
+        ratio: getContrastRatio(primary[6].hex, secondary[0].hex),
+        passes: meetsContrastRequirement(primary[6].hex, secondary[0].hex),
+      },
+      {
+        name: 'Secondary 900 on White',
+        foreground: secondary[8].hex, // secondary-900
+        background: '#ffffff',
+        ratio: getContrastRatio(secondary[8].hex, '#ffffff'),
+        passes: meetsContrastRequirement(secondary[8].hex, '#ffffff'),
+      },
+      {
+        name: 'Secondary 600 on Secondary 50',
+        foreground: secondary[6].hex, // secondary-600
+        background: secondary[0].hex,
+        ratio: getContrastRatio(secondary[6].hex, secondary[0].hex),
+        passes: meetsContrastRequirement(secondary[6].hex, secondary[0].hex),
+      },
+    ],
+    colorBlindSimulation: {
+      primary600: {
+        original: primary[6].hex,
+        protanopia: simulateColorBlindness(primary[6].hex, 'protanopia'),
+        deuteranopia: simulateColorBlindness(primary[6].hex, 'deuteranopia'),
+        tritanopia: simulateColorBlindness(primary[6].hex, 'tritanopia'),
+      },
+      secondary600: {
+        original: secondary[6].hex,
+        protanopia: simulateColorBlindness(secondary[6].hex, 'protanopia'),
+        deuteranopia: simulateColorBlindness(secondary[6].hex, 'deuteranopia'),
+        tritanopia: simulateColorBlindness(secondary[6].hex, 'tritanopia'),
+      },
+    },
+  }
+}

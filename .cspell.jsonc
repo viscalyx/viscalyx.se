@@ -309,7 +309,10 @@
     "viscalyx",
 
     // Strange words or part of words that cSpell is not able to handle
-    "issal" // dismissal
+    "issal", // dismissal
+
+    // Correct words that are not recogniced
+    "inclusivity"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "dictionaries": ["sv"],
