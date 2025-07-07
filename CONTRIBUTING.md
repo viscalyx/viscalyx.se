@@ -1492,6 +1492,54 @@ interface SlugOptions {
 5. **Performance**: Optimized implementations for both server and client
 6. **Accessibility**: Includes proper ARIA labels and semantic markup
 
+## Updating Packages
+
+Keeping dependencies up to date is important for security and compatibility. To update packages in this project:
+
+### 1. Check for Outdated Packages
+
+Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to see which dependencies have newer versions:
+
+```bash
+npx npm-check-updates --jsonUpgraded
+```
+
+Or use the built-in npm command:
+
+```bash
+npm outdated --json
+```
+
+### 2. Upgrade Dependencies
+
+To upgrade all dependencies to their latest versions:
+
+```bash
+npx npm-check-updates --upgrade
+npm install
+```
+
+Or update a specific package:
+
+```bash
+npm install <package-name>@latest
+```
+
+- **Commit the updated lock file** (`package-lock.json` or `pnpm-lock.yaml`) with your PR. This ensures reviewers and CI use the exact dependency versions you tested.
+- **Run `npm ci` in a clean clone** of your branch to verify reproducible installs. This helps catch any accidental mismatches in dependency versions before review.
+
+### 3. Verify and Test
+
+After updating, always run the full project check to ensure everything works:
+
+```bash
+npm run check
+```
+
+This will run type checking, linting, formatting, spell checking, tests, and security audits. Only submit a PR if all checks pass.
+
+> **Tip:** Review the [Development Workflow](#development-workflow) section for more details on quality standards.
+
 ## Code of Conduct
 
 This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior as outlined in the Code of Conduct.
