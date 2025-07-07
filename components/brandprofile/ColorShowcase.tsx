@@ -128,7 +128,7 @@ const ColorSwatch = ({
 
       {/* Tooltip */}
       {showTooltip && !showAccessibilityPanel && (
-        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 dark:bg-gray-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-secondary-900 dark:bg-secondary-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
           {copiedValue ? 'Copied!' : 'Click to copy'}
         </div>
       )}

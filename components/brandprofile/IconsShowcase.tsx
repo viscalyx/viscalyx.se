@@ -480,10 +480,12 @@ const IconsShowcase: React.FC = () => {
       transition={{ duration: 0.5 }}
       className="mb-12"
     >
-      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-2">
         {title}
       </h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-6">{description}</p>
+      <p className="text-secondary-600 dark:text-secondary-300 mb-6">
+        {description}
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {icons.map((icon, index) => {
           const IconComponent = icon.component
@@ -493,17 +495,17 @@ const IconsShowcase: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
+              className="bg-white dark:bg-secondary-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
                   <IconComponent className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 </div>
-                <h4 className="font-semibold text-gray-900 dark:text-white">
+                <h4 className="font-semibold text-secondary-900 dark:text-white">
                   {icon.name}
                 </h4>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-secondary-600 dark:text-secondary-300">
                 {icon.usage}
               </p>
             </motion.div>
@@ -522,10 +524,10 @@ const IconsShowcase: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-12"
       >
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-3xl font-bold text-secondary-900 dark:text-white mb-4">
           {t('icons.title')}
         </h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p className="text-lg text-secondary-600 dark:text-secondary-300 max-w-3xl mx-auto">
           {t('icons.description')}
         </p>
       </motion.div>
@@ -564,10 +566,10 @@ const IconsShowcase: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="mb-12"
       >
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-2">
           {t('icons.categories.dynamicAlertIcons.title')}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-secondary-600 dark:text-secondary-300 mb-6">
           {t('icons.categories.dynamicAlertIcons.description')}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -578,7 +580,7 @@ const IconsShowcase: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
+                className="bg-white dark:bg-secondary-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-primary-100 dark:bg-primary-900 rounded-lg">
@@ -594,11 +596,11 @@ const IconsShowcase: React.FC = () => {
                       className="w-5 h-5 text-primary-600 dark:text-primary-400"
                     />
                   </div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white capitalize">
+                  <h4 className="font-semibold text-secondary-900 dark:text-white capitalize">
                     {type}
                   </h4>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-secondary-600 dark:text-secondary-300">
                   {t(`icons.alertTypes.${type}`)}
                 </p>
               </motion.div>
@@ -614,25 +616,25 @@ const IconsShowcase: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-xl p-8"
       >
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-4">
           {t('icons.usageGuidelines.title')}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="font-semibold text-secondary-900 dark:text-white mb-3">
               {t('icons.usageGuidelines.customIcons.title')}
             </h4>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-secondary-600 dark:text-secondary-300">
               {customIconsGuidelines.map((item: string, index: number) => (
                 <li key={index}>• {item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+            <h4 className="font-semibold text-secondary-900 dark:text-white mb-3">
               {t('icons.usageGuidelines.lucideIcons.title')}
             </h4>
-            <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+            <ul className="space-y-2 text-secondary-600 dark:text-secondary-300">
               {lucideIconsGuidelines.map((item: string, index: number) => (
                 <li key={index}>• {item}</li>
               ))}
@@ -646,31 +648,31 @@ const IconsShowcase: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm border border-gray-200 dark:border-gray-700"
+        className="bg-white dark:bg-secondary-800 rounded-xl p-8 shadow-sm border border-secondary-200 dark:border-secondary-700"
       >
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-2xl font-bold text-secondary-900 dark:text-white mb-4">
           {t('icons.implementationExamples.title')}
         </h3>
         <div className="space-y-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-secondary-900 dark:text-white mb-2">
               {t('icons.implementationExamples.customSocialIcons.title')}
             </h4>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
+            <div className="bg-secondary-50 dark:bg-secondary-900 rounded-lg p-4 font-mono text-sm">
+              <pre className="text-secondary-800 dark:text-secondary-200">
                 {`import { GitHubIcon, LinkedInIcon } from '@/components/SocialIcons'
 
-<GitHubIcon className="w-5 h-5 text-gray-600 hover:text-gray-900" />
+<GitHubIcon className="w-5 h-5 text-secondary-600 hover:text-secondary-900" />
 <LinkedInIcon className="w-5 h-5 text-blue-600 hover:text-blue-700" />`}
               </pre>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-secondary-900 dark:text-white mb-2">
               {t('icons.implementationExamples.blogAlertIcons.title')}
             </h4>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
+            <div className="bg-secondary-50 dark:bg-secondary-900 rounded-lg p-4 font-mono text-sm">
+              <pre className="text-secondary-800 dark:text-secondary-200">
                 {`import { AlertIcon } from '@/components/BlogIcons'
 
 <AlertIcon type="warning" className="w-5 h-5 text-orange-500" />
@@ -679,11 +681,11 @@ const IconsShowcase: React.FC = () => {
             </div>
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+            <h4 className="font-semibold text-secondary-900 dark:text-white mb-2">
               {t('icons.implementationExamples.lucideReactIcons.title')}
             </h4>
-            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
-              <pre className="text-gray-800 dark:text-gray-200">
+            <div className="bg-secondary-50 dark:bg-secondary-900 rounded-lg p-4 font-mono text-sm">
+              <pre className="text-secondary-800 dark:text-secondary-200">
                 {`import { Mail, Phone, MapPin } from 'lucide-react'
 
 <Mail className="w-5 h-5 text-primary-600" />
