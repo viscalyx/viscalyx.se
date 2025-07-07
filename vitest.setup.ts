@@ -97,3 +97,10 @@ vi.mock('**/*.css', () => ({}))
 
 // Mock static assets
 vi.mock('*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')
+
+// Mock ResizeObserver for recharts
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}))

@@ -13,6 +13,7 @@ import {
   Terminal,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import RechartsComparison from './RechartsComparison'
 
 // Sample data for various chart types that use the visualization colors
 const generateSampleData = (colors: ColorItem[]) => {
@@ -255,6 +256,11 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
 }
 
 // Chart Components
+interface DataPoint {
+  x: string
+  y: number
+}
+
 interface ChartComponentProps {
   title: string
   colors: ColorItem[]
@@ -324,7 +330,7 @@ const SimpleLineChart = ({
   const maxY = Math.max(...allData.map(d => d.y))
   const minY = Math.min(...allData.map(d => d.y))
 
-  const getPath = (data: any[]) => {
+  const getPath = (data: DataPoint[]) => {
     const points = data.map((point, index) => {
       const x = padding + (index / (data.length - 1)) * (width - 2 * padding)
       const y =
@@ -449,7 +455,7 @@ const SimpleAreaChart = ({
   const maxY = Math.max(...allData.map(d => d.y))
   const minY = Math.min(...allData.map(d => d.y))
 
-  const getAreaPath = (data: any[], isBaseline = false) => {
+  const getAreaPath = (data: DataPoint[]) => {
     const points = data.map((point, index) => {
       const x = padding + (index / (data.length - 1)) * (width - 2 * padding)
       const y =
@@ -597,7 +603,7 @@ const PieChartExample = ({
           viewBox="0 0 200 200"
           className="flex-shrink-0"
         >
-          {pieChartData.map((slice, index) => {
+          {pieChartData.map(slice => {
             const percentage = slice.value
             const startAngle = (cumulativePercentage / 100) * 360
             const endAngle = ((cumulativePercentage + percentage) / 100) * 360
@@ -635,7 +641,7 @@ const PieChartExample = ({
         </svg>
 
         <div className="ml-6 space-y-2">
-          {pieChartData.map((slice, index) => (
+          {pieChartData.map(slice => (
             <div key={slice.name} className="flex items-center text-sm">
               <div
                 className="w-3 h-3 rounded-full mr-2"
@@ -914,6 +920,9 @@ const errorColor = colors.find(c => c.name === 'Visualization 5')?.hex`}
           </div>
         </div>
       </motion.div>
+
+      {/* Recharts Comparison Section */}
+      <RechartsComparison />
     </div>
   )
 }
