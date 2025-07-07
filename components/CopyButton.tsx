@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CopyIcon, CheckmarkIcon } from './BlogIcons'
+import { CheckmarkIcon, CopyIcon } from './BlogIcons'
 
 interface CopyButtonProps {
   text: string
@@ -52,7 +52,7 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
       aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
     >
       {copied ? (
-        <CheckmarkIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
+        <CheckmarkIcon className="w-4 h-4 text-green-600 dark:text-green-600" />
       ) : (
         <CopyIcon className="w-4 h-4 text-secondary-600 dark:text-secondary-300 group-hover:text-secondary-800 dark:group-hover:text-secondary-100 transition-colors" />
       )}
