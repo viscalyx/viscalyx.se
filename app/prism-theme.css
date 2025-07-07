@@ -6,38 +6,43 @@
   /* Core syntax token colors - Light theme */
   --color-token-comment: #6b7280; /* secondary-500 */
   --color-token-punctuation: #374151; /* secondary-700 */
-  --color-token-property: #dc2626; /* red-600 */
-  --color-token-selector: #059669; /* green-600 */
-  --color-token-operator: #d97706; /* amber-600 */
-  --color-token-keyword: #2563eb; /* blue-600 */
-  --color-token-function: #7c3aed; /* violet-600 */
-  --color-token-variable: #ea580c; /* orange-600 */
+  --color-token-property: #ef4444; /* brand error color */
+  --color-token-selector: #059669; /* brand success color */
+  --color-token-operator: #f59e0b; /* brand warning color */
+  --color-token-keyword: #3b82f6; /* brand info color */
+  --color-token-function: #7c3aed; /* brand important color */
+  --color-token-variable: #f59e0b; /* brand warning color */
 
   /* PowerShell-specific token colors - Light theme */
-  --color-token-powershell-variable: #2563eb; /* blue-600 */
-  --color-token-powershell-cmdlet: #7c3aed; /* violet-600 */
-  --color-token-powershell-parameter: #059669; /* green-600 */
+  --color-token-powershell-variable: #3b82f6; /* brand info color */
+  --color-token-powershell-cmdlet: #7c3aed; /* brand important color */
+  --color-token-powershell-parameter: #059669; /* brand success color */
 
   /* Code UI colors */
-  --color-highlight-line-bg: rgba(59, 130, 246, 0.1); /* blue with opacity */
+  --color-highlight-line-bg: rgba(
+    59,
+    130,
+    246,
+    0.1
+  ); /* brand info with opacity */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Core syntax token colors - Dark theme */
+    /* Core syntax token colors - Dark theme - lighter versions of brand colors */
     --color-token-comment: #9ca3af; /* secondary-400 */
     --color-token-punctuation: #d1d5db; /* secondary-300 */
-    --color-token-property: #f87171; /* red-400 */
-    --color-token-selector: #34d399; /* green-400 */
-    --color-token-operator: #fbbf24; /* amber-400 */
-    --color-token-keyword: #60a5fa; /* blue-400 */
-    --color-token-function: #a78bfa; /* violet-400 */
-    --color-token-variable: #fb923c; /* orange-400 */
+    --color-token-property: #fca5a5; /* lighter version of brand error */
+    --color-token-selector: #6ee7b7; /* lighter version of brand success */
+    --color-token-operator: #fbbf24; /* lighter version of brand warning */
+    --color-token-keyword: #93c5fd; /* lighter version of brand info */
+    --color-token-function: #c4b5fd; /* lighter version of brand important */
+    --color-token-variable: #fbbf24; /* lighter version of brand warning */
 
     /* PowerShell-specific token colors - Dark theme */
-    --color-token-powershell-variable: #60a5fa; /* blue-400 */
-    --color-token-powershell-cmdlet: #a78bfa; /* violet-400 */
-    --color-token-powershell-parameter: #34d399; /* green-400 */
+    --color-token-powershell-variable: #93c5fd; /* lighter version of brand info */
+    --color-token-powershell-cmdlet: #c4b5fd; /* lighter version of brand important */
+    --color-token-powershell-parameter: #6ee7b7; /* lighter version of brand success */
   }
 }
 

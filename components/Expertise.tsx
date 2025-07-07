@@ -1,20 +1,19 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import {
-  Terminal,
   Cloud,
-  Database,
-  Shield,
   Code,
-  Settings,
-  TrendingUp,
+  Database,
   Layers,
+  Settings,
+  Shield,
+  Terminal,
+  TrendingUp,
 } from 'lucide-react'
-import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { useRef } from 'react'
 
 const Expertise = () => {
   const ref = useRef(null)
@@ -26,49 +25,49 @@ const Expertise = () => {
       name: t('technologies.powershell'),
       level: 95,
       icon: Terminal,
-      color: 'bg-blue-500',
+      color: 'bg-[#3b82f6]', // viz-1
     },
     {
       name: t('technologies.powershellDsc'),
       level: 92,
       icon: Settings,
-      color: 'bg-indigo-500',
+      color: 'bg-[#6366f1]', // viz-2
     },
     {
       name: t('technologies.azureDevOps'),
       level: 88,
       icon: Cloud,
-      color: 'bg-sky-500',
+      color: 'bg-[#0ea5e9]', // viz-3
     },
     {
       name: t('technologies.docker'),
       level: 85,
       icon: Layers,
-      color: 'bg-cyan-500',
+      color: 'bg-[#06b6d4]', // viz-4
     },
     {
       name: t('technologies.gitGithub'),
       level: 90,
       icon: Code,
-      color: 'bg-secondary-700',
+      color: 'bg-[#4b5563]', // viz-8
     },
     {
       name: t('technologies.sqlServer'),
       level: 82,
       icon: Database,
-      color: 'bg-red-500',
+      color: 'bg-[#ef4444]', // viz-5
     },
     {
       name: t('technologies.security'),
       level: 86,
       icon: Shield,
-      color: 'bg-green-500',
+      color: 'bg-[#22c55e]', // viz-6
     },
     {
       name: t('technologies.performance'),
       level: 89,
       icon: TrendingUp,
-      color: 'bg-purple-500',
+      color: 'bg-[#a855f7]', // viz-7
     },
   ]
 
