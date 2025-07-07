@@ -50,7 +50,7 @@ const Expertise = () => {
       name: t('technologies.gitGithub'),
       level: 90,
       icon: Code,
-      color: 'bg-gray-700',
+      color: 'bg-secondary-700',
     },
     {
       name: t('technologies.sqlServer'),

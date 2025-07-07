@@ -258,7 +258,7 @@ const Hero = () => {
 
                       {/* Loading placeholder */}
                       {!imagesLoaded[index] && !imageLoadErrors[index] && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-gradient-to-br from-secondary-100 to-secondary-200 dark:from-secondary-800 dark:to-secondary-900 rounded-2xl flex items-center justify-center">
                           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                         </div>
                       )}
