@@ -177,6 +177,7 @@ const ColorShowcase = () => {
     primary: primaryColors,
     secondary: secondaryColors,
     accent: accentColors,
+    dataVisualization: dataVisualizationColors,
   } = getAllColors()
 
   const accessibilityInfo = getAccessibilityInfo()
@@ -298,6 +299,21 @@ const ColorShowcase = () => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {accentColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          {t('analysisColors')}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {dataVisualizationColors.map(color => (
             <ColorSwatch
               key={color.name}
               color={color}

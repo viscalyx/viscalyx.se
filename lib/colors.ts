@@ -96,12 +96,70 @@ export const getAccentColors = (): ColorItem[] => {
 }
 
 /**
+ * Get data visualization colors used for diagrams, charts, and spreadsheet-style visualizations
+ * These colors are optimized for data visualization and technical content
+ */
+export const getDataVisualizationColors = (): ColorItem[] => {
+  return [
+    {
+      name: 'Visualization 1',
+      hex: '#3b82f6',
+      rgb: 'rgb(59, 130, 246)',
+      usage: 'Primary data series, main categories',
+    },
+    {
+      name: 'Visualization 2',
+      hex: '#6366f1',
+      rgb: 'rgb(99, 102, 241)',
+      usage: 'Secondary data series, sub-categories',
+    },
+    {
+      name: 'Visualization 3',
+      hex: '#0ea5e9',
+      rgb: 'rgb(14, 165, 233)',
+      usage: 'Tertiary data series, supporting elements',
+    },
+    {
+      name: 'Visualization 4',
+      hex: '#06b6d4',
+      rgb: 'rgb(6, 182, 212)',
+      usage: 'Quaternary data series, additional metrics',
+    },
+    {
+      name: 'Visualization 5',
+      hex: '#ef4444',
+      rgb: 'rgb(239, 68, 68)',
+      usage: 'Error states, critical values',
+    },
+    {
+      name: 'Visualization 6',
+      hex: '#22c55e',
+      rgb: 'rgb(34, 197, 94)',
+      usage: 'Success states, positive values',
+    },
+    {
+      name: 'Visualization 7',
+      hex: '#a855f7',
+      rgb: 'rgb(168, 85, 247)',
+      usage: 'Special highlights, performance indicators',
+    },
+    {
+      name: 'Visualization 8',
+      hex: '#4b5563',
+      rgb: 'rgb(75, 85, 99)',
+      usage: 'Neutral values, background data',
+    },
+  ]
+}
+
+/**
  * Get all colors organized by category
  */
 export const getAllColors = () => ({
   primary: getPrimaryColors(),
   secondary: getSecondaryColors(),
   accent: getAccentColors(),
+  dataVisualization: getDataVisualizationColors(),
 })
 
 /**

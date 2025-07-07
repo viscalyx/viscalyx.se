@@ -70,6 +70,7 @@ vi.mock('lucide-react', () => ({
   ArrowUp: ({ size }: any) => <span data-testid="arrow-up-icon" />,
   Award: ({ size }: any) => <span data-testid="award-icon" />,
   BarChart: ({ size }: any) => <span data-testid="bar-chart-icon" />,
+  BarChart3: ({ size }: any) => <span data-testid="bar-chart3-icon" />,
   Camera: ({ size }: any) => <span data-testid="camera-icon" />,
   Check: ({ size }: any) => <span data-testid="check-icon" />,
   CheckCircle: ({ size }: any) => <span data-testid="check-circle-icon" />,
