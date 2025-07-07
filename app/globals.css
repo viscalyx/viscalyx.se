@@ -219,38 +219,38 @@
 
   /* Note variant - centralized via attribute selector */
   .blog-content .github-alert[data-alert-type='note'] {
-    --alert-border-color: #3b82f6; /* blue-500 */
+    --alert-border-color: #2563eb; /* blue-600 */
     --alert-title-color-light: #2563eb; /* blue-600 */
-    --alert-title-color-dark: #60a5fa; /* blue-400 */
+    --alert-title-color-dark: #2563eb; /* blue-600 */
   }
 
   /* Tip variant - set CSS variables for border, title color */
   .blog-content .github-alert-tip {
-    --alert-border-color: #10b981; /* green-500 */
+    --alert-border-color: #16a34a; /* green-600 */
     --alert-title-color-light: #16a34a; /* green-600 */
-    --alert-title-color-dark: #34d399; /* green-400 */
+    --alert-title-color-dark: #16a34a; /* green-600 */
   }
 
   /* Important - Purple with exclamation in speech bubble */
   .blog-content .github-alert-important {
-    --alert-border-color: #a855f7; /* purple-500 */
+    --alert-border-color: #7c3aed; /* purple-600 */
     --alert-title-color-light: #7c3aed; /* purple-600 */
-    --alert-title-color-dark: #a78bfa; /* purple-400 */
+    --alert-title-color-dark: #7c3aed; /* purple-600 */
   }
 
   /* Warning - Orange/Yellow with triangle exclamation */
   .blog-content .github-alert-warning {
-    --alert-border-color: #f97316; /* orange-500 */
+    --alert-border-color: #d97706; /* orange-600 */
     --alert-title-color-light: #d97706; /* orange-600 */
-    --alert-title-color-dark: #fb923c; /* orange-400 */
+    --alert-title-color-dark: #d97706; /* orange-600 */
   }
 
   /* Caution alert variant */
   .blog-content .github-alert-caution {
     /* Remove @apply since border-color is set by variable */
-    --alert-border-color: #ef4444; /* red-500 */
+    --alert-border-color: #dc2626; /* red-500 */
     --alert-title-color-light: #dc2626; /* red-600 */
-    --alert-title-color-dark: #f87171; /* red-400 */
+    --alert-title-color-dark: #dc2626; /* red-600 */
   }
 
   /* Quote - Styled like regular blockquote but with visible quote marks */

@@ -51,6 +51,12 @@ vi.mock('@/lib/colors', () => ({
         rgb: 'rgb(34, 197, 94)',
         usage: 'Success states, confirmations',
       },
+      {
+        name: 'Yellow',
+        hex: '#facc15',
+        rgb: 'rgb(250, 204, 21)',
+        usage: 'Star icons, ratings, achievements, gold accents',
+      },
     ],
     dataVisualization: [
       {

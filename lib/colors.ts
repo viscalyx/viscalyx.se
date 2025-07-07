@@ -70,27 +70,41 @@ export const getAccentColors = (): ColorItem[] => {
   return [
     {
       name: 'Success',
-      hex: '#22c55e',
-      rgb: 'rgb(34, 197, 94)',
-      usage: 'Success states, confirmations',
+      hex: '#059669',
+      rgb: hexToRgb('#059669'),
+      usage:
+        'Success states, checkmark icons, success confirmations, completion states',
     },
     {
       name: 'Warning',
       hex: '#f59e0b',
-      rgb: 'rgb(245, 158, 11)',
+      rgb: hexToRgb('#f59e0b'),
       usage: 'Warnings, cautions',
+    },
+    {
+      name: 'Important',
+      hex: '#7c3aed',
+      rgb: hexToRgb('#7c3aed'),
+      usage: 'Crucial information',
     },
     {
       name: 'Error',
       hex: '#ef4444',
-      rgb: 'rgb(239, 68, 68)',
-      usage: 'Errors, destructive actions',
+      rgb: hexToRgb('#ef4444'),
+      usage:
+        'Errors, destructive actions, heart icons, emergency states, failed action',
     },
     {
       name: 'Info',
       hex: '#3b82f6',
-      rgb: 'rgb(59, 130, 246)',
+      rgb: hexToRgb('#3b82f6'),
       usage: 'Information, tips',
+    },
+    {
+      name: 'Gold',
+      hex: '#facc15',
+      rgb: hexToRgb('#facc15'),
+      usage: 'Star icons, ratings, achievements, gold accents',
     },
   ]
 }
