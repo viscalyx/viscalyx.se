@@ -102,13 +102,13 @@ describe('DataVisualizationShowcase', () => {
   it('renders color hex values', () => {
     render(<DataVisualizationShowcase />)
 
-    // Check for hex color values
-    expect(screen.getByText('#3b82f6')).toBeInTheDocument() // Visualization 1 blue
-    expect(screen.getByText('#6366f1')).toBeInTheDocument() // Configuration indigo
-    expect(screen.getByText('#0ea5e9')).toBeInTheDocument() // Cloud sky
-    expect(screen.getByText('#ef4444')).toBeInTheDocument() // Database red
-    expect(screen.getByText('#22c55e')).toBeInTheDocument() // Security green
-    expect(screen.getByText('#a855f7')).toBeInTheDocument() // Performance purple
+    // Check that visualization colors are rendered (they appear in both color swatches and palette reference)
+    expect(screen.getAllByText('#3b82f6').length).toBeGreaterThan(0) // Visualization 1 blue
+    expect(screen.getAllByText('#6366f1').length).toBeGreaterThan(0) // Visualization 2 indigo
+    expect(screen.getAllByText('#0ea5e9').length).toBeGreaterThan(0) // Visualization 3 sky
+    expect(screen.getAllByText('#ef4444').length).toBeGreaterThan(0) // Visualization 5 red
+    expect(screen.getAllByText('#22c55e').length).toBeGreaterThan(0) // Visualization 6 green
+    expect(screen.getAllByText('#a855f7').length).toBeGreaterThan(0) // Visualization 7 purple
   })
 
   it('renders color RGB values', () => {
@@ -130,5 +130,58 @@ describe('DataVisualizationShowcase', () => {
     expect(
       screen.getByText('Secondary data series, sub-categories')
     ).toBeInTheDocument()
+  })
+
+  it('renders interactive chart examples', () => {
+    render(<DataVisualizationShowcase />)
+
+    // Check for chart example titles
+    expect(screen.getByText('Skills Assessment')).toBeInTheDocument()
+    expect(screen.getByText('Performance Trends')).toBeInTheDocument()
+    expect(screen.getByText('Growth Metrics')).toBeInTheDocument()
+    expect(screen.getByText('Technology Stack')).toBeInTheDocument()
+    expect(screen.getByText('Key Performance Indicators')).toBeInTheDocument()
+  })
+
+  it('renders chart components with custom SVG implementations', () => {
+    render(<DataVisualizationShowcase />)
+
+    // Check for custom chart components that actually use our visualization colors
+    expect(screen.getByText('Skills Assessment')).toBeInTheDocument()
+    expect(screen.getByText('Performance Trends')).toBeInTheDocument()
+    expect(screen.getByText('Growth Metrics')).toBeInTheDocument()
+    expect(screen.getByText('Technology Stack')).toBeInTheDocument()
+
+    // Check that SVG elements are present (our custom charts use SVG)
+    const svgElements = document.querySelectorAll('svg')
+    expect(svgElements.length).toBeGreaterThan(0)
+  })
+
+  it('renders metrics with proper values', () => {
+    render(<DataVisualizationShowcase />)
+
+    // Check for metric values
+    expect(screen.getByText('24')).toBeInTheDocument() // Active Projects
+    expect(screen.getByText('98%')).toBeInTheDocument() // Success Rate
+    expect(screen.getByText('4.9')).toBeInTheDocument() // Client Satisfaction
+    expect(screen.getByText('1.2s')).toBeInTheDocument() // Response Time
+  })
+
+  it('renders pie chart with technology stack data', () => {
+    render(<DataVisualizationShowcase />)
+
+    // Check for technology stack labels in pie chart
+    expect(screen.getByText(/React:/)).toBeInTheDocument()
+    expect(screen.getByText(/TypeScript:/)).toBeInTheDocument()
+    expect(screen.getByText(/Next.js:/)).toBeInTheDocument()
+    expect(screen.getByText(/Vue.js:/)).toBeInTheDocument()
+  })
+
+  it('renders color palette reference', () => {
+    render(<DataVisualizationShowcase />)
+
+    expect(screen.getByText('Color Palette Reference')).toBeInTheDocument()
+    expect(screen.getByText('Color 1')).toBeInTheDocument()
+    expect(screen.getByText('Color 2')).toBeInTheDocument()
   })
 })
