@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
+/* Configure dark mode to use class-based toggle instead of prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Custom theme variables for v4 */
 @theme {
   /* Colors */
