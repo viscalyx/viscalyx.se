@@ -984,12 +984,14 @@
       "components": "Komponenter",
       "icons": "Ikoner",
       "animations": "Animationer",
-      "accessibility": "Tillgänglighet"
+      "accessibility": "Tillgänglighet",
+      "analysis": "Datavisualisering"
     },
     "colorShowcase": {
       "primaryColors": "Primärfärger (blåskala)",
       "secondaryColors": "Sekundärfärger (gråskala)",
-      "accentColors": "Accentfärger"
+      "accentColors": "Accentfärger",
+      "analysisColors": "Datavisualisering"
     },
     "typographyShowcase": {
       "fontSizes": "Textstorlekar & Hierarki",

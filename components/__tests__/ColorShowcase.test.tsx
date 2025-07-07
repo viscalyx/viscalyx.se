@@ -16,6 +16,7 @@ vi.mock('next-intl', () => ({
       primaryColors: 'Primary Colors (Blue Scale)',
       secondaryColors: 'Secondary Colors (Gray Scale)',
       accentColors: 'Accent Colors',
+      analysisColors: 'Data Visualization Colors',
     }
     return translations[key] || key
   },
@@ -49,6 +50,20 @@ vi.mock('@/lib/colors', () => ({
         hex: '#22c55e',
         rgb: 'rgb(34, 197, 94)',
         usage: 'Success states, confirmations',
+      },
+    ],
+    dataVisualization: [
+      {
+        name: 'Visualization 1',
+        hex: '#3b82f6',
+        rgb: 'rgb(59, 130, 246)',
+        usage: 'Primary data series, main categories',
+      },
+      {
+        name: 'Visualization 2',
+        hex: '#6366f1',
+        rgb: 'rgb(99, 102, 241)',
+        usage: 'Secondary data series, sub-categories',
       },
     ],
   }),
@@ -93,6 +108,11 @@ describe('ColorShowcase', () => {
   it('renders accent colors section', () => {
     render(<ColorShowcase />)
     expect(screen.getByText('Accent Colors')).toBeInTheDocument()
+  })
+
+  it('renders analysis colors section', () => {
+    render(<ColorShowcase />)
+    expect(screen.getByText('Data Visualization Colors')).toBeInTheDocument()
   })
 
   it('renders primary color swatches', () => {

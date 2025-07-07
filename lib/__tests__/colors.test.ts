@@ -4,6 +4,7 @@ import {
   getAccessibilityInfo,
   getAllColors,
   getContrastRatio,
+  getDataVisualizationColors,
   getPrimaryColors,
   getSecondaryColors,
   meetsContrastRequirement,
@@ -66,6 +67,26 @@ describe('colors utility', () => {
     })
   })
 
+  describe('getDataVisualizationColors', () => {
+    it('should return analysis colors with correct structure', () => {
+      const colors = getDataVisualizationColors()
+
+      expect(colors).toHaveLength(8)
+      expect(colors[0]).toHaveProperty('name', 'Visualization 1')
+      expect(colors[0]).toHaveProperty('hex', '#3b82f6')
+      expect(colors[0]).toHaveProperty('rgb', 'rgb(59, 130, 246)')
+      expect(colors[0]).toHaveProperty(
+        'usage',
+        'Primary data series, main categories'
+      )
+
+      expect(colors[4]).toHaveProperty('name', 'Visualization 5')
+      expect(colors[4]).toHaveProperty('hex', '#ef4444')
+      expect(colors[4]).toHaveProperty('rgb', 'rgb(239, 68, 68)')
+      expect(colors[4]).toHaveProperty('usage', 'Error states, critical values')
+    })
+  })
+
   describe('getAllColors', () => {
     it('should return all colors organized by category', () => {
       const allColors = getAllColors()
@@ -73,10 +94,12 @@ describe('colors utility', () => {
       expect(allColors).toHaveProperty('primary')
       expect(allColors).toHaveProperty('secondary')
       expect(allColors).toHaveProperty('accent')
+      expect(allColors).toHaveProperty('dataVisualization')
 
       expect(allColors.primary).toHaveLength(10)
       expect(allColors.secondary).toHaveLength(11)
       expect(allColors.accent).toHaveLength(4)
+      expect(allColors.dataVisualization).toHaveLength(8)
     })
   })
 

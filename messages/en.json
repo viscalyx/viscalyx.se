@@ -978,12 +978,14 @@
       "components": "Components",
       "icons": "Icons",
       "animations": "Animations",
-      "accessibility": "Accessibility"
+      "accessibility": "Accessibility",
+      "analysis": "Data Visualization"
     },
     "colorShowcase": {
       "primaryColors": "Primary Colors (Blue Scale)",
       "secondaryColors": "Secondary Colors (Gray Scale)",
-      "accentColors": "Accent Colors"
+      "accentColors": "Accent Colors",
+      "analysisColors": "Data Visualization"
     },
     "typographyShowcase": {
       "fontSizes": "Font Sizes & Hierarchy",
