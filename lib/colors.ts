@@ -1,10 +1,7 @@
 /**
- * Color system utilities that extract actual color values from Tailwind CSS
+ * Color system utilities that extract actual color values from Tailwind CSS v4
  * This ensures the ColorShowcase component stays in sync with the design system
  */
-
-import resolveConfig from 'tailwindcss/resolveConfig.js'
-import tailwindConfig from '../tailwind.config.js'
 
 export interface ColorItem {
   name: string
@@ -12,18 +9,6 @@ export interface ColorItem {
   rgb: string
   usage?: string
 }
-
-// Define types for Tailwind color configuration
-export interface ColorPalette {
-  [key: string]: string
-}
-
-export interface ThemeColors {
-  [colorKey: string]: ColorPalette | string | undefined
-}
-
-// Resolve the full Tailwind configuration
-const fullConfig = resolveConfig(tailwindConfig)
 
 /**
  * Convert hex color to RGB format
@@ -40,88 +25,40 @@ const hexToRgb = (hex: string): string => {
 }
 
 /**
- * Helper function to extract color palette from Tailwind config
+ * Primary color palette - matching the theme variables in globals.css
  */
-const extractColorPalette = (
-  colorKey: string,
-  fallbackColor: string
-): ColorItem[] => {
-  const colors = fullConfig.theme?.colors as unknown as ThemeColors | undefined
-
-  if (!colors) {
-    console.warn(
-      `Theme colors not found in Tailwind config, using fallback colors`
-    )
-    return [
-      {
-        name: `${colorKey}-500`,
-        hex: fallbackColor,
-        rgb: hexToRgb(fallbackColor),
-      },
-    ]
-  }
-
-  const colorValue = colors[colorKey]
-
-  if (!colorValue) {
-    console.warn(
-      `${colorKey} colors not found in Tailwind config, using fallback colors`
-    )
-    return [
-      {
-        name: `${colorKey}-500`,
-        hex: fallbackColor,
-        rgb: hexToRgb(fallbackColor),
-      },
-    ]
-  }
-
-  // Handle single color (string) vs color palette (object)
-  if (typeof colorValue === 'string') {
-    return [
-      {
-        name: colorKey,
-        hex: colorValue,
-        rgb: hexToRgb(colorValue),
-      },
-    ]
-  }
-
-  // Handle color palette (object)
-  if (typeof colorValue === 'object' && colorValue !== null) {
-    const colorPalette = colorValue as ColorPalette
-    return Object.entries(colorPalette).map(([key, hex]) => ({
-      name: `${colorKey}-${key}`,
-      hex,
-      rgb: hexToRgb(hex),
-    }))
-  }
-
-  // Fallback if color value is neither string nor object
-  console.warn(
-    `${colorKey} color value has unexpected type, using fallback colors`
-  )
+export const getPrimaryColors = (): ColorItem[] => {
   return [
-    {
-      name: `${colorKey}-500`,
-      hex: fallbackColor,
-      rgb: hexToRgb(fallbackColor),
-    },
+    { name: 'primary-50', hex: '#eff6ff', rgb: hexToRgb('#eff6ff') },
+    { name: 'primary-100', hex: '#dbeafe', rgb: hexToRgb('#dbeafe') },
+    { name: 'primary-200', hex: '#bfdbfe', rgb: hexToRgb('#bfdbfe') },
+    { name: 'primary-300', hex: '#93c5fd', rgb: hexToRgb('#93c5fd') },
+    { name: 'primary-400', hex: '#60a5fa', rgb: hexToRgb('#60a5fa') },
+    { name: 'primary-500', hex: '#3b82f6', rgb: hexToRgb('#3b82f6') },
+    { name: 'primary-600', hex: '#2563eb', rgb: hexToRgb('#2563eb') },
+    { name: 'primary-700', hex: '#1d4ed8', rgb: hexToRgb('#1d4ed8') },
+    { name: 'primary-800', hex: '#1e40af', rgb: hexToRgb('#1e40af') },
+    { name: 'primary-900', hex: '#1e3a8a', rgb: hexToRgb('#1e3a8a') },
   ]
 }
 
 /**
- * Extract primary color palette from Tailwind configuration
- */
-export const getPrimaryColors = (): ColorItem[] => {
-  return extractColorPalette('primary', '#3b82f6')
-}
-
-/**
- * Extract secondary color palette from Tailwind configuration
+ * Secondary color palette - matching the theme variables in globals.css
  */
 export const getSecondaryColors = (): ColorItem[] => {
-  return extractColorPalette('secondary', '#64748b')
+  return [
+    { name: 'secondary-50', hex: '#f8fafc', rgb: hexToRgb('#f8fafc') },
+    { name: 'secondary-100', hex: '#f1f5f9', rgb: hexToRgb('#f1f5f9') },
+    { name: 'secondary-200', hex: '#e2e8f0', rgb: hexToRgb('#e2e8f0') },
+    { name: 'secondary-300', hex: '#cbd5e1', rgb: hexToRgb('#cbd5e1') },
+    { name: 'secondary-400', hex: '#94a3b8', rgb: hexToRgb('#94a3b8') },
+    { name: 'secondary-500', hex: '#64748b', rgb: hexToRgb('#64748b') },
+    { name: 'secondary-600', hex: '#475569', rgb: hexToRgb('#475569') },
+    { name: 'secondary-700', hex: '#334155', rgb: hexToRgb('#334155') },
+    { name: 'secondary-800', hex: '#1e293b', rgb: hexToRgb('#1e293b') },
+    { name: 'secondary-900', hex: '#0f172a', rgb: hexToRgb('#0f172a') },
+    { name: 'secondary-950', hex: '#020617', rgb: hexToRgb('#020617') },
+  ]
 }
 
 /**
