@@ -1,3 +1,4 @@
+export { default as AccessibilityDocumentation } from './AccessibilityDocumentation'
 export { default as AccessibilityShowcase } from './AccessibilityShowcase'
 export { default as AnimationsShowcase } from './AnimationsShowcase'
 export { default as BrandShowcase } from './BrandShowcase'
