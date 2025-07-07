@@ -54,16 +54,31 @@ describe('colors utility', () => {
     it('should return accent colors with correct structure', () => {
       const colors = getAccentColors()
 
-      expect(colors).toHaveLength(4)
+      expect(colors).toHaveLength(6)
       expect(colors[0]).toHaveProperty('name', 'Success')
-      expect(colors[0]).toHaveProperty('hex', '#22c55e')
-      expect(colors[0]).toHaveProperty('rgb', 'rgb(34, 197, 94)')
-      expect(colors[0]).toHaveProperty('usage', 'Success states, confirmations')
+      expect(colors[0]).toHaveProperty('hex', '#059669')
+      expect(colors[0]).toHaveProperty('rgb', 'rgb(5, 150, 105)')
+      expect(colors[0]).toHaveProperty(
+        'usage',
+        'Success states, checkmark icons, success confirmations, completion states'
+      )
 
-      expect(colors[2]).toHaveProperty('name', 'Error')
-      expect(colors[2]).toHaveProperty('hex', '#ef4444')
-      expect(colors[2]).toHaveProperty('rgb', 'rgb(239, 68, 68)')
-      expect(colors[2]).toHaveProperty('usage', 'Errors, destructive actions')
+      expect(colors[3]).toHaveProperty('name', 'Error')
+      expect(colors[3]).toHaveProperty('hex', '#ef4444')
+      expect(colors[3]).toHaveProperty('rgb', 'rgb(239, 68, 68)')
+      expect(colors[3]).toHaveProperty(
+        'usage',
+        'Errors, destructive actions, heart icons, emergency states, failed action'
+      )
+
+      // Test new icon colors
+      expect(colors[5]).toHaveProperty('name', 'Gold')
+      expect(colors[5]).toHaveProperty('hex', '#facc15')
+      expect(colors[5]).toHaveProperty('rgb', 'rgb(250, 204, 21)')
+      expect(colors[5]).toHaveProperty(
+        'usage',
+        'Star icons, ratings, achievements, gold accents'
+      )
     })
   })
 
@@ -98,7 +113,7 @@ describe('colors utility', () => {
 
       expect(allColors.primary).toHaveLength(10)
       expect(allColors.secondary).toHaveLength(11)
-      expect(allColors.accent).toHaveLength(4)
+      expect(allColors.accent).toHaveLength(6)
       expect(allColors.dataVisualization).toHaveLength(8)
     })
   })
