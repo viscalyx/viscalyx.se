@@ -1525,6 +1525,9 @@ Or update a specific package:
 npm install <package-name>@latest
 ```
 
+- **Commit the updated lock file** (`package-lock.json` or `pnpm-lock.yaml`) with your PR. This ensures reviewers and CI use the exact dependency versions you tested.
+- **Run `npm ci` in a clean clone** of your branch to verify reproducible installs. This helps catch any accidental mismatches in dependency versions before review.
+
 ### 3. Verify and Test
 
 After updating, always run the full project check to ensure everything works:
@@ -1535,7 +1538,7 @@ npm run check
 
 This will run type checking, linting, formatting, spell checking, tests, and security audits. Only submit a PR if all checks pass.
 
-> **Tip:** Review the [Code Generation Guidelines](#code-generation-guidelines) and [Development Workflow](#development-workflow) for more details on quality standards.
+> **Tip:** Review the [Development Workflow](#development-workflow) section for more details on quality standards.
 
 ## Code of Conduct
 
