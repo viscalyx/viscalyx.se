@@ -99,10 +99,7 @@ const Testimonials = () => {
             {/* Rating */}
             <div className="flex items-center mb-6">
               {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-5 h-5 text-yellow-400 fill-current"
-                />
+                <Star key={i} className="w-5 h-5 text-[#facc15] fill-current" />
               ))}
             </div>
 
