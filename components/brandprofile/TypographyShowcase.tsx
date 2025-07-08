@@ -312,12 +312,18 @@ const TypographyShowcase = () => {
           any color to apply it to all typography examples below and see how it
           looks in different contexts.
         </p>
+        <div id="color-selection-description" className="sr-only">
+          Choose a text color to preview how the typography looks with different color schemes. The selected color will be applied to text elements in the preview below.
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
           {textColors.map(color => (
             <button
               key={color.name}
               onClick={() => setSelectedTextColor(color.combinedClass)}
-              className={`p-4 rounded-lg border-2 transition-all duration-200 text-left hover:shadow-md ${
+              aria-pressed={selectedTextColor === color.combinedClass}
+              aria-label={`Select ${color.name} color for typography preview`}
+              aria-describedby="color-selection-description"
+              className={`p-4 rounded-lg border-2 transition-all duration-200 text-left hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${
                 selectedTextColor === color.combinedClass
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
                   : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'
@@ -342,6 +348,10 @@ const TypographyShowcase = () => {
                   <div className="italic">{color.usage}</div>
                 </div>
               </div>
+              <span className="sr-only">
+                {selectedTextColor === color.combinedClass ? 'Currently selected: ' : 'Select '}
+                {color.name} color
+              </span>
             </button>
           ))}
         </div>
