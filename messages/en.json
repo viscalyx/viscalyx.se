@@ -1179,6 +1179,10 @@
         "heading2": "Heading 2 (Section Title)",
         "heading3": "Heading 3 (Subsection)",
         "paragraphText": "Regular paragraph text with proper hierarchy and semantic structure."
+      },
+      "contrastTesting": {
+        "title": "Color Contrast Testing",
+        "description": "Automated testing ensures all color combinations meet WCAG AA contrast requirements (4.5:1 ratio minimum)."
       }
     },
     "analysisShowcase": {

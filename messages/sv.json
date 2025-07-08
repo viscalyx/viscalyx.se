@@ -1185,6 +1185,10 @@
         "heading2": "Rubrik 2 (Sektionstitel)",
         "heading3": "Rubrik 3 (Undersektion)",
         "paragraphText": "Vanlig paragraftext med korrekt hierarki och semantisk struktur."
+      },
+      "contrastTesting": {
+        "title": "Färgkontrastestning",
+        "description": "Automatiserad testning säkerställer att alla färgkombinationer uppfyller WCAG AA kontrastkrav (minst 4.5:1-förhållande)."
       }
     },
     "analysisShowcase": {

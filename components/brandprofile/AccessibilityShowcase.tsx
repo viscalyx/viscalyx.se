@@ -184,8 +184,8 @@ const AccessibilityShowcase = () => {
       </ComponentDemo>
 
       <ComponentDemo
-        title="Color Contrast Testing"
-        description="Automated testing ensures all color combinations meet WCAG AA contrast requirements (4.5:1 ratio minimum)."
+        title={t('contrastTesting.title')}
+        description={t('contrastTesting.description')}
       >
         <div className="space-y-4">
           <div className="flex items-center space-x-2 mb-4">
