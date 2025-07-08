@@ -1187,6 +1187,12 @@
         "paragraphText": "Vanlig paragraftext med korrekt hierarki och semantisk struktur."
       }
     },
+    "analysisShowcase": {
+      "rechartsComparison": {
+        "title": "Recharts Implementeringsjämförelse",
+        "description": "Här ser du hur samma datavisualiseringar ser ut med Recharts-biblioteket, samtidigt som vi behåller vår varumärkesfärgpalett och designkonsistens."
+      }
+    },
     "componentsShowcase": {
       "buttons": {
         "title": "Knappar",

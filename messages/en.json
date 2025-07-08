@@ -1181,6 +1181,12 @@
         "paragraphText": "Regular paragraph text with proper hierarchy and semantic structure."
       }
     },
+    "analysisShowcase": {
+      "rechartsComparison": {
+        "title": "Recharts Implementation Comparison",
+        "description": "Here's how the same data visualizations look using the Recharts library, maintaining our brand color palette and design consistency."
+      }
+    },
     "componentsShowcase": {
       "buttons": {
         "title": "Buttons",

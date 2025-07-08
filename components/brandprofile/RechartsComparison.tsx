@@ -2,6 +2,7 @@
 
 import { getDataVisualizationColors, type ColorItem } from '@/lib/colors'
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import {
   Area,
   AreaChart,
@@ -386,6 +387,7 @@ interface RechartsComparisonProps {
 }
 
 const RechartsComparison = ({ className = '' }: RechartsComparisonProps) => {
+  const t = useTranslations('brandProfile.analysisShowcase.rechartsComparison')
   const dataVisualizationColors = getDataVisualizationColors()
 
   return (
@@ -397,11 +399,10 @@ const RechartsComparison = ({ className = '' }: RechartsComparisonProps) => {
     >
       <div className="text-center">
         <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-          Recharts Implementation Comparison
+          {t('title')}
         </h2>
         <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
-          Here&apos;s how the same data visualizations look using the Recharts
-          library, maintaining our brand color palette and design consistency.
+          {t('description')}
         </p>
       </div>
 
