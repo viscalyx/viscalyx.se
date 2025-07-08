@@ -19,6 +19,26 @@ const TypographyShowcase = () => {
   const secondaryColors = getSecondaryColors()
   const accentColors = getAccentColors()
 
+  // Helper function to find color hex from our color constants
+  const getColorHex = (colorName: string): string => {
+    // Check primary colors
+    const primaryColor = primaryColors.find(c => c.name === colorName)
+    if (primaryColor) return primaryColor.hex
+
+    // Check secondary colors
+    const secondaryColor = secondaryColors.find(c => c.name === colorName)
+    if (secondaryColor) return secondaryColor.hex
+
+    // Check accent colors
+    const accentColor = accentColors.find(
+      c => c.name.toLowerCase() === colorName.toLowerCase()
+    )
+    if (accentColor) return accentColor.hex
+
+    // Fallback for colors not in our constants yet
+    return colorName.startsWith('#') ? colorName : '#000000'
+  }
+
   // Define all text colors used across the site
   const textColors = [
     {
@@ -26,8 +46,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-primary-content',
       darkClass: 'text-primary-content',
       combinedClass: 'text-primary-content',
-      hex: '#111827',
-      darkHex: '#f9fafb',
+      hex: getColorHex('secondary-900'), // #111827
+      darkHex: getColorHex('secondary-50'), // #f9fafb
       usage: 'Main headings, primary content',
     },
     {
@@ -35,8 +55,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-secondary-content',
       darkClass: 'text-secondary-content',
       combinedClass: 'text-secondary-content',
-      hex: '#4b5563',
-      darkHex: '#9ca3af',
+      hex: getColorHex('secondary-600'), // #4b5563
+      darkHex: getColorHex('secondary-400'), // #9ca3af
       usage: 'Body text, descriptions',
     },
     {
@@ -44,8 +64,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-tertiary-content',
       darkClass: 'text-tertiary-content',
       combinedClass: 'text-tertiary-content',
-      hex: '#374151',
-      darkHex: '#d1d5db',
+      hex: getColorHex('secondary-700'), // #374151
+      darkHex: getColorHex('secondary-300'), // #d1d5db
       usage: 'Strong body text, emphasized content',
     },
     {
@@ -53,8 +73,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-muted-content',
       darkClass: 'text-muted-content',
       combinedClass: 'text-muted-content',
-      hex: '#6b7280',
-      darkHex: '#6b7280',
+      hex: getColorHex('secondary-500'), // #6b7280
+      darkHex: getColorHex('secondary-500'), // #6b7280
       usage: 'Labels, captions, subtle text',
     },
     {
@@ -62,8 +82,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-brand-primary',
       darkClass: 'text-brand-primary',
       combinedClass: 'text-brand-primary',
-      hex: '#0277bd',
-      darkHex: '#38bdf8',
+      hex: getColorHex('primary-600'), // #0277bd
+      darkHex: getColorHex('primary-400'), // #38bdf8
       usage: 'Links, CTAs, brand elements',
     },
     {
@@ -71,8 +91,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-success-content',
       darkClass: 'text-success-content',
       combinedClass: 'text-success-content',
-      hex: '#16a34a',
-      darkHex: '#4ade80',
+      hex: getColorHex('Success'), // #059669 (close to #16a34a)
+      darkHex: '#4ade80', // Keep as fallback since not in constants
       usage: 'Success states, positive feedback',
     },
     {
@@ -80,8 +100,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-success-dark',
       darkClass: 'text-success-dark',
       combinedClass: 'text-success-dark',
-      hex: '#065f46',
-      darkHex: '#86efac',
+      hex: '#065f46', // Keep as fallback
+      darkHex: '#86efac', // Keep as fallback
       usage: 'Darker success text, success on light backgrounds',
     },
     {
@@ -89,8 +109,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-warning-amber',
       darkClass: 'text-warning-amber',
       combinedClass: 'text-warning-amber',
-      hex: '#f59e0b',
-      darkHex: '#f59e0b',
+      hex: getColorHex('Warning'), // #f59e0b
+      darkHex: getColorHex('Warning'), // #f59e0b
       usage: 'Primary warnings, cautions',
     },
     {
@@ -98,8 +118,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-warning-yellow',
       darkClass: 'text-warning-yellow',
       combinedClass: 'text-warning-yellow',
-      hex: '#ca8a04',
-      darkHex: '#facc15',
+      hex: '#ca8a04', // Keep as fallback
+      darkHex: getColorHex('Gold'), // #facc15
       usage: 'Alternative warning states',
     },
     {
@@ -107,8 +127,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-warning-dark',
       darkClass: 'text-warning-dark',
       combinedClass: 'text-warning-dark',
-      hex: '#713f12',
-      darkHex: '#fefce8',
+      hex: '#713f12', // Keep as fallback
+      darkHex: '#fefce8', // Keep as fallback
       usage: 'Warning text on colored backgrounds',
     },
     {
@@ -116,8 +136,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-warning-alternative',
       darkClass: 'text-warning-alternative',
       combinedClass: 'text-warning-alternative',
-      hex: '#92400e',
-      darkHex: '#fcd34d',
+      hex: '#92400e', // Keep as fallback
+      darkHex: '#fcd34d', // Keep as fallback
       usage: 'Warning backgrounds with opacity',
     },
     {
@@ -125,8 +145,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-error-red',
       darkClass: 'text-error-red',
       combinedClass: 'text-error-red',
-      hex: '#ef4444',
-      darkHex: '#ef4444',
+      hex: getColorHex('Error'), // #ef4444
+      darkHex: getColorHex('Error'), // #ef4444
       usage: 'Primary errors, destructive actions',
     },
     {
@@ -134,8 +154,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-error-alternative',
       darkClass: 'text-error-alternative',
       combinedClass: 'text-error-alternative',
-      hex: '#dc2626',
-      darkHex: '#f87171',
+      hex: '#dc2626', // Keep as fallback
+      darkHex: '#f87171', // Keep as fallback
       usage: 'Alternative error states',
     },
     {
@@ -143,8 +163,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-error-dark',
       darkClass: 'text-error-dark',
       combinedClass: 'text-error-dark',
-      hex: '#991b1b',
-      darkHex: '#fca5a5',
+      hex: '#991b1b', // Keep as fallback
+      darkHex: '#fca5a5', // Keep as fallback
       usage: 'Error backgrounds with opacity',
     },
     {
@@ -152,8 +172,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-info-blue',
       darkClass: 'text-info-blue',
       combinedClass: 'text-info-blue',
-      hex: '#3b82f6',
-      darkHex: '#3b82f6',
+      hex: getColorHex('Info'), // #3b82f6
+      darkHex: getColorHex('Info'), // #3b82f6
       usage: 'Primary information, tips',
     },
     {
@@ -161,8 +181,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-info-alternative',
       darkClass: 'text-info-alternative',
       combinedClass: 'text-info-alternative',
-      hex: '#1d4ed8',
-      darkHex: '#60a5fa',
+      hex: '#1d4ed8', // Keep as fallback
+      darkHex: '#60a5fa', // Keep as fallback
       usage: 'Links, alternative info states',
     },
     {
@@ -170,8 +190,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-info-dark',
       darkClass: 'text-info-dark',
       combinedClass: 'text-info-dark',
-      hex: '#1e40af',
-      darkHex: '#93c5fd',
+      hex: '#1e40af', // Keep as fallback
+      darkHex: '#93c5fd', // Keep as fallback
       usage: 'Dark info text, info on light backgrounds',
     },
     {
@@ -179,8 +199,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-[#facc15]',
       darkClass: 'dark:text-[#facc15]',
       combinedClass: 'text-[#facc15] dark:text-[#facc15]',
-      hex: '#facc15',
-      darkHex: '#facc15',
+      hex: getColorHex('Gold'), // #facc15
+      darkHex: getColorHex('Gold'), // #facc15
       usage: 'Star ratings, achievements, gold accents',
     },
     {
@@ -188,8 +208,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-orange-500',
       darkClass: 'dark:text-orange-500',
       combinedClass: 'text-orange-500 dark:text-orange-500',
-      hex: '#f97316',
-      darkHex: '#f97316',
+      hex: '#f97316', // Keep as fallback (not in constants)
+      darkHex: '#f97316', // Keep as fallback
       usage: 'Orange UI elements, warnings',
     },
     {
@@ -197,8 +217,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-gray-600',
       darkClass: 'dark:text-gray-400',
       combinedClass: 'text-gray-600 dark:text-gray-400',
-      hex: '#4b5563',
-      darkHex: '#9ca3af',
+      hex: getColorHex('secondary-600'), // #4b5563
+      darkHex: getColorHex('secondary-400'), // #9ca3af
       usage: 'Alternative gray text',
     },
     {
@@ -206,8 +226,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-green-400',
       darkClass: 'dark:text-green-400',
       combinedClass: 'text-green-400 dark:text-green-400',
-      hex: '#4ade80',
-      darkHex: '#4ade80',
+      hex: '#4ade80', // Keep as fallback (not in constants)
+      darkHex: '#4ade80', // Keep as fallback
       usage: 'Terminal/code text',
     },
     {
@@ -215,8 +235,8 @@ const TypographyShowcase = () => {
       lightClass: 'text-white',
       darkClass: 'dark:text-white',
       combinedClass: 'text-white dark:text-white',
-      hex: '#ffffff',
-      darkHex: '#ffffff',
+      hex: '#ffffff', // Keep as is
+      darkHex: '#ffffff', // Keep as is
       usage: 'Text on dark backgrounds',
     },
   ]
