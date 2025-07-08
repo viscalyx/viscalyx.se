@@ -6,7 +6,7 @@ import {
   getSecondaryColors,
 } from '@/lib/colors'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const TypographyShowcase = () => {
   const t = useTranslations('brandProfile.typographyShowcase')
@@ -19,21 +19,33 @@ const TypographyShowcase = () => {
   const secondaryColors = getSecondaryColors()
   const accentColors = getAccentColors()
 
+  // Memoized color map for O(1) lookup with case-insensitive matching
+  const colorMap = useMemo(() => {
+    const map: Record<string, string> = {}
+
+    // Add all colors to the map with lowercase keys for consistent lookup
+    primaryColors.forEach(color => {
+      map[color.name.toLowerCase()] = color.hex
+    })
+
+    secondaryColors.forEach(color => {
+      map[color.name.toLowerCase()] = color.hex
+    })
+
+    accentColors.forEach(color => {
+      map[color.name.toLowerCase()] = color.hex
+    })
+
+    return map
+  }, [primaryColors, secondaryColors, accentColors])
+
   // Helper function to find color hex from our color constants
   const getColorHex = (colorName: string): string => {
-    // Check primary colors
-    const primaryColor = primaryColors.find(c => c.name === colorName)
-    if (primaryColor) return primaryColor.hex
+    // Normalize input to lowercase for consistent lookup
+    const normalizedName = colorName.toLowerCase()
+    const colorHex = colorMap[normalizedName]
 
-    // Check secondary colors
-    const secondaryColor = secondaryColors.find(c => c.name === colorName)
-    if (secondaryColor) return secondaryColor.hex
-
-    // Check accent colors
-    const accentColor = accentColors.find(
-      c => c.name.toLowerCase() === colorName.toLowerCase()
-    )
-    if (accentColor) return accentColor.hex
+    if (colorHex) return colorHex
 
     // Fallback for colors not in our constants yet
     return colorName.startsWith('#') ? colorName : '#000000'
@@ -313,7 +325,9 @@ const TypographyShowcase = () => {
           looks in different contexts.
         </p>
         <div id="color-selection-description" className="sr-only">
-          Choose a text color to preview how the typography looks with different color schemes. The selected color will be applied to text elements in the preview below.
+          Choose a text color to preview how the typography looks with different
+          color schemes. The selected color will be applied to text elements in
+          the preview below.
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
           {textColors.map(color => (
@@ -349,7 +363,9 @@ const TypographyShowcase = () => {
                 </div>
               </div>
               <span className="sr-only">
-                {selectedTextColor === color.combinedClass ? 'Currently selected: ' : 'Select '}
+                {selectedTextColor === color.combinedClass
+                  ? 'Currently selected: '
+                  : 'Select '}
                 {color.name} color
               </span>
             </button>
