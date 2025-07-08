@@ -129,10 +129,14 @@ const ComponentsShowcase = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Primary Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Primary</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Primary
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-primary-50 dark:bg-primary-900/20 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-primary-50 / dark:bg-primary-900/20</span>
+                    <span className="text-xs font-mono">
+                      bg-primary-50 / dark:bg-primary-900/20
+                    </span>
                   </div>
                   <div className="bg-primary-100 p-3 rounded border">
                     <span className="text-xs font-mono">bg-primary-100</span>
@@ -151,38 +155,58 @@ const ComponentsShowcase = () => {
 
               {/* Secondary Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Secondary</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Secondary
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-secondary-50 dark:bg-secondary-800 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-secondary-50 / dark:bg-secondary-800</span>
+                    <span className="text-xs font-mono">
+                      bg-secondary-50 / dark:bg-secondary-800
+                    </span>
                   </div>
                   <div className="bg-secondary-100 dark:bg-secondary-700 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-secondary-100 / dark:bg-secondary-700</span>
+                    <span className="text-xs font-mono">
+                      bg-secondary-100 / dark:bg-secondary-700
+                    </span>
                   </div>
                   <div className="bg-secondary-200 dark:bg-secondary-600 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-secondary-200 / dark:bg-secondary-600</span>
+                    <span className="text-xs font-mono">
+                      bg-secondary-200 / dark:bg-secondary-600
+                    </span>
                   </div>
                   <div className="bg-secondary-800 dark:bg-secondary-100 p-3 rounded border text-white dark:text-black">
-                    <span className="text-xs font-mono">bg-secondary-800 / dark:bg-secondary-100</span>
+                    <span className="text-xs font-mono">
+                      bg-secondary-800 / dark:bg-secondary-100
+                    </span>
                   </div>
                   <div className="bg-secondary-900 dark:bg-secondary-50 p-3 rounded border text-white dark:text-black">
-                    <span className="text-xs font-mono">bg-secondary-900 / dark:bg-secondary-50</span>
+                    <span className="text-xs font-mono">
+                      bg-secondary-900 / dark:bg-secondary-50
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Surface & Container Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Surface & Container</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Surface & Container
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-white dark:bg-secondary-900 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-white / dark:bg-secondary-900</span>
+                    <span className="text-xs font-mono">
+                      bg-white / dark:bg-secondary-900
+                    </span>
                   </div>
                   <div className="bg-white/80 dark:bg-secondary-800/80 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-white/80 / dark:bg-secondary-800/80</span>
+                    <span className="text-xs font-mono">
+                      bg-white/80 / dark:bg-secondary-800/80
+                    </span>
                   </div>
                   <div className="bg-white/90 dark:bg-secondary-900/90 p-3 rounded border">
-                    <span className="text-xs font-mono">bg-white/90 / dark:bg-secondary-900/90</span>
+                    <span className="text-xs font-mono">
+                      bg-white/90 / dark:bg-secondary-900/90
+                    </span>
                   </div>
                   <div className="bg-transparent p-3 rounded border border-dashed">
                     <span className="text-xs font-mono">bg-transparent</span>
@@ -192,26 +216,38 @@ const ComponentsShowcase = () => {
 
               {/* Semantic Color Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Semantic Colors</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Semantic Colors
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded border border-[#3b82f6]/30">
-                    <span className="text-xs font-mono text-[#3b82f6]">Info (bg-[#3b82f6]/10)</span>
+                    <span className="text-xs font-mono text-[#3b82f6]">
+                      Info (bg-[#3b82f6]/10)
+                    </span>
                   </div>
                   <div className="bg-[#059669]/10 dark:bg-[#059669]/20 p-3 rounded border border-success-dark/30">
-                    <span className="text-xs font-mono text-success-dark">Success (bg-[#059669]/10)</span>
+                    <span className="text-xs font-mono text-success-dark">
+                      Success (bg-[#059669]/10)
+                    </span>
                   </div>
                   <div className="bg-[#f59e0b]/10 dark:bg-[#f59e0b]/20 p-3 rounded border border-[#f59e0b]/30">
-                    <span className="text-xs font-mono text-[#f59e0b]">Warning (bg-[#f59e0b]/10)</span>
+                    <span className="text-xs font-mono text-[#f59e0b]">
+                      Warning (bg-[#f59e0b]/10)
+                    </span>
                   </div>
                   <div className="bg-[#ef4444]/10 dark:bg-[#ef4444]/20 p-3 rounded border border-[#ef4444]/30">
-                    <span className="text-xs font-mono text-[#ef4444]">Error (bg-[#ef4444]/10)</span>
+                    <span className="text-xs font-mono text-[#ef4444]">
+                      Error (bg-[#ef4444]/10)
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Data Visualization Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Data Visualization</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Data Visualization
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-[#3b82f6] p-3 rounded border text-white">
                     <span className="text-xs font-mono">viz-1 (#3b82f6)</span>
@@ -242,22 +278,34 @@ const ComponentsShowcase = () => {
 
               {/* Gradient Backgrounds */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Gradients</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Gradients
+                </h5>
                 <div className="space-y-2">
                   <div className="bg-gradient-to-r from-primary-600 to-primary-800 p-3 rounded border text-white">
-                    <span className="text-xs font-mono">from-primary-600 to-primary-800</span>
+                    <span className="text-xs font-mono">
+                      from-primary-600 to-primary-800
+                    </span>
                   </div>
                   <div className="bg-gradient-to-r from-primary-600 to-secondary-700 p-3 rounded border text-white">
-                    <span className="text-xs font-mono">from-primary-600 to-secondary-700</span>
+                    <span className="text-xs font-mono">
+                      from-primary-600 to-secondary-700
+                    </span>
                   </div>
                   <div className="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-800/50 p-3 rounded border">
-                    <span className="text-xs font-mono">from-primary-50 to-secondary-50</span>
+                    <span className="text-xs font-mono">
+                      from-primary-50 to-secondary-50
+                    </span>
                   </div>
                   <div className="bg-gradient-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 p-3 rounded border">
-                    <span className="text-xs font-mono">from-primary-100/30 to-secondary-100/30</span>
+                    <span className="text-xs font-mono">
+                      from-primary-100/30 to-secondary-100/30
+                    </span>
                   </div>
                   <div className="bg-gradient-to-b from-white dark:from-secondary-800 to-transparent p-3 rounded border">
-                    <span className="text-xs font-mono">from-white to-transparent</span>
+                    <span className="text-xs font-mono">
+                      from-white to-transparent
+                    </span>
                   </div>
                 </div>
               </div>
@@ -272,73 +320,108 @@ const ComponentsShowcase = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Primary Borders */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Primary</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Primary
+                </h5>
                 <div className="space-y-2">
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-2 border-primary-500">
-                    <span className="text-xs font-mono">border-primary-500</span>
+                    <span className="text-xs font-mono">
+                      border-primary-500
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-2 border-primary-600 dark:border-primary-400">
-                    <span className="text-xs font-mono">border-primary-600 / dark:border-primary-400</span>
+                    <span className="text-xs font-mono">
+                      border-primary-600 / dark:border-primary-400
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-l-4 border-primary-300 dark:border-primary-600">
-                    <span className="text-xs font-mono">border-l-4 border-primary-300 / dark:border-primary-600</span>
+                    <span className="text-xs font-mono">
+                      border-l-4 border-primary-300 / dark:border-primary-600
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Secondary Borders */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Secondary</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Secondary
+                </h5>
                 <div className="space-y-2">
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-secondary-100 dark:border-secondary-700">
-                    <span className="text-xs font-mono">border-secondary-100 / dark:border-secondary-700</span>
+                    <span className="text-xs font-mono">
+                      border-secondary-100 / dark:border-secondary-700
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-600">
-                    <span className="text-xs font-mono">border-secondary-200 / dark:border-secondary-600</span>
+                    <span className="text-xs font-mono">
+                      border-secondary-200 / dark:border-secondary-600
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-secondary-300 dark:border-secondary-500">
-                    <span className="text-xs font-mono">border-secondary-300 / dark:border-secondary-500</span>
+                    <span className="text-xs font-mono">
+                      border-secondary-300 / dark:border-secondary-500
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-l-4 border-secondary-400 dark:border-secondary-500">
-                    <span className="text-xs font-mono">border-l-4 border-secondary-400 / dark:border-secondary-500</span>
+                    <span className="text-xs font-mono">
+                      border-l-4 border-secondary-400 /
+                      dark:border-secondary-500
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Semantic Borders */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Semantic</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Semantic
+                </h5>
                 <div className="space-y-2">
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-[#3b82f6]/30 dark:border-[#3b82f6]/50">
-                    <span className="text-xs font-mono text-[#3b82f6]">Info border-[#3b82f6]/30</span>
+                    <span className="text-xs font-mono text-[#3b82f6]">
+                      Info border-[#3b82f6]/30
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-success-dark/30 dark:border-success-dark/50">
-                    <span className="text-xs font-mono text-success-dark">Success border-success-dark/30</span>
+                    <span className="text-xs font-mono text-success-dark">
+                      Success border-success-dark/30
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-[#f59e0b]/30 dark:border-[#f59e0b]/50">
-                    <span className="text-xs font-mono text-[#f59e0b]">Warning border-[#f59e0b]/30</span>
+                    <span className="text-xs font-mono text-[#f59e0b]">
+                      Warning border-[#f59e0b]/30
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-[#ef4444]/30 dark:border-[#ef4444]/50">
-                    <span className="text-xs font-mono text-[#ef4444]">Error border-[#ef4444]/30</span>
+                    <span className="text-xs font-mono text-[#ef4444]">
+                      Error border-[#ef4444]/30
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Special Borders */}
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Special</h5>
+                <h5 className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
+                  Special
+                </h5>
                 <div className="space-y-2">
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-white">
                     <span className="text-xs font-mono">border-white</span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border border-transparent">
-                    <span className="text-xs font-mono">border-transparent</span>
+                    <span className="text-xs font-mono">
+                      border-transparent
+                    </span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-2 border-dashed border-secondary-300 dark:border-secondary-600">
                     <span className="text-xs font-mono">border-dashed</span>
                   </div>
                   <div className="p-3 rounded bg-white dark:bg-secondary-900 border-t-4 border-t-secondary-900 dark:border-t-secondary-100">
-                    <span className="text-xs font-mono">border-t-4 border-t-secondary-900</span>
+                    <span className="text-xs font-mono">
+                      border-t-4 border-t-secondary-900
+                    </span>
                   </div>
                 </div>
               </div>
@@ -352,22 +435,28 @@ const ComponentsShowcase = () => {
             </h4>
             <div className="space-y-3 text-sm text-secondary-700 dark:text-secondary-300">
               <p>
-                <strong>Primary colors:</strong> Use for main brand elements, CTAs, and active states
+                <strong>Primary colors:</strong> Use for main brand elements,
+                CTAs, and active states
               </p>
               <p>
-                <strong>Secondary colors:</strong> Use for text, borders, and neutral backgrounds
+                <strong>Secondary colors:</strong> Use for text, borders, and
+                neutral backgrounds
               </p>
               <p>
-                <strong>Semantic colors:</strong> Use for alerts, status indicators, and feedback messages
+                <strong>Semantic colors:</strong> Use for alerts, status
+                indicators, and feedback messages
               </p>
               <p>
-                <strong>Data visualization:</strong> Use the viz-* colors for charts and data presentations
+                <strong>Data visualization:</strong> Use the viz-* colors for
+                charts and data presentations
               </p>
               <p>
-                <strong>Gradients:</strong> Use sparingly for hero sections and special highlights
+                <strong>Gradients:</strong> Use sparingly for hero sections and
+                special highlights
               </p>
               <p>
-                <strong>Transparency:</strong> Use /10, /20, /30, /50 opacity variants for overlays and subtle backgrounds
+                <strong>Transparency:</strong> Use /10, /20, /30, /50 opacity
+                variants for overlays and subtle backgrounds
               </p>
             </div>
           </div>
