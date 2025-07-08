@@ -50,12 +50,12 @@ const ContrastTest = ({
     <div className="flex items-center space-x-3">
       <div className="flex space-x-1">
         <div
-          className="w-6 h-6 rounded border border-secondary-300 dark:border-secondary-600"
-          style={{ backgroundColor: foreground }}
+          className="w-6 h-6 rounded border border-secondary-300 dark:border-secondary-600 bg-color-sample"
+          style={{ '--bg-color': foreground } as React.CSSProperties}
         />
         <div
-          className="w-6 h-6 rounded border border-secondary-300 dark:border-secondary-600"
-          style={{ backgroundColor: background }}
+          className="w-6 h-6 rounded border border-secondary-300 dark:border-secondary-600 bg-color-sample"
+          style={{ '--bg-color': background } as React.CSSProperties}
         />
       </div>
       <div>
