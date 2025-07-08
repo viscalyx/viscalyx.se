@@ -1218,6 +1218,13 @@
         "emailPlaceholder": "Ange din e-postadress",
         "messageLabel": "Meddelande",
         "messagePlaceholder": "Ditt meddelande här"
+      },
+      "backgroundBorderColors": {
+        "title": "Bakgrunds- & Kantfärger",
+        "description": "Komplett samling av bakgrunds- och kantfärger som används på webbplatsen",
+        "backgroundTitle": "Bakgrundsfärger",
+        "borderTitle": "Kantfärger",
+        "guidelinesTitle": "Användningsriktlinjer"
       }
     }
   }

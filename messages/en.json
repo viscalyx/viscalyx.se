@@ -1212,6 +1212,13 @@
         "emailPlaceholder": "Enter your email",
         "messageLabel": "Message",
         "messagePlaceholder": "Your message here"
+      },
+      "backgroundBorderColors": {
+        "title": "Background & Border Colors",
+        "description": "Complete collection of background and border colors used throughout the site",
+        "backgroundTitle": "Background Colors",
+        "borderTitle": "Border Colors",
+        "guidelinesTitle": "Usage Guidelines"
       }
     }
   }
