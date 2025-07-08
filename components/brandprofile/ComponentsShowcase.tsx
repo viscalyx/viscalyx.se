@@ -55,27 +55,27 @@ const ComponentsShowcase = () => {
         description={t('alerts.description')}
       >
         <div className="space-y-4">
-          <div className="flex items-center space-x-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
-            <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <span className="text-green-800 dark:text-green-300">
+          <div className="flex items-center space-x-3 p-4 bg-[#059669]/10 dark:bg-[#059669]/20 border border-[#86efac]/30 dark:border-[#065f46]/50 rounded-lg">
+            <Check className="w-5 h-5 text-[#065f46]/80 dark:text-[#86efac]" />
+            <span className="text-[#065f46]/80 dark:text-[#86efac]">
               {t('alerts.success')}
             </span>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-            <span className="text-yellow-800 dark:text-yellow-300">
+          <div className="flex items-center space-x-3 p-4 bg-[#f59e0b]/10 dark:bg-[#f59e0b]/20 border border-[#92400e]/30 dark:border-[#fcd34d]/50 rounded-lg">
+            <AlertCircle className="w-5 h-5 text-[#92400e]/80 dark:text-[#fcd34d]" />
+            <span className="text-[#92400e]/80 dark:text-[#fcd34d]">
               {t('alerts.warning')}
             </span>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
-            <X className="w-5 h-5 text-red-600 dark:text-red-400" />
-            <span className="text-red-800 dark:text-red-300">
+          <div className="flex items-center space-x-3 p-4 bg-[#ef4444]/10 dark:bg-[#ef4444]/20 border border-[#991b1b]/30 dark:border-[#fca5a5]/50 rounded-lg">
+            <X className="w-5 h-5 text-[#991b1b] dark:text-[#fca5a5]" />
+            <span className="text-[#991b1b] dark:text-[#fca5a5]">
               {t('alerts.error')}
             </span>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
-            <Info className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <span className="text-blue-800 dark:text-blue-300">
+          <div className="flex items-center space-x-3 p-4 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 border border-[#1e40af]/30 dark:border-[#93c5fd]/50 rounded-lg">
+            <Info className="w-5 h-5 text-[#1e40af] dark:text-[#93c5fd]" />
+            <span className="text-[#1e40af] dark:text-[#93c5fd]">
               {t('alerts.info')}
             </span>
           </div>
