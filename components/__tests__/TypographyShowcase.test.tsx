@@ -254,19 +254,14 @@ describe('TypographyShowcase', () => {
   it('handles dark mode classes correctly', () => {
     const { container } = render(<TypographyShowcase />)
 
-    // Check for dark mode classes on headings
+    // Check for custom text color classes on headings
     const headings = container.querySelectorAll('h2')
     headings.forEach(heading => {
-      expect(heading).toHaveClass(
-        'text-secondary-900',
-        'dark:text-secondary-100'
-      )
+      expect(heading).toHaveClass('text-primary-content')
     })
 
-    // Check for dark mode classes on sample text
-    const sampleTexts = container.querySelectorAll(
-      '[class*="text-secondary-900"][class*="dark:text-secondary-100"]'
-    )
+    // Check for custom text color classes on sample text
+    const sampleTexts = container.querySelectorAll('[class*="text-primary-content"]')
     expect(sampleTexts.length).toBeGreaterThan(0)
 
     // Check for dark mode classes on labels
@@ -294,17 +289,17 @@ describe('TypographyShowcase', () => {
   it('provides proper text contrast for accessibility', () => {
     const { container } = render(<TypographyShowcase />)
 
-    // Check main text colors provide proper contrast
-    const mainTextElements = container.querySelectorAll('.text-secondary-900')
+    // Check main text colors provide proper contrast (using our new custom classes)
+    const mainTextElements = container.querySelectorAll('.text-primary-content')
     expect(mainTextElements.length).toBeGreaterThan(0)
 
-    // Check secondary text colors
+    // Check secondary text colors (still using Tailwind for labels/captions)
     const secondaryTextElements = container.querySelectorAll(
       '.text-secondary-600'
     )
     expect(secondaryTextElements.length).toBeGreaterThan(0)
 
-    // Check muted text colors
+    // Check muted text colors (still using Tailwind for subtle text)
     const mutedTextElements = container.querySelectorAll('.text-secondary-500')
     expect(mutedTextElements.length).toBeGreaterThan(0)
   })

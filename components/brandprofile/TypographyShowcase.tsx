@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 const TypographyShowcase = () => {
   const t = useTranslations('brandProfile.typographyShowcase')
-  const [selectedTextColor, setSelectedTextColor] = useState('text-secondary-900 dark:text-secondary-100')
+  const [selectedTextColor, setSelectedTextColor] = useState('text-primary-content')
 
   // Get brand colors for typography
   const primaryColors = getPrimaryColors()
@@ -17,147 +17,156 @@ const TypographyShowcase = () => {
   const textColors = [
     {
       name: 'Primary Text',
-      lightClass: 'text-secondary-900',
-      darkClass: 'dark:text-secondary-100',
-      combinedClass: 'text-secondary-900 dark:text-secondary-100',
+      lightClass: 'text-primary-content',
+      darkClass: 'text-primary-content',
+      combinedClass: 'text-primary-content',
       hex: '#111827',
       darkHex: '#f9fafb',
       usage: 'Main headings, primary content'
     },
     {
       name: 'Secondary Text',
-      lightClass: 'text-secondary-600',
-      darkClass: 'dark:text-secondary-400',
-      combinedClass: 'text-secondary-600 dark:text-secondary-400',
+      lightClass: 'text-secondary-content',
+      darkClass: 'text-secondary-content',
+      combinedClass: 'text-secondary-content',
       hex: '#4b5563',
       darkHex: '#9ca3af',
       usage: 'Body text, descriptions'
     },
     {
       name: 'Tertiary Text',
-      lightClass: 'text-secondary-700',
-      darkClass: 'dark:text-secondary-300',
-      combinedClass: 'text-secondary-700 dark:text-secondary-300',
+      lightClass: 'text-tertiary-content',
+      darkClass: 'text-tertiary-content',
+      combinedClass: 'text-tertiary-content',
       hex: '#374151',
       darkHex: '#d1d5db',
       usage: 'Strong body text, emphasized content'
     },
     {
       name: 'Muted Text',
-      lightClass: 'text-secondary-500',
-      darkClass: 'dark:text-secondary-500',
-      combinedClass: 'text-secondary-500 dark:text-secondary-500',
+      lightClass: 'text-muted-content',
+      darkClass: 'text-muted-content',
+      combinedClass: 'text-muted-content',
       hex: '#6b7280',
       darkHex: '#6b7280',
       usage: 'Labels, captions, subtle text'
     },
     {
       name: 'Brand Primary',
-      lightClass: 'text-primary-600',
-      darkClass: 'dark:text-primary-400',
-      combinedClass: 'text-primary-600 dark:text-primary-400',
+      lightClass: 'text-brand-primary',
+      darkClass: 'text-brand-primary',
+      combinedClass: 'text-brand-primary',
       hex: '#0277bd',
       darkHex: '#38bdf8',
       usage: 'Links, CTAs, brand elements'
     },
     {
       name: 'Success',
-      lightClass: 'text-green-600',
-      darkClass: 'dark:text-green-400',
-      combinedClass: 'text-green-600 dark:text-green-400',
+      lightClass: 'text-success-content',
+      darkClass: 'text-success-content',
+      combinedClass: 'text-success-content',
       hex: '#16a34a',
       darkHex: '#4ade80',
-      usage: 'Alternative success states'
+      usage: 'Success states, positive feedback'
     },
-    // {
-    //   name: 'Success Alternative',
-    //   lightClass: 'text-[#065f46]',
-    //   darkClass: 'dark:text-[#86efac]',
-    //   combinedClass: 'text-[#065f46] dark:text-[#86efac]',
-    //   hex: '#065f46',
-    //   darkHex: '#86efac',
-    //   usage: 'Success backgrounds with opacity'
-    // },
+    {
+      name: 'Success Dark',
+      lightClass: 'text-success-dark',
+      darkClass: 'text-success-dark',
+      combinedClass: 'text-success-dark',
+      hex: '#065f46',
+      darkHex: '#86efac',
+      usage: 'Darker success text, success on light backgrounds'
+    },
     {
       name: 'Warning Amber',
-      lightClass: 'text-[#f59e0b]',
-      darkClass: 'dark:text-[#f59e0b]',
-      combinedClass: 'text-[#f59e0b] dark:text-[#f59e0b]',
+      lightClass: 'text-warning-amber',
+      darkClass: 'text-warning-amber',
+      combinedClass: 'text-warning-amber',
       hex: '#f59e0b',
       darkHex: '#f59e0b',
       usage: 'Primary warnings, cautions'
     },
     {
       name: 'Warning Yellow',
-      lightClass: 'text-yellow-600',
-      darkClass: 'dark:text-yellow-400',
-      combinedClass: 'text-yellow-600 dark:text-yellow-400',
+      lightClass: 'text-warning-yellow',
+      darkClass: 'text-warning-yellow',
+      combinedClass: 'text-warning-yellow',
       hex: '#ca8a04',
       darkHex: '#facc15',
       usage: 'Alternative warning states'
     },
     {
       name: 'Warning Dark',
-      lightClass: 'text-yellow-900',
-      darkClass: 'dark:text-yellow-100',
-      combinedClass: 'text-yellow-900 dark:text-yellow-100',
+      lightClass: 'text-warning-dark',
+      darkClass: 'text-warning-dark',
+      combinedClass: 'text-warning-dark',
       hex: '#713f12',
       darkHex: '#fefce8',
       usage: 'Warning text on colored backgrounds'
     },
     {
       name: 'Warning Alternative',
-      lightClass: 'text-[#92400e]',
-      darkClass: 'dark:text-[#fcd34d]',
-      combinedClass: 'text-[#92400e] dark:text-[#fcd34d]',
+      lightClass: 'text-warning-alternative',
+      darkClass: 'text-warning-alternative',
+      combinedClass: 'text-warning-alternative',
       hex: '#92400e',
       darkHex: '#fcd34d',
       usage: 'Warning backgrounds with opacity'
     },
     {
       name: 'Error Red',
-      lightClass: 'text-[#ef4444]',
-      darkClass: 'dark:text-[#ef4444]',
-      combinedClass: 'text-[#ef4444] dark:text-[#ef4444]',
+      lightClass: 'text-error-red',
+      darkClass: 'text-error-red',
+      combinedClass: 'text-error-red',
       hex: '#ef4444',
       darkHex: '#ef4444',
       usage: 'Primary errors, destructive actions'
     },
     {
       name: 'Error Alternative',
-      lightClass: 'text-red-600',
-      darkClass: 'dark:text-red-400',
-      combinedClass: 'text-red-600 dark:text-red-400',
+      lightClass: 'text-error-alternative',
+      darkClass: 'text-error-alternative',
+      combinedClass: 'text-error-alternative',
       hex: '#dc2626',
       darkHex: '#f87171',
       usage: 'Alternative error states'
     },
     {
       name: 'Error Dark',
-      lightClass: 'text-[#991b1b]',
-      darkClass: 'dark:text-[#fca5a5]',
-      combinedClass: 'text-[#991b1b] dark:text-[#fca5a5]',
+      lightClass: 'text-error-dark',
+      darkClass: 'text-error-dark',
+      combinedClass: 'text-error-dark',
       hex: '#991b1b',
       darkHex: '#fca5a5',
       usage: 'Error backgrounds with opacity'
     },
     {
       name: 'Info Blue',
-      lightClass: 'text-[#3b82f6]',
-      darkClass: 'dark:text-[#3b82f6]',
-      combinedClass: 'text-[#3b82f6] dark:text-[#3b82f6]',
+      lightClass: 'text-info-blue',
+      darkClass: 'text-info-blue',
+      combinedClass: 'text-info-blue',
       hex: '#3b82f6',
       darkHex: '#3b82f6',
       usage: 'Primary information, tips'
     },
     {
       name: 'Info Alternative',
-      lightClass: 'text-blue-600',
-      darkClass: 'dark:text-blue-400',
-      combinedClass: 'text-blue-600 dark:text-blue-400',
-      hex: '#2563eb',
+      lightClass: 'text-info-alternative',
+      darkClass: 'text-info-alternative',
+      combinedClass: 'text-info-alternative',
+      hex: '#1d4ed8',
       darkHex: '#60a5fa',
       usage: 'Links, alternative info states'
+    },
+    {
+      name: 'Info Dark',
+      lightClass: 'text-info-dark',
+      darkClass: 'text-info-dark',
+      combinedClass: 'text-info-dark',
+      hex: '#1e40af',
+      darkHex: '#93c5fd',
+      usage: 'Dark info text, info on light backgrounds'
     },
     {
       name: 'Gold/Rating',
@@ -269,7 +278,7 @@ const TypographyShowcase = () => {
     <div className="space-y-12">
       {/* Text Colors Section */}
       <div>
-        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+        <h2 className="text-2xl font-bold text-primary-content mb-6">
           Typography Colors & Interactive Preview
         </h2>
         <p className="text-secondary-600 dark:text-secondary-400 mb-6">
@@ -291,7 +300,7 @@ const TypographyShowcase = () => {
                   className="w-6 h-6 rounded-full border border-secondary-200 dark:border-secondary-600"
                   style={{ backgroundColor: color.hex }}
                 />
-                <span className="font-medium text-secondary-900 dark:text-secondary-100">
+                <span className="font-medium text-primary-content">
                   {color.name}
                 </span>
               </div>
@@ -312,7 +321,7 @@ const TypographyShowcase = () => {
 
       {/* Font Sizes Section */}
       <div>
-        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+        <h2 className="text-2xl font-bold text-primary-content mb-6">
           {t('fontSizes')}
         </h2>
         <div className="space-y-6">
@@ -339,7 +348,7 @@ const TypographyShowcase = () => {
 
       {/* Font Weights Section */}
       <div>
-        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+        <h2 className="text-2xl font-bold text-primary-content mb-6">
           {t('fontWeights')}
         </h2>
         <div className="space-y-4">
@@ -363,7 +372,7 @@ const TypographyShowcase = () => {
 
       {/* Typography Combinations */}
       <div>
-        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+        <h2 className="text-2xl font-bold text-primary-content mb-6">
           Typography Examples
         </h2>
         <div className="space-y-8 p-6 border border-secondary-200 dark:border-secondary-700 rounded-lg">
