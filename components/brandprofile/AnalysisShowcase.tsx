@@ -12,14 +12,18 @@ import {
   Shield,
   Terminal,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import RechartsComparison from './RechartsComparison'
 
 // Sample data for various chart types that use the visualization colors
-const generateSampleData = (colors: ColorItem[]) => {
+const generateSampleData = (
+  colors: ColorItem[],
+  t: (key: string) => string
+) => {
   const barChartData = [
     {
-      label: 'Frontend Skills',
+      label: t('sampleData.frontendSkills'),
       data: [
         { x: 'React', y: 95, color: colors[0]?.hex },
         { x: 'TypeScript', y: 90, color: colors[1]?.hex },
@@ -32,7 +36,7 @@ const generateSampleData = (colors: ColorItem[]) => {
 
   const lineChartData = [
     {
-      label: 'Project Performance',
+      label: t('sampleData.projectPerformance'),
       color: colors[0]?.hex,
       data: [
         { x: 'Jan', y: 32 },
@@ -44,7 +48,7 @@ const generateSampleData = (colors: ColorItem[]) => {
       ],
     },
     {
-      label: 'Client Satisfaction',
+      label: t('sampleData.clientSatisfaction'),
       color: colors[1]?.hex,
       data: [
         { x: 'Jan', y: 28 },
@@ -59,7 +63,7 @@ const generateSampleData = (colors: ColorItem[]) => {
 
   const areaChartData = [
     {
-      label: 'Revenue Growth',
+      label: t('sampleData.revenueGrowth'),
       color: colors[5]?.hex,
       data: [
         { x: 'Q1', y: 25 },
@@ -69,7 +73,7 @@ const generateSampleData = (colors: ColorItem[]) => {
       ],
     },
     {
-      label: 'Market Share',
+      label: t('sampleData.marketShare'),
       color: colors[6]?.hex,
       data: [
         { x: 'Q1', y: 15 },
@@ -86,7 +90,7 @@ const generateSampleData = (colors: ColorItem[]) => {
     { name: 'TypeScript', value: 25, color: colors[1]?.hex },
     { name: 'Next.js', value: 20, color: colors[2]?.hex },
     { name: 'Vue.js', value: 15, color: colors[3]?.hex },
-    { name: 'Other', value: 5, color: colors[7]?.hex },
+    { name: t('sampleData.other'), value: 5, color: colors[7]?.hex },
   ]
 
   const scatterData = [
@@ -132,6 +136,7 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
   const [copied, setCopied] = useState(false)
   const [showTooltip, setShowTooltip] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const t = useTranslations('brandProfile.analysisShowcase')
 
   // Clean up timeout on component unmount
   useEffect(() => {
@@ -214,14 +219,16 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
       {/* Tooltip */}
       {showTooltip && (
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-secondary-900 dark:bg-secondary-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-          {copied ? 'Copied!' : 'Click to copy'}
+          {copied ? t('colorSwatch.copied') : t('colorSwatch.clickToCopy')}
         </div>
       )}
 
       {/* Copy confirmation */}
       {copied && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-          <span className="text-white text-sm font-medium">Copied!</span>
+          <span className="text-white text-sm font-medium">
+            {t('colorSwatch.copied')}
+          </span>
         </div>
       )}
 
@@ -273,7 +280,8 @@ const SimpleBarChart = ({
   colors,
   className = '',
 }: ChartComponentProps) => {
-  const { barChartData } = generateSampleData(colors)
+  const t = useTranslations('brandProfile.analysisShowcase')
+  const { barChartData } = generateSampleData(colors, t)
   const data = barChartData[0].data
   const maxValue = Math.max(...data.map(d => d.y))
 
@@ -321,7 +329,8 @@ const SimpleLineChart = ({
   colors,
   className = '',
 }: ChartComponentProps) => {
-  const { lineChartData } = generateSampleData(colors)
+  const t = useTranslations('brandProfile.analysisShowcase')
+  const { lineChartData } = generateSampleData(colors, t)
   const width = 320
   const height = 200
   const padding = 40
@@ -446,7 +455,8 @@ const SimpleAreaChart = ({
   colors,
   className = '',
 }: ChartComponentProps) => {
-  const { areaChartData } = generateSampleData(colors)
+  const t = useTranslations('brandProfile.analysisShowcase')
+  const { areaChartData } = generateSampleData(colors, t)
   const width = 320
   const height = 200
   const padding = 40
@@ -582,7 +592,8 @@ const PieChartExample = ({
   colors,
   className = '',
 }: ChartComponentProps) => {
-  const { pieChartData } = generateSampleData(colors)
+  const t = useTranslations('brandProfile.analysisShowcase')
+  const { pieChartData } = generateSampleData(colors, t)
 
   let cumulativePercentage = 0
   const radius = 80
@@ -664,27 +675,28 @@ const MetricsExample = ({
   colors,
   className = '',
 }: ChartComponentProps) => {
+  const t = useTranslations('brandProfile.analysisShowcase')
   const metrics = [
     {
-      label: 'Active Projects',
+      label: t('metrics.activeProjects'),
       value: '24',
       trend: '+12%',
       color: colors[5]?.hex,
     },
     {
-      label: 'Success Rate',
+      label: t('metrics.successRate'),
       value: '98%',
       trend: '+3%',
       color: colors[0]?.hex,
     },
     {
-      label: 'Client Satisfaction',
+      label: t('metrics.clientSatisfaction'),
       value: '4.9',
       trend: '+0.2',
       color: colors[1]?.hex,
     },
     {
-      label: 'Response Time',
+      label: t('metrics.responseTime'),
       value: '1.2s',
       trend: '-15%',
       color: colors[4]?.hex,
@@ -734,6 +746,7 @@ const MetricsExample = ({
 
 const DataVisualizationShowcase = () => {
   const dataVisualizationColors = getDataVisualizationColors()
+  const t = useTranslations('brandProfile.analysisShowcase')
 
   return (
     <div className="space-y-12">
@@ -745,12 +758,10 @@ const DataVisualizationShowcase = () => {
         className="text-center"
       >
         <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-          Analysis & Data Visualization Colors
+          {t('title')}
         </h2>
         <p className="text-lg text-secondary-600 dark:text-secondary-400 max-w-3xl mx-auto">
-          Specialized color palette designed for charts, diagrams, spreadsheets,
-          and technical visualizations. These colors provide optimal contrast
-          and clarity for data presentation while maintaining brand consistency.
+          {t('description')}
         </p>
       </motion.div>
 
@@ -782,52 +793,52 @@ const DataVisualizationShowcase = () => {
         className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-xl p-8"
       >
         <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-          Usage Guidelines
+          {t('usageGuidelines.title')}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
-              Recommended Use Cases
+              {t('usageGuidelines.recommendedUseCases.title')}
             </h4>
             <ul className="space-y-2 text-secondary-600 dark:text-secondary-400">
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Technology skill visualizations and progress bars
+                {t('usageGuidelines.recommendedUseCases.items.0')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Infrastructure diagrams and system architecture
+                {t('usageGuidelines.recommendedUseCases.items.1')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Data dashboards and analytics displays
+                {t('usageGuidelines.recommendedUseCases.items.2')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-primary-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Process flow charts and workflow diagrams
+                {t('usageGuidelines.recommendedUseCases.items.3')}
               </li>
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
-              Color Accessibility
+              {t('usageGuidelines.colorAccessibility.title')}
             </h4>
             <ul className="space-y-2 text-secondary-600 dark:text-secondary-400">
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                All colors meet WCAG AA contrast standards
+                {t('usageGuidelines.colorAccessibility.items.0')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Color-blind friendly palette tested
+                {t('usageGuidelines.colorAccessibility.items.1')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Distinct hues for clear differentiation
+                {t('usageGuidelines.colorAccessibility.items.2')}
               </li>
               <li className="flex items-start">
                 <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Works effectively in both light and dark themes
+                {t('usageGuidelines.colorAccessibility.items.3')}
               </li>
             </ul>
           </div>
@@ -842,7 +853,7 @@ const DataVisualizationShowcase = () => {
         className="bg-white dark:bg-secondary-800 rounded-xl p-8 shadow-sm border border-secondary-200 dark:border-secondary-700"
       >
         <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-          Implementation Example
+          {t('implementationExample.title')}
         </h3>
         <div className="bg-secondary-50 dark:bg-secondary-900 rounded-lg p-6 font-mono text-sm">
           <pre className="text-secondary-800 dark:text-secondary-200">
@@ -870,34 +881,34 @@ const errorColor = colors.find(c => c.name === 'Visualization 5')?.hex`}
         transition={{ duration: 0.5, delay: 0.8 }}
       >
         <h3 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-8 text-center">
-          Interactive Data Visualization Examples
+          {t('chartExamples.title')}
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <SimpleBarChart
-            title="Skills Assessment"
+            title={t('chartExamples.skillsAssessment')}
             colors={dataVisualizationColors}
           />
           <SimpleLineChart
-            title="Performance Trends"
+            title={t('chartExamples.performanceTrends')}
             colors={dataVisualizationColors}
           />
           <SimpleAreaChart
-            title="Growth Metrics"
+            title={t('chartExamples.growthMetrics')}
             colors={dataVisualizationColors}
           />
           <PieChartExample
-            title="Technology Stack"
+            title={t('chartExamples.technologyStack')}
             colors={dataVisualizationColors}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <MetricsExample
-            title="Key Performance Indicators"
+            title={t('chartExamples.keyPerformanceIndicators')}
             colors={dataVisualizationColors}
           />
           <div className="bg-white dark:bg-secondary-800 rounded-xl p-6 shadow-sm border border-secondary-200 dark:border-secondary-700">
             <h4 className="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
-              Color Palette Reference
+              {t('chartExamples.colorPaletteReference')}
             </h4>
             <div className="grid grid-cols-2 gap-3">
               {dataVisualizationColors.slice(0, 8).map((color, index) => (
@@ -908,7 +919,7 @@ const errorColor = colors.find(c => c.name === 'Visualization 5')?.hex`}
                   />
                   <div className="min-w-0">
                     <div className="text-sm font-medium text-secondary-900 dark:text-secondary-100 truncate">
-                      Color {index + 1}
+                      {t('chartExamples.colorLabel', { index: index + 1 })}
                     </div>
                     <div className="text-xs text-secondary-600 dark:text-secondary-400">
                       {color.hex}

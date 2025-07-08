@@ -1182,6 +1182,60 @@
       }
     },
     "analysisShowcase": {
+      "title": "Analysis & Data Visualization Colors",
+      "description": "Specialized color palette designed for charts, diagrams, spreadsheets, and technical visualizations. These colors provide optimal contrast and clarity for data presentation while maintaining brand consistency.",
+      "usageGuidelines": {
+        "title": "Usage Guidelines",
+        "recommendedUseCases": {
+          "title": "Recommended Use Cases",
+          "items": [
+            "Technology skill visualizations and progress bars",
+            "Infrastructure diagrams and system architecture",
+            "Data dashboards and analytics displays",
+            "Process flow charts and workflow diagrams"
+          ]
+        },
+        "colorAccessibility": {
+          "title": "Color Accessibility",
+          "items": [
+            "All colors meet WCAG AA contrast standards",
+            "Color-blind friendly palette tested",
+            "Distinct hues for clear differentiation",
+            "Works effectively in both light and dark themes"
+          ]
+        }
+      },
+      "implementationExample": {
+        "title": "Implementation Example"
+      },
+      "chartExamples": {
+        "title": "Interactive Data Visualization Examples",
+        "skillsAssessment": "Skills Assessment",
+        "performanceTrends": "Performance Trends",
+        "growthMetrics": "Growth Metrics",
+        "technologyStack": "Technology Stack",
+        "keyPerformanceIndicators": "Key Performance Indicators",
+        "colorPaletteReference": "Color Palette Reference",
+        "colorLabel": "Color {index}"
+      },
+      "colorSwatch": {
+        "copied": "Copied!",
+        "clickToCopy": "Click to copy"
+      },
+      "sampleData": {
+        "frontendSkills": "Frontend Skills",
+        "projectPerformance": "Project Performance",
+        "clientSatisfaction": "Client Satisfaction",
+        "revenueGrowth": "Revenue Growth",
+        "marketShare": "Market Share",
+        "other": "Other"
+      },
+      "metrics": {
+        "activeProjects": "Active Projects",
+        "successRate": "Success Rate",
+        "clientSatisfaction": "Client Satisfaction",
+        "responseTime": "Response Time"
+      },
       "rechartsComparison": {
         "title": "Recharts Implementation Comparison",
         "description": "Here's how the same data visualizations look using the Recharts library, maintaining our brand color palette and design consistency."

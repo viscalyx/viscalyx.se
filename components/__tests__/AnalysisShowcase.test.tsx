@@ -11,7 +11,62 @@ Object.assign(navigator, {
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => (key: string, values?: any) => {
+    const translations: Record<string, string> = {
+      title: 'Analysis & Data Visualization Colors',
+      description:
+        'Specialized color palette designed for charts, diagrams, spreadsheets, and technical visualizations. These colors provide optimal contrast and clarity for data presentation while maintaining brand consistency.',
+      'usageGuidelines.title': 'Usage Guidelines',
+      'usageGuidelines.recommendedUseCases.title': 'Recommended Use Cases',
+      'usageGuidelines.recommendedUseCases.items.0':
+        'Technology skill visualizations and progress bars',
+      'usageGuidelines.recommendedUseCases.items.1':
+        'Infrastructure diagrams and system architecture',
+      'usageGuidelines.recommendedUseCases.items.2':
+        'Data dashboards and analytics displays',
+      'usageGuidelines.recommendedUseCases.items.3':
+        'Process flow charts and workflow diagrams',
+      'usageGuidelines.colorAccessibility.title': 'Color Accessibility',
+      'usageGuidelines.colorAccessibility.items.0':
+        'All colors meet WCAG AA contrast standards',
+      'usageGuidelines.colorAccessibility.items.1':
+        'Color-blind friendly palette tested',
+      'usageGuidelines.colorAccessibility.items.2':
+        'Distinct hues for clear differentiation',
+      'usageGuidelines.colorAccessibility.items.3':
+        'Works effectively in both light and dark themes',
+      'implementationExample.title': 'Implementation Example',
+      'chartExamples.title': 'Interactive Data Visualization Examples',
+      'chartExamples.skillsAssessment': 'Skills Assessment',
+      'chartExamples.performanceTrends': 'Performance Trends',
+      'chartExamples.growthMetrics': 'Growth Metrics',
+      'chartExamples.technologyStack': 'Technology Stack',
+      'chartExamples.keyPerformanceIndicators': 'Key Performance Indicators',
+      'chartExamples.colorPaletteReference': 'Color Palette Reference',
+      'chartExamples.colorLabel': 'Color {index}',
+      'colorSwatch.copied': 'Copied!',
+      'colorSwatch.clickToCopy': 'Click to copy',
+      'sampleData.frontendSkills': 'Frontend Skills',
+      'sampleData.projectPerformance': 'Project Performance',
+      'sampleData.clientSatisfaction': 'Client Satisfaction',
+      'sampleData.revenueGrowth': 'Revenue Growth',
+      'sampleData.marketShare': 'Market Share',
+      'sampleData.other': 'Other',
+      'metrics.activeProjects': 'Active Projects',
+      'metrics.successRate': 'Success Rate',
+      'metrics.clientSatisfaction': 'Client Satisfaction',
+      'metrics.responseTime': 'Response Time',
+    }
+
+    let result = translations[key] || key
+
+    // Handle interpolation for the colorLabel
+    if (key === 'chartExamples.colorLabel' && values?.index) {
+      result = result.replace('{index}', values.index)
+    }
+
+    return result
+  },
 }))
 
 // Mock framer-motion
@@ -57,14 +112,14 @@ describe('DataVisualizationShowcase', () => {
   it('renders the main heading', () => {
     render(<DataVisualizationShowcase />)
     expect(
-      screen.getByText('Analysis & Data Visualization Colors')
+      screen.getAllByText('Analysis & Data Visualization Colors')[0]
     ).toBeInTheDocument()
   })
 
   it('renders the description', () => {
     render(<DataVisualizationShowcase />)
     expect(
-      screen.getByText(/Specialized color palette designed for charts/)
+      screen.getAllByText(/Specialized color palette designed for charts/)[0]
     ).toBeInTheDocument()
   })
 
