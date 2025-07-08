@@ -59,6 +59,25 @@ export interface BrandTypography {
     bold: number
     extrabold: number
   }
+  textColors: {
+    primary: string
+    secondary: string
+    tertiary: string
+    muted: string
+    brandPrimary: string
+    success: string
+    successDark: string
+    warningAmber: string
+    warningYellow: string
+    warningDark: string
+    warningAlternative: string
+    errorRed: string
+    errorAlternative: string
+    errorDark: string
+    infoBlue: string
+    infoAlternative: string
+    infoDark: string
+  }
 }
 
 // Brand constants
@@ -112,5 +131,24 @@ export const BRAND_TYPOGRAPHY: BrandTypography = {
     semibold: 600,
     bold: 700,
     extrabold: 800,
+  },
+  textColors: {
+    primary: 'text-primary-content',
+    secondary: 'text-secondary-content',
+    tertiary: 'text-tertiary-content',
+    muted: 'text-muted-content',
+    brandPrimary: 'text-brand-primary',
+    success: 'text-success-content',
+    successDark: 'text-success-dark',
+    warningAmber: 'text-warning-amber',
+    warningYellow: 'text-warning-yellow',
+    warningDark: 'text-warning-dark',
+    warningAlternative: 'text-warning-alternative',
+    errorRed: 'text-error-red',
+    errorAlternative: 'text-error-alternative',
+    errorDark: 'text-error-dark',
+    infoBlue: 'text-info-blue',
+    infoAlternative: 'text-info-alternative',
+    infoDark: 'text-info-dark',
   },
 }

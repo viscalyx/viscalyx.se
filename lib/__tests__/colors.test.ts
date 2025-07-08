@@ -56,8 +56,8 @@ describe('colors utility', () => {
 
       expect(colors).toHaveLength(6)
       expect(colors[0]).toHaveProperty('name', 'Success')
-      expect(colors[0]).toHaveProperty('hex', '#059669')
-      expect(colors[0]).toHaveProperty('rgb', 'rgb(5, 150, 105)')
+      expect(colors[0]).toHaveProperty('hex', '#16a34a')
+      expect(colors[0]).toHaveProperty('rgb', 'rgb(22, 163, 74)')
       expect(colors[0]).toHaveProperty(
         'usage',
         'Success states, checkmark icons, success confirmations, completion states'
