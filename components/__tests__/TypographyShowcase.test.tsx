@@ -104,17 +104,21 @@ describe('TypographyShowcase', () => {
   it('has proper semantic heading hierarchy for accessibility', () => {
     render(<TypographyShowcase />)
 
-    // Verify h2 headings are present (section titles)
+    // Verify h2 headings are present (section titles + example)
     const h2Headings = screen.getAllByRole('heading', { level: 2 })
-    expect(h2Headings.length).toBe(2)
+    expect(h2Headings.length).toBe(5) // Typography Colors, Font Sizes, Font Weights, Typography Examples + Section Heading example
+
+    // Verify h1 heading in examples section
+    const h1Headings = screen.getAllByRole('heading', { level: 1 })
+    expect(h1Headings.length).toBe(1) // Large Heading example
+
+    // Verify h3 headings in examples section
+    const h3Headings = screen.getAllByRole('heading', { level: 3 })
+    expect(h3Headings.length).toBe(1) // Subsection Heading example
 
     // Ensure all headings have proper structure
     const allHeadings = screen.getAllByRole('heading')
-    expect(allHeadings.length).toBe(2)
-
-    // Verify no h1 headings exist in this component (it's a showcase component)
-    const h1Headings = screen.queryAllByRole('heading', { level: 1 })
-    expect(h1Headings.length).toBe(0)
+    expect(allHeadings.length).toBe(7) // 5 h2 + 1 h1 + 1 h3 = 7 total
   })
 
   it('maintains proper heading structure for screen readers', () => {
@@ -122,10 +126,16 @@ describe('TypographyShowcase', () => {
 
     // Check that main section headings are h2 level
     expect(
+      screen.getByRole('heading', { level: 2, name: 'Typography Colors & Interactive Preview' })
+    ).toBeInTheDocument()
+    expect(
       screen.getByRole('heading', { level: 2, name: 'Font Sizes & Hierarchy' })
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { level: 2, name: 'Font Weights' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Typography Examples' })
     ).toBeInTheDocument()
 
     // Verify heading content is descriptive
@@ -141,12 +151,19 @@ describe('TypographyShowcase', () => {
     render(<TypographyShowcase />)
     const headings = screen.getAllByRole('heading')
 
-    // Should have 2 h2 headings (Font Sizes & Hierarchy, Font Weights)
-    expect(headings).toHaveLength(2)
+    // Should have 7 total headings (4 h2 section headings + 3 example headings)
+    expect(headings).toHaveLength(7)
 
-    // Check heading levels
+    // Check main section heading levels
     const h2Headings = screen.getAllByRole('heading', { level: 2 })
-    expect(h2Headings).toHaveLength(2)
+    expect(h2Headings).toHaveLength(5) // 4 section headings + 1 example heading
+
+    // Check example heading levels
+    const h1Headings = screen.getAllByRole('heading', { level: 1 })
+    expect(h1Headings).toHaveLength(1) // 1 large heading example
+
+    const h3Headings = screen.getAllByRole('heading', { level: 3 })
+    expect(h3Headings).toHaveLength(1) // 1 subsection heading example
 
     // Verify heading text content
     expect(
