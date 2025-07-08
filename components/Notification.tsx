@@ -92,7 +92,7 @@ const Notification = ({
     success: {
       bg: 'bg-secondary-50 dark:bg-secondary-800',
       border: 'border-secondary-200 dark:border-secondary-700',
-      icon: 'text-[#059669]',
+      icon: 'text-success-content',
       title: 'text-secondary-900 dark:text-secondary-100',
       text: 'text-secondary-700 dark:text-secondary-300',
     },
