@@ -50,54 +50,145 @@
 
   /* Fonts */
   --font-sans: Inter, system-ui, sans-serif;
-
-  /* Custom animations */
-  --animate-fade-in: fade-in 0.5s ease-in-out;
-  --animate-slide-up: slide-up 0.5s ease-out;
-  --animate-bounce-slow: bounce-slow 2s infinite;
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-up {
-    0% {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes bounce-slow {
-    0%,
-    20%,
-    53%,
-    80%,
-    100% {
-      transform: translateY(0);
-    }
-    40%,
-    43% {
-      transform: translateY(-30px);
-    }
-    70% {
-      transform: translateY(-15px);
-    }
-    90% {
-      transform: translateY(-4px);
-    }
-  }
 }
 
-/* ===== All code block styles moved to code-block-components.css ===== */
+/* Typography Text Colors - Custom CSS classes to replace Tailwind utilities */
+.text-primary-content {
+  color: #111827; /* secondary-900 */
+}
+
+.text-secondary-content {
+  color: #4b5563; /* secondary-600 */
+}
+
+.text-tertiary-content {
+  color: #374151; /* secondary-700 */
+}
+
+.text-muted-content {
+  color: #6b7280; /* secondary-500 */
+}
+
+.text-brand-primary {
+  color: #0277bd; /* primary-600 */
+}
+
+.text-success-content {
+  color: #16a34a; /* green-600 - semantic success */
+}
+
+.text-success-dark {
+  color: #065f46; /* green-800 - darker success */
+}
+
+.text-warning-amber {
+  color: #f59e0b; /* amber-500 */
+}
+
+.text-warning-yellow {
+  color: #ca8a04; /* yellow-600 */
+}
+
+.text-warning-dark {
+  color: #713f12; /* yellow-900 */
+}
+
+.text-warning-alternative {
+  color: #92400e; /* amber-800 */
+}
+
+.text-error-red {
+  color: #ef4444; /* red-500 */
+}
+
+.text-error-alternative {
+  color: #dc2626; /* red-600 */
+}
+
+.text-error-dark {
+  color: #991b1b; /* red-800 */
+}
+
+.text-info-blue {
+  color: #3b82f6; /* blue-500 */
+}
+
+.text-info-alternative {
+  color: #1d4ed8; /* blue-700 */
+}
+
+.text-info-dark {
+  color: #1e40af; /* blue-800 */
+}
+
+/* Dark theme overrides */
+:is(.dark *) .text-primary-content {
+  color: #f9fafb; /* secondary-50 */
+}
+
+:is(.dark *) .text-secondary-content {
+  color: #9ca3af; /* secondary-400 */
+}
+
+:is(.dark *) .text-tertiary-content {
+  color: #d1d5db; /* secondary-300 */
+}
+
+:is(.dark *) .text-muted-content {
+  color: #6b7280; /* secondary-500 - same in both modes */
+}
+
+:is(.dark *) .text-brand-primary {
+  color: #38bdf8; /* primary-400 */
+}
+
+:is(.dark *) .text-success-content {
+  color: #4ade80; /* green-400 - semantic success */
+}
+
+:is(.dark *) .text-success-dark {
+  color: #86efac; /* green-300 - lighter for dark mode */
+}
+
+:is(.dark *) .text-warning-amber {
+  color: #f59e0b; /* amber-500 - same in both modes */
+}
+
+:is(.dark *) .text-warning-yellow {
+  color: #facc15; /* yellow-400 */
+}
+
+:is(.dark *) .text-warning-dark {
+  color: #fefce8; /* yellow-50 */
+}
+
+:is(.dark *) .text-warning-alternative {
+  color: #fcd34d; /* yellow-300 */
+}
+
+:is(.dark *) .text-error-red {
+  color: #ef4444; /* red-500 - same in both modes */
+}
+
+:is(.dark *) .text-error-alternative {
+  color: #f87171; /* red-400 */
+}
+
+:is(.dark *) .text-error-dark {
+  color: #fca5a5; /* red-300 */
+}
+
+:is(.dark *) .text-info-blue {
+  color: #3b82f6; /* blue-500 - same in both modes */
+}
+
+:is(.dark *) .text-info-alternative {
+  color: #60a5fa; /* blue-400 */
+}
+
+:is(.dark *) .text-info-dark {
+  color: #93c5fd; /* blue-300 */
+}
 
 @layer base {
   html {
@@ -244,9 +335,9 @@
 
   /* Tip variant - set CSS variables for border, title color */
   .blog-content .github-alert-tip {
-    --alert-border-color: #059669; /* brand success color */
-    --alert-title-color-light: #059669; /* brand success color */
-    --alert-title-color-dark: #059669; /* brand success color */
+    --alert-border-color: #16a34a; /* brand success color */
+    --alert-title-color-light: #16a34a; /* brand success color */
+    --alert-title-color-dark: #4ade80; /* brand success color */
   }
 
   /* Important - Purple with exclamation in speech bubble */
