@@ -4,7 +4,17 @@ import RechartsComparison from '../brandprofile/RechartsComparison'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: (namespace: string) => (key: string) => {
+    if (namespace === 'brandProfile.analysisShowcase.rechartsComparison') {
+      const translations: Record<string, string> = {
+        title: 'Recharts Implementation Comparison',
+        description:
+          "Here's how the same data visualizations look using the Recharts library, maintaining our brand color palette and design consistency.",
+      }
+      return translations[key] || key
+    }
+    return key
+  },
 }))
 
 // Mock framer-motion

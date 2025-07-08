@@ -209,9 +209,11 @@ const ColorSwatch = ({ color, className = '' }: ColorSwatchProps) => {
         >
           <div
             className="w-full h-24 rounded-lg border-2 border-secondary-200 dark:border-secondary-700 flex items-center justify-center relative overflow-hidden"
-            style={{ backgroundColor: color.hex }}
+            style={{ '--dynamic-bg-color': color.hex } as React.CSSProperties}
+            data-color={color.hex}
           >
-            <IconComponent className="w-8 h-8 text-white/80 drop-shadow-md" />
+            <div className="absolute inset-0 bg-[var(--dynamic-bg-color)]" />
+            <IconComponent className="w-8 h-8 text-white/80 drop-shadow-md relative z-10" />
           </div>
         </button>
       </div>
@@ -301,16 +303,27 @@ const SimpleBarChart = ({
             <div className="w-full flex flex-col items-center">
               <div
                 className="w-full rounded-t transition-all duration-300 hover:opacity-80 hover:scale-105 shadow-sm"
-                style={{
-                  backgroundColor: colors[index]?.hex,
-                  height: `${Math.max((item.y / maxValue) * 180, 8)}px`,
-                }}
-              />
+                style={
+                  {
+                    '--bar-color': colors[index]?.hex,
+                    '--bar-height': `${Math.max((item.y / maxValue) * 180, 8)}px`,
+                  } as React.CSSProperties
+                }
+              >
+                <div
+                  className="w-full bg-[var(--bar-color)] rounded-t"
+                  style={{ height: 'var(--bar-height)' }}
+                />
+              </div>
               <div
                 className="text-white text-xs font-medium mt-1 px-2 py-1 rounded shadow-sm"
-                style={{ backgroundColor: colors[index]?.hex }}
+                style={
+                  { '--label-bg': colors[index]?.hex } as React.CSSProperties
+                }
               >
-                {item.y}%
+                <div className="bg-[var(--label-bg)] w-full h-full px-2 py-1 rounded">
+                  {item.y}%
+                </div>
               </div>
             </div>
             <div className="text-xs text-secondary-600 dark:text-secondary-400 text-center font-medium">
@@ -436,8 +449,14 @@ const SimpleLineChart = ({
             <div key={series.label} className="flex items-center">
               <div
                 className="w-3 h-3 rounded-full mr-2 shadow-sm"
-                style={{ backgroundColor: colors[index]?.hex }}
-              />
+                style={
+                  {
+                    '--legend-color': colors[index]?.hex,
+                  } as React.CSSProperties
+                }
+              >
+                <div className="w-full h-full bg-[var(--legend-color)] rounded-full" />
+              </div>
               <span className="text-sm text-secondary-600 dark:text-secondary-400 font-medium">
                 {series.label}
               </span>
@@ -571,10 +590,15 @@ const SimpleAreaChart = ({
             <div key={series.label} className="flex items-center">
               <div
                 className="w-3 h-3 rounded-full mr-2 shadow-sm"
-                style={{
-                  backgroundColor: colors[index + 5]?.hex || colors[index]?.hex,
-                }}
-              />
+                style={
+                  {
+                    '--area-legend-color':
+                      colors[index + 5]?.hex || colors[index]?.hex,
+                  } as React.CSSProperties
+                }
+              >
+                <div className="w-full h-full bg-[var(--area-legend-color)] rounded-full" />
+              </div>
               <span className="text-sm text-secondary-600 dark:text-secondary-400 font-medium">
                 {series.label}
               </span>
@@ -656,8 +680,12 @@ const PieChartExample = ({
             <div key={slice.name} className="flex items-center text-sm">
               <div
                 className="w-3 h-3 rounded-full mr-2"
-                style={{ backgroundColor: slice.color }}
-              />
+                style={
+                  { '--pie-legend-color': slice.color } as React.CSSProperties
+                }
+              >
+                <div className="w-full h-full bg-[var(--pie-legend-color)] rounded-full" />
+              </div>
               <span className="text-secondary-600 dark:text-secondary-400">
                 {slice.name}: {slice.value}%
               </span>
@@ -714,22 +742,39 @@ const MetricsExample = ({
         {metrics.map((metric, index) => (
           <div key={metric.label} className="text-center">
             <div
-              className="w-full h-2 rounded-full mb-2"
-              style={{ backgroundColor: metric.color + '20' }}
+              className="w-full h-2 rounded-full mb-2 bg-opacity-20"
+              style={
+                {
+                  '--metric-bg-light': metric.color + '20',
+                } as React.CSSProperties
+              }
             >
-              <div
-                className="h-full rounded-full transition-all duration-300"
-                style={{
-                  backgroundColor: metric.color,
-                  width: `${75 + index * 5}%`,
-                }}
-              />
+              <div className="h-full rounded-full bg-[var(--metric-bg-light)]">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={
+                    {
+                      '--metric-color': metric.color,
+                      '--metric-width': `${75 + index * 5}%`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <div
+                    className="h-full bg-[var(--metric-color)] rounded-full"
+                    style={{ width: 'var(--metric-width)' }}
+                  />
+                </div>
+              </div>
             </div>
             <div
               className="text-2xl font-bold mb-1"
-              style={{ color: metric.color }}
+              style={
+                { '--metric-text-color': metric.color } as React.CSSProperties
+              }
             >
-              {metric.value}
+              <span className="text-[var(--metric-text-color)]">
+                {metric.value}
+              </span>
             </div>
             <div className="text-sm text-secondary-600 dark:text-secondary-400">
               {metric.label}
@@ -863,7 +908,8 @@ const colors = getDataVisualizationColors()
 
 // Usage in data visualization charts
 const primaryColor = colors.find(c => c.name === 'Visualization 1')?.hex
-<div style={{ backgroundColor: primaryColor }}>
+<div style={{ '--primary-viz-color': primaryColor } as React.CSSProperties}>
+  <div className="bg-[var(--primary-viz-color)]">
   Primary Data Series
 </div>
 
@@ -915,8 +961,10 @@ const errorColor = colors.find(c => c.name === 'Visualization 5')?.hex`}
                 <div key={color.name} className="flex items-center">
                   <div
                     className="w-4 h-4 rounded-full mr-3 flex-shrink-0"
-                    style={{ backgroundColor: color.hex }}
-                  />
+                    style={{ '--ref-color': color.hex } as React.CSSProperties}
+                  >
+                    <div className="w-full h-full bg-[var(--ref-color)] rounded-full" />
+                  </div>
                   <div className="min-w-0">
                     <div className="text-sm font-medium text-secondary-900 dark:text-secondary-100 truncate">
                       {t('chartExamples.colorLabel', { index: index + 1 })}
