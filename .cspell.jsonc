@@ -312,7 +312,11 @@
     "issal", // dismissal
 
     // Correct words that are not recognized
-    "inclusivity"
+    "inclusivity",
+
+    // Fonts
+    "Segoe",
+    "Neue"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "dictionaries": ["sv"],
