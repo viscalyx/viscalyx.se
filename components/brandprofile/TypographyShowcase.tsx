@@ -1,12 +1,18 @@
 'use client'
 
-import { getAccentColors, getPrimaryColors, getSecondaryColors } from '@/lib/colors'
+import {
+  getAccentColors,
+  getPrimaryColors,
+  getSecondaryColors,
+} from '@/lib/colors'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 const TypographyShowcase = () => {
   const t = useTranslations('brandProfile.typographyShowcase')
-  const [selectedTextColor, setSelectedTextColor] = useState('text-primary-content')
+  const [selectedTextColor, setSelectedTextColor] = useState(
+    'text-primary-content'
+  )
 
   // Get brand colors for typography
   const primaryColors = getPrimaryColors()
@@ -22,7 +28,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-primary-content',
       hex: '#111827',
       darkHex: '#f9fafb',
-      usage: 'Main headings, primary content'
+      usage: 'Main headings, primary content',
     },
     {
       name: 'Secondary Text',
@@ -31,7 +37,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-secondary-content',
       hex: '#4b5563',
       darkHex: '#9ca3af',
-      usage: 'Body text, descriptions'
+      usage: 'Body text, descriptions',
     },
     {
       name: 'Tertiary Text',
@@ -40,7 +46,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-tertiary-content',
       hex: '#374151',
       darkHex: '#d1d5db',
-      usage: 'Strong body text, emphasized content'
+      usage: 'Strong body text, emphasized content',
     },
     {
       name: 'Muted Text',
@@ -49,7 +55,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-muted-content',
       hex: '#6b7280',
       darkHex: '#6b7280',
-      usage: 'Labels, captions, subtle text'
+      usage: 'Labels, captions, subtle text',
     },
     {
       name: 'Brand Primary',
@@ -58,7 +64,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-brand-primary',
       hex: '#0277bd',
       darkHex: '#38bdf8',
-      usage: 'Links, CTAs, brand elements'
+      usage: 'Links, CTAs, brand elements',
     },
     {
       name: 'Success',
@@ -67,7 +73,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-success-content',
       hex: '#16a34a',
       darkHex: '#4ade80',
-      usage: 'Success states, positive feedback'
+      usage: 'Success states, positive feedback',
     },
     {
       name: 'Success Dark',
@@ -76,7 +82,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-success-dark',
       hex: '#065f46',
       darkHex: '#86efac',
-      usage: 'Darker success text, success on light backgrounds'
+      usage: 'Darker success text, success on light backgrounds',
     },
     {
       name: 'Warning Amber',
@@ -85,7 +91,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-warning-amber',
       hex: '#f59e0b',
       darkHex: '#f59e0b',
-      usage: 'Primary warnings, cautions'
+      usage: 'Primary warnings, cautions',
     },
     {
       name: 'Warning Yellow',
@@ -94,7 +100,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-warning-yellow',
       hex: '#ca8a04',
       darkHex: '#facc15',
-      usage: 'Alternative warning states'
+      usage: 'Alternative warning states',
     },
     {
       name: 'Warning Dark',
@@ -103,7 +109,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-warning-dark',
       hex: '#713f12',
       darkHex: '#fefce8',
-      usage: 'Warning text on colored backgrounds'
+      usage: 'Warning text on colored backgrounds',
     },
     {
       name: 'Warning Alternative',
@@ -112,7 +118,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-warning-alternative',
       hex: '#92400e',
       darkHex: '#fcd34d',
-      usage: 'Warning backgrounds with opacity'
+      usage: 'Warning backgrounds with opacity',
     },
     {
       name: 'Error Red',
@@ -121,7 +127,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-error-red',
       hex: '#ef4444',
       darkHex: '#ef4444',
-      usage: 'Primary errors, destructive actions'
+      usage: 'Primary errors, destructive actions',
     },
     {
       name: 'Error Alternative',
@@ -130,7 +136,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-error-alternative',
       hex: '#dc2626',
       darkHex: '#f87171',
-      usage: 'Alternative error states'
+      usage: 'Alternative error states',
     },
     {
       name: 'Error Dark',
@@ -139,7 +145,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-error-dark',
       hex: '#991b1b',
       darkHex: '#fca5a5',
-      usage: 'Error backgrounds with opacity'
+      usage: 'Error backgrounds with opacity',
     },
     {
       name: 'Info Blue',
@@ -148,7 +154,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-info-blue',
       hex: '#3b82f6',
       darkHex: '#3b82f6',
-      usage: 'Primary information, tips'
+      usage: 'Primary information, tips',
     },
     {
       name: 'Info Alternative',
@@ -157,7 +163,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-info-alternative',
       hex: '#1d4ed8',
       darkHex: '#60a5fa',
-      usage: 'Links, alternative info states'
+      usage: 'Links, alternative info states',
     },
     {
       name: 'Info Dark',
@@ -166,7 +172,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-info-dark',
       hex: '#1e40af',
       darkHex: '#93c5fd',
-      usage: 'Dark info text, info on light backgrounds'
+      usage: 'Dark info text, info on light backgrounds',
     },
     {
       name: 'Gold/Rating',
@@ -175,7 +181,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-[#facc15] dark:text-[#facc15]',
       hex: '#facc15',
       darkHex: '#facc15',
-      usage: 'Star ratings, achievements, gold accents'
+      usage: 'Star ratings, achievements, gold accents',
     },
     {
       name: 'Orange Accent',
@@ -184,7 +190,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-orange-500 dark:text-orange-500',
       hex: '#f97316',
       darkHex: '#f97316',
-      usage: 'Orange UI elements, warnings'
+      usage: 'Orange UI elements, warnings',
     },
     {
       name: 'Gray Alternative',
@@ -193,7 +199,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-gray-600 dark:text-gray-400',
       hex: '#4b5563',
       darkHex: '#9ca3af',
-      usage: 'Alternative gray text'
+      usage: 'Alternative gray text',
     },
     {
       name: 'Terminal Green',
@@ -202,7 +208,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-green-400 dark:text-green-400',
       hex: '#4ade80',
       darkHex: '#4ade80',
-      usage: 'Terminal/code text'
+      usage: 'Terminal/code text',
     },
     {
       name: 'White Text',
@@ -211,7 +217,7 @@ const TypographyShowcase = () => {
       combinedClass: 'text-white dark:text-white',
       hex: '#ffffff',
       darkHex: '#ffffff',
-      usage: 'Text on dark backgrounds'
+      usage: 'Text on dark backgrounds',
     },
   ]
   const fontSizes = [
@@ -282,7 +288,9 @@ const TypographyShowcase = () => {
           Typography Colors & Interactive Preview
         </h2>
         <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-          Complete collection of all text colors used across the site. Click on any color to apply it to all typography examples below and see how it looks in different contexts.
+          Complete collection of all text colors used across the site. Click on
+          any color to apply it to all typography examples below and see how it
+          looks in different contexts.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
           {textColors.map(color => (
@@ -358,7 +366,9 @@ const TypographyShowcase = () => {
                 {weight.name}
               </div>
               <div className="flex-1">
-                <div className={`${weight.weight} text-lg ${selectedTextColor}`}>
+                <div
+                  className={`${weight.weight} text-lg ${selectedTextColor}`}
+                >
                   {t('brandText')}
                 </div>
               </div>
@@ -390,7 +400,8 @@ const TypographyShowcase = () => {
               Section Heading (text-2xl font-semibold)
             </h2>
             <p className={`text-base ${selectedTextColor}`}>
-              Body text using the selected color with base font size and normal weight.
+              Body text using the selected color with base font size and normal
+              weight.
             </p>
           </div>
 
@@ -399,7 +410,8 @@ const TypographyShowcase = () => {
               Subsection Heading (text-xl font-medium)
             </h3>
             <p className={`text-sm ${selectedTextColor}`}>
-              Small text using the selected color for captions or secondary information.
+              Small text using the selected color for captions or secondary
+              information.
             </p>
           </div>
         </div>
