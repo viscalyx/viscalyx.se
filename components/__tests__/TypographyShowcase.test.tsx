@@ -126,7 +126,10 @@ describe('TypographyShowcase', () => {
 
     // Check that main section headings are h2 level
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Typography Colors & Interactive Preview' })
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Typography Colors & Interactive Preview',
+      })
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { level: 2, name: 'Font Sizes & Hierarchy' })
@@ -261,7 +264,9 @@ describe('TypographyShowcase', () => {
     })
 
     // Check for custom text color classes on sample text
-    const sampleTexts = container.querySelectorAll('[class*="text-primary-content"]')
+    const sampleTexts = container.querySelectorAll(
+      '[class*="text-primary-content"]'
+    )
     expect(sampleTexts.length).toBeGreaterThan(0)
 
     // Check for dark mode classes on labels

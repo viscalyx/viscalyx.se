@@ -57,9 +57,7 @@ const ComponentsShowcase = () => {
         <div className="space-y-4">
           <div className="flex items-center space-x-3 p-4 bg-[#059669]/10 dark:bg-[#059669]/20 border border-success-dark/30 dark:border-success-dark/50 rounded-lg">
             <Check className="w-5 h-5 text-success-dark" />
-            <span className="text-success-dark">
-              {t('alerts.success')}
-            </span>
+            <span className="text-success-dark">{t('alerts.success')}</span>
           </div>
           <div className="flex items-center space-x-3 p-4 bg-[#f59e0b]/10 dark:bg-[#f59e0b]/20 border border-[#f59e0b]/30 dark:border-[#f59e0b]/50 rounded-lg">
             <AlertCircle className="w-5 h-5 text-[#f59e0b] dark:text-[#f59e0b]" />
