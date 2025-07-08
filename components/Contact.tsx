@@ -96,10 +96,10 @@ const Contact = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg p-4 mb-6 flex items-center"
+                className="bg-[#059669]/10 dark:bg-[#059669]/20 border border-[#86efac]/30 dark:border-[#86efac]/50 rounded-lg p-4 mb-6 flex items-center"
               >
-                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mr-3" />
-                <span className="text-green-800 dark:text-green-300">
+                <CheckCircle className="w-5 h-5 text-[#86efac] dark:text-[#86efac] mr-3" />
+                <span className="text-[#86efac] dark:text-[#86efac]">
                   {t('form.successMessage')}
                 </span>
               </motion.div>
