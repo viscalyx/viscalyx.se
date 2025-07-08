@@ -26,6 +26,9 @@ vi.mock('next-intl', () => ({
         'All interactive elements include proper ARIA labels',
       'colorContrast.downloadLabel': 'Download brand guidelines document',
       'colorContrast.downloadText': 'Download',
+      'contrastTesting.title': 'Color Contrast Testing',
+      'contrastTesting.description':
+        'Automated testing ensures all color combinations meet WCAG AA contrast requirements (4.5:1 ratio minimum).',
       'semanticHtml.title': 'Semantic HTML',
       'semanticHtml.description':
         'Proper heading hierarchy and semantic elements',
