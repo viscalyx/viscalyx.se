@@ -333,6 +333,7 @@ const TypographyShowcase = () => {
           {textColors.map(color => (
             <button
               key={color.name}
+              type="button"
               onClick={() => setSelectedTextColor(color.combinedClass)}
               aria-pressed={selectedTextColor === color.combinedClass}
               aria-label={`Select ${color.name} color for typography preview`}
