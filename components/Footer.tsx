@@ -60,7 +60,6 @@ const Footer = () => {
     ],
     resources: [
       { name: tNav('blog'), href: '/blog' },
-      { name: tNav('caseStudies'), href: '/case-studies' },
       { name: t('brandProfile'), href: '/brand-showcase' },
       { name: t('community'), href: '#' },
     ],

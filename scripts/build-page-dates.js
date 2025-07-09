@@ -40,7 +40,6 @@ function buildPageDates() {
   const pageDates = {
     home: getFileLastModified('app/[locale]/page.tsx'),
     blog: getFileLastModified('app/[locale]/blog/page.tsx'),
-    caseStudies: getFileLastModified('app/[locale]/case-studies/page.tsx'),
     privacy: getFileLastModified('app/[locale]/privacy/page.tsx'),
     terms: getFileLastModified('app/[locale]/terms/page.tsx'),
   }
