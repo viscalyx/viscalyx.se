@@ -138,64 +138,6 @@
       }
     }
   },
-  "testimonials": {
-    "title": "What Our",
-    "titleHighlight": "Clients Say",
-    "description": "Don't just take our word for it. Here's what industry professionals say about working with Viscalyx.",
-    "navigation": {
-      "previous": "Previous testimonial",
-      "next": "Next testimonial",
-      "goTo": "Go to testimonial"
-    },
-    "clients": [
-      {
-        "name": "Sarah Johnson",
-        "role": "DevOps Engineer",
-        "company": "TechCorp Solutions",
-        "content": "Viscalyx transformed our deployment pipeline completely. What used to take hours now happens in minutes. Their automation expertise is unmatched.",
-        "project": "CI/CD Pipeline Automation"
-      },
-      {
-        "name": "Michael Chen",
-        "role": "Senior Software Engineer",
-        "company": "Innovation Labs",
-        "content": "The PowerShell DSC implementations by Viscalyx saved us months of manual configuration work. Incredible attention to detail and technical depth.",
-        "project": "Infrastructure as Code"
-      },
-      {
-        "name": "Emily Rodriguez",
-        "role": "IT Director",
-        "company": "Global Finance Inc",
-        "content": "Working with Viscalyx was a game-changer. They didn't just deliver automation - they taught our team best practices that we continue to use today.",
-        "project": "Enterprise Automation Platform"
-      },
-      {
-        "name": "David Kim",
-        "role": "Cloud Architect",
-        "company": "StartupVenture",
-        "content": "The open-source contributions and knowledge sharing approach of Viscalyx shows their commitment to the community. True professionals.",
-        "project": "Cloud Migration Automation"
-      }
-    ],
-    "stats": {
-      "happyClients": {
-        "value": "50+",
-        "label": "Happy Clients"
-      },
-      "projectsDelivered": {
-        "value": "200+",
-        "label": "Projects Delivered"
-      },
-      "clientSatisfaction": {
-        "value": "99%",
-        "label": "Client Satisfaction"
-      },
-      "supportAvailable": {
-        "value": "24/7",
-        "label": "Support Available"
-      }
-    }
-  },
   "contact": {
     "title": "Let's Start Your",
     "titleHighlight": "Automation Journey",
@@ -561,8 +503,8 @@
         "settings": "Header settings menu",
         "globe": "Language switcher",
         "arrowUp": "Scroll to top button",
-        "arrowLeft": "Testimonials navigation",
-        "arrowRight": "Testimonials, Team, Hero CTAs",
+        "arrowLeft": "Navigation controls",
+        "arrowRight": "Team, Hero CTAs",
         "sun": "Theme toggle (light mode)",
         "moon": "Theme toggle (dark mode)",
         "monitor": "Theme toggle (system mode)",
@@ -579,7 +521,7 @@
         "lightbulb": "About section - innovation",
         "award": "About section - excellence",
         "trendingUp": "Case studies - growth metrics",
-        "star": "Testimonials, Open source ratings",
+        "star": "Open source ratings",
         "code": "Hero section, Services",
         "database": "Services - backend development",
         "smartphone": "Services - mobile development",
@@ -595,7 +537,7 @@
         "mapPin": "Contact location, Team locations",
         "send": "Contact form submission",
         "messageSquare": "Contact communication",
-        "quote": "Testimonials section",
+        "quote": "Quotations and callouts",
         "camera": "Team member photos",
         "externalLink": "Footer, Open source links",
         "download": "Accessibility showcase",

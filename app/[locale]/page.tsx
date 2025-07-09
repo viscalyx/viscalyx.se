@@ -1,14 +1,13 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Header from '@/components/Header'
-import Hero from '@/components/Hero'
 import About from '@/components/About'
-import Testimonials from '@/components/Testimonials'
-import OpenSource from '@/components/OpenSource'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import Hero from '@/components/Hero'
+import OpenSource from '@/components/OpenSource'
 import ScrollToTop from '@/components/ScrollToTop'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   return (
@@ -21,7 +20,6 @@ export default function Home() {
       <Header />
       <Hero />
       <About />
-      <Testimonials />
       <OpenSource />
       <Contact />
       <Footer />

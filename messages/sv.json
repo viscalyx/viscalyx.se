@@ -138,64 +138,6 @@
       }
     }
   },
-  "testimonials": {
-    "title": "Vad Våra",
-    "titleHighlight": "Kunder Säger",
-    "description": "Ta inte bara vårt ord för det. Här är vad branschproffs säger om att arbeta med Viscalyx.",
-    "navigation": {
-      "previous": "Föregående rekommendation",
-      "next": "Nästa rekommendation",
-      "goTo": "Gå till rekommendation"
-    },
-    "clients": [
-      {
-        "name": "Sarah Johnson",
-        "role": "DevOps-ingenjör",
-        "company": "TechCorp Solutions",
-        "content": "Viscalyx transformerade vår distributionspipeline helt och hållet. Det som brukade ta timmar händer nu på minuter. Deras automatiseringsexpertis är oöverträffad.",
-        "project": "CI/CD Pipeline Automation"
-      },
-      {
-        "name": "Michael Chen",
-        "role": "Senior mjukvaruingenjör",
-        "company": "Innovation Labs",
-        "content": "PowerShell DSC-implementationerna av Viscalyx sparade oss månader av manuellt konfigurationsarbete. Otrolig uppmärksamhet på detaljer och teknisk djup.",
-        "project": "Infrastruktur som kod"
-      },
-      {
-        "name": "Emily Rodriguez",
-        "role": "IT-direktör",
-        "company": "Global Finance Inc",
-        "content": "Att arbeta med Viscalyx var en game-changer. De levererade inte bara automation - de lärde vårt team bästa praxis som vi fortsätter att använda idag.",
-        "project": "Enterprise Automation Platform"
-      },
-      {
-        "name": "David Kim",
-        "role": "Molnarkitekt",
-        "company": "StartupVenture",
-        "content": "Bidragen till open source och kunskapsdelningsmetoden hos Viscalyx visar deras engagemang för gemenskapen. Riktiga proffs.",
-        "project": "Molnmigrering Automation"
-      }
-    ],
-    "stats": {
-      "happyClients": {
-        "value": "50+",
-        "label": "Nöjda kunder"
-      },
-      "projectsDelivered": {
-        "value": "200+",
-        "label": "Levererade projekt"
-      },
-      "clientSatisfaction": {
-        "value": "99%",
-        "label": "Kundnöjdhet"
-      },
-      "supportAvailable": {
-        "value": "24/7",
-        "label": "Support tillgänglig"
-      }
-    }
-  },
   "contact": {
     "title": "Låt oss starta din",
     "titleHighlight": "Automationsresa",
@@ -561,8 +503,8 @@
         "settings": "Rubrikinställningsmeny",
         "globe": "Språkväxlare",
         "arrowUp": "Rulla till toppen-knapp",
-        "arrowLeft": "Rekommendationsnavigering",
-        "arrowRight": "Rekommendationer, Team, Hero CTAs",
+        "arrowLeft": "Navigationskontroller",
+        "arrowRight": "Team, Hero CTAs",
         "sun": "Tema-växla (ljust läge)",
         "moon": "Tema-växla (mörkt läge)",
         "monitor": "Tema-växla (systemläge)",
@@ -579,7 +521,7 @@
         "lightbulb": "Om-sektion - innovation",
         "award": "Om-sektion - excellens",
         "trendingUp": "Fallstudier - tillväxtmätningar",
-        "star": "Rekommendationer, Open source-betyg",
+        "star": "Open source-betyg",
         "code": "Hero-sektion, Tjänster",
         "database": "Tjänster - backend-utveckling",
         "smartphone": "Tjänster - mobilutveckling",
@@ -595,7 +537,7 @@
         "mapPin": "Kontaktplats, Teamplatser",
         "send": "Kontaktformulär inskickning",
         "messageSquare": "Kontaktkommunikation",
-        "quote": "Rekommendationssektion",
+        "quote": "Citat och utdrag",
         "camera": "Teammedlemsfoton",
         "externalLink": "Sidfot, Open source-länkar",
         "download": "Tillgänglighetsvisning",
