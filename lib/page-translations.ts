@@ -95,11 +95,14 @@ interface TermsTranslations {
   }
 }
 
-export function usePrivacyTranslations() {
+/**
+ * Generic hook for loading page translations with fallback to English
+ * @param filePrefix - The prefix of the translation file (e.g., 'privacy', 'terms')
+ * @returns Object containing translations, loading state, and error state
+ */
+function usePageTranslations<T>(filePrefix: string) {
   const locale = useLocale()
-  const [translations, setTranslations] = useState<PrivacyTranslations | null>(
-    null
-  )
+  const [translations, setTranslations] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -107,26 +110,26 @@ export function usePrivacyTranslations() {
     async function loadTranslations() {
       try {
         setError(null) // Reset error state on new load
-        const data = await import(`../messages/privacy.${locale}.json`)
-        setTranslations(data.default as PrivacyTranslations)
+        const data = await import(`../messages/${filePrefix}.${locale}.json`)
+        setTranslations(data.default as T)
       } catch (error) {
         console.error(
-          `Error loading privacy translations for ${locale}:`,
+          `Error loading ${filePrefix} translations for ${locale}:`,
           error
         )
         // Fallback to English
         try {
-          const data = await import('../messages/privacy.en.json')
-          setTranslations(data.default as PrivacyTranslations)
+          const data = await import(`../messages/${filePrefix}.en.json`)
+          setTranslations(data.default as T)
         } catch (fallbackError) {
           console.error(
-            'Error loading fallback privacy translations:',
+            `Error loading fallback ${filePrefix} translations:`,
             fallbackError
           )
           setError(
             fallbackError instanceof Error
               ? fallbackError
-              : new Error('Failed to load privacy translations')
+              : new Error(`Failed to load ${filePrefix} translations`)
           )
         }
       } finally {
@@ -135,49 +138,15 @@ export function usePrivacyTranslations() {
     }
 
     loadTranslations()
-  }, [locale])
+  }, [locale, filePrefix])
 
   return { translations, loading, error }
 }
 
+export function usePrivacyTranslations() {
+  return usePageTranslations<PrivacyTranslations>('privacy')
+}
+
 export function useTermsTranslations() {
-  const locale = useLocale()
-  const [translations, setTranslations] = useState<TermsTranslations | null>(
-    null
-  )
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
-
-  useEffect(() => {
-    async function loadTranslations() {
-      try {
-        setError(null) // Reset error state on new load
-        const data = await import(`../messages/terms.${locale}.json`)
-        setTranslations(data.default as TermsTranslations)
-      } catch (error) {
-        console.error(`Error loading terms translations for ${locale}:`, error)
-        // Fallback to English
-        try {
-          const data = await import('../messages/terms.en.json')
-          setTranslations(data.default as TermsTranslations)
-        } catch (fallbackError) {
-          console.error(
-            'Error loading fallback terms translations:',
-            fallbackError
-          )
-          setError(
-            fallbackError instanceof Error
-              ? fallbackError
-              : new Error('Failed to load terms translations')
-          )
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadTranslations()
-  }, [locale])
-
-  return { translations, loading, error }
+  return usePageTranslations<TermsTranslations>('terms')
 }
