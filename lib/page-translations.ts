@@ -97,7 +97,9 @@ interface TermsTranslations {
 
 export function usePrivacyTranslations() {
   const locale = useLocale()
-  const [translations, setTranslations] = useState<PrivacyTranslations | null>(null)
+  const [translations, setTranslations] = useState<PrivacyTranslations | null>(
+    null
+  )
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -106,13 +108,19 @@ export function usePrivacyTranslations() {
         const data = await import(`../messages/privacy.${locale}.json`)
         setTranslations(data.default as PrivacyTranslations)
       } catch (error) {
-        console.error(`Error loading privacy translations for ${locale}:`, error)
+        console.error(
+          `Error loading privacy translations for ${locale}:`,
+          error
+        )
         // Fallback to English
         try {
           const data = await import('../messages/privacy.en.json')
           setTranslations(data.default as PrivacyTranslations)
         } catch (fallbackError) {
-          console.error('Error loading fallback privacy translations:', fallbackError)
+          console.error(
+            'Error loading fallback privacy translations:',
+            fallbackError
+          )
         }
       } finally {
         setLoading(false)
@@ -127,7 +135,9 @@ export function usePrivacyTranslations() {
 
 export function useTermsTranslations() {
   const locale = useLocale()
-  const [translations, setTranslations] = useState<TermsTranslations | null>(null)
+  const [translations, setTranslations] = useState<TermsTranslations | null>(
+    null
+  )
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -142,7 +152,10 @@ export function useTermsTranslations() {
           const data = await import('../messages/terms.en.json')
           setTranslations(data.default as TermsTranslations)
         } catch (fallbackError) {
-          console.error('Error loading fallback terms translations:', fallbackError)
+          console.error(
+            'Error loading fallback terms translations:',
+            fallbackError
+          )
         }
       } finally {
         setLoading(false)

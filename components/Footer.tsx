@@ -173,7 +173,9 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map(link => (
                 <li key={link.name}>
-                  {link.href.startsWith('#') || link.href === '#' || link.href.startsWith('http') ? (
+                  {link.href.startsWith('#') ||
+                  link.href === '#' ||
+                  link.href.startsWith('http') ? (
                     <button
                       onClick={() => handleNavigation(link.href)}
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
