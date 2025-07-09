@@ -978,12 +978,19 @@
       "components": "Components",
       "icons": "Icons",
       "animations": "Animations",
-      "accessibility": "Accessibility"
+      "accessibility": "Accessibility",
+      "analysis": "Data Visualization"
     },
     "colorShowcase": {
       "primaryColors": "Primary Colors (Blue Scale)",
       "secondaryColors": "Secondary Colors (Gray Scale)",
-      "accentColors": "Accent Colors"
+      "analysisColors": "Data Visualization",
+      "backgroundColors": "Background Colors",
+      "typographyColors": "Typography Colors",
+      "borderColors": "Border Colors",
+      "semanticColors": "Semantic Colors",
+      "uiStateColors": "UI State Colors",
+      "codeColors": "Code Syntax Colors"
     },
     "typographyShowcase": {
       "fontSizes": "Font Sizes & Hierarchy",
@@ -1177,6 +1184,70 @@
         "heading2": "Heading 2 (Section Title)",
         "heading3": "Heading 3 (Subsection)",
         "paragraphText": "Regular paragraph text with proper hierarchy and semantic structure."
+      },
+      "contrastTesting": {
+        "title": "Color Contrast Testing",
+        "description": "Automated testing ensures all color combinations meet WCAG AA contrast requirements (4.5:1 ratio minimum)."
+      }
+    },
+    "analysisShowcase": {
+      "title": "Analysis & Data Visualization Colors",
+      "description": "Specialized color palette designed for charts, diagrams, spreadsheets, and technical visualizations. These colors provide optimal contrast and clarity for data presentation while maintaining brand consistency.",
+      "usageGuidelines": {
+        "title": "Usage Guidelines",
+        "recommendedUseCases": {
+          "title": "Recommended Use Cases",
+          "items": [
+            "Technology skill visualizations and progress bars",
+            "Infrastructure diagrams and system architecture",
+            "Data dashboards and analytics displays",
+            "Process flow charts and workflow diagrams"
+          ]
+        },
+        "colorAccessibility": {
+          "title": "Color Accessibility",
+          "items": [
+            "All colors meet WCAG AA contrast standards",
+            "Color-blind friendly palette tested",
+            "Distinct hues for clear differentiation",
+            "Works effectively in both light and dark themes"
+          ]
+        }
+      },
+      "implementationExample": {
+        "title": "Implementation Example"
+      },
+      "chartExamples": {
+        "title": "Interactive Data Visualization Examples",
+        "skillsAssessment": "Skills Assessment",
+        "performanceTrends": "Performance Trends",
+        "growthMetrics": "Growth Metrics",
+        "technologyStack": "Technology Stack",
+        "keyPerformanceIndicators": "Key Performance Indicators",
+        "colorPaletteReference": "Color Palette Reference",
+        "colorLabel": "Color {index}"
+      },
+      "colorSwatch": {
+        "copied": "Copied!",
+        "clickToCopy": "Click to copy"
+      },
+      "sampleData": {
+        "frontendSkills": "Frontend Skills",
+        "projectPerformance": "Project Performance",
+        "clientSatisfaction": "Client Satisfaction",
+        "revenueGrowth": "Revenue Growth",
+        "marketShare": "Market Share",
+        "other": "Other"
+      },
+      "metrics": {
+        "activeProjects": "Active Projects",
+        "successRate": "Success Rate",
+        "clientSatisfaction": "Client Satisfaction",
+        "responseTime": "Response Time"
+      },
+      "rechartsComparison": {
+        "title": "Recharts Implementation Comparison",
+        "description": "Here's how the same data visualizations look using the Recharts library, maintaining our brand color palette and design consistency."
       }
     },
     "componentsShowcase": {
@@ -1210,6 +1281,13 @@
         "emailPlaceholder": "Enter your email",
         "messageLabel": "Message",
         "messagePlaceholder": "Your message here"
+      },
+      "backgroundBorderColors": {
+        "title": "Background & Border Colors",
+        "description": "Complete collection of background and border colors used throughout the site",
+        "backgroundTitle": "Background Colors",
+        "borderTitle": "Border Colors",
+        "guidelinesTitle": "Usage Guidelines"
       }
     }
   }

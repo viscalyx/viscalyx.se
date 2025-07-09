@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import {
+  BarChart3,
   Eye,
   MousePointer,
   Palette,
@@ -16,6 +17,7 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import AccessibilityShowcase from './AccessibilityShowcase'
+import DataVisualizationShowcase from './AnalysisShowcase'
 import AnimationsShowcase from './AnimationsShowcase'
 import ColorShowcase from './ColorShowcase'
 import ComponentsShowcase from './ComponentsShowcase'
@@ -33,6 +35,7 @@ const BrandShowcase = () => {
     { id: 'icons', label: t('tabs.icons'), icon: Sparkles },
     { id: 'animations', label: t('tabs.animations'), icon: MousePointer },
     { id: 'accessibility', label: t('tabs.accessibility'), icon: Eye },
+    { id: 'analysis', label: t('tabs.analysis'), icon: BarChart3 },
   ]
 
   const renderActiveTab = () => {
@@ -49,6 +52,8 @@ const BrandShowcase = () => {
         return <AnimationsShowcase />
       case 'accessibility':
         return <AccessibilityShowcase />
+      case 'analysis':
+        return <DataVisualizationShowcase />
       default:
         return <ColorShowcase />
     }

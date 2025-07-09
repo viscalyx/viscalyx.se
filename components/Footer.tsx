@@ -289,7 +289,7 @@ const Footer = () => {
                 transition={{ duration: 1, repeat: Infinity }}
                 className="mx-2"
               >
-                <Heart className="w-4 h-4 text-red-500 fill-current" />
+                <Heart className="w-4 h-4 text-[#ef4444] fill-current" />
               </motion.div>
               <span>{t('forDeveloperCommunity')}</span>
             </div>

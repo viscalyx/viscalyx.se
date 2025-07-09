@@ -126,7 +126,7 @@ const ReadingProgress = ({
               stroke="currentColor"
               strokeWidth="3"
               fill="none"
-              className="text-gray-200 dark:text-gray-700"
+              className="text-secondary-200 dark:text-secondary-700"
             />
             <circle
               cx="28"
@@ -147,13 +147,13 @@ const ReadingProgress = ({
 
           {/* Percentage Text */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            <span className="text-xs font-bold text-secondary-700 dark:text-secondary-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
               {Math.round(scrollProgress)}%
             </span>
           </div>
 
           {/* Background Circle for Better Visibility */}
-          <div className="absolute inset-0 -z-10 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700" />
+          <div className="absolute inset-0 -z-10 bg-white dark:bg-secondary-800 rounded-full shadow-lg border border-secondary-200 dark:border-secondary-700" />
 
           {/* Tooltip */}
           <div
@@ -161,10 +161,10 @@ const ReadingProgress = ({
               showOnLeft ? 'left-0' : 'right-0'
             }`}
           >
-            <div className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-3 py-1 rounded-lg text-sm whitespace-nowrap">
+            <div className="bg-secondary-900 dark:bg-secondary-100 text-white dark:text-secondary-900 px-3 py-1 rounded-lg text-sm whitespace-nowrap">
               {readingProgressText}
               <div
-                className={`absolute top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-100 ${
+                className={`absolute top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-secondary-900 dark:border-t-secondary-100 ${
                   showOnLeft ? 'left-4' : 'right-4'
                 }`}
               ></div>

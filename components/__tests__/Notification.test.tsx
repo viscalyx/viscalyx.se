@@ -118,10 +118,10 @@ describe('manual close behavior', () => {
 })
 
 it.each<[NotificationType, string, string, string]>([
-  ['success', 'bg-green-50', 'border-green-200', 'CheckCircle'],
-  ['error', 'bg-red-50', 'border-red-200', 'AlertCircle'],
-  ['warning', 'bg-yellow-50', 'border-yellow-200', 'AlertTriangle'],
-  ['info', 'bg-blue-50', 'border-blue-200', 'Info'],
+  ['success', 'bg-secondary-50', 'border-secondary-200', 'CheckCircle'],
+  ['error', 'bg-secondary-50', 'border-secondary-200', 'AlertCircle'],
+  ['warning', 'bg-secondary-50', 'border-secondary-200', 'AlertTriangle'],
+  ['info', 'bg-secondary-50', 'border-secondary-200', 'Info'],
 ])(
   'applies correct styling and icon for %s notifications',
   (type, bg, border, iconTestId) => {

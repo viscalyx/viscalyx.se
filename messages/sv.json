@@ -984,12 +984,19 @@
       "components": "Komponenter",
       "icons": "Ikoner",
       "animations": "Animationer",
-      "accessibility": "Tillgänglighet"
+      "accessibility": "Tillgänglighet",
+      "analysis": "Datavisualisering"
     },
     "colorShowcase": {
       "primaryColors": "Primärfärger (blåskala)",
       "secondaryColors": "Sekundärfärger (gråskala)",
-      "accentColors": "Accentfärger"
+      "analysisColors": "Datavisualisering",
+      "backgroundColors": "Bakgrundsfärger",
+      "typographyColors": "Typografifärger",
+      "borderColors": "Kantfärger",
+      "semanticColors": "Semantiska färger",
+      "uiStateColors": "UI-tillståndsfärger",
+      "codeColors": "Kodsyntaxfärger"
     },
     "typographyShowcase": {
       "fontSizes": "Textstorlekar & Hierarki",
@@ -1183,6 +1190,70 @@
         "heading2": "Rubrik 2 (Sektionstitel)",
         "heading3": "Rubrik 3 (Undersektion)",
         "paragraphText": "Vanlig paragraftext med korrekt hierarki och semantisk struktur."
+      },
+      "contrastTesting": {
+        "title": "Färgkontrastestning",
+        "description": "Automatiserad testning säkerställer att alla färgkombinationer uppfyller WCAG AA kontrastkrav (minst 4.5:1-förhållande)."
+      }
+    },
+    "analysisShowcase": {
+      "title": "Analys & Datavisualiseringsfärger",
+      "description": "Specialiserad färgpalett designad för diagram, scheman, kalkylark och tekniska visualiseringar. Dessa färger ger optimal kontrast och tydlighet för datapresentation samtidigt som varumärkeskonsistensen bibehålls.",
+      "usageGuidelines": {
+        "title": "Användningsriktlinjer",
+        "recommendedUseCases": {
+          "title": "Rekommenderade Användningsområden",
+          "items": [
+            "Teknikfärdighetsvisualiseringar och framstegsstänger",
+            "Infrastrukturdiagram och systemarkitektur",
+            "Datadashboards och analysdisplayer",
+            "Processflödesscheman och arbetsflödesdiagram"
+          ]
+        },
+        "colorAccessibility": {
+          "title": "Färgtillgänglighet",
+          "items": [
+            "Alla färger uppfyller WCAG AA kontraststandarder",
+            "Färgblindvänlig palett testad",
+            "Distinkta nyanser för tydlig differentiering",
+            "Fungerar effektivt i både ljusa och mörka teman"
+          ]
+        }
+      },
+      "implementationExample": {
+        "title": "Implementeringsexempel"
+      },
+      "chartExamples": {
+        "title": "Interaktiva Datavisualiseringsexempel",
+        "skillsAssessment": "Färdighetsbedömning",
+        "performanceTrends": "Prestationstrender",
+        "growthMetrics": "Tillväxtmått",
+        "technologyStack": "Teknikstack",
+        "keyPerformanceIndicators": "Nyckelprestatationsindikatorer",
+        "colorPaletteReference": "Färgpalettreferens",
+        "colorLabel": "Färg {index}"
+      },
+      "colorSwatch": {
+        "copied": "Kopierat!",
+        "clickToCopy": "Klicka för att kopiera"
+      },
+      "sampleData": {
+        "frontendSkills": "Frontend-färdigheter",
+        "projectPerformance": "Projektprestanda",
+        "clientSatisfaction": "Kundnöjdhet",
+        "revenueGrowth": "Intäktstillväxt",
+        "marketShare": "Marknadsandel",
+        "other": "Annat"
+      },
+      "metrics": {
+        "activeProjects": "Aktiva Projekt",
+        "successRate": "Framgångsgrad",
+        "clientSatisfaction": "Kundnöjdhet",
+        "responseTime": "Svarstid"
+      },
+      "rechartsComparison": {
+        "title": "Recharts Implementeringsjämförelse",
+        "description": "Här ser du hur samma datavisualiseringar ser ut med Recharts-biblioteket, samtidigt som vi behåller vår varumärkesfärgpalett och designkonsistens."
       }
     },
     "componentsShowcase": {
@@ -1216,6 +1287,13 @@
         "emailPlaceholder": "Ange din e-postadress",
         "messageLabel": "Meddelande",
         "messagePlaceholder": "Ditt meddelande här"
+      },
+      "backgroundBorderColors": {
+        "title": "Bakgrunds- & Kantfärger",
+        "description": "Komplett samling av bakgrunds- och kantfärger som används på webbplatsen",
+        "backgroundTitle": "Bakgrundsfärger",
+        "borderTitle": "Kantfärger",
+        "guidelinesTitle": "Användningsriktlinjer"
       }
     }
   }
