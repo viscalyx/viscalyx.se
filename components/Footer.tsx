@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Heart, Mail } from 'lucide-react'
+import { ExternalLink, Mail } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -54,7 +54,6 @@ const Footer = () => {
   const footerLinks = {
     company: [
       { name: t('aboutUs'), href: '#about' },
-      { name: tNav('services'), href: '#services' },
       { name: tNav('openSource'), href: '#open-source' },
     ],
     resources: [
@@ -279,18 +278,6 @@ const Footer = () => {
             <p className="text-secondary-400 text-sm">
               © {currentYear} Viscalyx. {t('allRightsReserved')}
             </p>
-
-            <div className="flex items-center mt-4 sm:mt-0 text-secondary-400 text-sm">
-              <span>{t('madeWith')}</span>
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="mx-2"
-              >
-                <Heart className="w-4 h-4 text-red-500 fill-current" />
-              </motion.div>
-              <span>{t('forDeveloperCommunity')}</span>
-            </div>
           </motion.div>
         </div>
       </div>

@@ -1,10 +1,9 @@
 {
   "navigation": {
-    "about": "Om oss",
-    "services": "Tjänster",
+    "about": "Om Oss",
     "team": "Team",
     "blog": "Blogg",
-    "openSource": "Open source",
+    "openSource": "Öppen Källkod",
     "contact": "Kontakt",
     "getStarted": "Kom igång",
     "settings": {
@@ -29,8 +28,6 @@
     "emailPlaceholder": "Ange din e-postadress",
     "subscribe": "Prenumerera",
     "allRightsReserved": "Alla rättigheter förbehållna.",
-    "madeWith": "Gjord med",
-    "forDeveloperCommunity": "för utvecklargemenskapen",
     "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
   },
   "language": {
@@ -45,7 +42,7 @@
     "description": "Professionella konsulttjänster som automatiserar repetitiva uppgifter för utvecklare och IT-proffs. Öka produktiviteten med PowerShell DSC, DevOps-lösningar och bidrag till open source.",
     "buttons": {
       "startProject": "Starta Ditt Projekt",
-      "exploreServices": "Utforska Tjänster"
+      "learnMore": "Läs Mer"
     },
     "stats": {
       "experience": {
@@ -139,80 +136,6 @@
       "testsson": {
         "biography": "Test tillför ett nytt perspektiv på teknisk kommunikation med en bakgrund inom digital marknadsföring, innehållsskapande och community-hantering. Hennes erfarenhet sträcker sig från traditionella marknadsföringsbyråer till tech-startups, där hon upptäckte sin passion för att göra komplexa tekniska koncept tillgängliga för olika målgrupper.\n\nSpecialiserad på visuell berättelse och sociala medier-strategi utmärker sig Test på att skapa övertygande berättelser kring tekniska produkter och tjänster. Hennes expertis inom innehållsstrategi hjälper till att överbrygga klyftan mellan tekniska team och deras målgrupper, vilket säkerställer att komplexa automationslösningar kommuniceras tydligt och effektivt till intressenter på alla nivåer.\n\nTests unika förmåga att humanisera teknik gör henne ovärderlig för tekniska organisationer som vill förbättra sin marknadsnärvaro. Hon förvandlar torr teknisk dokumentation till engagerande innehåll, bygger communities kring produkter och hjälper team att kommunicera sitt värdeerbjudande effektivt. Hennes arbete säkerställer att teknisk excellens översätts till affärstillväxt och kundengagemang."
       }
-    }
-  },
-  "services": {
-    "badge": "Våra Tjänster",
-    "title": "Omfattande Automation",
-    "titleHighlight": "Lösningar",
-    "description": "Från enkel uppgiftsautomation till komplexa DevOps-pipelines levererar vi lösningar som transformerar hur ditt team arbetar och skalar era operationer effektivt.",
-    "items": {
-      "taskAutomation": {
-        "title": "Uppgiftsautomation",
-        "description": "Eliminera repetitiva manuella processer med intelligenta automationslösningar skräddarsydda för dina specifika arbetsflödesbehov.",
-        "features": [
-          "Anpassade PowerShell-skript",
-          "Arbetsflödesoptimering",
-          "Processdokumentation",
-          "Felhantering och loggning"
-        ]
-      },
-      "devOpsSolutions": {
-        "title": "DevOps-lösningar",
-        "description": "Effektivisera din utvecklingspipeline med moderna DevOps-metoder och infrastrukturautomation.",
-        "features": [
-          "CI/CD-pipelinekonfiguration",
-          "Infrastruktur som kod",
-          "Containerdistribution",
-          "Övervakning och varningar"
-        ]
-      },
-      "powershellDsc": {
-        "title": "PowerShell DSC",
-        "description": "Implementera Desired State Configuration för konsekvent och tillförlitlig systemhantering över din infrastruktur.",
-        "features": [
-          "Konfigurationshantering",
-          "Efterlevnadsövervakning",
-          "Avvikelsedetektering",
-          "Automatiserad åtgärd"
-        ]
-      },
-      "securityAutomation": {
-        "title": "Säkerhetsautomation",
-        "description": "Förbättra din säkerhetsställning med automatiserade säkerhetskontroller, efterlevnadsövervakning och hotrespons.",
-        "features": [
-          "Säkerhetsskanning",
-          "Efterlevnadsrevision",
-          "Sårbarhetsbedömning",
-          "Incidentrespons"
-        ]
-      },
-      "dataManagement": {
-        "title": "Datahantering",
-        "description": "Automatisera databehandling, säkerhetskopieringsstrategier och databasunderhållsuppgifter för förbättrad tillförlitlighet.",
-        "features": [
-          "Automatiserade säkerhetskopior",
-          "Datamigrering",
-          "Databasoptimering",
-          "Rapportautomation"
-        ]
-      },
-      "performanceOptimization": {
-        "title": "Prestationsoptimering",
-        "description": "Identifiera flaskhalsar och implementera lösningar för att dramatiskt förbättra system- och applikationsprestanda.",
-        "features": [
-          "Prestandaanalys",
-          "Resursoptimering",
-          "Skalbarhetplanering",
-          "Övervakningskonfiguration"
-        ]
-      }
-    },
-    "learnMore": "Läs mer",
-    "bottomCta": {
-      "title": "Redo att transformera ditt arbetsflöde?",
-      "description": "Låt oss diskutera hur vi kan automatisera dina mest tidskrävande uppgifter och effektivisera era operationer. Få en gratis konsultation för att utforska möjligheterna.",
-      "consultation": "Få gratis konsultation"
     }
   },
   "testimonials": {
@@ -506,8 +429,8 @@
         "description": "Genom att komma åt och använda denna webbplats accepterar och godkänner du att vara bunden av villkoren i detta avtal."
       },
       "services": {
-        "title": "Våra Tjänster",
-        "description": "Viscalyx tillhandahåller konsulttjänster inklusive:",
+        "title": "Vår Verksamhet",
+        "description": "Viscalyx tillhandahåller professionell konsultation inklusive:",
         "items": [
           "DevOps och automationskonsultation",
           "Infrastructure as Code (IaC) lösningar",

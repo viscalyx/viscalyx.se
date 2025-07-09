@@ -331,7 +331,7 @@ const IconsShowcase: React.FC = () => {
         usage: t('icons.lucideIconsUsage.star'),
       },
     ],
-    'Technical & Services': [
+    'Technical & Development': [
       {
         name: 'Code',
         component: Code,

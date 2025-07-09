@@ -1,7 +1,6 @@
 {
   "navigation": {
     "about": "About",
-    "services": "Services",
     "team": "Team",
     "blog": "Blog",
     "openSource": "Open Source",
@@ -29,8 +28,6 @@
     "emailPlaceholder": "Enter your email",
     "subscribe": "Subscribe",
     "allRightsReserved": "All rights reserved.",
-    "madeWith": "Made with",
-    "forDeveloperCommunity": "for the developer community",
     "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide."
   },
   "language": {
@@ -45,7 +42,7 @@
     "description": "Professional consulting services that automate repetitive tasks for developers and IT professionals. Boost productivity with PowerShell DSC, DevOps solutions, and open-source contributions.",
     "buttons": {
       "startProject": "Start Your Project",
-      "exploreServices": "Explore Services"
+      "learnMore": "Learn More"
     },
     "stats": {
       "experience": {
@@ -139,80 +136,6 @@
       "testsson": {
         "biography": "Test brings a fresh perspective to technical communication with a background in digital marketing, content creation, and community management. Her experience spans from traditional marketing agencies to tech startups, where she discovered her passion for making complex technical concepts accessible to diverse audiences.\n\nSpecializing in visual storytelling and social media strategy, Test excels at creating compelling narratives around technical products and services. Her expertise in content strategy helps bridge the gap between technical teams and their audiences, ensuring that complex automation solutions are communicated clearly and effectively to stakeholders at all levels.\n\nTest's unique ability to humanize technology makes her invaluable to technical organizations looking to improve their market presence. She transforms dry technical documentation into engaging content, builds communities around products, and helps teams communicate their value proposition effectively. Her work ensures that technical excellence translates into business growth and customer engagement."
       }
-    }
-  },
-  "services": {
-    "badge": "Our Services",
-    "title": "Comprehensive Automation",
-    "titleHighlight": "Solutions",
-    "description": "From simple task automation to complex DevOps pipelines, we deliver solutions that transform how your team works and scales your operations efficiently.",
-    "items": {
-      "taskAutomation": {
-        "title": "Task Automation",
-        "description": "Eliminate repetitive manual processes with intelligent automation solutions tailored to your specific workflow needs.",
-        "features": [
-          "Custom PowerShell Scripts",
-          "Workflow Optimization",
-          "Process Documentation",
-          "Error Handling & Logging"
-        ]
-      },
-      "devOpsSolutions": {
-        "title": "DevOps Solutions",
-        "description": "Streamline your development pipeline with modern DevOps practices and infrastructure automation.",
-        "features": [
-          "CI/CD Pipeline Setup",
-          "Infrastructure as Code",
-          "Container Deployment",
-          "Monitoring & Alerting"
-        ]
-      },
-      "powershellDsc": {
-        "title": "PowerShell DSC",
-        "description": "Implement Desired State Configuration for consistent and reliable system management across your infrastructure.",
-        "features": [
-          "Configuration Management",
-          "Compliance Monitoring",
-          "Drift Detection",
-          "Automated Remediation"
-        ]
-      },
-      "securityAutomation": {
-        "title": "Security Automation",
-        "description": "Enhance your security posture with automated security checks, compliance monitoring, and threat response.",
-        "features": [
-          "Security Scanning",
-          "Compliance Auditing",
-          "Vulnerability Assessment",
-          "Incident Response"
-        ]
-      },
-      "dataManagement": {
-        "title": "Data Management",
-        "description": "Automate data processing, backup strategies, and database maintenance tasks for improved reliability.",
-        "features": [
-          "Automated Backups",
-          "Data Migration",
-          "Database Optimization",
-          "Reporting Automation"
-        ]
-      },
-      "performanceOptimization": {
-        "title": "Performance Optimization",
-        "description": "Identify bottlenecks and implement solutions to dramatically improve system and application performance.",
-        "features": [
-          "Performance Analysis",
-          "Resource Optimization",
-          "Scalability Planning",
-          "Monitoring Setup"
-        ]
-      }
-    },
-    "learnMore": "Learn More",
-    "bottomCta": {
-      "title": "Ready to Transform Your Workflow?",
-      "description": "Let's discuss how we can automate your most time-consuming tasks and streamline your operations. Get a free consultation to explore the possibilities.",
-      "consultation": "Get Free Consultation"
     }
   },
   "testimonials": {
@@ -506,8 +429,8 @@
         "description": "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement."
       },
       "services": {
-        "title": "Our Services",
-        "description": "Viscalyx provides consulting services including:",
+        "title": "Our Business",
+        "description": "Viscalyx provides professional consulting including:",
         "items": [
           "DevOps and automation consulting",
           "Infrastructure as Code (IaC) solutions",
