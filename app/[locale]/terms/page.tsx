@@ -1,25 +1,41 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useFormatter } from 'next-intl'
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
+import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import ScrollToTop from '@/components/ScrollToTop'
 import { getStaticPageDates } from '@/lib/file-dates'
 import { useTermsTranslations } from '@/lib/page-translations'
+import { motion } from 'framer-motion'
+import { useFormatter } from 'next-intl'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()
 
 export default function TermsPage() {
-  const { translations, loading } = useTermsTranslations()
+  const { translations, loading, error } = useTermsTranslations()
   const format = useFormatter()
 
-  if (loading || !translations) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
         <LoadingSpinner />
+      </div>
+    )
+  }
+
+  if (error || !translations) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Error Loading Terms
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {error?.message ||
+              'Failed to load terms content. Please try again later.'}
+          </p>
+        </div>
       </div>
     )
   }

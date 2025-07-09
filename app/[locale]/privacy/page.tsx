@@ -13,13 +13,29 @@ import { useFormatter } from 'next-intl'
 const staticPageDates = getStaticPageDates()
 
 export default function PrivacyPage() {
-  const { translations, loading } = usePrivacyTranslations()
+  const { translations, loading, error } = usePrivacyTranslations()
   const format = useFormatter()
 
-  if (loading || !translations) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
         <LoadingSpinner />
+      </div>
+    )
+  }
+
+  if (error || !translations) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Error Loading Privacy Policy
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {error?.message ||
+              'Failed to load privacy policy content. Please try again later.'}
+          </p>
+        </div>
       </div>
     )
   }

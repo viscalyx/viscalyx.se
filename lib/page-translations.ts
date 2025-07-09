@@ -101,10 +101,12 @@ export function usePrivacyTranslations() {
     null
   )
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     async function loadTranslations() {
       try {
+        setError(null) // Reset error state on new load
         const data = await import(`../messages/privacy.${locale}.json`)
         setTranslations(data.default as PrivacyTranslations)
       } catch (error) {
@@ -121,6 +123,11 @@ export function usePrivacyTranslations() {
             'Error loading fallback privacy translations:',
             fallbackError
           )
+          setError(
+            fallbackError instanceof Error
+              ? fallbackError
+              : new Error('Failed to load privacy translations')
+          )
         }
       } finally {
         setLoading(false)
@@ -130,7 +137,7 @@ export function usePrivacyTranslations() {
     loadTranslations()
   }, [locale])
 
-  return { translations, loading }
+  return { translations, loading, error }
 }
 
 export function useTermsTranslations() {
@@ -139,10 +146,12 @@ export function useTermsTranslations() {
     null
   )
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     async function loadTranslations() {
       try {
+        setError(null) // Reset error state on new load
         const data = await import(`../messages/terms.${locale}.json`)
         setTranslations(data.default as TermsTranslations)
       } catch (error) {
@@ -156,6 +165,11 @@ export function useTermsTranslations() {
             'Error loading fallback terms translations:',
             fallbackError
           )
+          setError(
+            fallbackError instanceof Error
+              ? fallbackError
+              : new Error('Failed to load terms translations')
+          )
         }
       } finally {
         setLoading(false)
@@ -165,5 +179,5 @@ export function useTermsTranslations() {
     loadTranslations()
   }, [locale])
 
-  return { translations, loading }
+  return { translations, loading, error }
 }
