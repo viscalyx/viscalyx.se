@@ -1,9 +1,9 @@
 {
   "navigation": {
     "about": "Om Oss",
+    "openSource": "Öppen Källkod",
     "team": "Team",
     "blog": "Blogg",
-    "openSource": "Öppen Källkod",
     "getStarted": "Kom igång",
     "settings": {
       "title": "Inställningar",
@@ -137,19 +137,19 @@
     "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med open source hjälper till att främja automation och DevOps-praxis världen över.",
     "stats": {
       "projects": {
-        "value": "50+",
+        "value": "80+",
         "label": "Projekt med Open Source"
       },
       "stars": {
-        "value": "5.2k",
-        "label": "GitHub-stjärnor"
+        "value": "30%",
+        "label": "Kodgranskningar"
       },
       "members": {
-        "value": "12k+",
-        "label": "Gemenskapsmedlemmar"
+        "value": "9k+",
+        "label": "Bidrag"
       },
       "years": {
-        "value": "8+",
+        "value": "10+",
         "label": "År av Bidrag"
       }
     },
@@ -165,9 +165,9 @@
         "language": "PowerShell"
       },
       "automationToolkits": {
-        "name": "Automation Toolkits",
+        "name": "Sampler",
         "description": "Moderna automationsverktyg och ramverk för DevOps-proffs",
-        "language": "TypeScript"
+        "language": "PowerShell"
       }
     },
     "viewProject": "Visa projekt",
@@ -175,7 +175,7 @@
       "title": "Gå med i vår gemenskap för open source",
       "description": "Samarbeta med oss på banbrytande automationsverktyg och bidra till projekt som påverkar tusentals utvecklare världen över.",
       "followGithub": "Följ på GitHub",
-      "collaborate": "Samarbeta med oss"
+      "collaborate": "Samarbeta med gemenskapen"
     }
   },
   "blog": {

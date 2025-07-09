@@ -137,19 +137,19 @@
     "description": "We believe in giving back to the community. Our active contributions to open-source projects help advance automation and DevOps practices worldwide.",
     "stats": {
       "projects": {
-        "value": "50+",
+        "value": "80+",
         "label": "Open Source Projects"
       },
       "stars": {
-        "value": "5.2k",
-        "label": "GitHub Stars"
+        "value": "30%",
+        "label": "Code Reviews"
       },
       "members": {
-        "value": "12k+",
-        "label": "Community Members"
+        "value": "9k+",
+        "label": "Contributions"
       },
       "years": {
-        "value": "8+",
+        "value": "10+",
         "label": "Years Contributing"
       }
     },
@@ -165,9 +165,9 @@
         "language": "PowerShell"
       },
       "automationToolkits": {
-        "name": "Automation Toolkits",
+        "name": "Sampler",
         "description": "Modern automation tools and frameworks for DevOps professionals",
-        "language": "TypeScript"
+        "language": "PowerShell"
       }
     },
     "viewProject": "View Project",
@@ -175,7 +175,7 @@
       "title": "Join Our Open Source Community",
       "description": "Collaborate with us on cutting-edge automation tools and contribute to projects that impact thousands of developers worldwide.",
       "followGithub": "Follow on GitHub",
-      "collaborate": "Collaborate With Us"
+      "collaborate": "Collaborate With Community"
     }
   },
   "blog": {
