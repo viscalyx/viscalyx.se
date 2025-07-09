@@ -62,12 +62,36 @@ async function getFileLastModified(filePath) {
 }
 
 /**
+ * Get all markdown files in the blog content directory
+ * @returns {string[]} - Array of file paths relative to repository root
+ */
+function getBlogContentFiles() {
+  const blogDir = path.join(process.cwd(), 'content/blog')
+  try {
+    const files = fs.readdirSync(blogDir)
+    return files
+      .filter(file => file.endsWith('.md') && file !== 'template.md')
+      .map(file => `content/blog/${file}`)
+  } catch (error) {
+    console.warn('Could not read blog content directory:', error.message)
+    return []
+  }
+}
+
+/**
  * Build page dates data from Git history
  */
 async function buildPageDates() {
+  // Get all blog content files
+  const blogContentFiles = getBlogContentFiles()
+  
   const pageDates = {
     home: await getFileLastModified('app/[locale]/page.tsx'),
-    blog: await getFileLastModified('app/[locale]/blog/page.tsx'),
+    // Blog page should track both the page component and all blog content
+    blog: await getFilesLastModified([
+      'app/[locale]/blog/page.tsx',
+      ...blogContentFiles,
+    ]),
     // For privacy and terms, check both page files and their specific translation files
     privacy: await getFilesLastModified([
       'app/[locale]/privacy/page.tsx',
