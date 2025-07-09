@@ -16,7 +16,6 @@
   "footer": {
     "company": "Company",
     "aboutUs": "About Us",
-    "expertise": "Expertise",
     "resources": "Resources",
     "brandProfile": "Brand Profile",
     "community": "Community",
@@ -213,62 +212,7 @@
     "bottomCta": {
       "title": "Ready to Transform Your Workflow?",
       "description": "Let's discuss how we can automate your most time-consuming tasks and streamline your operations. Get a free consultation to explore the possibilities.",
-      "consultation": "Get Free Consultation",
-      "expertise": "View Our Expertise"
-    }
-  },
-  "expertise": {
-    "badge": "Technical Expertise",
-    "title": "Core Technologies",
-    "subtitle": "Deep Technical Knowledge",
-    "subtitleHighlight": "Proven Results",
-    "description": "Years of hands-on experience with cutting-edge technologies and methodologies, combined with a commitment to continuous learning and industry best practices.",
-    "certifications": {
-      "title": "Certifications & Credentials"
-    },
-    "technologies": {
-      "powershell": "PowerShell",
-      "powershellDsc": "PowerShell DSC",
-      "azureDevOps": "Azure DevOps",
-      "docker": "Docker",
-      "gitGithub": "Git & GitHub",
-      "sqlServer": "SQL Server",
-      "security": "Security",
-      "performance": "Performance"
-    },
-    "certificationsList": [
-      "Microsoft Certified: Azure Administrator",
-      "PowerShell DSC Specialist",
-      "DevOps Foundation Certified",
-      "ITIL v4 Foundation"
-    ],
-    "stats": {
-      "experience": {
-        "value": "5+",
-        "label": "Years Experience",
-        "sublabel": "in Automation"
-      },
-      "projects": {
-        "value": "50+",
-        "label": "Projects Completed"
-      },
-      "satisfaction": {
-        "value": "100%",
-        "label": "Client Satisfaction"
-      },
-      "uptime": {
-        "value": "24/7",
-        "label": "System Uptime"
-      },
-      "openSource": {
-        "value": "∞",
-        "label": "Open Source"
-      }
-    },
-    "imageAlt": "Developer workspace with multiple monitors",
-    "quote": {
-      "text": "Automation isn't just about saving time—it's about enabling teams to focus on what truly matters: innovation and strategic growth.",
-      "author": "Viscalyx Philosophy"
+      "consultation": "Get Free Consultation"
     }
   },
   "testimonials": {

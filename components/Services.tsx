@@ -226,14 +226,6 @@ const Services = () => {
                 {t('bottomCta.consultation')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
-              <motion.button
-                onClick={() => handleNavigation('#expertise')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-secondary inline-flex items-center justify-center"
-              >
-                {t('bottomCta.expertise')}
-              </motion.button>
             </div>
           </div>
         </motion.div>

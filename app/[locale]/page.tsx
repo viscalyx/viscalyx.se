@@ -5,7 +5,6 @@ import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Services from '@/components/Services'
-import Expertise from '@/components/Expertise'
 import Testimonials from '@/components/Testimonials'
 import OpenSource from '@/components/OpenSource'
 import Contact from '@/components/Contact'
@@ -24,7 +23,6 @@ export default function Home() {
       <Hero />
       <About />
       <Services />
-      <Expertise />
       <Testimonials />
       <OpenSource />
       <Contact />

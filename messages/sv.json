@@ -16,7 +16,6 @@
   "footer": {
     "company": "Företag",
     "aboutUs": "Om oss",
-    "expertise": "Expertis",
     "resources": "Resurser",
     "brandProfile": "Varumärkesprofil",
     "community": "Gemenskap",
@@ -213,62 +212,7 @@
     "bottomCta": {
       "title": "Redo att transformera ditt arbetsflöde?",
       "description": "Låt oss diskutera hur vi kan automatisera dina mest tidskrävande uppgifter och effektivisera era operationer. Få en gratis konsultation för att utforska möjligheterna.",
-      "consultation": "Få gratis konsultation",
-      "expertise": "Se vår expertis"
-    }
-  },
-  "expertise": {
-    "badge": "Teknisk Expertis",
-    "title": "Kärnteknologier",
-    "subtitle": "Djup Teknisk Kunskap",
-    "subtitleHighlight": "Bevisade Resultat",
-    "description": "År av praktisk erfarenhet av banbrytande teknologier och metoder, kombinerat med ett engagemang för kontinuerlig lärande och branschens bästa praxis.",
-    "certifications": {
-      "title": "Certifieringar & Meriter"
-    },
-    "technologies": {
-      "powershell": "PowerShell",
-      "powershellDsc": "PowerShell DSC",
-      "azureDevOps": "Azure DevOps",
-      "docker": "Docker",
-      "gitGithub": "Git & GitHub",
-      "sqlServer": "SQL Server",
-      "security": "Säkerhet",
-      "performance": "Prestanda"
-    },
-    "certificationsList": [
-      "Microsoft Certified: Azure Administrator",
-      "PowerShell DSC Specialist",
-      "DevOps Foundation Certified",
-      "ITIL v4 Foundation"
-    ],
-    "stats": {
-      "experience": {
-        "value": "5+",
-        "label": "År av Erfarenhet",
-        "sublabel": "inom Automation"
-      },
-      "projects": {
-        "value": "50+",
-        "label": "Slutförda Projekt"
-      },
-      "satisfaction": {
-        "value": "100%",
-        "label": "Kundnöjdhet"
-      },
-      "uptime": {
-        "value": "24/7",
-        "label": "Systemdrifttid"
-      },
-      "openSource": {
-        "value": "∞",
-        "label": "Open Source"
-      }
-    },
-    "imageAlt": "Utvecklararbetsplats med flera skärmar",
-    "quote": {
-      "text": "Automation handlar inte bara om att spara tid—det handlar om att möjliggöra för team att fokusera på det som verkligen spelar roll: innovation och strategisk tillväxt.",
-      "author": "Viscalyx Filosofi"
+      "consultation": "Få gratis konsultation"
     }
   },
   "testimonials": {

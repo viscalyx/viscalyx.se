@@ -55,7 +55,6 @@ const Footer = () => {
     company: [
       { name: t('aboutUs'), href: '#about' },
       { name: tNav('services'), href: '#services' },
-      { name: t('expertise'), href: '#expertise' },
       { name: tNav('openSource'), href: '#open-source' },
     ],
     resources: [
