@@ -34,7 +34,6 @@
     "titleEnd": "Workflow",
     "description": "Professional consulting services that automate repetitive tasks for developers and IT professionals. Boost productivity with PowerShell DSC, DevOps solutions, and open-source contributions.",
     "buttons": {
-      "startProject": "Start Your Project",
       "learnMore": "Learn More"
     },
     "stats": {

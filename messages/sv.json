@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "about": "Om Oss",
+    "about": "Om oss",
     "team": "Team",
     "blog": "Blogg",
     "openSource": "Öppen Källkod",
@@ -34,7 +34,6 @@
     "titleEnd": "Arbetsflöde",
     "description": "Professionella konsulttjänster som automatiserar repetitiva uppgifter för utvecklare och IT-proffs. Öka produktiviteten med PowerShell DSC, DevOps-lösningar och bidrag till open source.",
     "buttons": {
-      "startProject": "Starta Ditt Projekt",
       "learnMore": "Läs Mer"
     },
     "stats": {

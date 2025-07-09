@@ -64,7 +64,6 @@ describe('Hero component', () => {
 
     expect(screen.getByText('description')).toBeInTheDocument()
 
-    expect(screen.getByText('buttons.startProject')).toBeInTheDocument()
     expect(screen.getByText('buttons.learnMore')).toBeInTheDocument()
   })
 
