@@ -61,7 +61,6 @@ const Footer = () => {
       { name: t('community'), href: 'https://dsccommunity.org/' },
     ],
     support: [
-      { name: t('faq'), href: '#' },
       { name: t('privacyPolicy'), href: '/privacy' },
       { name: t('termsOfService'), href: '/terms' },
     ],
