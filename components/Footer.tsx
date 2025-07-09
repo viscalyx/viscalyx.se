@@ -58,7 +58,6 @@ const Footer = () => {
     ],
     resources: [
       { name: tNav('blog'), href: '/blog' },
-      { name: t('brandProfile'), href: '/brand-showcase' },
       { name: t('community'), href: '#' },
     ],
     support: [
