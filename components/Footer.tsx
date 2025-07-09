@@ -58,7 +58,7 @@ const Footer = () => {
     ],
     resources: [
       { name: tNav('blog'), href: '/blog' },
-      { name: t('community'), href: '#' },
+      { name: t('community'), href: 'https://dsccommunity.org/' },
     ],
     support: [
       { name: t('faq'), href: '#' },
