@@ -56,29 +56,6 @@ describe('OpenSource component', () => {
     )
   })
 
-  it('scrolls to contact section when clicking collaborate button on home page', () => {
-    // Setup a contact anchor in the DOM
-    const contactElement = document.createElement('div')
-    contactElement.id = 'contact'
-    contactElement.scrollIntoView = vi.fn()
-    document.body.appendChild(contactElement)
-    render(<OpenSource />)
-    const button = screen.getByRole('button', { name: /collaborate/i })
-    fireEvent.click(button)
-    expect(contactElement.scrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-    })
-  })
-
-  it('navigates to contact section when clicking collaborate button from other page', () => {
-    // Override pathname mock to simulate non-home page
-    vi.mocked(nextNavigation.usePathname).mockReturnValue('/other')
-    render(<OpenSource />)
-    const button = screen.getByRole('button', { name: /collaborate/i })
-    fireEvent.click(button)
-    expect(mockRouter.push).toHaveBeenCalledWith('/#contact')
-  })
-
   it('renders correct number of projects and accessible list roles', () => {
     render(<OpenSource />)
     const list = screen.getByRole('list')

@@ -125,7 +125,6 @@ const Header = () => {
     { name: t('team'), href: '/team' },
     { name: t('blog'), href: '/blog' },
     { name: t('openSource'), href: '#open-source' },
-    { name: t('contact'), href: '#contact' },
   ]
 
   return (
@@ -219,20 +218,6 @@ const Header = () => {
                 )}
               </AnimatePresence>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <Link
-                href={getHrefUrl('#contact')}
-                onClick={e => handleLinkClick(e, '#contact')}
-                className="btn-primary inline-block"
-              >
-                {t('getStarted')}
-              </Link>
-            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -312,15 +297,6 @@ const Header = () => {
                     </Link>
                   </motion.div>
                 ))}
-                <div className="px-6 pt-2">
-                  <Link
-                    href={getHrefUrl('#contact')}
-                    onClick={e => handleLinkClick(e, '#contact')}
-                    className="btn-primary w-full text-center block"
-                  >
-                    {t('getStarted')}
-                  </Link>
-                </div>
               </div>
             </motion.div>
           )}

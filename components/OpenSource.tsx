@@ -227,15 +227,17 @@ const OpenSource = () => {
                 <GitHubIcon className="w-5 h-5 mr-2" />
                 {t('cta.followGithub')}
               </motion.a>
-              <motion.button
-                onClick={() => handleNavigation('#contact')}
+              <motion.a
+                href="https://github.com/viscalyx"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
               >
                 <Users className="w-5 h-5 mr-2" />
                 {t('cta.collaborate')}
-              </motion.button>
+              </motion.a>
             </div>
           </div>
         </motion.div>

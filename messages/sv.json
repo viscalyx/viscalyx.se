@@ -4,7 +4,6 @@
     "team": "Team",
     "blog": "Blogg",
     "openSource": "Öppen Källkod",
-    "contact": "Kontakt",
     "getStarted": "Kom igång",
     "settings": {
       "title": "Inställningar",
@@ -19,14 +18,9 @@
     "brandProfile": "Varumärkesprofil",
     "community": "Gemenskap",
     "support": "Support",
-    "contactUs": "Kontakta oss",
     "faq": "Vanliga frågor",
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",
-    "stayUpdated": "Håll dig uppdaterad",
-    "newsletterText": "Få de senaste insikterna om automation, DevOps och bidrag till open source.",
-    "emailPlaceholder": "Ange din e-postadress",
-    "subscribe": "Prenumerera",
     "allRightsReserved": "Alla rättigheter förbehållna.",
     "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
   },
@@ -136,66 +130,6 @@
       "testsson": {
         "biography": "Test tillför ett nytt perspektiv på teknisk kommunikation med en bakgrund inom digital marknadsföring, innehållsskapande och community-hantering. Hennes erfarenhet sträcker sig från traditionella marknadsföringsbyråer till tech-startups, där hon upptäckte sin passion för att göra komplexa tekniska koncept tillgängliga för olika målgrupper.\n\nSpecialiserad på visuell berättelse och sociala medier-strategi utmärker sig Test på att skapa övertygande berättelser kring tekniska produkter och tjänster. Hennes expertis inom innehållsstrategi hjälper till att överbrygga klyftan mellan tekniska team och deras målgrupper, vilket säkerställer att komplexa automationslösningar kommuniceras tydligt och effektivt till intressenter på alla nivåer.\n\nTests unika förmåga att humanisera teknik gör henne ovärderlig för tekniska organisationer som vill förbättra sin marknadsnärvaro. Hon förvandlar torr teknisk dokumentation till engagerande innehåll, bygger communities kring produkter och hjälper team att kommunicera sitt värdeerbjudande effektivt. Hennes arbete säkerställer att teknisk excellens översätts till affärstillväxt och kundengagemang."
       }
-    }
-  },
-  "contact": {
-    "title": "Låt oss starta din",
-    "titleHighlight": "Automationsresa",
-    "description": "Redo att transformera dina arbetsflöden? Kontakta oss idag och upptäck hur vi kan hjälpa till att automatisera dina processer och öka produktiviteten.",
-    "form": {
-      "title": "Skicka oss ett meddelande",
-      "successMessage": "Tack! Vi hör av oss snart.",
-      "fields": {
-        "name": {
-          "label": "Fullständigt namn *",
-          "placeholder": "Johan Svensson"
-        },
-        "email": {
-          "label": "E-postadress *",
-          "placeholder": "johan@foretag.se"
-        },
-        "company": {
-          "label": "Företag",
-          "placeholder": "Ditt företag"
-        },
-        "message": {
-          "label": "Meddelande *",
-          "placeholder": "Berätta om dina automationsbehov..."
-        }
-      },
-      "submitButton": "Skicka meddelande"
-    },
-    "info": {
-      "email": {
-        "title": "E-post",
-        "details": "hello@viscalyx.se",
-        "description": "Skicka oss ett e-postmeddelande när som helst"
-      },
-      "phone": {
-        "title": "Telefon",
-        "details": "+1 (555) 123-4567",
-        "description": "Mån-fre från 08:00 till 18:00"
-      },
-      "location": {
-        "title": "Plats",
-        "details": "Distans världen över",
-        "description": "Vi arbetar med kunder globalt"
-      },
-      "responseTime": {
-        "title": "Svarstid",
-        "details": "Inom 24 timmar",
-        "description": "Snabb hantering garanterad"
-      }
-    },
-    "consultation": {
-      "imageAlt": "Professionell konsultation",
-      "title": "Redo att komma igång?",
-      "description": "Låt oss diskutera dina automationsbehov"
-    },
-    "quickCall": {
-      "title": "Föredrar du ett snabbt samtal?",
-      "description": "Boka en gratis 30-minuters konsultation för att diskutera dina automationsbehov.",
-      "button": "Boka samtal"
     }
   },
   "openSource": {

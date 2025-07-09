@@ -159,7 +159,7 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-4"
             >
               <motion.button
-                onClick={() => handleNavigation('#contact')}
+                onClick={() => handleNavigation('#about')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary inline-flex items-center justify-center group"

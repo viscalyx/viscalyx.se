@@ -4,7 +4,6 @@
     "team": "Team",
     "blog": "Blog",
     "openSource": "Open Source",
-    "contact": "Contact",
     "getStarted": "Get Started",
     "settings": {
       "title": "Settings",
@@ -19,14 +18,9 @@
     "brandProfile": "Brand Profile",
     "community": "Community",
     "support": "Support",
-    "contactUs": "Contact Us",
     "faq": "FAQ",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
-    "stayUpdated": "Stay Updated",
-    "newsletterText": "Get the latest insights on automation, DevOps, and open-source contributions.",
-    "emailPlaceholder": "Enter your email",
-    "subscribe": "Subscribe",
     "allRightsReserved": "All rights reserved.",
     "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide."
   },
@@ -136,66 +130,6 @@
       "testsson": {
         "biography": "Test brings a fresh perspective to technical communication with a background in digital marketing, content creation, and community management. Her experience spans from traditional marketing agencies to tech startups, where she discovered her passion for making complex technical concepts accessible to diverse audiences.\n\nSpecializing in visual storytelling and social media strategy, Test excels at creating compelling narratives around technical products and services. Her expertise in content strategy helps bridge the gap between technical teams and their audiences, ensuring that complex automation solutions are communicated clearly and effectively to stakeholders at all levels.\n\nTest's unique ability to humanize technology makes her invaluable to technical organizations looking to improve their market presence. She transforms dry technical documentation into engaging content, builds communities around products, and helps teams communicate their value proposition effectively. Her work ensures that technical excellence translates into business growth and customer engagement."
       }
-    }
-  },
-  "contact": {
-    "title": "Let's Start Your",
-    "titleHighlight": "Automation Journey",
-    "description": "Ready to transform your workflows? Get in touch with us today and discover how we can help automate your processes and boost productivity.",
-    "form": {
-      "title": "Send us a message",
-      "successMessage": "Thank you! We'll get back to you soon.",
-      "fields": {
-        "name": {
-          "label": "Full Name *",
-          "placeholder": "John Doe"
-        },
-        "email": {
-          "label": "Email Address *",
-          "placeholder": "john@company.com"
-        },
-        "company": {
-          "label": "Company",
-          "placeholder": "Your Company"
-        },
-        "message": {
-          "label": "Message *",
-          "placeholder": "Tell us about your automation needs..."
-        }
-      },
-      "submitButton": "Send Message"
-    },
-    "info": {
-      "email": {
-        "title": "Email",
-        "details": "hello@viscalyx.se",
-        "description": "Send us an email anytime"
-      },
-      "phone": {
-        "title": "Phone",
-        "details": "+1 (555) 123-4567",
-        "description": "Mon-Fri from 8am to 6pm"
-      },
-      "location": {
-        "title": "Location",
-        "details": "Remote Worldwide",
-        "description": "We work with clients globally"
-      },
-      "responseTime": {
-        "title": "Response Time",
-        "details": "Within 24 hours",
-        "description": "Quick turnaround guaranteed"
-      }
-    },
-    "consultation": {
-      "imageAlt": "Professional consultation",
-      "title": "Ready to Get Started?",
-      "description": "Let's discuss your automation needs"
-    },
-    "quickCall": {
-      "title": "Prefer a quick call?",
-      "description": "Schedule a free 30-minute consultation to discuss your automation needs.",
-      "button": "Schedule Call"
     }
   },
   "openSource": {

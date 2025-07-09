@@ -62,7 +62,6 @@ const Footer = () => {
       { name: t('community'), href: '#' },
     ],
     support: [
-      { name: t('contactUs'), href: '#contact' },
       { name: t('faq'), href: '#' },
       { name: t('privacyPolicy'), href: '/privacy' },
       { name: t('termsOfService'), href: '/terms' },
@@ -228,41 +227,6 @@ const Footer = () => {
             </ul>
           </motion.div>
         </div>
-
-        {/* Newsletter Signup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="border-t border-secondary-800 mt-12 pt-12"
-        >
-          <div className="max-w-md mx-auto text-center lg:text-left lg:max-w-none lg:flex lg:items-center lg:justify-between">
-            <div className="lg:max-w-xl">
-              <h4 className="text-xl font-semibold mb-2">{t('stayUpdated')}</h4>
-              <p className="text-secondary-300">{t('newsletterText')}</p>
-            </div>
-
-            <div className="mt-6 lg:mt-0 lg:flex-shrink-0">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder={t('emailPlaceholder')}
-                  className="px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white placeholder-secondary-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent min-w-0 flex-1"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-primary whitespace-nowrap"
-                >
-                  {t('subscribe')}
-                </motion.button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Bottom Footer */}
