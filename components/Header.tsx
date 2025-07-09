@@ -122,9 +122,9 @@ const Header = () => {
 
   const menuItems = [
     { name: t('about'), href: '#about' },
+    { name: t('openSource'), href: '#open-source' },
     { name: t('team'), href: '/team' },
     { name: t('blog'), href: '/blog' },
-    { name: t('openSource'), href: '#open-source' },
   ]
 
   return (

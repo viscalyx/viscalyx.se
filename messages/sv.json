@@ -1,9 +1,9 @@
 {
   "navigation": {
     "about": "Om Oss",
-    "openSource": "Öppen Källkod",
     "team": "Team",
     "blog": "Blogg",
+    "openSource": "Öppen Källkod",
     "getStarted": "Kom igång",
     "settings": {
       "title": "Inställningar",
