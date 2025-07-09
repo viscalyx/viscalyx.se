@@ -189,7 +189,9 @@ const Footer = () => {
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
-                      <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </Link>
                   )}
                 </li>
@@ -208,19 +210,26 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.support.map(link => (
                 <li key={link.name}>
-                  {link.href.startsWith('#') ? (
+                  {link.href.startsWith('#') || link.href.startsWith('http') ? (
                     <button
+                      type="button"
                       onClick={() => handleNavigation(link.href)}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline bg-transparent border-none cursor-pointer text-left p-0"
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
                     >
                       {link.name}
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </button>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </Link>
                   )}
                 </li>
