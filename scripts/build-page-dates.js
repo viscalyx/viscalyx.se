@@ -84,7 +84,7 @@ function getBlogContentFiles() {
 async function buildPageDates() {
   // Get all blog content files
   const blogContentFiles = getBlogContentFiles()
-  
+
   const pageDates = {
     home: await getFileLastModified('app/[locale]/page.tsx'),
     // Blog page should track both the page component and all blog content
