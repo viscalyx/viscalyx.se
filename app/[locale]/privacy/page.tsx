@@ -1,18 +1,30 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useTranslations, useFormatter } from 'next-intl'
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import LoadingSpinner from '@/components/LoadingSpinner'
 import ScrollToTop from '@/components/ScrollToTop'
 import { getStaticPageDates } from '@/lib/file-dates'
+import { usePrivacyTranslations } from '@/lib/page-translations'
+import { motion } from 'framer-motion'
+import { useFormatter } from 'next-intl'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()
 
 export default function PrivacyPage() {
-  const t = useTranslations('privacy')
+  const { translations, loading } = usePrivacyTranslations()
   const format = useFormatter()
+
+  if (loading || !translations) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-secondary-900 flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  const t = translations.privacy
 
   return (
     <motion.main
@@ -33,13 +45,13 @@ export default function PrivacyPage() {
             className="text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-              {t('title')}
+              {t.title}
             </h1>
             <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-8">
-              {t('subtitle')}
+              {t.subtitle}
             </p>
             <p className="text-secondary-500 dark:text-secondary-500">
-              {t('lastUpdated')}:{' '}
+              {t.lastUpdated}:{' '}
               {format.dateTime(staticPageDates.privacy, {
                 year: 'numeric',
                 month: 'long',
@@ -62,88 +74,86 @@ export default function PrivacyPage() {
             >
               {/* Information We Collect */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.informationWeCollect.title')}
+                {t.sections.informationWeCollect.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-                {t('sections.informationWeCollect.description')}
+                {t.sections.informationWeCollect.description}
               </p>
               <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-                <li>{t('sections.informationWeCollect.items.0')}</li>
-                <li>{t('sections.informationWeCollect.items.1')}</li>
-                <li>{t('sections.informationWeCollect.items.2')}</li>
-                <li>{t('sections.informationWeCollect.items.3')}</li>
+                {t.sections.informationWeCollect.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
               </ul>
 
               {/* How We Use Your Information */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.howWeUse.title')}
+                {t.sections.howWeUse.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-                {t('sections.howWeUse.description')}
+                {t.sections.howWeUse.description}
               </p>
               <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-                <li>{t('sections.howWeUse.items.0')}</li>
-                <li>{t('sections.howWeUse.items.1')}</li>
-                <li>{t('sections.howWeUse.items.2')}</li>
-                <li>{t('sections.howWeUse.items.3')}</li>
+                {t.sections.howWeUse.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
               </ul>
 
               {/* Data Security */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.dataSecurity.title')}
+                {t.sections.dataSecurity.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-                {t('sections.dataSecurity.description')}
+                {t.sections.dataSecurity.description}
               </p>
 
               {/* Cookies and Tracking */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.cookies.title')}
+                {t.sections.cookies.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-                {t('sections.cookies.description')}
+                {t.sections.cookies.description}
               </p>
 
               {/* Third-Party Services */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.thirdParty.title')}
+                {t.sections.thirdParty.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-                {t('sections.thirdParty.description')}
+                {t.sections.thirdParty.description}
               </p>
               <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-                <li>{t('sections.thirdParty.items.0')}</li>
-                <li>{t('sections.thirdParty.items.1')}</li>
+                {t.sections.thirdParty.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
               </ul>
 
               {/* Your Rights */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.yourRights.title')}
+                {t.sections.yourRights.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-                {t('sections.yourRights.description')}
+                {t.sections.yourRights.description}
               </p>
               <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-                <li>{t('sections.yourRights.items.0')}</li>
-                <li>{t('sections.yourRights.items.1')}</li>
-                <li>{t('sections.yourRights.items.2')}</li>
-                <li>{t('sections.yourRights.items.3')}</li>
+                {t.sections.yourRights.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
               </ul>
 
               {/* Contact Us */}
               <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-                {t('sections.contact.title')}
+                {t.sections.contact.title}
               </h2>
               <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-                {t('sections.contact.description')}
+                {t.sections.contact.description}
               </p>
               <p className="text-secondary-600 dark:text-secondary-400">
-                <strong>{t('sections.contact.email')}:</strong>{' '}
+                <strong>{t.sections.contact.email}:</strong>{' '}
                 <a
-                  href={`mailto:${t('sections.contact.emailAddress')}`}
+                  href={`mailto:${t.sections.contact.emailAddress}`}
                   className="text-primary-600 dark:text-primary-400 hover:underline"
                 >
-                  {t('sections.contact.emailAddress')}
+                  {t.sections.contact.emailAddress}
                 </a>
               </p>
             </motion.div>
