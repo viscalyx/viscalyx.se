@@ -990,7 +990,6 @@
     "colorShowcase": {
       "primaryColors": "Primärfärger (blåskala)",
       "secondaryColors": "Sekundärfärger (gråskala)",
-      "accentColors": "Accentfärger",
       "analysisColors": "Datavisualisering"
     },
     "typographyShowcase": {

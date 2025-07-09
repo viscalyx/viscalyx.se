@@ -984,7 +984,6 @@
     "colorShowcase": {
       "primaryColors": "Primary Colors (Blue Scale)",
       "secondaryColors": "Secondary Colors (Gray Scale)",
-      "accentColors": "Accent Colors",
       "analysisColors": "Data Visualization"
     },
     "typographyShowcase": {

@@ -15,7 +15,6 @@ vi.mock('next-intl', () => ({
     const translations: Record<string, string> = {
       primaryColors: 'Primary Colors (Blue Scale)',
       secondaryColors: 'Secondary Colors (Gray Scale)',
-      accentColors: 'Accent Colors',
       analysisColors: 'Data Visualization Colors',
     }
     return translations[key] || key
@@ -43,20 +42,6 @@ vi.mock('@/lib/colors', () => ({
     secondary: [
       { name: 'secondary-500', hex: '#6b7280', rgb: 'rgb(107, 114, 128)' },
       { name: 'secondary-600', hex: '#4b5563', rgb: 'rgb(75, 85, 99)' },
-    ],
-    accent: [
-      {
-        name: 'Success',
-        hex: '#22c55e',
-        rgb: 'rgb(34, 197, 94)',
-        usage: 'Success states, confirmations',
-      },
-      {
-        name: 'Yellow',
-        hex: '#facc15',
-        rgb: 'rgb(250, 204, 21)',
-        usage: 'Star icons, ratings, achievements, gold accents',
-      },
     ],
     dataVisualization: [
       {
@@ -111,11 +96,6 @@ describe('ColorShowcase', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders accent colors section', () => {
-    render(<ColorShowcase />)
-    expect(screen.getByText('Accent Colors')).toBeInTheDocument()
-  })
-
   it('renders analysis colors section', () => {
     render(<ColorShowcase />)
     expect(screen.getByText('Data Visualization Colors')).toBeInTheDocument()
@@ -125,13 +105,6 @@ describe('ColorShowcase', () => {
     render(<ColorShowcase />)
     expect(screen.getByText('primary-500')).toBeInTheDocument()
     expect(screen.getAllByText('#0ea5e9').length).toBeGreaterThan(0)
-  })
-
-  it('renders accent color usage information', () => {
-    render(<ColorShowcase />)
-    expect(
-      screen.getByText('Success states, confirmations')
-    ).toBeInTheDocument()
   })
 
   // User interaction tests
@@ -182,23 +155,6 @@ describe('ColorShowcase', () => {
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
           'rgb(14, 165, 233)'
         )
-      })
-    })
-
-    it('handles click on accent color with usage information', async () => {
-      render(<ColorShowcase />)
-
-      // Find the Success color swatch button in the accent colors section
-      const successColorSwatch = screen.getByRole('button', {
-        name: /Copy Success color #22c55e/,
-      })
-
-      // Simulate click
-      fireEvent.click(successColorSwatch)
-
-      // Verify clipboard API was called with the hex value
-      await waitFor(() => {
-        expect(navigator.clipboard.writeText).toHaveBeenCalledWith('#22c55e')
       })
     })
 

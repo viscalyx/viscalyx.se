@@ -1,10 +1,6 @@
 'use client'
 
-import {
-  getAccentColors,
-  getPrimaryColors,
-  getSecondaryColors,
-} from '@/lib/colors'
+import { getPrimaryColors, getSecondaryColors } from '@/lib/colors'
 import { useTranslations } from 'next-intl'
 import { useMemo, useState } from 'react'
 
@@ -17,7 +13,6 @@ const TypographyShowcase = () => {
   // Get brand colors for typography
   const primaryColors = getPrimaryColors()
   const secondaryColors = getSecondaryColors()
-  const accentColors = getAccentColors()
 
   // Memoized color map for O(1) lookup with case-insensitive matching
   const colorMap = useMemo(() => {
@@ -32,12 +27,8 @@ const TypographyShowcase = () => {
       map[color.name.toLowerCase()] = color.hex
     })
 
-    accentColors.forEach(color => {
-      map[color.name.toLowerCase()] = color.hex
-    })
-
     return map
-  }, [primaryColors, secondaryColors, accentColors])
+  }, [primaryColors, secondaryColors])
 
   // Helper function to find color hex from our color constants
   const getColorHex = (colorName: string): string => {

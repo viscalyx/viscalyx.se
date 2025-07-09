@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import {
-  getAccentColors,
   getAccessibilityInfo,
   getAllColors,
   getContrastRatio,
@@ -50,38 +49,6 @@ describe('colors utility', () => {
     })
   })
 
-  describe('getAccentColors', () => {
-    it('should return accent colors with correct structure', () => {
-      const colors = getAccentColors()
-
-      expect(colors).toHaveLength(6)
-      expect(colors[0]).toHaveProperty('name', 'Success')
-      expect(colors[0]).toHaveProperty('hex', '#059669')
-      expect(colors[0]).toHaveProperty('rgb', 'rgb(5, 150, 105)')
-      expect(colors[0]).toHaveProperty(
-        'usage',
-        'Success states, checkmark icons, success confirmations, completion states'
-      )
-
-      expect(colors[3]).toHaveProperty('name', 'Error')
-      expect(colors[3]).toHaveProperty('hex', '#ef4444')
-      expect(colors[3]).toHaveProperty('rgb', 'rgb(239, 68, 68)')
-      expect(colors[3]).toHaveProperty(
-        'usage',
-        'Errors, destructive actions, heart icons, emergency states, failed action'
-      )
-
-      // Test new icon colors
-      expect(colors[5]).toHaveProperty('name', 'Gold')
-      expect(colors[5]).toHaveProperty('hex', '#facc15')
-      expect(colors[5]).toHaveProperty('rgb', 'rgb(250, 204, 21)')
-      expect(colors[5]).toHaveProperty(
-        'usage',
-        'Star icons, ratings, achievements, gold accents'
-      )
-    })
-  })
-
   describe('getDataVisualizationColors', () => {
     it('should return analysis colors with correct structure', () => {
       const colors = getDataVisualizationColors()
@@ -108,26 +75,22 @@ describe('colors utility', () => {
 
       expect(allColors).toHaveProperty('primary')
       expect(allColors).toHaveProperty('secondary')
-      expect(allColors).toHaveProperty('accent')
       expect(allColors).toHaveProperty('dataVisualization')
 
       expect(allColors.primary).toHaveLength(10)
       expect(allColors.secondary).toHaveLength(11)
-      expect(allColors.accent).toHaveLength(6)
       expect(allColors.dataVisualization).toHaveLength(8)
     })
   })
 
   describe('color values consistency', () => {
     it('should have consistent color values across all functions', () => {
-      const { primary, secondary, accent } = getAllColors()
+      const { primary, secondary } = getAllColors()
       const primaryDirect = getPrimaryColors()
       const secondaryDirect = getSecondaryColors()
-      const accentDirect = getAccentColors()
 
       expect(primary).toEqual(primaryDirect)
       expect(secondary).toEqual(secondaryDirect)
-      expect(accent).toEqual(accentDirect)
     })
   })
 

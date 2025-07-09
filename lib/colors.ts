@@ -64,52 +64,6 @@ export const getSecondaryColors = (): ColorItem[] => {
 }
 
 /**
- * Get accent/semantic colors used throughout the application
- */
-export const getAccentColors = (): ColorItem[] => {
-  return [
-    {
-      name: 'Success',
-      hex: '#059669',
-      rgb: hexToRgb('#059669'),
-      usage:
-        'Success states, checkmark icons, success confirmations, completion states',
-    },
-    {
-      name: 'Warning',
-      hex: '#f59e0b',
-      rgb: hexToRgb('#f59e0b'),
-      usage: 'Warnings, cautions',
-    },
-    {
-      name: 'Important',
-      hex: '#7c3aed',
-      rgb: hexToRgb('#7c3aed'),
-      usage: 'Crucial information',
-    },
-    {
-      name: 'Error',
-      hex: '#ef4444',
-      rgb: hexToRgb('#ef4444'),
-      usage:
-        'Errors, destructive actions, heart icons, emergency states, failed action',
-    },
-    {
-      name: 'Info',
-      hex: '#3b82f6',
-      rgb: hexToRgb('#3b82f6'),
-      usage: 'Information, tips',
-    },
-    {
-      name: 'Gold',
-      hex: '#facc15',
-      rgb: hexToRgb('#facc15'),
-      usage: 'Star icons, ratings, achievements, gold accents',
-    },
-  ]
-}
-
-/**
  * Get data visualization colors used for diagrams, charts, and spreadsheet-style visualizations
  * These colors are optimized for data visualization and technical content
  */
@@ -172,7 +126,6 @@ export const getDataVisualizationColors = (): ColorItem[] => {
 export const getAllColors = () => ({
   primary: getPrimaryColors(),
   secondary: getSecondaryColors(),
-  accent: getAccentColors(),
   dataVisualization: getDataVisualizationColors(),
 })
 
