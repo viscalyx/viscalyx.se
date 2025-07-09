@@ -984,7 +984,13 @@
     "colorShowcase": {
       "primaryColors": "Primary Colors (Blue Scale)",
       "secondaryColors": "Secondary Colors (Gray Scale)",
-      "analysisColors": "Data Visualization"
+      "analysisColors": "Data Visualization",
+      "backgroundColors": "Background Colors",
+      "typographyColors": "Typography Colors",
+      "borderColors": "Border Colors",
+      "semanticColors": "Semantic Colors",
+      "uiStateColors": "UI State Colors",
+      "codeColors": "Code Syntax Colors"
     },
     "typographyShowcase": {
       "fontSizes": "Font Sizes & Hierarchy",

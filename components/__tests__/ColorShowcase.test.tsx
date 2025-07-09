@@ -57,6 +57,158 @@ vi.mock('@/lib/colors', () => ({
         usage: 'Secondary data series, sub-categories',
       },
     ],
+    backgrounds: [
+      {
+        name: 'White',
+        hex: '#ffffff',
+        rgb: 'rgb(255, 255, 255)',
+        usage: 'Primary background',
+      },
+      {
+        name: 'Primary 50',
+        hex: '#f0f9ff',
+        rgb: 'rgb(240, 249, 255)',
+        usage: 'Light backgrounds',
+      },
+    ],
+    typography: [
+      {
+        name: 'Primary Content',
+        hex: '#111827',
+        rgb: 'rgb(17, 24, 39)',
+        usage: 'Primary text',
+      },
+      {
+        name: 'Secondary Content',
+        hex: '#4b5563',
+        rgb: 'rgb(75, 85, 99)',
+        usage: 'Body text',
+      },
+    ],
+    borders: [
+      {
+        name: 'Default Border',
+        hex: '#e5e7eb',
+        rgb: 'rgb(229, 231, 235)',
+        usage: 'Default borders',
+      },
+      {
+        name: 'Primary Border',
+        hex: '#0277bd',
+        rgb: 'rgb(2, 119, 189)',
+        usage: 'Primary borders',
+      },
+    ],
+    semantic: [
+      {
+        name: 'Success',
+        hex: '#16a34a',
+        rgb: 'rgb(22, 163, 74)',
+        usage: 'Success states',
+      },
+      {
+        name: 'Error',
+        hex: '#ef4444',
+        rgb: 'rgb(239, 68, 68)',
+        usage: 'Error states',
+      },
+    ],
+    uiStates: [
+      {
+        name: 'Hover Background',
+        hex: '#f0f9ff',
+        rgb: 'rgb(240, 249, 255)',
+        usage: 'Hover states',
+      },
+      {
+        name: 'Focus Ring',
+        hex: '#0ea5e9',
+        rgb: 'rgb(14, 165, 233)',
+        usage: 'Focus rings',
+      },
+    ],
+    code: [
+      {
+        name: 'Comment',
+        hex: '#6b7280',
+        rgb: 'rgb(107, 114, 128)',
+        usage: 'Code comments',
+      },
+      {
+        name: 'Keyword',
+        hex: '#2563eb',
+        rgb: 'rgb(37, 99, 235)',
+        usage: 'Keywords',
+      },
+    ],
+  }),
+  getColorCombinations: () => ({
+    textOnBackground: [
+      {
+        name: 'Primary Text on White',
+        lightBackground: '#ffffff',
+        lightText: '#111827',
+        darkBackground: '#111827',
+        darkText: '#f9fafb',
+        usage: 'Main content text',
+        component: 'Headers, paragraphs',
+      },
+    ],
+    buttonStates: [
+      {
+        name: 'Primary Button',
+        lightBackground: '#0277bd',
+        lightText: '#ffffff',
+        darkBackground: '#0ea5e9',
+        darkText: '#ffffff',
+        usage: 'Primary buttons',
+        component: 'Submit buttons',
+      },
+    ],
+    cardElements: [
+      {
+        name: 'Card Background',
+        lightBackground: '#ffffff',
+        lightText: '#111827',
+        darkBackground: '#1f2937',
+        darkText: '#f9fafb',
+        usage: 'Card containers',
+        component: 'Content cards',
+      },
+    ],
+    navigationElements: [
+      {
+        name: 'Navigation Text',
+        lightBackground: '#ffffff',
+        lightText: '#374151',
+        darkBackground: '#111827',
+        darkText: '#d1d5db',
+        usage: 'Navigation items',
+        component: 'Menu items',
+      },
+    ],
+    alertCombinations: [
+      {
+        name: 'Success Alert',
+        lightBackground: '#059669',
+        lightText: '#ffffff',
+        darkBackground: '#059669',
+        darkText: '#ffffff',
+        usage: 'Success messages',
+        component: 'Success notifications',
+      },
+    ],
+    codeElements: [
+      {
+        name: 'Code Block',
+        lightBackground: '#f3f4f6',
+        lightText: '#374151',
+        darkBackground: '#1f2937',
+        darkText: '#d1d5db',
+        usage: 'Code blocks',
+        component: 'Pre-formatted code',
+      },
+    ],
   }),
   getAccessibilityInfo: () => ({
     contrastTests: [

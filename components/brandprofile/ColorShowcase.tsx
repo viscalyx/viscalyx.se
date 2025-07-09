@@ -3,6 +3,7 @@
 import {
   getAccessibilityInfo,
   getAllColors,
+  getColorCombinations,
   type ColorItem,
 } from '@/lib/colors'
 import { motion } from 'framer-motion'
@@ -170,6 +171,132 @@ const ColorSwatch = ({
   )
 }
 
+interface ColorCombinationProps {
+  combination: {
+    name: string
+    lightBackground: string
+    lightText: string
+    darkBackground: string
+    darkText: string
+    usage: string
+    component: string
+  }
+}
+
+const ColorCombination = ({ combination }: ColorCombinationProps) => {
+  const [copiedValue, setCopiedValue] = useState<string | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const handleCopy = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopiedValue(value)
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setCopiedValue(null)
+        timeoutRef.current = null
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to copy color: ', err)
+    }
+  }
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className="bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg p-4 space-y-4"
+    >
+      <div>
+        <h4 className="font-semibold text-secondary-900 dark:text-secondary-100 mb-1">
+          {combination.name}
+        </h4>
+        <p className="text-xs text-secondary-600 dark:text-secondary-400 mb-2">
+          {combination.usage}
+        </p>
+        <p className="text-xs text-secondary-500 dark:text-secondary-500 italic">
+          Used in: {combination.component}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        {/* Light Theme */}
+        <div className="space-y-2">
+          <div className="text-xs font-medium text-secondary-700 dark:text-secondary-300">
+            Light Theme
+          </div>
+          <div
+            className="h-16 rounded-md border border-secondary-200 dark:border-secondary-600 flex items-center justify-center text-sm font-medium relative overflow-hidden"
+            style={{
+              backgroundColor: combination.lightBackground,
+              color: combination.lightText,
+            }}
+          >
+            <span className="relative z-10">Sample Text</span>
+            {copiedValue && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <span className="text-white text-xs">Copied!</span>
+              </div>
+            )}
+          </div>
+          <div className="space-y-1">
+            <button
+              onClick={() => handleCopy(combination.lightBackground)}
+              className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors block"
+            >
+              Background: {combination.lightBackground}
+            </button>
+            <button
+              onClick={() => handleCopy(combination.lightText)}
+              className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors block"
+            >
+              Text: {combination.lightText}
+            </button>
+          </div>
+        </div>
+
+        {/* Dark Theme */}
+        <div className="space-y-2">
+          <div className="text-xs font-medium text-secondary-700 dark:text-secondary-300">
+            Dark Theme
+          </div>
+          <div
+            className="h-16 rounded-md border border-secondary-200 dark:border-secondary-600 flex items-center justify-center text-sm font-medium relative overflow-hidden"
+            style={{
+              backgroundColor: combination.darkBackground,
+              color: combination.darkText,
+            }}
+          >
+            <span className="relative z-10">Sample Text</span>
+            {copiedValue && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <span className="text-white text-xs">Copied!</span>
+              </div>
+            )}
+          </div>
+          <div className="space-y-1">
+            <button
+              onClick={() => handleCopy(combination.darkBackground)}
+              className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors block"
+            >
+              Background: {combination.darkBackground}
+            </button>
+            <button
+              onClick={() => handleCopy(combination.darkText)}
+              className="text-xs text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors block"
+            >
+              Text: {combination.darkText}
+            </button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 const ColorShowcase = () => {
   const t = useTranslations('brandProfile.colorShowcase')
   const [showAccessibilityInfo, setShowAccessibilityInfo] = useState(false)
@@ -177,8 +304,15 @@ const ColorShowcase = () => {
     primary: primaryColors,
     secondary: secondaryColors,
     dataVisualization: dataVisualizationColors,
+    backgrounds: backgroundColors,
+    typography: typographyColors,
+    borders: borderColors,
+    semantic: semanticColors,
+    uiStates: uiStateColors,
+    code: codeColors,
   } = getAllColors()
 
+  const colorCombinations = getColorCombinations()
   const accessibilityInfo = getAccessibilityInfo()
 
   return (
@@ -294,8 +428,126 @@ const ColorShowcase = () => {
 
       <div>
         <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          Background Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors used for component backgrounds, overlays, and surfaces
+          throughout the site.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {backgroundColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          Typography Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors used for text content, ensuring proper contrast and readability
+          across themes.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {typographyColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          Border Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors used for component boundaries, providing visual separation and
+          structure.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {borderColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          Semantic Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors that convey meaning and status information for user feedback
+          and state communication.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {semanticColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          UI State Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors that provide feedback for user interactions like hover, focus,
+          and active states.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {uiStateColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
+          Code Syntax Colors
+        </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors used for code blocks and syntax highlighting in both light and
+          dark themes.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {codeColors.map(color => (
+            <ColorSwatch
+              key={color.name}
+              color={color}
+              showAccessibilityInfo={showAccessibilityInfo}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
           {t('analysisColors')}
         </h2>
+        <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+          Colors optimized for data visualization, charts, and technical
+          content.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {dataVisualizationColors.map(color => (
             <ColorSwatch
@@ -304,6 +556,112 @@ const ColorShowcase = () => {
               showAccessibilityInfo={showAccessibilityInfo}
             />
           ))}
+        </div>
+      </div>
+
+      {/* Color Combinations Section */}
+      <div className="border-t border-secondary-200 dark:border-secondary-700 pt-12">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-4">
+            Color Combinations
+          </h2>
+          <p className="text-secondary-600 dark:text-secondary-400 text-lg">
+            See how colors work together in both light and dark themes across
+            different UI components.
+          </p>
+        </div>
+
+        {/* Text on Background Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Text on Background
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            How text colors pair with background colors for optimal readability
+            in both themes.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.textOnBackground.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
+        </div>
+
+        {/* Button State Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Button States
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            Color combinations for buttons and their interactive states.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.buttonStates.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
+        </div>
+
+        {/* Card Element Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Card Elements
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            Color combinations used in card components and containers.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.cardElements.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Element Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Navigation Elements
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            Color combinations for navigation menus and interactive elements.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.navigationElements.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
+        </div>
+
+        {/* Alert Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Alert & Notification Colors
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            Semantic color combinations for alerts, notifications, and status
+            indicators.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.alertCombinations.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
+        </div>
+
+        {/* Code Element Combinations */}
+        <div className="mb-12">
+          <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 mb-4">
+            Code Elements
+          </h3>
+          <p className="text-secondary-600 dark:text-secondary-400 mb-6">
+            Color combinations for code blocks, syntax highlighting, and
+            technical content.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {colorCombinations.codeElements.map((combination, index) => (
+              <ColorCombination key={index} combination={combination} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

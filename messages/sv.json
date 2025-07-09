@@ -990,7 +990,13 @@
     "colorShowcase": {
       "primaryColors": "Primärfärger (blåskala)",
       "secondaryColors": "Sekundärfärger (gråskala)",
-      "analysisColors": "Datavisualisering"
+      "analysisColors": "Datavisualisering",
+      "backgroundColors": "Bakgrundsfärger",
+      "typographyColors": "Typografifärger",
+      "borderColors": "Kantfärger",
+      "semanticColors": "Semantiska färger",
+      "uiStateColors": "UI-tillståndsfärger",
+      "codeColors": "Kodsyntaxfärger"
     },
     "typographyShowcase": {
       "fontSizes": "Textstorlekar & Hierarki",
