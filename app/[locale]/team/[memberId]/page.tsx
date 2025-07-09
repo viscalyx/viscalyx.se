@@ -13,6 +13,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 
+// Export dynamic configuration to allow dynamic rendering
+export const dynamic = 'force-dynamic'
+
 type Props = {
   params: Promise<{ locale: string; memberId: string }>
 }

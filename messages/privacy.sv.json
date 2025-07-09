@@ -1,0 +1,61 @@
+{
+  "privacy": {
+    "title": "Integritetspolicy",
+    "subtitle": "Hur vi samlar in, använder och skyddar din information",
+    "lastUpdated": "Senast uppdaterad",
+    "sections": {
+      "informationWeCollect": {
+        "title": "Information vi samlar in",
+        "description": "Vi samlar automatiskt in begränsad information när du besöker vår webbplats. Vi samlar inte in personlig information som namn, e-postadresser eller kontaktuppgifter eftersom vi inte har kontaktformulär eller användarkonton:",
+        "items": [
+          "Bloggläsningsanalyser (artikelvisningar, läsframsteg, tid spenderad på sidor)",
+          "Teknisk information (IP-adress, användaragent, webbläsartyp, hänvisande webbplats)",
+          "Geografisk information (land-nivå plats från Cloudflare)",
+          "Webbplatspreferenser (tema- och språkinställningar lagrade lokalt i din webbläsare)"
+        ]
+      },
+      "howWeUse": {
+        "title": "Hur vi använder din information",
+        "description": "Informationen vi samlar in används enbart för att:",
+        "items": [
+          "Analysera blogginnehållets prestanda och läsarengagemang",
+          "Förbättra webbplatsens funktionalitet och användarupplevelse",
+          "Förstå den allmänna geografiska fördelningen av vår publik",
+          "Komma ihåg dina tema- och språkpreferenser för framtida besök"
+        ]
+      },
+      "dataSecurity": {
+        "title": "Datasäkerhet",
+        "description": "Vi implementerar lämpliga tekniska och organisatoriska åtgärder för att skydda information. All data bearbetas genom Cloudflares säkra infrastruktur, och vi lagrar inte personligt identifierande information på våra servrar."
+      },
+      "cookies": {
+        "title": "Lokal lagring och preferenser",
+        "description": "Vi använder inte cookies för spårning. Vi lagrar endast din temapreferens (ljust/mörkt läge) och språkval i din webbläsares lokala lagring. Denna data stannar på din enhet och överförs inte till våra servrar. Du kan rensa denna data när som helst genom dina webbläsarinställningar."
+      },
+      "thirdParty": {
+        "title": "Tredjepartstjänster",
+        "description": "Vi använder följande tredjepartstjänster:",
+        "items": [
+          "Cloudflare: Tillhandahåller innehållsleverans, säkerhet och grundläggande analyser (inkluderar standardwebbanalysdata)",
+          "Cloudflare Analytics Engine: Lagrar anonymiserade bloggläsningsmått för innehållsförbättring"
+        ]
+      },
+      "yourRights": {
+        "title": "Dina rättigheter",
+        "description": "Eftersom vi inte samlar in personligt identifierande information finns det ingen personlig data att komma åt, korrigera eller radera. Du kan dock:",
+        "items": [
+          "Rensa din webbläsares lokala lagring för att ta bort tema- och språkpreferenser",
+          "Använda integritetsfokuserade webbläsare eller annonsblockering för att begränsa datainsamling",
+          "Kontakta oss med eventuella integritetsfrågor eller funderingar",
+          "Begära information om den allmänna analysdata vi samlar in"
+        ]
+      },
+      "contact": {
+        "title": "Kontakta oss",
+        "description": "Om du har några frågor om denna integritetspolicy, vänligen kontakta oss:",
+        "email": "E-post",
+        "emailAddress": "privacy@viscalyx.se"
+      }
+    }
+  }
+}

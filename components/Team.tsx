@@ -216,7 +216,9 @@ const Team = () => {
               {t('joinTeam.description')}
             </p>
             <motion.a
-              href="#contact"
+              href="https://github.com/viscalyx"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors"

@@ -1,11 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Code } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter, usePathname } from 'next/navigation'
+import { Code, Sparkles } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const Hero = () => {
   const router = useRouter()
@@ -159,21 +159,12 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-4"
             >
               <motion.button
-                onClick={() => handleNavigation('#contact')}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary inline-flex items-center justify-center group"
-              >
-                {t('buttons.startProject')}
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-              <motion.button
-                onClick={() => handleNavigation('#services')}
+                onClick={() => handleNavigation('#about')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-secondary inline-flex items-center justify-center"
               >
-                {t('buttons.exploreServices')}
+                {t('buttons.learnMore')}
               </motion.button>
             </motion.div>
 
