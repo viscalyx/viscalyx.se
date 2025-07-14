@@ -131,7 +131,7 @@
   }
 
   .blog-content tbody tr:hover {
-    @apply bg-secondary-100 dark:bg-secondary-700;
+    @apply bg-secondary-200 dark:bg-secondary-600;
   }
 
   /* Ensure bold and italic text use normal text colors */
