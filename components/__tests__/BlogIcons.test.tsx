@@ -147,6 +147,13 @@ describe('BlogIcons', () => {
       expect(getAlertIcon('NOTE')).toBeDefined()
       expect(getAlertIcon('TIP')).toBeDefined()
       expect(getAlertIcon('Important')).toBeDefined()
+      expect(getAlertIcon('nOtE')).toBeDefined()
+      expect(getAlertIcon('tIp')).toBeDefined()
+      expect(getAlertIcon('imPORtant')).toBeDefined()
+      expect(getAlertIcon('WaRnInG')).toBeDefined()
+      expect(getAlertIcon('CaUtIoN')).toBeDefined()
+      expect(getAlertIcon('wArNiNg')).toBeDefined()
+      expect(getAlertIcon('cAuTiOn')).toBeDefined()
     })
 
     it('returns note icon for invalid type', () => {
