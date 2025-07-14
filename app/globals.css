@@ -97,6 +97,7 @@
   /* Override prose defaults with custom colors and behavior */
   .blog-content {
     @apply text-secondary-700 dark:text-secondary-300;
+    overflow-x: auto;
   }
 
   /* Headings - Override prose defaults with scroll behavior and custom colors */
