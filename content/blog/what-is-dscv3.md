@@ -31,7 +31,7 @@ Desired State Configuration (DSC) is a PowerShell-based framework that lets you 
 
    ```powershell
    # Windows (PowerShell)
-   m$env:PATH += ';C:\dsc'
+   $env:PATH += ';C:\dsc'
 
    # Linux/macOS (bash/zsh)
    export PATH="$HOME/bin:$PATH"
@@ -39,10 +39,10 @@ Desired State Configuration (DSC) is a PowerShell-based framework that lets you 
 
 1. Verify installation:
 
-```bash
-$ dsc --version
-DSC Engine version 3.x.x
-```
+   ```bash
+   $ dsc --version
+   DSC Engine version 3.x.x
+   ```
 
 ## Quick Start: Create a Folder
 
