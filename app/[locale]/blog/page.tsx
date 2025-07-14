@@ -17,6 +17,7 @@ interface BlogPostMeta {
   date: string
   readTime: string
   image: string
+  imageAlt?: string
   category: string
   slug: string
   tags?: string[]

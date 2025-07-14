@@ -35,6 +35,7 @@ interface BlogPost {
   date: string | null
   readTime: string
   image: string
+  imageAlt?: string
   category: string
   slug: string
   tags: string[]
@@ -481,7 +482,7 @@ const BlogPostContent = ({
       <section className="relative h-96 md:h-[500px]">
         <Image
           src={post.image}
-          alt={post.title}
+          alt={post.imageAlt || post.title}
           fill
           sizes="100vw"
           className="object-cover"

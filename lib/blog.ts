@@ -8,6 +8,7 @@ export interface BlogPost {
   author: string
   excerpt: string
   image: string
+  imageAlt?: string
   tags: string[]
   readTime: string
   category?: string
@@ -21,6 +22,7 @@ export interface BlogPostMetadata {
   author: string
   excerpt: string
   image: string
+  imageAlt?: string
   tags: string[]
   readTime: string
   category?: string
