@@ -60,7 +60,7 @@ Let's create a folder on your system using DSC v3.
           "type": "File",
           "name": "ExampleFolder",
           "properties": {
-            "DestinationPath": "/tmp/example", // On Windows use "C:\\Temp\\Example"
+            "DestinationPath": "/tmp/example",
             "Ensure": "Present",
             "Type": "Directory"
           }
@@ -82,7 +82,6 @@ You should now have an `ExampleFolder` directory under `/tmp` (or `C:\Temp\Examp
 ## How It Works
 
 - **configuration** block: Defines a DSC configuration in `folder-config.json`.
-- **Import-DscResource**: Loads built-in DSC resources like `File`.
 - **Node localhost**: Targets your local machine.
 - **File resource**: Ensures the specified folder exists.
 - **Apply**: `dsc.exe` reads the configuration and enforces the state on your machine.
