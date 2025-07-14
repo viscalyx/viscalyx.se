@@ -92,6 +92,7 @@ const BlogPage = () => {
     readTime: '5 min read',
     image:
       'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=400&fit=crop&crop=center',
+    imageAlt: 'Person typing on laptop with coffee cup and notebook on desk',
     category: t('fallback.featuredPost.category'),
     slug: 'welcome-to-my-blog',
   }

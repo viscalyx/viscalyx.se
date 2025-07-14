@@ -209,6 +209,7 @@ function getFallbackPost(slug: string): BlogPost | null {
       readTime: '5 min read',
       image:
         'https://images.unsplash.com/photo-1593505681742-8cbb6f44de25?w=1200&h=600&fit=crop&crop=center',
+      imageAlt: 'Code editor with colorful syntax highlighting showing web development',
       category: 'Template',
       tags: ['Template', 'Guide', 'Writing'],
       slug: 'template',
