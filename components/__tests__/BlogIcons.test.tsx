@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import {
   AlertIcon,
   CheckmarkIcon,
@@ -167,57 +167,113 @@ describe('BlogIcons', () => {
   })
 
   describe('getAlertIcon', () => {
-    it('returns correct icon component for each type', () => {
-      // Test note icon
+    it('returns note icon component', () => {
       const NoteComponent = getAlertIcon('note')
       expect(NoteComponent).toBeDefined()
       render(<NoteComponent />)
-      expect(screen.getByRole('img', { name: /note information/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: /note information/i })
+      ).toBeInTheDocument()
+    })
 
-      // Test tip icon
+    it('returns tip icon component', () => {
       const TipComponent = getAlertIcon('tip')
       expect(TipComponent).toBeDefined()
       render(<TipComponent />)
-      expect(screen.getByRole('img', { name: /tip information/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: /tip information/i })
+      ).toBeInTheDocument()
+    })
 
-      // Test important icon
+    it('returns important icon component', () => {
       const ImportantComponent = getAlertIcon('important')
       expect(ImportantComponent).toBeDefined()
       render(<ImportantComponent />)
-      expect(screen.getByRole('img', { name: /important information/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: /important information/i })
+      ).toBeInTheDocument()
+    })
 
-      // Test warning icon
+    it('returns warning icon component', () => {
       const WarningComponent = getAlertIcon('warning')
       expect(WarningComponent).toBeDefined()
       render(<WarningComponent />)
-      expect(screen.getByRole('img', { name: /warning information/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: /warning information/i })
+      ).toBeInTheDocument()
+    })
 
-      // Test caution icon
+    it('returns caution icon component', () => {
       const CautionComponent = getAlertIcon('caution')
       expect(CautionComponent).toBeDefined()
       render(<CautionComponent />)
-      expect(screen.getByRole('img', { name: /caution icon/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('img', { name: /caution icon/i })
+      ).toBeInTheDocument()
     })
 
-    it('handles case insensitive input', () => {
-      const testCases = [
-        { input: 'NOTE', expected: /note information/i },
-        { input: 'TIP', expected: /tip information/i },
-        { input: 'Important', expected: /important information/i },
-        { input: 'nOtE', expected: /note information/i },
-        { input: 'tIp', expected: /tip information/i },
-        { input: 'imPORtant', expected: /important information/i },
-        { input: 'WaRnInG', expected: /warning information/i },
-        { input: 'CaUtIoN', expected: /caution icon/i },
-        { input: 'wArNiNg', expected: /warning information/i },
-        { input: 'cAuTiOn', expected: /caution icon/i },
-      ]
-
-      testCases.forEach(({ input, expected }) => {
+    it('handles case insensitive input for note', () => {
+      const testCases = ['NOTE', 'nOtE']
+      testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
         render(<IconComponent />)
-        expect(screen.getByRole('img', { name: expected })).toBeInTheDocument()
+        expect(
+          screen.getByRole('img', { name: /note information/i })
+        ).toBeInTheDocument()
+        cleanup()
+      })
+    })
+
+    it('handles case insensitive input for tip', () => {
+      const testCases = ['TIP', 'tIp']
+      testCases.forEach(input => {
+        const IconComponent = getAlertIcon(input)
+        expect(IconComponent).toBeDefined()
+        render(<IconComponent />)
+        expect(
+          screen.getByRole('img', { name: /tip information/i })
+        ).toBeInTheDocument()
+        cleanup()
+      })
+    })
+
+    it('handles case insensitive input for important', () => {
+      const testCases = ['Important', 'imPORtant']
+      testCases.forEach(input => {
+        const IconComponent = getAlertIcon(input)
+        expect(IconComponent).toBeDefined()
+        render(<IconComponent />)
+        expect(
+          screen.getByRole('img', { name: /important information/i })
+        ).toBeInTheDocument()
+        cleanup()
+      })
+    })
+
+    it('handles case insensitive input for warning', () => {
+      const testCases = ['WaRnInG', 'wArNiNg']
+      testCases.forEach(input => {
+        const IconComponent = getAlertIcon(input)
+        expect(IconComponent).toBeDefined()
+        render(<IconComponent />)
+        expect(
+          screen.getByRole('img', { name: /warning information/i })
+        ).toBeInTheDocument()
+        cleanup()
+      })
+    })
+
+    it('handles case insensitive input for caution', () => {
+      const testCases = ['CaUtIoN', 'cAuTiOn']
+      testCases.forEach(input => {
+        const IconComponent = getAlertIcon(input)
+        expect(IconComponent).toBeDefined()
+        render(<IconComponent />)
+        expect(
+          screen.getByRole('img', { name: /caution icon/i })
+        ).toBeInTheDocument()
+        cleanup()
       })
     })
 
