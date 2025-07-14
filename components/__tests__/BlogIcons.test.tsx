@@ -168,33 +168,71 @@ describe('BlogIcons', () => {
 
   describe('getAlertIcon', () => {
     it('returns correct icon component for each type', () => {
-      expect(getAlertIcon('note')).toBeDefined()
-      expect(getAlertIcon('tip')).toBeDefined()
-      expect(getAlertIcon('important')).toBeDefined()
-      expect(getAlertIcon('warning')).toBeDefined()
-      expect(getAlertIcon('caution')).toBeDefined()
+      // Test note icon
+      const NoteComponent = getAlertIcon('note')
+      expect(NoteComponent).toBeDefined()
+      render(<NoteComponent />)
+      expect(screen.getByRole('img', { name: /note information/i })).toBeInTheDocument()
+
+      // Test tip icon
+      const TipComponent = getAlertIcon('tip')
+      expect(TipComponent).toBeDefined()
+      render(<TipComponent />)
+      expect(screen.getByRole('img', { name: /tip information/i })).toBeInTheDocument()
+
+      // Test important icon
+      const ImportantComponent = getAlertIcon('important')
+      expect(ImportantComponent).toBeDefined()
+      render(<ImportantComponent />)
+      expect(screen.getByRole('img', { name: /important information/i })).toBeInTheDocument()
+
+      // Test warning icon
+      const WarningComponent = getAlertIcon('warning')
+      expect(WarningComponent).toBeDefined()
+      render(<WarningComponent />)
+      expect(screen.getByRole('img', { name: /warning information/i })).toBeInTheDocument()
+
+      // Test caution icon
+      const CautionComponent = getAlertIcon('caution')
+      expect(CautionComponent).toBeDefined()
+      render(<CautionComponent />)
+      expect(screen.getByRole('img', { name: /caution icon/i })).toBeInTheDocument()
     })
 
     it('handles case insensitive input', () => {
-      expect(getAlertIcon('NOTE')).toBeDefined()
-      expect(getAlertIcon('TIP')).toBeDefined()
-      expect(getAlertIcon('Important')).toBeDefined()
-      expect(getAlertIcon('nOtE')).toBeDefined()
-      expect(getAlertIcon('tIp')).toBeDefined()
-      expect(getAlertIcon('imPORtant')).toBeDefined()
-      expect(getAlertIcon('WaRnInG')).toBeDefined()
-      expect(getAlertIcon('CaUtIoN')).toBeDefined()
-      expect(getAlertIcon('wArNiNg')).toBeDefined()
-      expect(getAlertIcon('cAuTiOn')).toBeDefined()
+      const testCases = [
+        { input: 'NOTE', expected: /note information/i },
+        { input: 'TIP', expected: /tip information/i },
+        { input: 'Important', expected: /important information/i },
+        { input: 'nOtE', expected: /note information/i },
+        { input: 'tIp', expected: /tip information/i },
+        { input: 'imPORtant', expected: /important information/i },
+        { input: 'WaRnInG', expected: /warning information/i },
+        { input: 'CaUtIoN', expected: /caution icon/i },
+        { input: 'wArNiNg', expected: /warning information/i },
+        { input: 'cAuTiOn', expected: /caution icon/i },
+      ]
+
+      testCases.forEach(({ input, expected }) => {
+        const IconComponent = getAlertIcon(input)
+        expect(IconComponent).toBeDefined()
+        render(<IconComponent />)
+        expect(screen.getByRole('img', { name: expected })).toBeInTheDocument()
+      })
     })
 
     it('returns note icon for invalid type', () => {
       const IconComponent = getAlertIcon('invalid')
       expect(IconComponent).toBeDefined()
 
-      const { container } = render(<IconComponent />)
-      const svg = container.querySelector('svg')
-      expect(svg).toBeInTheDocument()
+      render(<IconComponent />)
+      const icon = screen.getByRole('img', { name: /note information/i })
+      expect(icon).toBeInTheDocument()
+      // Verify it's actually the note icon by checking its unique path
+      expect(icon.querySelector('path')).toHaveAttribute(
+        'd',
+        'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+      )
     })
   })
 })
