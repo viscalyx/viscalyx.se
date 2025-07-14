@@ -109,6 +109,7 @@ function usePageTranslations<T>(filePrefix: string) {
   useEffect(() => {
     async function loadTranslations() {
       try {
+        setLoading(true) // Set loading to true when locale changes
         setError(null) // Reset error state on new load
         const data = await import(`../messages/${filePrefix}.${locale}.json`)
         setTranslations(data.default as T)

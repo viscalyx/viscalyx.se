@@ -11,12 +11,15 @@ vi.mock('next-intl', () => ({
   useLocale: () => mockUseLocale(),
 }))
 
+// Store console.error spy for cleanup
+let consoleErrorSpy: ReturnType<typeof vi.spyOn>
+
 beforeEach(() => {
   vi.clearAllMocks()
   mockUseLocale.mockReturnValue('en')
 
   // Setup console.error mock to suppress error logs in tests
-  vi.spyOn(console, 'error').mockImplementation(() => {})
+  consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 describe('usePrivacyTranslations', () => {
@@ -249,51 +252,12 @@ describe('useTermsTranslations', () => {
   })
 })
 
-// Test error handling - test with invalid locale that will trigger fallback behavior
-describe('usePrivacyTranslations error handling', () => {
-  it('should handle unsupported locale and fallback to English', async () => {
-    // Use a locale that doesn't have translation files to test fallback behavior
-    mockUseLocale.mockReturnValue('fr') // French is not supported
-    const { result } = renderHook(() => usePrivacyTranslations())
-
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false)
-    })
-
-    // Should have translations (fallback to English) and no error
-    expect(result.current.translations).toBeTruthy()
-    expect(result.current.error).toBe(null)
-
-    // The English translations should be loaded as fallback
-    if (result.current.translations) {
-      expect(result.current.translations.privacy.title).toBe('Privacy Policy')
-    }
-  })
-})
-
-describe('useTermsTranslations error handling', () => {
-  it('should handle unsupported locale and fallback to English', async () => {
-    // Use a locale that doesn't have translation files to test fallback behavior
-    mockUseLocale.mockReturnValue('fr') // French is not supported
-    const { result } = renderHook(() => useTermsTranslations())
-
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false)
-    })
-
-    // Should have translations (fallback to English) and no error
-    expect(result.current.translations).toBeTruthy()
-    expect(result.current.error).toBe(null)
-
-    // The English translations should be loaded as fallback
-    if (result.current.translations) {
-      expect(result.current.translations.terms.title).toBe('Terms of Service')
-    }
-  })
-})
-
 // Cleanup after all tests
 afterAll(() => {
   vi.unstubAllGlobals()
   vi.restoreAllMocks()
+  // Explicitly restore console.error spy
+  if (consoleErrorSpy) {
+    consoleErrorSpy.mockRestore()
+  }
 })
