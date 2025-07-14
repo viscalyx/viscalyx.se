@@ -4,7 +4,9 @@ date: '2025-07-14'
 author: 'Johan Ljunggren'
 excerpt: 'A beginner-friendly introduction to Desired State Configuration version 3 and how to use it across Windows, Linux, and macOS.'
 image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop&crop=center'
+imageAlt: 'Developer working on code with multiple monitors showing terminal and configuration files'
 tags: ['DSC', 'PowerShell', 'Automation', 'Beginners']
+category: 'Automation'
 readTime: '8 min read'
 ---
 
