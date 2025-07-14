@@ -156,6 +156,30 @@
     @apply text-secondary-900 dark:text-secondary-100 scroll-mt-24;
   }
 
+  /* Table styling for markdown tables */
+  .blog-content table {
+    @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
+    width: auto;
+    min-width: 300px;
+    max-width: 100%;
+  }
+
+  .blog-content th {
+    @apply bg-secondary-50 dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 font-bold px-4 py-3 text-left border border-secondary-200 dark:border-secondary-700;
+  }
+
+  .blog-content td {
+    @apply px-4 py-3 border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300;
+  }
+
+  .blog-content tbody tr:nth-child(even) {
+    @apply bg-secondary-50 dark:bg-secondary-800;
+  }
+
+  .blog-content tbody tr:hover {
+    @apply bg-secondary-100 dark:bg-secondary-700;
+  }
+
   /* Ensure bold and italic text use normal text colors */
   .blog-content strong,
   .blog-content b {
