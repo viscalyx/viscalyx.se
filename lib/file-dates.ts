@@ -14,7 +14,6 @@ export function getStaticPageDates() {
   return {
     home: new Date(pageDatesData.home),
     blog: new Date(pageDatesData.blog),
-    caseStudies: new Date(pageDatesData.caseStudies),
     privacy: new Date(pageDatesData.privacy),
     terms: new Date(pageDatesData.terms),
   }

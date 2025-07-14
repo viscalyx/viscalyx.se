@@ -1,0 +1,57 @@
+{
+  "terms": {
+    "title": "Användarvillkor",
+    "subtitle": "Villkor för användning av våra tjänster",
+    "lastUpdated": "Senast uppdaterad",
+    "sections": {
+      "agreement": {
+        "title": "Godkännande av villkor",
+        "description": "Genom att komma åt och använda denna webbplats accepterar och godkänner du att vara bunden av villkoren i detta avtal."
+      },
+      "services": {
+        "title": "Vår verksamhet",
+        "description": "Viscalyx tillhandahåller professionell konsultation inklusive:",
+        "items": [
+          "DevOps och automationskonsultation",
+          "Anpassad mjukvaruutveckling och integration"
+        ]
+      },
+      "userResponsibilities": {
+        "title": "Användaransvar",
+        "description": "Du samtycker till att:",
+        "items": [
+          "Tillhandahålla korrekt och fullständig information",
+          "Använda våra tjänster endast för lagliga ändamål",
+          "Respektera immateriella rättigheter",
+          "Inte försöka störa våra system eller säkerhet"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "Immateriella rättigheter",
+        "description": "Allt innehåll, varumärken och immateriella rättigheter på denna webbplats ägs av Viscalyx eller våra licensgivare. Du får inte använda vår immateriella egendom utan uttryckligt skriftligt tillstånd."
+      },
+      "limitationOfLiability": {
+        "title": "Ansvarsbegränsning",
+        "description": "Viscalyx ska inte vara ansvarig för några indirekta, tillfälliga, särskilda, följdskador eller straffskador som uppstår från din användning av våra tjänster."
+      },
+      "termination": {
+        "title": "Uppsägning",
+        "description": "Vi förbehåller oss rätten att avsluta eller stänga av tillgången till våra tjänster när som helst, utan förvarning, för beteende som vi anser bryter mot dessa användarvillkor."
+      },
+      "governingLaw": {
+        "title": "Tillämplig lag",
+        "description": "Dessa villkor ska styras och tolkas i enlighet med svensk lag, utan hänsyn till dess bestämmelser om lagkonflikter."
+      },
+      "changes": {
+        "title": "Ändringar av villkor",
+        "description": "Vi förbehåller oss rätten att ändra dessa villkor när som helst. Ändringar träder i kraft omedelbart när de publiceras på denna webbplats."
+      },
+      "contact": {
+        "title": "Kontaktinformation",
+        "description": "Om du har några frågor om dessa användarvillkor, vänligen kontakta oss:",
+        "email": "E-post",
+        "emailAddress": "legal@viscalyx.se"
+      }
+    }
+  }
+}

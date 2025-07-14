@@ -26,12 +26,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/case-studies`,
-      lastModified: staticPageDates.caseStudies,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
     ...['en', 'sv'].map(locale => ({
       url: `${baseUrl}/${locale}/privacy`,
       lastModified: staticPageDates.privacy,

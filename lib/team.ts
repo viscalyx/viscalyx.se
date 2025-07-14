@@ -2,13 +2,9 @@ import {
   BlueskyIcon,
   DiscordIcon,
   GitHubIcon,
-  InstagramIcon,
   LinkedInIcon,
   MastodonIcon,
-  SlackIcon,
-  StackOverflowIcon,
   XIcon,
-  YouTubeIcon,
 } from '@/components/SocialIcons'
 import { Mail } from 'lucide-react'
 
@@ -80,39 +76,39 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
           href: 'https://github.com/johlju',
           icon: GitHubIcon,
         },
-        {
-          name: 'Stack Overflow',
-          href: 'https://stackoverflow.com/users/2397355/johan-ljunggren',
-          icon: StackOverflowIcon,
-        },
-        {
-          name: 'YouTube',
-          href: 'https://youtube.com/@johlju',
-          icon: YouTubeIcon,
-        },
-        {
-          name: 'Slack',
-          href: 'https://dsccommunity.slack.com',
-          icon: SlackIcon,
-        },
+        // {
+        //   name: 'Stack Overflow',
+        //   href: 'https://stackoverflow.com/users/2397355/johan-ljunggren',
+        //   icon: StackOverflowIcon,
+        // },
+        // {
+        //   name: 'YouTube',
+        //   href: 'https://youtube.com/@johlju',
+        //   icon: YouTubeIcon,
+        // },
+        // {
+        //   name: 'Slack',
+        //   href: 'https://dsccommunity.slack.com',
+        //   icon: SlackIcon,
+        // },
       ],
     },
-    {
-      id: 'testsson',
-      name: 'Test Testsson',
-      role: t('members.testsson.role'),
-      image: undefined, // No image available
-      bio: t('members.testsson.bio'),
-      location: 'Sweden',
-      specialties: t.raw('members.testsson.specialties') as string[],
-      socialLinks: [
-        {
-          name: 'Instagram',
-          href: 'https://instagram.com/testtestsson99934201',
-          icon: InstagramIcon,
-        },
-      ],
-    },
+    // {
+    //   id: 'testsson',
+    //   name: 'Test Testsson',
+    //   role: t('members.testsson.role'),
+    //   image: undefined, // No image available
+    //   bio: t('members.testsson.bio'),
+    //   location: 'Sweden',
+    //   specialties: t.raw('members.testsson.specialties') as string[],
+    //   socialLinks: [
+    //     {
+    //       name: 'Instagram',
+    //       href: 'https://instagram.com/testtestsson99934201',
+    //       icon: InstagramIcon,
+    //     },
+    //   ],
+    // },
   ]
 }
 
