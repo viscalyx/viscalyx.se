@@ -26,18 +26,18 @@ Desired State Configuration (DSC) is a PowerShell-based framework that lets you 
 ## Installing DSC v3
 
 1. Download the latest `dsc.exe` from the [DSC GitHub releases](https://github.com/PowerShell/dsc/releases).
-2. Move `dsc.exe` into a folder on your machine (e.g., `C:\dsc` or `~/bin`).
-3. Add it to your PATH:
+1. Move `dsc.exe` into a folder on your machine (e.g., `C:\dsc` or `~/bin`).
+1. Add it to your PATH:
 
-```powershell
-# Windows (PowerShell)
-$env:PATH += ';C:\dsc'
+   ```powershell
+   # Windows (PowerShell)
+   m$env:PATH += ';C:\dsc'
 
-# Linux/macOS (bash/zsh)
-export PATH="$HOME/bin:$PATH"
-```
+   # Linux/macOS (bash/zsh)
+   export PATH="$HOME/bin:$PATH"
+   ```
 
-4. Verify installation:
+1. Verify installation:
 
 ```bash
 $ dsc --version
@@ -50,34 +50,34 @@ Let's create a folder on your system using DSC v3.
 
 1. Create a JSON configuration `folder-config.json` using DSC v3’s schema:
 
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/PowerShell/dsc/main/schema/dsc-config.schema.json",
-  "version": "3.0.0",
-  "nodes": {
-    "localhost": {
-      "resources": [
-        {
-          "module": "PSDesiredStateConfiguration",
-          "type": "File",
-          "name": "ExampleFolder",
-          "properties": {
-            "DestinationPath": "/tmp/example",
-            "Ensure": "Present",
-            "Type": "Directory"
-          }
-        }
-      ]
-    }
-  }
-}
-```
+   ```json
+   {
+     "$schema": "https://raw.githubusercontent.com/PowerShell/dsc/main/schema/dsc-config.schema.json",
+     "version": "3.0.0",
+     "nodes": {
+       "localhost": {
+         "resources": [
+           {
+             "module": "PSDesiredStateConfiguration",
+             "type": "File",
+             "name": "ExampleFolder",
+             "properties": {
+               "DestinationPath": "/tmp/example",
+               "Ensure": "Present",
+               "Type": "Directory"
+             }
+           }
+         ]
+       }
+     }
+   }
+   ```
 
-2. Apply the configuration directly:
+1. Apply the configuration directly:
 
-```bash
-$ dsc config apply ./folder-config.json
-```
+   ```bash
+   $ dsc config apply ./folder-config.json
+   ```
 
 You should now have an `ExampleFolder` directory under `/tmp` (or `C:\Temp\Example` on Windows).
 
