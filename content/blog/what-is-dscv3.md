@@ -81,7 +81,7 @@ Let's create a configuration that gets the current operating system information 
 
 > [!NOTE]
 > It is also possible to get the current state by running `dsc resource get -r Microsoft/OSInfo`
-> without needing a configration file.
+> without needing a configuration file.
 
 ## Conclusion
 
