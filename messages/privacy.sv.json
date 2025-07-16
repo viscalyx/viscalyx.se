@@ -8,7 +8,7 @@
         "title": "Information vi samlar in",
         "description": "Vi samlar automatiskt in begränsad information när du besöker vår webbplats. Vi samlar inte in personlig information som namn, e-postadresser eller kontaktuppgifter eftersom vi inte har kontaktformulär eller användarkonton:",
         "items": [
-          "Bloggläsningsanalyser (artikelvisningar, läsframsteg, tid spenderad på sidor)",
+          "Bloggläsningsanalyser (artikelvisningar, lässtatus, tid spenderad på sidor)",
           "Teknisk information (IP-adress, användaragent, webbläsartyp, hänvisande webbplats)",
           "Geografisk information (land-nivå plats från Cloudflare)",
           "Webbplatspreferenser (tema- och språkinställningar lagrade lokalt i din webbläsare)"
@@ -36,7 +36,7 @@
         "title": "Tredjepartstjänster",
         "description": "Vi använder följande tredjepartstjänster:",
         "items": [
-          "Cloudflare: Tillhandahåller innehållsleverans, säkerhet och grundläggande analyser (inkluderar standardwebbanalysdata)",
+          "Cloudflare: Tillhandahåller innehållsleverans, säkerhet och grundläggande analyser (inkluderar normal webbanalysinformation)",
           "Cloudflare Analytics Engine: Lagrar anonymiserade bloggläsningsmått för innehållsförbättring"
         ]
       },

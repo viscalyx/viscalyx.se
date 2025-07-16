@@ -271,7 +271,7 @@ describe('validateFilePrefix', () => {
     it('converts input to lowercase', () => {
       expect(validateFilePrefix('PRIVACY')).toBe('privacy')
       expect(validateFilePrefix('Terms')).toBe('terms')
-      expect(validateFilePrefix('MixedCase')).toBe('mixedcase')
+      expect(validateFilePrefix('MixedCase')).toBe('mixedcase') // cSpell: disable-line
     })
 
     it('trims whitespace', () => {
@@ -399,7 +399,7 @@ describe('validateFilePrefix', () => {
     it('allows valid names that contain reserved names as substrings', () => {
       expect(validateFilePrefix('configuration')).toBe('configuration')
       expect(validateFilePrefix('contact')).toBe('contact')
-      expect(validateFilePrefix('mainpage')).toBe('mainpage')
+      expect(validateFilePrefix('mainpage')).toBe('mainpage') // cSpell: disable-line
     })
   })
 })

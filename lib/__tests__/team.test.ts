@@ -31,10 +31,10 @@ describe('team utilities', () => {
           return 'Founder & Lead Consultant'
         case 'members.johlju.bio':
           return 'Passionate automation expert with over 30 years of experience in IT.'
-        case 'members.testsson.role':
-          return 'Test Role'
-        case 'members.testsson.bio':
-          return 'Test bio'
+        // case 'members.testsson.role':
+        //   return 'Test Role'
+        // case 'members.testsson.bio':
+        //   return 'Test bio'
         default:
           return key
       }
@@ -44,8 +44,8 @@ describe('team utilities', () => {
       switch (key) {
         case 'members.johlju.specialties':
           return ['PowerShell DSC', 'DevOps', 'Open Source']
-        case 'members.testsson.specialties':
-          return ['Testing', 'Quality Assurance']
+        // case 'members.testsson.specialties':
+        //   return ['Testing', 'Quality Assurance']
         default:
           return []
       }
