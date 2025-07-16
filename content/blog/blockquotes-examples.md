@@ -4,6 +4,7 @@ date: '2025-06-22'
 author: 'Johan Ljunggren'
 excerpt: 'Demonstrates available blockquote styles in Markdown.'
 image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=600&fit=crop&crop=center'
+imageAlt: 'Close-up of a fountain pen writing in cursive on lined paper.'
 tags: ['GitHub', 'Markdown', 'Alerts', 'Examples']
 category: 'Documentation'
 readTime: '3 min read'
