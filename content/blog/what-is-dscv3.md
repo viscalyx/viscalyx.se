@@ -26,72 +26,62 @@ Desired State Configuration (DSC) is a PowerShell-based framework that lets you 
 ## Installing DSC v3
 
 1. Download the latest `dsc.exe` from the [DSC GitHub releases](https://github.com/PowerShell/dsc/releases).
-1. Move `dsc.exe` into a folder on your machine (e.g., `C:\dsc` or `~/bin`).
+1. Move `dsc.exe` into a folder on your machine, e.g.:
+   - Windows: `C:\dsc`
+   - Linux: `/opt/microsoft/dsc`
+   - macOS: `/usr/local/microsoft/dsc`
 1. Add it to your PATH:
 
    ```powershell
    # Windows (PowerShell)
    $env:PATH += ';C:\dsc'
 
-   # Linux/macOS (bash/zsh)
-   export PATH="$HOME/bin:$PATH"
+   # Linux (bash/zsh)
+   ln -s /opt/microsoft/dsc/dsc /usr/local/bin/dsc
+
+    # macOS (bash/zsh)
+   ln -s /usr/local/microsoft/dsc/dsc /usr/local/bin/dsc
    ```
 
 1. Verify installation:
 
    ```bash
    $ dsc --version
-   DSC Engine version 3.x.x
+   dsc x.x.x
    ```
 
-## Quick Start: Create a Folder
+> [!TIP]
+> On Linux and macOS if you are not allowed to execute dsc, make it executable by running
+> `chmod +x /opt/microsoft/dsc/dsc` or `chmod +x /usr/local/microsoft/dsc/dsc` respectively.
 
-Let's create a folder on your system using DSC v3.
+## Quick Start: Get the current state
+
+Let's create a configuration that gets the current operating system information on your system using DSC v3.
 
 1. Create a JSON configuration `folder-config.json` using DSC v3’s schema:
 
    ```json
    {
-     "$schema": "https://raw.githubusercontent.com/PowerShell/dsc/main/schema/dsc-config.schema.json",
-     "version": "3.0.0",
-     "nodes": {
-       "localhost": {
-         "resources": [
-           {
-             "module": "PSDesiredStateConfiguration",
-             "type": "File",
-             "name": "ExampleFolder",
-             "properties": {
-               "DestinationPath": "/tmp/example",
-               "Ensure": "Present",
-               "Type": "Directory"
-             }
-           }
-         ]
+     "$schema": "https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/v3/config/document.json",
+     "resources": [
+       {
+         "name": "MyOSInfo",
+         "type": "Microsoft/OSInfo",
+         "properties": {}
        }
-     }
+     ]
    }
    ```
 
-1. Apply the configuration directly:
+1. Get the current state:
 
    ```bash
-   $ dsc config apply ./folder-config.json
+   dsc config get --file ./folder-config.json --output-format pretty-json
    ```
 
-You should now have an `ExampleFolder` directory under `/tmp` (or `C:\Temp\Example` on Windows).
-
-## How It Works
-
-- **configuration** block: Defines a DSC configuration in `folder-config.json`.
-- **Node localhost**: Targets your local machine.
-- **File resource**: Ensures the specified folder exists.
-- **Apply**: `dsc.exe` reads the configuration and enforces the state on your machine.
-
-## Next Steps
-
-- Explore other DSC resources: `Service`, `Package`, `User`, and more.
-- Automate software installs and service management.
+> [!NOTE]
+> It is also possible to get the current state by running `dsc resource get -r Microsoft/OSInfo`
+> without needing a configration file.
 
 ## Conclusion
 
