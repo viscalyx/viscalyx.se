@@ -1,6 +1,6 @@
 /**
  * Remark plugin for processing GitHub-style blockquote types
- * Converts blockquotes with [!TYPE] syntax into structured alert elements
+ * Converts block quotes with [!TYPE] syntax into structured alert elements
  */
 
 // Alert types configuration

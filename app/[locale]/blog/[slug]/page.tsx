@@ -35,6 +35,7 @@ interface BlogPost {
   date: string | null
   readTime: string
   image: string
+  imageAlt?: string
   category: string
   slug: string
   tags: string[]
@@ -208,6 +209,8 @@ function getFallbackPost(slug: string): BlogPost | null {
       readTime: '5 min read',
       image:
         'https://images.unsplash.com/photo-1593505681742-8cbb6f44de25?w=1200&h=600&fit=crop&crop=center',
+      imageAlt:
+        'Code editor with colorful syntax highlighting showing web development',
       category: 'Template',
       tags: ['Template', 'Guide', 'Writing'],
       slug: 'template',
@@ -481,7 +484,7 @@ const BlogPostContent = ({
       <section className="relative h-96 md:h-[500px]">
         <Image
           src={post.image}
-          alt={post.title}
+          alt={post.imageAlt || post.title}
           fill
           sizes="100vw"
           className="object-cover"
