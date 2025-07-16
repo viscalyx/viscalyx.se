@@ -185,13 +185,13 @@ describe('team utilities', () => {
     })
 
     it('should return correct initials for a three-word name', () => {
-      const initials = getAuthorInitials('Johan Anders Ljunggren')
+      const initials = getAuthorInitials('Johan Carl Ljunggren')
 
       expect(initials).toBe('JA')
     })
 
     it('should return correct initials for a name with many words', () => {
-      const initials = getAuthorInitials('Johan Anders Erik Ljunggren')
+      const initials = getAuthorInitials('Johan Carl Erik Ljunggren')
 
       expect(initials).toBe('JA')
     })
