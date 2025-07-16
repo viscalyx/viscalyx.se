@@ -23,7 +23,7 @@ Regular block quotations are indented passages that are typographically set apar
 
 ## Quote
 
-This style is used to add quotation marks around a quote. References to the source (for example, author, title, and page number) are not yet supported.
+This style adds quotation marks around a passage. Source references (for example, author, title, or page number) are not yet supported.
 
 ```markdown
 > [!QUOTE]
