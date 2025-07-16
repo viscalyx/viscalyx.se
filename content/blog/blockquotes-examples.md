@@ -1,5 +1,5 @@
 ---
-title: 'Block quotes Examples'
+title: 'Block Quotes Examples'
 date: '2025-06-22'
 author: 'Johan Ljunggren'
 excerpt: 'Demonstrates available blockquote styles in Markdown.'
