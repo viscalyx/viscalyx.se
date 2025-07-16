@@ -13,7 +13,7 @@ This post demonstrates the new regular blockquote and GitHub-style markdown aler
 
 ## Regular
 
-Regular block quotations has an indented passage that is typographically set apart on its own:
+Regular block quotations are indented passages that are typographically set apart on their own:
 
 ```markdown
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
