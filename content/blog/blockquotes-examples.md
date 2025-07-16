@@ -14,7 +14,7 @@ This post demonstrates the new regular blockquote and GitHub-style markdown aler
 
 ## Regular
 
-Regular block quotations are indented passages typographically set apart:
+Regular block quotations are indented passages, typographically set apart:
 
 ```markdown
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
@@ -24,7 +24,7 @@ Regular block quotations are indented passages typographically set apart:
 
 ## Quote
 
-This style adds quotation marks around a passage. Source references (for example, author, title, or page number) are not yet supported.
+This style places quotation marks around a passage. Source references (for example, author, title, or page number) are not yet supported.
 
 ```markdown
 > [!QUOTE]
