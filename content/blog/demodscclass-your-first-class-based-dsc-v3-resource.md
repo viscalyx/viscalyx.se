@@ -231,7 +231,10 @@ dsc resource set --resource DemoDscClass/DemoDscClass --output-format json --inp
 
 ### Known issues
 
+#### DSC executable
+
 Currently the get, test and set operation fails if there are any `Write-Verbose`, `Write-Warning`, or `Write-Debug` that return output. You will then get the error `ERROR JSON: expected value at line 1 column 1`.
+See issue [Output during module import or output from Get operaton interrupts the parsing process for class-based resource](https://github.com/PowerShell/DSC/issues/833).
 
 For example if we would add parameter `-Verbose` the above line `Write-Verbose -Message 'Get called'` then the get operation would fail with:
 
