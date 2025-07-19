@@ -4,12 +4,13 @@ date: '2025-07-13'
 author: 'Johan Ljunggren'
 excerpt: 'A step-by-step beginner’s guide to designing, coding, testing, and running your first class-based DSC v3 resource in PowerShell.'
 image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=600&fit=crop&crop=center'
+imageAlt: 'Top-down view of a busy workspace with multiple laptops, smartphones, notebooks, and drinks, surrounded by people working and collaborating.'
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
 category: 'PowerShell'
 readTime: '7 min read'
 ---
 
-> **Objective:** Show a complete beginner how to design, code, test, and run a **class‑based DSC v3 resource** called **DemoDscClass**.
+> **Objective:** Show a complete beginner how to design, code, test, and run a **class‑based DSC v3 resource** called **DemoDscClass**. It is recommended that cross-platform PowerShell is used throughput this guide.
 
 ## What is a DSC resource?
 
@@ -21,19 +22,20 @@ A _DSC resource_ is a building‑block that tells the engine **how** to reach �
 | **`Test()`** | Checks if the state matches the desired state | `$true` if node already matches the desired state |
 | **`Set()`**  | Applies the desired state                     | Nothing – it just fixes things                    |
 
-## Why write a **class‑based** resource?
+## Why write a class‑based resource?
 
 Class-based DSC resources offer a modern, object-oriented approach to configuration management in PowerShell. By writing your resource as a class, you gain several advantages:
 
 - **Broad Compatibility:** Your resource runs seamlessly on both the new **DSC v3** engine (the next-generation, cross-platform Desired State Configuration engine) _and_ the legacy **PSDSC** engine. This means you can support both modern and existing environments without maintaining separate codebases, ensuring backward compatibility for organizations in transition.
 - **Cleaner Code & Reusability:** Classes allow you to encapsulate logic, properties, and methods in a structured way, making your code easier to read, maintain, and extend. You can leverage inheritance and composition for more advanced scenarios.
+- **Cross-Platform Awareness:** To make your resource work on Windows, Linux, or macOS, write simple checks in your `Get()`, `Test()`, and `Set()` methods that detect which operating system you’re on and run the right commands or file paths. This ensures your resource behaves correctly on all platforms.
 
 > [!NOTE]
 > The engine ships with adapters that load class‑based resources even when they target the older v2 runtime.
 
 ### Are class-based resources the future of DSC?
 
-While class-based resources are currently the recommended pattern for PowerShell DSC resource authoring, DSC v3 has broader goals and is evolving to support multiple languages and resource types—not just PowerShell classes. For example, you can author resources in Go, C#, and other languages (see the [DSC v3 documentation](https://powershell.github.io/DSC-Samples/languages/go/first-resource/)). Class-based resources remain well-supported, but may not be the only or primary model in the future.
+While class-based resources are currently the recommended pattern for PowerShell DSC resource authoring, DSC v3 has broader goals and is evolving to support multiple languages and resource types—not just PowerShell classes. For example, you can author resources in Go, C#, Python and other languages (see the [DSC v3 documentation](https://powershell.github.io/DSC-Samples/languages/go/first-resource/)). Class-based resources remain well-supported, but may not be the only or primary model in the future.
 
 For example, if your organization is migrating from Windows-only infrastructure to a mix of Windows and Linux, or adopting newer versions of PowerShell, class-based resources ensure your automation investments remain valid and portable—regardless of whether you are running the new DSC v3 engine or the older PSDSC engine.
 
@@ -45,7 +47,23 @@ DemoDscClass\
 └─ DemoDscClass.psm1    # Module with the class inside
 ```
 
-### Create a module manifest
+> [!IMPORTANT]
+> The module manifest name _must_ be named the same as project folder name (the module name), e.g. _DemoDscClass_.
+
+<!-- Cross-platform setup instructions -->
+
+### Create the project folder (cross-platform)
+
+You can use _Command Prompt_ (Windows), _Windows PowerShell_ (Windows), _PowerShell_ (Windows, macOS, or Linux) or any POSIX shell to set up the folder structure:
+
+```bash
+mkdir DemoDscClass
+cd DemoDscClass
+```
+
+## Create a module manifest
+
+You can use _Windows PowerShell_ (Windows) or _PowerShell_ (Windows, macOS, or Linux) to create the module manifest:
 
 ```powershell
 $manifestParams = @{
@@ -60,9 +78,40 @@ $manifestParams = @{
 New-ModuleManifest @manifestParams
 ```
 
+You could also use any text editor to create the file _DemoDscClass.psd1_ manually:
+
+```powershell
+@{
+    RootModule = 'DemoDscClass.psm1'
+    ModuleVersion = '0.0.1'
+    CompatiblePSEditions = 'Desktop', 'Core'
+    GUID = '03ac4e95-e504-468d-add4-f099e2368239'
+    Author = 'username'
+    CompanyName = 'Unknown'
+    Copyright = '(c) developer. All rights reserved.'
+    PowerShellVersion = '5.1'
+    FunctionsToExport = '*'
+    CmdletsToExport = '*'
+    VariablesToExport = '*'
+    AliasesToExport = '*'
+    DscResourcesToExport = 'DemoDscClass'
+    PrivateData = @{
+        PSData = @{
+        }
+    }
+}
+```
+
+> [!NOTE]
+> There are more properties available and best practices for setting properties
+> in the module manufest than shown here, but this is the same properties and their
+> values set by the command `New-ModuleManifest` and they are the minimum properties
+> needed. Use the command `New-ModuleManifest` to see available properties or read
+> [about_Module_Manifest](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_module_manifests).
+
 ## Author the class
 
-Create _DemoDscClass.psm1_:
+Create _DemoDscClass.psm1_ using any text editor:
 
 ```powershell
 [DscResource()]                   # Marks this class as a DSC resource for the engine
@@ -70,7 +119,9 @@ class DemoDscClass {
     [DscProperty(Key)]            # Declares a key property (must uniquely identify the resource instance), at least one key property is required for all DSC resources
     [System.String] $Key
 
-    DemoDscClass()                # Constructor (optional, can be used for initialization)
+    DemoDscClass() {              # Constructor (optional, can be used for initialization)
+      # init logic here
+    }
 
     [DemoDscClass] Get() {        # Returns the current state as a hashtable
         Write-Verbose -Message 'Get called'
@@ -83,52 +134,87 @@ class DemoDscClass {
     }
 
     [System.Boolean] Test() {     # Checks if the current state matches the desired state
-        Write-Verbose -Message 'Test called – always returns $false to demo Set()'
+        Write-Verbose -Message 'Test called - always returns $false to demo Set()'
 
         return $false             # Always returns false to force Set() for demo
     }
 
     [void] Set() {                # Applies the desired state (no-op in this demo)
-        Write-Verbose 'Set called – no changes are applied for demo'
+        Write-Verbose -Message 'Set called - no changes are applied for demo'
     }
 }
 ```
 
-> [!IMPORTANT]
-> Any initialization logic in the constructor must not fail (throw an error), as this would prevent the PowerShell from creating an instance of the class resource.
-
 ### Code Walk‑through
 
 1. **`[DscResource()]`** – This attribute marks the PowerShell class as a DSC resource, making it discoverable and loadable by the DSC engine. Without this, the engine will ignore the class entirely.
-2. **`[DscProperty(Key)]`** – This attribute designates a property as a _key_ property, which is required for every DSC resource. The key property (or properties) uniquely identifies each instance of the resource, allowing DSC to track and manage multiple resources of the same type. You can have additional properties, but at least one must be marked as `Key`.
-3. **`Get()`** – This method is called by the DSC engine to retrieve the current state of the resource. It should return either a plain hashtable (the most common pattern) or an instance of the DSC resource class itself — both are accepted by the engine. The returned object should describe the current values of all properties. DSC uses this information to compare the actual state with the desired state, enabling it to determine if changes are needed.
-4. **`Test()`** – This method determines whether the current state matches the desired state specified in the configuration. It should return `$true` if no changes are needed (i.e., the system is already in the desired state), or `$false` if `Set()` needs to be called to bring the system into compliance. This is where you implement your logic to check for drift or configuration differences.
-5. **`Set()`** – This method is responsible for applying the desired state. If `Test()` returns `$false`, then the method `Set()` should be called to make the necessary changes. In a real-world resource, this is where you would implement the code to enforce the configuration (e.g., create a file, set a registry key, etc.). In this demo, `Set()` is a no-op for simplicity, but in production resources, it should contain your remediation logic.
+1. **`[DscProperty(Key)]`** – This attribute designates a property as a _key_ property, which is required for every DSC resource. The key property (or properties) uniquely identifies each instance of the resource, allowing DSC to track and manage multiple resources of the same type. You can have additional properties, but at least one must be marked as `Key`. Beside key properties you can have optional, mandatory and read-only properties, read more in [Class-based DSC Resource properties](https://learn.microsoft.com/en-us/powershell/dsc/concepts/class-based-resources?view=dsc-2.0#class-based-dsc-resource-properties).
+1. **`DemoDscClass()`** - This is the class constructor. A constructor is a special method in a class that runs automatically when you create a new object from that class. Its main job is to set up the initial state of the object—like assigning default values to properties or running setup code—so your object is ready to use right away. Think of it as the instructions for building and preparing your object when you first make it.
+1. **`Get()`** – This method is called by the DSC engine to retrieve the current state of the resource instance. It should return either a plain hashtable (the most common pattern) or an instance of the DSC resource class itself — both are accepted by the engine. The returned object should describe the current values of all properties managed by the resource.
+1. **`Test()`** – This method determines whether the current state matches the desired state specified in the configuration. It should return `$true` if no changes are needed (i.e., the system is already in the desired state), or `$false` if `Set()` needs to be called to bring the system into compliance. This is where you implement your logic to check for drift or configuration differences.
+1. **`Set()`** – This method is responsible for applying the desired state. If `Test()` returns `$false`, then the method `Set()` should be called to make the necessary changes. In a production resource, this is where you would implement the code to enforce the configuration (e.g., create a file, set a registry key, etc.), it should contain your remediation logic. When calling set operation from the DSC executable it will also call `Get()`, so any error in `Get()` could potentially make set operaion fail. In this demo, `Set()` is a no-op for simplicity.
 
-## Smoke‑test locally with `dsc.exe`
+> [!IMPORTANT]
+> Any initialization logic in the constructor must not fail (throw an error), as this would prevent the PowerShell from creating an instance of the class resource.
 
-Install the DSCv3 engine:
+## Smoke‑test locally with DSC executable
+
+### Install DSC executable
+
+You can use the community module _PSDSC_ to install the DSC v3 executable
+from _PowerShell_ (not _Windows PowerShell_). Once installed you can run
+the DSC executable from any shell.
+
+To install the latest version (a preview if newest) of the DSC v3 engine, run the following:
 
 ```powershell
 Install-PSResource PSDSC -TrustRepository -Quiet
 Install-DscExe -IncludePrerelease -Force
-$env:PATH += ';' + (Join-Path $env:LOCALAPPDATA 'dsc')
+dsc --version
 ```
 
 > [!NOTE]
-> This installs the latest full or preview version. Remove `-IncludePrerelease` to intstall latest full version.
+> You can find additional ways to install dsc executable in [Installing DSCv3](https://github.com/PowerShell/Dsc?tab=readme-ov-file#installing-dscv3).
 
-### List resources
+#### Troubleshooting DSC executable
+
+If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contain the path to the DSC executable in you current PowerShell session:
 
 ```powershell
-dsc resource list --adapter Microsoft.Windows/WindowsPowerShell
+$env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 ```
+
+To persist this change across sessions, either add the same line to your PowerShell profile (`$PROFILE`) or update you machine or user environment variable `PATH` to use the dsc executable from any shell.
+
+For Linux POSIX shells (e.g., bash, zsh), the path to the `dsc` executable was symbolic linked from _/usr/local/bin_ by `Install-DscExe`, it should work from any shell.
+
+## Make sure PowerShell can find your resource
+
+Before you list your DSC resource, you need to make sure PowerShell knows where to look for it. This is done by adding the folder where your resource lives to the `$env:PATH` variable. This step helps PowerShell discover your module, especially when working in a new folder or after creating your resource for the first time.
+
+Open PowerShell and make sure you are in the project folder you created, then run:
+
+```powershell
+$env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Location) -Parent)
+```
+
+This command adds your current folder to the search path. Now, PowerShell can find your DSC resource when you list or use it.
+
+## List resources
+
+To see all available DSC resources, run:
+
+```powershell
+dsc resource list --adapter Microsoft.DSC/PowerShell
+```
+
+You should now see the _DemoDscClass_ in the resource list.
 
 > [!NOTE]
 > **Note on Adapters:**
-> In DSC v3, an adapter acts as a bridge between the DSC engine and different resource types or execution environments. For example, the Microsoft.Windows/WindowsPowerShell adapter allows the engine to discover and run traditional PowerShell-based DSC resources—even on the new cross-platform DSC engine. This ensures compatibility with existing resources and enables a smooth transition to newer DSC models, letting you leverage both legacy and modern configurations within the same environment.
+> In DSC v3, an adapter acts as a bridge between the DSC engine and different resource types or execution environments. For example, the Microsoft.DSC/PowerShell adapter allows the engine to discover and run traditional PowerShell-based DSC resources—even on the new cross-platform DSC engine. This ensures compatibility with existing resources and enables a smooth transition to newer DSC models, letting you leverage both legacy and modern configurations within the same environment.
 
-### Invoke each lifecycle method
+## Invoke each lifecycle operation
 
 ```powershell
 $desiredParameters = @{ Key = 'Demo' } | ConvertTo-Json -Compress
@@ -143,9 +229,21 @@ dsc resource set --resource DemoDscClass/DemoDscClass --output-format json --inp
 > [!TIP]
 > To see tracelogs add the argument `--trace-level trace`, e.g. `dsc --trace-level trace resource get`. The different trace levels are: `error`, `warning` (default), `info`, `debug`, `trace`.
 
-### Invoke using configuration
+### Known issues
 
-#### Syntax for instance definition
+Currently the get, test and set operation fails if there are any `Write-Verbose`, `Write-Warning`, or `Write-Debug` that return output. You will then get the error `ERROR JSON: expected value at line 1 column 1`.
+
+For example if we would add parameter `-Verbose` the above line `Write-Verbose -Message 'Get called'` then the get operation would fail with:
+
+```
+ERROR Operation: Failed to parse JSON from 'get': executable = 'pwsh' stdout = 'VERBOSE: Get called
+{"result":[{"name":"DemoDscClass/DemoDscClass","type":"DemoDscClass/DemoDscClass","properties":{"Key":"Demo"}}]}
+' stderr = '' -> expected value at line 1 column 1
+```
+
+## Invoke using configuration
+
+### Syntax for instance definition
 
 > [!TIP]
 > More information about instance definition syntax and resource configuration can be found here: [Microsoft.Windows/WindowsPowerShell DSC Resource Reference](https://learn.microsoft.com/sv-se/powershell/dsc/reference/resources/microsoft/windows/windowspowershell).
@@ -171,7 +269,7 @@ resources:
 dsc config invoke --configuration demo-config.yaml --output-format json
 ```
 
-#### Implicit custom syntax for instance definition
+### Implicit custom syntax for instance definition
 
 Create _demo-implicit-config.yaml_:
 
