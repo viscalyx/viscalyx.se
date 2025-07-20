@@ -10,7 +10,7 @@ category: 'PowerShell'
 readTime: '7 min read'
 ---
 
-> **Objective:** Show a complete beginner how to design, code, test, and run a **class‑based DSC v3 resource** called **DemoDscClass**. It is recommended that cross-platform PowerShell is used throughput this guide.
+> **Objective:** Show a complete beginner how to design, code, test, and run a **class‑based DSC v3 resource** called **DemoDscClass**. It is recommended that cross-platform PowerShell is used throughout this guide.
 
 ## What is a DSC resource?
 
@@ -104,7 +104,7 @@ You could also use any text editor to create the file _DemoDscClass.psd1_ manual
 
 > [!NOTE]
 > There are more properties available and best practices for setting properties
-> in the module manufest than shown here, but this is the same properties and their
+> in the module manifest than shown here, but this is the same properties and their
 > values set by the command `New-ModuleManifest` and they are the minimum properties
 > needed. Use the command `New-ModuleManifest` to see available properties or read
 > [about_Module_Manifest](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_module_manifests).
@@ -152,7 +152,7 @@ class DemoDscClass {
 1. **`DemoDscClass()`** - This is the class constructor. A constructor is a special method in a class that runs automatically when you create a new object from that class. Its main job is to set up the initial state of the object—like assigning default values to properties or running setup code—so your object is ready to use right away. Think of it as the instructions for building and preparing your object when you first make it.
 1. **`Get()`** – This method is called by the DSC engine to retrieve the current state of the resource instance. It should return either a plain hashtable (the most common pattern) or an instance of the DSC resource class itself — both are accepted by the engine. The returned object should describe the current values of all properties managed by the resource.
 1. **`Test()`** – This method determines whether the current state matches the desired state specified in the configuration. It should return `$true` if no changes are needed (i.e., the system is already in the desired state), or `$false` if `Set()` needs to be called to bring the system into compliance. This is where you implement your logic to check for drift or configuration differences.
-1. **`Set()`** – This method is responsible for applying the desired state. If `Test()` returns `$false`, then the method `Set()` should be called to make the necessary changes. In a production resource, this is where you would implement the code to enforce the configuration (e.g., create a file, set a registry key, etc.), it should contain your remediation logic. When calling set operation from the DSC executable it will also call `Get()`, so any error in `Get()` could potentially make set operaion fail. In this demo, `Set()` is a no-op for simplicity.
+1. **`Set()`** – This method is responsible for applying the desired state. If `Test()` returns `$false`, then the method `Set()` should be called to make the necessary changes. In a production resource, this is where you would implement the code to enforce the configuration (e.g., create a file, set a registry key, etc.), it should contain your remediation logic. When calling set operation from the DSC executable it will also call `Get()`, so any error in `Get()` could potentially make set operation fail. In this demo, `Set()` is a no-op for simplicity.
 
 > [!IMPORTANT]
 > Any initialization logic in the constructor must not fail (throw an error), as this would prevent the PowerShell from creating an instance of the class resource.
@@ -186,7 +186,7 @@ $env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 
 To persist this change across sessions, either add the same line to your PowerShell profile (`$PROFILE`) or update you machine or user environment variable `PATH` to use the dsc executable from any shell.
 
-For Linux POSIX shells (e.g., bash, zsh), the path to the `dsc` executable was symbolic linked from _/usr/local/bin_ by `Install-DscExe`, it should work from any shell.
+For Linux POSIX shells (e.g., bash, zsh), the path to the `dsc` executable was symbolically linked from _/usr/local/bin_ by `Install-DscExe`, it should work from any shell.
 
 ## Make sure PowerShell can find your resource
 
