@@ -1,6 +1,6 @@
 ---
 title: 'Automating SQL Server Power BI Report Server with DSC v3 – Three Invocation Patterns for Seasoned Engineers'
-date: '2024-07-20'
+date: '2025-07-20'
 author: 'Johan Ljunggren'
 excerpt: 'Explore three advanced patterns for automating SQL Server Power BI Report Server deployments using DSC v3: imperative, declarative, and Winget-based approaches.'
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
@@ -18,45 +18,41 @@ readTime: '8 min read'
 ---
 
 > **Audience:** infrastructure engineers comfortable with PowerShell, CI pipelines and automated SQL Server deployments.
->
-> **Scope:** demonstrate **SqlRSSetup** on DSC v3 when executed:
->
-> 1. **Imperatively** – _direct_ `dsc resource set`
-> 2. **Declaratively** – in a DSC v3 _configuration_
-> 3. **Winget Configuration** – as part of a machine bootstrap with `winget configure`
+
+## Scope
+
+Demonstrate **SqlRSSetup** on DSC v3 when executed:
+
+1. **Imperatively** – _direct_ `dsc resource set`
+1. **Declaratively** – in a DSC v3 _configuration_
+1. **Winget Configuration** – as part of a machine bootstrap with `winget configure`
 
 ## Baseline environment
 
-| Component               | Minimum version  | Notes                            |
-| ----------------------- | ---------------- | -------------------------------- |
-| PowerShell              | 7.4              | Engine host                      |
-| DSC v3                  | v3.2.0-preview.2 | Install via `Install-DscExe`     |
-| SqlServerDsc            | 16.4.x           | Contains **SqlRSSetup** resource |
-| Power BI Report Server  | 2022 / 2019      | Local or UNC path                |
-| Windows Package Manager | 1.11             | For winget scenario              |
+| Component               | Minimum version  | Notes                                                             |
+| ----------------------- | ---------------- | ----------------------------------------------------------------- |
+| Windows Server          | 2025             | Operating system for deployment (only required to support WinGet) |
+| PowerShell              | 7.5.x            | Engine host                                                       |
+| DSC v3                  | v3.2.0-preview.2 | Required for modern invocation patterns                           |
+| SqlServerDsc            | 17.1.x           | Contains **SqlRSSetup** resource                                  |
+| Power BI Report Server  | v15.x            | Setup media need to be available by local or UNC path             |
+| Windows Package Manager | 1.11             | For WinGet scenario (requires Windows Server 2025)                |
 
-> [!Tip]
-> Keep previews side‑by‑side – pin exact DSC v3 and SqlServerDsc versions in CI to avoid drift.
-
-### Install DSC v3
-
-```powershell
-Install-PSResource PSDSC -TrustRepository -Quiet
-Install-DscExe -IncludePrerelease -Force
-$env:PATH += ';' + (Join-Path $env:LOCALAPPDATA 'dsc')
-```
+> [!NOTE]
+> For instructions on installing DSC v3, see the "Install DSC executable" section in [DemoDscClass: Your First Class-based DSC v3 Resource](/blog/demodscclass-your-first-class-based-dsc-v3-resource#install-dsc-executable).
 
 ### Install SqlServerDsc
 
 ```powershell
-Install-PSResource SqlServerDsc -RequiredVersion 16.4.0 -Force
+Install-PSResource SqlServerDsc -RequiredVersion 17.1.0 -Force
 ```
 
-### Install PowerBI Report Server
+### Download PowerBI Report Server
 
 ```powershell
 $url = 'https://download.microsoft.com/download/2/7/3/2739a88a-4769-4700-8748-1a01ddf60974/PowerBIReportServer.exe'
-$script:mediaFile = Save-SqlDscSqlServerMediaFile -SkipExecution -Url $url -FileName 'PowerBIReportServer.exe' -DestinationPath (Get-TemporaryFolder) -Force -Quiet -ErrorAction 'Stop'
+$script:mediaFile = Get-TemporaryFolder
+Save-SqlDscSqlServerMediaFile -SkipExecution -Url $url -FileName 'PowerBIReportServer.exe' -DestinationPath $script:mediaFile -Force -ErrorAction 'Stop'
 ```
 
 ## Pattern 1 – One‑shot imperative call
@@ -153,7 +149,7 @@ Winget handles:
 ### Good to know
 
 - Telemetry and state land under `%LOCALAPPDATA%\Microsoft\Winget\Configuration\Logs`.
-- Use MSTIC logs to pipe failures into SIEM.
+- Use these logs to send failures to a SIEM.
 
 ## Takeaways
 
