@@ -14,13 +14,14 @@ readTime: '7 min read'
 
 ## What is a DSC resource?
 
-A _DSC resource_ is a building‑block that tells the engine **how** to reach – and stay in – a desired state. Think of it as a PowerShell class with three lifecycle methods:
+A _DSC resource_ is a building-block that tells the engine **how** to reach – and stay in – a desired state. Think of it as a PowerShell class with four lifecycle methods:
 
-| Method       | When used                                     | What it returns                                   |
-| ------------ | --------------------------------------------- | ------------------------------------------------- |
-| **`Get()`**  | Returns the current state                     | A hashtable describing _current_ state            |
-| **`Test()`** | Checks if the state matches the desired state | `$true` if node already matches the desired state |
-| **`Set()`**  | Applies the desired state                     | Nothing – it just fixes things                    |
+| Method         | When used                                     | What it returns                                                            |
+| -------------- | --------------------------------------------- | -------------------------------------------------------------------------- |
+| **`Get()`**    | Returns the current state                     | A hashtable describing _current_ state                                     |
+| **`Test()`**   | Checks if the state matches the desired state | `$true` if node already matches the desired state                          |
+| **`Set()`**    | Applies the desired state                     | Nothing – it just fixes things                                             |
+| **`Export()`** | Exports the current configuration state       | An array of resource class instances representing the configured resources |
 
 ## Why write a class‑based resource?
 
@@ -119,11 +120,14 @@ class DemoDscClass {
     [DscProperty(Key)]            # Declares a key property (must uniquely identify the resource instance), at least one key property is required for all DSC resources
     [System.String] $Key
 
+    [DscProperty()]               # Declares an optional property
+    [System.String] $OptionalProperty
+
     DemoDscClass() {              # Constructor (optional, can be used for initialization)
       # init logic here
     }
 
-    [DemoDscClass] Get() {        # Returns the current state as a hashtable
+    [DemoDscClass] Get() {        # Returns the current state as a hashtable (DSC accepts either a class instance or a hashtable)
         Write-Verbose -Message 'Get called'
 
         $currentState = @{        # Set properties to the current state
@@ -142,6 +146,23 @@ class DemoDscClass {
     [void] Set() {                # Applies the desired state (no-op in this demo)
         Write-Verbose -Message 'Set called - no changes are applied for demo'
     }
+
+    static [DemoDscClass[]] Export() {    # Exports the configuration state for DSC v3
+        Write-Verbose -Message 'Export called - demo returns no instances'
+
+        $resultList = [System.Collections.Generic.List[DemoDscClass]]::new()
+
+        # In a real resource, return an array of actual resource instances
+        1..3 | ForEach-Object -Process {
+            $obj = New-Object DemoDscClass
+            $obj.Key = 'Demo{0}' -f $_
+            $obj.OptionalProperty = 'Value of OptionalProperty for Demo{0}' -f $_
+
+            $resultList.Add($obj)
+        }
+
+        return $resultList.ToArray()
+    }
 }
 ```
 
@@ -153,6 +174,7 @@ class DemoDscClass {
 1. **`Get()`** – This method is called by the DSC engine to retrieve the current state of the resource instance. It should return either a plain hashtable (the most common pattern) or an instance of the DSC resource class itself — both are accepted by the engine. The returned object should describe the current values of all properties managed by the resource.
 1. **`Test()`** – This method determines whether the current state matches the desired state specified in the configuration. It should return `$true` if no changes are needed (i.e., the system is already in the desired state), or `$false` if `Set()` needs to be called to bring the system into compliance. This is where you implement your logic to check for drift or configuration differences.
 1. **`Set()`** – This method is responsible for applying the desired state. If `Test()` returns `$false`, then the method `Set()` should be called to make the necessary changes. In a production resource, this is where you would implement the code to enforce the configuration (e.g., create a file, set a registry key, etc.), it should contain your remediation logic. When calling set operation from the DSC executable it will also call `Get()`, so any error in `Get()` could potentially make set operation fail. In this demo, `Set()` is a no-op for simplicity.
+1. **`Export()`** – This static method is used by DSC v3 to export the current configuration state. It should return an array of resource class instances representing existing resource instances, allowing DSC to retrieve a complete snapshot of all managed resources in the system.
 
 > [!IMPORTANT]
 > Any initialization logic in the constructor must not fail (throw an error), as this would prevent the PowerShell from creating an instance of the class resource.
@@ -208,7 +230,7 @@ To see all available DSC resources, run:
 dsc resource list --adapter Microsoft.DSC/PowerShell
 ```
 
-You should now see the _DemoDscClass_ in the resource list.
+You should now see the _DemoDscClass_ in the resource list. It should show that it supports the capabilities get, test and set. Due to sa bug in DSC v3 it does not recognize that we have implemented the capability _export_. This is just a visual reporting bug, DSC v3 will still be able to use the _export_ capability.
 
 > [!NOTE]
 > **Note on Adapters:**
@@ -224,6 +246,8 @@ dsc resource get --resource DemoDscClass/DemoDscClass --output-format json --inp
 dsc resource test --resource DemoDscClass/DemoDscClass --output-format json --input $desiredParameters
 
 dsc resource set --resource DemoDscClass/DemoDscClass --output-format json --input $desiredParameters
+
+dsc resource export --resource DemoDscClass/DemoDscClass --output-format json
 ```
 
 > [!TIP]
@@ -246,20 +270,24 @@ ERROR Operation: Failed to parse JSON from 'get': executable = 'pwsh' stdout = '
 
 ## Invoke using configuration
 
+Here’s an easy way to group your DSC commands into a simple YAML file. It might look a bit mysterious at first, but think of it as giving DSC a recipe to follow so you don’t have to type each command separately.
+
 ### Syntax for instance definition
 
-> [!TIP]
-> More information about instance definition syntax and resource configuration can be found here: [Microsoft.Windows/WindowsPowerShell DSC Resource Reference](https://learn.microsoft.com/sv-se/powershell/dsc/reference/resources/microsoft/windows/windowspowershell).
->
-> For details on the configuration document schema and structure, see: [DSC Configuration Document Schema Reference](https://learn.microsoft.com/sv-se/powershell/dsc/reference/schemas/config/document).
+First, we write down what resources we want and their settings in a YAML file. Think of this as writing clear instructions that DSC will read and execute.
 
-Create _demo-config.yaml_:
+> [!TIP]
+> More information about instance definition syntax and resource configuration can be found here: [MMicrosoft.DSC/PowerShell](https://learn.microsoft.com/en-us/powershell/dsc/reference/resources/microsoft/dsc/powershell).
+>
+> For details on the configuration document schema and structure, see: [DSC Configuration Document Schema Reference](https://learn.microsoft.com/en-us/powershell/dsc/reference/schemas/config/document).
+
+Open a text editor, create a new file called `demo-config.yaml`, and paste in the following content:
 
 ```yaml
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2024/04/config/document.json
 resources:
   - name: Demo Dsc Class
-    type: Microsoft.Windows/WindowsPowerShell
+    type: Microsoft.DSC/PowerShell
     properties:
       resources:
         - name: Demo Dsc Class 1
@@ -268,11 +296,35 @@ resources:
             Key: Demo
 ```
 
-```powershell
-dsc config invoke --configuration demo-config.yaml --output-format json
+Great! Now that the YAML file is saved, let’s run some commands to see how DSC interprets it:
+
+```sh
+dsc config get --file demo-config.yaml --output-format json
 ```
 
+This command tells DSC to read the `demo-config.yaml` file and show you (in JSON) what it thinks the current state should look like. It’s like a dry run to check your setup.
+
+```sh
+dsc config test --file demo-config.yaml --output-format json
+```
+
+Here, DSC checks if the actual system state matches the desired state in your YAML. It will return `true` if everything is already good, or `false` if something needs fixing.
+
+```sh
+dsc config set --file demo-config.yaml --output-format json
+```
+
+This one applies the changes. Think of it as telling DSC, “Go ahead and make my system look like the YAML describes.” It won’t crash the real system in this demo, but in a real scenario it would.
+
+```sh
+dsc config export --file demo-config.yaml --output-format json
+```
+
+Finally, DSC exports the full configuration it applied (or would apply) in JSON format. This is helpful if you want to save or inspect the resulting state, or get a baseline configuration.
+
 ### Implicit custom syntax for instance definition
+
+If you prefer a shorter way, you can use an implicit syntax. It’s like a shortcut: you don’t need a wrapper, just list your resource directly.
 
 Create _demo-implicit-config.yaml_:
 
@@ -285,13 +337,24 @@ resources:
       Key: Demo
 ```
 
-To apply this configuration with the DSC v3 engine, save it as `demo-implicit-config.yaml` and run:
+This tiny YAML file does the same thing as before but with less typing. Run the configuration file with the same commands as above.
+
+## Write a quick Pester integration test
+
+Pester is the de facto testing framework for PowerShell. It helps you write and run automated tests for scripts, modules, and DSC resources to ensure your code works as expected. In this section, we’ll install Pester, create a simple test script, and run it to confirm that our `DemoDscClass` resource’s `Get()` method returns the correct `Key` value.
+
+Here’s an overview of the test structure:
+
+- **BeforeAll**: Runs once before any tests to set up the testing environment (import module, configure paths).
+- **Describe**: Defines a test suite or group of related tests.
+- **Context**: Divides the test suite into logical sections, grouping related test cases for specific methods (e.g., `Get()` and `Export()`).
+- **It**: Defines an individual test case with assertions using `Should`.
+
+### Install Pester module
 
 ```powershell
-dsc config invoke --configuration demo-implicit-config.yaml --output-format json
+Install-PSResource -Name Pester
 ```
-
-## Write a quick Pester test
 
 Create _DemoDscClass.tests.ps1_:
 
@@ -303,19 +366,45 @@ BeforeAll {
 }
 
 Describe 'DemoDscClass' {
-    It 'Returns the same Key in Get()' {
-        $desiredParameters = @{ Key = 'X' } | ConvertTo-Json -Compress
-        $out = dsc resource get --resource DemoDscClass/DemoDscClass --output-format json --input $desiredParameters
-        $out.Key | Should -Be 'X'
+    Context 'Get() method' {
+        It 'Returns the same Key in Get()' {
+            $desiredParameters = @{ Key = 'X' } | ConvertTo-Json -Compress
+
+            $out = dsc resource get --resource DemoDscClass/DemoDscClass --output-format json --input $desiredParameters | ConvertFrom-Json
+
+            $out.actualState.Key | Should -Be 'X'
+        }
+    }
+
+    Context 'Export() method' {
+        It 'Returns multiple instances in Export()' {
+            $desiredParameters = @{ Key = 'X' } | ConvertTo-Json -Compress
+            $outArray = dsc resource export --resource DemoDscClass/DemoDscClass --output-format json | ConvertFrom-Json
+
+            $outArray.resources | Should -HaveCount 3
+
+            $outArray.resources[0].properties.Key | Should -BeLike 'Demo*'
+        }
     }
 }
 ```
 
-Run:
+Once the test script is saved, you can run it with Pester:
 
 ```powershell
-Invoke-Pester -CI -Output Detailed
+Invoke-Pester -Script ./DemoDscClass.tests.ps1 -Output Detailed
 ```
+
+To understand what happens in the test script:
+
+- The **BeforeAll** block runs once at the start. We set `$modulePath` and import our DSC module so that the `dsc` command can find and use the `DemoDscClass` definition.
+- The **Describe** block defines the overall test suite for `DemoDscClass`.
+- The **Context** blocks divide our suite into logical sections, grouping related test cases for specific methods (e.g., `Get()` and `Export()`), which makes tests easier to navigate.
+- The **It** block contains the actual test case, where we perform the action and assert the expected result using `Should`.
+
+You can extend this test file with more cases. For example, to verify the `Test()` and `Set()` methods.
+
+This approach lets you build confidence in each resource method by writing focused, easy-to-read tests.
 
 > [!IMPORTANT]
 > **If you change the class definition, you must restart your PowerShell session.** PowerShell cannot reload or update a class that has already been loaded in the current session. Any changes to the class (such as adding properties or logic in methods) will not take effect until you start a new session. For automated testing or development, see [Invoke‑PesterJob](https://github.com/viscalyx/Viscalyx.Common/wiki/Invoke%E2%80%91PesterJob) for a helper that can run tests in a fresh session automatically.
@@ -328,9 +417,33 @@ To share your DSC resource with others or make it available for installation via
 Publish-PSResource -Path .\ -Repository PSGallery -ApiKey <PAT>
 ```
 
-## Next steps
+## Additional reading
 
-- Add **non‑key** properties and additional logic in the methods. See [Writing a custom DSC resource with PowerShell classes](https://learn.microsoft.com/en-us/powershell/dsc/resources/authoringresourceclass?view=dsc-1.1) for more information.
-- Tie the resource into a real **DSC v3 configuration** once it does something useful.
+To deepen your understanding, check out the following resources:
 
-Congratulations – you have built, tested and executed your very first class‑based DSC v3 resource!
+- [Writing a custom DSC resource with PowerShell classes](https://learn.microsoft.com/en-us/powershell/dsc/resources/authoringresourceclass?view=dsc-1.1) – Official Microsoft guide on class-based DSC resources.
+- [DSC v3 Samples on GitHub](https://github.com/PowerShell/DSC-Samples) – Explore real-world examples in various languages (Go, C#, Python).
+- [Pester Testing Framework](https://pester.dev/) – Learn how to write tests for your DSC resources.
+- [DSC Configuration Document Schema Reference](https://learn.microsoft.com/en-us/powershell/dsc/reference/schemas/config/document) – Understand the YAML schema for configuration files.
+- [Schema examples](https://github.com/PowerShell/DSC/tree/main/dsc/examples) - Learn from community schemas.
+
+## Conclusion
+
+Congratulations – you have built, tested, and executed your very first class-based DSC v3 resource!
+
+By following this guide, you have learned how to:
+
+1. Create a project folder and module manifest.
+1. Author a PowerShell class with `Get()`, `Test()`, `Set()`, and `Export()` methods.
+1. Perform smoke tests using the DSC executable.
+1. Define configuration files in YAML and run them.
+1. Write Pester tests to verify resource behavior.
+
+Next steps for a novice:
+
+- Extend `DemoDscClass` with additional properties and real-world logic, such as file or registry management.
+- Implement more robust checks in `Test()` to detect actual configuration drift.
+- Practice packaging and publishing your module to the PowerShell Gallery.
+- Engage with the PowerShell DSC community through blogs, forums, and GitHub.
+
+With these fundamentals in place, you’re well on your way to creating powerful, cross-platform DSC resources. Happy scripting!
