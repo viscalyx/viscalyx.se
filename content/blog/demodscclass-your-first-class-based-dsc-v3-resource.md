@@ -57,7 +57,7 @@ DemoDscClass\
 
 You can use _Command Prompt_ (Windows), _Windows PowerShell_ (Windows), _PowerShell_ (Windows, macOS, or Linux) or any POSIX shell to set up the folder structure:
 
-```bash
+```sh
 mkdir DemoDscClass
 cd DemoDscClass
 ```
@@ -148,7 +148,7 @@ class DemoDscClass {
     }
 
     static [DemoDscClass[]] Export() {    # Exports the configuration state for DSC v3
-        Write-Verbose -Message 'Export called - demo returns no instances'
+        Write-Verbose -Message 'Export called - returning three demo instances'
 
         $resultList = [System.Collections.Generic.List[DemoDscClass]]::new()
 
@@ -203,7 +203,7 @@ dsc --version
 If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contains the path to the DSC executable in your current PowerShell session:
 
 ```powershell
-$env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
+$env:PATH += [System.IO.Path]::PathSeparator + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 ```
 
 To persist this change across sessions, either add the same line to your PowerShell profile (`$PROFILE`) or update your machine or user environment variable `PATH` to use the dsc executable from any shell.
