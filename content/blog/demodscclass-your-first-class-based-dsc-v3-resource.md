@@ -105,10 +105,10 @@ You could also use any text editor to create the file _DemoDscClass.psd1_ manual
 
 > [!NOTE]
 > There are more properties available and best practices for setting properties
-> in the module manifest than shown here, but this is the same properties and their
-> values set by the command `New-ModuleManifest` and they are the minimum properties
-> needed. Use the command `New-ModuleManifest` to see available properties or read
-> [about_Module_Manifest](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_module_manifests).
+> in the module manifest than shown here, but these are the same properties and
+> values set by `New-ModuleManifest`, and they are the minimum required. Use
+> the command `New-ModuleManifest` to output a module manifest to see available
+> properties or read the article [about_Module_Manifest](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_module_manifests).
 
 ## Author the class
 
