@@ -185,7 +185,7 @@ CautionIcon.displayName = 'CautionIcon'
 ChevronUpIcon.displayName = 'ChevronUpIcon'
 ChevronDownIcon.displayName = 'ChevronDownIcon'
 
-// Alert Icon component for blog alerts/blockquotes
+// Alert Icon component for blog alerts/block quotes
 export interface AlertIconProps extends BlogIconProps {
   type: 'note' | 'tip' | 'important' | 'warning' | 'caution'
 }

@@ -1,9 +1,10 @@
 ---
-title: 'Blockquotes Examples'
+title: 'Block Quotes Examples'
 date: '2025-06-22'
 author: 'Johan Ljunggren'
 excerpt: 'Demonstrates available blockquote styles in Markdown.'
 image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=600&fit=crop&crop=center'
+imageAlt: 'Close-up of a fountain pen writing in cursive on lined paper.'
 tags: ['GitHub', 'Markdown', 'Alerts', 'Examples']
 category: 'Documentation'
 readTime: '3 min read'
@@ -11,9 +12,9 @@ readTime: '3 min read'
 
 This post demonstrates the new regular blockquote and GitHub-style markdown alerts that support different types with distinct colors and icons.
 
-## Regular Blockquotes
+## Regular
 
-Regular blockquotes without the special syntax still work as before:
+Regular block quotations are indented passages, typographically set apart:
 
 ```markdown
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
@@ -21,7 +22,9 @@ Regular blockquotes without the special syntax still work as before:
 
 > This is a regular blockquote without any special alert type. It maintains the original styling and behavior.
 
-## Quote Blockquotes
+## Quote
+
+This style places quotation marks around a passage. Source references (for example, author, title, or page number) are not yet supported.
 
 ```markdown
 > [!QUOTE]
@@ -31,7 +34,7 @@ Regular blockquotes without the special syntax still work as before:
 > [!QUOTE]
 > The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems.
 
-## GitHub-style Blockquotes
+## GitHub-style
 
 These GitHub-style alerts make your documentation more visually appealing and help readers quickly identify important information based on the color coding and iconography.
 

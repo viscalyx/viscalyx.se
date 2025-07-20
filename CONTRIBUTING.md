@@ -1283,7 +1283,6 @@ npm run build:page-dates
 
 - **home**: `app/[locale]/page.tsx`
 - **blog**: `app/[locale]/blog/page.tsx`
-- **caseStudies**: `app/[locale]/case-studies/page.tsx`
 - **privacy**: `app/[locale]/privacy/page.tsx`
 - **terms**: `app/[locale]/terms/page.tsx`
 

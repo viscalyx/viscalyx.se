@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Heart, Mail } from 'lucide-react'
+import { ExternalLink, Mail } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -54,19 +54,13 @@ const Footer = () => {
   const footerLinks = {
     company: [
       { name: t('aboutUs'), href: '#about' },
-      { name: tNav('services'), href: '#services' },
-      { name: t('expertise'), href: '#expertise' },
       { name: tNav('openSource'), href: '#open-source' },
     ],
     resources: [
       { name: tNav('blog'), href: '/blog' },
-      { name: tNav('caseStudies'), href: '/case-studies' },
-      { name: t('brandProfile'), href: '/brand-showcase' },
-      { name: t('community'), href: '#' },
+      { name: t('community'), href: 'https://dsccommunity.org/' },
     ],
     support: [
-      { name: t('contactUs'), href: '#contact' },
-      { name: t('faq'), href: '#' },
       { name: t('privacyPolicy'), href: '/privacy' },
       { name: t('termsOfService'), href: '/terms' },
     ],
@@ -100,7 +94,7 @@ const Footer = () => {
     },
     {
       name: 'Email',
-      href: 'mailto:hello@viscalyx.se',
+      href: 'mailto:info@viscalyx.se',
       icon: Mail,
     },
   ]
@@ -178,13 +172,16 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map(link => (
                 <li key={link.name}>
-                  {link.href.startsWith('#') || link.href === '#' ? (
+                  {link.href.startsWith('#') || link.href.startsWith('http') ? (
                     <button
+                      type="button"
                       onClick={() => handleNavigation(link.href)}
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
                     >
                       {link.name}
-                      <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </button>
                   ) : (
                     <Link
@@ -192,7 +189,9 @@ const Footer = () => {
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
-                      <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </Link>
                   )}
                 </li>
@@ -211,19 +210,26 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.support.map(link => (
                 <li key={link.name}>
-                  {link.href.startsWith('#') ? (
+                  {link.href.startsWith('#') || link.href.startsWith('http') ? (
                     <button
+                      type="button"
                       onClick={() => handleNavigation(link.href)}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline bg-transparent border-none cursor-pointer text-left p-0"
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
                     >
                       {link.name}
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </button>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
+                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
+                      {link.href.startsWith('http') && (
+                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+                      )}
                     </Link>
                   )}
                 </li>
@@ -231,41 +237,6 @@ const Footer = () => {
             </ul>
           </motion.div>
         </div>
-
-        {/* Newsletter Signup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="border-t border-secondary-800 mt-12 pt-12"
-        >
-          <div className="max-w-md mx-auto text-center lg:text-left lg:max-w-none lg:flex lg:items-center lg:justify-between">
-            <div className="lg:max-w-xl">
-              <h4 className="text-xl font-semibold mb-2">{t('stayUpdated')}</h4>
-              <p className="text-secondary-300">{t('newsletterText')}</p>
-            </div>
-
-            <div className="mt-6 lg:mt-0 lg:flex-shrink-0">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder={t('emailPlaceholder')}
-                  className="px-4 py-3 bg-secondary-800 border border-secondary-700 rounded-lg text-white placeholder-secondary-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent min-w-0 flex-1"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-primary whitespace-nowrap"
-                >
-                  {t('subscribe')}
-                </motion.button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Bottom Footer */}
@@ -281,18 +252,6 @@ const Footer = () => {
             <p className="text-secondary-400 text-sm">
               © {currentYear} Viscalyx. {t('allRightsReserved')}
             </p>
-
-            <div className="flex items-center mt-4 sm:mt-0 text-secondary-400 text-sm">
-              <span>{t('madeWith')}</span>
-              <motion.div
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="mx-2"
-              >
-                <Heart className="w-4 h-4 text-red-500 fill-current" />
-              </motion.div>
-              <span>{t('forDeveloperCommunity')}</span>
-            </div>
           </motion.div>
         </div>
       </div>
