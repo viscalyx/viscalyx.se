@@ -1,6 +1,6 @@
 ---
 title: 'Automating SQL Server Power BI Report Server with DSC v3 – Three Invocation Patterns for Seasoned Engineers'
-date: '2024-07-12'
+date: '2024-07-20'
 author: 'Johan Ljunggren'
 excerpt: 'Explore three advanced patterns for automating SQL Server Power BI Report Server deployments using DSC v3: imperative, declarative, and Winget-based approaches.'
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
@@ -13,6 +13,7 @@ tags:
     'Automation',
     'DevOps',
   ]
+category: 'PowerShell DSC'
 readTime: '8 min read'
 ---
 
