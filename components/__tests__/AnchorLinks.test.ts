@@ -29,7 +29,7 @@ describe('Blog Anchor Links', () => {
     it('should handle special characters', () => {
       expect(createSlug("What's New?")).toBe("what's-new")
       expect(createSlug('C# & .NET Development')).toBe('c-and-.net-development')
-      expect(createSlug('API/REST Endpoints')).toBe('apirest-endpoints')
+      expect(createSlug('API/REST Endpoints')).toBe('apirest-endpoints') // cSpell: disable-line
     })
 
     it('should differentiate between similar programming language names', () => {

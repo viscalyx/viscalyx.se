@@ -78,7 +78,7 @@ describe('Blockquote Types Plugin', () => {
     expect(alertNode.children[0].children[0].value).toBe('Warning')
   })
 
-  test('should not transform regular blockquotes', () => {
+  test('should not transform regular block quotes', () => {
     const testTree = {
       type: 'root',
       children: [

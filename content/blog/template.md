@@ -5,7 +5,7 @@ author: 'Blog Author'
 excerpt: 'Brief 1-2 sentence summary that will appear in blog listings and social media previews'
 image: 'https://images.unsplash.com/photo-1593505681742-8cbb6f44de25?w=1200&h=600&fit=crop&crop=center'
 tags: ['Tag1', 'Tag2', 'Tag3']
-category: 'Category Name'
+category: 'Template'
 readTime: '1 min read'
 ---
 

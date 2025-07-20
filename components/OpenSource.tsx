@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ExternalLink, Star, Users } from 'lucide-react'
+import { ExternalLink, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -39,7 +39,6 @@ const OpenSource = () => {
       name: t('projects.powershellDsc.name'),
       description: t('projects.powershellDsc.description'),
       language: t('projects.powershellDsc.language'),
-      stars: '2.5k',
       link: 'https://github.com/dsccommunity',
       image:
         'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop&crop=center',
@@ -48,7 +47,6 @@ const OpenSource = () => {
       name: t('projects.dscResourceKit.name'),
       description: t('projects.dscResourceKit.description'),
       language: t('projects.dscResourceKit.language'),
-      stars: '1.8k',
       link: 'https://github.com/PowerShell/DscResources',
       image:
         'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400&h=300&fit=crop&crop=center',
@@ -57,8 +55,7 @@ const OpenSource = () => {
       name: t('projects.automationToolkits.name'),
       description: t('projects.automationToolkits.description'),
       language: t('projects.automationToolkits.language'),
-      stars: '892',
-      link: '#',
+      link: 'https://github.com/gaelcolas/Sampler',
       image:
         'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop&crop=center',
     },
@@ -152,14 +149,10 @@ const OpenSource = () => {
                 </div>
 
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="mb-3">
                     <h3 className="text-xl font-semibold text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                       {project.name}
                     </h3>
-                    <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-sm">
-                      <Star className="w-4 h-4 mr-1" />
-                      {project.stars}
-                    </div>
                   </div>
 
                   <p className="text-secondary-600 dark:text-secondary-400 mb-4">
@@ -227,15 +220,17 @@ const OpenSource = () => {
                 <GitHubIcon className="w-5 h-5 mr-2" />
                 {t('cta.followGithub')}
               </motion.a>
-              <motion.button
-                onClick={() => handleNavigation('#contact')}
+              <motion.a
+                href="https://dsccommunity.org/"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
               >
                 <Users className="w-5 h-5 mr-2" />
                 {t('cta.collaborate')}
-              </motion.button>
+              </motion.a>
             </div>
           </div>
         </motion.div>

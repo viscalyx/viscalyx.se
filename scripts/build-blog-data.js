@@ -197,6 +197,7 @@ async function buildBlogData() {
           image:
             data.image ||
             'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=600&fit=crop&crop=center',
+          imageAlt: data.imageAlt || data.title || 'Blog post image',
           tags: data.tags || [],
           readTime: data.readTime || calculatedReadTime,
           category,

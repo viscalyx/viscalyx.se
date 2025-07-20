@@ -31,10 +31,10 @@ describe('team utilities', () => {
           return 'Founder & Lead Consultant'
         case 'members.johlju.bio':
           return 'Passionate automation expert with over 30 years of experience in IT.'
-        case 'members.testsson.role':
-          return 'Test Role'
-        case 'members.testsson.bio':
-          return 'Test bio'
+        // case 'members.testsson.role':
+        //   return 'Test Role'
+        // case 'members.testsson.bio':
+        //   return 'Test bio'
         default:
           return key
       }
@@ -44,8 +44,8 @@ describe('team utilities', () => {
       switch (key) {
         case 'members.johlju.specialties':
           return ['PowerShell DSC', 'DevOps', 'Open Source']
-        case 'members.testsson.specialties':
-          return ['Testing', 'Quality Assurance']
+        // case 'members.testsson.specialties':
+        //   return ['Testing', 'Quality Assurance']
         default:
           return []
       }
@@ -57,7 +57,7 @@ describe('team utilities', () => {
       const teamMembers = getTeamMembers(mockT)
 
       expect(teamMembers).toBeInstanceOf(Array)
-      expect(teamMembers).toHaveLength(2)
+      expect(teamMembers).toHaveLength(1)
 
       // Check first member (johlju)
       expect(teamMembers[0]).toMatchObject({
@@ -70,8 +70,8 @@ describe('team utilities', () => {
         specialties: ['PowerShell DSC', 'DevOps', 'Open Source'],
       })
 
-      // Check social links separately
-      expect(teamMembers[0].socialLinks).toHaveLength(10)
+      // Check social links separately - currently 7 active links
+      expect(teamMembers[0].socialLinks).toHaveLength(7)
       expect(
         teamMembers[0].socialLinks.some(link => link.name === 'Email')
       ).toBe(true)
@@ -79,30 +79,19 @@ describe('team utilities', () => {
         teamMembers[0].socialLinks.some(link => link.name === 'LinkedIn')
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Stack Overflow')
+        teamMembers[0].socialLinks.some(link => link.name === 'Bluesky')
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'YouTube')
+        teamMembers[0].socialLinks.some(link => link.name === 'Mastodon')
+      ).toBe(true)
+      expect(teamMembers[0].socialLinks.some(link => link.name === 'X')).toBe(
+        true
+      )
+      expect(
+        teamMembers[0].socialLinks.some(link => link.name === 'Discord')
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Slack')
-      ).toBe(true)
-
-      // Check second member (testsson)
-      expect(teamMembers[1]).toMatchObject({
-        id: 'testsson',
-        name: 'Test Testsson',
-        role: 'Test Role',
-        image: undefined,
-        bio: 'Test bio',
-        location: 'Sweden',
-        specialties: ['Testing', 'Quality Assurance'],
-      })
-
-      // Check social links separately
-      expect(teamMembers[1].socialLinks).toHaveLength(1)
-      expect(
-        teamMembers[1].socialLinks.some(link => link.name === 'Instagram')
+        teamMembers[0].socialLinks.some(link => link.name === 'GitHub')
       ).toBe(true)
     })
 
@@ -111,11 +100,8 @@ describe('team utilities', () => {
 
       expect(mockTranslation).toHaveBeenCalledWith('members.johlju.role')
       expect(mockTranslation).toHaveBeenCalledWith('members.johlju.bio')
-      expect(mockTranslation).toHaveBeenCalledWith('members.testsson.role')
-      expect(mockTranslation).toHaveBeenCalledWith('members.testsson.bio')
 
       expect(mockRaw).toHaveBeenCalledWith('members.johlju.specialties')
-      expect(mockRaw).toHaveBeenCalledWith('members.testsson.specialties')
     })
   })
 
@@ -128,12 +114,10 @@ describe('team utilities', () => {
       expect(member?.name).toBe('Johan Ljunggren')
     })
 
-    it('should return the correct team member by ID for testsson', () => {
+    it('should return null for testsson ID since it is commented out', () => {
       const member = getTeamMemberById('testsson', mockT)
 
-      expect(member).not.toBeNull()
-      expect(member?.id).toBe('testsson')
-      expect(member?.name).toBe('Test Testsson')
+      expect(member).toBeNull()
     })
 
     it('should return null for non-existent ID', () => {
@@ -201,15 +185,15 @@ describe('team utilities', () => {
     })
 
     it('should return correct initials for a three-word name', () => {
-      const initials = getAuthorInitials('Johan Anders Ljunggren')
+      const initials = getAuthorInitials('Johan Carl Ljunggren')
 
-      expect(initials).toBe('JA')
+      expect(initials).toBe('JC')
     })
 
     it('should return correct initials for a name with many words', () => {
-      const initials = getAuthorInitials('Johan Anders Erik Ljunggren')
+      const initials = getAuthorInitials('Johan Carl Erik Ljunggren')
 
-      expect(initials).toBe('JA')
+      expect(initials).toBe('JC')
     })
 
     it('should handle lowercase names correctly', () => {
