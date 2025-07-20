@@ -129,6 +129,7 @@
     "JWT",
     "HTTPS",
     "SSL/TLS",
+    "hashtable",
 
     // Automation tools
     "Ansible",
