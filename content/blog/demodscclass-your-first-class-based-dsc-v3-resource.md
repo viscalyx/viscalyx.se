@@ -206,7 +206,7 @@ If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contain
 $env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 ```
 
-To persist this change across sessions, either add the same line to your PowerShell profile (`$PROFILE`) or update you machine or user environment variable `PATH` to use the dsc executable from any shell.
+To persist this change across sessions, either add the same line to your PowerShell profile (`$PROFILE`) or update your machine or user environment variable `PATH` to use the dsc executable from any shell.
 
 For Linux POSIX shells (e.g., bash, zsh), the path to the `dsc` executable was symbolically linked from _/usr/local/bin_ by `Install-DscExe`, it should work from any shell.
 
@@ -277,7 +277,7 @@ Here’s an easy way to group your DSC commands into a simple YAML file. It migh
 First, we write down what resources we want and their settings in a YAML file. Think of this as writing clear instructions that DSC will read and execute.
 
 > [!TIP]
-> More information about instance definition syntax and resource configuration can be found here: [MMicrosoft.DSC/PowerShell](https://learn.microsoft.com/en-us/powershell/dsc/reference/resources/microsoft/dsc/powershell).
+> More information about instance definition syntax and resource configuration can be found here: [Microsoft.DSC/PowerShell](https://learn.microsoft.com/en-us/powershell/dsc/reference/resources/microsoft/dsc/powershell).
 >
 > For details on the configuration document schema and structure, see: [DSC Configuration Document Schema Reference](https://learn.microsoft.com/en-us/powershell/dsc/reference/schemas/config/document).
 
