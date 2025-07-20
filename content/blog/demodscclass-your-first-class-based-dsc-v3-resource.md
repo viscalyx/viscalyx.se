@@ -200,7 +200,7 @@ dsc --version
 
 #### Troubleshooting DSC executable
 
-If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contain the path to the DSC executable in you current PowerShell session:
+If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contain the path to the DSC executable in your current PowerShell session:
 
 ```powershell
 $env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
@@ -230,7 +230,7 @@ To see all available DSC resources, run:
 dsc resource list --adapter Microsoft.DSC/PowerShell
 ```
 
-You should now see the _DemoDscClass_ in the resource list. It should show that it supports the capabilities get, test and set. Due to sa bug in DSC v3 it does not recognize that we have implemented the capability _export_. This is just a visual reporting bug, DSC v3 will still be able to use the _export_ capability.
+You should now see the _DemoDscClass_ in the resource list. It should show that it supports the capabilities get, test and set. Due to a bug in DSC v3 it does not recognize that we have implemented the capability _export_. This is just a visual reporting bug, DSC v3 will still be able to use the _export_ capability.
 
 > [!NOTE]
 > **Note on Adapters:**
@@ -258,7 +258,7 @@ dsc resource export --resource DemoDscClass/DemoDscClass --output-format json
 #### DSC executable
 
 Currently the get, test and set operation fails if there are any `Write-Verbose`, `Write-Warning`, or `Write-Debug` that return output. You will then get the error `ERROR JSON: expected value at line 1 column 1`.
-See issue [Output during module import or output from Get operaton interrupts the parsing process for class-based resource](https://github.com/PowerShell/DSC/issues/833).
+See issue [Output during module import or output from Get operation interrupts the parsing process for class-based resource](https://github.com/PowerShell/DSC/issues/833).
 
 For example if we would add parameter `-Verbose` the above line `Write-Verbose -Message 'Get called'` then the get operation would fail with:
 
