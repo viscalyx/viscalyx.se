@@ -4,7 +4,7 @@ date: '2025-06-08'
 author: 'Blog Author'
 excerpt: 'Testing different code block language syntax highlighting, including PowerShell.'
 tags: ['syntax', 'highlighting', 'test']
-category: 'Testing'
+category: 'Template'
 readTime: '1 min read'
 ---
 
