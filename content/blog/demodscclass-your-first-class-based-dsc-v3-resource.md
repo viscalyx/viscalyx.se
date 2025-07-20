@@ -238,7 +238,7 @@ See issue [Output during module import or output from Get operaton interrupts th
 
 For example if we would add parameter `-Verbose` the above line `Write-Verbose -Message 'Get called'` then the get operation would fail with:
 
-```
+```text
 ERROR Operation: Failed to parse JSON from 'get': executable = 'pwsh' stdout = 'VERBOSE: Get called
 {"result":[{"name":"DemoDscClass/DemoDscClass","type":"DemoDscClass/DemoDscClass","properties":{"Key":"Demo"}}]}
 ' stderr = '' -> expected value at line 1 column 1
