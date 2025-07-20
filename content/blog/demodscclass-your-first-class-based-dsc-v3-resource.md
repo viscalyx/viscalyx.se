@@ -200,7 +200,7 @@ dsc --version
 
 #### Troubleshooting DSC executable
 
-If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contain the path to the DSC executable in your current PowerShell session:
+If you get an error running DSC v3 on Windows, make sure the `$env:PATH` contains the path to the DSC executable in your current PowerShell session:
 
 ```powershell
 $env:PATH += ';' + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
@@ -230,7 +230,7 @@ To see all available DSC resources, run:
 dsc resource list --adapter Microsoft.DSC/PowerShell
 ```
 
-You should now see the _DemoDscClass_ in the resource list. It should show that it supports the capabilities get, test and set. Due to a bug in DSC v3 it does not recognize that we have implemented the capability _export_. This is just a visual reporting bug, DSC v3 will still be able to use the _export_ capability.
+You should now see the _DemoDscClass_ in the resource list. It should show that it supports the capabilities get, test, and set. Due to a bug in DSC v3 it does not recognize that we have implemented the capability _export_. This is just a visual reporting bug, DSC v3 will still be able to use the _export_ capability.
 
 > [!NOTE]
 > **Note on Adapters:**
