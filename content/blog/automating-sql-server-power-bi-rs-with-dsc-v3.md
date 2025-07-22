@@ -154,7 +154,7 @@ $desiredParameters = @{
     InstanceName = 'PBIRS'
     Action       = 'Install'
     AcceptLicensingTerms = $true
-    MediaPath   = 'C:\Users\sqladmin\AppData\Local\Temp\2\PowerBIReportServer.exe' #'path to media executable'
+    MediaPath   = '<path to media executable>'
     Edition = 'Developer'
 } | ConvertTo-Json -Compress
 ```
@@ -210,7 +210,7 @@ resources:
             InstanceName: 'PBIRS'
             Action: 'Install'
             AcceptLicensingTerms: true
-            MediaPath: 'C:\Users\sqladmin\AppData\Local\Temp\2\PowerBIReportServer.exe' #'path to media executable'
+            MediaPath: '<path to media executable>'
             Edition: 'Developer'
 ```
 
@@ -308,7 +308,7 @@ $ dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | Con
                 "InstanceName": "PBIRS",
                 "Action": "Install",
                 "AcceptLicensingTerms": true,
-                "MediaPath": "C:\\Users\\sqladmin\\AppData\\Local\\Temp\\2\\PowerBIReportServer.exe",
+                "MediaPath": "C:\\Users\\user\\AppData\\Local\\Temp\\2\\PowerBIReportServer.exe",
                 "Edition": "Developer"
               }
             }
@@ -469,7 +469,7 @@ resources:
       InstanceName: 'PBIRS'
       Action: 'Install'
       AcceptLicensingTerms: true
-      MediaPath: 'C:\Users\sqladmin\AppData\Local\Temp\2\PowerBIReportServer.exe' #'path to media executable'
+      MediaPath: '<path to media executable>'
       Edition: 'Developer'
 ```
 
@@ -509,7 +509,7 @@ SqlServerDsc/SqlRSSetup [Install PBIRS]
   Settings:
     InstanceName: PBIRS
     Edition: Developer
-    MediaPath: C:\Users\sqladmin\AppData\Local\Temp\2\PowerBIReportServer.exe
+    MediaPath: C:\Users\user\AppData\Local\Temp\2\PowerBIReportServer.exe
     AcceptLicensingTerms: true
     Action: Install
 You are responsible for understanding the configuration settings you are choosing to execute. Microsoft is not responsible for the configuration file you have authored or imported. This configuration may change settings in Windows, install software, change software settings (including security settings), and accept user agreements to third-party packages and services on your behalf.  By running this configuration file, you acknowledge that you understand and agree to these resources and settings. Any applications installed are licensed to you by their owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages or services.
