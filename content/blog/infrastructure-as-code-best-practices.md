@@ -6,6 +6,7 @@ excerpt: 'Learn the fundamental principles and best practices for implementing I
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
 tags: ['Infrastructure as Code', 'DevOps', 'Automation', 'Best Practices']
 readTime: '8 min read'
+category: 'Automation'
 ---
 
 # Infrastructure as Code Best Practices

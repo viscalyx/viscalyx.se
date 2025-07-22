@@ -34,9 +34,9 @@ This style places quotation marks around a passage. Source references (for examp
 > [!QUOTE]
 > The best way to learn programming is not just by reading about it, but by actually writing code and solving real problems.
 
-## GitHub-style
+## DocFX-style
 
-These GitHub-style alerts make your documentation more visually appealing and help readers quickly identify important information based on the color coding and iconography.
+These DocFX-style alerts make your documentation more visually appealing and help readers quickly identify important information based on the color coding and iconography.
 
 You can use the following alert types in your markdown:
 

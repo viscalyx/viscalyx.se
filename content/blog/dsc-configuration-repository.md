@@ -12,6 +12,7 @@ tags:
     'Desired State Configuration',
     'Automation',
   ]
+category: 'PowerShell DSC'
 readTime: '10 min read'
 ---
 
