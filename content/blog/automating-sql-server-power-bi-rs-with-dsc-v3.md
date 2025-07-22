@@ -520,6 +520,12 @@ SqlServerDsc/SqlRSSetup [Install PBIRS]
 Configuration successfully applied.
 ```
 
+Use `configure show` to display the details of the configuration.
+
+```powershell
+PS> winget configure show --file deploy-PBIRS.winget.config.yaml --verbose-logs
+```
+
 ## Takeaways
 
 - **DSC v3** gives you flexible invocation patterns – pick imperative for speed, declarative for compliance.
