@@ -435,7 +435,6 @@ Ship a single YAML file and run `winget configure` – perfect for **endpoint pr
 
 WinGet handles:
 
-- Downloading DSC v3 if missing
 - Invoke the specified DSC resource
 - Returning structured exit codes
 
