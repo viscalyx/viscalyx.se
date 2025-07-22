@@ -49,13 +49,16 @@ const sanitizeOptions = {
     pre: ['class', 'data-language'],
     span: ['class'],
     div: ['class', 'data-alert-type'],
+    // Allow img attributes for inline images
+    img: ['src', 'alt', 'style', 'width', 'height'],
     // Allow data attributes for Prism.js functionality
     '*': ['data-*'],
   },
-  // Allow additional tags that Prism.js might use
+  // Allow additional tags that Prism.js might use and images for inline content
   allowedTags: [
     ...sanitizeHtml.defaults.allowedTags,
     'span', // Prism.js uses spans for syntax highlighting
+    'img', // Allow inline images in blog content
   ],
 }
 
@@ -109,7 +112,7 @@ async function buildBlogData() {
         const processedContent = await remark()
           .use(remarkGfm)
           .use(() => remarkBlockquoteTypes(visit))
-          .use(remarkRehype)
+          .use(remarkRehype, { allowDangerousHtml: true })
           .use(rehypePrismPlus, {
             showLineNumbers: false,
             ignoreMissing: true,
@@ -169,7 +172,7 @@ async function buildBlogData() {
               })
             }
           })
-          .use(rehypeStringify)
+          .use(rehypeStringify, { allowDangerousHtml: true })
           .process(content)
 
         const rawContentHtml = processedContent.toString()
