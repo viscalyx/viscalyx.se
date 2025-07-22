@@ -7,7 +7,7 @@ image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=60
 imageAlt: 'Top-down view of a busy workspace with multiple laptops, smartphones, notebooks, and drinks, surrounded by people working and collaborating.'
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
 category: 'PowerShell DSC'
-readTime: '7 min read'
+readTime: '8 min read'
 ---
 
 > **Objective:** Show a complete beginner how to design, code, test, and run a **class‑based DSC v3 resource** called **DemoDscClass**. It is recommended that cross-platform PowerShell is used throughout this guide.

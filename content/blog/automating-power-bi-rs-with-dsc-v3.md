@@ -15,7 +15,7 @@ tags:
     'DevOps',
   ]
 category: 'DSC'
-readTime: '8 min read'
+readTime: '9 min read'
 ---
 
 > **Audience:** infrastructure engineers comfortable with PowerShell, CI pipelines and automated SQL Server deployments.
