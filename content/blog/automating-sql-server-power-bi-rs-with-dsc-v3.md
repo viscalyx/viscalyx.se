@@ -56,7 +56,7 @@ Make sure to also download the dependencies package as they might be needed to b
 
 Windows Server 2025 does not come with PowerShell (only _Windows PowerShell_) so we need to install it:
 
-```
+```sh
 winget install Microsoft.PowerShell
 ```
 
@@ -475,7 +475,7 @@ resources:
 
 ### Configure WinGet
 
-To use DCS v3 with WinGet we have to enable an experimental setting.
+To use DSC v3 with WinGet we have to enable an experimental setting.
 
 ```powershell
 winget settings
