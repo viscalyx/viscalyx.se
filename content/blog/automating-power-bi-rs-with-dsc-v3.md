@@ -496,8 +496,8 @@ Open in any text editor and add `experimentalFeatures` as show here:
 
 You must run this in an elevated shell:
 
-```powershell
-PS> winget configure --file deploy-PBIRS.winget.config.yaml --verbose-logs
+```sh
+winget configure --file deploy-PBIRS.winget.config.yaml --verbose-logs
 ```
 
 You will get an output similar to the one below, you need to accept this if you want to continue. When you accept it you will be prompted for the UAC question.
@@ -521,8 +521,8 @@ Configuration successfully applied.
 
 Use `configure show` to display the details of the configuration.
 
-```powershell
-PS> winget configure show --file deploy-PBIRS.winget.config.yaml --verbose-logs
+```sh
+winget configure show --file deploy-PBIRS.winget.config.yaml --verbose-logs
 ```
 
 ## Takeaways
