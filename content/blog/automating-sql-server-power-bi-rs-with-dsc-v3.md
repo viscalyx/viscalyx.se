@@ -514,7 +514,10 @@ SqlServerDsc/SqlRSSetup [Install PBIRS]
     Action: Install
 You are responsible for understanding the configuration settings you are choosing to execute. Microsoft is not responsible for the configuration file you have authored or imported. This configuration may change settings in Windows, install software, change software settings (including security settings), and accept user agreements to third-party packages and services on your behalf.  By running this configuration file, you acknowledge that you understand and agree to these resources and settings. Any applications installed are licensed to you by their owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages or services.
 Have you reviewed the configuration and would you like to proceed applying it to the system?
-[Y] Yes  [N] No:
+[Y] Yes  [N] No: y
+SqlServerDsc/SqlRSSetup [Install PBIRS]
+  Unit successfully applied.
+Configuration successfully applied.
 ```
 
 ## Takeaways
