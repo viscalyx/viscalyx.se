@@ -51,6 +51,8 @@
     "westeurope",
     "nosniff",
     "devcontainers",
+    "pakfire",
+    "altaro",
 
     // PowerShell DSC specific
     "DSC",
@@ -220,6 +222,7 @@
     "macOS",
     "FreeBSD",
     "OpenBSD",
+    "ipfire",
 
     // Business terms
     "SLA",
