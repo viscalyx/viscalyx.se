@@ -281,10 +281,10 @@ First, we write down what resources we want and their settings in a YAML file. T
 >
 > For details on the configuration document schema and structure, see: [DSC Configuration Document Schema Reference](https://learn.microsoft.com/en-us/powershell/dsc/reference/schemas/config/document).
 
-Open a text editor, create a new file called `demo-config.yaml`, and paste in the following content:
+Open a text editor, create a new file called `demo.dsc.config.yaml`, and paste in the following content:
 
 ```yaml
-$schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2024/04/config/document.json
+$schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 resources:
   - name: Demo Dsc Class
     type: Microsoft.DSC/PowerShell
@@ -299,25 +299,25 @@ resources:
 Great! Now that the YAML file is saved, let’s run some commands to see how DSC interprets it:
 
 ```sh
-dsc config get --file demo-config.yaml --output-format json
+dsc config get --file demo.dsc.config.yaml --output-format json
 ```
 
-This command tells DSC to read the `demo-config.yaml` file and show you (in JSON) what it thinks the current state should look like. It’s like a dry run to check your setup.
+This command tells DSC to read the `demo.dsc.config.yaml` file and show you (in JSON) what it thinks the current state should look like. It’s like a dry run to check your setup.
 
 ```sh
-dsc config test --file demo-config.yaml --output-format json
+dsc config test --file demo.dsc.config.yaml --output-format json
 ```
 
 Here, DSC checks if the actual system state matches the desired state in your YAML. It will return `true` if everything is already good, or `false` if something needs fixing.
 
 ```sh
-dsc config set --file demo-config.yaml --output-format json
+dsc config set --file demo.dsc.config.yaml --output-format json
 ```
 
 This one applies the changes. Think of it as telling DSC, “Go ahead and make my system look like the YAML describes.” It won’t crash the real system in this demo, but in a real scenario it would.
 
 ```sh
-dsc config export --file demo-config.yaml --output-format json
+dsc config export --file demo.dsc.config.yaml --output-format json
 ```
 
 Finally, DSC exports the full configuration it applied (or would apply) in JSON format. This is helpful if you want to save or inspect the resulting state, or get a baseline configuration.
@@ -326,7 +326,7 @@ Finally, DSC exports the full configuration it applied (or would apply) in JSON 
 
 If you prefer a shorter way, you can use an implicit syntax. It’s like a shortcut: you don’t need a wrapper, just list your resource directly.
 
-Create _demo-implicit-config.yaml_:
+Create _demo-implicit.dsc.config.yaml_:
 
 ```yaml
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2024/04/config/document.json
@@ -337,7 +337,7 @@ resources:
       Key: Demo
 ```
 
-This tiny YAML file does the same thing as before but with less typing. Run the configuration file with the same commands as above.
+This tiny YAML file does the same thing as before but with less typing. Run the configuration file with the same commands as above, but change the path to the implicit configuration file.
 
 ## Write a quick Pester integration test
 
