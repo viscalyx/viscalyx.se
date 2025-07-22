@@ -42,8 +42,8 @@ Demonstrate **SqlRSSetup** on DSC v3 when executed:
 
 ### Install Windows Server 2025
 
-There are a lot of guides how to install Windows Server, version 2025 are
-no different to install than any previous versions.
+There are many guides on installing Windows Server; version 2025 installs
+no differently from previous versions.
 
 ### Update WinGet
 
@@ -218,7 +218,11 @@ resources:
 
 ```powershell
 $ dsc config get --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+```
 
+Outputs:
+
+```json
 {
   "metadata": {
     "Microsoft.DSC": {
@@ -276,7 +280,11 @@ $ dsc config get --file deploy-PBIRS.dsc.config.yaml --output-format json | Conv
 
 ```powershell
 $ dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+```
 
+Outputs:
+
+```json
 {
   "metadata": {
     "Microsoft.DSC": {
@@ -332,10 +340,7 @@ $ dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | Con
           ]
         },
         "inDesiredState": true,
-        "differingProperties": [
-          "resources",
-          "metadata"
-        ]
+        "differingProperties": ["resources", "metadata"]
       }
     }
   ],
@@ -348,7 +353,11 @@ $ dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | Con
 
 ```powershell
 $ dsc config set --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+```
 
+Outputs:
+
+```json
 {
   "metadata": {
     "Microsoft.DSC": {
@@ -417,9 +426,7 @@ $ dsc config set --file deploy-PBIRS.dsc.config.yaml --output-format json | Conv
             }
           ]
         },
-        "changedProperties": [
-          "result"
-        ]
+        "changedProperties": ["result"]
       }
     }
   ],
