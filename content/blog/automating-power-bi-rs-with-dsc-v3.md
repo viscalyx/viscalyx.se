@@ -45,7 +45,7 @@ no differently from previous versions.
 
 ### Update WinGet
 
-We require WinGet 1.11.40, but Windows Server 2025 comes with an older version. Use the method [installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client) of your choice.
+We require WinGet 1.11.400, but Windows Server 2025 comes with an older version. Use the method [installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client) of your choice.
 
 If you download the latest release from [winget-cli releases](https://github.com/microsoft/winget-cli/releases).
 Make sure to also download the dependencies package as they might be needed to be installed to successfully install WinGet. I could not install one dependency but it turned out that wasn't needed for the WinGet install, that might not be true in your case.
@@ -67,7 +67,7 @@ For instructions on installing DSC v3, see the "Install DSC executable" section 
 
 ### Install SqlServer
 
-Thre module _SqlServer_ is used by SqlServerDsc for SQL Server .NET types and SQL Server PowerShell commands.
+The module _SqlServer_ is used by SqlServerDsc for SQL Server .NET types and SQL Server PowerShell commands.
 
 ```powershell
 Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
@@ -163,7 +163,7 @@ changedProperties : {InstallFolder, InstanceName}
 > [!NOTE]
 > Running the Set-operation will take several minutes and no output will be shown until it is complete.
 
-We can re-run the Set-operation again, this time it will be quicker as the desired state is already achieved, so it does nothing until the instance is removed. We can below that a second run did not change any properties.
+We can re-run the Set-operation again, this time it will be quicker as the desired state is already achieved, so it does nothing until the instance is removed. We can see below that a second run did not change any properties:
 
 ```powershell
 $ dsc resource set --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
