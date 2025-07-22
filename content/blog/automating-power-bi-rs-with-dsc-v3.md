@@ -6,14 +6,12 @@ excerpt: 'Explore three advanced patterns for automating Power BI Report Server 
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
 imageAlt: 'Server racks filled with networking cables and glowing indicator lights in a data center.'
 tags:
-  [
-    'SQL Server',
-    'DSC',
-    'BI Report Server',
-    'PowerShell',
-    'Automation',
-    'DevOps',
-  ]
+  - 'SQL Server'
+  - 'DSC'
+  - 'BI Report Server'
+  - 'PowerShell'
+  - 'Automation'
+  - 'DevOps'
 category: 'DSC'
 readTime: '9 min read'
 ---
@@ -79,7 +77,7 @@ Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 
 Without the dependent module SqlServerDsc outputs a warning message:
 
-```
+```text
 WARNING: Failed to find a dependent module. Unable to run SQL Server commands or use SQL Server types. Please install one of the preferred SMO modules or the SQLPS module, then try to import SqlServerDsc again.
 ```
 
