@@ -67,23 +67,18 @@ For instructions on installing DSC v3, see the "Install DSC executable" section 
 
 ### Install SqlServer
 
+Thre module _SqlServer_ is used by SqlServerDsc for SQL Server .NET types and SQL Server PowerShell commands.
+
 ```powershell
 Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 ```
 
 > [!IMPORTANT]
-> The dependent module should not be required for this guide, but due to a
-> bug in DSC v3 we need to install it.
-
-Without the dependent module SqlServerDsc outputs a warning message:
-
-```text
-WARNING: Failed to find a dependent module. Unable to run SQL Server commands or use SQL Server types. Please install one of the preferred SMO modules or the SQLPS module, then try to import SqlServerDsc again.
-```
-
-That warning message is normally not an issue, but will fail DSC v3. To avoid
-DSC v3 to fail and not to see the warning message, install the correct dependent
-PowerShell module version that works for your environment; _SQLPS_, _SqlServer_, or _dbatools_.
+> The dependent module should not be required for this guide, but due to a bug in DSC v3 we need to install it.
+> Without the dependent module SqlServerDsc outputs a warning message: `WARNING: Failed to find a dependent module. Unable to run SQL Server commands or use SQL Server types. Please install one of the preferred SMO modules or the SQLPS module, then try to import SqlServerDsc again.`
+> That warning message is normally not an issue, but will fail DSC v3. To avoid
+> DSC v3 to fail and not to see the warning message, install a supported dependent
+> PowerShell module and its version that works for your environment; _SQLPS_, _SqlServer_, or _dbatools_.
 
 ### Install SqlServerDsc
 
