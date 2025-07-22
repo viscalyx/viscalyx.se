@@ -1037,6 +1037,36 @@ The following packages enable these scripts:
 
 ## Security Testing
 
+### Dependency Auditing
+
+You can audit updated dependency versions before installing them by generating a lockfile only and running both `npm audit` and Snyk:
+
+1. Generate or update only the lockfile (without installing packages):
+
+   ```bash
+   npm install --package-lock-only
+   ```
+
+2. Run `npm audit` (omit dev dependencies if desired):
+
+   ```bash
+   npm audit
+   ```
+
+3. Run a Snyk security test against your `package.json`:
+
+   ```bash
+   npx snyk auth
+   npx snyk test --file=package.json
+   ```
+
+4. Once finished, restore your original lockfile and install as usual:
+
+   ```bash
+   git restore package-lock.json
+   npm install
+   ```
+
 This section explains the security testing approach for the blog data generation process, which handles regular security audits of the build-time sanitization process.
 
 ### Security Overview
