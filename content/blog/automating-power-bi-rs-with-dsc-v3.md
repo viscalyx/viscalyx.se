@@ -114,7 +114,7 @@ $desiredParameters = @{
 
 ### Imperative Get-operation
 
-Running the Get-operation we can verify that the current state currently missing the Power BI Report Server instance.
+Running the Get-operation we can verify that the current state currently missing the Power BI Report Server instance:
 
 ```powershell
 $ dsc resource get --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
@@ -124,7 +124,7 @@ actualState : @{ProductKey=; Timeout=7200; SuppressRestart=; EditionUpgrade=; Lo
 
 ### Imperative Test-operation
 
-Running the Test-operation we can verify that it report that our desired state is not in compliance the Power BI Report Server instance is missing.
+Running the Test-operation we can verify that it report that our desired state is not in compliance, the Power BI Report Server instance is missing:
 
 ```powershell
 $ dsc resource test --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
@@ -137,7 +137,7 @@ differingProperties : {AcceptLicensingTerms, InstanceName, Edition, MediaPath…
 
 ### Imperative Set-operation
 
-Running the Set-operation will make sure our desired state is configured.
+Running the Set-operation will make sure our desired state is configured:
 
 > [!IMPORTANT]
 > Contrary to the Get- and Test-operation the Set-operation must run in an elevated PowerShell prompt.
@@ -430,7 +430,7 @@ Outputs:
 
 ## Pattern 3 – Winget Configuration
 
-Windows Package Manager v1.11 or higher can **delegate configuration application to DSC v3**.
+Windows Package Manager v1.11.400 or higher can **delegate configuration application to DSC v3**.
 Ship a single YAML file and run `winget configure` – perfect for **endpoint provisioning at scale**.
 
 WinGet handles:
