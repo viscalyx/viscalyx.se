@@ -26,7 +26,7 @@ Demonstrate **SqlRSSetup** on DSC v3 when executed:
 
 1. **Imperatively** – _direct_ with DSC v3 using `dsc resource set`
 1. **Declaratively** – in a DSC v3 _configuration_ using `dsc config set`
-1. **Winget Configuration** – hand off your DSC v3 config to the Windows Package Manager with `winget configure`
+1. **WinGet** – hand off your DSC v3 config to the Windows Package Manager with `winget configure`
 
 ## Baseline environment
 
