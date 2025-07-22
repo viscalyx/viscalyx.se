@@ -168,7 +168,7 @@ changedProperties : {InstallFolder, InstanceName}
 > [!NOTE]
 > Running the Set-operation will take several minutes and no output will be shown until it is complete.
 
-We can re-run the Set-operation again, this time it will be quicker as the desired state is already achived so it don't do anything, not until we run it and the resource sees the instance missing again (if we removed it). We can see that this time DSC did not chnage any properties.
+We can re-run the Set-operation again, this time it will be quicker as the desired state is already achieved, so it does nothing until the instance is removed. We can below that a second run did not change any properties.
 
 ```powershell
 $ dsc resource set --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
