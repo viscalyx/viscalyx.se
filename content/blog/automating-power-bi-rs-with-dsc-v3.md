@@ -210,7 +210,7 @@ resources:
 ### Declarative Get-operation
 
 ```powershell
-$ dsc config get --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+dsc config get --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
 
 Outputs:
@@ -272,7 +272,7 @@ Outputs:
 ### Declarative Test-operation
 
 ```powershell
-$ dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
 
 Outputs:
@@ -345,7 +345,7 @@ Outputs:
 ### Declarative Set-operation
 
 ```powershell
-$ dsc config set --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
+dsc config set --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
 
 Outputs:
