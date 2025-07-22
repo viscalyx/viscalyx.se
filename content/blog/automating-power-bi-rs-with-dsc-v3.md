@@ -476,7 +476,7 @@ resources:
 
 To use DSC v3 with WinGet we have to enable an experimental setting.
 
-```powershell
+```sh
 winget settings
 ```
 
