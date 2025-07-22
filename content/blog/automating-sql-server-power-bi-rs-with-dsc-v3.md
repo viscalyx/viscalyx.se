@@ -30,15 +30,15 @@ Demonstrate **SqlRSSetup** on DSC v3 when executed:
 
 ## Baseline environment
 
-| Component               | Minimum version | Notes                                                             |
-| ----------------------- | --------------- | ----------------------------------------------------------------- |
-| Windows Server          | 2025            | Operating system for deployment (only required to support WinGet) |
-| Windows Package Manager | 1.11.400        | For WinGet scenario (requires Windows Server 2025)                |
-| PowerShell              | 7.5.x           | Engine host                                                       |
-| DSC v3                  | 3.2.0-preview.2 | Required for modern invocation patterns                           |
-| SqlServer               | 22.3.0          | Dependent module for SqlServerDsc                                 |
-| SqlServerDsc            | 17.1.x          | Contains **SqlRSSetup** resource                                  |
-| Power BI Report Server  | 15.x            | Setup media need to be available by local or UNC path             |
+| Component               | Minimum version | Notes                                                 |
+| ----------------------- | --------------- | ----------------------------------------------------- |
+| Windows Server          | 2025            | Edition 2025 only required to support WinGet deploy   |
+| Windows Package Manager | 1.11.400        | For WinGet scenario (requires Windows Server 2025)    |
+| PowerShell              | 7.5.x           | Engine host                                           |
+| DSC v3                  | 3.2.0-preview.2 | Required for modern invocation patterns               |
+| SqlServer               | 22.3.0          | Dependent module for SqlServerDsc                     |
+| SqlServerDsc            | 17.1.x          | Contains **SqlRSSetup** resource                      |
+| Power BI Report Server  | 15.x            | Setup media need to be available by local or UNC path |
 
 ### Install Windows Server 2025
 
