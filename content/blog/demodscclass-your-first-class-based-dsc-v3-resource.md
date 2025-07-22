@@ -6,7 +6,7 @@ excerpt: 'A step-by-step beginner’s guide to designing, coding, testing, and r
 image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=600&fit=crop&crop=center'
 imageAlt: 'Top-down view of a busy workspace with multiple laptops, smartphones, notebooks, and drinks, surrounded by people working and collaborating.'
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
-category: 'PowerShell DSC'
+category: 'DSC'
 readTime: '8 min read'
 ---
 
