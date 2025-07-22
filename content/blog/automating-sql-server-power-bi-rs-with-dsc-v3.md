@@ -14,7 +14,7 @@ tags:
     'Automation',
     'DevOps',
   ]
-category: 'PowerShell DSC'
+category: 'DSC'
 readTime: '8 min read'
 ---
 
