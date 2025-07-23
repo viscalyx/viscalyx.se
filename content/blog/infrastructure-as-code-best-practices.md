@@ -1,6 +1,6 @@
 ---
 title: 'Infrastructure as Code Best Practices'
-date: '2024-12-15'
+date: '2025-05-15'
 author: 'Viscalyx Team'
 excerpt: 'Learn the fundamental principles and best practices for implementing Infrastructure as Code in your organization.'
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
