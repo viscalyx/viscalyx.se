@@ -1,6 +1,6 @@
 ---
 title: 'Install IPFire on a Hyper-V Guest'
-date: '2025-07-22'
+date: '2025-06-22'
 author: 'Johan Ljunggren'
 excerpt: 'Learn how to deploy IPFire on Microsoft Hyper-V with Generation 2 VMs, multiple network interfaces, and post-install configuration.'
 image: '/team-install-ipfire.png'
@@ -15,6 +15,9 @@ tags:
 category: 'Virtualization'
 readTime: '9 min read'
 ---
+
+> [!WARNING]
+> This guide is an AI generated draft, it is still WIP! Goal would be to have it as a part of a guide to set up a lab environment.
 
 **TL;DR** — You can run the latest IPFire (currently **2.29 – Core 195**) on Microsoft Hyper-V in about 30 minutes. Create a Generation 2 VM, turn **Secure Boot** off, attach **two or more NICs** for the IPFire color-coded zones, boot from the ISO and finish the console wizard; afterwards reach the WebUI at `https://<GREEN-IP>:444`. Detailed, copy-ready steps follow.
 
@@ -88,7 +91,17 @@ Some users report the installer freezing at the language screen on Gen-2; Gen-1 
 In the text setup:
 
 1. Select _Network Configuration Type_ (e.g. **GREEN + RED**).
-2. Under _Drivers & Card Assignments_ link each MAC to a color. Note that IPFire shows NIC MACs; map them to correct VM NIC using Hyper-V console or Hyper-V PowerShell commands.
+2. Under _Drivers & Card Assignments_ link each MAC to a color. Note that IPFire shows NIC MACs; map them to the correct VM NIC using Hyper-V:
+
+   - In PowerShell, list each adapter and its MAC address:
+     ```powershell
+     Get-VMNetworkAdapter -VMName "IPFire" | Select-Object Name, MacAddress
+     ```
+   - Or use the dedicated MAC command:
+     ```powershell
+     Get-VMNetworkAdapterMacAddress -VMName "IPFire"
+     ```
+   - Compare the MAC addresses shown in the installer with the output above to assign each adapter to a zone.
 3. Give GREEN a static LAN (e.g. 192.168.1.220/24); leave RED to DHCP or set static from your ISP. See also [Configure NAT for nested Hyper-V VM on Azure VM host](/blog/configure-nat-azure-vm-hyperv-host)
 4. Finish and reboot.
 
