@@ -19,6 +19,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
         const mermaid = await import('mermaid')
 
         // Configure mermaid with default settings
+        // https://mermaid.js.org/config/schema-docs/config.html
         mermaid.default.initialize({
           startOnLoad: false,
           flowchart: {
