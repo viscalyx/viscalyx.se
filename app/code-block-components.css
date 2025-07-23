@@ -168,12 +168,11 @@
 
 /* ===== Mermaid Diagram Specific Styles ===== */
 
-/* Mermaid diagram wrapper styling */
+/* Mermaid diagram wrapper layout - keep structural styles in CSS */
 .blog-content .mermaid-diagram-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
   overflow-x: auto;
   overflow-y: visible;
 }
@@ -186,21 +185,13 @@
   justify-content: center;
 }
 
-/* Mermaid SVG styling */
-.blog-content .mermaid-diagram-wrapper svg {
-  max-width: 100% !important;
-  height: auto !important;
-  display: block;
-}
-
 /* Hide Mermaid code blocks once rendered (they get replaced by the diagram) */
-.blog-content .mermaid-code-block[data-rendered="true"] {
+.blog-content .mermaid-code-block[data-rendered='true'] {
   display: none;
 }
 
-/* Error styling for failed Mermaid rendering */
+/* Error styling for failed Mermaid rendering - only structural styles */
 .blog-content .mermaid-error {
-  font-family: ui-monospace, SFMono-Regular, 'Cascadia Code', 'Roboto Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   white-space: pre-wrap;
   word-break: break-word;
 }
