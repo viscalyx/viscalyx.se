@@ -3,6 +3,7 @@ const path = require('node:path')
 const matter = require('gray-matter')
 const sanitizeHtml = require('sanitize-html')
 const remarkBlockquoteTypes = require('./plugins/blockquote-types')
+const remarkFloatingImages = require('./plugins/remark-floating-images')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -60,6 +61,10 @@ const sanitizeOptions = {
     'span', // Prism.js uses spans for syntax highlighting
     'img', // Allow inline images in blog content
   ],
+  // Allow specific classes for floating images
+  allowedClasses: {
+    img: ['floating-image'],
+  },
 }
 
 // Sanitization options for text extraction (strips all HTML)
@@ -112,7 +117,8 @@ async function buildBlogData() {
         const processedContent = await remark()
           .use(remarkGfm)
           .use(() => remarkBlockquoteTypes(visit))
-          .use(remarkRehype, { allowDangerousHtml: true })
+          .use(remarkFloatingImages)
+          .use(remarkRehype)
           .use(rehypePrismPlus, {
             showLineNumbers: false,
             ignoreMissing: true,
@@ -172,7 +178,7 @@ async function buildBlogData() {
               })
             }
           })
-          .use(rehypeStringify, { allowDangerousHtml: true })
+          .use(rehypeStringify)
           .process(content)
 
         const rawContentHtml = processedContent.toString()
