@@ -165,3 +165,57 @@
 .dark .blog-content pre[class*='language-'] code[class*='language-'] {
   color: #ffffff; /* dark:text-white */
 }
+
+/* ===== Mermaid Diagram Specific Styles ===== */
+
+/* Mermaid diagram wrapper styling */
+.blog-content .mermaid-diagram-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+/* Ensure mermaid diagrams are responsive */
+.blog-content .mermaid-diagram-wrapper .mermaid-diagram {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mermaid SVG styling */
+.blog-content .mermaid-diagram-wrapper svg {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Hide Mermaid code blocks once rendered (they get replaced by the diagram) */
+.blog-content .mermaid-code-block[data-rendered="true"] {
+  display: none;
+}
+
+/* Error styling for failed Mermaid rendering */
+.blog-content .mermaid-error {
+  font-family: ui-monospace, SFMono-Regular, 'Cascadia Code', 'Roboto Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Ensure proper spacing in not-prose contexts */
+.not-prose {
+  margin: 2rem 0 !important;
+}
+
+/* Remove prose styles from Mermaid diagrams */
+.blog-content .not-prose * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.blog-content .not-prose {
+  margin: 2rem 0 !important;
+}
