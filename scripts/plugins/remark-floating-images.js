@@ -2,9 +2,9 @@
 // This allows us to avoid allowDangerousHtml while still supporting styled images
 
 function remarkFloatingImages() {
-  return (tree) => {
+  return tree => {
     const { visit } = require('unist-util-visit')
-    
+
     visit(tree, 'html', (node, index, parent) => {
       // Check if this is an img tag with style attribute
       const imgMatch = node.value.match(/<img\s+([^>]*?)>/i)
@@ -32,11 +32,13 @@ function remarkFloatingImages() {
             data: {
               hProperties: {
                 style: style,
-                className: style.includes('float') ? ['floating-image'] : undefined
-              }
-            }
-          }
-        ]
+                className: style.includes('float')
+                  ? ['floating-image']
+                  : undefined,
+              },
+            },
+          },
+        ],
       }
 
       // Replace the HTML node with the markdown image
