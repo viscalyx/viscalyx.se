@@ -1,6 +1,5 @@
 'use client'
 
-import { useTheme } from '@/lib/theme-context'
 import { useEffect, useRef } from 'react'
 
 interface MermaidRendererProps {
@@ -8,7 +7,6 @@ interface MermaidRendererProps {
 }
 
 const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
-  const { theme } = useTheme()
   const processedDiagrams = useRef(new Set<Element>())
 
   useEffect(() => {
@@ -20,10 +18,9 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
 
-        // Configure mermaid with simplified theme support
+        // Configure mermaid with default settings
         mermaid.default.initialize({
           startOnLoad: false,
-          darkMode: theme === 'dark',
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -81,7 +78,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create wrapper div for the diagram
             const wrapper = document.createElement('div')
             wrapper.className =
-              'mermaid-diagram-wrapper not-prose bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg'
+              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg'
             wrapper.style.cssText = `
               margin: 2rem 0;
               padding: 1.5rem;
@@ -119,7 +116,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create error message
             const errorDiv = document.createElement('div')
             errorDiv.className =
-              'mermaid-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-800 dark:text-red-200'
+              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800'
             errorDiv.style.cssText = `
               margin: 2rem 0;
               padding: 1rem;
@@ -156,7 +153,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     return () => {
       clearTimeout(timer)
     }
-  }, [contentLoaded, theme])
+  }, [contentLoaded])
 
   // This component doesn't render anything visible itself
   return null
