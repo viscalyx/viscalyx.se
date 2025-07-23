@@ -3,6 +3,7 @@ const path = require('node:path')
 const matter = require('gray-matter')
 const sanitizeHtml = require('sanitize-html')
 const remarkBlockquoteTypes = require('./plugins/blockquote-types')
+const remarkFloatingImages = require('./plugins/remark-floating-images')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -49,14 +50,21 @@ const sanitizeOptions = {
     pre: ['class', 'data-language'],
     span: ['class'],
     div: ['class', 'data-alert-type'],
+    // Allow img attributes for inline images
+    img: ['src', 'alt', 'style', 'width', 'height'],
     // Allow data attributes for Prism.js functionality
     '*': ['data-*'],
   },
-  // Allow additional tags that Prism.js might use
+  // Allow additional tags that Prism.js might use and images for inline content
   allowedTags: [
     ...sanitizeHtml.defaults.allowedTags,
     'span', // Prism.js uses spans for syntax highlighting
+    'img', // Allow inline images in blog content
   ],
+  // Allow specific classes for floating images
+  allowedClasses: {
+    img: ['floating-image'],
+  },
 }
 
 // Sanitization options for text extraction (strips all HTML)
@@ -109,6 +117,7 @@ async function buildBlogData() {
         const processedContent = await remark()
           .use(remarkGfm)
           .use(() => remarkBlockquoteTypes(visit))
+          .use(remarkFloatingImages)
           .use(remarkRehype)
           .use(rehypePrismPlus, {
             showLineNumbers: false,

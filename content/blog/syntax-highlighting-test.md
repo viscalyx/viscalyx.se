@@ -1,6 +1,6 @@
 ---
 title: 'Syntax Highlighting Test'
-date: '2025-06-08'
+date: '2025-04-08'
 author: 'Blog Author'
 excerpt: 'Testing different code block language syntax highlighting, including PowerShell.'
 tags: ['syntax', 'highlighting', 'test']
