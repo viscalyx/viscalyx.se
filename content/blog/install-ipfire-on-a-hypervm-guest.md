@@ -92,7 +92,6 @@ In the text setup:
 
 1. Select _Network Configuration Type_ (e.g. **GREEN + RED**).
 2. Under _Drivers & Card Assignments_ link each MAC to a color. Note that IPFire shows NIC MACs; map them to the correct VM NIC using Hyper-V:
-
    - In PowerShell, list each adapter and its MAC address:
      ```powershell
      Get-VMNetworkAdapter -VMName "IPFire" | Select-Object Name, MacAddress
@@ -102,6 +101,7 @@ In the text setup:
      Get-VMNetworkAdapterMacAddress -VMName "IPFire"
      ```
    - Compare the MAC addresses shown in the installer with the output above to assign each adapter to a zone.
+
 3. Give GREEN a static LAN (e.g. 192.168.1.220/24); leave RED to DHCP or set static from your ISP. See also [Configure NAT for nested Hyper-V VM on Azure VM host](/blog/configure-nat-azure-vm-hyperv-host)
 4. Finish and reboot.
 
