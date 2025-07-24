@@ -120,13 +120,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create wrapper div for the diagram
             const wrapper = document.createElement('div')
             wrapper.className =
-              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg'
-            wrapper.style.cssText = `
-              margin: 2rem 0;
-              padding: 1.5rem;
-              overflow-x: auto;
-              text-align: center;
-            `
+              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg my-8 p-6 overflow-x-auto text-center'
 
             // Create the diagram container
             const diagramContainer = document.createElement('div')
