@@ -161,7 +161,7 @@ async function buildBlogData() {
                         type: 'text',
                         value: isMermaid
                           ? 'MERMAID DIAGRAM'
-                          : language.toLocaleUpperCase(),
+                          : language.toUpperCase(),
                       },
                     ],
                   }
