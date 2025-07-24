@@ -1,7 +1,7 @@
 name: 📝 Documentation
 description: Report issues with documentation or suggest improvements
-title: "📝 [Docs]: "
-labels: ["documentation", "triage"]
+title: '📝 [Docs]: '
+labels: ['documentation', 'triage']
 assignees: []
 
 body:
@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         Thank you for helping improve our documentation! Clear documentation benefits everyone.
-        
+
         **This template is for:**
         - Reporting unclear or missing documentation
         - Suggesting documentation improvements
