@@ -4,10 +4,10 @@
 
 We actively support and provide security updates for the following versions of Viscalyx.se:
 
-| Version  | Supported          |
-| -------- | ------------------ |
-| Latest   | :white_check_mark: |
-| < Latest | :x:                |
+| Branch / Release          | Security-supported? |
+| ------------------------- | ------------------- |
+| `main` (latest)           | :white_check_mark:  |
+| All other tagged releases | :x:                 |
 
 The latest version in main branch is what is normally published automatically.
 
