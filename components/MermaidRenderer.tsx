@@ -122,6 +122,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             })
 
             // Set the inner HTML of the diagram container
+            // To temporary disable the mermaid sanitization, you can set this to `svg`
             diagramContainer.innerHTML = cleanSvg
 
             // Find the appropriate container to replace
