@@ -1087,6 +1087,19 @@ architecture-beta
     disk2:T -- B:db
 ```
 
+Icons are very [limitied](https://mermaid.js.org/syntax/architecture.html#icons) unless using [Iconify Icons](https://icon-sets.iconify.design/) (and accepting the licenses), example psuedo-code:
+
+```typescript
+mermaid.registerIconPacks([
+  {
+    name: 'logos',
+    loader: () => fetch('…/logos@1/icons.json').then(r => r.json()),
+  },
+])
+```
+
+This is currently not suppported in the blog system.
+
 ## 20. Kanban Boards
 
 [Documentation](https://mermaid.js.org/syntax/kanban.html)
