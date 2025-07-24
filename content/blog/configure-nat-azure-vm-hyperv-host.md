@@ -128,7 +128,7 @@ Repeat for each guest that should use NAT.
 
 ## 5 . Configure the nested VM’s NIC
 
-Hand out DCHP addresses, or assign a static address.
+Hand out DHCP addresses, or assign a static address.
 
 ### Option 1 - Static IP address
 
