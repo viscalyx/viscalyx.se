@@ -95,6 +95,58 @@ interface TermsTranslations {
   }
 }
 
+interface CookiesTranslations {
+  title: string
+  description: string
+  lastUpdated: string
+  whatAreCookies: {
+    title: string
+    description: string
+  }
+  howWeUseCookies: {
+    title: string
+    description: string
+    purposes: {
+      essential: string
+      preferences: string
+      analytics: string
+    }
+  }
+  typesOfCookies: {
+    title: string
+    session: {
+      title: string
+      description: string
+    }
+    persistent: {
+      title: string
+      description: string
+    }
+    firstParty: {
+      title: string
+      description: string
+    }
+    thirdParty: {
+      title: string
+      description: string
+    }
+  }
+  yourChoices: {
+    title: string
+    description: string
+    options: {
+      browserSettings: string
+      ourSettings: string
+      thirdPartyOptOut: string
+    }
+    disclaimer: string
+  }
+  contact: {
+    title: string
+    description: string
+  }
+}
+
 /**
  * Validates and sanitizes the filePrefix parameter to prevent injection attacks
  * This function ensures only safe file names are used in dynamic imports.
@@ -219,6 +271,10 @@ export function usePrivacyTranslations() {
 
 export function useTermsTranslations() {
   return usePageTranslations<TermsTranslations>('terms')
+}
+
+export function useCookiesTranslations() {
+  return usePageTranslations<CookiesTranslations>('cookies')
 }
 
 // Export validation function for testing purposes

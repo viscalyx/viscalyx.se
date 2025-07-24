@@ -16,5 +16,6 @@ export function getStaticPageDates() {
     blog: new Date(pageDatesData.blog),
     privacy: new Date(pageDatesData.privacy),
     terms: new Date(pageDatesData.terms),
+    cookies: new Date(pageDatesData.cookies),
   }
 }

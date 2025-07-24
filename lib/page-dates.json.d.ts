@@ -3,6 +3,7 @@ declare const pageDatesData: {
   blog: string
   privacy: string
   terms: string
+  cookies: string
 }
 
 export = pageDatesData

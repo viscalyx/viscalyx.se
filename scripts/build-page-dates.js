@@ -103,6 +103,11 @@ async function buildPageDates() {
       'messages/terms.en.json',
       'messages/terms.sv.json',
     ]),
+    cookies: await getFilesLastModified([
+      'app/[locale]/cookies/page.tsx',
+      'messages/cookies.en.json',
+      'messages/cookies.sv.json',
+    ]),
   }
 
   // Write the data to JSON file

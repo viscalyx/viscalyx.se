@@ -1,147 +1,170 @@
-import { type Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
-import CookieSettings from '../../../components/CookieSettings'
+'use client'
 
-type Props = {
-  params: Promise<{ locale: string }>
-}
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import ScrollToTop from '@/components/ScrollToTop'
+import CookieSettings from '@/components/CookieSettings'
+import { getStaticPageDates } from '@/lib/file-dates'
+import { useCookiesTranslations } from '@/lib/page-translations'
+import { motion } from 'framer-motion'
+import { useFormatter } from 'next-intl'
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'cookiePolicy' })
+// Get the actual last modified date
+const staticPageDates = getStaticPageDates()
 
-  return {
-    title: t('title'),
-    description: t('description'),
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: `/${locale}/cookies`,
-      languages: {
-        en: '/en/cookies',
-        sv: '/sv/cookies',
-      },
-    },
+export default function CookiesPage() {
+  const { translations, loading, error } = useCookiesTranslations()
+  const format = useFormatter()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
   }
-}
 
-export default async function CookiesPage({ params }: Props) {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'cookiePolicy' })
+  if (error || !translations) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Error loading page
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Please try refreshing the page.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t('title')}
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-            {t('description')}
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-            {t('lastUpdated')}: {new Date().toLocaleDateString(locale)}
-          </p>
-        </div>
-
-        {/* Cookie Policy Content */}
-        <div className="max-w-4xl mx-auto mb-12 prose prose-lg dark:prose-invert">
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {t('whatAreCookies.title')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-              {t('whatAreCookies.description')}
+    <>
+      <Header />
+      <motion.main
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-white dark:bg-gray-900"
+      >
+        <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              {translations.title}
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+              {translations.description}
             </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {t('howWeUseCookies.title')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-              {t('howWeUseCookies.description')}
-            </p>
-            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
-              <li>{t('howWeUseCookies.purposes.essential')}</li>
-              <li>{t('howWeUseCookies.purposes.preferences')}</li>
-              <li>{t('howWeUseCookies.purposes.analytics')}</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {t('typesOfCookies.title')}
-            </h2>
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {t('typesOfCookies.session.title')}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t('typesOfCookies.session.description')}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {t('typesOfCookies.persistent.title')}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t('typesOfCookies.persistent.description')}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {t('typesOfCookies.firstParty.title')}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t('typesOfCookies.firstParty.description')}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {t('typesOfCookies.thirdParty.title')}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
-                  {t('typesOfCookies.thirdParty.description')}
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {t('yourChoices.title')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-              {t('yourChoices.description')}
-            </p>
-            <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
-              <li>{t('yourChoices.options.browserSettings')}</li>
-              <li>{t('yourChoices.options.ourSettings')}</li>
-              <li>{t('yourChoices.options.thirdPartyOptOut')}</li>
-            </ul>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-              {t('yourChoices.disclaimer')}
+              {translations.lastUpdated}: {format.dateTime(staticPageDates.cookies, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
             </p>
-          </section>
+          </div>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {t('contact.title')}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              {t('contact.description')}
-            </p>
-          </section>
+          {/* Cookie Policy Content */}
+          <div className="max-w-4xl mx-auto mb-12 prose prose-lg dark:prose-invert">
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                {translations.whatAreCookies.title}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                {translations.whatAreCookies.description}
+              </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                {translations.howWeUseCookies.title}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                {translations.howWeUseCookies.description}
+              </p>
+              <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                <li>{translations.howWeUseCookies.purposes.essential}</li>
+                <li>{translations.howWeUseCookies.purposes.preferences}</li>
+                <li>{translations.howWeUseCookies.purposes.analytics}</li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                {translations.typesOfCookies.title}
+              </h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {translations.typesOfCookies.session.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {translations.typesOfCookies.session.description}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {translations.typesOfCookies.persistent.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {translations.typesOfCookies.persistent.description}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {translations.typesOfCookies.firstParty.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {translations.typesOfCookies.firstParty.description}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {translations.typesOfCookies.thirdParty.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {translations.typesOfCookies.thirdParty.description}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                {translations.yourChoices.title}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+                {translations.yourChoices.description}
+              </p>
+              <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                <li>{translations.yourChoices.options.browserSettings}</li>
+                <li>{translations.yourChoices.options.ourSettings}</li>
+                <li>{translations.yourChoices.options.thirdPartyOptOut}</li>
+              </ul>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                {translations.yourChoices.disclaimer}
+              </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                {translations.contact.title}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                {translations.contact.description}
+              </p>
+            </section>
+          </div>
+
+          {/* Cookie Settings */}
+          <CookieSettings />
         </div>
-
-        {/* Cookie Settings */}
-        <CookieSettings />
-      </div>
-    </div>
+      </motion.main>
+      <Footer />
+      <ScrollToTop />
+    </>
   )
 }

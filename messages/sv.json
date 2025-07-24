@@ -272,56 +272,5 @@
         "description": "Dessa cookies hjälper oss att förstå hur besökare interagerar med vår webbplats genom att samla in och rapportera information anonymt. Detta hjälper oss att förbättra vår webbplats prestanda och användarupplevelse."
       }
     }
-  },
-  "cookiePolicy": {
-    "title": "Cookie-policy",
-    "description": "Lär dig om hur vi använder cookies på vår webbplats och hur du kan hantera dina cookie-preferenser.",
-    "lastUpdated": "Senast uppdaterad",
-    "whatAreCookies": {
-      "title": "Vad är Cookies?",
-      "description": "Cookies är små textfiler som lagras på din enhet när du besöker en webbplats. De används i stor utsträckning för att få webbplatser att fungera mer effektivt och för att ge information till webbplatsägare om hur deras webbplats används."
-    },
-    "howWeUseCookies": {
-      "title": "Hur Vi Använder Cookies",
-      "description": "Vi använder cookies för flera syften för att förbättra din upplevelse på vår webbplats:",
-      "purposes": {
-        "essential": "Väsentlig webbplatsfunktionalitet och säkerhet",
-        "preferences": "Komma ihåg dina inställningar och preferenser",
-        "analytics": "Förstå hur besökare använder vår webbplats (endast serverbaserad bearbetning, inga spårningscookies)"
-      }
-    },
-    "typesOfCookies": {
-      "title": "Typer av Cookies Vi Använder",
-      "session": {
-        "title": "Sessions-cookies",
-        "description": "Dessa är tillfälliga cookies som raderas när du stänger din webbläsare. De hjälper oss att upprätthålla din session när du navigerar genom vår webbplats."
-      },
-      "persistent": {
-        "title": "Beständiga Cookies",
-        "description": "Dessa cookies förblir på din enhet under en viss period eller tills du raderar dem. De hjälper oss att komma ihåg dina preferenser när du återvänder till vår webbplats."
-      },
-      "firstParty": {
-        "title": "Förstaparts-cookies",
-        "description": "Dessa är cookies som ställs in direkt av vår webbplats. Vi har full kontroll över dessa cookies och använder dem för att förbättra din upplevelse på vår webbplats."
-      },
-      "thirdParty": {
-        "title": "Tredjepartscookies",
-        "description": "Vi använder inte tredjepartscookies. Alla cookies på vår webbplats är förstapartscookies som vi ställer in direkt. Även om vi använder vissa tredjepartstjänster (som Cloudflare för hosting), ställer dessa tjänster inte in cookies genom vår webbplats."
-      }
-    },
-    "yourChoices": {
-      "title": "Dina Cookie-val",
-      "description": "Du har flera alternativ för att hantera cookies:",
-      "options": {
-        "browserSettings": "Konfigurera dina webbläsarinställningar för att blockera eller radera cookies",
-        "ourSettings": "Använd våra cookie-inställningar nedan för att kontrollera vilka typer av cookies vi ställer in",
-        "thirdPartyOptOut": "Eftersom vi inte använder tredjepartscookies behövs ingen avanmälan från externa tjänster"
-      },
-      "disclaimer": "Observera att blockering av vissa cookies kan påverka funktionaliteten på vår webbplats."
-    },
-    "contact": {
-      "title": "Kontakta Oss",
-      "description": "Om du har några frågor om vår användning av cookies, vänligen kontakta oss genom vår webbplats eller skicka e-post till oss direkt."
-    }
   }
 }
