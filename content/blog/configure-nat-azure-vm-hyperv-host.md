@@ -132,7 +132,7 @@ Hand out DHCP addresses, or assign a static address.
 
 ### Option 1 - Static IP address
 
-Inside the firewall guest OS, set the RED NIC to use Static IP, Static IP will be the VmNAT's IP address:
+Inside the firewall guest OS, set the RED NIC to use a static IP. The gateway will be the VmNAT's IP address:
 
 | Setting     | Value (example)                                                                |
 | ----------- | ------------------------------------------------------------------------------ |
