@@ -10,8 +10,6 @@ category: 'Template'
 readTime: '15 min read'
 ---
 
-# Complete Guide to Mermaid Diagrams: Every Type Explained with Examples
-
 Mermaid is a powerful diagramming and charting tool that uses simple text definitions to create complex visual diagrams. This comprehensive guide covers every type of Mermaid diagram with practical examples that you can use in your own projects.
 
 ## Introduction
