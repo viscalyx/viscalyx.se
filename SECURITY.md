@@ -49,7 +49,7 @@ We aim to respond to security reports according to the following timeline:
 
 - **Initial Response**: Within 48 hours of receiving the report
 - **Assessment**: Within 5 business days, we'll assess the severity and validity
-- **Resolution**: Critical vulnerabilities will be addressed within 7 days, others within 30 days
+- **Resolution**: We will make a _best-effort_ to address critical vulnerabilities within **7 calendar days** and all others within **30 calendar days**, subject to resource availability.
 - **Disclosure**: After the fix is deployed, we'll coordinate with you on public disclosure
 
 ## Security Measures
