@@ -1,7 +1,7 @@
 name: 🐛 Bug Report
 description: Report a bug or unexpected behavior
-title: "🐛 [Bug]: "
-labels: ["bug", "triage"]
+title: '🐛 [Bug]: '
+labels: ['bug', 'triage']
 assignees: []
 
 body:
@@ -13,7 +13,7 @@ body:
         **Before submitting, please:**
         - Check if this bug has already been reported
         - Ensure you're using the latest version from the main branch
-        - Review our [Security Policy](https://github.com/viscalyx/viscalyx.se/blob/main/SECURITY.md) if this might be a security issue
+        - Review our [Security Policy](./../../SECURITY.md) if this might be a security issue
 
   - type: textarea
     id: description
@@ -133,5 +133,5 @@ body:
       options:
         - label: I have searched existing issues to ensure this bug hasn't been reported before
           required: true
-        - label: I have confirmed this is not a security vulnerability (see [Security Policy](https://github.com/viscalyx/viscalyx.se/blob/main/SECURITY.md))
+        - label: I have confirmed this is not a security vulnerability (see [Security Policy](./../../SECURITY.md))
           required: true
