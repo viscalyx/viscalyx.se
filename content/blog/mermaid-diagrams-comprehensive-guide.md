@@ -1256,10 +1256,4 @@ Choose the right diagram type for your needs, keep them simple and focused, and 
 - [Mermaid Syntax Reference](https://mermaid.js.org/syntax/flowchart.html)
 - [Visual Documentation Best Practices](https://www.writethedocs.org/)
 
----
-
 _This comprehensive guide covers all major Mermaid diagram types. Bookmark this page as a reference when creating visual documentation for your projects. Each diagram type has its strengths - choose the one that best communicates your specific information._
-
-```
-
-```
