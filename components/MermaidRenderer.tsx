@@ -1,5 +1,6 @@
 'use client'
 
+import DOMPurify from 'dompurify'
 import { useEffect, useRef } from 'react'
 
 interface MermaidRendererProps {
@@ -93,9 +94,35 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             diagramContainer.className = 'mermaid-diagram'
             wrapper.appendChild(diagramContainer)
 
-            // Render the diagram
+            // Render the diagram - if a mermaid diagram does not render as expected, it is likely due to the mermaid code/syntax being sanitized incorrectly.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
-            diagramContainer.innerHTML = svg
+
+            // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
+            const cleanSvg = DOMPurify.sanitize(svg, {
+              FORBID_TAGS: ['script'],
+              FORBID_ATTR: [
+                'onclick',
+                'onload',
+                'onerror',
+                'onmouseover',
+                'onmouseout',
+                'onfocus',
+                'onblur',
+              ],
+              ADD_TAGS: ['foreignObject'], // Explicitly allow foreignObject which flowcharts use for text
+              ADD_ATTR: [
+                'xmlns',
+                'xmlns:xlink',
+                'xml:space',
+                'dominant-baseline',
+                'text-anchor',
+              ], // Allow SVG text attributes
+              ALLOW_DATA_ATTR: true,
+              KEEP_CONTENT: true,
+            })
+
+            // Set the inner HTML of the diagram container
+            diagramContainer.innerHTML = cleanSvg
 
             // Find the appropriate container to replace
             let containerToReplace = block
@@ -124,10 +151,15 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
               font-family: 'Courier New', monospace;
               font-size: 0.875rem;
             `
-            errorDiv.innerHTML = `
+            // Render error message with DOMPurify to avoid XSS
+            const rawErrorHtml = `
               <strong>Mermaid Diagram Error:</strong><br>
               ${error instanceof Error ? error.message : 'Unknown error occurred'}
             `
+            const cleanErrorHtml = DOMPurify.sanitize(rawErrorHtml, {
+              USE_PROFILES: { html: true },
+            })
+            errorDiv.innerHTML = cleanErrorHtml
 
             // Find the appropriate container to replace
             let containerToReplace = block
