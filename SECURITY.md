@@ -9,7 +9,7 @@ We actively support and provide security updates for the following versions of V
 | `main` (latest)           | :white_check_mark:  |
 | All other tagged releases | :x:                 |
 
-The latest version in main branch is what is normally published automatically.
+The latest version in the main branch is what is normally published automatically.
 
 ## Reporting a Vulnerability
 
@@ -49,7 +49,7 @@ We aim to respond to security reports according to the following timeline:
 
 - **Initial Response**: Within 48 hours of receiving the report
 - **Assessment**: Within 5 business days, we'll assess the severity and validity
-- **Resolution**: We will make a _best-effort_ to address critical vulnerabilities within **7 calendar days** and all others within **30 calendar days**, subject to resource availability.
+- **Resolution**: We will make a _best-effort_ to address critical vulnerabilities within **14 calendar days** and all others within **45 calendar days**. These timelines are subject to resource availability, including team capacity, workload, and the complexity of the issue. In cases where additional time is required, we will communicate updates to the reporter promptly.
 - **Disclosure**: After the fix is deployed, we'll coordinate with you on public disclosure
 
 ## Security Measures
@@ -104,7 +104,7 @@ If you're contributing to this project, please follow these security guidelines:
 - **Input Validation**: Always validate and sanitize user inputs
 - **XSS Prevention**: Use proper escaping and Content Security Policy
 - **CSRF Protection**: Implement CSRF tokens for state-changing operations
-- **SQL Injection**: Use parameterized queries and avoid dynamic SQL
+- **SQL Injection**: If database functionality is added in the future, use parameterized queries and avoid dynamic SQL
 - **Authentication**: Implement secure authentication and session management
 - **Authorization**: Enforce proper access controls and permissions
 
