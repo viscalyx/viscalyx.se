@@ -1,10 +1,11 @@
 'use client'
 
-import { useLocale, useTranslations } from 'next-intl'
-import { useRouter, usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
-import { useState, useEffect, useRef } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
+import { saveLanguagePreference } from '../lib/language-preferences'
 
 const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -45,6 +46,10 @@ const LanguageSwitcher = () => {
 
   const handleLanguageChange = (newLocale: string) => {
     const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
+
+    // Save language preference if user has consented to preferences cookies
+    saveLanguagePreference(newLocale)
+
     router.push(`/${newLocale}${currentPath}`)
     setIsOpen(false)
   }

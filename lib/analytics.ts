@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
+import { hasConsent } from './cookie-consent'
 
 interface BlogAnalyticsData {
   slug: string
@@ -30,6 +31,11 @@ export function useBlogAnalytics(
 
   const trackEvent = useCallback(
     async (readProgress?: number, timeSpent?: number) => {
+      // Only track if user has consented to analytics cookies
+      if (!hasConsent('analytics')) {
+        return
+      }
+
       try {
         await fetch('/api/analytics/blog-read', {
           method: 'POST',
@@ -57,7 +63,7 @@ export function useBlogAnalytics(
     let throttleTimer: NodeJS.Timeout | null = null
 
     const handleScroll = () => {
-      if (!trackReadProgress) return
+      if (!trackReadProgress || !hasConsent('analytics')) return
 
       if (throttleTimer) return
 
@@ -92,6 +98,11 @@ export function useBlogAnalytics(
     }
 
     const handleBeforeUnload = () => {
+      // Only track if user has consented to analytics cookies
+      if (!hasConsent('analytics')) {
+        return
+      }
+
       // Track final analytics on page unload
       const timeSpent = trackTimeSpent
         ? Math.round((Date.now() - startTime.current) / 1000)
@@ -113,7 +124,7 @@ export function useBlogAnalytics(
     }
 
     const timeoutId = setTimeout(() => {
-      if (trackTimeSpent) {
+      if (trackTimeSpent && hasConsent('analytics')) {
         trackEvent(0, 0) // Initial page view
       }
     }, 1000)

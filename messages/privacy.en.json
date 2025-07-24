@@ -29,15 +29,15 @@
         "description": "We implement appropriate technical and organizational measures to protect information. All data is processed through Cloudflare's secure infrastructure, and we do not store personal identifying information on our servers."
       },
       "cookies": {
-        "title": "Local storage and preferences",
-        "description": "We do not use cookies for tracking. We only store your theme preference (light/dark mode) and language selection in your browser's local storage. This data remains on your device and is not transmitted to our servers. You can clear this data anytime through your browser settings."
+        "title": "Cookies and Local Storage",
+        "description": "We use first-party cookies and local storage to enhance your experience. We do not use third-party tracking cookies or advertising cookies. You can manage these through our cookie consent banner or your browser settings."
       },
       "thirdParty": {
         "title": "Third-Party Services",
-        "description": "We use the following third-party services:",
+        "description": "We use the following third-party services that may process data when you visit our website:",
         "items": [
-          "Cloudflare: Provides content delivery, security, and basic analytics (includes standard web analytics data)",
-          "Cloudflare Analytics Engine: Stores anonymized blog reading metrics for content improvement"
+          "Cloudflare: Content delivery network, security, and server-side analytics processing (processes IP addresses, user agents, and request headers)",
+          "Google Fonts: Font delivery service (loads Inter font from Google's servers, no tracking or cookies)"
         ]
       },
       "yourRights": {

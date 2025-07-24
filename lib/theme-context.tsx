@@ -4,9 +4,10 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useState,
   useRef,
+  useState,
 } from 'react'
+import { hasConsent } from './cookie-consent'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -46,7 +47,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Load theme from localStorage with error handling
     let savedTheme: string | null = null
     try {
-      savedTheme = localStorage.getItem('theme')
+      // Only load from localStorage if user has consented to preferences cookies
+      if (hasConsent('preferences')) {
+        savedTheme = localStorage.getItem('theme')
+      }
     } catch (error) {
       console.error('Failed to access localStorage for theme:', error)
     }
@@ -118,9 +122,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.classList.remove('dark')
       }
 
-      // Save to localStorage with error handling
+      // Save to localStorage with error handling and cookie consent check
       try {
-        localStorage.setItem('theme', theme)
+        // Only save to localStorage if user has consented to preferences cookies
+        if (hasConsent('preferences')) {
+          localStorage.setItem('theme', theme)
+        }
       } catch (error) {
         console.error('Failed to save theme to localStorage:', error)
       }

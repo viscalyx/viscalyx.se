@@ -72,6 +72,21 @@ If you haven't already, please read the main [README.md](README.md) for an overv
   - [Integration Examples](#integration-examples)
   - [TypeScript Types](#typescript-types)
   - [Benefits](#benefits-1)
+- [GDPR Cookie Consent Implementation](#gdpr-cookie-consent-implementation)
+  - [Features](#features-1)
+  - [Cookie Categories](#cookie-categories)
+  - [Files Added/Modified](#files-addedmodified)
+  - [Usage](#usage-1)
+  - [Legal Compliance](#legal-compliance)
+  - [Customization](#customization)
+  - [Testing](#testing-1)
+  - [Browser Support](#browser-support)
+  - [Performance](#performance-1)
+  - [Monitoring](#monitoring)
+  - [Security](#security-1)
+  - [Maintenance](#maintenance)
+  - [Support](#support)
+  - [License](#license)
 - [Code of Conduct](#code-of-conduct)
 - [Reporting Bugs](#reporting-bugs)
 - [Asking for Help](#asking-for-help)
@@ -1589,5 +1604,238 @@ If you have questions or need help with your contribution, feel free to:
 
 - Create an issue on GitHub, labeling it as a "question".
 - Clearly describe the problem you're facing or the information you need.
+
+## GDPR Cookie Consent Implementation
+
+This implementation provides a complete GDPR-compliant cookie consent solution for the Next.js website.
+
+### Features
+
+✅ **GDPR Compliant**: Meets all EU legal requirements for cookie consent
+✅ **Granular Control**: Users can enable/disable different cookie categories
+✅ **Multi-language**: Supports English and Swedish translations
+✅ **Accessible**: Full keyboard navigation and screen reader support
+✅ **Responsive**: Works on all device sizes
+✅ **Privacy-First**: Only strictly necessary cookies by default
+✅ **Theme Integration**: Respects cookie consent for theme preferences
+
+### Cookie Categories
+
+#### 🛡️ Strictly Necessary
+
+- **Cannot be disabled** (GDPR exemption)
+- Authentication, security, load balancing
+- Examples: session cookies, CSRF tokens
+
+#### 🎨 Preferences
+
+- **Theme settings** (light/dark mode) - `theme` cookie
+- **Language preferences** (en/sv) - `language` cookie
+- User interface customizations
+
+#### 📊 Analytics
+
+- Website usage analytics
+- Performance monitoring
+- User behavior insights
+
+> **Note**: Marketing cookies have been intentionally excluded as this website does not currently use any marketing or advertising cookies. This keeps the consent interface simple and honest about what data is actually collected.
+
+### Files Added/Modified
+
+#### New Files
+
+- `lib/cookie-consent.ts` - Core cookie consent utilities
+- `lib/language-preferences.ts` - Language preference management
+- `components/CookieConsentBanner.tsx` - Banner component
+- `components/CookieSettings.tsx` - Settings management page
+- `app/[locale]/cookies/page.tsx` - Cookie policy page
+- `lib/__tests__/cookie-consent.test.ts` - Unit tests
+- `lib/__tests__/language-preferences.test.ts` - Language preference tests
+- `components/__tests__/CookieConsentBanner.test.tsx` - Component tests
+
+#### Modified Files
+
+- `app/[locale]/layout.tsx` - Added banner integration
+- `lib/theme-context.tsx` - Added consent checking for theme preferences
+- `components/LanguageSwitcher.tsx` - Added language preference storage
+- `components/Footer.tsx` - Added cookie policy link
+- `messages/en.json` - Added English translations
+- `messages/sv.json` - Added Swedish translations
+
+### Usage
+
+#### Basic Integration
+
+The cookie consent banner automatically appears for new users. It's integrated into the main layout and will show until the user makes a choice.
+
+#### Checking Consent in Your Code
+
+```typescript
+import { hasConsent } from '@/lib/cookie-consent'
+import { saveLanguagePreference } from '@/lib/language-preferences'
+
+// Check for analytics consent
+if (hasConsent('analytics')) {
+  // Initialize Google Analytics
+  gtag('config', 'GA_MEASUREMENT_ID')
+}
+
+// Save language preference when user changes language
+function handleLanguageChange(newLanguage: string) {
+  // This will only save if user has consented to preferences cookies
+  saveLanguagePreference(newLanguage)
+}
+```
+
+#### Managing Cookie Registry
+
+Add your cookies to the `cookieRegistry` in `lib/cookie-consent.ts`:
+
+```typescript
+export const cookieRegistry: CookieInfo[] = [
+  // ... existing cookies
+  {
+    name: '_ga',
+    category: 'analytics',
+    purpose: 'Google Analytics - tracks user interactions',
+    duration: '2 years',
+    provider: 'Google',
+  },
+  {
+    name: 'language',
+    category: 'preferences',
+    purpose: 'Stores user language preference (en/sv)',
+    duration: '1 year',
+  },
+]
+```
+
+### Legal Compliance
+
+#### GDPR Requirements Met
+
+1. ✅ **Explicit Consent**: Clear opt-in required for non-essential cookies
+2. ✅ **Granular Choice**: Users can select specific cookie categories
+3. ✅ **Easy Withdrawal**: Users can change preferences anytime
+4. ✅ **Clear Information**: Detailed cookie descriptions provided
+5. ✅ **Record Keeping**: Consent timestamp and settings stored
+6. ✅ **No Pre-checked Boxes**: All non-essential cookies disabled by default
+
+#### Data Stored
+
+- **Consent Settings**: Stored in localStorage and cookie
+- **Timestamp**: When consent was given
+- **Version**: For future consent updates
+
+#### Data Retention
+
+- Consent data expires after 1 year
+- Users can export their data
+- Users can reset all consent at any time
+
+### Customization
+
+#### Styling
+
+The components use Tailwind CSS classes and respect your design system:
+
+- Primary color: `primary-600`
+- Dark mode support built-in
+- Responsive design included
+
+#### Translations
+
+Add new languages by:
+
+1. Creating new message files (e.g., `messages/de.json`)
+2. Adding the locale to your i18n configuration
+3. Copying the `cookieConsent` and `cookiePolicy` sections
+
+#### Cookie Categories
+
+To add new categories:
+
+1. Update the `CookieCategory` type
+2. Add translations for the new category
+3. Update the UI components to include the new category
+
+### Testing
+
+Run tests with:
+
+```bash
+npm test
+```
+
+The implementation includes:
+
+- Unit tests for core functionality
+- Component tests for user interactions
+- Type checking for TypeScript safety
+
+### Browser Support
+
+- **Modern browsers**: Full feature support
+- **Legacy browsers**: Graceful degradation
+- **No JavaScript**: Banner won't appear (acceptable for GDPR)
+
+### Performance
+
+- **Lazy loaded**: Banner only loads when needed
+- **Small bundle**: Minimal impact on page size
+- **No external dependencies**: Except for animations
+
+### Monitoring
+
+Monitor cookie consent effectiveness:
+
+```typescript
+import { getConsentSettings, getConsentTimestamp } from '@/lib/cookie-consent'
+
+// Analytics on consent choices
+const settings = getConsentSettings()
+const timestamp = getConsentTimestamp()
+
+// Track conversion rates, user preferences, etc.
+```
+
+### Security
+
+- **XSS Protection**: All user data is sanitized
+- **CSP Compatible**: No inline scripts required
+- **HTTPS Only**: Secure cookie attributes set
+- **SameSite**: Protection against CSRF attacks
+
+### Maintenance
+
+#### Regular Tasks
+
+1. **Audit cookies**: Review `cookieRegistry` quarterly
+2. **Update consent version**: When adding new cookie purposes
+3. **Monitor compliance**: Ensure third-party scripts respect consent
+4. **Review translations**: Keep legal language up to date
+
+#### Future Enhancements
+
+Consider adding:
+
+- Integration with Consent Management Platforms (CMP)
+- Server-side consent detection
+- Advanced analytics on consent patterns
+- Integration with marketing automation tools
+
+### Support
+
+For questions or issues:
+
+1. Check the test files for usage examples
+2. Review the cookie registry for cookie definitions
+3. Test with browser developer tools to verify consent flow
+4. Ensure third-party scripts respect consent decisions
+
+### License
+
+This implementation is part of the viscalyx.se project and follows the same MIT license.
 
 Thank you for contributing to Viscalyx.se!

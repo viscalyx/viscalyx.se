@@ -29,15 +29,15 @@
         "description": "Vi implementerar lämpliga tekniska och organisatoriska åtgärder för att skydda information. All data bearbetas genom Cloudflares säkra infrastruktur, och vi lagrar inte personligt identifierande information på våra servrar."
       },
       "cookies": {
-        "title": "Lokal lagring och preferenser",
-        "description": "Vi använder inte cookies för spårning. Vi lagrar endast din temapreferens (ljust/mörkt läge) och språkval i din webbläsares lokala lagring. Denna data stannar på din enhet och överförs inte till våra servrar. Du kan rensa denna data när som helst genom dina webbläsarinställningar."
+        "title": "Cookies och lokal lagring",
+        "description": "Vi använder förstapartscookies och lokal lagring för att förbättra din upplevelse. Vi använder inte tredjepartsspårningscookies eller reklamcookies. Du kan hantera dessa genom vår cookie-samtyckesbanner eller dina webbläsarinställningar."
       },
       "thirdParty": {
         "title": "Tredjepartstjänster",
-        "description": "Vi använder följande tredjepartstjänster:",
+        "description": "Vi använder följande tredjepartstjänster som kan behandla data när du besöker vår webbplats:",
         "items": [
-          "Cloudflare: Tillhandahåller innehållsleverans, säkerhet och grundläggande analyser (inkluderar normal webbanalysinformation)",
-          "Cloudflare Analytics Engine: Lagrar anonymiserade bloggläsningsmått för innehållsförbättring"
+          "Cloudflare: Innehållsleveransnätverk, säkerhet och serverbaserad analysbehandling (behandlar IP-adresser, användaragenter och förfrågningshuvuden)",
+          "Google Fonts: Typsnittsleveranstjänst (laddar Inter-typsnitt från Googles servrar, ingen spårning eller cookies)"
         ]
       },
       "yourRights": {
