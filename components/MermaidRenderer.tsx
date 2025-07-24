@@ -94,7 +94,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             diagramContainer.className = 'mermaid-diagram'
             wrapper.appendChild(diagramContainer)
 
-            // Render the diagram - if a mermaid diagram does not render as expected, it is likely due to the mermaid code/syntax being sanitized incorrectly.
+            // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
 
             // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
