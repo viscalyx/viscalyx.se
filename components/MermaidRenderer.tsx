@@ -185,13 +185,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create error message
             const errorDiv = document.createElement('div')
             errorDiv.className =
-              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800'
-            errorDiv.style.cssText = `
-              margin: 2rem 0;
-              padding: 1rem;
-              font-family: 'Courier New', monospace;
-              font-size: 0.875rem;
-            `
+              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800 my-8 p-4 font-mono text-sm'
             // Render error message with DOMPurify to avoid XSS
             const rawErrorHtml = `
               <strong>Mermaid Diagram Error:</strong><br>
