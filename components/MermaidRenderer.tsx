@@ -121,9 +121,15 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
               KEEP_CONTENT: true,
             })
 
-            // Set the inner HTML of the diagram container
+            // Clear container and safely append SVG
+            diagramContainer.textContent = ''
+            const tempDiv = document.createElement('div')
             // To temporary disable the mermaid sanitization, you can set this to `svg`
-            diagramContainer.innerHTML = cleanSvg
+            tempDiv.innerHTML = cleanSvg
+            const svgElement = tempDiv.querySelector('svg')
+            if (svgElement) {
+              diagramContainer.appendChild(svgElement)
+            }
 
             // Find the appropriate container to replace
             let containerToReplace = block
