@@ -126,7 +126,7 @@
 
 <!-- Ensure all items are checked before submitting -->
 
-- [ ] I have read and followed the [Contributing Guidelines](https://github.com/viscalyx/viscalyx.se/blob/main/CONTRIBUTING.md)
+- [ ] I have read and followed the [Contributing Guidelines](../CONTRIBUTING.md)
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
