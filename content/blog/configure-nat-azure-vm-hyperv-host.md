@@ -110,7 +110,7 @@ New-NetNat -Name VmNAT -InternalIPInterfaceAddressPrefix 192.168.100.0/24
 Get-NetNat -Name VmNAT
 ```
 
-> [!MPORTANT]
+> [!IMPORTANT]
 > • **One NAT per prefix** only. If you re-run, delete the old first:
 > `Remove-NetNat -Name VmNAT`
 
