@@ -3,6 +3,46 @@
 import DOMPurify from 'dompurify'
 import { useEffect, useRef } from 'react'
 
+/**
+ * MermaidRenderer Component - Lazy Loading Strategy
+ *
+ * This component implements lazy loading for the Mermaid diagramming library to optimize
+ * initial bundle size while maintaining security and performance.
+ *
+ * ## How Lazy Loading Works:
+ *
+ * 1. **Build Time**:
+ *    - Mermaid is listed in devDependencies (not regular dependencies)
+ *    - Next.js/Webpack analyzes the dynamic import and creates a separate chunk
+ *    - The exact version (from package.json) is bundled into this chunk at build time
+ *
+ * 2. **Runtime**:
+ *    - Initial page load: Mermaid chunk is NOT loaded (reduces bundle size)
+ *    - When component mounts and detects mermaid code blocks: Dynamic import triggers
+ *    - Browser fetches the pre-built mermaid chunk from your domain (not external CDN)
+ *    - Chunk is cached for subsequent mermaid diagrams on other pages
+ *
+ * ## Security Benefits:
+ * - Exact version pinning prevents supply chain attacks
+ * - No runtime fetching from external CDNs
+ * - Library is bundled and verified at build time
+ * - Sub-resource integrity is handled by the bundler
+ *
+ * ## Performance Benefits:
+ * - ~500KB+ reduction in initial bundle size
+ * - Library only loads when diagrams are present
+ * - Chunk splitting allows for efficient caching
+ * - Non-blocking: Page renders immediately, diagrams render after library loads
+ *
+ * ## Usage:
+ * The component is rendered after the markdown content is inserted into the DOM,
+ * allowing it to find and replace mermaid code blocks with rendered diagrams.
+ *
+ * ## Bundle Analysis:
+ * You can see the chunk creation with: `npm run build` and look for mermaid chunks
+ * in the build output or use `npm run analyze` if bundle analyzer is configured.
+ */
+
 interface MermaidRendererProps {
   contentLoaded?: boolean
 }
