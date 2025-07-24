@@ -59,7 +59,9 @@
         "usernamehw.errorlens",
         "GitHub.copilot",
         "GitHub.copilot-chat",
-        "vitest.explorer"
+        "vitest.explorer",
+        "bierner.markdown-mermaid",
+        "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
       ],
       "settings": {
         // Editor settings
