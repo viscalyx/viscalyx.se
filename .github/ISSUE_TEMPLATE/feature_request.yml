@@ -1,0 +1,155 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: '✨ [Feature]: '
+labels: ['enhancement', 'triage']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature! We appreciate your input in making Viscalyx.se better.
+
+        **Before submitting, please:**
+        - Check if this feature has already been requested
+        - Consider if this aligns with the project's goals and scope
+
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: Feature Type
+      description: What type of feature is this?
+      options:
+        - UI/UX, SEO or Performance Enhancement
+        - Accessibility, Internationalization (i18n) Improvement
+        - Blog/Content Feature
+        - Developer Experience
+        - Analytics/Tracking
+        - Other (please specify in description)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What's the motivation behind this request?
+      placeholder: |
+        Describe the problem or limitation that this feature would address...
+
+        Example: "As a user, I want to be able to... so that I can..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented
+      placeholder: |
+        Describe your proposed solution in detail...
+
+        Consider:
+        - How should it work?
+        - What should the user interface look like?
+        - How should it integrate with existing features?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or features you've considered
+      placeholder: |
+        Have you considered any other approaches? What are the pros and cons?
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups/Examples
+      description: |
+        If applicable, add mockups, wireframes, or examples from other sites
+        You can drag and drop images here or paste URLs
+      placeholder: |
+        Add mockups, screenshots, or links to examples here...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve user experience
+        - High - Important for usability
+        - Critical - Blocking current workflows
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who would benefit from this feature?
+      multiple: true
+      options:
+        - Site visitors/readers
+        - Content creators/authors
+        - Contributors/developers
+        - Site administrators
+        - SEO/Marketing
+        - Accessibility users
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_considerations
+    attributes:
+      label: Technical Considerations
+      description: |
+        Any technical aspects to consider? (Optional, but helpful for developers)
+        - Dependencies that might be needed
+        - Performance implications
+        - Compatibility concerns
+        - Security considerations
+      placeholder: |
+        Technical notes (if any):
+        - New dependencies:
+        - Performance impact:
+        - Browser compatibility:
+        - Accessibility requirements:
+
+  - type: textarea
+    id: implementation_help
+    attributes:
+      label: Implementation Assistance
+      description: Are you willing to help implement this feature?
+      placeholder: |
+        Let us know if you're interested in:
+        - Contributing code
+        - Providing design assets
+        - Testing the implementation
+        - Writing documentation
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context, links, or information about the feature request
+      placeholder: |
+        Additional information:
+        - Related issues or PRs
+        - External links or resources
+        - Other relevant context
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this feature hasn't been requested before
+          required: true
+        - label: I understand this is a volunteer project and there's no guarantee of implementation timeline
+          required: true
