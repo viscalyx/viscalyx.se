@@ -11,8 +11,8 @@ body:
         Have a question about Viscalyx.se? We're here to help!
 
         **Before asking, please:**
-        - Check the [README.md](../../../README.md)
-        - Review the [Contributing Guidelines](../../../CONTRIBUTING.md)
+        - Check the [README.md](/README.md)
+        - Review the [Contributing Guidelines](/CONTRIBUTING.md)
         - Search existing issues for similar questions
 
   - type: dropdown
