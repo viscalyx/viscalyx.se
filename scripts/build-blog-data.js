@@ -157,7 +157,12 @@ async function buildBlogData() {
                     tagName: 'div',
                     properties: { className: ['code-language-label'] },
                     children: [
-                      { type: 'text', value: isMermaid ? 'MERMAID DIAGRAM' : language.toLocaleUpperCase() },
+                      {
+                        type: 'text',
+                        value: isMermaid
+                          ? 'MERMAID DIAGRAM'
+                          : language.toLocaleUpperCase(),
+                      },
                     ],
                   }
 
@@ -178,7 +183,10 @@ async function buildBlogData() {
                   // Replace original node with wrapper div
                   node.tagName = 'div'
                   node.properties = {
-                    className: ['code-block-wrapper', ...(isMermaid ? ['mermaid-code-block'] : [])],
+                    className: [
+                      'code-block-wrapper',
+                      ...(isMermaid ? ['mermaid-code-block'] : []),
+                    ],
                     'data-language': language,
                   }
                   node.children = [labelElement, preNode]
