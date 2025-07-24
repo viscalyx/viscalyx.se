@@ -53,6 +53,11 @@
     "devcontainers",
     "pakfire",
     "altaro",
+    "netsh",
+    "nmcli",
+    "nslookup",
+    "ipnat",
+    "gantt",
 
     // PowerShell DSC specific
     "DSC",

@@ -122,6 +122,8 @@ async function buildBlogData() {
           .use(rehypePrismPlus, {
             showLineNumbers: false,
             ignoreMissing: true,
+            // Skip syntax highlighting for Mermaid diagrams
+            ignoredLanguages: ['mermaid'],
           })
           .use(() => {
             // Wrap code blocks in a container with static language label
@@ -145,13 +147,22 @@ async function buildBlogData() {
                   if (!languageClass) return
                   const language = languageClass.replace('language-', '')
 
+                  // For Mermaid diagrams, we want to preserve the code for client-side rendering
+                  // but still wrap it for consistency
+                  const isMermaid = language === 'mermaid'
+
                   // Build label element
                   const labelElement = {
                     type: 'element',
                     tagName: 'div',
                     properties: { className: ['code-language-label'] },
                     children: [
-                      { type: 'text', value: language.toLocaleUpperCase() },
+                      {
+                        type: 'text',
+                        value: isMermaid
+                          ? 'MERMAID DIAGRAM'
+                          : language.toUpperCase(),
+                      },
                     ],
                   }
 
@@ -163,6 +174,8 @@ async function buildBlogData() {
                       ...node.properties,
                       'data-processed': true,
                       'data-language': language,
+                      // Add special attribute for Mermaid diagrams
+                      ...(isMermaid && { 'data-mermaid': 'true' }),
                     },
                     children: node.children,
                   }
@@ -170,7 +183,10 @@ async function buildBlogData() {
                   // Replace original node with wrapper div
                   node.tagName = 'div'
                   node.properties = {
-                    className: ['code-block-wrapper'],
+                    className: [
+                      'code-block-wrapper',
+                      ...(isMermaid ? ['mermaid-code-block'] : []),
+                    ],
                     'data-language': language,
                   }
                   node.children = [labelElement, preNode]

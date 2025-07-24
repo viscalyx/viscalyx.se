@@ -116,5 +116,8 @@
   // Explorer settings
   "explorer.compactFolders": false,
   "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false
+  "explorer.confirmDragAndDrop": false,
+
+  "markdown-mermaid.darkModeTheme": "default",
+  "markdown-mermaid.lightModeTheme": "default"
 }

@@ -5,6 +5,7 @@ import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import LoadingScreen from '@/components/LoadingScreen'
+import MermaidRenderer from '@/components/MermaidRenderer'
 import ReadingProgress from '@/components/ReadingProgress'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
@@ -547,6 +548,7 @@ const BlogPostContent = ({
                     className="markdown-content"
                   />
                   <CodeBlockEnhancer contentLoaded={!loading && !!post} />
+                  <MermaidRenderer contentLoaded={!loading && !!post} />
                 </AlertIconInjector>
               </div>
 

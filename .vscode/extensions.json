@@ -28,6 +28,8 @@
     // Productivity
     "gruntfuggly.todo-tree",
     "usernamehw.errorlens",
+    "bierner.markdown-mermaid",
+    "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
 
     // GitHub Copilot
     "GitHub.copilot",
