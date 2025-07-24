@@ -20,16 +20,11 @@ body:
       label: Feature Type
       description: What type of feature is this?
       options:
-        - UI/UX Enhancement
-        - New Component
-        - Performance Improvement
-        - Accessibility Improvement
-        - Internationalization (i18n)
+        - UI/UX, SEO or Performance Enhancement
+        - Accessibility, Internationalization (i18n) Improvement
         - Blog/Content Feature
         - Developer Experience
-        - SEO Enhancement
         - Analytics/Tracking
-        - Security Enhancement
         - Other (please specify in description)
     validations:
       required: true
