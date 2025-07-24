@@ -1,0 +1,133 @@
+name: ❓ Question
+description: Ask a question about the project
+title: "❓ [Question]: "
+labels: ["question", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about Viscalyx.se? We're here to help!
+        
+        **Before asking, please:**
+        - Check the [README.md](https://github.com/viscalyx/viscalyx.se/blob/main/README.md)
+        - Review the [Contributing Guidelines](https://github.com/viscalyx/viscalyx.se/blob/main/CONTRIBUTING.md)
+        - Search existing issues for similar questions
+
+  - type: dropdown
+    id: question_category
+    attributes:
+      label: Question Category
+      description: What area does your question relate to?
+      options:
+        - Getting Started
+        - Development Setup
+        - Contributing Process
+        - Code Architecture
+        - Dependencies/Libraries
+        - Deployment/Hosting
+        - Internationalization (i18n)
+        - Testing
+        - Performance
+        - Security
+        - Accessibility
+        - SEO
+        - Content/Blog
+        - Design/Styling
+        - Browser Compatibility
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: |
+        Please be as specific as possible. Include:
+        - What you're trying to achieve
+        - What you've already tried
+        - What specific aspect you need help with
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: |
+        Provide any relevant context that might help us answer your question:
+        - What you're working on
+        - Your experience level
+        - Any constraints or requirements
+      placeholder: |
+        Context that might be helpful:
+        - I'm trying to...
+        - My experience level: [beginner/intermediate/advanced]
+        - I'm working on: [specific feature/contribution]
+        - I've already tried: [what you've attempted]
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment (if relevant)
+      description: |
+        If your question is about setup or technical issues, please provide:
+        - Operating System
+        - Node.js version
+        - Browser version (if applicable)
+        - Any relevant tool versions
+      placeholder: |
+        Environment details (if applicable):
+        - OS: [e.g. macOS 14.0, Windows 11, Ubuntu 22.04]
+        - Node.js: [e.g. v20.10.0]
+        - Browser: [e.g. Chrome 120.0.0.0]
+        - Other tools: [relevant versions]
+
+  - type: textarea
+    id: attempted_solutions
+    attributes:
+      label: What Have You Tried?
+      description: |
+        What have you already attempted to solve this or find the answer?
+        This helps us avoid suggesting things you've already tried.
+      placeholder: |
+        I have tried:
+        - Reading the documentation at [specific sections]
+        - Searching for [specific terms]
+        - Looking at [specific files/examples]
+        - Attempting [specific approaches]
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: Additional Information
+      description: |
+        Any other information that might be relevant:
+        - Links to specific code or files
+        - Screenshots (if UI-related)
+        - Error messages
+        - Related discussions or resources
+      placeholder: |
+        Additional context:
+        - Error messages: [paste any error messages]
+        - Related files: [mention specific files]
+        - Screenshots: [attach if helpful]
+        - References: [links to related resources]
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues and discussions for similar questions
+          required: true
+        - label: I have read the relevant documentation
+          required: true
+        - label: This is not a bug report (I would use the bug report template instead)
+          required: true
+        - label: This is not a feature request (I would use the feature request template instead)
+          required: true
