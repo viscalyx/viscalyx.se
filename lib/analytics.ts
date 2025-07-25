@@ -96,6 +96,18 @@ export function useBlogAnalytics(
   const hasTrackedProgress = useRef<boolean>(false)
   const maxScrollProgress = useRef<number>(0)
 
+  // Use ref to store data and only update when values actually change
+  const dataRef = useRef<BlogAnalyticsData>(data)
+
+  // Update dataRef only when values actually change
+  if (
+    dataRef.current.slug !== data.slug ||
+    dataRef.current.category !== data.category ||
+    dataRef.current.title !== data.title
+  ) {
+    dataRef.current = data
+  }
+
   const trackEvent = useCallback(
     async (readProgress?: number, timeSpent?: number) => {
       // Only track if user has consented to analytics cookies
@@ -110,9 +122,9 @@ export function useBlogAnalytics(
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            slug: data.slug,
-            category: data.category,
-            title: data.title,
+            slug: dataRef.current.slug,
+            category: dataRef.current.category,
+            title: dataRef.current.title,
             readProgress,
             timeSpent,
           }),
@@ -121,7 +133,7 @@ export function useBlogAnalytics(
         console.warn('Failed to track blog analytics:', error)
       }
     },
-    [data.slug, data.category, data.title]
+    [] // No dependencies - uses stable dataRef.current
   )
 
   useEffect(() => {
@@ -183,9 +195,9 @@ export function useBlogAnalytics(
         navigator.sendBeacon(
           '/api/analytics/blog-read',
           JSON.stringify({
-            slug: data.slug,
-            category: data.category,
-            title: data.title,
+            slug: dataRef.current.slug,
+            category: dataRef.current.category,
+            title: dataRef.current.title,
             readProgress: maxScrollProgress.current,
             timeSpent,
           })
@@ -221,13 +233,10 @@ export function useBlogAnalytics(
       cleanupConsentListener()
     }
   }, [
-    data.slug,
-    data.category,
-    data.title,
     trackReadProgress,
     trackTimeSpent,
     progressThreshold,
-    trackEvent,
+    trackEvent, // Include trackEvent but it's now stable (no deps) so won't cause re-renders
   ])
 
   return {
