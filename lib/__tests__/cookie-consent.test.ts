@@ -9,6 +9,8 @@ import {
   saveConsentSettings,
 } from '../cookie-consent'
 
+// Don't mock cookie-utils, so we test the actual integration
+
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
@@ -134,6 +136,56 @@ describe('Cookie Consent', () => {
       expect(cookieData.settings).toEqual(settings)
       expect(cookieData.version).toBe('1.0')
       expect(cookieData.timestamp).toBeTruthy()
+    })
+
+    it('should include Secure attribute when served over HTTPS', () => {
+      // Mock HTTPS location
+      Object.defineProperty(window, 'location', {
+        value: {
+          protocol: 'https:',
+          hostname: 'example.com',
+        },
+        writable: true,
+      })
+
+      const settings = {
+        'strictly-necessary': true,
+        analytics: false,
+        preferences: false,
+      }
+
+      saveConsentSettings(settings)
+
+      // Check if the cookie operation included the Secure attribute
+      const lastCookieOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
+      expect(lastCookieOperation).toContain('Secure')
+      expect(lastCookieOperation).toContain('SameSite=Lax')
+    })
+
+    it('should not include Secure attribute when served over HTTP', () => {
+      // Mock HTTP location
+      Object.defineProperty(window, 'location', {
+        value: {
+          protocol: 'http:',
+          hostname: 'localhost',
+        },
+        writable: true,
+      })
+
+      const settings = {
+        'strictly-necessary': true,
+        analytics: false,
+        preferences: false,
+      }
+
+      saveConsentSettings(settings)
+
+      // Check if the cookie operation did not include the Secure attribute
+      const lastCookieOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
+      expect(lastCookieOperation).not.toContain('Secure')
+      expect(lastCookieOperation).toContain('SameSite=Lax')
     })
   })
 

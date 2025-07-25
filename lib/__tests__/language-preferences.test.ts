@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { hasConsent } from '../cookie-consent'
+import { setCookie, deleteCookie, getCookie } from '../cookie-utils'
 import {
   clearLanguagePreference,
   getDefaultLanguage,
@@ -12,57 +13,13 @@ vi.mock('../cookie-consent', () => ({
   hasConsent: vi.fn(() => true), // Default to having consent
 }))
 
-// Mock document.cookie with proper cookie parsing and storage
-const cookieMock = {
-  cookies: new Map<string, string>(),
-  lastSet: '', // Track what was set for assertions
-
-  get cookie() {
-    // Convert stored cookies back to cookie string format
-    const cookieStrings = Array.from(this.cookies.entries()).map(
-      ([name, value]) => `${name}=${value}`
-    )
-    return cookieStrings.join('; ')
-  },
-
-  set cookie(val: string) {
-    this.lastSet = val // Store the actual set value for testing
-
-    // Parse the cookie string to extract name, value, and options
-    const [nameValuePair, ...options] = val.split(';').map(part => part.trim())
-    const [name, value = ''] = nameValuePair.split('=')
-
-    // Check if this is a cookie deletion (expires in the past)
-    const isExpired = options.some(
-      option =>
-        option.includes('expires=Thu, 01 Jan 1970') ||
-        option.includes('max-age=0') ||
-        option.includes('max-age=-')
-    )
-
-    if (isExpired) {
-      // Remove the cookie
-      this.cookies.delete(name)
-    } else {
-      // Set/update the cookie
-      this.cookies.set(name, value)
-    }
-  },
-
-  reset() {
-    this.cookies.clear()
-    this.lastSet = ''
-  },
-}
-
-Object.defineProperty(document, 'cookie', {
-  get() {
-    return cookieMock.cookie
-  },
-  set(val: string) {
-    cookieMock.cookie = val
-  },
-})
+// Mock cookie utilities
+vi.mock('../cookie-utils', () => ({
+  setCookie: vi.fn(),
+  deleteCookie: vi.fn(),
+  getCookie: vi.fn(() => null),
+  getSecureAttribute: vi.fn(() => ''), // Default to no secure attribute (HTTP)
+}))
 
 // Mock navigator.language
 Object.defineProperty(navigator, 'language', {
@@ -72,24 +29,24 @@ Object.defineProperty(navigator, 'language', {
 
 describe('Language Preferences', () => {
   beforeEach(() => {
-    cookieMock.reset()
     vi.clearAllMocks()
   })
 
   describe('getLanguagePreference', () => {
     it('should return null when no language cookie exists', () => {
+      vi.mocked(getCookie).mockReturnValue(null)
       expect(getLanguagePreference()).toBeNull()
     })
 
     it('should return language from cookie', () => {
-      cookieMock.cookies.set('language', 'sv')
+      vi.mocked(getCookie).mockReturnValue('sv')
       expect(getLanguagePreference()).toBe('sv')
     })
 
     it('should return null when preferences consent is not given', () => {
       vi.mocked(hasConsent).mockReturnValue(false)
+      vi.mocked(getCookie).mockReturnValue('sv')
 
-      cookieMock.cookies.set('language', 'sv')
       expect(getLanguagePreference()).toBeNull()
 
       // Reset to default
@@ -97,41 +54,96 @@ describe('Language Preferences', () => {
     })
 
     it('should handle URL encoded values', () => {
-      cookieMock.cookies.set('language', 'en%2DUS')
+      vi.mocked(getCookie).mockReturnValue('en-US')
       expect(getLanguagePreference()).toBe('en-US')
     })
   })
 
   describe('saveLanguagePreference', () => {
     it('should save language preference when consent is given', () => {
+      const mockSetCookie = vi.mocked(setCookie)
+      
       saveLanguagePreference('sv')
-      expect(document.cookie).toContain('language=sv')
+      
+      expect(mockSetCookie).toHaveBeenCalledWith(
+        'language',
+        'sv',
+        { maxAge: 365 * 24 * 60 * 60 }
+      )
     })
 
     it('should not save when preferences consent is not given', () => {
       vi.mocked(hasConsent).mockReturnValue(false)
+      const mockSetCookie = vi.mocked(setCookie)
 
-      const initialCookie = document.cookie
       saveLanguagePreference('sv')
-      expect(document.cookie).toBe(initialCookie)
+      
+      expect(mockSetCookie).not.toHaveBeenCalled()
 
       // Reset to default
       vi.mocked(hasConsent).mockReturnValue(true)
     })
 
     it('should URL encode language values', () => {
+      const mockSetCookie = vi.mocked(setCookie)
+      
       saveLanguagePreference('en-US')
-      expect(cookieMock.lastSet).toContain('language=en-US')
+      
+      expect(mockSetCookie).toHaveBeenCalledWith(
+        'language',
+        'en-US',
+        { maxAge: 365 * 24 * 60 * 60 }
+      )
+    })
+
+    it('should include Secure attribute when served over HTTPS', () => {
+      const mockSetCookie = vi.mocked(setCookie)
+
+      saveLanguagePreference('sv')
+
+      expect(mockSetCookie).toHaveBeenCalledWith(
+        'language',
+        'sv',
+        { maxAge: 365 * 24 * 60 * 60 }
+      )
+    })
+
+    it('should not include Secure attribute when served over HTTP', () => {
+      const mockSetCookie = vi.mocked(setCookie)
+
+      saveLanguagePreference('sv')
+
+      expect(mockSetCookie).toHaveBeenCalledWith(
+        'language',
+        'sv',
+        { maxAge: 365 * 24 * 60 * 60 }
+      )
     })
   })
 
   describe('clearLanguagePreference', () => {
     it('should clear language preference cookie', () => {
-      cookieMock.cookies.set('language', 'sv')
+      const mockDeleteCookie = vi.mocked(deleteCookie)
+      
       clearLanguagePreference()
-      expect(cookieMock.lastSet).toContain(
-        'expires=Thu, 01 Jan 1970 00:00:00 GMT'
-      )
+      
+      expect(mockDeleteCookie).toHaveBeenCalledWith('language')
+    })
+
+    it('should include Secure attribute when clearing cookie over HTTPS', () => {
+      const mockDeleteCookie = vi.mocked(deleteCookie)
+
+      clearLanguagePreference()
+
+      expect(mockDeleteCookie).toHaveBeenCalledWith('language')
+    })
+
+    it('should not include Secure attribute when clearing cookie over HTTP', () => {
+      const mockDeleteCookie = vi.mocked(deleteCookie)
+
+      clearLanguagePreference()
+
+      expect(mockDeleteCookie).toHaveBeenCalledWith('language')
     })
   })
 

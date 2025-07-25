@@ -2,6 +2,8 @@
  * Cookie consent management utilities for GDPR compliance
  */
 
+import { deleteCookie as deleteCookieUtil, setCookie } from './cookie-utils'
+
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
 
 export interface CookieConsentSettings {
@@ -111,7 +113,9 @@ export function saveConsentSettings(settings: CookieConsentSettings): void {
     localStorage.setItem(CONSENT_COOKIE_NAME, JSON.stringify(data))
 
     // Also set a cookie for server-side detection
-    document.cookie = `${CONSENT_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(data))}; path=/; max-age=${365 * 24 * 60 * 60}; SameSite=Lax`
+    setCookie(CONSENT_COOKIE_NAME, JSON.stringify(data), {
+      maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
+    })
   } catch (error) {
     console.error('Failed to save cookie consent:', error)
   }
@@ -171,18 +175,7 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
  * Delete a specific cookie
  */
 function deleteCookie(name: string): void {
-  // Delete for current path
-  document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-
-  // Delete for root domain
-  const domain = window.location.hostname
-  document.cookie = `${name}=; domain=${domain}; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-
-  // Delete for parent domain (if subdomain)
-  if (domain.includes('.')) {
-    const parentDomain = domain.substring(domain.indexOf('.'))
-    document.cookie = `${name}=; domain=${parentDomain}; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-  }
+  deleteCookieUtil(name)
 }
 
 /**

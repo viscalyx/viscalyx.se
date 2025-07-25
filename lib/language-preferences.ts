@@ -3,6 +3,7 @@
  */
 
 import { hasConsent } from './cookie-consent'
+import { setCookie, deleteCookie, getCookie } from './cookie-utils'
 
 const LANGUAGE_COOKIE_NAME = 'language'
 
@@ -16,18 +17,7 @@ export function getLanguagePreference(): string | null {
   if (!hasConsent('preferences')) return null
 
   try {
-    // Try to get from cookie first
-    const cookies = document.cookie.split(';')
-    const languageCookie = cookies.find(cookie =>
-      cookie.trim().startsWith(`${LANGUAGE_COOKIE_NAME}=`)
-    )
-
-    if (languageCookie) {
-      const value = languageCookie.split('=')[1]
-      return decodeURIComponent(value)
-    }
-
-    return null
+    return getCookie(LANGUAGE_COOKIE_NAME)
   } catch {
     return null
   }
@@ -45,7 +35,7 @@ export function saveLanguagePreference(language: string): void {
   try {
     // Set cookie with 1 year expiry
     const maxAge = 365 * 24 * 60 * 60 // 1 year in seconds
-    document.cookie = `${LANGUAGE_COOKIE_NAME}=${encodeURIComponent(language)}; path=/; max-age=${maxAge}; SameSite=Lax`
+    setCookie(LANGUAGE_COOKIE_NAME, language, { maxAge })
   } catch (error) {
     console.error('Failed to save language preference:', error)
   }
@@ -58,8 +48,7 @@ export function clearLanguagePreference(): void {
   if (typeof window === 'undefined') return
 
   try {
-    // Delete the cookie by setting it to expire in the past
-    document.cookie = `${LANGUAGE_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+    deleteCookie(LANGUAGE_COOKIE_NAME)
   } catch (error) {
     console.error('Failed to clear language preference:', error)
   }
