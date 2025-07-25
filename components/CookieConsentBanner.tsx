@@ -22,7 +22,6 @@ const CookieConsentBanner = () => {
   const [settings, setSettings] = useState<CookieConsentSettings>(
     defaultConsentSettings
   )
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Check if user has already made a choice
@@ -37,8 +36,7 @@ const CookieConsentBanner = () => {
     }
   }, [])
 
-  const handleAcceptAll = async () => {
-    setIsLoading(true)
+  const handleAcceptAll = () => {
     const allAccepted: CookieConsentSettings = {
       'strictly-necessary': true,
       analytics: true,
@@ -48,24 +46,19 @@ const CookieConsentBanner = () => {
     setSettings(allAccepted)
     saveConsentSettings(allAccepted)
     setIsVisible(false)
-    setIsLoading(false)
   }
 
-  const handleRejectAll = async () => {
-    setIsLoading(true)
+  const handleRejectAll = () => {
     setSettings(defaultConsentSettings)
     saveConsentSettings(defaultConsentSettings)
     cleanupCookies(defaultConsentSettings)
     setIsVisible(false)
-    setIsLoading(false)
   }
 
-  const handleSavePreferences = async () => {
-    setIsLoading(true)
+  const handleSavePreferences = () => {
     saveConsentSettings(settings)
     cleanupCookies(settings)
     setIsVisible(false)
-    setIsLoading(false)
   }
 
   const handleCategoryToggle = (category: CookieCategory) => {
@@ -144,16 +137,14 @@ const CookieConsentBanner = () => {
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <button
                   onClick={handleRejectAll}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
                   aria-label={t('rejectAll')}
                 >
                   {t('rejectAll')}
                 </button>
                 <button
                   onClick={() => setShowDetails(true)}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
                   aria-label={t('customizeSettings')}
                 >
                   <Settings className="w-4 h-4 inline mr-2" />
@@ -161,8 +152,7 @@ const CookieConsentBanner = () => {
                 </button>
                 <button
                   onClick={handleAcceptAll}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
                   aria-label={t('acceptAll')}
                 >
                   {t('acceptAll')}
@@ -290,22 +280,19 @@ const CookieConsentBanner = () => {
               <div className="flex flex-col sm:flex-row gap-3 justify-end">
                 <button
                   onClick={handleRejectAll}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 >
                   {t('rejectAll')}
                 </button>
                 <button
                   onClick={handleAcceptAll}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
                 >
                   {t('acceptAll')}
                 </button>
                 <button
                   onClick={handleSavePreferences}
-                  disabled={isLoading}
-                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
                 >
                   {t('savePreferences')}
                 </button>
