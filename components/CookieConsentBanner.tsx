@@ -346,17 +346,15 @@ const CookieConsentBanner = () => {
                         <details className="text-xs text-gray-500 dark:text-gray-400">
                           <summary
                             className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
-                            aria-expanded="false"
                             aria-label={`${t('viewCookies')} for ${categoryName} (${cookiesInCategory.length} cookies)`}
                           >
                             {t('viewCookies')} ({cookiesInCategory.length})
                           </summary>
-                          <div className="mt-2 space-y-2 pl-4" role="list">
+                          <ul className="mt-2 space-y-2 pl-4">
                             {cookiesInCategory.map(cookie => (
-                              <div
+                              <li
                                 key={cookie.name}
                                 className="border-l-2 border-gray-200 dark:border-gray-700 pl-3"
-                                role="listitem"
                               >
                                 <div className="font-mono font-medium">
                                   {cookie.name}
@@ -367,9 +365,9 @@ const CookieConsentBanner = () => {
                                   {cookie.provider &&
                                     ` • ${t('provider')}: ${cookie.provider}`}
                                 </div>
-                              </div>
+                              </li>
                             ))}
-                          </div>
+                          </ul>
                         </details>
                       )}
                     </div>
