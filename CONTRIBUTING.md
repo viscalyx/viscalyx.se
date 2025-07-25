@@ -1633,11 +1633,16 @@ Strictly necessary cookies are essential for the site to function and **cannot b
 
 #### 🎨 Preferences
 
-- **Theme settings** (light/dark mode) - `theme` cookie
+Preferences cookies store settings that tailor the site to an individual user.
+
+- **Theme settings** (light/dark mode) – `theme` cookie
 - **Language preferences** (en/sv) - `language` cookie
 - User interface customizations
 
 #### 📊 Analytics
+
+Analytics cookies help us understand how visitors interact with the site so we
+can improve performance and content.
 
 - Website usage analytics
 - Performance monitoring
