@@ -165,7 +165,9 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
 
   // Note: Analytics data is processed server-side in Cloudflare Analytics Engine
   // and doesn't use client-side cookies, so no cleanup needed for analytics category
-} /**
+}
+
+/**
  * Delete a specific cookie
  */
 function deleteCookie(name: string): void {
