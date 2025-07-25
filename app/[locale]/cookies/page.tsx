@@ -3,8 +3,6 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import { getStaticPageDates } from '@/lib/file-dates'
-
-export const runtime = 'edge'
 import { useFormatter, useTranslations } from 'next-intl'
 
 // Get the actual last modified date

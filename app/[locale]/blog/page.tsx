@@ -1,7 +1,5 @@
 'use client'
 
-export const runtime = 'edge'
-
 import { Calendar, Clock, User } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'

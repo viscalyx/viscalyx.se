@@ -1,7 +1,5 @@
 'use client'
 
-export const runtime = 'edge'
-
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
