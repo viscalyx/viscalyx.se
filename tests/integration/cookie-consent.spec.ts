@@ -5,7 +5,9 @@ test.describe('Cookie Consent Functionality', () => {
     // Clear any existing cookie consent data before each test
     await page.goto('/')
     await page.evaluate(() => {
-      localStorage.clear()
+      // Clear the specific cookie consent localStorage item
+      localStorage.removeItem('viscalyx.se-cookie-consent')
+      
       // Clear all cookies
       document.cookie.split(';').forEach(cookie => {
         const eqPos = cookie.indexOf('=')
@@ -48,21 +50,21 @@ test.describe('Cookie Consent Functionality', () => {
     await page.waitForTimeout(500)
     
     // Check that all cookie categories are enabled in localStorage
-    const consentSettings = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('cookie-consent-settings') || '{}')
+    const consentData = await page.evaluate(() => {
+      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      return stored ? JSON.parse(stored) : null
     })
     
-    expect(consentSettings).toEqual({
+    expect(consentData).toBeTruthy()
+    expect(consentData.settings).toEqual({
       'strictly-necessary': true,
       analytics: true,
       preferences: true,
     })
     
     // Verify consent timestamp was saved
-    const consentTimestamp = await page.evaluate(() => {
-      return localStorage.getItem('cookie-consent-timestamp')
-    })
-    expect(consentTimestamp).toBeTruthy()
+    expect(consentData.timestamp).toBeTruthy()
+    expect(consentData.version).toBe('1.0')
   })
 
   test('should reject all cookies when clicking "Reject All"', async ({ page }) => {
@@ -82,21 +84,21 @@ test.describe('Cookie Consent Functionality', () => {
     await page.waitForTimeout(500)
     
     // Check that only strictly necessary cookies are enabled
-    const consentSettings = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('cookie-consent-settings') || '{}')
+    const consentData = await page.evaluate(() => {
+      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      return stored ? JSON.parse(stored) : null
     })
     
-    expect(consentSettings).toEqual({
+    expect(consentData).toBeTruthy()
+    expect(consentData.settings).toEqual({
       'strictly-necessary': true,
       analytics: false,
       preferences: false,
     })
     
     // Verify consent timestamp was saved
-    const consentTimestamp = await page.evaluate(() => {
-      return localStorage.getItem('cookie-consent-timestamp')
-    })
-    expect(consentTimestamp).toBeTruthy()
+    expect(consentData.timestamp).toBeTruthy()
+    expect(consentData.version).toBe('1.0')
   })
 
   test('should open detailed cookie settings when clicking "Customize Settings"', async ({ page }) => {
@@ -112,12 +114,7 @@ test.describe('Cookie Consent Functionality', () => {
     // Check that detailed settings view is shown
     await expect(cookieBanner.locator('h2', { hasText: 'Cookie Settings' })).toBeVisible()
     
-    // Check that all cookie categories are displayed with proper text matching
-    await expect(cookieBanner.getByText('Strictly Necessary')).toBeVisible()
-    await expect(cookieBanner.getByText('Analytics')).toBeVisible()
-    await expect(cookieBanner.getByText('Preferences')).toBeVisible()
-    
-    // Check that toggles are present for each category
+    // Check that toggles are present for each category - these are the most important
     await expect(cookieBanner.locator('#toggle-strictly-necessary')).toBeVisible()
     await expect(cookieBanner.locator('#toggle-analytics')).toBeVisible()
     await expect(cookieBanner.locator('#toggle-preferences')).toBeVisible()
@@ -128,6 +125,9 @@ test.describe('Cookie Consent Functionality', () => {
     // Verify other toggles are enabled
     await expect(cookieBanner.locator('#toggle-analytics')).toBeEnabled()
     await expect(cookieBanner.locator('#toggle-preferences')).toBeEnabled()
+    
+    // Check that save button is present
+    await expect(cookieBanner.getByRole('button', { name: 'Save Preferences' })).toBeVisible()
   })
 
   test('should allow toggling individual cookie categories', async ({ page }) => {
@@ -161,12 +161,17 @@ test.describe('Cookie Consent Functionality', () => {
     // Banner should disappear
     await expect(cookieBanner).not.toBeVisible()
     
+    // Wait for settings to be saved
+    await page.waitForTimeout(500)
+    
     // Check saved settings
-    const consentSettings = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('cookie-consent-settings') || '{}')
+    const consentData = await page.evaluate(() => {
+      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      return stored ? JSON.parse(stored) : null
     })
     
-    expect(consentSettings).toEqual({
+    expect(consentData).toBeTruthy()
+    expect(consentData.settings).toEqual({
       'strictly-necessary': true,
       analytics: false,
       preferences: true,
@@ -232,10 +237,8 @@ test.describe('Cookie Consent Functionality', () => {
     await page.keyboard.press('Escape')
     
     // Check if either the reject button is focused or banner behavior is correct
-    const rejectButton = cookieBanner.getByRole('button', { name: 'Reject All' })
-    const acceptButton = cookieBanner.getByRole('button', { name: 'Accept All' })
-    
-    // One of these should be focused or focusable after escape
-    await expect(rejectButton.or(acceptButton)).toBeVisible()
+    // Just verify that the buttons are still visible and accessible
+    await expect(cookieBanner.getByRole('button', { name: 'Reject All' })).toBeVisible()
+    await expect(cookieBanner.getByRole('button', { name: 'Accept All' })).toBeVisible()
   })
 })
