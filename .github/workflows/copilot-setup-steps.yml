@@ -66,6 +66,9 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Run initial quality checks
-        run: |
-          npm run check
+      # Need to remove this, because if Copilot does not follow copilot-instructions
+      # for the PR commit and has lint errors, spell errors, formatting errors or
+      # test errors, it will not run the build step when asked through PR comments.
+      # - name: Run initial quality checks
+      #   run: |
+      #     npm run check
