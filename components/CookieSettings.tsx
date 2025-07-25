@@ -129,17 +129,32 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       exportTimestamp: new Date().toISOString(),
     }
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json',
-    })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'cookie-consent-data.json'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    let url: string | null = null
+    let element: HTMLAnchorElement | null = null
+
+    try {
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: 'application/json',
+      })
+      url = URL.createObjectURL(blob)
+      element = document.createElement('a')
+      element.href = url
+      element.download = 'cookie-consent-data.json'
+      document.body.appendChild(element)
+      element.click()
+    } catch (error) {
+      console.error('Failed to export cookie data:', error)
+      setShowError(true)
+      setTimeout(() => setShowError(false), 5000)
+    } finally {
+      // Clean up resources
+      if (element && document.body.contains(element)) {
+        document.body.removeChild(element)
+      }
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
+    }
   }
 
   const getCategoryIcon = (category: CookieCategory) => {
