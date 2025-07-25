@@ -37,7 +37,7 @@
         "description": "We use the following third-party services that may process data when you visit our website:",
         "items": [
           "Cloudflare: Content delivery network, security, and server-side analytics processing (processes IP addresses, user agents, and request headers)",
-          "Google Fonts: Font delivery service (loads Inter font from Google's servers, no tracking or cookies)"
+          "Google Fonts: Font files (Inter typeface) are self-hosted on our servers via Next.js optimization - no requests are made to Google when you visit our site"
         ]
       },
       "yourRights": {
