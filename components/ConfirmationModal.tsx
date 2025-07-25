@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertTriangle, X } from 'lucide-react'
+import { AlertTriangle, Info, Trash2, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
 interface ConfirmationModalProps {
@@ -82,9 +82,7 @@ const ConfirmationModal = ({
         }
       case 'info':
         return {
-          icon: (
-            <AlertTriangle className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-          ),
+          icon: <Info className="w-6 h-6 text-blue-600 dark:text-blue-400" />,
           confirmButton:
             'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white',
           iconBg: 'bg-blue-100 dark:bg-blue-900/20',
@@ -176,7 +174,10 @@ const ConfirmationModal = ({
                         {confirmText}
                       </div>
                     ) : (
-                      confirmText
+                      <div className="flex items-center gap-2">
+                        <Trash2 className="w-4 h-4" aria-hidden="true" />
+                        {confirmText}
+                      </div>
                     )}
                   </button>
                 </div>
