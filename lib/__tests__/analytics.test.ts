@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { act, renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useBlogAnalytics } from '../analytics'
-import { renderHook, act } from '@testing-library/react'
 import { hasConsent } from '../cookie-consent'
 
 // Mock the cookie consent module
@@ -20,6 +20,12 @@ describe('useBlogAnalytics', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.useFakeTimers()
+
+    // Mock Date.now to return a consistent timestamp
+    const mockStartTime = 1640995200000 // 2022-01-01 00:00:00 UTC
+    vi.setSystemTime(mockStartTime)
+
     vi.mocked(global.fetch).mockResolvedValue(
       new Response(JSON.stringify({ success: true }), { status: 200 })
     )
@@ -47,6 +53,10 @@ describe('useBlogAnalytics', () => {
       value: vi.fn().mockReturnValue(true),
       writable: true,
     })
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should track events when analytics consent is given', async () => {
@@ -117,9 +127,9 @@ describe('useBlogAnalytics', () => {
       window.dispatchEvent(new Event('scroll'))
     })
 
-    // Wait for any throttled events
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 150))
+    // Advance timers to trigger any throttled events
+    act(() => {
+      vi.advanceTimersByTime(150)
     })
 
     expect(global.fetch).not.toHaveBeenCalled()
@@ -136,6 +146,16 @@ describe('useBlogAnalytics', () => {
       })
     )
 
+    // Advance time to trigger initial page view (1000ms timeout)
+    act(() => {
+      vi.advanceTimersByTime(1000)
+    })
+
+    // Advance time to simulate elapsed time for timeSpent calculation
+    act(() => {
+      vi.advanceTimersByTime(5000) // Simulate 5 more seconds elapsed (total 6s)
+    })
+
     // Simulate scroll to 50%
     act(() => {
       Object.defineProperty(window, 'pageYOffset', { value: 250 })
@@ -145,13 +165,29 @@ describe('useBlogAnalytics', () => {
       window.dispatchEvent(new Event('scroll'))
     })
 
-    // Wait for throttled events
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 150))
+    // Advance timers to trigger throttled events (100ms throttle + some buffer)
+    act(() => {
+      vi.advanceTimersByTime(150)
     })
 
-    expect(global.fetch).toHaveBeenCalledTimes(1)
-    expect(global.fetch).toHaveBeenCalledWith(
+    expect(global.fetch).toHaveBeenCalledTimes(2)
+
+    // Verify initial page view call
+    expect(global.fetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/analytics/blog-read',
+      expect.objectContaining({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: expect.stringContaining('"readProgress":0'),
+      })
+    )
+
+    // Verify scroll tracking call
+    expect(global.fetch).toHaveBeenNthCalledWith(
+      2,
       '/api/analytics/blog-read',
       expect.objectContaining({
         method: 'POST',
@@ -161,6 +197,11 @@ describe('useBlogAnalytics', () => {
         body: expect.stringContaining('"readProgress":50'),
       })
     )
+
+    // Verify that timeSpent is calculated correctly (6 seconds total)
+    const scrollCallArgs = vi.mocked(global.fetch).mock.calls[1]
+    const requestBody = JSON.parse(scrollCallArgs[1]?.body as string)
+    expect(requestBody.timeSpent).toBe(6)
   })
 
   it('should not use sendBeacon on page unload when analytics consent is denied', async () => {
