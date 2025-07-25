@@ -75,6 +75,46 @@ export const cookieRegistry: CookieInfo[] = [
 const CONSENT_COOKIE_NAME = 'cookie-consent'
 const CONSENT_VERSION = '1.0'
 
+// Cache for parsed cookies to avoid repeated parsing
+let cookieCache: { [key: string]: string } | null = null
+let cookieCacheTimestamp = 0
+const CACHE_DURATION = 1000 // 1 second cache to balance performance vs freshness
+
+/**
+ * Get parsed cookies with caching to avoid repeated string parsing
+ */
+function getCachedCookies(): { [key: string]: string } {
+  const now = Date.now()
+
+  // Return cached cookies if cache is still valid
+  if (cookieCache && now - cookieCacheTimestamp < CACHE_DURATION) {
+    return cookieCache
+  }
+
+  // Parse cookies and update cache
+  const cookies: { [key: string]: string } = {}
+  if (typeof window !== 'undefined' && document.cookie) {
+    document.cookie.split(';').forEach(cookie => {
+      const [name, ...valueParts] = cookie.trim().split('=')
+      if (name) {
+        cookies[name] = valueParts.join('=') || ''
+      }
+    })
+  }
+
+  cookieCache = cookies
+  cookieCacheTimestamp = now
+  return cookies
+}
+
+/**
+ * Invalidate cookie cache when cookies are modified
+ */
+function invalidateCookieCache(): void {
+  cookieCache = null
+  cookieCacheTimestamp = 0
+}
+
 /**
  * Get current cookie consent settings from localStorage/cookie
  */
@@ -118,6 +158,9 @@ export function saveConsentSettings(settings: CookieConsentSettings): void {
       maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
     })
 
+    // Invalidate cookie cache since we just modified cookies
+    invalidateCookieCache()
+
     // Emit consent change event
     consentEvents.emit({
       type: 'consent-changed',
@@ -153,11 +196,10 @@ export function hasConsentChoice(): boolean {
 export function cleanupCookies(settings: CookieConsentSettings): void {
   if (typeof window === 'undefined') return
 
-  // Get all cookies
-  const cookies = document.cookie.split(';')
+  // Get all cookies using cached approach
+  const cookies = getCachedCookies()
 
-  cookies.forEach(cookie => {
-    const [name] = cookie.trim().split('=')
+  Object.keys(cookies).forEach(name => {
     const cookieInfo = cookieRegistry.find(info => info.name === name)
 
     if (cookieInfo && cookieInfo.category !== 'strictly-necessary') {
@@ -174,6 +216,9 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
     deleteCookie('language')
   }
 
+  // Invalidate cache since we may have deleted cookies
+  invalidateCookieCache()
+
   // Note: Analytics data is processed server-side in Cloudflare Analytics Engine
   // and doesn't use client-side cookies, so no cleanup needed for analytics category
 }
@@ -183,6 +228,8 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
  */
 function deleteCookie(name: string): void {
   deleteCookieUtil(name)
+  // Invalidate cache since we just deleted a cookie
+  invalidateCookieCache()
 }
 
 /**
@@ -192,10 +239,13 @@ export function resetConsent(): void {
   if (typeof window === 'undefined') return
 
   localStorage.removeItem(CONSENT_COOKIE_NAME)
-  deleteCookie(CONSENT_COOKIE_NAME)
+  deleteCookieUtil(CONSENT_COOKIE_NAME)
 
   // Clean up all non-essential cookies
   cleanupCookies(defaultConsentSettings)
+
+  // Invalidate cache since we modified cookies
+  invalidateCookieCache()
 
   // Emit consent reset event
   consentEvents.emit({
