@@ -44,6 +44,14 @@ function getCachedAnalyticsConsent(): boolean {
 }
 
 /**
+ * Helper function to check if two objects are deeply equal using JSON serialization
+ * This is safe for simple objects without functions, circular references, or undefined values
+ */
+function isDataEqual(a: BlogAnalyticsData, b: BlogAnalyticsData): boolean {
+  return JSON.stringify(a) === JSON.stringify(b)
+}
+
+/**
  * Invalidate the consent cache (call when consent settings change)
  */
 export function invalidateConsentCache(): void {
@@ -99,12 +107,8 @@ export function useBlogAnalytics(
   // Use ref to store data and only update when values actually change
   const dataRef = useRef<BlogAnalyticsData>(data)
 
-  // Update dataRef only when values actually change
-  if (
-    dataRef.current.slug !== data.slug ||
-    dataRef.current.category !== data.category ||
-    dataRef.current.title !== data.title
-  ) {
+  // Update dataRef only when data actually changes (using deep comparison)
+  if (!isDataEqual(dataRef.current, data)) {
     dataRef.current = data
   }
 
