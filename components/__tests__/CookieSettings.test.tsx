@@ -3,23 +3,17 @@ import { vi } from 'vitest'
 import CookieSettings from '../CookieSettings'
 
 // Mock cookie-consent lib
-const mockSaveConsentSettings = vi.fn()
-const mockCleanupCookies = vi.fn()
-const mockResetConsent = vi.fn()
-const mockGetConsentSettings = vi.fn()
-const mockGetConsentTimestamp = vi.fn()
-
 vi.mock('../../lib/cookie-consent', () => ({
   defaultConsentSettings: {
     'strictly-necessary': true,
     analytics: false,
     preferences: false,
   },
-  getConsentSettings: mockGetConsentSettings,
-  getConsentTimestamp: mockGetConsentTimestamp,
-  saveConsentSettings: mockSaveConsentSettings,
-  cleanupCookies: mockCleanupCookies,
-  resetConsent: mockResetConsent,
+  getConsentSettings: vi.fn(),
+  getConsentTimestamp: vi.fn(),
+  saveConsentSettings: vi.fn(),
+  cleanupCookies: vi.fn(),
+  resetConsent: vi.fn(),
   cookieRegistry: [
     {
       name: 'test-cookie',
@@ -30,6 +24,15 @@ vi.mock('../../lib/cookie-consent', () => ({
     },
   ],
 }))
+
+// Import the mocked functions
+import * as cookieConsent from '../../lib/cookie-consent'
+
+const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
+const mockGetConsentTimestamp = vi.mocked(cookieConsent.getConsentTimestamp)
+const mockSaveConsentSettings = vi.mocked(cookieConsent.saveConsentSettings)
+const mockCleanupCookies = vi.mocked(cookieConsent.cleanupCookies)
+const mockResetConsent = vi.mocked(cookieConsent.resetConsent)
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
