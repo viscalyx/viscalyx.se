@@ -1623,9 +1623,11 @@ This implementation provides a complete GDPR-compliant cookie consent solution f
 
 #### 🛡️ Strictly Necessary
 
-- **Cannot be disabled** (GDPR exemption)
-- Authentication, security, load balancing
-- Examples: session cookies, CSRF tokens
+Strictly necessary cookies are essential for the site to function and **cannot be disabled** (GDPR exemption).
+
+- Authentication
+- Security
+- Load balancing
 
 #### 🎨 Preferences
 
