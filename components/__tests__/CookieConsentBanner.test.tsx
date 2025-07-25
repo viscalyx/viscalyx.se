@@ -188,4 +188,72 @@ describe('CookieConsentBanner', () => {
       expect(necessaryToggle).toBeDisabled()
     })
   })
+
+  describe('accessibility features', () => {
+    it('should have proper ARIA attributes for dialog', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        const dialog = screen.getByRole('dialog')
+        expect(dialog).toHaveAttribute('aria-modal', 'true')
+        expect(dialog).toHaveAttribute('aria-labelledby', 'cookie-banner-title')
+        expect(dialog).toHaveAttribute(
+          'aria-describedby',
+          'cookie-banner-description'
+        )
+        expect(dialog).toHaveAttribute('aria-live', 'polite')
+      })
+    })
+
+    it('should add body padding when banner is visible to prevent content overlap', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(document.body.style.paddingBottom).toBe('200px')
+      })
+    })
+
+    it('should remove body padding when banner is closed', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Accept All')).toBeInTheDocument()
+      })
+
+      fireEvent.click(screen.getByText('Accept All'))
+
+      await waitFor(() => {
+        expect(document.body.style.paddingBottom).toBe('')
+      })
+    })
+
+    it('should have proper aria labels for toggle switches in detailed view', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      fireEvent.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
+        expect(analyticsToggle).toHaveAttribute(
+          'aria-describedby',
+          'analytics-description'
+        )
+        expect(analyticsToggle).toHaveAttribute('id', 'toggle-analytics')
+      })
+    })
+
+    it('should have accessible cookie details in settings view', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      fireEvent.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        const viewCookiesButton = screen.getByText(/View Cookies \(1\)/)
+        expect(viewCookiesButton).toHaveAttribute('aria-label')
+        expect(viewCookiesButton.getAttribute('aria-label')).toContain(
+          'View Cookies for'
+        )
+      })
+    })
+  })
 })

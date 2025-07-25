@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   cleanupCookies,
   type CookieCategory,
@@ -22,6 +22,85 @@ const CookieConsentBanner = () => {
   const [settings, setSettings] = useState<CookieConsentSettings>(
     defaultConsentSettings
   )
+
+  // Refs for focus management
+  const bannerRef = useRef<HTMLDivElement>(null)
+  const firstFocusableRef = useRef<HTMLButtonElement>(null) // Accept All button
+  const rejectButtonRef = useRef<HTMLButtonElement>(null) // Reject All button
+  const previousActiveElement = useRef<HTMLElement | null>(null)
+
+  // Manage focus and body scroll when banner is visible
+  useEffect(() => {
+    // Focus trap functionality
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isVisible) return
+
+      if (event.key === 'Tab') {
+        const focusableElements = bannerRef.current?.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+        )
+
+        if (!focusableElements || focusableElements.length === 0) return
+
+        const firstElement = focusableElements[0] as HTMLElement
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement
+
+        if (event.shiftKey) {
+          // Shift + Tab (backward)
+          if (document.activeElement === firstElement) {
+            event.preventDefault()
+            lastElement.focus()
+          }
+        } else {
+          // Tab (forward)
+          if (document.activeElement === lastElement) {
+            event.preventDefault()
+            firstElement.focus()
+          }
+        }
+      }
+
+      if (event.key === 'Escape') {
+        // Escape should focus the Reject All button (cancel action)
+        rejectButtonRef.current?.focus()
+      }
+    }
+
+    if (isVisible) {
+      // Store the previously focused element
+      previousActiveElement.current = document.activeElement as HTMLElement
+
+      // Add bottom padding to body to prevent content overlap
+      document.body.style.paddingBottom = '200px' // Adjust based on banner height
+
+      // Add keyboard event listener for focus trap
+      document.addEventListener('keydown', handleKeyDown)
+
+      // Focus the first interactive element (Accept All button) for better UX
+      setTimeout(() => {
+        firstFocusableRef.current?.focus()
+      }, 100)
+    } else {
+      // Remove bottom padding when banner is hidden
+      document.body.style.paddingBottom = ''
+
+      // Remove keyboard event listener
+      document.removeEventListener('keydown', handleKeyDown)
+
+      // Restore focus to previously focused element
+      if (previousActiveElement.current) {
+        previousActiveElement.current.focus()
+        previousActiveElement.current = null
+      }
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.paddingBottom = ''
+    }
+  }, [isVisible])
 
   useEffect(() => {
     // Check if user has already made a choice
@@ -96,14 +175,17 @@ const CookieConsentBanner = () => {
   return (
     <AnimatePresence>
       <motion.div
+        ref={bannerRef}
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg"
         role="dialog"
+        aria-modal="true"
         aria-labelledby="cookie-banner-title"
         aria-describedby="cookie-banner-description"
+        aria-live="polite"
       >
         <div className="container mx-auto px-4 py-6 max-w-7xl">
           {!showDetails ? (
@@ -137,6 +219,7 @@ const CookieConsentBanner = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <button
+                  ref={rejectButtonRef}
                   type="button"
                   onClick={handleRejectAll}
                   className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -154,6 +237,7 @@ const CookieConsentBanner = () => {
                   {t('customizeSettings')}
                 </button>
                 <button
+                  ref={firstFocusableRef}
                   type="button"
                   onClick={handleAcceptAll}
                   className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
@@ -167,7 +251,10 @@ const CookieConsentBanner = () => {
             // Detailed settings view
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2
+                  id="cookie-settings-title"
+                  className="text-xl font-semibold text-gray-900 dark:text-white"
+                >
                   {t('cookieSettings')}
                 </h2>
                 <button
@@ -175,6 +262,7 @@ const CookieConsentBanner = () => {
                   onClick={() => setShowDetails(false)}
                   className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                   aria-label={t('close')}
+                  aria-describedby="cookie-settings-title"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -222,7 +310,8 @@ const CookieConsentBanner = () => {
                             disabled={isRequired}
                             className="sr-only"
                             aria-describedby={`${category}-description`}
-                            aria-label={categoryName}
+                            aria-label={`${categoryName} ${isRequired ? t('required') : ''}`}
+                            id={`toggle-${category}`}
                           />
                           <div
                             className={`
@@ -234,6 +323,7 @@ const CookieConsentBanner = () => {
                             }
                             ${isRequired ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                           `}
+                            role="presentation"
                           >
                             <div
                               className={`
@@ -254,14 +344,19 @@ const CookieConsentBanner = () => {
 
                       {cookiesInCategory.length > 0 && (
                         <details className="text-xs text-gray-500 dark:text-gray-400">
-                          <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
+                          <summary
+                            className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
+                            aria-expanded="false"
+                            aria-label={`${t('viewCookies')} for ${categoryName} (${cookiesInCategory.length} cookies)`}
+                          >
                             {t('viewCookies')} ({cookiesInCategory.length})
                           </summary>
-                          <div className="mt-2 space-y-2 pl-4">
+                          <div className="mt-2 space-y-2 pl-4" role="list">
                             {cookiesInCategory.map(cookie => (
                               <div
                                 key={cookie.name}
                                 className="border-l-2 border-gray-200 dark:border-gray-700 pl-3"
+                                role="listitem"
                               >
                                 <div className="font-mono font-medium">
                                   {cookie.name}
