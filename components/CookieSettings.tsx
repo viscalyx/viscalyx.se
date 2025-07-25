@@ -121,6 +121,35 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     }
   }
 
+  /**
+   * Clean up download resources to prevent memory leaks
+   */
+  const cleanupDownloadResources = (
+    element: HTMLAnchorElement | null,
+    elementAppended: boolean,
+    url: string | null
+  ) => {
+    // Clean up DOM element
+    if (element && elementAppended) {
+      try {
+        if (document.body.contains(element)) {
+          document.body.removeChild(element)
+        }
+      } catch (removeError) {
+        console.warn('Failed to remove download element:', removeError)
+      }
+    }
+
+    // Clean up blob URL
+    if (url) {
+      try {
+        URL.revokeObjectURL(url)
+      } catch (revokeError) {
+        console.warn('Failed to revoke blob URL:', revokeError)
+      }
+    }
+  }
+
   const handleExportData = () => {
     const data = {
       consentSettings: settings,
@@ -149,25 +178,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       setShowError(true)
       setTimeout(() => setShowError(false), 5000)
     } finally {
-      // Clean up DOM element with robust error handling
-      if (element && elementAppended) {
-        try {
-          if (document.body.contains(element)) {
-            document.body.removeChild(element)
-          }
-        } catch (removeError) {
-          console.warn('Failed to remove download element:', removeError)
-        }
-      }
-
-      // Clean up blob URL with error handling
-      if (url) {
-        try {
-          URL.revokeObjectURL(url)
-        } catch (revokeError) {
-          console.warn('Failed to revoke blob URL:', revokeError)
-        }
-      }
+      cleanupDownloadResources(element, elementAppended, url)
     }
   }
 
