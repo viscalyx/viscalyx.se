@@ -24,7 +24,7 @@ export default defineConfig([
       'coverage/**',
       'out/**',
       'build/**',
-      'open-next/**',
+      '.open-next/**',
     ],
   },
   {
