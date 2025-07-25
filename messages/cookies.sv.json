@@ -1,51 +1,51 @@
 {
   "title": "Cookie-policy",
-  "description": "Lär dig om hur vi använder cookies på vår webbplats och hur du kan hantera dina cookie-preferenser.",
+  "description": "Lär dig om hur vi använder kakor på vår webbplats och hur du kan hantera dina kak-preferenser.",
   "lastUpdated": "Senast uppdaterad",
   "whatAreCookies": {
-    "title": "Vad är Cookies?",
-    "description": "Cookies är små textfiler som lagras på din enhet när du besöker en webbplats. De används i stor utsträckning för att få webbplatser att fungera mer effektivt och för att ge information till webbplatsägare om hur deras webbplats används."
+    "title": "Vad är Kakor?",
+    "description": "Kakor är små textfiler som lagras på din enhet när du besöker en webbplats. De används i stor utsträckning för att få webbplatser att fungera mer effektivt och för att ge information till webbplatsägare om hur deras webbplats används."
   },
   "howWeUseCookies": {
-    "title": "Hur Vi Använder Cookies",
-    "description": "Vi använder cookies för flera syften för att förbättra din upplevelse på vår webbplats:",
+    "title": "Hur Vi Använder Kakor",
+    "description": "Vi använder kakor för flera syften för att förbättra din upplevelse på vår webbplats:",
     "purposes": {
       "essential": "Väsentlig webbplatsfunktionalitet och säkerhet",
       "preferences": "Komma ihåg dina inställningar och preferenser",
-      "analytics": "Förstå hur besökare använder vår webbplats (endast serverbaserad bearbetning, inga spårningscookies)"
+      "analytics": "Förstå hur besökare använder vår webbplats (endast serverbaserad bearbetning, inga spårningskakor)"
     }
   },
   "typesOfCookies": {
-    "title": "Typer av Cookies Vi Använder",
+    "title": "Typer av Kakor Vi Använder",
     "session": {
-      "title": "Sessions-cookies",
-      "description": "Dessa är tillfälliga cookies som raderas när du stänger din webbläsare. De hjälper oss att upprätthålla din session när du navigerar genom vår webbplats."
+      "title": "Sessionskakor",
+      "description": "Dessa är tillfälliga kakor som raderas när du stänger din webbläsare. De hjälper oss att upprätthålla din session när du navigerar genom vår webbplats."
     },
     "persistent": {
-      "title": "Beständiga Cookies",
-      "description": "Dessa cookies förblir på din enhet under en viss period eller tills du raderar dem. De hjälper oss att komma ihåg dina preferenser när du återvänder till vår webbplats."
+      "title": "Beständiga Kakor",
+      "description": "Dessa kakor förblir på din enhet under en viss period eller tills du raderar dem. De hjälper oss att komma ihåg dina preferenser när du återvänder till vår webbplats."
     },
     "firstParty": {
-      "title": "Förstaparts-cookies",
-      "description": "Dessa är cookies som ställs in direkt av vår webbplats. Vi har full kontroll över dessa cookies och använder dem för att förbättra din upplevelse på vår webbplats."
+      "title": "Förstapartskakor",
+      "description": "Dessa är kakor som ställs in direkt av vår webbplats. Vi har full kontroll över dessa kakor och använder dem för att förbättra din upplevelse på vår webbplats."
     },
     "thirdParty": {
-      "title": "Tredjepartscookies",
-      "description": "Vi använder inte tredjepartscookies. Alla cookies på vår webbplats är förstapartscookies som vi ställer in direkt. Även om vi använder vissa tredjepartstjänster (som Cloudflare för hosting), ställer dessa tjänster inte in cookies genom vår webbplats."
+      "title": "Tredjepartskakor",
+      "description": "Vi använder inte tredjepartskakor. Alla kakor på vår webbplats är förstapartskakor som vi ställer in direkt. Även om vi använder vissa tredjepartstjänster (som Cloudflare för hosting), ställer dessa tjänster inte in kakor genom vår webbplats."
     }
   },
   "yourChoices": {
-    "title": "Dina Cookie-val",
-    "description": "Du har flera alternativ för att hantera cookies:",
+    "title": "Dina Kakor-val",
+    "description": "Du har flera alternativ för att hantera kakor:",
     "options": {
-      "browserSettings": "Konfigurera dina webbläsarinställningar för att blockera eller radera cookies",
-      "ourSettings": "Använd våra cookie-inställningar nedan för att kontrollera vilka typer av cookies vi ställer in",
-      "thirdPartyOptOut": "Eftersom vi inte använder tredjepartscookies behövs ingen avanmälan från externa tjänster"
+      "browserSettings": "Konfigurera dina webbläsarinställningar för att blockera eller radera kakor",
+      "ourSettings": "Använd våra kakinställningar nedan för att kontrollera vilka typer av kakor vi ställer in",
+      "thirdPartyOptOut": "Eftersom vi inte använder tredjepartskakor behövs ingen avanmälan från externa tjänster"
     },
-    "disclaimer": "Observera att blockering av vissa cookies kan påverka funktionaliteten på vår webbplats."
+    "disclaimer": "Observera att blockering av vissa kakor kan påverka funktionaliteten på vår webbplats."
   },
   "contact": {
     "title": "Kontakta Oss",
-    "description": "Om du har några frågor om vår användning av cookies, vänligen kontakta oss genom vår webbplats eller skicka e-post till oss direkt."
+    "description": "Om du har några frågor om vår användning av kakor, vänligen kontakta oss genom vår webbplats eller skicka e-post till oss direkt."
   }
 }

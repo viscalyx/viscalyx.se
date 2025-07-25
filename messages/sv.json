@@ -242,37 +242,37 @@
     "rejectAll": "Avvisa Alla",
     "customizeSettings": "Anpassa Inställningar",
     "savePreferences": "Spara Preferenser",
-    "cookieSettings": "Cookie-inställningar",
-    "settingsDescription": "Hantera dina cookie-preferenser. Du kan aktivera eller inaktivera olika typer av cookies nedan. Observera att blockering av vissa typer av cookies kan påverka din upplevelse på vår webbplats.",
+    "cookieSettings": "Kakinställningar",
+    "settingsDescription": "Hantera dina kakpreferenser. Du kan aktivera eller inaktivera olika typer av kakor nedan. Observera att blockering av vissa typer av kakor kan påverka din upplevelse på vår webbplats.",
     "lastUpdated": "Senast uppdaterad",
-    "settingsSaved": "Cookie-preferenser sparade framgångsrikt",
-    "settingsError": "Misslyckades att spara cookie-preferenser. Vänligen försök igen.",
+    "settingsSaved": "Kakpreferenser sparade framgångsrikt",
+    "settingsError": "Misslyckades att spara kakpreferenser. Vänligen försök igen.",
     "quickActions": "Snabbåtgärder",
     "exportData": "Exportera Data",
     "resetConsent": "Återställ Samtycke",
-    "resetConfirmation": "Är du säker på att du vill återställa alla cookie-preferenser? Detta kommer att ta bort all lagrad samtyckedata.",
-    "resetConfirmationTitle": "Återställ Cookie-preferenser",
+    "resetConfirmation": "Är du säker på att du vill återställa alla kakpreferenser? Detta kommer att ta bort all lagrad samtyckedata.",
+    "resetConfirmationTitle": "Återställ Kakpreferenser",
     "confirmReset": "Återställ Samtycke",
     "cancel": "Avbryt",
     "saving": "Sparar...",
     "close": "Stäng",
     "required": "Obligatorisk",
-    "viewCookies": "Visa Cookies",
+    "viewCookies": "Visa Kakor",
     "duration": "Varaktighet",
     "provider": "Leverantör",
     "categories": {
-      "title": "Cookie-kategorier",
+      "title": "Kakkategorier",
       "strictly-necessary": {
-        "name": "Strikt Nödvändiga Cookies",
-        "description": "Dessa cookies är nödvändiga för att webbplatsen ska fungera korrekt. De möjliggör grundläggande funktioner som säkerhet, autentisering och lastbalansering. Du kan inte välja bort dessa cookies."
+        "name": "Strikt Nödvändiga Kakor",
+        "description": "Dessa kakor är nödvändiga för att webbplatsen ska fungera korrekt. De möjliggör grundläggande funktioner som säkerhet, autentisering och lastbalansering. Du kan inte välja bort dessa kakor."
       },
       "preferences": {
-        "name": "Preferens-cookies",
-        "description": "Dessa cookies låter oss komma ihåg val du gör och tillhandahålla förbättrade, mer personliga funktioner. De kan ställas in av oss eller av tredjepartsleverantörer vars tjänster vi har lagt till på våra sidor."
+        "name": "Preferenskakor",
+        "description": "Dessa kakor låter oss komma ihåg val du gör och tillhandahålla förbättrade, mer personliga funktioner. De kan ställas in av oss eller av tredjepartsleverantörer vars tjänster vi har lagt till på våra sidor."
       },
       "analytics": {
-        "name": "Analys-cookies",
-        "description": "Dessa cookies hjälper oss att förstå hur besökare interagerar med vår webbplats genom att samla in och rapportera information anonymt. Detta hjälper oss att förbättra vår webbplats prestanda och användarupplevelse."
+        "name": "Analyskakor",
+        "description": "Dessa kakor hjälper oss att förstå hur besökare interagerar med vår webbplats genom att samla in och rapportera information anonymt. Detta hjälper oss att förbättra vår webbplats prestanda och användarupplevelse."
       }
     }
   }
