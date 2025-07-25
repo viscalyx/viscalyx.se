@@ -67,18 +67,18 @@ export function clearLanguagePreference(): void {
 
 /**
  * Get the default language based on browser preferences or fallback
- * 
+ *
  * This function implements a language detection strategy with the following priority:
  * 1. Browser's primary language (navigator.language)
  * 2. First available browser language (navigator.languages[0])
  * 3. Fallback to English ('en')
- * 
+ *
  * Supported language codes:
  * - 'sv': Swedish (matches any locale starting with 'sv', e.g., 'sv-SE', 'sv-FI')
  * - 'en': English (default fallback for all other languages)
- * 
+ *
  * @returns The detected or fallback language code ('sv' | 'en')
- * 
+ *
  * @example
  * // Browser language is 'sv-SE' → returns 'sv'
  * // Browser language is 'en-US' → returns 'en'
