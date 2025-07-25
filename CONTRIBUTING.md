@@ -1621,6 +1621,8 @@ This implementation provides a complete GDPR-compliant cookie consent solution f
 
 ### Cookie Categories
 
+These are the different cookie categories the website currently uses.
+
 #### 🛡️ Strictly Necessary
 
 Strictly necessary cookies are essential for the site to function and **cannot be disabled** (GDPR exemption).
