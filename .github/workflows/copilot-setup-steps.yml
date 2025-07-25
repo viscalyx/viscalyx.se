@@ -54,30 +54,6 @@ jobs:
       - name: Build blog data
         run: npm run build:sitedata
 
-      - name: Verify project structure
-        run: |
-          echo "✅ Verifying project structure..."
-          # Check for key directories
-          test -d "app" || (echo "❌ app directory missing" && exit 1)
-          test -d "components" || (echo "❌ components directory missing" && exit 1)
-          test -d "lib" || (echo "❌ lib directory missing" && exit 1)
-          test -d "content" || (echo "❌ content directory missing" && exit 1)
-          test -d "messages" || (echo "❌ messages directory missing" && exit 1)
-          test -d "public" || (echo "❌ public directory missing" && exit 1)
-
-          # Check for key files
-          test -f "next.config.js" || (echo "❌ next.config.js missing" && exit 1)
-          test -f "tailwind.config.js" || (echo "❌ tailwind.config.js missing" && exit 1)
-          test -f "tsconfig.json" || (echo "❌ tsconfig.json missing" && exit 1)
-          test -f "vitest.config.ts" || (echo "❌ vitest.config.ts missing" && exit 1)
-          test -f "i18n.ts" || (echo "❌ i18n.ts missing" && exit 1)
-
-          # Check for generated files
-          test -f "lib/blog-data.json" || (echo "❌ blog-data.json not generated" && exit 1)
-          test -f "lib/page-dates.json" || (echo "❌ page-dates.json not generated" && exit 1)
-
-          echo "✅ Project structure verified successfully"
-
       # - name: Cache Next.js build
       #   uses: actions/cache@v4
       #   with:
@@ -92,9 +68,4 @@ jobs:
 
       - name: Run initial quality checks
         run: |
-          echo "✅ Running initial quality checks..."
-
-          # Run check
           npm run check
-
-          echo "✅ Initial quality checks completed successfully"

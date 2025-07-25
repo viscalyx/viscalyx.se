@@ -17,9 +17,9 @@
     "resources": "Resurser",
     "community": "Gemenskap",
     "support": "Support",
-    "faq": "Vanliga frågor",
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",
+    "cookiePolicy": "Kakpolicy",
     "allRightsReserved": "Alla rättigheter förbehållna.",
     "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
   },
@@ -231,6 +231,48 @@
         "excerpt": "Detta är en platshållare för din utvalda blogginlägg. Lägg till markdown-filer i content/blog-katalogen för att se dina faktiska blogginlägg här.",
         "author": "Ditt Namn",
         "category": "Blogg"
+      }
+    }
+  },
+  "cookieConsent": {
+    "title": "Vi Använder Kakor",
+    "description": "Vi använder kakor för att förbättra din surfupplevelse, leverera personaliserat innehåll och analysera vår trafik. Genom att klicka på 'Acceptera alla' samtycker du till vår användning av kakor.",
+    "learnMore": "Läs mer",
+    "acceptAll": "Acceptera Alla",
+    "rejectAll": "Avvisa Alla",
+    "customizeSettings": "Anpassa Inställningar",
+    "savePreferences": "Spara Preferenser",
+    "cookieSettings": "Kakinställningar",
+    "settingsDescription": "Hantera dina kakpreferenser. Du kan aktivera eller inaktivera olika typer av kakor nedan. Observera att blockering av vissa typer av kakor kan påverka din upplevelse på vår webbplats.",
+    "lastUpdated": "Senast uppdaterad",
+    "settingsSaved": "Kakpreferenser sparade framgångsrikt",
+    "settingsError": "Misslyckades att spara kakpreferenser. Vänligen försök igen.",
+    "quickActions": "Snabbåtgärder",
+    "exportData": "Exportera Data",
+    "resetConsent": "Återställ Samtycke",
+    "resetConfirmation": "Är du säker på att du vill återställa alla kakpreferenser? Detta kommer att ta bort all lagrad samtyckedata.",
+    "resetConfirmationTitle": "Återställ Kakpreferenser",
+    "confirmReset": "Återställ Samtycke",
+    "cancel": "Avbryt",
+    "saving": "Sparar...",
+    "close": "Stäng",
+    "required": "Obligatorisk",
+    "viewCookies": "Visa Kakor",
+    "duration": "Varaktighet",
+    "provider": "Leverantör",
+    "categories": {
+      "title": "Kakkategorier",
+      "strictly-necessary": {
+        "name": "Strikt Nödvändiga Kakor",
+        "description": "Dessa kakor är nödvändiga för att webbplatsen ska fungera korrekt. De möjliggör grundläggande funktioner som säkerhet, autentisering och lastbalansering. Du kan inte välja bort dessa kakor."
+      },
+      "preferences": {
+        "name": "Preferenskakor",
+        "description": "Dessa kakor låter oss komma ihåg val du gör och tillhandahålla förbättrade, mer personliga funktioner. De kan ställas in av oss eller av tredjepartsleverantörer vars tjänster vi har lagt till på våra sidor."
+      },
+      "analytics": {
+        "name": "Analyskakor",
+        "description": "Dessa kakor hjälper oss att förstå hur besökare interagerar med vår webbplats genom att samla in och rapportera information anonymt. Detta hjälper oss att förbättra vår webbplats prestanda och användarupplevelse."
       }
     }
   }

@@ -63,6 +63,7 @@ const Footer = () => {
     support: [
       { name: t('privacyPolicy'), href: '/privacy' },
       { name: t('termsOfService'), href: '/terms' },
+      { name: t('cookiePolicy'), href: '/cookies' },
     ],
   }
 

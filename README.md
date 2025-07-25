@@ -1,7 +1,5 @@
 # Viscalyx Website
 
-![Work in Progress](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow?style=for-the-badge)
-
 The official website for Viscalyx, built with Next.js and featuring blog content, team information, and case studies.
 
 ## Features
@@ -12,8 +10,36 @@ The official website for Viscalyx, built with Next.js and featuring blog content
 - 👥 Team member profiles
 - 💼 Case studies showcase
 - 🌙 Dark/light theme toggle
-- 📊 Bundle analysis with Codecov
+- 🍪 GDPR-compliant cookie consent
+- 🔒📊 Privacy-first analytics with Cloudflare
 - 🧪 Comprehensive testing with Vitest
+
+### Privacy & Analytics
+
+Our website respects user privacy and complies with GDPR cookie consent requirements:
+
+- **Cookie Consent Banner**: Appears on first visit to allow users to choose their cookie preferences
+- **Granular Control**: Users can accept/reject different categories of cookies:
+  - **Strictly Necessary**: Required for website functionality (always enabled)
+  - **Preferences**: Remember user settings like theme and language preferences
+  - **Analytics**: Track website usage through Cloudflare Analytics Engine
+- **Privacy-First Analytics**: We collect minimal data for website improvement:
+  - Reading progress and time spent on blog posts
+  - Geographic location (country-level) via Cloudflare
+  - Referrer information and basic browser data
+  - **No client-side tracking cookies** - all processing happens server-side
+- **User Rights**: Users can change preferences, export data, or reset consent at any time
+
+## Legal Compliance
+
+### GDPR Requirements Met
+
+1. ✅ **Explicit Consent**: Clear opt-in required for non-essential cookies
+2. ✅ **Granular Choice**: Users can select specific cookie categories
+3. ✅ **Easy Withdrawal**: Users can change preferences anytime
+4. ✅ **Clear Information**: Detailed cookie descriptions provided
+5. ✅ **Record Keeping**: Consent timestamp and settings stored
+6. ✅ **No Pre-checked Boxes**: All non-essential cookies disabled by default
 
 ## Tech Stack
 

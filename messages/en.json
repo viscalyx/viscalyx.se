@@ -17,9 +17,9 @@
     "resources": "Resources",
     "community": "Community",
     "support": "Support",
-    "faq": "FAQ",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
     "allRightsReserved": "All rights reserved.",
     "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide."
   },
@@ -231,6 +231,48 @@
         "excerpt": "This is a placeholder for your featured blog post. Add markdown files to the content/blog directory to see your actual blog posts here.",
         "author": "Your Name",
         "category": "Blog"
+      }
+    }
+  },
+  "cookieConsent": {
+    "title": "We Use Cookies",
+    "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies.",
+    "learnMore": "Learn more",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "customizeSettings": "Customize Settings",
+    "savePreferences": "Save Preferences",
+    "cookieSettings": "Cookie Settings",
+    "settingsDescription": "Manage your cookie preferences. You can enable or disable different types of cookies below. Note that blocking some types of cookies may impact your experience on our website.",
+    "lastUpdated": "Last updated",
+    "settingsSaved": "Cookie preferences saved successfully",
+    "settingsError": "Failed to save cookie preferences. Please try again.",
+    "quickActions": "Quick Actions",
+    "exportData": "Export Data",
+    "resetConsent": "Reset Consent",
+    "resetConfirmation": "Are you sure you want to reset all cookie preferences? This will remove all stored consent data.",
+    "resetConfirmationTitle": "Reset Cookie Preferences",
+    "confirmReset": "Reset Consent",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "close": "Close",
+    "required": "Required",
+    "viewCookies": "View Cookies",
+    "duration": "Duration",
+    "provider": "Provider",
+    "categories": {
+      "title": "Cookie Categories",
+      "strictly-necessary": {
+        "name": "Strictly Necessary Cookies",
+        "description": "These cookies are essential for the website to function properly. They enable core functionality such as security, authentication, and load balancing. You cannot opt out of these cookies."
+      },
+      "preferences": {
+        "name": "Preference Cookies",
+        "description": "These cookies allow us to remember choices you make and provide enhanced, more personal features. They may be set by us or by third party providers whose services we have added to our pages."
+      },
+      "analytics": {
+        "name": "Analytics Cookies",
+        "description": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously. This helps us improve our website's performance and user experience."
       }
     }
   }

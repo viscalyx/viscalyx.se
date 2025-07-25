@@ -14,6 +14,20 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale: locale,
-    messages: (await import(`./messages/${locale}.json`)).default,
+    messages: {
+      // Load main messages - shouldn't have error handling that returns an empty object (we want main message loading failures to bubble up)
+      ...(await import(`./messages/${locale}.json`)).default,
+      // Parallel page-specific imports with error handling
+      ...Object.fromEntries(
+        await Promise.all(
+          ['cookies', 'privacy', 'terms'].map(async page => [
+            page,
+            await import(`./messages/${page}.${locale}.json`)
+              .then(m => m.default)
+              .catch(() => ({})),
+          ])
+        )
+      ),
+    },
   }
 })

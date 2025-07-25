@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import { consentEvents } from './consent-events'
+import { hasConsent } from './cookie-consent'
 
 interface BlogAnalyticsData {
   slug: string
@@ -12,6 +14,80 @@ interface UseAnalyticsOptions {
   trackReadProgress?: boolean
   trackTimeSpent?: boolean
   progressThreshold?: number // Send analytics when user reaches this % of content
+}
+
+// Cache for consent status to avoid repeated localStorage reads
+let cachedAnalyticsConsent: boolean | null = null
+let consentCacheTimestamp: number = 0
+const CONSENT_CACHE_DURATION = 30000 // Cache for 30 seconds - balanced between performance and responsiveness
+
+/**
+ * Get cached analytics consent status or fetch fresh if cache is stale
+ */
+function getCachedAnalyticsConsent(): boolean {
+  const now = Date.now()
+
+  // If cache is fresh, return cached value
+  if (
+    cachedAnalyticsConsent !== null &&
+    now - consentCacheTimestamp < CONSENT_CACHE_DURATION
+  ) {
+    return cachedAnalyticsConsent
+  }
+
+  // Cache is stale or doesn't exist, fetch fresh consent
+  const currentConsent = hasConsent('analytics')
+  cachedAnalyticsConsent = currentConsent
+  consentCacheTimestamp = now
+
+  return currentConsent
+}
+
+/**
+ * Helper function to check if two objects are deeply equal using JSON serialization
+ * This is safe for simple objects without functions, circular references, or undefined values
+ */
+function isDataEqual(a: BlogAnalyticsData, b: BlogAnalyticsData): boolean {
+  return JSON.stringify(a) === JSON.stringify(b)
+}
+
+/**
+ * Invalidate the consent cache (call when consent settings change)
+ */
+export function invalidateConsentCache(): void {
+  cachedAnalyticsConsent = null
+  consentCacheTimestamp = 0
+}
+
+/**
+ * Setup consent change listeners to invalidate cache
+ */
+function setupConsentCacheInvalidation(): () => void {
+  if (typeof window === 'undefined') return () => {}
+
+  // Listen for consent events (more reliable than storage events)
+  const unsubscribeConsentChange = consentEvents.on('consent-changed', () => {
+    invalidateConsentCache()
+  })
+
+  const unsubscribeConsentReset = consentEvents.on('consent-reset', () => {
+    invalidateConsentCache()
+  })
+
+  // Also listen for storage events as fallback (for cross-tab synchronization)
+  const handleStorageChange = (event: StorageEvent) => {
+    if (event.key === 'cookie-consent') {
+      invalidateConsentCache()
+    }
+  }
+
+  window.addEventListener('storage', handleStorageChange)
+
+  return () => {
+    unsubscribeConsentChange()
+    unsubscribeConsentReset()
+    window.removeEventListener('storage', handleStorageChange)
+  }
 }
 
 export function useBlogAnalytics(
@@ -28,8 +104,21 @@ export function useBlogAnalytics(
   const hasTrackedProgress = useRef<boolean>(false)
   const maxScrollProgress = useRef<number>(0)
 
+  // Use ref to store data and only update when values actually change
+  const dataRef = useRef<BlogAnalyticsData>(data)
+
+  // Update dataRef only when data actually changes (using deep comparison)
+  if (!isDataEqual(dataRef.current, data)) {
+    dataRef.current = data
+  }
+
   const trackEvent = useCallback(
     async (readProgress?: number, timeSpent?: number) => {
+      // Only track if user has consented to analytics cookies
+      if (!getCachedAnalyticsConsent()) {
+        return
+      }
+
       try {
         await fetch('/api/analytics/blog-read', {
           method: 'POST',
@@ -37,9 +126,9 @@ export function useBlogAnalytics(
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            slug: data.slug,
-            category: data.category,
-            title: data.title,
+            slug: dataRef.current.slug,
+            category: dataRef.current.category,
+            title: dataRef.current.title,
             readProgress,
             timeSpent,
           }),
@@ -48,16 +137,19 @@ export function useBlogAnalytics(
         console.warn('Failed to track blog analytics:', error)
       }
     },
-    [data.slug, data.category, data.title]
+    [] // No dependencies - uses stable dataRef.current
   )
 
   useEffect(() => {
     if (!trackReadProgress && !trackTimeSpent) return
 
+    // Setup consent cache invalidation listener
+    const cleanupConsentListener = setupConsentCacheInvalidation()
+
     let throttleTimer: NodeJS.Timeout | null = null
 
     const handleScroll = () => {
-      if (!trackReadProgress) return
+      if (!trackReadProgress || !getCachedAnalyticsConsent()) return
 
       if (throttleTimer) return
 
@@ -92,6 +184,11 @@ export function useBlogAnalytics(
     }
 
     const handleBeforeUnload = () => {
+      // Only track if user has consented to analytics cookies
+      if (!getCachedAnalyticsConsent()) {
+        return
+      }
+
       // Track final analytics on page unload
       const timeSpent = trackTimeSpent
         ? Math.round((Date.now() - startTime.current) / 1000)
@@ -102,9 +199,9 @@ export function useBlogAnalytics(
         navigator.sendBeacon(
           '/api/analytics/blog-read',
           JSON.stringify({
-            slug: data.slug,
-            category: data.category,
-            title: data.title,
+            slug: dataRef.current.slug,
+            category: dataRef.current.category,
+            title: dataRef.current.title,
             readProgress: maxScrollProgress.current,
             timeSpent,
           })
@@ -113,7 +210,7 @@ export function useBlogAnalytics(
     }
 
     const timeoutId = setTimeout(() => {
-      if (trackTimeSpent) {
+      if (trackTimeSpent && getCachedAnalyticsConsent()) {
         trackEvent(0, 0) // Initial page view
       }
     }, 1000)
@@ -137,15 +234,13 @@ export function useBlogAnalytics(
       if (trackTimeSpent) {
         window.removeEventListener('beforeunload', handleBeforeUnload)
       }
+      cleanupConsentListener()
     }
   }, [
-    data.slug,
-    data.category,
-    data.title,
     trackReadProgress,
     trackTimeSpent,
     progressThreshold,
-    trackEvent,
+    trackEvent, // Include trackEvent but it's now stable (no deps) so won't cause re-renders
   ])
 
   return {
