@@ -214,6 +214,11 @@ describe('useBlogAnalytics', () => {
       })
     )
 
+    // Advance time to simulate some elapsed time
+    act(() => {
+      vi.advanceTimersByTime(2000)
+    })
+
     // Simulate page unload
     act(() => {
       window.dispatchEvent(new Event('beforeunload'))
@@ -232,6 +237,11 @@ describe('useBlogAnalytics', () => {
       })
     )
 
+    // Advance time to simulate elapsed time for timeSpent calculation
+    act(() => {
+      vi.advanceTimersByTime(3000) // Simulate 3 seconds elapsed
+    })
+
     // Simulate page unload
     act(() => {
       window.dispatchEvent(new Event('beforeunload'))
@@ -242,5 +252,10 @@ describe('useBlogAnalytics', () => {
       '/api/analytics/blog-read',
       expect.stringContaining('"readProgress":0')
     )
+
+    // Verify that timeSpent is calculated correctly
+    const sendBeaconCall = vi.mocked(navigator.sendBeacon).mock.calls[0]
+    const requestBody = JSON.parse(sendBeaconCall[1] as string)
+    expect(requestBody.timeSpent).toBe(3)
   })
 })
