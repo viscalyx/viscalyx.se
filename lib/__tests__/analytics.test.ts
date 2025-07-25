@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useBlogAnalytics } from '../analytics'
+import { useBlogAnalytics, invalidateConsentCache } from '../analytics'
 import { hasConsent } from '../cookie-consent'
 
 // Mock the cookie consent module
@@ -21,6 +21,9 @@ describe('useBlogAnalytics', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.useFakeTimers()
+
+    // Invalidate analytics consent cache between tests
+    invalidateConsentCache()
 
     // Mock Date.now to return a consistent timestamp
     const mockStartTime = 1640995200000 // 2022-01-01 00:00:00 UTC

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { hasConsent } from './cookie-consent'
 
 interface BlogAnalyticsData {
@@ -13,6 +13,60 @@ interface UseAnalyticsOptions {
   trackReadProgress?: boolean
   trackTimeSpent?: boolean
   progressThreshold?: number // Send analytics when user reaches this % of content
+}
+
+// Cache for consent status to avoid repeated localStorage reads
+let cachedAnalyticsConsent: boolean | null = null
+let consentCacheTimestamp: number = 0
+const CONSENT_CACHE_DURATION = 5000 // Cache for 5 seconds
+
+/**
+ * Get cached analytics consent status or fetch fresh if cache is stale
+ */
+function getCachedAnalyticsConsent(): boolean {
+  const now = Date.now()
+
+  // If cache is fresh, return cached value
+  if (
+    cachedAnalyticsConsent !== null &&
+    now - consentCacheTimestamp < CONSENT_CACHE_DURATION
+  ) {
+    return cachedAnalyticsConsent
+  }
+
+  // Cache is stale or doesn't exist, fetch fresh consent
+  const currentConsent = hasConsent('analytics')
+  cachedAnalyticsConsent = currentConsent
+  consentCacheTimestamp = now
+
+  return currentConsent
+}
+
+/**
+ * Invalidate the consent cache (call when consent settings change)
+ */
+export function invalidateConsentCache(): void {
+  cachedAnalyticsConsent = null
+  consentCacheTimestamp = 0
+}
+
+/**
+ * Listen for consent changes via storage events
+ */
+function setupConsentCacheInvalidation(): () => void {
+  if (typeof window === 'undefined') return () => {}
+
+  const handleStorageChange = (event: StorageEvent) => {
+    if (event.key === 'cookie-consent') {
+      invalidateConsentCache()
+    }
+  }
+
+  window.addEventListener('storage', handleStorageChange)
+
+  return () => {
+    window.removeEventListener('storage', handleStorageChange)
+  }
 }
 
 export function useBlogAnalytics(
@@ -32,7 +86,7 @@ export function useBlogAnalytics(
   const trackEvent = useCallback(
     async (readProgress?: number, timeSpent?: number) => {
       // Only track if user has consented to analytics cookies
-      if (!hasConsent('analytics')) {
+      if (!getCachedAnalyticsConsent()) {
         return
       }
 
@@ -60,10 +114,13 @@ export function useBlogAnalytics(
   useEffect(() => {
     if (!trackReadProgress && !trackTimeSpent) return
 
+    // Setup consent cache invalidation listener
+    const cleanupConsentListener = setupConsentCacheInvalidation()
+
     let throttleTimer: NodeJS.Timeout | null = null
 
     const handleScroll = () => {
-      if (!trackReadProgress || !hasConsent('analytics')) return
+      if (!trackReadProgress || !getCachedAnalyticsConsent()) return
 
       if (throttleTimer) return
 
@@ -99,7 +156,7 @@ export function useBlogAnalytics(
 
     const handleBeforeUnload = () => {
       // Only track if user has consented to analytics cookies
-      if (!hasConsent('analytics')) {
+      if (!getCachedAnalyticsConsent()) {
         return
       }
 
@@ -124,7 +181,7 @@ export function useBlogAnalytics(
     }
 
     const timeoutId = setTimeout(() => {
-      if (trackTimeSpent && hasConsent('analytics')) {
+      if (trackTimeSpent && getCachedAnalyticsConsent()) {
         trackEvent(0, 0) // Initial page view
       }
     }, 1000)
@@ -148,6 +205,7 @@ export function useBlogAnalytics(
       if (trackTimeSpent) {
         window.removeEventListener('beforeunload', handleBeforeUnload)
       }
+      cleanupConsentListener()
     }
   }, [
     data.slug,

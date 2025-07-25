@@ -116,6 +116,16 @@ export function saveConsentSettings(settings: CookieConsentSettings): void {
     setCookie(CONSENT_COOKIE_NAME, JSON.stringify(data), {
       maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
     })
+
+    // Invalidate analytics consent cache when settings change
+    // Import dynamically to avoid circular dependencies
+    import('./analytics')
+      .then(({ invalidateConsentCache }) => {
+        invalidateConsentCache()
+      })
+      .catch(() => {
+        // Silently fail if analytics module is not available
+      })
   } catch (error) {
     console.error('Failed to save cookie consent:', error)
   }
@@ -189,6 +199,16 @@ export function resetConsent(): void {
 
   // Clean up all non-essential cookies
   cleanupCookies(defaultConsentSettings)
+
+  // Invalidate analytics consent cache when settings are reset
+  // Import dynamically to avoid circular dependencies
+  import('./analytics')
+    .then(({ invalidateConsentCache }) => {
+      invalidateConsentCache()
+    })
+    .catch(() => {
+      // Silently fail if analytics module is not available
+    })
 }
 
 /**
