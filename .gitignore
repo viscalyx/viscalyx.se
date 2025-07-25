@@ -217,3 +217,9 @@ lib/page-dates.json
 
 .wrangler/
 test-results/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
