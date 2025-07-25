@@ -122,6 +122,18 @@ describe('Cookie Consent', () => {
       expect(parsed.settings).toEqual(settings)
       expect(parsed.version).toBe('1.0')
       expect(parsed.timestamp).toBeTruthy()
+
+      // Verify that the consent cookie is also set
+      expect(document.cookie).toContain('cookie-consent=')
+
+      // Verify the cookie contains the expected data structure
+      const cookieMatch = document.cookie.match(/cookie-consent=([^;]+)/)
+      expect(cookieMatch).toBeTruthy()
+
+      const cookieData = JSON.parse(decodeURIComponent(cookieMatch![1]))
+      expect(cookieData.settings).toEqual(settings)
+      expect(cookieData.version).toBe('1.0')
+      expect(cookieData.timestamp).toBeTruthy()
     })
   })
 
