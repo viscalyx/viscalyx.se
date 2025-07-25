@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 
+export const runtime = 'edge'
+
 export async function GET() {
   try {
     const allPosts = getAllPosts()

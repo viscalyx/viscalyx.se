@@ -1,5 +1,7 @@
 'use client'
 
+export const runtime = 'edge'
+
 import AlertIconInjector from '@/components/AlertIconInjector'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import Footer from '@/components/Footer'

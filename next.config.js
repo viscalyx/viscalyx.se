@@ -1,11 +1,13 @@
-// Only initialize OpenNext Cloudflare for development/non-production environments
-if (process.env.NODE_ENV !== 'production') {
+// Cloudflare Pages setup
+const { setupDevPlatform } = require('@cloudflare/next-on-pages/next-dev')
+
+// Setup development platform if not in production
+if (process.env.NODE_ENV === 'development') {
   try {
-    const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
-    initOpenNextCloudflareForDev()
+    setupDevPlatform()
   } catch (error) {
     console.warn(
-      'Warning: Failed to load @opennextjs/cloudflare module:',
+      'Warning: Failed to setup Cloudflare development platform:',
       error.message
     )
   }

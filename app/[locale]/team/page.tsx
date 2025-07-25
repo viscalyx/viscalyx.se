@@ -1,5 +1,7 @@
 'use client'
 
+export const runtime = 'edge'
+
 import { motion } from 'framer-motion'
 import Header from '@/components/Header'
 import Team from '@/components/Team'

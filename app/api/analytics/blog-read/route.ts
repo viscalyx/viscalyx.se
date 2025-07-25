@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { getRequestContext } from '@cloudflare/next-on-pages'
+
+export const runtime = 'edge'
 
 interface BlogReadEvent {
   slug: string
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
 
     // Write data point to Analytics Engine
     try {
-      const { env } = getCloudflareContext()
+      const { env } = getRequestContext()
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getPostBySlug, getRelatedPosts } from '@/lib/blog'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { getRequestContext } from '@cloudflare/next-on-pages'
+
+export const runtime = 'edge'
 
 // Analytics tracking function
 function trackBlogRead(slug: string, category: string, request: Request) {
@@ -16,7 +18,7 @@ function trackBlogRead(slug: string, category: string, request: Request) {
 
     // Write data point to Analytics Engine
     try {
-      const { env } = getCloudflareContext()
+      const { env } = getRequestContext()
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [
