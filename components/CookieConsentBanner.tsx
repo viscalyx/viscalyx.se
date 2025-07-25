@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   cleanupCookies,
   type CookieCategory,
@@ -29,6 +29,32 @@ const CookieConsentBanner = () => {
   const rejectButtonRef = useRef<HTMLButtonElement>(null) // Reject All button
   const previousActiveElement = useRef<HTMLElement | null>(null)
 
+  // Cache focusable elements to avoid repeated DOM queries
+  const cachedFocusableElements = useRef<NodeListOf<Element> | null>(null)
+
+  // Memoized focusable elements query function
+  const getFocusableElements = useCallback(() => {
+    if (!bannerRef.current) return null
+
+    // Use cached elements if available and banner structure hasn't changed
+    if (cachedFocusableElements.current) {
+      return cachedFocusableElements.current
+    }
+
+    const elements = bannerRef.current.querySelectorAll(
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+    )
+
+    // Cache the elements
+    cachedFocusableElements.current = elements
+    return elements
+  }, [])
+
+  // Clear cached elements when showDetails changes (structure changes)
+  useEffect(() => {
+    cachedFocusableElements.current = null
+  }, [showDetails])
+
   // Manage focus and body scroll when banner is visible
   useEffect(() => {
     // Focus trap functionality
@@ -36,9 +62,7 @@ const CookieConsentBanner = () => {
       if (!isVisible) return
 
       if (event.key === 'Tab') {
-        const focusableElements = bannerRef.current?.querySelectorAll(
-          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
-        )
+        const focusableElements = getFocusableElements()
 
         if (!focusableElements || focusableElements.length === 0) return
 
@@ -100,7 +124,7 @@ const CookieConsentBanner = () => {
       document.removeEventListener('keydown', handleKeyDown)
       document.body.style.paddingBottom = ''
     }
-  }, [isVisible])
+  }, [isVisible, getFocusableElements])
 
   useEffect(() => {
     // Check if user has already made a choice
