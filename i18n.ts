@@ -14,6 +14,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale: locale,
-    messages: (await import(`./messages/${locale}.json`)).default,
+    messages: {
+      // Load main messages
+      ...(await import(`./messages/${locale}.json`)).default,
+      // Load additional page-specific messages
+      cookies: (await import(`./messages/cookies.${locale}.json`)).default,
+      privacy: (await import(`./messages/privacy.${locale}.json`)).default,
+      terms: (await import(`./messages/terms.${locale}.json`)).default,
+    },
   }
 })
