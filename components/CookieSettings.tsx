@@ -421,6 +421,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
         cancelText={t('cancel')}
         variant="danger"
         confirmLoading={isLoading}
+        confirmIcon={<Trash2 className="w-4 h-4" aria-hidden="true" />}
       />
     </div>
   )

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { Trash2 } from 'lucide-react'
 import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
@@ -141,5 +142,22 @@ describe('ConfirmationModal', () => {
     expect(
       screen.getByText('Are you sure you want to proceed?')
     ).toHaveAttribute('id', 'modal-description')
+  })
+
+  it('renders with custom confirm icon when provided', () => {
+    const customIcon = (
+      <Trash2 data-testid="custom-confirm-icon" className="w-4 h-4" />
+    )
+    render(<ConfirmationModal {...defaultProps} confirmIcon={customIcon} />)
+
+    expect(screen.getByTestId('custom-confirm-icon')).toBeInTheDocument()
+  })
+
+  it('renders without icon when confirmIcon is not provided', () => {
+    render(<ConfirmationModal {...defaultProps} />)
+
+    // The confirm button should still be present but without the icon
+    expect(screen.getByText('Confirm')).toBeInTheDocument()
+    expect(screen.queryByTestId('custom-confirm-icon')).not.toBeInTheDocument()
   })
 })

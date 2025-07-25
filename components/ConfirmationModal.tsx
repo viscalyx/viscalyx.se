@@ -1,8 +1,8 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertTriangle, Info, Trash2, X } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { AlertTriangle, Info, X } from 'lucide-react'
+import { ReactNode, useEffect, useRef } from 'react'
 
 interface ConfirmationModalProps {
   isOpen: boolean
@@ -14,6 +14,7 @@ interface ConfirmationModalProps {
   cancelText: string
   variant?: 'danger' | 'warning' | 'info'
   confirmLoading?: boolean
+  confirmIcon?: ReactNode
 }
 
 const ConfirmationModal = ({
@@ -26,6 +27,7 @@ const ConfirmationModal = ({
   cancelText,
   variant = 'warning',
   confirmLoading = false,
+  confirmIcon,
 }: ConfirmationModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
@@ -175,7 +177,7 @@ const ConfirmationModal = ({
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <Trash2 className="w-4 h-4" aria-hidden="true" />
+                        {confirmIcon}
                         {confirmText}
                       </div>
                     )}
