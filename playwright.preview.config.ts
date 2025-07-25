@@ -70,6 +70,7 @@ export default defineConfig({
         {
           command: 'npm run preview',
           port: 8788,
+          timeout: 180 * 1000, // 3 minutes timeout for preview server to start
           reuseExistingServer: !process.env.CI,
           env: {
             NODE_ENV: 'production',

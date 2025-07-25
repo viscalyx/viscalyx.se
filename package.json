@@ -30,6 +30,7 @@
     "test:integration:preview": "playwright test --config=playwright.preview.config.ts",
     "test:integration:ui": "playwright test --ui",
     "test:integration:report": "playwright show-report",
+    "test:integration:all": "npm run test:integration:dev && npm run test:integration:preview",
     "check": "npm run type-check && npm run format:check && npm run spell:check && npm run lint && npm run test && npm run test:security",
     "prepreview": "rimraf .open-next .wrangler && npm run cf-typegen",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",

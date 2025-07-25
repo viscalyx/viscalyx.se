@@ -14,7 +14,7 @@ jobs:
   test-dev-server:
     name: Test Against Dev Server
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -56,7 +56,7 @@ jobs:
   test-preview-server:
     name: Test Against Preview Server
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
 
     steps:
       - name: Checkout code
