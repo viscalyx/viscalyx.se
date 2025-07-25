@@ -151,13 +151,14 @@ describe('useBlogAnalytics', () => {
     })
 
     expect(global.fetch).toHaveBeenCalledTimes(1)
-    expect(global.fetch).toHaveBeenCalledWith('/api/analytics/blog-read', 
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/analytics/blog-read',
       expect.objectContaining({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: expect.stringContaining('"readProgress":50')
+        body: expect.stringContaining('"readProgress":50'),
       })
     )
   })

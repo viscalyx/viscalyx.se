@@ -59,7 +59,8 @@ export default function CookiesPage() {
               {translations.description}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-              {translations.lastUpdated}: {format.dateTime(staticPageDates.cookies, {
+              {translations.lastUpdated}:{' '}
+              {format.dateTime(staticPageDates.cookies, {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
