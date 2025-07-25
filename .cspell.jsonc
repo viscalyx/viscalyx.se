@@ -322,6 +322,7 @@
     // Swedish words not in the dictionary (first set files to use Swedish dictionary below)
     "lässtatus",
     "läsframsteg",
+    "Typsnittsfiler",
 
     // Strange words or part of words that cSpell is not able to handle
     "issal" // dismissal

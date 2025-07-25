@@ -37,7 +37,7 @@
         "description": "Vi använder följande tredjepartstjänster som kan behandla data när du besöker vår webbplats:",
         "items": [
           "Cloudflare: Innehållsleveransnätverk, säkerhet och serverbaserad analysbehandling (behandlar IP-adresser, användaragenter och förfrågningshuvuden)",
-          "Google Fonts: Typsnittsleveranstjänst (laddar Inter-typsnitt från Googles servrar, ingen spårning eller kakor)"
+          "Google Fonts: Typsnittsfiler (Inter-typsnitt) lagras på våra servrar via Next.js-optimering - inga förfrågningar görs till Google när du besöker vår webbplats"
         ]
       },
       "yourRights": {
