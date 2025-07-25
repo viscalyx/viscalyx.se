@@ -23,6 +23,7 @@ import {
   resetConsent,
   saveConsentSettings,
 } from '../lib/cookie-consent'
+import ConfirmationModal from './ConfirmationModal'
 
 interface CookieSettingsProps {
   onSettingsChange?: (settings: CookieConsentSettings) => void
@@ -37,6 +38,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [showError, setShowError] = useState(false)
+  const [showResetConfirmation, setShowResetConfirmation] = useState(false)
 
   useEffect(() => {
     const currentSettings = getConsentSettings()
@@ -95,16 +97,27 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     onSettingsChange?.(defaultConsentSettings)
   }
 
-  const handleResetConsent = async () => {
-    if (confirm(t('resetConfirmation'))) {
-      setIsLoading(true)
+  const handleResetConsent = () => {
+    setShowResetConfirmation(true)
+  }
+
+  const confirmResetConsent = async () => {
+    setIsLoading(true)
+    setShowResetConfirmation(false)
+
+    try {
       resetConsent()
       setSettings(defaultConsentSettings)
       setConsentTimestamp(null)
       onSettingsChange?.(defaultConsentSettings)
-      setIsLoading(false)
       setShowSuccess(true)
       setTimeout(() => setShowSuccess(false), 3000)
+    } catch (error) {
+      console.error('Failed to reset consent:', error)
+      setShowError(true)
+      setTimeout(() => setShowError(false), 5000)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -367,6 +380,19 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           {isLoading ? t('saving') : t('savePreferences')}
         </button>
       </div>
+
+      {/* Reset Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showResetConfirmation}
+        onClose={() => setShowResetConfirmation(false)}
+        onConfirm={confirmResetConsent}
+        title={t('resetConfirmationTitle')}
+        message={t('resetConfirmation')}
+        confirmText={t('confirmReset')}
+        cancelText={t('cancel')}
+        variant="danger"
+        confirmLoading={isLoading}
+      />
     </div>
   )
 }
