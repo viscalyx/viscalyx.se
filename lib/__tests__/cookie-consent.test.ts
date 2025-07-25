@@ -103,7 +103,6 @@ describe('Cookie Consent', () => {
       const settings = {
         'strictly-necessary': true,
         analytics: true,
-        marketing: false,
         preferences: true,
       }
 
@@ -167,7 +166,7 @@ describe('Cookie Consent', () => {
   describe('cleanupCookies', () => {
     beforeEach(() => {
       // Mock cookies
-      cookieMock.value = 'theme=dark; _ga=test; marketing_cookie=value'
+      cookieMock.value = 'theme=dark; _ga=test'
     })
 
     it('should not remove strictly necessary cookies', () => {
