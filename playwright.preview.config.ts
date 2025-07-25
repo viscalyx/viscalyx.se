@@ -6,6 +6,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests/integration',
+  /* Output directory for test results */
+  outputDir: 'test-results/preview',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -16,8 +18,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html', { outputFolder: 'test-results/playwright-report-preview' }],
-    ['junit', { outputFile: 'test-results/playwright-junit-preview.xml' }],
+    ['html', { outputFolder: 'playwright-report-preview' }],
+    ['junit', { outputFile: 'test-results/preview/playwright-junit.xml' }],
     ['list'],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -70,7 +72,7 @@ export default defineConfig({
         {
           command: 'npm run preview',
           port: 8788,
-          timeout: 180 * 1000, // 3 minutes timeout for preview server to start
+          timeout: 300 * 1000, // 5 minutes timeout for preview server to start (includes build time)
           reuseExistingServer: !process.env.CI,
           env: {
             NODE_ENV: 'production',
