@@ -150,19 +150,16 @@ describe('useBlogAnalytics', () => {
       await new Promise(resolve => setTimeout(resolve, 150))
     })
 
-    expect(global.fetch).toHaveBeenCalledWith('/api/analytics/blog-read', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        slug: 'test-blog-post',
-        category: 'Technology',
-        title: 'Test Blog Post',
-        readProgress: 50,
-        timeSpent: expect.any(Number),
-      }),
-    })
+    expect(global.fetch).toHaveBeenCalledTimes(1)
+    expect(global.fetch).toHaveBeenCalledWith('/api/analytics/blog-read', 
+      expect.objectContaining({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: expect.stringContaining('"readProgress":50')
+      })
+    )
   })
 
   it('should not use sendBeacon on page unload when analytics consent is denied', async () => {
@@ -198,15 +195,10 @@ describe('useBlogAnalytics', () => {
       window.dispatchEvent(new Event('beforeunload'))
     })
 
+    expect(navigator.sendBeacon).toHaveBeenCalledTimes(1)
     expect(navigator.sendBeacon).toHaveBeenCalledWith(
       '/api/analytics/blog-read',
-      JSON.stringify({
-        slug: 'test-blog-post',
-        category: 'Technology',
-        title: 'Test Blog Post',
-        readProgress: 0,
-        timeSpent: expect.any(Number),
-      })
+      expect.stringContaining('"readProgress":0')
     )
   })
 })

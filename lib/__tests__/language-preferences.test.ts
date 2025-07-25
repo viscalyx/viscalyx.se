@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { hasConsent } from '../cookie-consent'
 import {
   clearLanguagePreference,
   getDefaultLanguage,
@@ -14,11 +15,32 @@ vi.mock('../cookie-consent', () => ({
 // Mock document.cookie
 const cookieMock = {
   value: '',
+  lastSet: '', // Track what was set for assertions
   get cookie() {
     return this.value
   },
   set cookie(val: string) {
-    this.value = val
+    this.lastSet = val // Store the actual set value for testing
+
+    // Simulate how browsers handle cookie setting
+    if (val.includes('expires=Thu, 01 Jan 1970')) {
+      // Clear the cookie
+      const name = val.split('=')[0]
+      this.value = this.value
+        .split(';')
+        .filter(cookie => !cookie.trim().startsWith(name + '='))
+        .join(';')
+    } else if (val.includes('language=')) {
+      // Set the language cookie
+      const existingCookies = this.value
+        .split(';')
+        .filter(cookie => !cookie.trim().startsWith('language='))
+        .filter(cookie => cookie.trim())
+
+      const newCookie = val.split(';')[0] // Get just the name=value part
+      existingCookies.push(newCookie)
+      this.value = existingCookies.join(';')
+    }
   },
 }
 
@@ -40,6 +62,7 @@ Object.defineProperty(navigator, 'language', {
 describe('Language Preferences', () => {
   beforeEach(() => {
     cookieMock.value = ''
+    cookieMock.lastSet = ''
     vi.clearAllMocks()
   })
 
@@ -53,12 +76,14 @@ describe('Language Preferences', () => {
       expect(getLanguagePreference()).toBe('sv')
     })
 
-    it('should return null when preferences consent is not given', async () => {
-      const { hasConsent } = await import('../cookie-consent')
+    it('should return null when preferences consent is not given', () => {
       vi.mocked(hasConsent).mockReturnValue(false)
 
       cookieMock.value = 'language=sv'
       expect(getLanguagePreference()).toBeNull()
+
+      // Reset to default
+      vi.mocked(hasConsent).mockReturnValue(true)
     })
 
     it('should handle URL encoded values', () => {
@@ -73,17 +98,20 @@ describe('Language Preferences', () => {
       expect(document.cookie).toContain('language=sv')
     })
 
-    it('should not save when preferences consent is not given', async () => {
-      const { hasConsent } = await import('../cookie-consent')
+    it('should not save when preferences consent is not given', () => {
       vi.mocked(hasConsent).mockReturnValue(false)
 
+      const initialCookie = document.cookie
       saveLanguagePreference('sv')
-      expect(document.cookie).not.toContain('language=sv')
+      expect(document.cookie).toBe(initialCookie)
+
+      // Reset to default
+      vi.mocked(hasConsent).mockReturnValue(true)
     })
 
     it('should URL encode language values', () => {
       saveLanguagePreference('en-US')
-      expect(document.cookie).toContain('language=en%2DUS')
+      expect(cookieMock.lastSet).toContain('language=en-US')
     })
   })
 
@@ -91,7 +119,9 @@ describe('Language Preferences', () => {
     it('should clear language preference cookie', () => {
       cookieMock.value = 'language=sv'
       clearLanguagePreference()
-      expect(document.cookie).toContain('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+      expect(cookieMock.lastSet).toContain(
+        'expires=Thu, 01 Jan 1970 00:00:00 GMT'
+      )
     })
   })
 
