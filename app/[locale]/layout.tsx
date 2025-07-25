@@ -1,8 +1,16 @@
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
+import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
-import CookieConsentBanner from '../../components/CookieConsentBanner'
 import { locales } from '../../i18n'
+
+// Dynamically import CookieConsentBanner to reduce initial bundle size
+const CookieConsentBanner = dynamic(
+  () => import('../../components/CookieConsentBanner'),
+  {
+    loading: () => null,
+  }
+)
 
 type Props = {
   children: React.ReactNode
