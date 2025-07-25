@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { consentEvents } from '../consent-events'
 import {
   cleanupCookies,
   defaultConsentSettings,
@@ -64,6 +65,7 @@ describe('Cookie Consent', () => {
   beforeEach(() => {
     localStorageMock.clear()
     cookieMock.reset()
+    consentEvents.removeAllListeners()
     vi.clearAllMocks()
   })
 
@@ -211,6 +213,27 @@ describe('Cookie Consent', () => {
       expect(hasConsent('analytics')).toBe(true)
       expect(hasConsent('preferences')).toBe(true)
     })
+
+    it('should emit consent-changed event when settings are saved', () => {
+      const eventListener = vi.fn()
+      const unsubscribe = consentEvents.on('consent-changed', eventListener)
+
+      const settings = {
+        'strictly-necessary': true,
+        analytics: true,
+        preferences: false,
+      }
+
+      saveConsentSettings(settings)
+
+      expect(eventListener).toHaveBeenCalledWith({
+        type: 'consent-changed',
+        settings,
+      })
+      expect(eventListener).toHaveBeenCalledTimes(1)
+
+      unsubscribe()
+    })
   })
 
   describe('hasConsentChoice', () => {
@@ -284,6 +307,26 @@ describe('Cookie Consent', () => {
           op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
       )
       expect(languageCookieDeletion).toBeDefined()
+    })
+
+    it('should emit consent-reset event when consent is reset', () => {
+      const eventListener = vi.fn()
+      const unsubscribe = consentEvents.on('consent-reset', eventListener)
+
+      // Setup: Save consent settings first
+      saveConsentSettings(defaultConsentSettings)
+      expect(hasConsentChoice()).toBe(true)
+
+      // Act: Reset consent
+      resetConsent()
+
+      // Assert: Event was emitted
+      expect(eventListener).toHaveBeenCalledWith({
+        type: 'consent-reset',
+      })
+      expect(eventListener).toHaveBeenCalledTimes(1)
+
+      unsubscribe()
     })
   })
 

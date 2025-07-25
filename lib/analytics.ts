@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef } from 'react'
+import { consentEvents } from './consent-events'
 import { hasConsent } from './cookie-consent'
 
 interface BlogAnalyticsData {
@@ -51,11 +52,21 @@ export function invalidateConsentCache(): void {
 }
 
 /**
- * Listen for consent changes via storage events
+ * Setup consent change listeners to invalidate cache
  */
 function setupConsentCacheInvalidation(): () => void {
   if (typeof window === 'undefined') return () => {}
 
+  // Listen for consent events (more reliable than storage events)
+  const unsubscribeConsentChange = consentEvents.on('consent-changed', () => {
+    invalidateConsentCache()
+  })
+
+  const unsubscribeConsentReset = consentEvents.on('consent-reset', () => {
+    invalidateConsentCache()
+  })
+
+  // Also listen for storage events as fallback (for cross-tab synchronization)
   const handleStorageChange = (event: StorageEvent) => {
     if (event.key === 'cookie-consent') {
       invalidateConsentCache()
@@ -65,6 +76,8 @@ function setupConsentCacheInvalidation(): () => void {
   window.addEventListener('storage', handleStorageChange)
 
   return () => {
+    unsubscribeConsentChange()
+    unsubscribeConsentReset()
     window.removeEventListener('storage', handleStorageChange)
   }
 }

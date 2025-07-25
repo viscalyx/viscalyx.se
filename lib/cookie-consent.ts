@@ -2,6 +2,7 @@
  * Cookie consent management utilities for GDPR compliance
  */
 
+import { consentEvents } from './consent-events'
 import { deleteCookie as deleteCookieUtil, setCookie } from './cookie-utils'
 
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
@@ -117,15 +118,11 @@ export function saveConsentSettings(settings: CookieConsentSettings): void {
       maxAge: 365 * 24 * 60 * 60, // 1 year in seconds
     })
 
-    // Invalidate analytics consent cache when settings change
-    // Import dynamically to avoid circular dependencies
-    import('./analytics')
-      .then(({ invalidateConsentCache }) => {
-        invalidateConsentCache()
-      })
-      .catch(() => {
-        // Silently fail if analytics module is not available
-      })
+    // Emit consent change event
+    consentEvents.emit({
+      type: 'consent-changed',
+      settings,
+    })
   } catch (error) {
     console.error('Failed to save cookie consent:', error)
   }
@@ -200,15 +197,10 @@ export function resetConsent(): void {
   // Clean up all non-essential cookies
   cleanupCookies(defaultConsentSettings)
 
-  // Invalidate analytics consent cache when settings are reset
-  // Import dynamically to avoid circular dependencies
-  import('./analytics')
-    .then(({ invalidateConsentCache }) => {
-      invalidateConsentCache()
-    })
-    .catch(() => {
-      // Silently fail if analytics module is not available
-    })
+  // Emit consent reset event
+  consentEvents.emit({
+    type: 'consent-reset',
+  })
 }
 
 /**
