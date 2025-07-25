@@ -19,7 +19,7 @@
     "support": "Support",
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",
-    "cookiePolicy": "Cookie-policy",
+    "cookiePolicy": "Kakpolicy",
     "allRightsReserved": "Alla rättigheter förbehållna.",
     "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
   },
@@ -235,8 +235,8 @@
     }
   },
   "cookieConsent": {
-    "title": "Vi Använder Cookies",
-    "description": "Vi använder cookies för att förbättra din surfupplevelse, leverera personaliserat innehåll och analysera vår trafik. Genom att klicka på 'Acceptera alla' samtycker du till vår användning av cookies.",
+    "title": "Vi Använder Kakor",
+    "description": "Vi använder kakor för att förbättra din surfupplevelse, leverera personaliserat innehåll och analysera vår trafik. Genom att klicka på 'Acceptera alla' samtycker du till vår användning av kakor.",
     "learnMore": "Läs mer",
     "acceptAll": "Acceptera Alla",
     "rejectAll": "Avvisa Alla",
