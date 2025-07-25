@@ -131,6 +131,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
     let url: string | null = null
     let element: HTMLAnchorElement | null = null
+    let elementAppended = false
 
     try {
       const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -141,18 +142,31 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       element.href = url
       element.download = 'cookie-consent-data.json'
       document.body.appendChild(element)
+      elementAppended = true
       element.click()
     } catch (error) {
       console.error('Failed to export cookie data:', error)
       setShowError(true)
       setTimeout(() => setShowError(false), 5000)
     } finally {
-      // Clean up resources
-      if (element && document.body.contains(element)) {
-        document.body.removeChild(element)
+      // Clean up DOM element with robust error handling
+      if (element && elementAppended) {
+        try {
+          if (document.body.contains(element)) {
+            document.body.removeChild(element)
+          }
+        } catch (removeError) {
+          console.warn('Failed to remove download element:', removeError)
+        }
       }
+
+      // Clean up blob URL with error handling
       if (url) {
-        URL.revokeObjectURL(url)
+        try {
+          URL.revokeObjectURL(url)
+        } catch (revokeError) {
+          console.warn('Failed to revoke blob URL:', revokeError)
+        }
       }
     }
   }
