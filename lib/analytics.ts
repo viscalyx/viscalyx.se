@@ -18,7 +18,7 @@ interface UseAnalyticsOptions {
 // Cache for consent status to avoid repeated localStorage reads
 let cachedAnalyticsConsent: boolean | null = null
 let consentCacheTimestamp: number = 0
-const CONSENT_CACHE_DURATION = 5000 // Cache for 5 seconds
+const CONSENT_CACHE_DURATION = 30000 // Cache for 30 seconds - balanced between performance and responsiveness
 
 /**
  * Get cached analytics consent status or fetch fresh if cache is stale
