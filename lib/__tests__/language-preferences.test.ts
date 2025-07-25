@@ -12,35 +12,46 @@ vi.mock('../cookie-consent', () => ({
   hasConsent: vi.fn(() => true), // Default to having consent
 }))
 
-// Mock document.cookie
+// Mock document.cookie with proper cookie parsing and storage
 const cookieMock = {
-  value: '',
+  cookies: new Map<string, string>(),
   lastSet: '', // Track what was set for assertions
+
   get cookie() {
-    return this.value
+    // Convert stored cookies back to cookie string format
+    const cookieStrings = Array.from(this.cookies.entries()).map(
+      ([name, value]) => `${name}=${value}`
+    )
+    return cookieStrings.join('; ')
   },
+
   set cookie(val: string) {
     this.lastSet = val // Store the actual set value for testing
 
-    // Simulate how browsers handle cookie setting
-    if (val.includes('expires=Thu, 01 Jan 1970')) {
-      // Clear the cookie
-      const name = val.split('=')[0]
-      this.value = this.value
-        .split(';')
-        .filter(cookie => !cookie.trim().startsWith(name + '='))
-        .join(';')
-    } else if (val.includes('language=')) {
-      // Set the language cookie
-      const existingCookies = this.value
-        .split(';')
-        .filter(cookie => !cookie.trim().startsWith('language='))
-        .filter(cookie => cookie.trim())
+    // Parse the cookie string to extract name, value, and options
+    const [nameValuePair, ...options] = val.split(';').map(part => part.trim())
+    const [name, value = ''] = nameValuePair.split('=')
 
-      const newCookie = val.split(';')[0] // Get just the name=value part
-      existingCookies.push(newCookie)
-      this.value = existingCookies.join(';')
+    // Check if this is a cookie deletion (expires in the past)
+    const isExpired = options.some(
+      option =>
+        option.includes('expires=Thu, 01 Jan 1970') ||
+        option.includes('max-age=0') ||
+        option.includes('max-age=-')
+    )
+
+    if (isExpired) {
+      // Remove the cookie
+      this.cookies.delete(name)
+    } else {
+      // Set/update the cookie
+      this.cookies.set(name, value)
     }
+  },
+
+  reset() {
+    this.cookies.clear()
+    this.lastSet = ''
   },
 }
 
@@ -61,8 +72,7 @@ Object.defineProperty(navigator, 'language', {
 
 describe('Language Preferences', () => {
   beforeEach(() => {
-    cookieMock.value = ''
-    cookieMock.lastSet = ''
+    cookieMock.reset()
     vi.clearAllMocks()
   })
 
@@ -72,14 +82,14 @@ describe('Language Preferences', () => {
     })
 
     it('should return language from cookie', () => {
-      cookieMock.value = 'language=sv'
+      cookieMock.cookies.set('language', 'sv')
       expect(getLanguagePreference()).toBe('sv')
     })
 
     it('should return null when preferences consent is not given', () => {
       vi.mocked(hasConsent).mockReturnValue(false)
 
-      cookieMock.value = 'language=sv'
+      cookieMock.cookies.set('language', 'sv')
       expect(getLanguagePreference()).toBeNull()
 
       // Reset to default
@@ -87,7 +97,7 @@ describe('Language Preferences', () => {
     })
 
     it('should handle URL encoded values', () => {
-      cookieMock.value = 'language=en%2DUS'
+      cookieMock.cookies.set('language', 'en%2DUS')
       expect(getLanguagePreference()).toBe('en-US')
     })
   })
@@ -117,7 +127,7 @@ describe('Language Preferences', () => {
 
   describe('clearLanguagePreference', () => {
     it('should clear language preference cookie', () => {
-      cookieMock.value = 'language=sv'
+      cookieMock.cookies.set('language', 'sv')
       clearLanguagePreference()
       expect(cookieMock.lastSet).toContain(
         'expires=Thu, 01 Jan 1970 00:00:00 GMT'
