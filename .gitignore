@@ -220,3 +220,9 @@ public/blog-content/
 cloudflare-env.d.ts
 next-env.d.ts
 test-results/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
