@@ -79,7 +79,8 @@ describe('Cookie Utils', () => {
     it('should set a cookie with default options', () => {
       setCookie('test', 'value')
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain('test=value')
       expect(lastOperation).toContain('path=/')
       expect(lastOperation).toContain('SameSite=Lax')
@@ -88,14 +89,16 @@ describe('Cookie Utils', () => {
     it('should URL encode cookie values', () => {
       setCookie('test', 'special value with spaces')
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain('test=special%20value%20with%20spaces')
     })
 
     it('should include maxAge when specified', () => {
       setCookie('test', 'value', { maxAge: 3600 })
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain('max-age=3600')
     })
 
@@ -103,14 +106,16 @@ describe('Cookie Utils', () => {
       const expires = 'Thu, 01 Jan 2025 00:00:00 GMT'
       setCookie('test', 'value', { expires })
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain(`expires=${expires}`)
     })
 
     it('should include domain when specified', () => {
       setCookie('test', 'value', { domain: '.example.com' })
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain('domain=.example.com')
     })
 
@@ -125,7 +130,8 @@ describe('Cookie Utils', () => {
 
       setCookie('test', 'value')
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).toContain('Secure')
     })
 
@@ -140,7 +146,8 @@ describe('Cookie Utils', () => {
 
       setCookie('test', 'value')
 
-      const lastOperation = cookieMock.operations[cookieMock.operations.length - 1]
+      const lastOperation =
+        cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastOperation).not.toContain('Secure')
     })
   })
@@ -150,10 +157,13 @@ describe('Cookie Utils', () => {
       deleteCookie('test')
 
       const operations = cookieMock.operations
-      expect(operations.some(op => 
-        op.includes('test=;') && 
-        op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
-      )).toBe(true)
+      expect(
+        operations.some(
+          op =>
+            op.includes('test=;') &&
+            op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+        )
+      ).toBe(true)
     })
 
     it('should include Secure attribute when deleting over HTTPS', () => {
@@ -190,7 +200,9 @@ describe('Cookie Utils', () => {
       deleteCookie('test', { domain: '.example.com' })
 
       const operations = cookieMock.operations
-      expect(operations.some(op => op.includes('domain=.example.com'))).toBe(true)
+      expect(operations.some(op => op.includes('domain=.example.com'))).toBe(
+        true
+      )
     })
   })
 

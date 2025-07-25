@@ -30,13 +30,7 @@ export function setCookie(
 ): void {
   if (typeof window === 'undefined') return
 
-  const {
-    path = '/',
-    maxAge,
-    expires,
-    sameSite = 'Lax',
-    domain,
-  } = options
+  const { path = '/', maxAge, expires, sameSite = 'Lax', domain } = options
 
   let cookieString = `${name}=${encodeURIComponent(value)}; path=${path}; SameSite=${sameSite}${getSecureAttribute()}`
 
@@ -110,9 +104,7 @@ export function getCookie(name: string): string | null {
 
   try {
     const cookies = document.cookie.split(';')
-    const cookie = cookies.find(cookie =>
-      cookie.trim().startsWith(`${name}=`)
-    )
+    const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`))
 
     if (cookie) {
       const value = cookie.split('=')[1]

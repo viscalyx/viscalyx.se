@@ -62,14 +62,12 @@ describe('Language Preferences', () => {
   describe('saveLanguagePreference', () => {
     it('should save language preference when consent is given', () => {
       const mockSetCookie = vi.mocked(setCookie)
-      
+
       saveLanguagePreference('sv')
-      
-      expect(mockSetCookie).toHaveBeenCalledWith(
-        'language',
-        'sv',
-        { maxAge: 365 * 24 * 60 * 60 }
-      )
+
+      expect(mockSetCookie).toHaveBeenCalledWith('language', 'sv', {
+        maxAge: 365 * 24 * 60 * 60,
+      })
     })
 
     it('should not save when preferences consent is not given', () => {
@@ -77,7 +75,7 @@ describe('Language Preferences', () => {
       const mockSetCookie = vi.mocked(setCookie)
 
       saveLanguagePreference('sv')
-      
+
       expect(mockSetCookie).not.toHaveBeenCalled()
 
       // Reset to default
@@ -86,14 +84,12 @@ describe('Language Preferences', () => {
 
     it('should URL encode language values', () => {
       const mockSetCookie = vi.mocked(setCookie)
-      
+
       saveLanguagePreference('en-US')
-      
-      expect(mockSetCookie).toHaveBeenCalledWith(
-        'language',
-        'en-US',
-        { maxAge: 365 * 24 * 60 * 60 }
-      )
+
+      expect(mockSetCookie).toHaveBeenCalledWith('language', 'en-US', {
+        maxAge: 365 * 24 * 60 * 60,
+      })
     })
 
     it('should include Secure attribute when served over HTTPS', () => {
@@ -101,11 +97,9 @@ describe('Language Preferences', () => {
 
       saveLanguagePreference('sv')
 
-      expect(mockSetCookie).toHaveBeenCalledWith(
-        'language',
-        'sv',
-        { maxAge: 365 * 24 * 60 * 60 }
-      )
+      expect(mockSetCookie).toHaveBeenCalledWith('language', 'sv', {
+        maxAge: 365 * 24 * 60 * 60,
+      })
     })
 
     it('should not include Secure attribute when served over HTTP', () => {
@@ -113,20 +107,18 @@ describe('Language Preferences', () => {
 
       saveLanguagePreference('sv')
 
-      expect(mockSetCookie).toHaveBeenCalledWith(
-        'language',
-        'sv',
-        { maxAge: 365 * 24 * 60 * 60 }
-      )
+      expect(mockSetCookie).toHaveBeenCalledWith('language', 'sv', {
+        maxAge: 365 * 24 * 60 * 60,
+      })
     })
   })
 
   describe('clearLanguagePreference', () => {
     it('should clear language preference cookie', () => {
       const mockDeleteCookie = vi.mocked(deleteCookie)
-      
+
       clearLanguagePreference()
-      
+
       expect(mockDeleteCookie).toHaveBeenCalledWith('language')
     })
 
