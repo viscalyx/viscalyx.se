@@ -71,19 +71,19 @@ If you haven't already, please read the main [README.md](README.md) for an overv
   - [API Reference](#api-reference)
   - [Integration Examples](#integration-examples)
   - [TypeScript Types](#typescript-types)
-  - [Benefits](#benefits-1)
+  - [Benefits](#benefits-slug-utilities)
 - [GDPR Cookie Consent Implementation](#gdpr-cookie-consent-implementation)
-  - [Features](#features-1)
+  - [Features](#features-consent)
   - [Cookie Categories](#cookie-categories)
   - [Files Added/Modified](#files-addedmodified)
-  - [Usage](#usage-1)
+  - [Usage](#usage-consent)
   - [Legal Compliance](#legal-compliance)
   - [Customization](#customization)
-  - [Testing](#testing-1)
+  - [Testing](#testing-consent)
   - [Browser Support](#browser-support)
-  - [Performance](#performance-1)
+  - [Performance](#performance-consent)
   - [Monitoring](#monitoring)
-  - [Security](#security-1)
+  - [Security](#security-consent)
   - [Maintenance](#maintenance)
   - [Support](#support)
   - [License](#license)
@@ -1527,7 +1527,7 @@ interface SlugOptions {
 }
 ```
 
-### Benefits
+### Benefits Slug Utilities
 
 1. **Consistency**: All slug generation uses the same configuration and rules
 2. **Reusability**: Functions can be used throughout the application
@@ -1609,7 +1609,7 @@ If you have questions or need help with your contribution, feel free to:
 
 This implementation provides a complete GDPR-compliant cookie consent solution for the Next.js website.
 
-### Features
+### Features Consent
 
 ✅ **GDPR Compliant**: Meets all EU legal requirements for cookie consent
 ✅ **Granular Control**: Users can enable/disable different cookie categories
@@ -1663,7 +1663,7 @@ This implementation provides a complete GDPR-compliant cookie consent solution f
 - `messages/en.json` - Added English translations
 - `messages/sv.json` - Added Swedish translations
 
-### Usage
+### Usage Consent
 
 #### Basic Integration
 
@@ -1760,7 +1760,7 @@ To add new categories:
 2. Add translations for the new category
 3. Update the UI components to include the new category
 
-### Testing
+### Testing Consent
 
 Run tests with:
 
@@ -1780,7 +1780,7 @@ The implementation includes:
 - **Legacy browsers**: Graceful degradation
 - **No JavaScript**: Banner won't appear (acceptable for GDPR)
 
-### Performance
+### Performance Consent
 
 - **Lazy loaded**: Banner only loads when needed
 - **Small bundle**: Minimal impact on page size
@@ -1800,7 +1800,7 @@ const timestamp = getConsentTimestamp()
 // Track conversion rates, user preferences, etc.
 ```
 
-### Security
+### Security Consent
 
 - **XSS Protection**: All user data is sanitized
 - **CSP Compatible**: No inline scripts required
