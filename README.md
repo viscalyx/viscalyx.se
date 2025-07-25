@@ -10,9 +10,8 @@ The official website for Viscalyx, built with Next.js and featuring blog content
 - 👥 Team member profiles
 - 💼 Case studies showcase
 - 🌙 Dark/light theme toggle
-- � GDPR-compliant cookie consent
-- �📊 Privacy-first analytics with Cloudflare
-- 📊 Bundle analysis with Codecov
+- 🍪 GDPR-compliant cookie consent
+- 🔒📊 Privacy-first analytics with Cloudflare
 - 🧪 Comprehensive testing with Vitest
 
 ### Privacy & Analytics
