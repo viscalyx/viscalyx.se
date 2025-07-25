@@ -5,6 +5,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests/integration',
+  /* Output directory for test results */
+  outputDir: 'test-results/dev',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -15,8 +17,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html', { outputFolder: 'test-results/playwright-report' }],
-    ['junit', { outputFile: 'test-results/playwright-junit.xml' }],
+    ['html', { outputFolder: 'playwright-report-dev' }],
+    ['junit', { outputFile: 'test-results/dev/playwright-junit.xml' }],
     ['list'],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
