@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  getSecureAttribute,
-  setCookie,
   deleteCookie,
   getCookie,
+  getSecureAttribute,
+  setCookie,
 } from '../cookie-utils'
 
 // Mock document.cookie with operation tracking
@@ -223,7 +223,7 @@ describe('Cookie Utils', () => {
     })
 
     it('should handle cookies with special characters', () => {
-      cookieMock.value = 'test=value%3Dwith%3Dequals'
+      cookieMock.value = 'test=value%3Dwith%3Dequals' // cSpell: disable-line
       expect(getCookie('test')).toBe('value=with=equals')
     })
 
