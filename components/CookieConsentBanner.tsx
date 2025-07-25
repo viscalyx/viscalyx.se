@@ -227,6 +227,7 @@ const CookieConsentBanner = () => {
                             disabled={isRequired}
                             className="sr-only"
                             aria-describedby={`${category}-description`}
+                            aria-label={categoryName}
                           />
                           <div
                             className={`
