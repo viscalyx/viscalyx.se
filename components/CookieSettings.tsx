@@ -36,6 +36,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const [consentTimestamp, setConsentTimestamp] = useState<Date | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showError, setShowError] = useState(false)
 
   useEffect(() => {
     const currentSettings = getConsentSettings()
@@ -61,13 +62,21 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
   const handleSaveSettings = async () => {
     setIsLoading(true)
-    saveConsentSettings(settings)
-    cleanupCookies(settings)
-    setConsentTimestamp(new Date())
-    setShowSuccess(true)
-    setIsLoading(false)
+    setShowError(false) // Reset any previous error state
 
-    setTimeout(() => setShowSuccess(false), 3000)
+    try {
+      saveConsentSettings(settings)
+      cleanupCookies(settings)
+      setConsentTimestamp(new Date())
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 3000)
+    } catch (error) {
+      console.error('Failed to save cookie settings:', error)
+      setShowError(true)
+      setTimeout(() => setShowError(false), 5000)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleAcceptAll = () => {
@@ -173,6 +182,19 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           >
             <p className="text-sm text-green-800 dark:text-green-200">
               ✓ {t('settingsSaved')}
+            </p>
+          </motion.div>
+        )}
+
+        {showError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+          >
+            <p className="text-sm text-red-800 dark:text-red-200">
+              ⚠ {t('settingsError')}
             </p>
           </motion.div>
         )}

@@ -247,6 +247,7 @@
     "settingsDescription": "Manage your cookie preferences. You can enable or disable different types of cookies below. Note that blocking some types of cookies may impact your experience on our website.",
     "lastUpdated": "Last updated",
     "settingsSaved": "Cookie preferences saved successfully",
+    "settingsError": "Failed to save cookie preferences. Please try again.",
     "quickActions": "Quick Actions",
     "exportData": "Export Data",
     "resetConsent": "Reset Consent",

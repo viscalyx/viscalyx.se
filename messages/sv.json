@@ -247,6 +247,7 @@
     "settingsDescription": "Hantera dina cookie-preferenser. Du kan aktivera eller inaktivera olika typer av cookies nedan. Observera att blockering av vissa typer av cookies kan påverka din upplevelse på vår webbplats.",
     "lastUpdated": "Senast uppdaterad",
     "settingsSaved": "Cookie-preferenser sparade framgångsrikt",
+    "settingsError": "Misslyckades att spara cookie-preferenser. Vänligen försök igen.",
     "quickActions": "Snabbåtgärder",
     "exportData": "Exportera Data",
     "resetConsent": "Återställ Samtycke",
