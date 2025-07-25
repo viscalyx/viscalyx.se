@@ -43,7 +43,7 @@ export const cookieRegistry: CookieInfo[] = [
     duration: '1 year',
   },
   {
-    name: 'cookie-consent',
+    name: 'viscalyx.se-cookie-consent',
     category: 'strictly-necessary',
     purpose: 'Stores user cookie consent preferences',
     duration: '1 year',
@@ -72,48 +72,63 @@ export const cookieRegistry: CookieInfo[] = [
   },
 ]
 
-const CONSENT_COOKIE_NAME = 'cookie-consent'
+const CONSENT_COOKIE_NAME = 'viscalyx.se-cookie-consent'
 const CONSENT_VERSION = '1.0'
 
-// Cache for parsed cookies to avoid repeated parsing
-let cookieCache: { [key: string]: string } | null = null
-let cookieCacheTimestamp = 0
-const CACHE_DURATION = 1000 // 1 second cache to balance performance vs freshness
-
 /**
- * Get parsed cookies with caching to avoid repeated string parsing
+ * Cookie cache manager to handle caching with proper cleanup mechanisms
  */
-function getCachedCookies(): { [key: string]: string } {
-  const now = Date.now()
+class CookieCacheManager {
+  private cache: { [key: string]: string } | null = null
+  private cacheTimestamp = 0
+  private readonly cacheDuration = 1000 // 1 second cache to balance performance vs freshness
 
-  // Return cached cookies if cache is still valid
-  if (cookieCache && now - cookieCacheTimestamp < CACHE_DURATION) {
-    return cookieCache
+  /**
+   * Get parsed cookies with caching to avoid repeated string parsing
+   */
+  getCachedCookies(): { [key: string]: string } {
+    const now = Date.now()
+
+    // Return cached cookies if cache is still valid
+    if (this.cache && now - this.cacheTimestamp < this.cacheDuration) {
+      return this.cache
+    }
+
+    // Parse cookies and update cache
+    const cookies: { [key: string]: string } = {}
+    if (typeof window !== 'undefined' && document.cookie) {
+      document.cookie.split(';').forEach(cookie => {
+        const [name, ...valueParts] = cookie.trim().split('=')
+        if (name) {
+          cookies[name] = valueParts.join('=') || ''
+        }
+      })
+    }
+
+    this.cache = cookies
+    this.cacheTimestamp = now
+    return cookies
   }
 
-  // Parse cookies and update cache
-  const cookies: { [key: string]: string } = {}
-  if (typeof window !== 'undefined' && document.cookie) {
-    document.cookie.split(';').forEach(cookie => {
-      const [name, ...valueParts] = cookie.trim().split('=')
-      if (name) {
-        cookies[name] = valueParts.join('=') || ''
-      }
-    })
+  /**
+   * Invalidate cookie cache when cookies are modified
+   */
+  invalidateCache(): void {
+    this.cache = null
+    this.cacheTimestamp = 0
   }
 
-  cookieCache = cookies
-  cookieCacheTimestamp = now
-  return cookies
+  /**
+   * Clear all cache data (useful for testing and cleanup)
+   */
+  clearCache(): void {
+    this.cache = null
+    this.cacheTimestamp = 0
+  }
 }
 
-/**
- * Invalidate cookie cache when cookies are modified
- */
-function invalidateCookieCache(): void {
-  cookieCache = null
-  cookieCacheTimestamp = 0
-}
+// Create a singleton instance for the cookie cache manager
+const cookieCacheManager = new CookieCacheManager()
 
 /**
  * Get current cookie consent settings from localStorage/cookie
@@ -159,7 +174,7 @@ export function saveConsentSettings(settings: CookieConsentSettings): void {
     })
 
     // Invalidate cookie cache since we just modified cookies
-    invalidateCookieCache()
+    cookieCacheManager.invalidateCache()
 
     // Emit consent change event
     consentEvents.emit({
@@ -197,7 +212,7 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
   if (typeof window === 'undefined') return
 
   // Get all cookies using cached approach
-  const cookies = getCachedCookies()
+  const cookies = cookieCacheManager.getCachedCookies()
 
   Object.keys(cookies).forEach(name => {
     const cookieInfo = cookieRegistry.find(info => info.name === name)
@@ -217,7 +232,7 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
   }
 
   // Invalidate cache since we may have deleted cookies
-  invalidateCookieCache()
+  cookieCacheManager.invalidateCache()
 
   // Note: Analytics data is processed server-side in Cloudflare Analytics Engine
   // and doesn't use client-side cookies, so no cleanup needed for analytics category
@@ -229,7 +244,7 @@ export function cleanupCookies(settings: CookieConsentSettings): void {
 function deleteCookie(name: string): void {
   deleteCookieUtil(name)
   // Invalidate cache since we just deleted a cookie
-  invalidateCookieCache()
+  cookieCacheManager.invalidateCache()
 }
 
 /**
@@ -245,7 +260,7 @@ export function resetConsent(): void {
   cleanupCookies(defaultConsentSettings)
 
   // Invalidate cache since we modified cookies
-  invalidateCookieCache()
+  cookieCacheManager.invalidateCache()
 
   // Emit consent reset event
   consentEvents.emit({
@@ -268,4 +283,12 @@ export function getConsentTimestamp(): Date | null {
   } catch {
     return null
   }
+}
+
+/**
+ * Clear all internal caches (useful for testing environments)
+ * @internal This function is intended for testing and cleanup purposes
+ */
+export function clearInternalCaches(): void {
+  cookieCacheManager.clearCache()
 }

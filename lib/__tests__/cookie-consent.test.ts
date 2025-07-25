@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { consentEvents } from '../consent-events'
 import {
   cleanupCookies,
+  clearInternalCaches,
   defaultConsentSettings,
   getConsentSettings,
   hasConsent,
@@ -66,6 +67,7 @@ describe('Cookie Consent', () => {
     localStorageMock.clear()
     cookieMock.reset()
     consentEvents.removeAllListeners()
+    clearInternalCaches() // Clear cookie cache between tests
     vi.clearAllMocks()
   })
 
@@ -87,13 +89,16 @@ describe('Cookie Consent', () => {
         timestamp: new Date().toISOString(),
       }
 
-      localStorageMock.setItem('cookie-consent', JSON.stringify(data))
+      localStorageMock.setItem(
+        'viscalyx.se-cookie-consent',
+        JSON.stringify(data)
+      )
 
       expect(getConsentSettings()).toEqual(settings)
     })
 
     it('should return null for invalid JSON', () => {
-      localStorageMock.setItem('cookie-consent', 'invalid-json')
+      localStorageMock.setItem('viscalyx.se-cookie-consent', 'invalid-json')
       expect(getConsentSettings()).toBeNull()
     })
 
@@ -104,7 +109,10 @@ describe('Cookie Consent', () => {
         timestamp: new Date().toISOString(),
       }
 
-      localStorageMock.setItem('cookie-consent', JSON.stringify(data))
+      localStorageMock.setItem(
+        'viscalyx.se-cookie-consent',
+        JSON.stringify(data)
+      )
       expect(getConsentSettings()).toBeNull()
     })
   })
@@ -119,7 +127,7 @@ describe('Cookie Consent', () => {
 
       saveConsentSettings(settings)
 
-      const stored = localStorageMock.getItem('cookie-consent')
+      const stored = localStorageMock.getItem('viscalyx.se-cookie-consent')
       expect(stored).toBeTruthy()
 
       const parsed = JSON.parse(stored!)
@@ -128,10 +136,12 @@ describe('Cookie Consent', () => {
       expect(parsed.timestamp).toBeTruthy()
 
       // Verify that the consent cookie is also set
-      expect(document.cookie).toContain('cookie-consent=')
+      expect(document.cookie).toContain('viscalyx.se-cookie-consent=')
 
       // Verify the cookie contains the expected data structure
-      const cookieMatch = document.cookie.match(/cookie-consent=([^;]+)/)
+      const cookieMatch = document.cookie.match(
+        /viscalyx\.se-cookie-consent=([^;]+)/
+      )
       expect(cookieMatch).toBeTruthy()
 
       const cookieData = JSON.parse(decodeURIComponent(cookieMatch![1]))
@@ -267,12 +277,14 @@ describe('Cookie Consent', () => {
 
       // Set up cookies that should be cleaned during reset
       cookieMock.value =
-        'cookie-consent=test; theme=dark; language=en; session=123'
+        'viscalyx.se-cookie-consent=test; theme=dark; language=en; session=123'
 
       // Verify initial state - consent is stored
-      expect(localStorageMock.getItem('cookie-consent')).not.toBeNull()
+      expect(
+        localStorageMock.getItem('viscalyx.se-cookie-consent')
+      ).not.toBeNull()
       expect(hasConsentChoice()).toBe(true)
-      expect(cookieMock.value).toContain('cookie-consent=test')
+      expect(cookieMock.value).toContain('viscalyx.se-cookie-consent=test')
 
       // Clear previous operations to track only resetConsent operations
       cookieMock.operations = []
@@ -281,7 +293,7 @@ describe('Cookie Consent', () => {
       resetConsent()
 
       // Assert: Verify localStorage is cleared
-      expect(localStorageMock.getItem('cookie-consent')).toBeNull()
+      expect(localStorageMock.getItem('viscalyx.se-cookie-consent')).toBeNull()
 
       // Assert: Verify consent choice is false
       expect(hasConsentChoice()).toBe(false)
@@ -295,7 +307,7 @@ describe('Cookie Consent', () => {
       // Assert: Verify consent cookie deletion was attempted
       const consentCookieDeletion = cookieMock.operations.find(
         op =>
-          op.includes('cookie-consent=;') &&
+          op.includes('viscalyx.se-cookie-consent=;') &&
           op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
       )
       expect(consentCookieDeletion).toBeDefined()
@@ -339,7 +351,7 @@ describe('Cookie Consent', () => {
     it('should not remove strictly necessary cookies', () => {
       // Setup: Add strictly necessary and other cookies
       cookieMock.value =
-        'cookie-consent=test; session=abc123; theme=dark; cf-analytics=xyz'
+        'viscalyx.se-cookie-consent=test; session=abc123; theme=dark; cf-analytics=xyz'
 
       const settings = {
         'strictly-necessary': true,
@@ -366,7 +378,7 @@ describe('Cookie Consent', () => {
 
       const consentCookieDeletion = cookieMock.operations.find(
         op =>
-          op.includes('cookie-consent=;') &&
+          op.includes('viscalyx.se-cookie-consent=;') &&
           op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
       )
       expect(consentCookieDeletion).toBeUndefined()
@@ -457,7 +469,7 @@ describe('Cookie Consent', () => {
     it('should preserve cookies when their category consent is true', () => {
       // Setup: Add cookies from all categories
       cookieMock.value =
-        'theme=dark; language=en; cf-analytics=test; blog-reading-analytics=data; session=abc; cookie-consent=settings'
+        'theme=dark; language=en; cf-analytics=test; blog-reading-analytics=data; session=abc; viscalyx.se-cookie-consent=settings'
 
       const settings = {
         'strictly-necessary': true,
