@@ -129,7 +129,7 @@ slmgr.vbs /dlv
 ## Snapshot the VM disks
 
 > [!CAUTION]
-> It is recommended to create a snapshot of the operating system disk (and any data disks) before starting the in-place upgrade process. Create a snapshot on each data disk as well if they exist. WIthout it you cannot revert to a previous state.
+> It is recommended to create a snapshot of the operating system disk (and any data disks) before starting the in-place upgrade process. Create a snapshot on each data disk as well if they exist. Without it you cannot revert to a previous state.
 
 > [!IMPORTANT]
 > To revert to the previous state of the VM if anything fails during the upgrade, you must have made snapshots. See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure) for recovery procedures.
@@ -228,7 +228,8 @@ $managedDiskSKU = 'Standard_LRS'
 if ($subscription) { Set-AzContext -Subscription $subscription }
 
 # Get the latest version of the special (hidden) VM Image from the Azure Marketplace
-$versions = Get-AzVMImage -PublisherName $publisher -Location $location -Offer $offer -Skus $sku | sort-object -Descending {[version] $_.Version	}
+$versions = Get-AzVMImage -PublisherName $publisher -Location $location -Offer $offer -Skus $sku |
+  Sort-Object -Descending { [System.Version] $_.Version }
 $latestString = $versions[0].Version
 
 # Get the special (hidden) VM Image from the Azure Marketplace by version - the image is used to create a disk to upgrade to the new version
