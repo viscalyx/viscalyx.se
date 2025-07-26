@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import Image from 'next/image'
 import React, { useEffect } from 'react'
 
 interface ImageModalProps {
@@ -73,15 +74,18 @@ const ImageModal: React.FC<ImageModalProps> = ({
 
           {/* Image Container */}
           <div className="w-full h-full flex items-center justify-center p-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={imageSrc}
               alt={imageAlt}
+              width={1400}
+              height={1000}
               className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               style={{
                 maxWidth: 'min(90vw, 1400px)',
                 maxHeight: 'min(85vh, 1000px)',
               }}
+              unoptimized
+              priority
             />
           </div>
 
