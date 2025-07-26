@@ -6,7 +6,7 @@ excerpt: 'Complete guide for performing in-place upgrades of Windows Server on A
 image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
 imageAlt: 'Azure VM management interface showing Windows Server upgrade process'
 tags: ['Azure', 'Windows Server', 'Upgrade', 'Virtual Machines', 'PowerShell']
-readTime: '15 min read'
+readTime: '38 min read'
 category: 'Infrastructure'
 ---
 
@@ -35,8 +35,8 @@ Most VMs in Azure are already using Managed Disks. Retirement for unmanaged disk
 ### Verify Managed Disks Usage
 
 1. Browse to: [Azure Portal, Virtual Machines](https://portal.azure.com/#view/Microsoft_Azure_ComputeHub/ComputeHubMenuBlade/~/virtualMachinesBrowse)
-2. Click **Manage View**, then **Edit columns** and enable **"Uses managed disks"**
-3. Verify it shows _Yes_ under **"Uses managed disks"** for the VM you are about to upgrade
+1. Click **Manage View**, then **Edit columns** and enable **"Uses managed disks"**
+1. Verify it shows _Yes_ under **"Uses managed disks"** for the VM you are about to upgrade
 
 ### Migrate to Managed Disks (if needed)
 
@@ -162,9 +162,9 @@ Set the properties:
 **Steps to change system locale:**
 
 1. Open **Control Panel** → **Clock and Region** → **Region**
-2. On the **Administrative** tab, click **Change system locale**
-3. Select **English (United States)**
-4. Restart the computer when prompted
+1. On the **Administrative** tab, click **Change system locale**
+1. Select **English (United States)**
+1. Restart the computer when prompted
 
 ## Create upgrade media disk
 
@@ -263,11 +263,11 @@ Attach the upgrade media disk to the VM to upgrade. This can be performed whethe
 ### Portal Steps
 
 1. Go to the virtual machine in the Azure portal
-2. In the left menu, select **Settings**, then **Disks**
-3. Select **Attach existing disks**
-4. In the drop-down for **LUN** keep 0 (or first free LUN)
-5. In the drop-down for **Disk name**, select the name of the upgrade disk created in the previous step
-6. Click **Apply** to attach the upgrade disk to the VM
+1. In the left menu, select **Settings**, then **Disks**
+1. Select **Attach existing disks**
+1. In the drop-down for **LUN** keep 0 (or first free LUN)
+1. In the drop-down for **Disk name**, select the name of the upgrade disk created in the previous step
+1. Click **Apply** to attach the upgrade disk to the VM
 
 ### PowerShell Alternative
 
@@ -295,9 +295,9 @@ If there are any VM auto-shutdown policies that can impact the upgrade process, 
 **Steps to disable auto-shutdown:**
 
 1. Navigate to your VM in Azure Portal
-2. Go to **Operations** → **Auto-shutdown**
-3. Toggle **Enable** to **Off**
-4. Click **Save**
+1. Go to **Operations** → **Auto-shutdown**
+1. Toggle **Enable** to **Off**
+1. Click **Save**
 
 ## Perform in-place upgrade (Windows Server 2016, 2019, or 2022)
 
@@ -338,8 +338,8 @@ During the upgrade process, the VM will automatically disconnect from the RDP se
 **To access boot diagnostics:**
 
 1. Navigate to your VM in Azure Portal
-2. Go to **Help** → **Boot diagnostics**
-3. Click **Screenshot** to see current status
+1. Go to **Help** → **Boot diagnostics**
+1. Click **Screenshot** to see current status
 
 > [!IMPORTANT]
 > The image plan information will not change after the upgrade process.
@@ -349,16 +349,16 @@ During the upgrade process, the VM will automatically disconnect from the RDP se
 For Windows Server 2012 upgrades, the process is slightly different:
 
 1. **Connect to the VM** using RDP
-2. **Determine the drive letter** for the upgrade disk
-3. **Start Windows PowerShell**
-4. **Navigate to the upgrade directory:**
+1. **Determine the drive letter** for the upgrade disk
+1. **Start Windows PowerShell**
+1. **Navigate to the upgrade directory:**
 
-```powershell
-cd 'E:\'
-.\setup.exe
-```
+   ```powershell
+   cd 'E:\'
+   .\setup.exe
+   ```
 
-5. **Follow the GUI wizard:**
+1. **Follow the GUI wizard:**
    - Select **Install now**
    - For "Get important updates for Windows Setup", select **No thanks**
    - Select the correct Windows Server 2012 "Upgrade to" image
@@ -404,25 +404,25 @@ Once the upgrade process has completed successfully, the following steps should 
 
 1. **Verify the OS version:**
 
-```powershell
-# Check Windows version
-Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, WindowsBuildLabEx
+   ```powershell
+   # Check Windows version
+   Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, WindowsBuildLabEx
 
-# Alternative method
-[System.Environment]::OSVersion.Version
-```
+   # Alternative method
+   [System.Environment]::OSVersion.Version
+   ```
 
-2. **Check system health:**
+1. **Check system health:**
 
-```powershell
-# Run System File Checker
-sfc /scannow
+   ```powershell
+   # Run System File Checker
+   sfc /scannow
 
-# Check Windows Update status
-Get-WindowsUpdate
-```
+   # Check Windows Update status
+   Get-WindowsUpdate
+   ```
 
-3. **Verify services and applications:**
+1. **Verify services and applications:**
    - Test critical applications
    - Verify network connectivity
    - Check server roles and features
