@@ -262,3 +262,12 @@ Verify with:
 Get-NetFirewallProfile | Select-Object Name, Enabled
 (Get-MpPreference).DisableRealtimeMonitoring
 ```
+
+## Post upgrade steps
+
+Once the upgrade process has completed successfully the following steps should be taken to clean up any artifacts which were created during the upgrade process:
+
+- Delete the snapshots of the OS disk and data disk(s) if they were created.
+- Disconnect the upgrade media Managed Disk from the VM that was upgrade.
+- Delete the upgrade media Managed Disk.
+- Enable antivirus, anti-spyware, or firewall software that may have been disabled at the start of the upgrade process.
