@@ -10,26 +10,57 @@ readTime: '15 min read'
 category: 'Infrastructure'
 ---
 
-[In-place upgrade for VMs running Windows Server in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade)
+More information than what's in this guide can be found in the article [In-place upgrade for VMs running Windows Server in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade).
 
-Only supports:
+## Supported Upgrade Paths
 
-- Windows Server 2012 from Windows Server 2008 (64-bit) or Windows Server 2008 R2
-- Windows Server 2016 from Windows Server 2012 or Windows Server 2012 R2
-- Windows Server 2019 from Windows Server 2012 R2 or Windows Server 2016
-- Windows Server 2022 from Windows Server 2016 or Windows Server 2019
+Currently only these upgrade scenarios are supported:
+
+- **Windows Server 2012** from Windows Server 2008 (64-bit) or Windows Server 2008 R2
+- **Windows Server 2016** from Windows Server 2012 or Windows Server 2012 R2
+- **Windows Server 2019** from Windows Server 2012 R2 or Windows Server 2016
+- **Windows Server 2022** from Windows Server 2016 or Windows Server 2019
+- **Windows Server 2025** from Windows Server 2019 or Windows Server 2022
+
+> [!WARNING]
+> Remember to always test the upgrade process in a non-production environment first, and ensure you have reliable backups before proceeding with production systems.
+
+## Upgrade to Managed Disks
+
+> [!IMPORTANT]
+> The in-place upgrade process requires the use of Managed Disks on the VM to be upgraded.
+
+Most VMs in Azure are already using Managed Disks. Retirement for unmanaged disks support was announced in November 2022. If your VM is currently using unmanaged disks, you must migrate to Managed Disks before proceeding.
+
+### Verify Managed Disks Usage
+
+1. Browse to: [Azure Portal, Virtual Machines](https://portal.azure.com/#view/Microsoft_Azure_ComputeHub/ComputeHubMenuBlade/~/virtualMachinesBrowse)
+2. Click **Manage View**, then **Edit columns** and enable **"Uses managed disks"**
+3. Verify it shows _Yes_ under **"Uses managed disks"** for the VM you are about to upgrade
+
+### Migrate to Managed Disks (if needed)
+
+If your VM shows _No_ under "Uses managed disks", follow the migration steps in [migrate to Managed Disks](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/migrate-to-managed-disks).
 
 ## Evaluate free space to perform in-place upgrade
 
-[Hardware requirements for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hardware-requirements?)
+Make sure you have enough free space for the upgrade. If your current OS disk doesn't have enough free space, you must expand it before proceeding. See [Expand virtual hard disks attached to a Windows virtual machine](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/expand-disks) for detailed instructions.
 
-Minimum requirements:
+| Component                 | Requirement              |
+| ------------------------- | ------------------------ |
+| **System partition size** | 32 GB (absolute minimum) |
 
-| OS                                       | System partition size (GB) |
-| ---------------------------------------- | -------------------------- |
-| Windows Server 2016, 2019, 2022 and 2025 | 32                         |
+Review the comprehensive [Hardware requirements for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hardware-requirements) documentation for complete details.
 
-[Expand virtual hard disks attached to a Windows virtual machine](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/expand-disks)
+### Check Current Disk Size and free space
+
+Connect to your VM via RDP and run the following PowerShell command to check available space:
+
+```powershell
+Get-WmiObject -Class Win32_LogicalDisk |
+  Where-Object {$_.DeviceID -eq "C:"} |
+  Select-Object Size,FreeSpace,@{Name="SizeGB";Expression={[math]::Round($_.Size/1GB,2)}},@{Name="FreeSpaceGB";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
+```
 
 ## Disable security functions
 
@@ -40,23 +71,17 @@ Disable antivirus and anti-spyware software and firewalls. These types of softwa
 Open PowerShell in an elevated PowerShell session and run:
 
 ```powershell
-# Veirfy status
+# Verify current status
 Get-NetFirewallProfile | Select-Object Name, Enabled
 ```
 
-Disable Windows Defender Firewall for all three profiles (Domain, Private, Public) on the server:
+Disable Windows Defender Firewall for all three profiles (Domain, Private, Public) on the server:
 
 ```powershell
 Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
 ```
 
-Re‑enable later:
-
-```powershell
-Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
-```
-
-Also possible to disable firewall trough user interface, this is how on Windows Server 2019:
+You can also disable firewall through the user interface. On Windows Server 2019, this is done through Windows Defender Firewall settings:
 
 ![Windows Control Panel settings window showing the customization options for Windows Defender Firewall. Both Private and Public network settings have the option 'Turn off Windows Defender Firewall (not recommended)' selected, indicated by red shield icons. The options to turn on the firewall are unselected.](/public/blog-images/windows-defender-firewall-network-settings-win2019.png)
 
@@ -67,15 +92,17 @@ Stop the real‑time engine but keep Defender installed.
 Open PowerShell in an elevated PowerShell session and run:
 
 ```powershell
-# Veirfy status
+# Verify current status
 (Get-MpPreference).DisableRealtimeMonitoring
 ```
+
+Disable real-time monitoring:
 
 ```powershell
 Set-MpPreference -DisableRealtimeMonitoring $true
 ```
 
-Also possible to disable real‑time engine trough user interface, this is how on Windows Server 2019:
+You can also disable the real‑time engine through the user interface. On Windows Server 2019, this is done through Windows Security settings:
 
 ![Windows Security window showing the 'Virus & threat protection' section. Under 'Current threats', it reports no current threats and a last scan with zero threats found. Below, a warning under 'Virus & threat protection settings' states that real-time protection is off, leaving the device vulnerable, with a greyed-out 'Turn on' button and a 'Manage settings' link.](/public/blog-images/virus-and-threat-protection-settings-win2019.png)
 
@@ -85,29 +112,27 @@ When click on the Manage settings link:
 
 ## Upgrade VM to volume license (KMS server activation)
 
-This is only relevant if the VM was imported into Azure, to use the upgrade
-media provided by Azure, see [Upgrade VM to volume license (KMS server activation)](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#upgrade-vm-to-volume-license-kms-server-activation).
+> [!IMPORTANT]
+> This step is only relevant if the VM was imported into Azure. VMs deployed from Azure Marketplace images are already configured for volume licensing.
 
-The default behavior for any Windows&nbsp;Server VM that was installed from
-a generalized image in Azure to be configured for Windows&nbsp;Server volume
-licensing
+The upgrade media provided by Azure requires the VM to be configured for Windows Server volume licensing. This is the default behavior for any Windows Server VM that was installed from a generalized image in Azure.
 
-## Upgrade to Managed Disks
+If the VM was imported into Azure, it might need to be converted to volume licensing to use the upgrade media provided by Azure. To confirm and configure the VM for volume license activation see [Upgrade VM to volume license (KMS server activation)](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#upgrade-vm-to-volume-license-kms-server-activation).
 
-The in-place upgrade process requires the use of Managed Disks on the VM
-to be upgraded.
+You can verify the current licensing configuration by running this PowerShell command:
 
-1. Browse to: [Azure Portal, Virtual Machines](https://portal.azure.com/#view/Microsoft_Azure_ComputeHub/ComputeHubMenuBlade/~/virtualMachinesBrowse)
-1. click **Manage View\***, **Edit columns** and turn on **“Uses managed disks”**
-1. Make sure it says _Yes_ under **“Uses managed disks”** for the VM you are about to upgrade
+```powershell
+# Check current license status
+slmgr.vbs /dlv
+```
 
 ## Snapshot the VM disks
 
-It is recommended to create a snapshot of the operating system disk (and any data disks) before starting the in-place upgrade process. Create a snapshot on each data disk as weel if they exist.
+> [!CAUTION]
+> It is recommended to create a snapshot of the operating system disk (and any data disks) before starting the in-place upgrade process. Create a snapshot on each data disk as well if they exist. WIthout it you cannot revert to a previous state.
 
-> [!CRITICAL]
-> To revert to the previous state of the VM if anything fails during the upgrade, you must have made snapshot.
-> See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure)
+> [!IMPORTANT]
+> To revert to the previous state of the VM if anything fails during the upgrade, you must have made snapshots. See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure) for recovery procedures.
 
 ### Snapshot the operating system disk
 
@@ -129,34 +154,56 @@ Set the properties:
 | Source disk         | Choose the VM's operating system disk in the list |
 | Storage type        | Standard HDD                                      |
 
-## Set operating system language to english US
+## Set operating system language to English US
 
-The upgrade media disk can only use `en-US` language. No other languages are supported. To avoid any errors, set the system language to en-US or change the system locale to English (United States) in Control Panel.
+> [!IMPORTANT]
+> The upgrade media disk can only use `en-US` language. No other languages are supported. To avoid any errors, set the system language to en-US or change the system locale to English (United States) in Control Panel.
+
+**Steps to change system locale:**
+
+1. Open **Control Panel** → **Clock and Region** → **Region**
+2. On the **Administrative** tab, click **Change system locale**
+3. Select **English (United States)**
+4. Restart the computer when prompted
 
 ## Create upgrade media disk
 
 To initiate an in-place upgrade, the upgrade media must be attached to the VM as a Managed Disk.
 
-Suggest using Azure Cloud Shell after logging in to the portal. Otherwise, to use the script below
-some PowerShell modules need to be installed (this will also automatically install dependent modules).
-You aso need to connect to thr correct tenant and subscrition.
+### Prerequisites for PowerShell Script
+
+Suggest using Azure Cloud Shell after logging in to the portal. Otherwise, to use the script below some PowerShell modules need to be installed (this will also automatically install dependent modules). You also need to connect to the correct tenant and subscription.
 
 ```powershell
 Install-PSResource Az.Compute, Az.Resource -TrustRepository
 Connect-AzAccount -Tenant '<tenant-id>' -Subscription '<subscription-hosting-vm>'
-Connect-AzAccount -Subscription 'fe44ac4b-46de-4d25-ab3e-7a7985c0d7e6' -Tenant '282a80cf-5adc-4264-88ac-4a9c7bb05031'
 ```
 
-Use the following PowerShell script to create the upgrade media for Windows Server 2022, ensuring you modify the variables as needed. If you have more than one subscription, you must set subscription to use.
+### PowerShell Script Parameters
+
+Modify the following variables in the PowerShell script according to your environment:
+
+| Parameter        | Description                                                    | Example                                                                                       |
+| ---------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `$subscription`  | Subscription name or ID of the VM to be upgraded               | `'ad44ec4c-23de-4e25-fb2e-3ae9c5c0d4e2'`                                                      |
+| `$resourceGroup` | Resource group where upgrade media disk will be created        | `'myResourceGroup'`                                                                           |
+| `$location`      | Azure region (must match VM region)                            | `'westeurope'`                                                                                |
+| `$zone`          | Azure zone (must match VM zone, empty string for regional VMs) | `''` or `'1'`                                                                                 |
+| `$diskName`      | Name for the upgrade media disk                                | `'WindowsServer2022UpgradeDisk'`                                                              |
+| `$sku`           | Target OS version                                              | `'server2022Upgrade'`, `'server2019Upgrade'`, `'server2016Upgrade'`, or `'server2012Upgrade'` |
+
+### PowerShell Script to Create Upgrade Media
+
+Use the following PowerShell script to create the upgrade media for Windows Server 2022, ensuring you modify the variables as needed:
 
 ```powershell
 ### START - Modify variables
 
 # Subscription name or id of the VM to be upgraded
-$subscription = 'fe44ac4b-46de-4d25-ab3e-7a7985c0d7e6'
+$subscription = '<subscription-id-or-name>'
 
 # Name of the resource group where the upgrade media Managed Disk will be created. The named resource group is created if it doesn't exist. Set to resource group of the source VM.
-$resourceGroup = 'opscalyxrg'
+$resourceGroup = '<resourceGroupName>'
 
 # Azure region where the upgrade media Managed Disk is created. This must be the same region as the VM to be upgraded.
 $location = 'westeurope'
@@ -212,22 +259,56 @@ New-AzDisk -ResourceGroupName $resourceGroup -DiskName $diskName -Disk $diskConf
 
 Attach the upgrade media disk to the VM to upgrade. This can be performed whether the VM is running or stopped.
 
-1. Go the the virtual machine in the Azure portal
-1. To the left, select **Settings**, then **Disks**
-1. Select **Attach existing disks**
-1. In the drop-down for **LUN** keep 0 (or first free LUN)
-1. In the drop-down for **Disk name**, select the name of the upgrade disk created in the previous step.
-1. Click **Apply** to attach the upgrade disk to the VM.
+### Portal Steps
+
+1. Go to the virtual machine in the Azure portal
+2. In the left menu, select **Settings**, then **Disks**
+3. Select **Attach existing disks**
+4. In the drop-down for **LUN** keep 0 (or first free LUN)
+5. In the drop-down for **Disk name**, select the name of the upgrade disk created in the previous step
+6. Click **Apply** to attach the upgrade disk to the VM
+
+### PowerShell Alternative
+
+```powershell
+# Variables
+$vmName = 'YourVMName'
+$resourceGroupName = 'YourResourceGroup'
+$diskName = 'WindowsServer2022UpgradeDisk'
+
+# Get the VM and disk
+$vm = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmName
+$disk = Get-AzDisk -ResourceGroupName $resourceGroupName -DiskName $diskName
+
+# Attach the disk to the VM
+$vm = Add-AzVMDataDisk -VM $vm -Name $diskName -ManagedDiskId $disk.Id -Lun 0 -CreateOption Attach
+
+# Update the VM
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $vm
+```
 
 ## Disable Auto-shutdown
 
-If there are any VM auto-shutdown that can impact upgrade process, disable it temporarily.
+If there are any VM auto-shutdown policies that can impact the upgrade process, disable them temporarily.
+
+**Steps to disable auto-shutdown:**
+
+1. Navigate to your VM in Azure Portal
+2. Go to **Operations** → **Auto-shutdown**
+3. Toggle **Enable** to **Off**
+4. Click **Save**
 
 ## Perform in-place upgrade (Windows Server 2016, 2019, or 2022)
 
-Connect to the VM using RDP. Determine the drive letter for the upgrade disk
-(typically `E:` if there are no other data disks), then start an elevated
-Windows&nbsp;Powershell and run:
+> [!IMPORTANT]
+> To initiate the in-place upgrade the VM must be in the `Running` state.
+
+### Steps to Perform the Upgrade
+
+1. **Connect to the VM** using [RDP](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-rdp#connect-to-the-virtual-machine) or [RDP-Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-connect-vm-rdp-windows#rdp)
+1. **Determine the drive letter** for the upgrade disk (typically `E:` if there are no other data disks, or `F:`)
+1. **Start an elevated Windows PowerShell session**
+1. **Navigate to the upgrade directory and start the upgrade:**
 
 ```powershell
 # Change to correct folder on E: drive if other target OS.
@@ -235,36 +316,177 @@ cd 'E:\Windows Server 2022'
 .\setup.exe /auto upgrade /dynamicupdate disable /eula accept
 ```
 
-Window Server upgrade process will start. After a short while you need to
-select image to upgrade to - choose desktop experience, and the same edition
-as the existing :
+### Understanding the Setup Command
+
+- `/auto upgrade` - Performs an automatic upgrade
+- `/dynamicupdate disable` - Disables dynamic updates during setup
+- `/eula accept` - Automatically accepts the End User License Agreement
+
+### During the Upgrade Process
+
+The Windows Server upgrade process will start. After a short while you need to select the image to upgrade to - choose desktop experience, and the same edition as the existing installation:
 
 ![Windows Server Setup screen titled 'Select Image'. The user is prompted to select the image to install. Four operating system options are listed: Windows Server 2022 Standard, Windows Server 2022 Standard (Desktop Experience), Windows Server 2022 Datacenter, and Windows Server 2022 Datacenter (Desktop Experience), all in the en-US language. A note below indicates that the non-Desktop Experience versions omit most graphical elements and are managed via command prompt, PowerShell, or remote tools. 'Next' and 'Back' buttons appear at the bottom.](/public/blog-images/win2019-setup-select-image.png)
 
 The upgrade process will continue and use unattended installation.
 
+### Monitoring Progress
+
+During the upgrade process, the VM will automatically disconnect from the RDP session. After the VM is disconnected from the RDP session, the progress of the upgrade can be monitored through the [screenshot functionality available in the Azure portal](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/boot-diagnostics#enable-boot-diagnostics-on-existing-virtual-machine).
+
+**To access boot diagnostics:**
+
+1. Navigate to your VM in Azure Portal
+2. Go to **Help** → **Boot diagnostics**
+3. Click **Screenshot** to see current status
+
 > [!IMPORTANT]
 > The image plan information will not change after the upgrade process.
 
-## Re-enable firewall. anti-virus and anti-spyware
+## Perform in-place upgrade (Windows Server 2012 only)
+
+For Windows Server 2012 upgrades, the process is slightly different:
+
+1. **Connect to the VM** using RDP
+2. **Determine the drive letter** for the upgrade disk
+3. **Start Windows PowerShell**
+4. **Navigate to the upgrade directory:**
 
 ```powershell
-Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled 'True'
+cd 'E:\'
+.\setup.exe
+```
+
+5. **Follow the GUI wizard:**
+   - Select **Install now**
+   - For "Get important updates for Windows Setup", select **No thanks**
+   - Select the correct Windows Server 2012 "Upgrade to" image
+   - On License terms page, select **I accept the license terms** and then **Next**
+   - For "What type of installation do you want?" select **Upgrade: Install Windows and keep files, settings, and applications**
+   - Setup will produce a Compatibility report, you can ignore any warnings and select **Next**
+
+## Re-enable firewall, anti-virus and anti-spyware
+
+After the upgrade is complete, re-enable all security software that was disabled:
+
+```powershell
+# Re-enable Windows Defender Firewall
+Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
+
+# Re-enable Windows Defender real-time protection
 Set-MpPreference -DisableRealtimeMonitoring $false
 ```
 
-Verify with:
+Verify the settings:
 
 ```powershell
+# Verify firewall status
 Get-NetFirewallProfile | Select-Object Name, Enabled
+
+# Verify antivirus status
 (Get-MpPreference).DisableRealtimeMonitoring
 ```
 
 ## Post upgrade steps
 
-Once the upgrade process has completed successfully the following steps should be taken to clean up any artifacts which were created during the upgrade process:
+Once the upgrade process has completed successfully, the following steps should be taken to clean up any artifacts which were created during the upgrade process:
 
-- Delete the snapshots of the OS disk and data disk(s) if they were created.
-- Disconnect the upgrade media Managed Disk from the VM that was upgrade.
-- Delete the upgrade media Managed Disk.
-- Enable antivirus, anti-spyware, or firewall software that may have been disabled at the start of the upgrade process.
+### Immediate Cleanup Tasks
+
+1. **Delete the snapshots** of the OS disk and data disk(s) if they were created (after confirming upgrade success)
+2. **Detach the upgrade media Managed Disk** from the VM that was upgraded
+3. **Delete the upgrade media Managed Disk** (unless you plan to reuse it for other VMs)
+4. **Re-enable auto-shutdown** if it was disabled
+5. **Re-enable antivirus, anti-spyware, and firewall software** that was disabled at the start of the upgrade process
+
+### Verification Steps
+
+1. **Verify the OS version:**
+
+```powershell
+# Check Windows version
+Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, WindowsBuildLabEx
+
+# Alternative method
+[System.Environment]::OSVersion.Version
+```
+
+2. **Check system health:**
+
+```powershell
+# Run System File Checker
+sfc /scannow
+
+# Check Windows Update status
+Get-WindowsUpdate
+```
+
+3. **Verify services and applications:**
+   - Test critical applications
+   - Verify network connectivity
+   - Check server roles and features
+
+### PowerShell Script for Cleanup
+
+```powershell
+# Variables - Update these
+$resourceGroupName = 'YourResourceGroup'
+$vmName = 'YourVMName'
+$upgradeDiskName = 'WindowsServer2022UpgradeDisk'
+$snapshotName = 'snapshot_vm-name_os'
+
+# Detach upgrade disk from VM
+$vm = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmName
+$vm = Remove-AzVMDataDisk -VM $vm -Name $upgradeDiskName
+Update-AzVM -ResourceGroupName $resourceGroupName -VM $vm
+
+# Delete upgrade disk
+Remove-AzDisk -ResourceGroupName $resourceGroupName -DiskName $upgradeDiskName -Force
+
+# Delete snapshot (only after confirming upgrade success)
+Remove-AzSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotName -Force
+
+Write-Output "Cleanup completed successfully"
+```
+
+## Troubleshooting Common Issues
+
+### Upgrade Fails to Start
+
+**Symptoms:** Setup.exe fails to launch or exits immediately
+**Solutions:**
+
+- Verify the VM is using `en-US` locale
+- Ensure sufficient disk space (at least 32 GB free)
+- Check that all security software is disabled
+- Verify the upgrade media disk is properly attached
+
+### Upgrade Stalls During Process
+
+**Symptoms:** Progress stops for extended periods
+**Solutions:**
+
+- Use boot diagnostics to monitor progress
+- Allow up to several hours for completion
+- Do not interrupt the process
+- If truly stuck, restore from snapshot
+
+### RDP Connection Issues After Upgrade
+
+**Symptoms:** Cannot connect via RDP after upgrade
+**Solutions:**
+
+- Check VM status in Azure Portal
+- Use boot diagnostics to see console
+- Try Azure Bastion for connectivity
+- Verify network security group rules
+
+### Performance Issues After Upgrade
+
+**Symptoms:** VM runs slowly after upgrade
+**Solutions:**
+
+- Install latest Windows updates
+- Update VM agents and drivers
+- Consider increasing VM size if needed
+- Run disk cleanup and defragmentation
