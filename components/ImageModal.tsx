@@ -63,6 +63,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
         >
           {/* Close Button */}
           <button
+            type="button"
             onClick={onClose}
             className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-black"
             aria-label="Close modal"
