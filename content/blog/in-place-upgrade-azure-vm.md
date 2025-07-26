@@ -25,12 +25,9 @@ Only supports:
 
 Minimum requirements:
 
-| OS                  | System partition size (GB) |
-| ------------------- | -------------------------- |
-| Windows Server 2016 | 32                         |
-| Windows Server 2019 | 32                         |
-| Windows Server 2022 | 32                         |
-| Windows Server 2025 | 32                         |
+| OS                                       | System partition size (GB) |
+| ---------------------------------------- | -------------------------- |
+| Windows Server 2016, 2019, 2022 and 2025 | 32                         |
 
 [Expand virtual hard disks attached to a Windows virtual machine](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/expand-disks)
 
