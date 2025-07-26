@@ -3,7 +3,7 @@ title: 'In-place upgrade an Azure VM Windows Server'
 date: '2025-07-26'
 author: 'Johan Ljunggren'
 excerpt: 'Complete guide for performing in-place upgrades of Windows Server on Azure VMs, including prerequisites, security considerations, and step-by-step instructions.'
-image: '/team-deep-in-though.png'
+image: '/team-deep-in-thought.png'
 imageAlt: 'In a bright open‑plan office, three IT professionals—two men and one woman—study their monitors showing Azure logos, diagrams, and code, while a dream‑like, cloud‑shrouded datacenter complex hovers on the horizon.s'
 tags: ['Azure', 'Windows Server', 'Upgrade', 'Virtual Machines', 'PowerShell']
 readTime: '38 min read'
@@ -57,7 +57,7 @@ Review the comprehensive [Hardware requirements for Windows Server](https://lear
 Connect to your VM via RDP and run the following PowerShell command to check available space:
 
 ```powershell
-Get-WmiObject -Class Win32_LogicalDisk |
+Get-CimInstance -ClassName Win32_LogicalDisk |
   Where-Object {$_.DeviceID -eq "C:"} |
   Select-Object Size,FreeSpace,@{Name="SizeGB";Expression={[math]::Round($_.Size/1GB,2)}},@{Name="FreeSpaceGB";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
 ```
