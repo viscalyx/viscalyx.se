@@ -4,6 +4,7 @@ const matter = require('gray-matter')
 const sanitizeHtml = require('sanitize-html')
 const remarkBlockquoteTypes = require('./plugins/blockquote-types')
 const remarkFloatingImages = require('./plugins/remark-floating-images')
+const remarkImagePaths = require('./plugins/remark-image-paths')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -117,6 +118,7 @@ async function buildBlogData() {
         const processedContent = await remark()
           .use(remarkGfm)
           .use(() => remarkBlockquoteTypes(visit))
+          .use(remarkImagePaths, { mode: 'build' })
           .use(remarkFloatingImages)
           .use(remarkRehype)
           .use(rehypePrismPlus, {
