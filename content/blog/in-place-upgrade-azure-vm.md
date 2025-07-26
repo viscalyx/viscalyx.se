@@ -61,7 +61,7 @@ Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
 
 Also possible to disable firewall trough user interface, this is how on Windows Server 2019:
 
-![alt text](/windows-defender-firewall-network-settings-win2019.png)
+![Windows Control Panel settings window showing the customization options for Windows Defender Firewall. Both Private and Public network settings have the option 'Turn off Windows Defender Firewall (not recommended)' selected, indicated by red shield icons. The options to turn on the firewall are unselected.](/public/windows-defender-firewall-network-settings-win2019.png)
 
 ### Antivirus and Anti-spyware software
 
@@ -80,9 +80,11 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 
 Also possible to disable real‑time engine trough user interface, this is how on Windows Server 2019:
 
-![alt text](/virus-and-threat-protection-settings-win2019.png)
+![Windows Security window showing the 'Virus & threat protection' section. Under 'Current threats', it reports no current threats and a last scan with zero threats found. Below, a warning under 'Virus & threat protection settings' states that real-time protection is off, leaving the device vulnerable, with a greyed-out 'Turn on' button and a 'Manage settings' link.](/public/virus-and-threat-protection-settings-win2019.png)
 
-![alt text](/real-time-protection-setting-win2019.png)
+When click on the Manage settings link:
+
+![Windows Security window showing the 'Virus & threat protection settings' section. Under 'Real-time protection', it indicates that the setting is turned off, with a red warning icon and message stating 'Real-time protection is off, leaving your device vulnerable.' A toggle switch is set to 'Off' at the bottom of the section.](/public/real-time-protection-setting-win2019.png)
 
 ## Upgrade VM to volume license (KMS server activation)
 
@@ -240,7 +242,7 @@ Window Server upgrade process will start. After a short while you need to
 select image to upgrade to - choose desktop experience, and the same edition
 as the existing :
 
-![alt text](/win2019-setup-select-image.png)
+![Windows Server Setup screen titled 'Select Image'. The user is prompted to select the image to install. Four operating system options are listed: Windows Server 2022 Standard, Windows Server 2022 Standard (Desktop Experience), Windows Server 2022 Datacenter, and Windows Server 2022 Datacenter (Desktop Experience), all in the en-US language. A note below indicates that the non-Desktop Experience versions omit most graphical elements and are managed via command prompt, PowerShell, or remote tools. 'Next' and 'Back' buttons appear at the bottom.](/public/win2019-setup-select-image.png)
 
 The upgrade process will continue and use unattended installation.
 
