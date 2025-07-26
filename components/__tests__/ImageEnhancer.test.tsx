@@ -3,12 +3,21 @@ import { useRef } from 'react'
 import { vi } from 'vitest'
 import ImageEnhancer from '../ImageEnhancer'
 
+interface MockImageModalProps {
+  isOpen: boolean
+  onClose: () => void
+  imageSrc: string
+  imageAlt: string
+}
+
 // Mock the ImageModal component
 vi.mock('../ImageModal', () => ({
-  default: ({ isOpen, onClose, imageSrc, imageAlt }: any) =>
+  default: ({ isOpen, onClose, imageSrc, imageAlt }: MockImageModalProps) =>
     isOpen ? (
       <div data-testid="image-modal">
-        <button onClick={onClose}>Close</button>
+        <button type="button" onClick={onClose}>
+          Close
+        </button>
         <img src={imageSrc} alt={imageAlt} />
         <span>{imageAlt}</span>
       </div>
@@ -22,8 +31,8 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div>
       <div ref={contentRef} className="blog-content">
-        <img src="/test1.jpg" alt="Test image 1" />
-        <img src="/test2.jpg" alt="Test image 2" />
+        <img src="/test1.jpg" alt="Test 1" />
+        <img src="/test2.jpg" alt="Test 2" />
         {children}
       </div>
       <ImageEnhancer contentRef={contentRef} />
@@ -43,8 +52,8 @@ describe('ImageEnhancer', () => {
 
   it('renders without crashing', () => {
     render(<TestComponent />)
-    expect(screen.getByAltText('Test image 1')).toBeInTheDocument()
-    expect(screen.getByAltText('Test image 2')).toBeInTheDocument()
+    expect(screen.getByAltText('Test 1')).toBeInTheDocument()
+    expect(screen.getByAltText('Test 2')).toBeInTheDocument()
   })
 
   it('opens modal when image is clicked', async () => {
@@ -55,14 +64,14 @@ describe('ImageEnhancer', () => {
       vi.advanceTimersByTime(100)
     })
 
-    const image = screen.getByAltText('Test image 1')
+    const image = screen.getByAltText('Test 1')
 
     await act(async () => {
       fireEvent.click(image)
     })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
-    expect(screen.getByText('Test image 1')).toBeInTheDocument()
+    expect(screen.getByText('Test 1')).toBeInTheDocument()
   })
 
   it('closes modal when close button is clicked', async () => {
@@ -74,7 +83,7 @@ describe('ImageEnhancer', () => {
     })
 
     // Open modal
-    const image = screen.getByAltText('Test image 1')
+    const image = screen.getByAltText('Test 1')
     await act(async () => {
       fireEvent.click(image)
     })
@@ -99,13 +108,13 @@ describe('ImageEnhancer', () => {
     })
 
     // Click first image
-    const image1 = screen.getByAltText('Test image 1')
+    const image1 = screen.getByAltText('Test 1')
     await act(async () => {
       fireEvent.click(image1)
     })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
-    expect(screen.getByText('Test image 1')).toBeInTheDocument()
+    expect(screen.getByText('Test 1')).toBeInTheDocument()
 
     // Close modal
     await act(async () => {
@@ -115,13 +124,13 @@ describe('ImageEnhancer', () => {
     expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
 
     // Click second image
-    const image2 = screen.getByAltText('Test image 2')
+    const image2 = screen.getByAltText('Test 2')
     await act(async () => {
       fireEvent.click(image2)
     })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
-    expect(screen.getByText('Test image 2')).toBeInTheDocument()
+    expect(screen.getByText('Test 2')).toBeInTheDocument()
   })
 
   it('marks images as enhanced to prevent duplicate handlers', async () => {
@@ -132,7 +141,7 @@ describe('ImageEnhancer', () => {
       vi.advanceTimersByTime(100)
     })
 
-    const image = screen.getByAltText('Test image 1') as HTMLImageElement
+    const image = screen.getByAltText('Test 1') as HTMLImageElement
     expect(image.dataset.enhanced).toBe('true')
   })
 
@@ -144,7 +153,7 @@ describe('ImageEnhancer', () => {
       vi.advanceTimersByTime(100)
     })
 
-    const image = screen.getByAltText('Test image 1') as HTMLImageElement
+    const image = screen.getByAltText('Test 1') as HTMLImageElement
 
     // Mouse enter
     await act(async () => {
