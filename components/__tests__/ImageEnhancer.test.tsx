@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { useRef } from 'react'
 import { vi } from 'vitest'
 import ImageEnhancer from '../ImageEnhancer'
@@ -34,6 +34,11 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
 describe('ImageEnhancer', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('renders without crashing', () => {
@@ -42,72 +47,116 @@ describe('ImageEnhancer', () => {
     expect(screen.getByAltText('Test image 2')).toBeInTheDocument()
   })
 
-  it('opens modal when image is clicked', () => {
+  it('opens modal when image is clicked', async () => {
     render(<TestComponent />)
 
+    // Fast-forward the timer to trigger the enhancement
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
+
     const image = screen.getByAltText('Test image 1')
-    fireEvent.click(image)
+
+    await act(async () => {
+      fireEvent.click(image)
+    })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
     expect(screen.getByText('Test image 1')).toBeInTheDocument()
   })
 
-  it('closes modal when close button is clicked', () => {
+  it('closes modal when close button is clicked', async () => {
     render(<TestComponent />)
+
+    // Fast-forward the timer to trigger the enhancement
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
 
     // Open modal
     const image = screen.getByAltText('Test image 1')
-    fireEvent.click(image)
+    await act(async () => {
+      fireEvent.click(image)
+    })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
 
     // Close modal
     const closeButton = screen.getByText('Close')
-    fireEvent.click(closeButton)
+    await act(async () => {
+      fireEvent.click(closeButton)
+    })
 
     expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
   })
 
-  it('shows correct image in modal when different images are clicked', () => {
+  it('shows correct image in modal when different images are clicked', async () => {
     render(<TestComponent />)
+
+    // Fast-forward the timer to trigger the enhancement
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
 
     // Click first image
     const image1 = screen.getByAltText('Test image 1')
-    fireEvent.click(image1)
+    await act(async () => {
+      fireEvent.click(image1)
+    })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
     expect(screen.getByText('Test image 1')).toBeInTheDocument()
 
     // Close modal
-    fireEvent.click(screen.getByText('Close'))
+    await act(async () => {
+      fireEvent.click(screen.getByText('Close'))
+    })
+
+    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
 
     // Click second image
     const image2 = screen.getByAltText('Test image 2')
-    fireEvent.click(image2)
+    await act(async () => {
+      fireEvent.click(image2)
+    })
 
     expect(screen.getByTestId('image-modal')).toBeInTheDocument()
     expect(screen.getByText('Test image 2')).toBeInTheDocument()
   })
 
-  it('marks images as enhanced to prevent duplicate handlers', () => {
+  it('marks images as enhanced to prevent duplicate handlers', async () => {
     render(<TestComponent />)
+
+    // Fast-forward the timer to trigger the enhancement
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
 
     const image = screen.getByAltText('Test image 1') as HTMLImageElement
     expect(image.dataset.enhanced).toBe('true')
   })
 
-  it('applies hover effects on mouse enter and leave', () => {
+  it('applies hover effects on mouse enter and leave', async () => {
     render(<TestComponent />)
+
+    // Fast-forward the timer to trigger the enhancement
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
 
     const image = screen.getByAltText('Test image 1') as HTMLImageElement
 
     // Mouse enter
-    fireEvent.mouseEnter(image)
+    await act(async () => {
+      fireEvent.mouseEnter(image)
+    })
     expect(image.style.transform).toContain('translateY(-5px)')
     expect(image.style.filter).toBe('brightness(1.05)')
 
     // Mouse leave
-    fireEvent.mouseLeave(image)
+    await act(async () => {
+      fireEvent.mouseLeave(image)
+    })
     expect(image.style.transform).toContain('translateY(0)')
     expect(image.style.filter).toBe('brightness(1)')
   })
