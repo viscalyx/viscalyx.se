@@ -4,6 +4,7 @@ import AlertIconInjector from '@/components/AlertIconInjector'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import ImageEnhancer from '@/components/ImageEnhancer'
 import LoadingScreen from '@/components/LoadingScreen'
 import MermaidRenderer from '@/components/MermaidRenderer'
 import ReadingProgress from '@/components/ReadingProgress'
@@ -549,6 +550,7 @@ const BlogPostContent = ({
                   />
                   <CodeBlockEnhancer contentLoaded={!loading && !!post} />
                   <MermaidRenderer contentLoaded={!loading && !!post} />
+                  <ImageEnhancer contentRef={contentRef} />
                 </AlertIconInjector>
               </div>
 
