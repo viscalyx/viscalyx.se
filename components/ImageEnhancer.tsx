@@ -23,76 +23,68 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
   useEffect(() => {
     if (!contentRef.current || enhancedRef.current) return
 
-    // Add a small delay to ensure DOM is fully rendered
-    const timer = setTimeout(() => {
-      const content = contentRef.current
-      if (!content) return
+    const content = contentRef.current
+    if (!content) return
 
-      const images = content.querySelectorAll('img')
+    const images = content.querySelectorAll('img')
 
-      const imageHandlers = new Map<
-        HTMLImageElement,
-        {
-          mouseEnter: () => void
-          mouseLeave: () => void
-          click: (event: Event) => void
-        }
-      >()
+    const imageHandlers = new Map<
+      HTMLImageElement,
+      {
+        mouseEnter: () => void
+        mouseLeave: () => void
+        click: (event: Event) => void
+      }
+    >()
 
-      // Add click handlers and hover effects to all images
-      images.forEach(img => {
-        const imageElement = img as HTMLImageElement
+    // Add click handlers and hover effects to all images
+    images.forEach(img => {
+      const imageElement = img as HTMLImageElement
 
-        // Skip if already enhanced
-        if (imageElement.dataset.enhanced === 'true') return
+      // Skip if already enhanced
+      if (imageElement.dataset.enhanced === 'true') return
 
-        // Create handlers
-        const handleMouseEnter = () => {
-          imageElement.style.transform =
-            'perspective(1000px) rotateX(0deg) translateY(-5px)'
-          imageElement.style.filter = 'brightness(1.05)'
-        }
+      // Create handlers
+      const handleMouseEnter = () => {
+        imageElement.style.transform =
+          'perspective(1000px) rotateX(0deg) translateY(-5px)'
+        imageElement.style.filter = 'brightness(1.05)'
+      }
 
-        const handleMouseLeave = () => {
-          imageElement.style.transform =
-            'perspective(1000px) rotateX(2deg) translateY(0)'
-          imageElement.style.filter = 'brightness(1)'
-        }
+      const handleMouseLeave = () => {
+        imageElement.style.transform =
+          'perspective(1000px) rotateX(2deg) translateY(0)'
+        imageElement.style.filter = 'brightness(1)'
+      }
 
-        const handleClick = (event: Event) => {
-          event.preventDefault()
-          event.stopPropagation()
+      const handleClick = (event: Event) => {
+        event.preventDefault()
+        event.stopPropagation()
 
-          setModalState({
-            isOpen: true,
-            imageSrc: imageElement.src,
-            imageAlt: imageElement.alt || '',
-          })
-        }
-
-        // Store handlers for cleanup
-        imageHandlers.set(imageElement, {
-          mouseEnter: handleMouseEnter,
-          mouseLeave: handleMouseLeave,
-          click: handleClick,
+        setModalState({
+          isOpen: true,
+          imageSrc: imageElement.src,
+          imageAlt: imageElement.alt || '',
         })
+      }
 
-        // Add event listeners
-        imageElement.addEventListener('mouseenter', handleMouseEnter)
-        imageElement.addEventListener('mouseleave', handleMouseLeave)
-        imageElement.addEventListener('click', handleClick)
-
-        // Mark as enhanced
-        imageElement.dataset.enhanced = 'true'
+      // Store handlers for cleanup
+      imageHandlers.set(imageElement, {
+        mouseEnter: handleMouseEnter,
+        mouseLeave: handleMouseLeave,
+        click: handleClick,
       })
 
-      enhancedRef.current = true
-    }, 100)
+      // Add event listeners
+      imageElement.addEventListener('mouseenter', handleMouseEnter)
+      imageElement.addEventListener('mouseleave', handleMouseLeave)
+      imageElement.addEventListener('click', handleClick)
 
-    // Cleanup function
-    return () => {
-      clearTimeout(timer)
-    }
+      // Mark as enhanced
+      imageElement.dataset.enhanced = 'true'
+    })
+
+    enhancedRef.current = true
   }, [contentRef])
 
   const closeModal = () => {
