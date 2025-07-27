@@ -22,7 +22,7 @@ In this tutorial, you learn how to:
 ## Prerequisites
 
 - PowerShell 7.2 or later installed on Windows, macOS, or Linux
-- Basic knowledge of PowerShell scripting
+- Basic knowledge of PowerShell scripting and Pester syntax
 - A text editor or IDE (Visual Studio Code recommended)
 
 ## What is a DSC resource?
@@ -66,7 +66,7 @@ cd DemoDscClass
 
 Your project structure should look like this:
 
-```
+```powershell
 DemoDscClass/
 ├── DemoDscClass.psd1    # Module manifest
 └── DemoDscClass.psm1    # Resource implementation
