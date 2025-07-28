@@ -3,9 +3,3 @@ contact_links:
   - name: Security Vulnerability Report
     url: https://github.com/viscalyx/viscalyx.se/security/advisories/new
     about: Report sensitive security vulnerabilities privately
-  - name: Documentation
-    url: https://github.com/viscalyx/viscalyx.se/blob/main/README.md
-    about: Read the project documentation and setup guides
-  - name: Contributing Guidelines
-    url: https://github.com/viscalyx/viscalyx.se/blob/main/CONTRIBUTING.md
-    about: Learn how to contribute to the project
