@@ -1,0 +1,52 @@
+name: Blog Request
+description: Request a new blog post or article
+title: '[Blog]: '
+labels: ['blog', 'content', 'triage']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a blog post! Help us understand what content you'd like to see.
+
+  - type: textarea
+    id: topic
+    attributes:
+      label: Blog Topic
+      description: What topic would you like to see covered in a blog post?
+      placeholder: e.g., "How to configure...", "Best practices for", etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Need
+      description: What problem would this blog post solve?
+      placeholder: 'This would help users who struggle with...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: target_audience
+    attributes:
+      label: Target Audience
+      description: Who is the intended audience for this blog post?
+      placeholder: e.g., "Beginner developers", "Cloud administrators", "PowerShell users", etc.
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Suggested Resources
+      description: Any specific tools, documentation, or references that should be mentioned?
+      placeholder: Links to relevant documentation, tools, or examples
+
+  - type: checkboxes
+    id: offer_help
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to help write or review this blog post
+        - label: I can provide technical expertise on this topic
+        - label: I have real-world examples I could share
