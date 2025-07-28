@@ -1,6 +1,6 @@
-name: 🐛 Bug Report
+name: Bug Report
 description: Report a bug or unexpected behavior
-title: '🐛 [Bug]: '
+title: '[Bug]: '
 labels: ['bug', 'triage']
 assignees: []
 
@@ -8,18 +8,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to report a bug! Please fill out the form below with as much detail as possible.
-
-        **Before submitting, please:**
-        - Check if this bug has already been reported
-        - Ensure you're using the latest version from the main branch
-        - Review our [Security Policy](/SECURITY.md) if this might be a security issue
+        Please provide details about the bug you encountered.
 
   - type: textarea
     id: description
     attributes:
       label: Bug Description
-      description: A clear and concise description of what the bug is
+      description: What is the bug?
       placeholder: Describe the bug...
     validations:
       required: true
@@ -28,12 +23,10 @@ body:
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: Steps to reproduce the behavior
       placeholder: |
         1. Go to '...'
         2. Click on '...'
-        3. Scroll down to '...'
-        4. See error
+        3. See error
     validations:
       required: true
 
@@ -41,8 +34,7 @@ body:
     id: expected
     attributes:
       label: Expected Behavior
-      description: A clear and concise description of what you expected to happen
-      placeholder: What should have happened?
+      description: What should have happened?
     validations:
       required: true
 
@@ -50,88 +42,12 @@ body:
     id: actual
     attributes:
       label: Actual Behavior
-      description: A clear and concise description of what actually happened
-      placeholder: What actually happened?
+      description: What actually happened?
     validations:
       required: true
-
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: Browser(s)
-      description: Which browser(s) are you experiencing this issue on?
-      multiple: true
-      options:
-        - Chrome
-        - Firefox
-        - Safari
-        - Edge
-        - Other (please specify in additional context)
-    validations:
-      required: true
-
-  - type: dropdown
-    id: device
-    attributes:
-      label: Device Type
-      description: What type of device are you using?
-      options:
-        - Desktop
-        - Mobile
-        - Tablet
-    validations:
-      required: true
-
-  - type: textarea
-    id: environment
-    attributes:
-      label: Environment Details
-      description: |
-        Please provide relevant environment details:
-        - Operating System
-        - Browser version
-        - Screen resolution (if layout issue)
-        - Any browser extensions that might interfere
-      placeholder: |
-        OS: [e.g. macOS 14.0, Windows 11, Ubuntu 22.04]
-        Browser: [e.g. Chrome 120.0.0.0]
-        Resolution: [e.g. 1920x1080]
-        Extensions: [e.g. uBlock Origin, Dark Reader]
-
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots/Videos
-      description: If applicable, add screenshots or videos to help explain the problem
-      placeholder: Drag and drop screenshots or videos here, or paste URLs
-
-  - type: textarea
-    id: console_logs
-    attributes:
-      label: Console Logs
-      description: |
-        If applicable, please include browser console logs:
-        1. Open Developer Tools (F12)
-        2. Go to Console tab
-        3. Reproduce the issue
-        4. Copy any error messages
-      render: text
-      placeholder: Paste console logs here...
 
   - type: textarea
     id: additional
     attributes:
       label: Additional Context
-      description: Add any other context about the problem here
-      placeholder: Any additional information that might be helpful...
-
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Checklist
-      description: Please confirm the following
-      options:
-        - label: I have searched existing issues to ensure this bug hasn't been reported before
-          required: true
-        - label: I have confirmed this is not a security vulnerability (see [Security Policy](/SECURITY.md))
-          required: true
+      description: Screenshots, console logs, or other helpful information
