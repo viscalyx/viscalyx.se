@@ -32,15 +32,15 @@ To install Microsoft DSC v3 on all platforms, you can use a community PowerShell
 1. Open a PowerShell terminal session
 1. Install the `PSDSC` module by typing:
 
-  ```powershell
-  Install-PSResource -Name PSDSC -Repository PSGallery
-  ```
+```powershell
+Install-PSResource -Name PSDSC -Repository PSGallery
+```
 
 1. Execute `Install-DscExe` in your terminal session
 
-  ```powershell
-  Install-DscExe
-  ```
+```powershell
+Install-DscExe
+```
 
 > [!TIP]
 > You can also install pre-release version by adding the `PreRelease` switch parameter.
@@ -77,14 +77,14 @@ To quickly learn about Microsoft DSC v3, let's create a configuration document t
 
 1. Create the following YAML file:
 
-  ```yaml
-  # osinfo.dsc.yaml
-  $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
-  resources:
-    - name: os
-      type: Microsoft/OSInfo
-      properties:
-        family: Windows
+   ```yaml
+   # osinfo.dsc.yaml
+   $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
+   resources:
+     - name: os
+       type: Microsoft/OSInfo
+       properties:
+         family: Windows
    ```
 
 1. Run the following command to get the current state
