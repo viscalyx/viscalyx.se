@@ -58,6 +58,8 @@
     "nslookup",
     "ipnat",
     "gantt",
+    "rundll",
+    "sysdm",
 
     // PowerShell DSC specific
     "DSC",
