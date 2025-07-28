@@ -302,6 +302,64 @@
     @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline;
   }
 
+  /* Image styling for blog content - 3D shadow effect and normalized sizing */
+  .blog-content img {
+    @apply max-w-full h-auto rounded-lg border border-secondary-200 dark:border-secondary-700;
+    /* Normalize image size - max width for large screens, responsive for smaller screens */
+    max-width: min(600px, 100%);
+    /* Center images horizontally */
+    margin: 2rem auto;
+    display: block;
+    /* Cursor to indicate clickability */
+    cursor: pointer;
+    /* 3D shadow effect */
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 20px 40px -10px rgba(0, 0, 0, 0.1),
+      0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    /* Enhanced 3D effect with transform perspective */
+    transform: perspective(1000px) rotateX(2deg);
+    transition: all 0.3s ease;
+  }
+
+  /* Hover effect for blog images */
+  .blog-content img:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+    box-shadow:
+      0 20px 40px -5px rgba(0, 0, 0, 0.15),
+      0 30px 60px -15px rgba(0, 0, 0, 0.15),
+      0 5px 15px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  /* Dark mode adjustments for image shadows */
+  .dark .blog-content img {
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.3),
+      0 20px 40px -10px rgba(0, 0, 0, 0.2),
+      0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .blog-content img:hover {
+    box-shadow:
+      0 20px 40px -5px rgba(0, 0, 0, 0.4),
+      0 30px 60px -15px rgba(0, 0, 0, 0.3),
+      0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  /* Responsive adjustments for mobile devices */
+  @media (max-width: 768px) {
+    .blog-content img {
+      max-width: 100%;
+      margin: 1.5rem auto;
+      /* Reduce 3D effect on mobile for better performance */
+      transform: perspective(500px) rotateX(1deg);
+    }
+
+    .blog-content img:hover {
+      transform: perspective(500px) rotateX(0deg) translateY(-2px);
+    }
+  }
+
   /* Table of Contents custom scrollbar styles */
   .toc-scrollable {
     /* Show scrollbar always when content overflows */
