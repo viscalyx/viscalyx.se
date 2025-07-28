@@ -14,7 +14,7 @@ Microsoft Desired State Configuration (DSC) v3 represents the next generation of
 
 In this tutorial, you learn how to:
 
-- Design a class based DSC resources, supporting capabilities for Microsoft DSC v3.
+- Design class-based DSC resources that support Microsoft DSC v3 capabilities.
 - Implement the required lifecycle methods.
 - Test your resource locally.
 - Run your resource with DSC v3 configuration documents.
@@ -44,33 +44,31 @@ Class-based DSC resources offer a modern, object-oriented approach to configurat
 - **Cleaner code**: Encapsulates logic in a structured, maintainable way
 - **Cross-platform support**: Runs on Windows, Linux, and macOS with proper implementation
 
-
-
 ### Are class-based resources the future of DSC?
 
 While class-based resources are currently the recommended pattern for PowerShell DSC resource authoring, DSC v3 supports multiple languages and resource types. You can author resources in [Go][00], C#, Python and other languages. Class-based resources remain well-supported but may not be the only model in the future.
 
 For example, if your organization migrates from Windows-only infrastructure to a mix of Windows and Linux, or adopts newer versions of PowerShell, class-based resources help ensure your automation investments remain valid and portable across both the new Microsoft DSC v3 engine and the older PSDSC engine.
 
-In the next section, you will learn to setup a project structure with a class-based DSC resource named `DemoDscClass`.
+In the next section, you will learn to set up a project structure with a class-based DSC resource named `DemoDscClass`.
 
 ## Step 1: Create the project structure
 
 Create a new folder for your DSC resource module:
 
-```powershell
-# Create and navigate to project folder
-mkdir DemoDscClass
-cd DemoDscClass
-```
+  ```bash
+  # Create and navigate to project folder
+  mkdir DemoDscClass
+  cd DemoDscClass
+  ```
 
 Your project structure should look like this:
 
-```powershell
-DemoDscClass/
-├── DemoDscClass.psd1    # Module manifest
-└── DemoDscClass.psm1    # Resource implementation
-```
+  ```plaintext
+  DemoDscClass/
+  ├── DemoDscClass.psd1    # Module manifest
+  └── DemoDscClass.psm1    # Resource implementation
+  ```
 
 > [!IMPORTANT]
 > Your module manifest filename must match the project folder name. For example, if your folder is named `DemoDscClass`, your manifest must be `DemoDscClass.psd1`.
@@ -79,44 +77,44 @@ DemoDscClass/
 
 ### Use PowerShell to generate the manifest
 
-```powershell
-$manifestParams = @{
-    Path                  = '.\DemoDscClass.psd1'
-    RootModule            = 'DemoDscClass.psm1'
-    DscResourcesToExport  = 'DemoDscClass'
-    ModuleVersion         = '0.0.1'
-    CompatiblePSEditions  = @('Desktop', 'Core')
-    PowerShellVersion     = '5.1'
-}
+  ```powershell
+  $manifestParams = @{
+      Path                  = '.\DemoDscClass.psd1'
+      RootModule            = 'DemoDscClass.psm1'
+      DscResourcesToExport  = 'DemoDscClass'
+      ModuleVersion         = '0.0.1'
+      CompatiblePSEditions  = @('Desktop', 'Core')
+      PowerShellVersion     = '5.1'
+  }
 
-New-ModuleManifest @manifestParams
-```
+  New-ModuleManifest @manifestParams
+  ```
 
 ### Or create manually
 
 You can also create `DemoDscClass.psd1` using any text editor:
 
-```powershell
-@{
-    RootModule = 'DemoDscClass.psm1'
-    ModuleVersion = '0.0.1'
-    CompatiblePSEditions = 'Desktop', 'Core'
-    GUID = '03ac4e95-e504-468d-add4-f099e2368239' # Change the GUID using New-Guid command
-    Author = 'username'
-    CompanyName = 'Unknown'
-    Copyright = '(c) developer. All rights reserved.'
-    PowerShellVersion = '5.1'
-    FunctionsToExport = '*'
-    CmdletsToExport = '*'
-    VariablesToExport = '*'
-    AliasesToExport = '*'
-    DscResourcesToExport = 'DemoDscClass'
-    PrivateData = @{
-        PSData = @{
-        }
-    }
-}
-```
+  ```powershell
+  @{
+      RootModule = 'DemoDscClass.psm1'
+      ModuleVersion = '0.0.1'
+      CompatiblePSEditions = 'Desktop', 'Core'
+      GUID = '03ac4e95-e504-468d-add4-f099e2368239' # Change the GUID using New-Guid command
+      Author = 'username'
+      CompanyName = 'Unknown'
+      Copyright = '(c) developer. All rights reserved.'
+      PowerShellVersion = '5.1'
+      FunctionsToExport = '*'
+      CmdletsToExport = '*'
+      VariablesToExport = '*'
+      AliasesToExport = '*'
+      DscResourcesToExport = 'DemoDscClass'
+      PrivateData = @{
+          PSData = @{
+          }
+      }
+  }
+  ```
 
 > [!NOTE]
 > More properties are available to set. For more information, read the article [about_Module_Manifest][01]
@@ -127,36 +125,36 @@ You can also create `DemoDscClass.psd1` using any text editor:
 
 Create `DemoDscClass.psm1` and add the basic class definition:
 
-```powershell
-[DscResource()]                   # Marks this class as a DSC resource
-class DemoDscClass {
-    [DscProperty(Key)]            # Key property (uniquely identifies resource)
-    [System.String] $Key
+  ```powershell
+  [DscResource()]                   # Marks this class as a DSC resource for discovery
+  class DemoDscClass {
+      [DscProperty(Key)]            # Key property (uniquely identifies resource)
+      [System.String] $Key
 
-    [DscProperty()]               # Optional property
-    [System.String] $OptionalProperty
+      [DscProperty()]               # Optional property
+      [System.String] $OptionalProperty
 
-    DemoDscClass() {              # Constructor (optional)
-      # initialization logic here
-    }
-}
-```
+      DemoDscClass() {              # Constructor (optional)
+        # initialization logic here
+      }
+  }
+  ```
 
 ### Add the Get() method
 
 The `Get()` method retrieves the current state:
 
-```powershell
-    [DemoDscClass] Get() {
-        Write-Verbose -Message 'Get called'
+  ```powershell
+      [DemoDscClass] Get() {
+          Write-Verbose -Message 'Get called'
 
-        $currentState = @{
-          Key = $this.Key
-        }
+          $currentState = @{
+            Key = $this.Key
+          }
 
-        return $currentState
-    }
-```
+          return $currentState
+      }
+  ```
 
 ### Add the Test() method
 
@@ -182,7 +180,7 @@ The `Set()` method applies the desired state:
 
 ### Add the Export() method
 
-The `Export()` method exports configuration state for DSC v3:
+The `Export()` method exports every instance of a set of resources in Microsoft DSC v3.
 
 ```powershell
     static [DemoDscClass[]] Export() {
@@ -202,62 +200,76 @@ The `Export()` method exports configuration state for DSC v3:
     }
 ```
 
+You can only call the `Export()` method by instantiating the class. Prior DSC versions can't directly invoke the capability. Also remember, not all classes should implement `Export()`. Always ask two questions:
+
+1. Does it make sense to implement `Export()`?
+2. Is it a cheap operation to perform?
+
+> [!INFO]
+> For example, exporting all Windows services from a machine makes sense and is relatily cheap. Exporting the whole registry _might_ make sense, but isn't a cheap operation to perform.
+
 ### Complete class implementation
 
 Here's the complete `DemoDscClass.psm1` file:
 
-```powershell
-[DscResource()] # Attribute marking class as DSC resource
-class DemoDscClass {
-    [DscProperty(Key)] # Declares a key property (must uniquely identify the resource instance), at least one key property is required for all DSC resources
-    [System.String] $Key
+  ```powershell
+  [DscResource()] # Attribute marking class as DSC resource
+  class DemoDscClass {
+      [DscProperty(Key)] # Declares a key property (must uniquely identify the resource instance), at least one key property is required for all DSC resources
+      [System.String] $Key
 
-    [DscProperty()]
-    [System.String] $OptionalProperty # Optional DSC property
+      [DscProperty()]
+      [System.String] $OptionalProperty # Optional DSC property
 
-    DemoDscClass() {
-      # init logic here
-    }
+      DemoDscClass() {
+        # init logic here
+      }
 
-    [DemoDscClass] Get() { # Returns the current state as a hashtable (DSC accepts either a class instance or a hashtable)
-        Write-Verbose -Message 'Get called'
+      [DemoDscClass] Get() { # Returns the current state as a hashtable (DSC accepts either a class instance or a hashtable)
+          Write-Verbose -Message 'Get called'
 
-        $currentState = @{
-          Key = $this.Key
-        }
+          $currentState = @{
+            Key = $this.Key
+          }
 
-        return $currentState
-    }
+          return $currentState
+      }
 
-    [System.Boolean] Test() {
- # Checks if the current state matches the desired state        Write-Verbose -Message 'Test called - always returns $false to demo Set()'
-
+      [System.Boolean] Test() {
+        # Checks if the current state matches the desired state        Write-Verbose -Message 'Test called - always returns $false to demo Set()'
         return $false # Always returns false to force Set() for demo
-    }
+      }
 
-    [void] Set() { # Applies the desired state (no-op in this demo)
-        Write-Verbose -Message 'Set called - no changes are applied for demo'
-    }
+      [void] Set() { # Applies the desired state (no-op in this demo)
+          Write-Verbose -Message 'Set called - no changes are applied for demo'
+      }
 
-    static [DemoDscClass[]] Export() { # New capability in Microsoft DSC v3
-        Write-Verbose -Message 'Export called - returning three demo instances'
+      static [DemoDscClass[]] Export() { # New capability in Microsoft DSC v3
+          Write-Verbose -Message 'Export called - returning three demo instances'
 
-        $resultList = [System.Collections.Generic.List[DemoDscClass]]::new()
+          $resultList = [System.Collections.Generic.List[DemoDscClass]]::new()
 
-        1..3 | ForEach-Object -Process { # In a real resource, return an array of actual resource instances
-            $obj = New-Object DemoDscClass
-            $obj.Key = 'Demo{0}' -f $_
-            $obj.OptionalProperty = 'Value of OptionalProperty for Demo{0}' -f $_
+          1..3 | ForEach-Object -Process { # In a real resource, return an array of actual resource instances
+              $obj = New-Object DemoDscClass
+              $obj.Key = 'Demo{0}' -f $_
+              $obj.OptionalProperty = 'Value of OptionalProperty for Demo{0}' -f $_
 
-            $resultList.Add($obj)
-        }
+              $resultList.Add($obj)
+          }
 
-        return $resultList.ToArray()
-    }
-}
-```
+          return $resultList.ToArray()
+      }
+  }
+  ```
 
-## Step 4: Install DSC v3
+It's time to install Microsoft DSC v3 and test out the class using `dsc.exe`.
+
+## Step 4: Install Microsoft DSC v3
+
+To easily install the `dsc.exe` executable, you can use the [PSDC][02] PowerShell community module.
+
+> [!INFO]
+> The community module only works on PowerShell 7.
 
 ### Install using PowerShell
 
@@ -268,18 +280,7 @@ dsc --version
 ```
 
 > [!NOTE]
-> You can install DSC on other platforms by grabbing the relevant asset on [GitHub][02]
-
-### Configure environment (Windows)
-
-If you encounter errors running DSC on Windows, add the DSC path to your environment:
-
-```powershell
-$env:PATH += [System.IO.Path]::PathSeparator + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
-```
-
-> [!TIP]
-> To persist this change, add the line to your PowerShell profile (`$PROFILE`) or update your system PATH variable.
+> The command also works on other platforms. You can also grab the asset on [GitHub][03] for the platform you're working on.
 
 ## Step 5: Test your resource
 
@@ -328,9 +329,11 @@ dsc resource export --resource DemoDscClass/DemoDscClass
 > [!TIP]
 > To see detailed trace logs, add the `--trace-level trace` parameter to any DSC command. DSC's default output is YAML if nothing is piped. If you want the raw JSON, you can add the `--output-format json` option.
 
-## Step 6: Use configuration files
+## Step 6: Use configuration documents
 
-### Create a configuration file
+You can also define a configuration document, allowing you to define multiple resource instances. The next section illustrates how you can create such a configuration document.
+
+### Create a configuration document
 
 Create `demo.dsc.config.yaml`:
 
@@ -351,21 +354,21 @@ resources:
 
 ```sh
 # Get current state
-dsc config get --file demo.dsc.config.yaml --output-format json
+dsc config get --file demo.dsc.config.yaml
 
 # Test compliance
-dsc config test --file demo.dsc.config.yaml --output-format json
+dsc config test --file demo.dsc.config.yaml
 
 # Apply configuration
-dsc config set --file demo.dsc.config.yaml --output-format json
+dsc config set --file demo.dsc.config.yaml
 
 # Export configuration
-dsc config export --file demo.dsc.config.yaml --output-format json
+dsc config export --file demo.dsc.config.yaml
 ```
 
 ### Use implicit syntax (optional)
 
-Create `demo-implicit.dsc.config.yaml` for a simpler approach:
+Microsoft DSC v3 allows you to implicitly call the DSC class-based resource. Create `demo-implicit.dsc.config.yaml` for a simpler approach:
 
 ```yaml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
@@ -438,18 +441,30 @@ If you receive an error when running `dsc`, verify the installation:
 Get-Command dsc -ErrorAction SilentlyContinue
 
 # If not found, add to PATH for current session (Windows only)
-$env:PATH += ";$env:LOCALAPPDATA\dsc"
+$env:PATH += [System.IO.Path]::PathSeparator + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 ```
 
 ### JSON parsing errors
 
-If you encounter `ERROR JSON: expected value at line 1 column 1`, remove any verbose output:
+If you encounter the following error:
+
+  ```plaintext
+  ERROR Operation: Failed to parse JSON from 'get': executable = 'pwsh' stdout = 'VERBOSE: Get called
+  {"result":[{"name":"DemoDscClass/DemoDscClass","type":"DemoDscClass/DemoDscClass","properties":{"Key":"Demo"}}]}
+  ' stderr = '' -> expected value at line 1 column 1
+  ```
+
+You should remove any output that clutters the STDIN:
 
 ```powershell
 # Remove these from your methods:
 Write-Verbose "message"  # Causes JSON parsing issues
 Write-Warning "message"  # Causes JSON parsing issues
+Write-Debug "message" # Causes JSON parsing issues
 ```
+
+> [INFO]
+> The issue is currently open on [GitHub](https://github.com/PowerShell/DSC/issues/833).
 
 ## Publish your resource (optional)
 
@@ -459,16 +474,34 @@ To share your resource on PowerShell Gallery:
 Publish-PSResource -Path .\ -Repository PSGallery -ApiKey <YOUR-API-KEY>
 ```
 
-## Next steps
+## Review and next steps
+
+Congratulations – you have built, tested, and executed your very first class-based DSC v3 resource!
+
+By following this guide, you have learned how to:
+
+1. Create a project folder and module manifest.
+2. Author a PowerShell class with Get(), Test(), Set(), and Export() methods.
+3. Perform smoke tests using the DSC executable.
+4. Define configuration files in YAML and run them.
+5. Write Pester tests to verify resource behavior.
+
+### Next steps
 
 Now that you've created your first DSC class-based resource, explore these advanced topics:
 
-- [Add unit tests with Pester](https://pester.dev/docs/quick-start)
-- [Implement cross-platform support](https://learn.microsoft.com/powershell/dsc/concepts/cross-platform)
-- [Publish to PowerShell Gallery](https://learn.microsoft.com/powershell/gallery/how-to/publishing-packages/publishing-a-package)
+- Extend `DemoDscClass` with additional properties and real-world logic, such as file or registry management.
+- Implement more checks in `Test()` to detect actual configuration drift.
+- Practice packaging and publishing your module to the PowerShell Gallery.
+- Engage with the PowerShell DSC community through blogs, forums, and GitHub.
 
 ## Related content
 
+- [DSC resources](https://learn.microsoft.com/en-us/powershell/dsc/concepts/resources/overview?view=dsc-3.0)
+- [Add unit tests with Pester](https://pester.dev/docs/quick-start)
+- [Implement cross-platform support](https://learn.microsoft.com/powershell/dsc/concepts/cross-platform)
+- [The DSC V3 Handbook](https://leanpub.com/thedscv3handbook/)
+- [Publish to PowerShell Gallery](https://learn.microsoft.com/powershell/gallery/how-to/publishing-packages/publishing-a-package)
 - [DSC v3 overview](https://learn.microsoft.com/powershell/dsc/overview)
 - [Class-based DSC resources](https://learn.microsoft.com/powershell/dsc/concepts/class-based-resources)
 - [DSC configuration documents](https://learn.microsoft.com/powershell/dsc/concepts/configurations)
@@ -478,4 +511,5 @@ Now that you've created your first DSC class-based resource, explore these advan
 <!-- Link reference definitions -->
 [00]: https://powershell.github.io/DSC-Samples/languages/go/first-resource/
 [01]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_module_manifests
-[02]: https://github.com/PowerShell/Dsc?tab=readme-ov-file#installing-dscv3
+[02]: https://www.powershellgallery.com/packages/PSDSC/
+[03]: https://github.com/PowerShell/Dsc?tab=readme-ov-file#installing-dscv3
