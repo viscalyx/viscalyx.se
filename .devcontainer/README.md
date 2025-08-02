@@ -1,25 +1,35 @@
 # DevContainer Configuration
 
-This directory contains the complete development container setup for the Viscalyx.se project. The devcontainer provides a consistent development environment that works across different platforms and ensures all contributors have the same tooling and dependencies.
+This directory contains the complete development container setup for the Viscalyx.se project. The devcontainer provides a consistent, **cross-platform** development environment that works seamlessly across Linux, macOS, and Windows, ensuring all contributors have the same tooling and dependencies.
 
 ## What's Included
 
 ### Development Environment
 
-- **Node.js 20 LTS** - Latest stable version for optimal performance
+- **Node.js 24 LTS** - Latest stable version for optimal performance
 - **TypeScript** - Full TypeScript support with proper tooling
-- **Zsh with Oh My Zsh** - Enhanced shell experience with useful plugins
+- **Zsh with Oh My Zsh** - Enhanced shell experience (with bash fallback)
 - **Git** - Version control with proper configuration
 - **GitHub CLI** - For seamless GitHub integration
+- **Cross-platform support** - Works on Linux, macOS, and Windows
+
+### Cross-Platform Features
+
+- **Multi-architecture support** - Supports both AMD64 and ARM64 (Apple Silicon)
+- **Optimized builds** - Multi-stage Docker builds for smaller images
+- **Volume optimization** - Named volumes for better performance on all platforms
+- **SSH agent forwarding** - Automatic on Linux/macOS, gracefully handled on Windows
+- **Shell compatibility** - Bash and Zsh support with intelligent defaults
 
 ### VS Code Extensions
 
 - **Language Support**: TypeScript, React, Next.js
 - **Code Quality**: ESLint, Prettier, Error Lens
 - **Productivity**: Auto-rename tag, Path IntelliSense, TODO Tree
-- **Styling**: Tailwind CSS IntelliSense, Material Theme
+- **Styling**: Tailwind CSS IntelliSense
 - **Documentation**: Markdown support, Spell checker (English + Swedish)
-- **Git Integration**: GitLens, Git Graph, GitHub PR/Issues
+- **Git Integration**: Built-in Git support
+- **AI Assistance**: GitHub Copilot integration
 
 ### Pre-configured Settings
 
@@ -29,75 +39,219 @@ This directory contains the complete development container setup for the Viscaly
 - Tailwind CSS IntelliSense configuration
 - Spell checking for multiple languages
 - Git auto-fetch and smart commit
+- Cross-platform terminal configuration
 
 ## Quick Start
 
-1. **Prerequisites**
-   - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-   - Install [VS Code](https://code.visualstudio.com/)
-   - Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+### Prerequisites
 
-2. **Open in DevContainer**
-   - Clone the repository
-   - Open the project in VS Code
-   - When prompted, click "Reopen in Container" or use the Command Palette (`Cmd+Shift+P`) and select "Dev Containers: Reopen in Container"
+- **Docker Desktop** - [Download for your platform](https://www.docker.com/products/docker-desktop/)
+  - Windows: Ensure WSL2 is enabled for best performance
+  - macOS: Both Intel and Apple Silicon supported
+  - Linux: Standard Docker Engine or Docker Desktop
+- **VS Code** - [Download for your platform](https://code.visualstudio.com/)
+- **Dev Containers extension** - [Install from marketplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-3. **Wait for Setup**
-   - The container will build automatically (first time may take 5-10 minutes)
-   - Dependencies will be installed automatically
-   - The project will be ready for development
+### Platform-Specific Setup
+
+#### Windows
+- Enable WSL2 for optimal performance
+- Consider using Windows Terminal for better experience
+- SSH agent forwarding requires additional setup (optional)
+
+#### macOS
+- Both Intel and Apple Silicon Macs supported
+- SSH agent forwarding works automatically
+- Docker Desktop handles all platform detection
+
+#### Linux
+- Native Docker support provides best performance
+- SSH agent forwarding works automatically
+- All features fully supported
+
+### Opening in DevContainer
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/viscalyx/viscalyx.se.git
+   cd viscalyx.se
+   ```
+
+2. **Open in VS Code**
+   ```bash
+   code .
+   ```
+
+3. **Start DevContainer**
+   - When prompted, click "Reopen in Container"
+   - Or use Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) → "Dev Containers: Reopen in Container"
+
+4. **Wait for Setup**
+   - First build may take 5-15 minutes (depending on platform and internet speed)
+   - Dependencies install automatically
+   - All tools and extensions configure automatically
+
+## Architecture & Performance
+
+### Multi-Stage Docker Build
+
+The Dockerfile uses multi-stage builds for:
+- **Smaller final images** - Only runtime dependencies included
+- **Better caching** - Separate layers for different concerns
+- **Cross-platform compatibility** - Automatic platform detection
+- **Security** - Minimal attack surface in final image
+
+### Volume Strategy
+
+- **Source code** - Bind mount with optimized caching
+- **node_modules** - Named volume for cross-platform performance
+- **npm cache** - Persistent cache to speed up subsequent builds
+
+### Platform Detection
+
+The setup automatically detects and optimizes for:
+- **AMD64** (Intel/AMD processors)
+- **ARM64** (Apple Silicon, ARM servers)
+- **Different host OS** (Linux, macOS, Windows)
 
 ## Files Structure
 
 ```
 .devcontainer/
-├── devcontainer.json      # Main configuration file
-├── docker-compose.yml     # Docker Compose setup
-├── Dockerfile            # Container image definition
-├── scripts/              # Setup scripts
-│   ├── setup-git.sh     # Git configuration
-│   ├── setup-zsh.sh     # Shell configuration
-│   └── README.md        # Scripts documentation
-└── README.md            # This file
+├── devcontainer.json      # Main configuration file with cross-platform settings
+├── docker-compose.yml     # Multi-platform Docker Compose setup
+├── Dockerfile            # Multi-stage container image definition
+├── .dockerignore         # Optimized build context exclusions
+└── README.md            # This file (comprehensive documentation)
 ```
 
 ## Available Ports
 
 - **3000** or **3001** - Next.js development server
-- **8787** - Cloudflare Wrangler preview / production server
+- **8787** - Cloudflare Wrangler preview / production server  
 - **51204** - Vitest UI server
+
+All ports are automatically forwarded and work across all platforms.
 
 ## Development Workflow
 
-The devcontainer includes helpful aliases for common tasks:
+The devcontainer environment supports all standard npm scripts:
 
 ```bash
 # Development
-dev          # Start development server (npm run dev)
-build        # Build the project (npm run build)
-start        # Start production server (npm run start)
+npm run dev          # Start development server
+npm run build        # Build the project
+npm run preview      # Preview production build
 
 # Code Quality
-lint         # Run ESLint (npm run lint)
-format       # Format code with Prettier (npm run format)
-typecheck    # Run TypeScript checks (npm run type-check)
-check        # Run all checks (npm run check)
+npm run lint         # Run ESLint
+npm run format       # Format code with Prettier
+npm run type-check   # Run TypeScript checks
+npm run check        # Run all checks (lint, test, type, format, spell)
 
-# Git shortcuts
-gs           # git status
-ga           # git add
-gc           # git commit
-gp           # git push
-gl           # git pull
+# Testing
+npm run test         # Run tests
+npm run test:watch   # Watch mode testing
+npm run test:coverage # Coverage report
+
+# Deployment
+npm run deploy       # Deploy to Cloudflare
 ```
 
 ## Customization
 
 ### Adding Extensions
 
-Edit the `extensions` array in `devcontainer.json` to add more VS Code extensions.
+Edit the `extensions` array in `devcontainer.json` to add more VS Code extensions:
+
+```json
+"extensions": [
+  "existing.extensions",
+  "new.extension.id"
+]
+```
 
 ### Modifying Settings
+
+VS Code settings can be customized in the `customizations.vscode.settings` section of `devcontainer.json`.
+
+### Platform-Specific Customizations
+
+The configuration automatically adapts to different platforms, but you can add platform-specific customizations using VS Code's conditional settings.
+
+## Troubleshooting
+
+### Build Issues
+
+**Slow builds on Windows:**
+- Ensure WSL2 is enabled
+- Consider using WSL2 backend for Docker Desktop
+- Place project files in WSL2 filesystem for better performance
+
+**Platform architecture issues:**
+- The setup automatically detects ARM64 (Apple Silicon) vs AMD64
+- If you encounter issues, try: `docker buildx create --use`
+
+**Permission issues:**
+- The container uses a non-root user for security
+- All file permissions are handled automatically
+- On Windows, ensure Docker Desktop has proper file sharing permissions
+
+### Runtime Issues
+
+**SSH agent not working:**
+- Linux/macOS: Ensure SSH_AUTH_SOCK environment variable is set
+- Windows: SSH agent forwarding requires additional setup or use Git credentials
+
+**Port conflicts:**
+- Default ports (3000, 3001, 8787, 51204) can be changed in docker-compose.yml
+- VS Code will automatically forward ports and notify you
+
+**Performance issues:**
+- node_modules are stored in a named volume for better performance
+- If you experience issues, try rebuilding: "Dev Containers: Rebuild Container"
+
+### Development Environment
+
+**Extensions not loading:**
+- Wait for the container to fully initialize
+- Check the "Output" panel for extension installation logs
+- Some extensions require a reload: "Developer: Reload Window"
+
+**Git configuration:**
+- Git is pre-configured with safe defaults
+- You may need to set your user.name and user.email:
+  ```bash
+  git config --global user.name "Your Name"
+  git config --global user.email "your.email@example.com"
+  ```
+
+## Security Considerations
+
+- **Non-root user**: Container runs as 'vscode' user for security
+- **Minimal base image**: Uses slim Debian image to reduce attack surface  
+- **No secrets in image**: All sensitive data handled via environment variables
+- **Read-only configurations**: System configurations are immutable
+- **SSH agent isolation**: SSH agent socket is properly isolated and secured
+
+## Performance Optimization
+
+- **Multi-stage builds**: Optimized image layers for faster builds and smaller size
+- **Build cache**: Docker layer caching speeds up subsequent builds
+- **Named volumes**: node_modules and npm cache persist across container restarts
+- **Platform detection**: Automatic optimization for ARM64 and AMD64 architectures
+
+## Contributing
+
+When modifying the devcontainer configuration:
+
+1. Test on multiple platforms if possible (Linux, macOS, Windows)
+2. Ensure the build works for both AMD64 and ARM64
+3. Update this README with any new features or requirements
+4. Consider the impact on build time and image size
+5. Follow the project's containerization best practices
+
+For more details about the project setup, see the main [README.md](../README.md) in the project root.
 
 Update the `settings` object in `devcontainer.json` to customize VS Code behavior.
 

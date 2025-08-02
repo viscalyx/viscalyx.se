@@ -1,0 +1,70 @@
+# Version control
+.git*
+.gitignore
+
+# Dependencies that will be installed in container
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+.next
+out
+dist
+build
+*.tsbuildinfo
+
+# Development files
+.env.*
+!.env.example
+*.log
+coverage
+.nyc_output
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Test files
+test/
+tests/
+spec/
+__tests__/
+*.test.*
+*.spec.*
+
+# Development container files (avoid recursion)
+.devcontainer/
+
+# Cache directories
+.cache
+.npm
+.yarn
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# CI/CD files
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Package manager lock files (will be generated in container)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

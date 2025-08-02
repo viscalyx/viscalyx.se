@@ -4,10 +4,14 @@ services:
       context: ..
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      # Mount the root folder that contains .git
+      # Mount the root folder that contains .git with cross-platform caching
       - ..:/workspace:cached
-    # Override the workspace ownership in the container
-    command: bash -c "sleep infinity"
+      # Create named volume for node_modules for better performance
+      - node_modules:/workspace/node_modules
+      # Create named volume for npm cache
+      - npm-cache:/home/vscode/.npm
+    # Keep container running
+    command: sleep infinity
     # Set environment variables
     environment:
       - NODE_ENV=development
@@ -18,5 +22,11 @@ services:
       - '3001:3001'
       - '8787:8787'
       - '51204:51204'
-    # Use the default shell
+    # Use the vscode user (created by base image)
     user: vscode
+    # Ensure proper init system for signal handling
+    init: true
+
+volumes:
+  node_modules:
+  npm-cache:
