@@ -55,16 +55,19 @@ This directory contains the complete development container setup for the Viscaly
 ### Platform-Specific Setup
 
 #### Windows
+
 - Enable WSL2 for optimal performance
 - Consider using Windows Terminal for better experience
 - SSH agent forwarding requires additional setup (optional)
 
 #### macOS
+
 - Both Intel and Apple Silicon Macs supported
 - SSH agent forwarding works automatically
 - Docker Desktop handles all platform detection
 
 #### Linux
+
 - Native Docker support provides best performance
 - SSH agent forwarding works automatically
 - All features fully supported
@@ -72,12 +75,14 @@ This directory contains the complete development container setup for the Viscaly
 ### Opening in DevContainer
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/viscalyx/viscalyx.se.git
    cd viscalyx.se
    ```
 
 2. **Open in VS Code**
+
    ```bash
    code .
    ```
@@ -96,6 +101,7 @@ This directory contains the complete development container setup for the Viscaly
 ### Multi-Stage Docker Build
 
 The Dockerfile uses multi-stage builds for:
+
 - **Smaller final images** - Only runtime dependencies included
 - **Better caching** - Separate layers for different concerns
 - **Cross-platform compatibility** - Automatic platform detection
@@ -110,6 +116,7 @@ The Dockerfile uses multi-stage builds for:
 ### Platform Detection
 
 The setup automatically detects and optimizes for:
+
 - **AMD64** (Intel/AMD processors)
 - **ARM64** (Apple Silicon, ARM servers)
 - **Different host OS** (Linux, macOS, Windows)
@@ -128,7 +135,7 @@ The setup automatically detects and optimizes for:
 ## Available Ports
 
 - **3000** or **3001** - Next.js development server
-- **8787** - Cloudflare Wrangler preview / production server  
+- **8787** - Cloudflare Wrangler preview / production server
 - **51204** - Vitest UI server
 
 All ports are automatically forwarded and work across all platforms.
@@ -184,41 +191,62 @@ The configuration automatically adapts to different platforms, but you can add p
 ### Build Issues
 
 **Slow builds on Windows:**
+
 - Ensure WSL2 is enabled
 - Consider using WSL2 backend for Docker Desktop
 - Place project files in WSL2 filesystem for better performance
 
 **Platform architecture issues:**
+
 - The setup automatically detects ARM64 (Apple Silicon) vs AMD64
 - If you encounter issues, try: `docker buildx create --use`
 
 **Permission issues:**
+
 - The container uses a non-root user for security
 - All file permissions are handled automatically
 - On Windows, ensure Docker Desktop has proper file sharing permissions
 
 ### Runtime Issues
 
+**npm command not found:**
+
+- This can happen if the postCreateCommand runs before devcontainer features are fully initialized
+- The configuration uses `bash -l` to ensure proper shell initialization
+- If you still encounter this issue, try rebuilding the container: "Dev Containers: Rebuild Container"
+- As a workaround, you can manually run `npm install` after the container starts
+
+**npm permission errors (EACCES):**
+
+- This was resolved by removing the node_modules named volume that could cause permission conflicts
+- node_modules are now stored directly in the workspace with proper vscode user ownership
+- If you encounter permission errors, try rebuilding the container: "Dev Containers: Rebuild Container"
+
 **SSH agent not working:**
+
 - Linux/macOS: Ensure SSH_AUTH_SOCK environment variable is set
 - Windows: SSH agent forwarding requires additional setup or use Git credentials
 
 **Port conflicts:**
+
 - Default ports (3000, 3001, 8787, 51204) can be changed in docker-compose.yml
 - VS Code will automatically forward ports and notify you
 
 **Performance issues:**
-- node_modules are stored in a named volume for better performance
+
+- node_modules are stored directly in the workspace with proper caching
 - If you experience issues, try rebuilding: "Dev Containers: Rebuild Container"
 
 ### Development Environment
 
 **Extensions not loading:**
+
 - Wait for the container to fully initialize
 - Check the "Output" panel for extension installation logs
 - Some extensions require a reload: "Developer: Reload Window"
 
 **Git configuration:**
+
 - Git is pre-configured with safe defaults
 - You may need to set your user.name and user.email:
   ```bash
@@ -229,7 +257,7 @@ The configuration automatically adapts to different platforms, but you can add p
 ## Security Considerations
 
 - **Non-root user**: Container runs as 'vscode' user for security
-- **Minimal base image**: Uses slim Debian image to reduce attack surface  
+- **Minimal base image**: Uses slim Debian image to reduce attack surface
 - **No secrets in image**: All sensitive data handled via environment variables
 - **Read-only configurations**: System configurations are immutable
 - **SSH agent isolation**: SSH agent socket is properly isolated and secured

@@ -218,10 +218,11 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "bash -c 'sudo npm install -g npm@latest && npm install && npm run check'",
+  // Ensure node_modules volume is owned by vscode to avoid permission issues
+  "postCreateCommand": "bash -l -c 'sudo chown -R vscode:vscode /workspace && mkdir -p /workspace/node_modules && sudo chown -R vscode:vscode /workspace/node_modules && sudo mkdir -p /home/vscode/.npm && sudo chown -R vscode:vscode /home/vscode/.npm && npm install && npm run check'",
 
   // Use 'postStartCommand' to run commands after the container starts
-  "postStartCommand": "bash -c 'git config --global --unset gpg.ssh.program 2>/dev/null || true; git config --global init.defaultBranch main'",
+  "postStartCommand": "bash -l -c 'git config --global --unset gpg.ssh.program 2>/dev/null || true; git config --global init.defaultBranch main'",
 
   // Configure remote user
   "remoteUser": "vscode"
