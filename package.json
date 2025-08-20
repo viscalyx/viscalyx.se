@@ -45,7 +45,7 @@
     "next-intl": "^4.3.4",
     "node-html-parser": "^7.0.1",
     "prismjs": "^1.30.0",
-    "react": "^19.1.0",
+    "react": "^19.1.1",
     "react-dom": "^19.1.0",
     "rehype-prism-plus": "^2.0.1",
     "rehype-stringify": "^10.0.1",
