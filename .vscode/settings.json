@@ -42,7 +42,8 @@
   "files.exclude": {
     "**/node_modules": true,
     "**/.next": true,
-    "**/out": true,
+    "**/.open-next": true,
+    "**/.wrangler": true,
     "**/.git": true,
     "**/.DS_Store": true,
     "**/tsconfig.tsbuildinfo": true
