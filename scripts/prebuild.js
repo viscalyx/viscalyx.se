@@ -19,62 +19,62 @@
 
 // cSpell:ignore prebuild esbuild copyfile sitedata
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { execSync } = require('child_process')
+const fs = require('fs')
+const path = require('path')
 
 // Step 1: Clean Next.js build directories
-console.log('🧹 Cleaning Next.js build artifacts...');
+console.log('🧹 Cleaning Next.js build artifacts...')
 if (fs.existsSync('.next')) {
-  fs.rmSync('.next', { recursive: true, force: true });
+  fs.rmSync('.next', { recursive: true, force: true })
 }
 if (fs.existsSync('out')) {
-  fs.rmSync('out', { recursive: true, force: true });
+  fs.rmSync('out', { recursive: true, force: true })
 }
 
 // Step 2 & 3: Handle OpenNext directory (if it exists)
 if (fs.existsSync('.open-next')) {
-  console.log('🔧 Fixing permissions on OpenNext config files...');
+  console.log('🔧 Fixing permissions on OpenNext config files...')
   // Fix permissions on config files (esbuild creates them with --w-------)
   // This needs to happen BEFORE the bundler tries to read them during the next build
   // Without this fix, you'll see errors like:
   //   ✘ [Error: ENOENT: no such file or directory,
   //     copyfile '/workspace/.open-next/.build/open-next.config.edge.mjs'
   //     -> '/workspace/.open-next/middleware/open-next.config.mjs'
-  const buildDir = path.join('.open-next', '.build');
-  
+  const buildDir = path.join('.open-next', '.build')
+
   if (fs.existsSync(buildDir)) {
-    const files = fs.readdirSync(buildDir);
-    files.forEach((file) => {
+    const files = fs.readdirSync(buildDir)
+    files.forEach(file => {
       if (file.startsWith('open-next.config') && file.endsWith('.mjs')) {
-        const filePath = path.join(buildDir, file);
+        const filePath = path.join(buildDir, file)
         try {
-          fs.chmodSync(filePath, 0o644);
+          fs.chmodSync(filePath, 0o644)
         } catch {
           // Silently ignore permission errors (e.g., on Windows)
         }
       }
-    });
+    })
   }
 
-  console.log('🗑️  Cleaning OpenNext artifacts (preserving .build)...');
+  console.log('🗑️  Cleaning OpenNext artifacts (preserving .build)...')
   // Clean everything in .open-next EXCEPT the .build directory
   // The .build directory contains compiled configs that we want to reuse
-  const items = fs.readdirSync('.open-next');
-  items.forEach((item) => {
+  const items = fs.readdirSync('.open-next')
+  items.forEach(item => {
     if (item !== '.build') {
-      const itemPath = path.join('.open-next', item);
-      fs.rmSync(itemPath, { recursive: true, force: true });
+      const itemPath = path.join('.open-next', item)
+      fs.rmSync(itemPath, { recursive: true, force: true })
     }
-  });
+  })
 }
 
 // Step 4: Rebuild site data
-console.log('📊 Building site data...');
+console.log('📊 Building site data...')
 try {
-  execSync('npm run build:sitedata', { stdio: 'inherit' });
-  console.log('✅ Prebuild complete!');
+  execSync('npm run build:sitedata', { stdio: 'inherit' })
+  console.log('✅ Prebuild complete!')
 } catch {
-  console.error('❌ Failed to build site data');
-  process.exit(1);
+  console.error('❌ Failed to build site data')
+  process.exit(1)
 }
