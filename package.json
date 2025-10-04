@@ -6,7 +6,7 @@
   "scripts": {
     "predev": "npm run build:sitedata",
     "dev": "next dev",
-    "prebuild": "./scripts/prebuild.sh",
+    "prebuild": "node ./scripts/prebuild.js",
     "build": "cross-env NODE_ENV=production next build",
     "start": "next start",
     "lint": "npx eslint . --format=stylish && next lint",
