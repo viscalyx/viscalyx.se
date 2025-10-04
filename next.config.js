@@ -1,18 +1,21 @@
+import { fileURLToPath } from 'url'
+import path from 'path'
+import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
+import withNextIntl from 'next-intl/plugin'
+import { codecovNextJSWebpackPlugin } from '@codecov/nextjs-webpack-plugin'
+
+// emulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 // Only initialize OpenNext Cloudflare for development/non-production environments
 if (process.env.NODE_ENV !== 'production') {
   try {
-    const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
     initOpenNextCloudflareForDev()
   } catch (error) {
-    console.warn(
-      'Warning: Failed to load @opennextjs/cloudflare module:',
-      error.message
-    )
+    console.warn('Warning: Failed to load @opennextjs/cloudflare module:', error.message)
   }
 }
-
-const withNextIntl = require('next-intl/plugin')('./i18n.ts')
-const { codecovNextJSWebpackPlugin } = require('@codecov/nextjs-webpack-plugin')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -113,4 +116,5 @@ const nextConfig = {
   },
 }
 
-module.exports = withNextIntl(nextConfig)
+// Wrap and export as ESM
+export default withNextIntl('./i18n.ts')(nextConfig)
