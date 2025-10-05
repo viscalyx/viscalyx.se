@@ -340,8 +340,7 @@
     "xattr",
     "setfattr",
     "inotifywait",
-    "sparsebundle",
-    "uniquie"
+    "sparsebundle"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "flagWords": [
