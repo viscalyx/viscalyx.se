@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ExternalLink, Mail } from 'lucide-react'
+import { Route } from 'next'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -27,7 +28,7 @@ const Footer = () => {
       // If we're not on the home page, navigate to home first
       const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
       if (currentPath !== '/') {
-        router.push(`/${locale}/${href}`)
+        router.push(`/${locale}/${href}` as Route)
       } else {
         // We're already on home page, just scroll to section
         const element = document.querySelector(href)
@@ -186,7 +187,7 @@ const Footer = () => {
                     </button>
                   ) : (
                     <Link
-                      href={link.href}
+                      href={link.href as Route}
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
@@ -224,7 +225,7 @@ const Footer = () => {
                     </button>
                   ) : (
                     <Link
-                      href={link.href}
+                      href={link.href as Route}
                       className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
                     >
                       {link.name}
