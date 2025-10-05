@@ -5,7 +5,11 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind,consistency=cached"
+    {
+      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME}${localEnv:USERPROFILE}/.ssh-agent-fallback.sock}",
+      "target": "/ssh-agent.sock",
+      "type": "bind"
+    }
   ],
   "containerEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent.sock",
