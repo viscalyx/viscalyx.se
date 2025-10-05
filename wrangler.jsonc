@@ -1,3 +1,4 @@
+// NOTE: Always re-run `npm run cf-typegen` after modifying this file
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
