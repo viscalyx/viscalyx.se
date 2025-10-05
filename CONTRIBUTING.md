@@ -126,6 +126,36 @@ To ensure a consistent development environment, this project supports VS Code De
    npm install
    ```
 
+4. **Set up environment variables** (if needed):
+
+   This project uses `.env` files for both `npm run dev` (Next.js) and `npm run preview` (Wrangler).
+
+   **Files committed to repository:**
+   - `.env.development` - Shared development defaults
+   - `.env.production` - Shared production defaults (if needed)
+   - `.env.example` - Template showing all possible variables
+
+   **Files for local secrets (gitignored):**
+   - `.env.development.local` - Your local development secrets/overrides
+   - `.env.local` - Your local overrides for all environments
+
+   If you need to add local secrets or override defaults:
+
+   ```bash
+   cp .env.example .env.development.local
+   ```
+
+   Edit `.env.development.local` and add your secret values.
+
+   > **Note**: All matching .env files are loaded and values are merged. For each variable,
+   > the value from the most specific file is used, with this precedence:
+   > 1. `.env.development.local` (most specific - your local secrets)
+   > 2. `.env.local`
+   > 3. `.env.development` (shared defaults)
+   > 4. `.env` (least specific - global defaults)
+   >
+   > This works for both Next.js and Wrangler. See [Cloudflare's documentation](https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets) for details.
+
 ## Development
 
 ```bash
