@@ -36,6 +36,7 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   reactStrictMode: true,
+  typedRoutes: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
