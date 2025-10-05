@@ -21,6 +21,7 @@ import {
   Tag,
   User,
 } from 'lucide-react'
+import { Route } from 'next'
 import { useFormatter, useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -604,7 +605,7 @@ const BlogPostContent = ({
                       </h3>
                       {teamMember && (
                         <Link
-                          href={`/team/${teamMember.id}`}
+                          href={`/team/${teamMember.id}` as Route}
                           className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
                         >
                           <span className="font-medium text-sm underline decoration-1 underline-offset-2">
@@ -695,7 +696,7 @@ const BlogPostContent = ({
                     {relatedPosts.map(relatedPost => (
                       <Link
                         key={relatedPost.slug}
-                        href={`/blog/${relatedPost.slug}`}
+                        href={`/blog/${relatedPost.slug}` as Route}
                         className="flex space-x-3 group"
                       >
                         <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">

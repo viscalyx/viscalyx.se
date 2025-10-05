@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Code, Sparkles } from 'lucide-react'
+import { Route } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -79,7 +80,7 @@ const Hero = () => {
       }
     } else {
       // Regular page navigation
-      router.push(href)
+      router.push(href as Route)
     }
   }
 

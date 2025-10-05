@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, Settings, X } from 'lucide-react'
+import { Route } from 'next'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -163,7 +164,7 @@ const Header = () => {
               return (
                 <MotionLink
                   key={item.name}
-                  href={getHrefUrl(item.href)}
+                  href={getHrefUrl(item.href) as Route}
                   onClick={e => handleLinkClick(e, item.href)}
                   className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
                   initial={{ opacity: 0, y: -20 }}
@@ -289,7 +290,7 @@ const Header = () => {
                     transition={{ delay: index * 0.1 }}
                   >
                     <Link
-                      href={getHrefUrl(item.href)}
+                      href={getHrefUrl(item.href) as Route}
                       onClick={e => handleLinkClick(e, item.href)}
                       className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer"
                     >

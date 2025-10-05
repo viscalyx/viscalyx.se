@@ -1,6 +1,7 @@
 'use client'
 
 import { Calendar, Clock, User } from 'lucide-react'
+import { Route } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTranslations, useFormatter } from 'next-intl'
@@ -191,7 +192,10 @@ const BlogPage = () => {
               {t('featuredPost.title')}
             </h2>
 
-            <Link href={`/blog/${displayFeaturedPost.slug}`} className="block">
+            <Link
+              href={`/blog/${displayFeaturedPost.slug}` as Route}
+              className="block"
+            >
               <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 transform">
                 <div className="grid lg:grid-cols-2">
                   <div className="relative h-64 lg:h-full">
@@ -269,7 +273,7 @@ const BlogPage = () => {
             {displayBlogPosts.map((post: BlogPostMeta) => (
               <Link
                 key={post.slug}
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.slug}` as Route}
                 className="block"
               >
                 <article className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:-translate-y-2 transform">
