@@ -75,13 +75,44 @@ vi.mock('next/image', () => {
     quality?: number
     placeholder?: string
     blurDataURL?: string
+    unoptimized?: boolean
+    loading?: 'lazy' | 'eager'
     [key: string]: unknown
   }
 
-  const Image = ({ src, alt, fill, ...rest }: ImageProps) => {
-    // Suppress unused variable warning for fill prop
+  const Image = ({
+    src,
+    alt,
+    // Next.js specific props that should not be passed to native img
+    fill,
+    priority,
+    quality,
+    placeholder,
+    blurDataURL,
+    unoptimized,
+    loading,
+    ...rest
+  }: ImageProps) => {
+    // Suppress unused variable warnings for Next.js-specific props
     void fill
-    return React.createElement('img', { src, alt, ...rest })
+    void priority
+    void quality
+    void placeholder
+    void blurDataURL
+    void unoptimized
+
+    // Only pass loading if it's a valid HTML attribute value
+    const imgProps: React.ImgHTMLAttributes<HTMLImageElement> = {
+      src,
+      alt,
+      ...rest,
+    }
+
+    if (loading) {
+      imgProps.loading = loading
+    }
+
+    return React.createElement('img', imgProps)
   }
 
   Image.displayName = 'MockedImage'
