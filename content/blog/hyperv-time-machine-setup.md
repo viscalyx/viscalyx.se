@@ -37,8 +37,9 @@ Use USB-C or internal SATA. Leave it **un-formatted** in Windows.
    - 4 GB RAM minimum.
    - Attach **Ubuntu Server 24.04 LTS** ISO.
    - Add `TimeMachineData.vhdx` as _second_ drive.
-2. Install Ubuntu with default partitioning for the system disk; leave the 1 TB VHDX untouched.
-3. Enable **OpenSSH Server** during install.
+1. Install Ubuntu with default partitioning for the system disk; leave the
+   1 TB VHDX untouched.
+1. Enable **OpenSSH Server** during install.
 
 > [!TIP]
 > A suggestion is to add the second drive _after_ installation, to
@@ -103,7 +104,7 @@ ufw enable
 
 1. **Finder > Go > Connect to Server** > `smb://backup01.company.se/timemachine`
    - Log in as **tmbackup**, save in keychain.
-2. **System Settings > General > Time Machine** > **Add Backup Disk…**
+1. **System Settings > General > Time Machine** > **Add Backup Disk…**
    - Select the network volume.
    - Choose **Encrypt** if desired.
 
@@ -127,10 +128,18 @@ sudo chmod 750 /srv/timemachine      # or 770
 
 A quick note on those permission modes:
 
-- `750` grants full access (read/write/execute) to the owner (`tmbackup`), read and execute to the group, and no access to others. Use this when you want the share accessible only to the tmbackup account and any users in its group.
-- `770` is slightly more permissive for collaborators: it grants full access to owner and group, and still denies others. Choose `770` if you have multiple system accounts in the same group that should be able to write to the share (for example, if you manage backups from several service accounts).
+- `750` grants full access (read/write/execute) to the owner
+  (`tmbackup`), read and execute to the group, and no access to others.
+  Use this when you want the share accessible only to the `tmbackup`
+  account and any users in its group.
+- `770` is slightly more permissive for collaborators: it grants full
+  access to owner and group, and still denies others. Choose `770` if
+  you have multiple system accounts in the same group that should be
+  able to write to the share (for example, if you manage backups from
+  several service accounts).
 
-In both cases the share remains closed to "others" (world), which helps avoid accidental guest access from macOS clients.
+In both cases the share remains closed to "others" (world), which helps
+avoid accidental guest access from macOS clients.
 
 ### 8.2 - Ensure xattrs & ACLs
 
@@ -159,4 +168,5 @@ _Check UID in_ `smbstatus --shares`. Should be the tmbackup UID, **not 65534**
 | Live file creation | `sudo inotifywait -m /srv/timemachine` during connection  |
 
 > [!NOTE]
-> Once the hidden file `.com.apple.timemachine.supported` and the `<Mac-Name>.sparsebundle` appear in `/srv/timemachine`, Time Machine sees the share as fully read/write.
+> Once the hidden file `.com.apple.timemachine.supported` and the `<Mac-Name>.sparsebundle`
+> appear in `/srv/timemachine`, Time Machine sees the share as fully read/write.
