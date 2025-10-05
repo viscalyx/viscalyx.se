@@ -38,12 +38,11 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
+# Environment variables
+# Only .local files should contain secrets and are gitignored below.
+# All other .env files can be committed to share configuration across contributors.
 .env.local
+.env.*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
