@@ -29,7 +29,7 @@
     "prepreview": "rimraf .open-next .wrangler",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "build:sitedata": "npm run build:blog && npm run build:page-dates",
     "build:blog": "node scripts/build-blog-data.js",
     "build:page-dates": "node scripts/build-page-dates.js",

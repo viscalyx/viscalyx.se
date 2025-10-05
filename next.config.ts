@@ -1,20 +1,9 @@
-// Only initialize OpenNext Cloudflare for development/non-production environments
-if (process.env.NODE_ENV !== 'production') {
-  try {
-    const { initOpenNextCloudflareForDev } = require('@opennextjs/cloudflare')
-    initOpenNextCloudflareForDev()
-  } catch (error) {
-    console.warn(
-      'Warning: Failed to load @opennextjs/cloudflare module:',
-      error.message
-    )
-  }
-}
+import type { NextConfig } from 'next'
+import createNextIntlPlugin from 'next-intl/plugin'
 
-const withNextIntl = require('next-intl/plugin')('./i18n.ts')
+const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -98,4 +87,19 @@ const nextConfig = {
   },
 }
 
-module.exports = withNextIntl(nextConfig)
+// Initialize OpenNext Cloudflare for development (non-production)
+// This needs to be done conditionally and without top-level await
+if (process.env.NODE_ENV !== 'production') {
+  import('@opennextjs/cloudflare')
+    .then(({ initOpenNextCloudflareForDev }) => {
+      initOpenNextCloudflareForDev()
+    })
+    .catch(error => {
+      console.warn(
+        'Warning: Failed to load @opennextjs/cloudflare module:',
+        error instanceof Error ? error.message : 'Unknown error'
+      )
+    })
+}
+
+export default withNextIntl(nextConfig)

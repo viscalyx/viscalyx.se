@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
+import { Route } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -31,7 +32,7 @@ const OpenSource = () => {
     if (href.startsWith('http')) {
       window.open(href, '_blank', 'noopener noreferrer')
     } else {
-      router.push(href)
+      router.push(href as Route)
     }
   }
   const contributions = [
