@@ -19,7 +19,6 @@
     "spell:fix": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\" --show-suggestions",
     "clean:all": "rimraf .next out .open-next .wrangler",
     "analyze": "ANALYZE=true npm run build",
-    "analyze:bundle": "CODECOV_TOKEN=${CODECOV_TOKEN} npm run build",
     "export": "next export",
     "test": "vitest run",
     "test:watch": "vitest",
