@@ -25,6 +25,7 @@ export default defineConfig([
       'out/**',
       'build/**',
       '.open-next/**',
+      'cloudflare-env.d.ts',
     ],
   },
   {
