@@ -32,9 +32,12 @@ If you haven't already, please read the main [README.md](README.md) for an overv
   - [Commit Messages](#commit-messages)
   - [Pull Request (PR) Process](#pull-request-pr-process)
   - [Code Review](#code-review)
-- [SSH Agent Setup](#ssh-agent-setup)
-  - [macOS / Linux](#macos--linux)
-  - [Windows (PowerShell)](#windows-powershell)
+- [Dev Container Setup & Requirements](#dev-container-setup--requirements)
+  - [Cross-Platform Compatibility](#cross-platform-compatibility)
+  - [Prerequisites by Platform](#prerequisites-by-platform)
+  - [Verifying Your Setup](#verifying-your-setup)
+  - [Troubleshooting](#troubleshooting)
+  - [What's Included in the Dev Container](#whats-included-in-the-dev-container)
 - [Spell Checking Setup](#spell-checking-setup)
   - [Configuration](#configuration)
   - [Usage](#usage)
@@ -696,57 +699,254 @@ docs: update contributing guidelines for blog posts
 - Be prepared to discuss your changes and make adjustments based on feedback.
 - After approval and all checks pass, your PR will be merged.
 
-## SSH Agent Setup
+## Dev Container Setup & Requirements
 
-This project supports forwarding your SSH agent into the dev container cross-platform. The default `devcontainer.json` uses:
+This project uses VS Code Dev Containers to provide a consistent, cross-platform development environment. The devcontainer automatically handles all dependencies, tools, and configuration.
+
+### Cross-Platform Compatibility
+
+The devcontainer is designed to work seamlessly on Linux, macOS, and Windows. The configuration includes a fallback mechanism for SSH agent forwarding:
 
 ```jsonc
 "mounts": [
-  "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind,consistency=cached"
-],
-"containerEnv": {
-  "SSH_AUTH_SOCK": "/ssh-agent.sock"
-}
+  {
+    "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME}${localEnv:USERPROFILE}/.ssh-agent-fallback.sock}",
+    "target": "/ssh-agent.sock",
+    "type": "bind"
+  }
+]
 ```
 
-### macOS / Linux
+This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific path using `HOME` (Linux/macOS) or `USERPROFILE` (Windows).
 
-Typically, your login shell exports `SSH_AUTH_SOCK` automatically. If not:
+### Prerequisites by Platform
 
-1. Start the agent and add your key:
+#### All Platforms (Common)
+
+1. **Docker Desktop** (or Docker Engine + Docker Compose)
+   - Minimum version: Docker 20.10+
+   - Download: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+
+2. **VS Code**
+   - Extension: **Dev Containers** (`ms-vscode-remote.remote-containers`)
+
+3. **Git**
+   - Configured with user name and email
+
+#### Linux-Specific Setup
+
+**Docker Installation:**
+
+```bash
+# Install Docker Engine
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+# Add your user to the docker group (avoid using sudo)
+sudo usermod -aG docker $USER
+newgrp docker  # or logout/login
+
+# Verify Docker works without sudo
+docker run hello-world
+```
+
+**SSH Agent Setup:**
+
+```bash
+# 1. Start SSH agent automatically (add to ~/.bashrc or ~/.zshrc)
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval "$(ssh-agent -s)"
+fi
+
+# 2. Add your SSH key to the agent
+ssh-add ~/.ssh/id_rsa  # or your specific key file
+# Or for ed25519:
+ssh-add ~/.ssh/id_ed25519
+
+# 3. Verify SSH agent is running
+echo $SSH_AUTH_SOCK
+# Should output something like: /tmp/ssh-XXXXXXX/agent.XXXXX
+```
+
+#### macOS-Specific Setup
+
+**Docker Desktop Configuration:**
+
+1. Install Docker Desktop for Mac
+2. In Docker Desktop Preferences:
+   - **Resources > File Sharing**: Ensure your project directory is shared
+   - **Resources > Advanced**: Allocate at least 4GB RAM, 2 CPUs
+   - **General**: Enable appropriate settings for your Mac architecture
+
+**SSH Agent Setup:**
+
+```bash
+# 1. macOS has SSH agent built-in, configure it for persistence
+# Add to ~/.ssh/config:
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_rsa  # or your key file
+
+# 2. Add key to macOS Keychain (one-time)
+ssh-add --apple-use-keychain ~/.ssh/id_rsa
+
+# 3. Verify SSH agent
+echo $SSH_AUTH_SOCK
+# Should output: /private/tmp/com.apple.launchd.XXXXXXXXX/Listeners
+```
+
+**Performance Note:** macOS uses a VM for Docker. The `:cached` mount option in docker-compose.yml helps optimize file system performance.
+
+#### Windows-Specific Setup
+
+**Prerequisites:**
+
+- Windows 10/11 (Pro, Enterprise, or Education for Hyper-V)
+- WSL 2 (Windows Subsystem for Linux 2)
+
+**WSL 2 Installation:**
+
+```powershell
+# In PowerShell as Administrator:
+
+# 1. Enable WSL 2
+wsl --install
+
+# 2. Set WSL 2 as default
+wsl --set-default-version 2
+
+# 3. Install a Linux distribution (e.g., Ubuntu)
+wsl --install -d Ubuntu
+
+# 4. Verify WSL 2
+wsl --list --verbose
+# Should show VERSION 2
+```
+
+**Docker Desktop for Windows:**
+
+1. Install Docker Desktop for Windows
+2. During installation:
+   - Enable "Use WSL 2 instead of Hyper-V"
+   - Enable "Install required Windows components for WSL 2"
+3. In Docker Desktop Settings:
+   - **General**: "Use the WSL 2 based engine" (checked)
+   - **Resources > WSL Integration**: Enable for your WSL distro
+
+**SSH Agent Setup (Choose One Option):**
+
+**Option A: Windows OpenSSH Agent** (Recommended)
+
+```powershell
+# In PowerShell as Administrator:
+
+# 1. Enable and start SSH agent service
+Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+
+# 2. Add your SSH key
+ssh-add $env:USERPROFILE\.ssh\id_rsa
+
+# 3. Configure Git to use Windows SSH
+git config --global core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe"
+```
+
+**Option B: SSH Agent in WSL**
+
+```bash
+# In WSL terminal:
+
+# 1. Add to ~/.bashrc or ~/.zshrc
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+  if [ ! -S "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -a $SSH_AUTH_SOCK)" > /dev/null
+  fi
+fi
+
+# 2. Add SSH key
+ssh-add ~/.ssh/id_rsa
+```
+
+**Git Line Endings Configuration:**
+
+```bash
+# In WSL, configure Git line endings
+git config --global core.autocrlf input
+git config --global core.eol lf
+```
+
+### Verifying Your Setup
+
+After completing the platform-specific setup, verify everything works:
+
+```bash
+# 1. Test SSH agent
+ssh-add -l
+# Should list your SSH keys
+
+# 2. Test Docker
+docker run hello-world
+
+# 3. Test Docker Compose
+docker compose version
+
+# 4. Open project in VS Code
+code .
+
+# 5. VS Code should prompt to "Reopen in Container"
+#    Or use Command Palette: "Dev Containers: Reopen in Container"
+```
+
+### Troubleshooting
+
+**SSH Agent Not Working:**
+
+If SSH agent forwarding doesn't work after setup:
+
+1. **Verify environment variable:**
 
    ```bash
-   eval "$(ssh-agent -s)"
-   ssh-add ~/.ssh/id_rsa
+   echo $SSH_AUTH_SOCK
    ```
 
-2. Verify `echo $SSH_AUTH_SOCK` is set.
+   Should show a valid path.
 
-### Windows (PowerShell)
+2. **Check SSH keys are added:**
 
-1. Ensure the **OpenSSH Authentication Agent** service is running:
-
-   ```powershell
-   Start-Service ssh-agent
+   ```bash
+   ssh-add -l
    ```
 
-2. Add the named pipe to your user environment, so VS Code picks it up:
+3. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git operations, or configure personal access tokens.
 
-   ```powershell
-   [Environment]::SetEnvironmentVariable(
-     "SSH_AUTH_SOCK",
-     "//./pipe/openssh-ssh-agent",
-     "User"
-   )
-   ```
+**Container Build Fails:**
 
-3. Log out, then log back in, and verify it’s available by running:
+- Ensure Docker Desktop is running
+- Check Docker has sufficient resources (CPU/RAM)
+- Try rebuilding: Command Palette → "Dev Containers: Rebuild Container"
 
-   ```powershell
-   ls env:ssh*
-   ```
+**Performance Issues on macOS/Windows:**
 
-After this, `${localEnv:SSH_AUTH_SOCK}` will resolve correctly on all platforms.
+- Increase Docker Desktop resource allocation
+- On macOS, ensure VirtioFS is enabled for better performance
+- On Windows, ensure WSL 2 integration is enabled
+
+### What's Included in the Dev Container
+
+The devcontainer automatically provides:
+
+- **Node.js 24 LTS** (Debian Bookworm base)
+- **Git** with safe directory configuration
+- **GitHub CLI** (`gh`) pre-installed
+- **Zsh** with Oh My Zsh configuration
+- **All VS Code extensions** from `.vscode/extensions.json`
+- **Configured settings** for formatting, linting, and spell checking
+- **Port forwarding** for Next.js (3000, 3001), Wrangler (8787), and Vitest UI (51204)
+- **Automatic npm install** on container creation
+
+You don't need to manually install any of these tools!
 
 ## Spell Checking Setup
 
