@@ -149,6 +149,7 @@ To ensure a consistent development environment, this project supports VS Code De
 
    > **Note**: All matching .env files are loaded and values are merged. For each variable,
    > the value from the most specific file is used, with this precedence:
+   >
    > 1. `.env.development.local` (most specific - your local secrets)
    > 2. `.env.local`
    > 3. `.env.development` (shared defaults)
