@@ -9,7 +9,8 @@ category: 'Infrastructure'
 readTime: '12 min read'
 ---
 
-A step-by-step guide for hosting a **macOS-compatible Time Machine target** inside an Ubuntu Server VM on Hyper-V (Windows 11)
+A step-by-step guide for hosting a **macOS-compatible Time Machine target**
+inside an Ubuntu Server VM on Hyper-V (Windows 11)
 
 ## 1 - Hardware & Hyper-V preparation
 
