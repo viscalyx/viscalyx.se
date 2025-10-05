@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
 import { getPostBySlug, getRelatedPosts } from '@/lib/blog'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { NextResponse } from 'next/server'
 
 // Analytics tracking function
 function trackBlogRead(slug: string, category: string, request: Request) {

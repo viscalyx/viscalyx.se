@@ -12,7 +12,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const withNextIntl = require('next-intl/plugin')('./i18n.ts')
-const { codecovNextJSWebpackPlugin } = require('@codecov/nextjs-webpack-plugin')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -95,21 +94,6 @@ const nextConfig = {
         ],
       },
     ]
-  },
-  webpack: (config, options) => {
-    // Add Codecov bundle analysis plugin
-    config.plugins.push(
-      codecovNextJSWebpackPlugin({
-        enableBundleAnalysis: true,
-        bundleName: 'viscalyx-se-bundle',
-        uploadToken: process.env.CODECOV_TOKEN,
-        webpack: options.webpack,
-        // Disable telemetry for better privacy
-        telemetry: false,
-      })
-    )
-
-    return config
   },
 }
 

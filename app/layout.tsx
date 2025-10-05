@@ -1,3 +1,4 @@
+import { getLocale } from 'next-intl/server'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '../lib/theme-context'
 import './code-block-components.css'
@@ -15,11 +16,11 @@ export { metadata }
 
 type Props = {
   children: React.ReactNode
-  params: Promise<{ locale: string }>
 }
 
-export default async function RootLayout({ children, params }: Props) {
-  const { locale } = await params
+export default async function RootLayout({ children }: Props) {
+  // Get the current locale using next-intl
+  const locale = await getLocale()
 
   return (
     <html
