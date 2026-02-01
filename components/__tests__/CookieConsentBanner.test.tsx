@@ -12,7 +12,7 @@ vi.mock('framer-motion', () => ({
 }))
 
 // Mock the cookie consent utilities
-vi.mock('../../lib/cookie-consent', () => ({
+vi.mock('@/lib/cookie-consent', () => ({
   getConsentSettings: vi.fn(() => null),
   saveConsentSettings: vi.fn(),
   hasConsentChoice: vi.fn(() => false),
@@ -108,7 +108,7 @@ describe('CookieConsentBanner', () => {
   })
 
   it('should accept all cookies when Accept All is clicked', async () => {
-    const { saveConsentSettings } = await import('../../lib/cookie-consent')
+    const { saveConsentSettings } = await import('@/lib/cookie-consent')
 
     renderWithIntl(<CookieConsentBanner />)
 
@@ -129,7 +129,7 @@ describe('CookieConsentBanner', () => {
 
   it('should reject all cookies when Reject All is clicked', async () => {
     const { saveConsentSettings, cleanupCookies } = await import(
-      '../../lib/cookie-consent'
+      '@/lib/cookie-consent'
     )
 
     renderWithIntl(<CookieConsentBanner />)

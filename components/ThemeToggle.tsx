@@ -1,9 +1,8 @@
 'use client'
 
-import React from 'react'
+import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
-import { Sun, Moon, Monitor } from 'lucide-react'
-import { useTheme } from '../lib/theme-context'
+import { Monitor, Moon, Sun } from 'lucide-react'
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()

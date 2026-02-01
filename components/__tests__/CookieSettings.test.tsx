@@ -3,7 +3,7 @@ import { vi } from 'vitest'
 import CookieSettings from '../CookieSettings'
 
 // Mock cookie-consent lib
-vi.mock('../../lib/cookie-consent', () => ({
+vi.mock('@/lib/cookie-consent', () => ({
   defaultConsentSettings: {
     'strictly-necessary': true,
     analytics: false,
@@ -26,7 +26,7 @@ vi.mock('../../lib/cookie-consent', () => ({
 }))
 
 // Import the mocked functions
-import * as cookieConsent from '../../lib/cookie-consent'
+import * as cookieConsent from '@/lib/cookie-consent'
 
 const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
 const mockGetConsentTimestamp = vi.mocked(cookieConsent.getConsentTimestamp)
