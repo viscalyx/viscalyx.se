@@ -106,8 +106,8 @@ async function loadBlogContent(
       `${slug}.json`
     )
     const contentData = await fs.readFile(contentPath, 'utf-8')
-    const { content } = JSON.parse(contentData)
-    return content
+    const parsed = JSON.parse(contentData) as { content?: string }
+    return typeof parsed.content === 'string' ? parsed.content : null
   } catch {
     return null
   }
