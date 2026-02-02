@@ -127,7 +127,7 @@ Immediately open **Pakfire → Update Lists → Upgrade** to apply any new Core 
 | ------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | VM hangs at EFI or keyboard dead      | Secure Boot still on – disable and power-cycle([Ask Ubuntu][8], [Microsoft Learn][7])                     |
 | “Setting up Pakfire…” freeze on Gen-2 | Use Gen-1 temporarily; bug tracked in community thread([IPFire Community][9])                             |
-| No network in RED                     | Ensure correct vSwitch binding and that your ISP link hands out DHCP; double-check NIC ↔ zone mapping    |
+| No network in RED                     | Ensure correct vSwitch binding and that your ISP link hands out DHCP; double-check NIC ↔ zone mapping     |
 | WebUI unreachable                     | Confirm GREEN IP, browser uses HTTPS port 444, and that local machine is on GREEN subnet([IPFire.org][3]) |
 
 ## 8 – Keeping the firewall healthy

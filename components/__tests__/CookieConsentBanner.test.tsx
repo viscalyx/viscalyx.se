@@ -128,9 +128,8 @@ describe('CookieConsentBanner', () => {
   })
 
   it('should reject all cookies when Reject All is clicked', async () => {
-    const { saveConsentSettings, cleanupCookies } = await import(
-      '@/lib/cookie-consent'
-    )
+    const { saveConsentSettings, cleanupCookies } =
+      await import('@/lib/cookie-consent')
 
     renderWithIntl(<CookieConsentBanner />)
 
