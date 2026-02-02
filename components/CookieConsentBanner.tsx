@@ -7,7 +7,6 @@ import {
   cookieRegistry,
   defaultConsentSettings,
   getConsentSettings,
-  hasConsentChoice,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -28,13 +27,12 @@ const CookieConsentBanner = () => {
   // This is intentional - we're syncing with external storage state on mount
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect */
-    const hasChoice = hasConsentChoice()
+    // Single storage read: getConsentSettings returns null if no choice exists
+    const storedSettings = getConsentSettings()
+    const hasChoice = storedSettings !== null
     setIsVisible(!hasChoice)
-    if (hasChoice) {
-      const currentSettings = getConsentSettings()
-      if (currentSettings) {
-        setSettings(currentSettings)
-      }
+    if (storedSettings) {
+      setSettings(storedSettings)
     }
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
