@@ -1,3 +1,9 @@
+// NOTE: This file is intentionally named middleware.ts instead of proxy.ts
+// OpenNext for Cloudflare does not yet support the new Next.js 16 "proxy" convention.
+// The proxy.ts file runs on Node.js runtime, but Cloudflare Workers only supports
+// edge middleware. Keep this as middleware.ts until OpenNext adds proxy support.
+// See: https://github.com/opennextjs/opennextjs-cloudflare/issues/1093
+
 import createMiddleware from 'next-intl/middleware'
 import { locales } from './i18n'
 
