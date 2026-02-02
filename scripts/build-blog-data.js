@@ -8,6 +8,8 @@ const remarkImagePaths = require('./plugins/remark-image-paths')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
+// Separate directory for individual post content files (not bundled into server)
+const contentOutputDir = path.join(process.cwd(), 'public/blog-content')
 
 // Function to calculate reading time based on word count
 function calculateReadingTime(content) {
@@ -215,6 +217,18 @@ async function buildBlogData() {
         // Calculate reading time based on content word count
         const calculatedReadTime = calculateReadingTime(contentHtml)
 
+        // Write content to separate file in public/blog-content/
+        // This keeps content out of the server bundle and serves it as static files
+        if (!fs.existsSync(contentOutputDir)) {
+          fs.mkdirSync(contentOutputDir, { recursive: true })
+        }
+        const contentFilePath = path.join(contentOutputDir, `${slug}.json`)
+        fs.writeFileSync(
+          contentFilePath,
+          JSON.stringify({ content: contentHtml })
+        )
+
+        // Post metadata (without content) for the main blog-data.json
         const post = {
           slug,
           title: data.title || 'Untitled',
@@ -228,7 +242,6 @@ async function buildBlogData() {
           tags: data.tags || [],
           readTime: data.readTime || calculatedReadTime,
           category,
-          content: contentHtml,
         }
 
         posts.push(post)
@@ -282,9 +295,10 @@ async function buildBlogData() {
       fs.mkdirSync(outputDir, { recursive: true })
     }
 
-    // Write the blog data to a JSON file
+    // Write the blog data to a JSON file (metadata only, no content)
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))
-    console.log(`✓ Blog data written to ${outputPath}`)
+    console.log(`✓ Blog metadata written to ${outputPath}`)
+    console.log(`✓ Blog content files written to ${contentOutputDir}`)
     console.log(
       `✓ Built ${sortedPosts.length} blog posts with HTML sanitization`
     )

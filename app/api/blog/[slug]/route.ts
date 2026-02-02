@@ -46,6 +46,45 @@ function trackBlogRead(slug: string, category: string, request: Request) {
   }
 }
 
+// Load blog content from static file via Cloudflare ASSETS binding or filesystem fallback
+async function loadBlogContent(
+  slug: string,
+  request: Request
+): Promise<string | null> {
+  try {
+    // Try to use Cloudflare ASSETS binding first (works in production)
+    try {
+      const { env } = getCloudflareContext()
+      if (env?.ASSETS) {
+        // Create a request to the static asset
+        const assetUrl = new URL(`/blog-content/${slug}.json`, request.url)
+        const assetResponse = await env.ASSETS.fetch(assetUrl.toString())
+        if (assetResponse.ok) {
+          const data = await assetResponse.json()
+          return (data as { content: string }).content
+        }
+      }
+    } catch {
+      // ASSETS binding not available, fall through to filesystem
+    }
+
+    // Fallback: Read from filesystem (works in local development)
+    const fs = await import('node:fs/promises')
+    const path = await import('node:path')
+    const contentPath = path.join(
+      process.cwd(),
+      'public',
+      'blog-content',
+      `${slug}.json`
+    )
+    const contentData = await fs.readFile(contentPath, 'utf-8')
+    const { content } = JSON.parse(contentData)
+    return content
+  } catch {
+    return null
+  }
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -53,11 +92,24 @@ export async function GET(
   try {
     const { slug } = await params
 
-    const post = getPostBySlug(slug)
+    const postMetadata = getPostBySlug(slug)
 
-    if (!post) {
+    if (!postMetadata) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
+
+    // Load content from separate static file (via ASSETS binding or filesystem)
+    const content = await loadBlogContent(slug, request)
+
+    if (!content) {
+      return NextResponse.json(
+        { error: 'Post content not found' },
+        { status: 404 }
+      )
+    }
+
+    // Combine metadata with content
+    const post = { ...postMetadata, content }
 
     // Track the blog read event
     // cSpell:ignore uncategorized
