@@ -13,6 +13,8 @@ const config = [
       'out/**',
       'build/**',
       '.open-next/**',
+      '.wrangler/**',
+      'bundled/**',
       'cloudflare-env.d.ts',
     ],
   },
