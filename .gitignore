@@ -54,6 +54,7 @@ out
 
 # Cloudflare Workers build output
 .open-next
+bundled
 
 # Nuxt.js build / generate output
 .nuxt
@@ -216,4 +217,5 @@ lib/page-dates.json
 public/blog-content/
 
 .wrangler/
+cloudflare-env.d.ts
 test-results/

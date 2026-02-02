@@ -4,6 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 const nextConfig: NextConfig = {
+  // Exclude heavy packages from server bundle to reduce Cloudflare Worker size
+  // These packages are either client-only or not needed in the worker runtime
+  serverExternalPackages: ['mermaid', '@mermaid-js/parser', 'dompurify'],
   images: {
     remotePatterns: [
       {

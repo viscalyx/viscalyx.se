@@ -24,6 +24,11 @@
       "dataset": "viscalyx-se"
     }
   ],
+  // CPU limits to prevent runaway bills or denial-of-wallet attacks
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#limits
+  "limits": {
+    "cpu_ms": 50 // Maximum CPU time in milliseconds per invocation (default for paid plans is 30000ms)
+  },
   // https://developers.cloudflare.com/workers/wrangler/configuration/#local-development-settings
   // Development server configuration for preview modem, for more info: npx wrangler dev --help
   "dev": {

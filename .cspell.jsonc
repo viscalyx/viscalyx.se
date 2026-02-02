@@ -357,6 +357,7 @@
     "out/**",
     "dist/**",
     "build/**",
+    "bundled/**",
     ".git/**",
     "*.min.js",
     "*.min.css",
