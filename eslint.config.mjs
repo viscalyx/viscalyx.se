@@ -1,6 +1,6 @@
-import nextConfig from 'eslint-config-next'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
+import nextConfig from 'eslint-config-next'
 import globals from 'globals'
 
 const config = [
