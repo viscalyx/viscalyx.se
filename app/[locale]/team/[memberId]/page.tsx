@@ -2,16 +2,15 @@
 
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
-import LoadingScreen from '@/components/LoadingScreen'
 import ScrollToTop from '@/components/ScrollToTop'
-import { getTeamMemberById, TeamMember } from '@/lib/team'
+import { getTeamMemberById } from '@/lib/team'
 import { motion, Variants } from 'framer-motion'
 import { ArrowLeft, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { use, useEffect, useState } from 'react'
+import { notFound } from 'next/navigation'
+import { use, useMemo } from 'react'
 
 // Export dynamic configuration to allow dynamic rendering
 export const dynamic = 'force-dynamic'
@@ -22,28 +21,15 @@ type Props = {
 
 export default function TeamMemberPage({ params }: Props) {
   const resolvedParams = use(params)
-  const [member, setMember] = useState<TeamMember | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const t = useTranslations('teamMember')
   const tGlobal = useTranslations('team')
-  const router = useRouter()
 
-  useEffect(() => {
-    const memberId = resolvedParams.memberId
-    const memberData = getTeamMemberById(memberId, tGlobal)
+  const member = useMemo(() => {
+    return getTeamMemberById(resolvedParams.memberId, tGlobal)
+  }, [resolvedParams.memberId, tGlobal])
 
-    if (!memberData) {
-      setIsLoading(false)
-      router.replace('/404')
-      return
-    }
-
-    setMember(memberData)
-    setIsLoading(false)
-  }, [resolvedParams.memberId, router, tGlobal])
-
-  if (isLoading || !member) {
-    return <LoadingScreen />
+  if (!member) {
+    notFound()
   }
 
   const containerVariants: Variants = {
