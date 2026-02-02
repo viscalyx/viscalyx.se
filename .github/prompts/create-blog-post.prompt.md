@@ -11,6 +11,7 @@ excerpt: 'Max 160 chars'
 image: 'https://images.unsplash.com/photo-xxx?w=1200&h=600&fit=crop'
 tags: ['tag1', 'tag2']
 category: 'DevOps|PowerShell|Azure|Infrastructure|Automation'
+readTime: '5 min'
 ---
 ```
 

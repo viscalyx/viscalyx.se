@@ -95,7 +95,10 @@ export default Component
 - Dark mode: always include `dark:` variants
 - Colors: `primary-{50-950}`, `secondary-{50-950}`, `accent-{50-950}`
 - Icons: `lucide-react`, group in `*Icons.tsx` files
-- **Inline styles OK for**: dynamic values, SVG properties (`strokeDasharray`, `filter`)
+- **Use Tailwind classes for all styling**; inline styles are a limited exception only for:
+  - Runtime-computed dynamic values (e.g., `style={{ width: `${percentage}%` }}`)
+  - SVG-specific attributes not supported by Tailwind (`strokeDasharray`, `strokeDashoffset`, `filter`)
+- All other styling must use Tailwind utility classes
 
 ## i18n
 
