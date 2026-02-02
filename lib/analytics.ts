@@ -100,17 +100,24 @@ export function useBlogAnalytics(
     progressThreshold = 50, // Track when user reads 50% of content
   } = options
 
-  const startTime = useRef<number>(Date.now())
+  const startTime = useRef<number | null>(null)
   const hasTrackedProgress = useRef<boolean>(false)
   const maxScrollProgress = useRef<number>(0)
 
-  // Use ref to store data and only update when values actually change
+  // Store data in ref for use in callbacks
   const dataRef = useRef<BlogAnalyticsData>(data)
 
-  // Update dataRef only when data actually changes (using deep comparison)
-  if (!isDataEqual(dataRef.current, data)) {
-    dataRef.current = data
-  }
+  // Initialize startTime on mount and sync dataRef
+  useEffect(() => {
+    startTime.current = Date.now()
+  }, [])
+
+  // Update dataRef when data changes
+  useEffect(() => {
+    if (!isDataEqual(dataRef.current, data)) {
+      dataRef.current = data
+    }
+  }, [data])
 
   const trackEvent = useCallback(
     async (readProgress?: number, timeSpent?: number) => {
@@ -172,9 +179,10 @@ export function useBlogAnalytics(
           scrollProgress >= progressThreshold
         ) {
           hasTrackedProgress.current = true
-          const timeSpent = trackTimeSpent
-            ? Math.round((Date.now() - startTime.current) / 1000)
-            : undefined
+          const timeSpent =
+            trackTimeSpent && startTime.current
+              ? Math.round((Date.now() - startTime.current) / 1000)
+              : undefined
 
           trackEvent(scrollProgress, timeSpent)
         }
@@ -190,9 +198,10 @@ export function useBlogAnalytics(
       }
 
       // Track final analytics on page unload
-      const timeSpent = trackTimeSpent
-        ? Math.round((Date.now() - startTime.current) / 1000)
-        : undefined
+      const timeSpent =
+        trackTimeSpent && startTime.current
+          ? Math.round((Date.now() - startTime.current) / 1000)
+          : undefined
 
       // Use sendBeacon for reliable tracking on page unload
       if (navigator.sendBeacon) {
@@ -245,6 +254,5 @@ export function useBlogAnalytics(
 
   return {
     trackEvent,
-    maxScrollProgress: maxScrollProgress.current,
   }
 }
