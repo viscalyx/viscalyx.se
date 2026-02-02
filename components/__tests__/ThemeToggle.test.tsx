@@ -5,7 +5,7 @@ import ThemeToggle from '../ThemeToggle'
 const setThemeMock = vi.fn()
 
 // Mock theme context
-vi.mock('../../lib/theme-context', () => ({
+vi.mock('@/lib/theme-context', () => ({
   useTheme: () => ({ theme: 'light', setTheme: setThemeMock }),
 }))
 

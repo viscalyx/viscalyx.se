@@ -1,11 +1,11 @@
 'use client'
 
+import { saveLanguagePreference } from '@/lib/language-preferences'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { saveLanguagePreference } from '../lib/language-preferences'
 
 const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false)

@@ -1,6 +1,6 @@
+import { ThemeProvider } from '@/lib/theme-context'
 import { getLocale } from 'next-intl/server'
 import { Inter } from 'next/font/google'
-import { ThemeProvider } from '../lib/theme-context'
 import './code-block-components.css'
 import './globals.css'
 import { metadata } from './metadata'

@@ -1,9 +1,5 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
-import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   cleanupCookies,
   type CookieCategory,
@@ -13,7 +9,11 @@ import {
   getConsentSettings,
   hasConsentChoice,
   saveConsentSettings,
-} from '../lib/cookie-consent'
+} from '@/lib/cookie-consent'
+import { AnimatePresence, motion } from 'framer-motion'
+import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const CookieConsentBanner = () => {
   const t = useTranslations('cookieConsent')
