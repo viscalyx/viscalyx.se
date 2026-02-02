@@ -1,6 +1,34 @@
 import { getPostBySlug, getRelatedPosts } from '@/lib/blog'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { NextResponse } from 'next/server'
+import path from 'node:path'
+
+// Slug validation pattern: only allow alphanumerics, hyphens, and underscores
+const SAFE_SLUG_PATTERN = /^[a-zA-Z0-9_-]+$/
+
+/**
+ * Validates that a slug is safe and doesn't allow path traversal attacks.
+ * Returns the validated slug or null if invalid.
+ */
+function validateSlug(slug: string): string | null {
+  // Check against allowlist pattern
+  if (!SAFE_SLUG_PATTERN.test(slug)) {
+    return null
+  }
+
+  // Additional path traversal check: normalize and verify the path stays within blog-content
+  const blogContentDir = path.join(process.cwd(), 'public', 'blog-content')
+  const normalizedPath = path.normalize(
+    path.join(blogContentDir, `${slug}.json`)
+  )
+
+  // Ensure the normalized path starts with the blog-content directory
+  if (!normalizedPath.startsWith(blogContentDir + path.sep)) {
+    return null
+  }
+
+  return slug
+}
 
 // Analytics tracking function
 function trackBlogRead(slug: string, category: string, request: Request) {
@@ -92,14 +120,23 @@ export async function GET(
   try {
     const { slug } = await params
 
-    const postMetadata = getPostBySlug(slug)
+    // Validate slug to prevent path traversal attacks
+    const validatedSlug = validateSlug(slug)
+    if (!validatedSlug) {
+      return NextResponse.json(
+        { error: 'Invalid slug format' },
+        { status: 400 }
+      )
+    }
+
+    const postMetadata = getPostBySlug(validatedSlug)
 
     if (!postMetadata) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
     // Load content from separate static file (via ASSETS binding or filesystem)
-    const content = await loadBlogContent(slug, request)
+    const content = await loadBlogContent(validatedSlug, request)
 
     if (!content) {
       return NextResponse.json(
@@ -113,7 +150,7 @@ export async function GET(
 
     // Track the blog read event
     // cSpell:ignore uncategorized
-    trackBlogRead(slug, post.category || 'uncategorized', request)
+    trackBlogRead(validatedSlug, post.category || 'uncategorized', request)
 
     const relatedPosts = await getRelatedPosts(post.slug, post.category)
 
