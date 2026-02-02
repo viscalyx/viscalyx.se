@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "viscalyx-se" generated at 2026-02-02T18:41:00.756Z.
