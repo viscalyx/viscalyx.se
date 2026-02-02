@@ -3,6 +3,9 @@
  *
  * This test suite verifies that the complete blog data build process
  * properly handles sanitization, file operations, and data generation.
+ *
+ * Note: Blog content is now written to separate files in public/blog-content/
+ * and the main blog-data.json contains only metadata.
  */
 
 const fs = require('node:fs')
@@ -30,6 +33,21 @@ const createMockBlogPost = (filename, content) => {
   fs.mkdirSync(blogDir, { recursive: true })
   fs.writeFileSync(path.join(blogDir, filename), content)
   return tempDir
+}
+
+// Helper to read blog content from the separate content file
+const readBlogContent = (tempDir, slug) => {
+  const contentPath = path.join(
+    tempDir,
+    'public',
+    'blog-content',
+    `${slug}.json`
+  )
+  if (fs.existsSync(contentPath)) {
+    const data = JSON.parse(fs.readFileSync(contentPath, 'utf8'))
+    return data.content
+  }
+  return null
 }
 
 const copyBuildScript = tempDir => {
@@ -126,18 +144,22 @@ Normal **bold** and *italic* text should work fine.
         expect(blogData.posts).toHaveLength(1)
         const post = blogData.posts[0]
 
+        // Content is now in a separate file - read it from there
+        const content = readBlogContent(tempDir, post.slug)
+        expect(content).not.toBeNull()
+
         // Verify malicious content is removed
-        expect(post.content).not.toContain('<script>')
-        expect(post.content).not.toContain('alert(')
-        expect(post.content).not.toContain('onclick')
-        expect(post.content).not.toContain('javascript:')
+        expect(content).not.toContain('<script>')
+        expect(content).not.toContain('alert(')
+        expect(content).not.toContain('onclick')
+        expect(content).not.toContain('javascript:')
 
         // Verify legitimate content is preserved
-        expect(post.content).toContain('<h1')
-        expect(post.content).toContain('This is a legitimate paragraph')
-        expect(post.content).toContain('<strong>bold</strong>')
-        expect(post.content).toContain('<em>italic</em>')
-        expect(post.content).toContain('safe') // Part of "const safe"
+        expect(content).toContain('<h1')
+        expect(content).toContain('This is a legitimate paragraph')
+        expect(content).toContain('<strong>bold</strong>')
+        expect(content).toContain('<em>italic</em>')
+        expect(content).toContain('safe') // Part of "const safe"
 
         // Verify metadata is correct
         expect(post.title).toBe('Security Test Post')
@@ -212,23 +234,27 @@ const users: User[] = [
 
         const post = blogData.posts[0]
 
+        // Content is now in a separate file - read it from there
+        const content = readBlogContent(tempDir, post.slug)
+        expect(content).not.toBeNull()
+
         // Verify syntax highlighting classes are preserved
-        expect(post.content).toContain('class="language-javascript"')
-        expect(post.content).toContain('class="language-python"')
-        expect(post.content).toContain('class="language-typescript"')
+        expect(content).toContain('class="language-javascript"')
+        expect(content).toContain('class="language-python"')
+        expect(content).toContain('class="language-typescript"')
 
         // Verify data-language attributes are preserved
-        expect(post.content).toContain('data-language="javascript"')
-        expect(post.content).toContain('data-language="python"')
-        expect(post.content).toContain('data-language="typescript"')
+        expect(content).toContain('data-language="javascript"')
+        expect(content).toContain('data-language="python"')
+        expect(content).toContain('data-language="typescript"')
 
         // Verify token classes are preserved (from Prism.js)
-        expect(post.content).toContain('class="token')
+        expect(content).toContain('class="token')
 
         // Verify actual code content is preserved (search for tokens within the syntax highlighting)
-        expect(post.content).toContain('hello') // Function name
-        expect(post.content).toContain('fibonacci') // Function name
-        expect(post.content).toContain('interface') // TypeScript keyword
+        expect(content).toContain('hello') // Function name
+        expect(content).toContain('fibonacci') // Function name
+        expect(content).toContain('interface') // TypeScript keyword
       } catch (error) {
         console.error('Build script execution failed:', error.toString())
         throw error
@@ -326,32 +352,37 @@ But styling should be removed while preserving the rest.
 
         expect(blogData.posts).toHaveLength(3)
 
-        // Verify all posts are sanitized
+        // Verify all posts are sanitized - content is now in separate files
         blogData.posts.forEach(post => {
-          expect(post.content).not.toContain('<script>')
-          expect(post.content).not.toContain('<iframe>')
-          expect(post.content).not.toContain('<style>')
-          expect(post.content).not.toContain('javascript:')
-          expect(post.content).not.toContain('alert(')
+          const content = readBlogContent(tempDir, post.slug)
+          expect(content).not.toBeNull()
+          expect(content).not.toContain('<script>')
+          expect(content).not.toContain('<iframe>')
+          expect(content).not.toContain('<style>')
+          expect(content).not.toContain('javascript:')
+          expect(content).not.toContain('alert(')
         })
 
         // Verify legitimate content is preserved in all posts
         const safePost = blogData.posts.find(p => p.title === 'Safe Post')
-        expect(safePost.content).toContain('<strong>bold</strong>')
-        expect(safePost.content).toContain('<em>italic</em>')
-        expect(safePost.content).toContain('<ul>')
+        const safeContent = readBlogContent(tempDir, safePost.slug)
+        expect(safeContent).toContain('<strong>bold</strong>')
+        expect(safeContent).toContain('<em>italic</em>')
+        expect(safeContent).toContain('<ul>')
 
         const maliciousPost = blogData.posts.find(
           p => p.title === 'Malicious Post'
         )
-        expect(maliciousPost.content).toContain('<strong>bold text</strong>')
-        expect(maliciousPost.content).toContain(
+        const maliciousContent = readBlogContent(tempDir, maliciousPost.slug)
+        expect(maliciousContent).toContain('<strong>bold text</strong>')
+        expect(maliciousContent).toContain(
           'This post tries to include dangerous content'
         )
 
         const mixedPost = blogData.posts.find(p => p.title === 'Mixed Post')
-        expect(mixedPost.content).toContain('class="language-bash"')
-        expect(mixedPost.content).toContain('echo') // Command name within syntax highlighting
+        const mixedContent = readBlogContent(tempDir, mixedPost.slug)
+        expect(mixedContent).toContain('class="language-bash"')
+        expect(mixedContent).toContain('echo') // Command name within syntax highlighting
       } catch (error) {
         console.error('Build script execution failed:', error.toString())
         throw error
@@ -432,15 +463,19 @@ This conclusion paragraph wraps up the content and should also be included in th
         expect(minutes).toBeGreaterThanOrEqual(1)
         expect(minutes).toBeLessThan(10) // Reasonable upper bound
 
+        // Content is now in a separate file - read it from there
+        const content = readBlogContent(tempDir, post.slug)
+        expect(content).not.toBeNull()
+
         // Verify the content is properly sanitized
-        expect(post.content).not.toContain('<script>')
-        expect(post.content).not.toContain('alert(')
-        expect(post.content).not.toContain('maliciousVariable')
+        expect(content).not.toContain('<script>')
+        expect(content).not.toContain('alert(')
+        expect(content).not.toContain('maliciousVariable')
 
         // Verify legitimate content is preserved
-        expect(post.content).toContain('Introduction')
-        expect(post.content).toContain('Main Content')
-        expect(post.content).toContain('example') // Function name within syntax highlighting
+        expect(content).toContain('Introduction')
+        expect(content).toContain('Main Content')
+        expect(content).toContain('example') // Function name within syntax highlighting
       } catch (error) {
         console.error('Build script execution failed:', error.toString())
         throw error
