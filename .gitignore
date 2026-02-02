@@ -54,6 +54,7 @@ out
 
 # Cloudflare Workers build output
 .open-next
+bundled
 
 # Nuxt.js build / generate output
 .nuxt
