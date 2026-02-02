@@ -1,21 +1,6 @@
 import blogData from './blog-data.json'
 import { isValidDate, normalizeDate } from './date-utils'
 
-// BlogPost with content (for single post pages)
-export interface BlogPost {
-  slug: string
-  title: string
-  date?: string
-  author: string
-  excerpt: string
-  image: string
-  imageAlt?: string
-  tags: string[]
-  readTime: string
-  category?: string
-  content: string
-}
-
 // BlogPostMetadata without content (for listings - stored in blog-data.json)
 export interface BlogPostMetadata {
   slug: string
@@ -28,6 +13,11 @@ export interface BlogPostMetadata {
   tags: string[]
   readTime: string
   category?: string
+}
+
+// BlogPost with content (for single post pages)
+export interface BlogPost extends BlogPostMetadata {
+  content: string
 }
 
 // Blog data now only contains metadata (no content)
