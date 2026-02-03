@@ -94,6 +94,6 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: bundle-analysis
-          path: |
-            .open-next/
+          path: test-results/bundle-report.md
           retention-days: 7
+          if-no-files-found: warn
