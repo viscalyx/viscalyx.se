@@ -4,12 +4,8 @@
   "main": ".open-next/worker.js",
   "name": "viscalyx-se",
   // See settings "Default as of" here: https://developers.cloudflare.com/workers/configuration/compatibility-flags/
-  "compatibility_date": "2025-03-25",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public",
-    "enable_navigator_language" // This flag enables the real browser language detection (default as of 2025-05-19)
-  ],
+  "compatibility_date": "2025-05-19",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
