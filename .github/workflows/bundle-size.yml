@@ -34,7 +34,7 @@ jobs:
         id: bundle
         run: |
           node scripts/analyze-bundle.js --ci --dry-run
-          
+
           # Generate markdown for PR comment
           mkdir -p test-results
           node scripts/analyze-bundle.js --markdown --dry-run > test-results/bundle-report.md

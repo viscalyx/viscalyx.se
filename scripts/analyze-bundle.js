@@ -148,7 +148,10 @@ function getWranglerBundleSize() {
  */
 function isBuildFresh(maxAgeMinutes = 30) {
   const buildDir = path.join(process.cwd(), '.open-next')
-  const serverHandler = path.join(buildDir, 'server-functions/default/handler.mjs')
+  const serverHandler = path.join(
+    buildDir,
+    'server-functions/default/handler.mjs'
+  )
 
   if (!fs.existsSync(serverHandler)) {
     return { fresh: false, reason: 'Build not found' }
@@ -186,7 +189,6 @@ function runBuild() {
   }
 }
 
-
 /**
  * Analyze the bundle and return results
  */
@@ -195,7 +197,9 @@ function analyzeBuild(options = {}) {
 
   if (!fs.existsSync(buildDir)) {
     console.error('❌ Build directory .open-next not found!')
-    console.error('   Run "npm run preview" or "npx opennextjs-cloudflare build" first.')
+    console.error(
+      '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.'
+    )
     process.exit(1)
   }
 
@@ -304,14 +308,22 @@ function outputForCI(results) {
   const output = []
 
   output.push(`server-size=${results.serverHandler.size}`)
-  output.push(`server-size-formatted=${formatBytes(results.serverHandler.size)}`)
+  output.push(
+    `server-size-formatted=${formatBytes(results.serverHandler.size)}`
+  )
   output.push(`server-gzip-size=${results.serverHandler.gzipSize}`)
-  output.push(`server-gzip-formatted=${formatBytes(results.serverHandler.gzipSize)}`)
+  output.push(
+    `server-gzip-formatted=${formatBytes(results.serverHandler.gzipSize)}`
+  )
 
   output.push(`middleware-size=${results.middleware.size}`)
-  output.push(`middleware-size-formatted=${formatBytes(results.middleware.size)}`)
+  output.push(
+    `middleware-size-formatted=${formatBytes(results.middleware.size)}`
+  )
   output.push(`middleware-gzip-size=${results.middleware.gzipSize}`)
-  output.push(`middleware-gzip-formatted=${formatBytes(results.middleware.gzipSize)}`)
+  output.push(
+    `middleware-gzip-formatted=${formatBytes(results.middleware.gzipSize)}`
+  )
 
   output.push(`assets-size=${results.assets.size}`)
   output.push(`assets-size-formatted=${formatBytes(results.assets.size)}`)
@@ -320,10 +332,18 @@ function outputForCI(results) {
   output.push(`total-size-formatted=${formatBytes(results.total.size)}`)
 
   if (results.wrangler) {
-    output.push(`wrangler-size=${Math.round(results.wrangler.uncompressedKB * 1024)}`)
-    output.push(`wrangler-size-formatted=${results.wrangler.uncompressedKB.toFixed(2)} KB`)
-    output.push(`wrangler-gzip-size=${Math.round(results.wrangler.compressedKB * 1024)}`)
-    output.push(`wrangler-gzip-formatted=${results.wrangler.compressedKB.toFixed(2)} KB`)
+    output.push(
+      `wrangler-size=${Math.round(results.wrangler.uncompressedKB * 1024)}`
+    )
+    output.push(
+      `wrangler-size-formatted=${results.wrangler.uncompressedKB.toFixed(2)} KB`
+    )
+    output.push(
+      `wrangler-gzip-size=${Math.round(results.wrangler.compressedKB * 1024)}`
+    )
+    output.push(
+      `wrangler-gzip-formatted=${results.wrangler.compressedKB.toFixed(2)} KB`
+    )
   }
 
   if (results.usage) {
@@ -334,7 +354,9 @@ function outputForCI(results) {
   }
 
   output.push(`status=${results.status}`)
-  output.push(`status-emoji=${results.status === 'error' ? '❌' : results.status === 'warning' ? '⚠️' : results.status === 'info' ? 'ℹ️' : '✅'}`)
+  output.push(
+    `status-emoji=${results.status === 'error' ? '❌' : results.status === 'warning' ? '⚠️' : results.status === 'info' ? 'ℹ️' : '✅'}`
+  )
   output.push(`status-message=${results.statusMessage}`)
 
   // Write to GITHUB_OUTPUT if available
@@ -352,10 +374,20 @@ function outputForCI(results) {
  */
 function outputForMarkdown(results) {
   const statusEmoji =
-    results.status === 'error' ? '❌' : results.status === 'warning' ? '⚠️' : results.status === 'info' ? 'ℹ️' : '✅'
+    results.status === 'error'
+      ? '❌'
+      : results.status === 'warning'
+        ? '⚠️'
+        : results.status === 'info'
+          ? 'ℹ️'
+          : '✅'
 
-  const wranglerSize = results.wrangler ? `${results.wrangler.uncompressedKB.toFixed(2)} KB` : 'N/A'
-  const wranglerGzipSize = results.wrangler ? `${results.wrangler.compressedKB.toFixed(2)} KB` : 'N/A'
+  const wranglerSize = results.wrangler
+    ? `${results.wrangler.uncompressedKB.toFixed(2)} KB`
+    : 'N/A'
+  const wranglerGzipSize = results.wrangler
+    ? `${results.wrangler.compressedKB.toFixed(2)} KB`
+    : 'N/A'
 
   const freeStatus = results.usage?.exceedsFree ? '❌' : '✅'
   const paidStatus = results.usage?.exceedsPaid ? '❌' : '✅'
@@ -364,9 +396,11 @@ function outputForMarkdown(results) {
 
   let warningText = ''
   if (results.status === 'warning') {
-    warningText = '⚠️ Consider optimizing bundle size to stay within comfortable limits.'
+    warningText =
+      '⚠️ Consider optimizing bundle size to stay within comfortable limits.'
   } else if (results.status === 'error') {
-    warningText = '❌ **Action required:** Bundle exceeds size limits and will fail deployment.'
+    warningText =
+      '❌ **Action required:** Bundle exceeds size limits and will fail deployment.'
   }
 
   const markdown = `## 📦 Bundle Size Report
@@ -412,28 +446,48 @@ ${warningText}`
  */
 function outputForTerminal(results) {
   const statusEmoji =
-    results.status === 'error' ? '❌' : results.status === 'warning' ? '⚠️' : results.status === 'info' ? 'ℹ️' : '✅'
+    results.status === 'error'
+      ? '❌'
+      : results.status === 'warning'
+        ? '⚠️'
+        : results.status === 'info'
+          ? 'ℹ️'
+          : '✅'
 
   console.log('\n📦 Bundle Size Analysis\n')
-  console.log('=' .repeat(60))
+  console.log('='.repeat(60))
 
   console.log('\n📊 Build Output Sizes:\n')
-  console.log(`  Server Handler:     ${formatBytes(results.serverHandler.size)}`)
-  console.log(`    └─ gzipped:       ${formatBytes(results.serverHandler.gzipSize)}`)
+  console.log(
+    `  Server Handler:     ${formatBytes(results.serverHandler.size)}`
+  )
+  console.log(
+    `    └─ gzipped:       ${formatBytes(results.serverHandler.gzipSize)}`
+  )
   console.log(`  Middleware:         ${formatBytes(results.middleware.size)}`)
-  console.log(`    └─ gzipped:       ${formatBytes(results.middleware.gzipSize)}`)
+  console.log(
+    `    └─ gzipped:       ${formatBytes(results.middleware.gzipSize)}`
+  )
   console.log(`  Static Assets:      ${formatBytes(results.assets.size)}`)
-  console.log(`  Server Functions:   ${formatBytes(results.serverFunctions.size)}`)
+  console.log(
+    `  Server Functions:   ${formatBytes(results.serverFunctions.size)}`
+  )
   console.log(`  Total Build:        ${formatBytes(results.total.size)}`)
 
   if (results.wrangler) {
     console.log('\n🚀 Wrangler Bundle (what Cloudflare sees):\n')
-    console.log(`  Total Upload:       ${results.wrangler.uncompressedKB.toFixed(2)} KB`)
-    console.log(`  Gzipped:            ${results.wrangler.compressedKB.toFixed(2)} KB`)
-    console.log(`                      (${(results.wrangler.compressedKB / 1024).toFixed(2)} MB)`)
+    console.log(
+      `  Total Upload:       ${results.wrangler.uncompressedKB.toFixed(2)} KB`
+    )
+    console.log(
+      `  Gzipped:            ${results.wrangler.compressedKB.toFixed(2)} KB`
+    )
+    console.log(
+      `                      (${(results.wrangler.compressedKB / 1024).toFixed(2)} MB)`
+    )
   }
 
-  console.log('\n' + '=' .repeat(60))
+  console.log('\n' + '='.repeat(60))
   console.log(`\n${statusEmoji} Status: ${results.statusMessage}`)
 
   console.log('\n📋 Cloudflare Workers Limits:\n')
@@ -446,8 +500,12 @@ function outputForTerminal(results) {
     const freeStatus = results.usage.exceedsFree ? '❌ EXCEEDS' : '✅'
     const paidStatus = results.usage.exceedsPaid ? '❌ EXCEEDS' : '✅'
 
-    console.log(`  Free        ${LIMITS.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`)
-    console.log(`  Paid        ${LIMITS.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`)
+    console.log(
+      `  Free        ${LIMITS.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
+    )
+    console.log(
+      `  Paid        ${LIMITS.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
+    )
   } else {
     console.log(`  Free        ${LIMITS.freeCompressedMB} MB`)
     console.log(`  Paid        ${LIMITS.paidCompressedMB} MB`)
@@ -523,7 +581,9 @@ Examples:
         process.exit(1)
       }
     } else {
-      console.error(`✅ Using existing build (${buildStatus.ageMinutes} minutes old)\n`)
+      console.error(
+        `✅ Using existing build (${buildStatus.ageMinutes} minutes old)\n`
+      )
     }
   }
 
