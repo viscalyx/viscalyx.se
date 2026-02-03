@@ -183,7 +183,7 @@ function runBuild() {
     })
     console.error('')
     return true
-  } catch (error) {
+  } catch {
     console.error('❌ Build failed!')
     return false
   }
