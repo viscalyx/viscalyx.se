@@ -17,6 +17,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const zlib = require('zlib')
 const { execSync } = require('child_process')
 
 // Cloudflare Workers limits (gzipped)
@@ -75,15 +76,13 @@ function getDirSize(dirPath) {
 }
 
 /**
- * Get gzipped size of a file using gzip command
+ * Get gzipped size of a file using Node.js zlib
  */
 function getGzipSize(filePath) {
   try {
-    const result = execSync(`gzip -c "${filePath}" | wc -c`, {
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', 'pipe'],
-    })
-    return parseInt(result.trim(), 10)
+    const content = fs.readFileSync(filePath)
+    const compressed = zlib.gzipSync(content)
+    return compressed.length
   } catch {
     return 0
   }
