@@ -37,7 +37,7 @@ jobs:
 
           # Generate markdown for PR comment
           mkdir -p test-results
-          node scripts/analyze-bundle.js --markdown --dry-run > test-results/bundle-report.md
+          node scripts/analyze-bundle.js --markdown --no-build > test-results/bundle-report.md
 
       - name: Comment bundle size on PR
         # Skip for fork PRs - they can't write comments due to security restrictions
