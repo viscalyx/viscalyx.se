@@ -569,7 +569,9 @@ Examples:
       console.error(
         `Error: Invalid --max-age value "${maxAgeArg.split('=')[1]}". Must be a positive integer.`
       )
-      console.error('Usage: --max-age=N where N is minutes (e.g., --max-age=60)')
+      console.error(
+        'Usage: --max-age=N where N is minutes (e.g., --max-age=60)'
+      )
       process.exit(1)
     }
     maxAgeMinutes = parsed
