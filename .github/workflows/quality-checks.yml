@@ -27,6 +27,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # cSpell:ignore typegen
+      - name: Generate Cloudflare types
+        run: npm run cf-typegen
+
       - name: Run formatting check
         run: npm run format:check
 
