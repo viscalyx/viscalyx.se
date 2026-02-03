@@ -281,9 +281,20 @@ function analyzeBuild(options = {}) {
   // Get actual wrangler bundle size if requested
   if (options.dryRun) {
     results.wrangler = getWranglerBundleSize()
+
+    // Fail fast if dry-run was requested but wrangler sizes are unavailable
+    if (!results.wrangler) {
+      const errorMessage =
+        'dry-run requested but wrangler sizes unavailable - cannot determine accurate bundle size'
+      console.error(`❌ Error: ${errorMessage}`)
+      results.status = 'error'
+      results.statusMessage = errorMessage
+      return results
+    }
   }
 
   // Determine status based on wrangler size or estimated size
+  // When dryRun is set, results.wrangler is guaranteed to be valid (fail-fast above)
   const compressedKB = results.wrangler
     ? results.wrangler.compressedKB
     : results.serverHandler.gzipSize / 1024
