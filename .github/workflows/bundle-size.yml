@@ -40,7 +40,8 @@ jobs:
           node scripts/analyze-bundle.js --markdown --dry-run > test-results/bundle-report.md
 
       - name: Comment bundle size on PR
-        if: github.event_name == 'pull_request'
+        # Skip for fork PRs - they can't write comments due to security restrictions
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         uses: actions/github-script@v8
         with:
           script: |
@@ -73,6 +74,14 @@ jobs:
                 body: body
               });
             }
+
+      - name: Print bundle report (fork PRs)
+        # For fork PRs, print to logs since we can't comment
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "📦 Bundle Size Report (see below - cannot comment on fork PRs)"
+          echo ""
+          cat test-results/bundle-report.md
 
       - name: Check for size limit violation
         if: steps.bundle.outputs.status == 'error'
