@@ -367,6 +367,7 @@ function outputForCI(results) {
   // Also print to stdout for debugging
   output.forEach(line => {
     console.log(line)
+    return
   })
 }
 
