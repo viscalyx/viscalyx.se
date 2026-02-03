@@ -44,6 +44,22 @@ function formatBytes(bytes) {
 }
 
 /**
+ * Get emoji for status
+ */
+function getStatusEmoji(status) {
+  switch (status) {
+    case 'error':
+      return '❌'
+    case 'warning':
+      return '⚠️'
+    case 'info':
+      return 'ℹ️'
+    default:
+      return '✅'
+  }
+}
+
+/**
  * Get file size in bytes
  */
 function getFileSize(filePath) {
@@ -353,9 +369,7 @@ function outputForCI(results) {
   }
 
   output.push(`status=${results.status}`)
-  output.push(
-    `status-emoji=${results.status === 'error' ? '❌' : results.status === 'warning' ? '⚠️' : results.status === 'info' ? 'ℹ️' : '✅'}`
-  )
+  output.push(`status-emoji=${getStatusEmoji(results.status)}`)
   output.push(`status-message=${results.statusMessage}`)
 
   // Write to GITHUB_OUTPUT if available
@@ -367,7 +381,6 @@ function outputForCI(results) {
   // Also print to stdout for debugging
   output.forEach(line => {
     console.log(line)
-    return
   })
 }
 
@@ -375,14 +388,7 @@ function outputForCI(results) {
  * Output results as Markdown (for PR comments)
  */
 function outputForMarkdown(results) {
-  const statusEmoji =
-    results.status === 'error'
-      ? '❌'
-      : results.status === 'warning'
-        ? '⚠️'
-        : results.status === 'info'
-          ? 'ℹ️'
-          : '✅'
+  const statusEmoji = getStatusEmoji(results.status)
 
   const wranglerSize = results.wrangler
     ? `${results.wrangler.uncompressedKB.toFixed(2)} KB`
@@ -447,14 +453,7 @@ ${warningText}`
  * Output results for terminal (human readable)
  */
 function outputForTerminal(results) {
-  const statusEmoji =
-    results.status === 'error'
-      ? '❌'
-      : results.status === 'warning'
-        ? '⚠️'
-        : results.status === 'info'
-          ? 'ℹ️'
-          : '✅'
+  const statusEmoji = getStatusEmoji(results.status)
 
   console.log('\n📦 Bundle Size Analysis\n')
   console.log('='.repeat(60))
@@ -563,7 +562,18 @@ Examples:
 
   // Parse max-age option
   const maxAgeArg = args.find(a => a.startsWith('--max-age='))
-  const maxAgeMinutes = maxAgeArg ? parseInt(maxAgeArg.split('=')[1], 10) : 30
+  let maxAgeMinutes = 30 // default
+  if (maxAgeArg) {
+    const parsed = parseInt(maxAgeArg.split('=')[1], 10)
+    if (!Number.isInteger(parsed) || parsed <= 0) {
+      console.error(
+        `Error: Invalid --max-age value "${maxAgeArg.split('=')[1]}". Must be a positive integer.`
+      )
+      console.error('Usage: --max-age=N where N is minutes (e.g., --max-age=60)')
+      process.exit(1)
+    }
+    maxAgeMinutes = parsed
+  }
 
   const options = {
     ci: args.includes('--ci'),
