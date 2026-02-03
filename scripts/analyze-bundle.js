@@ -254,6 +254,12 @@ function analyzeBuild(options = {}) {
   if (fs.existsSync(serverHandlerPath)) {
     results.serverHandler.size = getFileSize(serverHandlerPath)
     results.serverHandler.gzipSize = getGzipSize(serverHandlerPath)
+  } else if (!options.dryRun) {
+    // Silent OK only in non-dryRun mode is legacy; now we fail-fast when not dryRun
+    throw new Error(
+      `Server handler not found at ${serverHandlerPath}. ` +
+        `Build directory '${buildDir}' may be incomplete or corrupted.`
+    )
   }
 
   // Analyze middleware
@@ -408,8 +414,16 @@ function outputForMarkdown(results) {
     ? `${results.wrangler.compressedKB.toFixed(2)} KB`
     : 'N/A'
 
-  const freeStatus = results.usage?.exceedsFree ? '❌' : '✅'
-  const paidStatus = results.usage?.exceedsPaid ? '❌' : '✅'
+  const freeStatus = results.usage
+    ? results.usage.exceedsFree
+      ? '❌'
+      : '✅'
+    : 'N/A'
+  const paidStatus = results.usage
+    ? results.usage.exceedsPaid
+      ? '❌'
+      : '✅'
+    : 'N/A'
   const freePercent = results.usage?.freePercent.toFixed(1) ?? 'N/A'
   const paidPercent = results.usage?.paidPercent.toFixed(1) ?? 'N/A'
 
