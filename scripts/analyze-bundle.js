@@ -255,11 +255,13 @@ function analyzeBuild(options = {}) {
     results.serverHandler.size = getFileSize(serverHandlerPath)
     results.serverHandler.gzipSize = getGzipSize(serverHandlerPath)
   } else if (!options.dryRun) {
-    // Silent OK only in non-dryRun mode is legacy; now we fail-fast when not dryRun
-    throw new Error(
+    const errorMessage =
       `Server handler not found at ${serverHandlerPath}. ` +
-        `Build directory '${buildDir}' may be incomplete or corrupted.`
-    )
+      `Build directory '${buildDir}' may be incomplete or corrupted.`
+    console.error(`❌ Error: ${errorMessage}`)
+    results.status = 'error'
+    results.statusMessage = errorMessage
+    return results
   }
 
   // Analyze middleware
@@ -424,8 +426,8 @@ function outputForMarkdown(results) {
       ? '❌'
       : '✅'
     : 'N/A'
-  const freePercent = results.usage?.freePercent.toFixed(1) ?? 'N/A'
-  const paidPercent = results.usage?.paidPercent.toFixed(1) ?? 'N/A'
+  const freePercent = results.usage?.freePercent?.toFixed(1) ?? 'N/A'
+  const paidPercent = results.usage?.paidPercent?.toFixed(1) ?? 'N/A'
 
   let warningText = ''
   if (results.status === 'warning') {
