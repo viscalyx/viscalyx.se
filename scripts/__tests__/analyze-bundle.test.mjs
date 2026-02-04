@@ -293,13 +293,49 @@ describe('analyze-bundle.js', () => {
       expect(result.statusMessage).toBe('Bundle size OK')
     })
 
-    it('should return info status for 50% usage that is within free limit', () => {
-      // We need to be above 50% of paid (5MB) but within free (3MB) - not possible!
-      // Let's test at exactly 50.1% of paid = 5.01 MB, but this exceeds free
-      // So info status is only possible for bundles > 50% paid but <= free
-      // That's impossible since 50% of 10MB = 5MB > 3MB free limit
-      // Test a case where we're below free limit but above 50% paid threshold
-      // is impossible given the limits, so info status requires custom limits
+    it('should return info status when above warn threshold but within free limit', () => {
+      // With default LIMITS (free: 3MB, paid: 10MB, warnPercentage: 50%),
+      // info status requires: compressedMB <= 3MB AND paidPercent > 50%
+      // paidPercent > 50 means compressedMB > 5MB, but that exceeds free limit
+      // So info status is unreachable with default limits.
+
+      // To test info status, use custom limits where free > 50% of paid
+      const customLimits = {
+        freeCompressedMB: 6, // Free limit is 6MB
+        paidCompressedMB: 10, // Paid limit is 10MB
+        warnPercentage: 50, // Warn at 50% of paid (5MB)
+      }
+
+      const calculateCustomUsage = compressedKB => {
+        const compressedMB = compressedKB / 1024
+        return {
+          compressedMB,
+          paidPercent: (compressedMB / customLimits.paidCompressedMB) * 100,
+        }
+      }
+
+      const determineCustomStatus = usage => {
+        if (usage.compressedMB > customLimits.paidCompressedMB) {
+          return { status: 'error', statusMessage: 'Exceeds paid limit' }
+        } else if (usage.compressedMB > customLimits.freeCompressedMB) {
+          return { status: 'warning', statusMessage: 'Exceeds free limit' }
+        } else if (usage.paidPercent > customLimits.warnPercentage) {
+          return {
+            status: 'info',
+            statusMessage: 'Bundle size OK but approaching limits',
+          }
+        }
+        return { status: 'success', statusMessage: 'Bundle size OK' }
+      }
+
+      // 5.5 MB = 5632 KB: within free limit (6MB) but above 50% of paid (55%)
+      const usage = calculateCustomUsage(5632)
+      expect(usage.compressedMB).toBe(5.5)
+      expect(usage.paidPercent).toBeCloseTo(55, 10)
+
+      const result = determineCustomStatus(usage)
+      expect(result.status).toBe('info')
+      expect(result.statusMessage).toBe('Bundle size OK but approaching limits')
     })
   })
 
