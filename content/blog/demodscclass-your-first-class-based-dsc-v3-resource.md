@@ -337,7 +337,7 @@ You can also define a configuration document, allowing you to define multiple re
 
 Create `demo.dsc.config.yaml`:
 
-> [!INFO]
+> [!NOTE]
 > As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a nested `resources` array. The new pattern uses `requireAdapter` in the resource metadata under `Microsoft.DSC`, making configurations flatter and more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for details.
 
 ```yaml
