@@ -289,7 +289,7 @@ dsc --version
 Add your project folder to the module path:
 
 ```powershell
-$env:PSModulePath += [System.IO.Path]::PathSeparator + (Get-Location)
+$env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Location) -Parent)
 ```
 
 This commands adds your current directory to be searchable. PowerShell can now find your DSC resource when you list or invoke capabilities against it.
