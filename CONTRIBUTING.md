@@ -136,6 +136,7 @@ Dev Containers.
    <!-- markdownlint-enable MD013 -->
 
    extension from the VS Code Marketplace.
+
 2. **Reopen in Container**:
    - Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`).
    - Type `Remote-Containers: Reopen in Container` and select it.
