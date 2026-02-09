@@ -6,7 +6,7 @@
   "shutdownAction": "stopCompose",
   "mounts": [
     {
-      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME}${localEnv:USERPROFILE}/.ssh-agent-fallback.sock}",
+      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME:${localEnv:USERPROFILE}}/.ssh-agent-fallback.sock}",
       "target": "/ssh-agent.sock",
       "type": "bind"
     }

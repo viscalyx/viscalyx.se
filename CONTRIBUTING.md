@@ -710,14 +710,14 @@ The devcontainer is designed to work seamlessly on Linux, macOS, and Windows. Th
 ```jsonc
 "mounts": [
   {
-    "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME}${localEnv:USERPROFILE}/.ssh-agent-fallback.sock}",
+    "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME:${localEnv:USERPROFILE}}/.ssh-agent-fallback.sock}",
     "target": "/ssh-agent.sock",
     "type": "bind"
   }
 ]
 ```
 
-This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific path using `HOME` (Linux/macOS) or `USERPROFILE` (Windows).
+This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific path using `HOME` (Linux/macOS) or, if `HOME` is unset, `USERPROFILE` (Windows), joined with `/.ssh-agent-fallback.sock`.
 
 ### Prerequisites by Platform
 
