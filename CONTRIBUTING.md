@@ -1,8 +1,11 @@
 # Contributing to Viscalyx.se
 
-First off, thank you for considering contributing to Viscalyx.se! We welcome contributions of all kinds, from bug fixes and documentation improvements to new features. This document provides guidelines to help you get started.
+First off, thank you for considering contributing to Viscalyx.se! We welcome
+contributions of all kinds, from bug fixes and documentation improvements to new
+features. This document provides guidelines to help you get started.
 
-If you haven't already, please read the main [README.md](README.md) for an overview of the project.
+If you haven't already, please read the main [README.md](README.md) for an
+overview of the project.
 
 ## Table of Contents
 
@@ -98,40 +101,64 @@ If you haven't already, please read the main [README.md](README.md) for an overv
 
 Before you begin, ensure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (LTS version recommended, check `.nvmrc` if available or `package.json` engines field)
+- [Node.js](https://nodejs.org/) (LTS version recommended, check `.nvmrc` if
+  available or `package.json` engines field)
 - [npm](https://www.npmjs.com/) (usually comes with Node.js)
 - [Git](https://git-scm.com/)
 
 ## Getting Started
 
-1. **Fork the repository**: Click the "Fork" button on the GitHub repository page.
+1. **Fork the repository**: Click the "Fork" button on the GitHub repository
+   page.
 2. **Clone your fork**:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
    cd viscalyx.se
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 ### Open in Dev Container
 
-To ensure a consistent development environment, this project supports VS Code Dev Containers.
+To ensure a consistent development environment, this project supports VS Code
+Dev Containers.
 
-1. **Install the Remote - Containers extension**: If you haven't already, install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the VS Code Marketplace.
+1. **Install the Remote - Containers extension**: If you haven't already,
+   install the
+
+   <!-- markdownlint-disable MD013 -->
+
+   [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+   <!-- markdownlint-enable MD013 -->
+
+   extension from the VS Code Marketplace.
 2. **Reopen in Container**:
    - Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`).
    - Type `Remote-Containers: Reopen in Container` and select it.
-   - VS Code will build the development container. This may take a few minutes the first time.
-   - Once built, your workspace files will be automatically synced into the container, and it will have all the necessary tools and dependencies pre-installed.
+   - VS Code will build the development container. This may take a few minutes
+     the first time.
+   - Once built, your workspace files will be automatically synced into the
+     container, and it will have all the necessary tools and dependencies
+     pre-installed.
 
 3. **Install dependencies**:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npm install
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 4. **Set up environment variables** (if needed):
 
-   This project uses `.env` files for both `npm run dev` (Next.js) and `npm run preview` (Wrangler).
+   This project uses `.env` files for both `npm run dev` (Next.js) and
+   `npm run preview` (Wrangler).
 
    **Files committed to repository:**
    - `.env.development` - Shared development defaults
@@ -144,23 +171,38 @@ To ensure a consistent development environment, this project supports VS Code De
 
    If you need to add local secrets or override defaults:
 
+   <!-- markdownlint-disable MD013 -->
+
    ```bash
    cp .env.example .env.development.local
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
    Edit `.env.development.local` and add your secret values.
 
-   > **Note**: All matching .env files are loaded and values are merged. For each variable,
-   > the value from the most specific file is used, with this precedence:
+   > **Note**: All matching .env files are loaded and values are merged. For
+   > each variable, the value from the most specific file is used, with this
+   > precedence:
    >
    > 1. `.env.development.local` (most specific - your local secrets)
    > 2. `.env.local`
    > 3. `.env.development` (shared defaults)
    > 4. `.env` (least specific - global defaults)
    >
-   > This works for both Next.js and Wrangler. See [Cloudflare's documentation](https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets) for details.
+   > This works for both Next.js and Wrangler. See
+
+   <!-- markdownlint-disable MD013 -->
+
+   > [Cloudflare's documentation](https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets)
+
+   <!-- markdownlint-enable MD013 -->
+
+   > for details.
 
 ## Development
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # Install dependencies
@@ -173,6 +215,8 @@ npm run dev
 npm run build
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ## Development Workflow
 
 ### Branching Strategy
@@ -180,31 +224,46 @@ npm run build
 We use a simple branching strategy:
 
 1. Create a new branch for each feature or bug fix from the `main` branch.
-1. Name your branches descriptively, e.g., `feature/add-contact-form` or `fix/header-layout-issue`.
+1. Name your branches descriptively, e.g., `feature/add-contact-form` or
+   `fix/header-layout-issue`.
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 ### Running the App Locally
 
 To start the development server:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run dev
 ```
 
-This command will also run `build:blog` and `build:page-dates` scripts. The application will be available at `http://localhost:3000`.
+<!-- markdownlint-enable MD013 -->
+
+This command will also run `build:blog` and `build:page-dates` scripts. The
+application will be available at `http://localhost:3000`.
 
 ### Building the App
 
 To create a production build:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run build
 ```
 
-This command ensures all necessary build steps, including blog data and page dates generation, are executed.
+<!-- markdownlint-enable MD013 -->
+
+This command ensures all necessary build steps, including blog data and page
+dates generation, are executed.
 
 ### Linting and Formatting
 
@@ -212,43 +271,79 @@ This project uses ESLint for linting and Prettier for code formatting.
 
 - **Check for linting and formatting errors**:
 
+  <!-- markdownlint-disable MD013 -->
+
   ```bash
   npm run lint
   npm run format:check
   ```
 
+  <!-- markdownlint-enable MD013 -->
+
 - **Fix linting errors automatically**:
+
+  <!-- markdownlint-disable MD013 -->
 
   ```bash
   npm run lint:fix
   ```
 
+  <!-- markdownlint-enable MD013 -->
+
 - **Format code automatically**:
+
+  <!-- markdownlint-disable MD013 -->
 
   ```bash
   npm run format
   ```
 
-We recommend installing the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) VS Code extensions for a better development experience.
+  <!-- markdownlint-enable MD013 -->
+
+We recommend installing the
+
+<!-- markdownlint-disable MD013 -->
+
+[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+<!-- markdownlint-enable MD013 -->
+
+and
+
+<!-- markdownlint-disable MD013 -->
+
+[Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+<!-- markdownlint-enable MD013 -->
+
+VS Code extensions for a better development experience.
 
 ### Type Checking
 
 This project uses TypeScript. To check for type errors:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run type-check
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ## GitHub Copilot Support
 
-This project includes a customized development environment for GitHub Copilot's coding agent:
+This project includes a customized development environment for GitHub Copilot's
+coding agent:
 
-- **Pre-configured Setup**: Automatic dependency installation and project configuration
+- **Pre-configured Setup**: Automatic dependency installation and project
+  configuration
 - **Quality Assurance**: Built-in linting, formatting, and testing
 - **Development Tools**: All necessary tools pre-installed and ready to use
-- **Project-Specific**: Optimized for Next.js, TypeScript, and Tailwind CSS workflows
+- **Project-Specific**: Optimized for Next.js, TypeScript, and Tailwind CSS
+  workflows
 
-The Copilot environment is configured via `.github/workflows/copilot-setup-steps.yml` and includes:
+The Copilot environment is configured via
+`.github/workflows/copilot-setup-steps.yml` and includes:
 
 - Node.js 22 with npm caching
 - TypeScript strict mode checking
@@ -263,12 +358,14 @@ The Copilot environment is configured via `.github/workflows/copilot-setup-steps
 
 A brief overview of the main directories:
 
-- `app/`: Contains the core application logic, pages, layouts, and API routes using Next.js App Router.
+- `app/`: Contains the core application logic, pages, layouts, and API routes
+  using Next.js App Router.
   - `app/[locale]/`: Locale-specific pages.
   - `app/api/`: API route handlers.
 - `components/`: Reusable React components.
 - `content/`: Markdown files for blog posts and potentially other content.
-- `lib/`: Utility functions, data handling (like `blog.ts`, `file-dates.ts`), and context providers.
+- `lib/`: Utility functions, data handling (like `blog.ts`, `file-dates.ts`),
+  and context providers.
 - `messages/`: JSON files for internationalization (i18n).
 - `public/`: Static assets like images and fonts.
 - `scripts/`: Build scripts, e.g., for generating blog data or page dates.
@@ -277,36 +374,54 @@ A brief overview of the main directories:
 
 #### Blog Posts
 
-1. Create a new Markdown file (e.g., `my-new-post.md`) in the `content/blog/` directory.
-1. Follow the frontmatter structure of existing blog posts (see `content/blog/template.md` if available). Essential fields usually include `title`, `date`, `author`, `excerpt`, and `tags`.
+1. Create a new Markdown file (e.g., `my-new-post.md`) in the `content/blog/`
+   directory.
+1. Follow the frontmatter structure of existing blog posts (see
+   `content/blog/template.md` if available). Essential fields usually include
+   `title`, `date`, `author`, `excerpt`, and `tags`.
 1. Write your content in Markdown.
 1. After adding or modifying a blog post, regenerate the blog data:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npm run build:blog
    ```
 
-   This script updates `lib/blog-data.json`, which is used to list and display blog posts. `npm run dev` also runs this script.
+   <!-- markdownlint-enable MD013 -->
+
+   This script updates `lib/blog-data.json`, which is used to list and display
+   blog posts. `npm run dev` also runs this script.
 
 #### Static Pages
 
-This project manages "last modified" dates for static pages using Git commit history. To add a new static page and track its last modified date:
+This project manages "last modified" dates for static pages using Git commit
+history. To add a new static page and track its last modified date:
 
-1. Create your new page component within the `app/[locale]/` directory structure (e.g., `app/[locale]/new-page/page.tsx`).
+1. Create your new page component within the `app/[locale]/` directory structure
+   (e.g., `app/[locale]/new-page/page.tsx`).
 1. Update the `scripts/build-page-dates.js` file:
-   - Add your new page to the `pagePaths` object, mapping a key (e.g., `newPage`) to its file path.
+   - Add your new page to the `pagePaths` object, mapping a key (e.g.,
+     `newPage`) to its file path.
 1. Update the `lib/file-dates.ts` file:
-   - Add a corresponding property for your new page to the `PageDates` interface and the return object of the `getStaticPageDates()` function.
-1. Update the TypeScript declaration file `lib/page-dates.json.d.ts` to include the new page key.
+   - Add a corresponding property for your new page to the `PageDates` interface
+     and the return object of the `getStaticPageDates()` function.
+1. Update the TypeScript declaration file `lib/page-dates.json.d.ts` to include
+   the new page key.
 1. Run the script to update the dates (or rely on `npm run dev`/`build`):
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npm run build:page-dates
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 #### Internationalization (i18n)
 
-The website supports English (`en`) and Swedish (`sv`). Text strings are managed in JSON files:
+The website supports English (`en`) and Swedish (`sv`). Text strings are managed
+in JSON files:
 
 - `messages/en.json` for English
 - `messages/sv.json` for Swedish
@@ -314,28 +429,35 @@ The website supports English (`en`) and Swedish (`sv`). Text strings are managed
 When adding new user-facing text:
 
 1. Add a unique key and its translation to both `en.json` and `sv.json`.
-1. Use the `useTranslations` hook from `next-intl` in your components to display translated strings. Refer to existing components for usage examples.
+1. Use the `useTranslations` hook from `next-intl` in your components to display
+   translated strings. Refer to existing components for usage examples.
 
 ### Component Development
 
 - Create new components in the `components/` directory.
-- Ensure components are well-structured, reusable, and follow React best practices.
+- Ensure components are well-structured, reusable, and follow React best
+  practices.
 - Use TypeScript for type safety.
 
 ### Styling
 
 - Styling is primarily done using [Tailwind CSS](https://tailwindcss.com/).
 - Global styles are defined in `app/globals.css`.
-- Component-specific styles can be achieved using Tailwind utility classes directly in the JSX.
+- Component-specific styles can be achieved using Tailwind utility classes
+  directly in the JSX.
 
 #### Blog Content Styling
 
-The blog content uses a simplified CSS architecture designed to make customization easy for contributors.
+The blog content uses a simplified CSS architecture designed to make
+customization easy for contributors.
 
 **Quick Start**:
 
-1. **Base Blog Content**: All blog posts use the `.blog-content` class, which provides consistent styling for all content elements.
+1. **Base Blog Content**: All blog posts use the `.blog-content` class, which
+   provides consistent styling for all content elements.
 2. **Simple Customization**: Apply modifier classes to change blog appearance:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```tsx
    // Default styling
@@ -349,6 +471,8 @@ The blog content uses a simplified CSS architecture designed to make customizati
    </div>
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 3. **Available Modifier Classes**:
    - `.blog-content-accent-headings` - Primary color headings
    - `.blog-content-large-text` - Larger H2 headings
@@ -356,6 +480,8 @@ The blog content uses a simplified CSS architecture designed to make customizati
    - `.blog-content-colorful` - Gradient blockquotes
 
 4. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```css
    .blog-content-custom {
@@ -367,6 +493,8 @@ The blog content uses a simplified CSS architecture designed to make customizati
    }
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 **Key Benefits:**
 
 - **Simple**: Easy to understand and modify
@@ -376,16 +504,22 @@ The blog content uses a simplified CSS architecture designed to make customizati
 
 **Common Tasks:**
 
-- **Change heading colors**: Use `.blog-content-accent-headings` or create a custom modifier
-- **Adjust spacing**: Use `.blog-content-spaced` or modify paragraph margins in a custom class
-- **Style code blocks**: Modify `.blog-content pre` and `.blog-content code` rules
-- **Customize blockquotes**: Use `.blog-content-colorful` or create custom blockquote styles
+- **Change heading colors**: Use `.blog-content-accent-headings` or create a
+  custom modifier
+- **Adjust spacing**: Use `.blog-content-spaced` or modify paragraph margins in
+  a custom class
+- **Style code blocks**: Modify `.blog-content pre` and `.blog-content code`
+  rules
+- **Customize blockquotes**: Use `.blog-content-colorful` or create custom
+  blockquote styles
 
 The architecture is meant to be a clean and easily customizable approach.
 
 #### Easy Customization Examples
 
 To make all H2 headings larger:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content-large-text h2 {
@@ -397,7 +531,11 @@ To make all H2 headings larger:
 <div className="blog-content blog-content-large-text prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 To make headings use the primary color:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content-accent-headings h1,
@@ -411,7 +549,11 @@ To make headings use the primary color:
 <div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 To add more space between paragraphs:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content-spaced p {
@@ -423,7 +565,11 @@ To add more space between paragraphs:
 <div className="blog-content blog-content-spaced prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 To make blockquotes more visually appealing:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content-colorful blockquote {
@@ -435,11 +581,15 @@ To make blockquotes more visually appealing:
 <div className="blog-content blog-content-colorful prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Changing Heading Colors
 
 1. Open `app/globals.css`
 2. Find the `.blog-content h1, .blog-content h2, ...` section
 3. Modify the `@apply` directive:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content h1,
@@ -449,9 +599,13 @@ To make blockquotes more visually appealing:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Changing Code Block Styling
 
 To change code block background:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content pre {
@@ -459,9 +613,13 @@ To change code block background:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Changing Link Colors
 
 To change link styling:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content a {
@@ -469,9 +627,13 @@ To change link styling:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Adding Custom Typography
 
 To add different font weights or sizes:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 .blog-content h1 {
@@ -483,35 +645,54 @@ To add different font weights or sizes:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Creating Blog Variations
 
 You can now easily create different blog post styles by combining modifiers:
 
 ##### Modern Tech Blog Style
 
+<!-- markdownlint-disable MD013 -->
+
 ```tsx
 <div className="blog-content blog-content-accent-headings blog-content-large-text prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ##### Spacious Reading Style
+
+<!-- markdownlint-disable MD013 -->
 
 ```tsx
 <div className="blog-content blog-content-spaced prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ##### Colorful Feature Style
+
+<!-- markdownlint-disable MD013 -->
 
 ```tsx
 <div className="blog-content blog-content-colorful blog-content-accent-headings prose prose-lg max-w-none">
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Syntax Highlighting
 
-The blog system includes automatic syntax highlighting for code blocks using Prism.js. This feature works with 200+ programming languages and automatically adapts to the current theme.
+The blog system includes automatic syntax highlighting for code blocks using
+Prism.js. This feature works with 200+ programming languages and automatically
+adapts to the current theme.
 
 **Using Syntax Highlighting:**
 
-1. **Standard Code Blocks**: Simply use triple backticks with a language identifier:
+1. **Standard Code Blocks**: Simply use triple backticks with a language
+   identifier:
+
+   <!-- markdownlint-disable MD013 -->
 
    ````markdown
    ```javascript
@@ -524,7 +705,10 @@ The blog system includes automatic syntax highlighting for code blocks using Pri
    Get-Process | Where-Object { $_.CPU -gt 100 }
    ```
 
-2. **Supported Languages**: The system supports all major programming languages, including:
+   <!-- markdownlint-enable MD013 -->
+
+2. **Supported Languages**: The system supports all major programming languages,
+   including:
    - **PowerShell** (`powershell`, `ps1`)
    - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
    - **Python** (`python`, `py`)
@@ -533,13 +717,16 @@ The blog system includes automatic syntax highlighting for code blocks using Pri
    - **JSON/YAML** (`json`, `yaml`)
    - And many more...
 
-3. **Theme Integration**: Syntax highlighting automatically adapts to light/dark themes using the same color palette as the rest of the site.
+3. **Theme Integration**: Syntax highlighting automatically adapts to light/dark
+   themes using the same color palette as the rest of the site.
 
-4. **Language Labels**: Code blocks automatically display language labels in the top-right corner for better readability.
+4. **Language Labels**: Code blocks automatically display language labels in the
+   top-right corner for better readability.
 
 **Customizing Syntax Highlighting:**
 
-The syntax highlighting styles are defined in `app/prism-theme.css`. The implementation:
+The syntax highlighting styles are defined in `app/prism-theme.css`. The
+implementation:
 
 - Uses the Tailwind CSS color palette for consistency
 - Preserves existing blog content backgrounds
@@ -547,6 +734,8 @@ The syntax highlighting styles are defined in `app/prism-theme.css`. The impleme
 - Includes PowerShell-specific token styling
 
 To modify syntax highlighting colors:
+
+<!-- markdownlint-disable MD013 -->
 
 ```css
 /* Light theme colors */
@@ -560,17 +749,22 @@ To modify syntax highlighting colors:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Technical Implementation:**
 
-- **Server-side processing**: Syntax highlighting is applied during the build process using `rehype-prism-plus`
+- **Server-side processing**: Syntax highlighting is applied during the build
+  process using `rehype-prism-plus`
 - **Build script**: Code highlighting is handled in `scripts/build-blog-data.js`
 - **HTML sanitization**: Updated to allow syntax highlighting classes and spans
 - **Performance**: No client-side JavaScript required for syntax highlighting
-- **Copy functionality**: Each code block includes a copy-to-clipboard button for easy code sharing
+- **Copy functionality**: Each code block includes a copy-to-clipboard button
+  for easy code sharing
 
 **Copy-to-Clipboard Feature:**
 
-All code blocks automatically include a copy button in the top-right corner that allows readers to quickly copy code snippets. The feature:
+All code blocks automatically include a copy button in the top-right corner that
+allows readers to quickly copy code snippets. The feature:
 
 - Uses the modern `navigator.clipboard.writeText()` API with fallback support
 - Provides visual feedback when content is copied
@@ -578,13 +772,17 @@ All code blocks automatically include a copy button in the top-right corner that
 - Automatically positions alongside language labels
 - Works with all supported programming languages
 
-The implementation ensures fast loading times and consistent rendering across all devices.
+The implementation ensures fast loading times and consistent rendering across
+all devices.
 
 #### GitHub-Style Alerts
 
-The blog system supports GitHub-style alerts for special content callouts. These provide visual emphasis with distinct colors and icons:
+The blog system supports GitHub-style alerts for special content callouts. These
+provide visual emphasis with distinct colors and icons:
 
 **Using GitHub Alerts:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```markdown
 > [!NOTE]
@@ -603,11 +801,14 @@ The blog system supports GitHub-style alerts for special content callouts. These
 > Negative potential consequences of an action.
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Alert Types:**
 
 - **NOTE** (Blue with info icon): General information and explanations
 - **TIP** (Green with lightbulb icon): Helpful suggestions and best practices
-- **IMPORTANT** (Purple with speech bubble icon): Critical information for success
+- **IMPORTANT** (Purple with speech bubble icon): Critical information for
+  success
 - **WARNING** (Orange with triangle icon): Potential risks and cautions
 - **CAUTION** (Red with octagon icon): Dangerous operations or breaking changes
 
@@ -617,7 +818,8 @@ The blog system supports GitHub-style alerts for special content callouts. These
 - Use regular blockquotes for quotes, citations, and general emphasis
 - Choose the alert type based on the urgency and type of information
 
-The alerts are processed during the build phase and include proper semantic HTML for accessibility.
+The alerts are processed during the build phase and include proper semantic HTML
+for accessibility.
 
 ## Brand Guidelines & Visual Style Guide
 
@@ -626,9 +828,8 @@ and visual style guide to maintain consistency across the website. Our brand
 assets and style guidelines will be documented in the `/docs` directory once
 created. When making design-related changes, follow the guidelines below.
 
-> **Note**: The `docs/` directory with brand asset
-> files (`brand-assets-readme.md`,
-> `brand-style-guide.md`, `brand-usage-examples.md`)
+> **Note**: The `docs/` directory with brand asset files
+> (`brand-assets-readme.md`, `brand-style-guide.md`, `brand-usage-examples.md`)
 > is planned but does not exist yet.
 
 **Key Points:**
@@ -647,10 +848,15 @@ Please follow these general guidelines for commit messages:
 
 - Keep them concise and descriptive.
 - Use the present tense (e.g., "Add feature" not "Added feature").
-- If your changes address a specific issue, reference it in the commit message (e.g., `fix: resolve issue #123`).
-- Consider following the [Conventional Commits](https://www.conventionalcommits.org/) specification for more structured commit messages, though it's not strictly enforced.
+- If your changes address a specific issue, reference it in the commit message
+  (e.g., `fix: resolve issue #123`).
+- Consider following the
+  [Conventional Commits](https://www.conventionalcommits.org/) specification for
+  more structured commit messages, though it's not strictly enforced.
 
 Example:
+
+<!-- markdownlint-disable MD013 -->
 
 ```text
 feat: add user profile page
@@ -664,24 +870,30 @@ fix: correct typo in contact form validation
 docs: update contributing guidelines for blog posts
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Pull Request (PR) Process
 
-1. Ensure your local branch is up-to-date with the `main` branch of the
-   upstream repository.
+1. Ensure your local branch is up-to-date with the `main` branch of the upstream
+   repository.
 1. Push your changes to your forked repository.
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    git push origin feature/your-feature-name
    ```
 
-1. Go to the original `viscalyx.se` repository on GitHub and create a
-   new Pull Request from your forked branch.
+   <!-- markdownlint-enable MD013 -->
+
+1. Go to the original `viscalyx.se` repository on GitHub and create a new Pull
+   Request from your forked branch.
 1. Provide a clear title and description for your PR:
    - Summarize the changes made.
    - Explain the "why" behind your changes.
    - Link to any relevant issues (e.g., "Closes #123").
-1. Ensure all automated checks (GitHub Actions for linting, spell check,
-   build, etc.) pass. If they fail, please address the issues in your branch.
+1. Ensure all automated checks (GitHub Actions for linting, spell check, build,
+   etc.) pass. If they fail, please address the issues in your branch.
 
 ### Code Review
 
@@ -691,16 +903,16 @@ docs: update contributing guidelines for blog posts
 
 ## Dev Container Setup & Requirements
 
-This project uses VS Code Dev Containers to provide a
-consistent, cross-platform development environment. The
-devcontainer automatically handles all dependencies, tools,
-and configuration.
+This project uses VS Code Dev Containers to provide a consistent, cross-platform
+development environment. The devcontainer automatically handles all
+dependencies, tools, and configuration.
 
 ### Cross-Platform Compatibility
 
-The devcontainer is designed to work seamlessly on Linux,
-macOS, and Windows. The configuration includes a fallback
-mechanism for SSH agent forwarding:
+The devcontainer is designed to work seamlessly on Linux, macOS, and Windows.
+The configuration includes a fallback mechanism for SSH agent forwarding:
+
+<!-- markdownlint-disable MD013 -->
 
 ```jsonc
 "mounts": [
@@ -712,10 +924,11 @@ mechanism for SSH agent forwarding:
 ]
 ```
 
-This uses `SSH_AUTH_SOCK` if available, or falls back to a
-platform-specific path using `HOME` (Linux/macOS) or, if
-`HOME` is unset, `USERPROFILE` (Windows), joined with
-`/.ssh-agent-fallback.sock`.
+<!-- markdownlint-enable MD013 -->
+
+This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific
+path using `HOME` (Linux/macOS) or, if `HOME` is unset, `USERPROFILE` (Windows),
+joined with `/.ssh-agent-fallback.sock`.
 
 ### Prerequisites by Platform
 
@@ -723,7 +936,13 @@ platform-specific path using `HOME` (Linux/macOS) or, if
 
 1. **Docker Desktop** (or Docker Engine + Docker Compose)
    - Minimum version: Docker 20.10+
-   - Download: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+   - Download:
+
+     <!-- markdownlint-disable MD013 -->
+
+     [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+
+     <!-- markdownlint-enable MD013 -->
 
 2. **VS Code**
    - Extension: **Dev Containers** (`ms-vscode-remote.remote-containers`)
@@ -734,6 +953,8 @@ platform-specific path using `HOME` (Linux/macOS) or, if
 #### Linux-Specific Setup
 
 **Docker Installation:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # Install Docker Engine
@@ -748,7 +969,11 @@ newgrp docker  # or logout/login
 docker run hello-world
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **SSH Agent Setup:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # 1. Start SSH agent automatically (add to ~/.bashrc or ~/.zshrc)
@@ -766,6 +991,8 @@ echo $SSH_AUTH_SOCK
 # Should output something like: /tmp/ssh-XXXXXXX/agent.XXXXX
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### macOS-Specific Setup
 
 **Docker Desktop Configuration:**
@@ -777,6 +1004,8 @@ echo $SSH_AUTH_SOCK
    - **General**: Enable appropriate settings for your Mac architecture
 
 **SSH Agent Setup:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # 1. macOS has SSH agent built-in, configure it for persistence
@@ -794,9 +1023,10 @@ echo $SSH_AUTH_SOCK
 # Should output: /private/tmp/com.apple.launchd.XXXXXXXXX/Listeners
 ```
 
-**Performance Note:** macOS uses a VM for Docker.
-The `:cached` mount option in docker-compose.yml helps
-optimize file system performance.
+<!-- markdownlint-enable MD013 -->
+
+**Performance Note:** macOS uses a VM for Docker. The `:cached` mount option in
+docker-compose.yml helps optimize file system performance.
 
 #### Windows-Specific Setup
 
@@ -806,6 +1036,8 @@ optimize file system performance.
 - WSL 2 (Windows Subsystem for Linux 2)
 
 **WSL 2 Installation:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```powershell
 # In PowerShell as Administrator:
@@ -824,6 +1056,8 @@ wsl --list --verbose
 # Should show VERSION 2
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Docker Desktop for Windows:**
 
 1. Install Docker Desktop for Windows
@@ -837,6 +1071,8 @@ wsl --list --verbose
 **SSH Agent Setup (Choose One Option):**
 
 **Option A: Windows OpenSSH Agent** (Recommended)
+
+<!-- markdownlint-disable MD013 -->
 
 ```powershell
 # In PowerShell as Administrator:
@@ -852,7 +1088,11 @@ ssh-add $env:USERPROFILE\.ssh\id_rsa
 git config --global core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe"
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Option B: SSH Agent in WSL**
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # In WSL terminal:
@@ -869,7 +1109,11 @@ fi
 ssh-add ~/.ssh/id_rsa
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Git Line Endings Configuration:**
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # In WSL, configure Git line endings
@@ -877,9 +1121,13 @@ git config --global core.autocrlf input
 git config --global core.eol lf
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Verifying Your Setup
 
 After completing the platform-specific setup, verify everything works:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 # 1. Test SSH agent
@@ -899,6 +1147,8 @@ code .
 #    Or use Command Palette: "Dev Containers: Reopen in Container"
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Troubleshooting
 
 **SSH Agent Not Working:**
@@ -907,21 +1157,28 @@ If SSH agent forwarding doesn't work after setup:
 
 1. **Verify environment variable:**
 
+   <!-- markdownlint-disable MD013 -->
+
    ```bash
    echo $SSH_AUTH_SOCK
    ```
+
+   <!-- markdownlint-enable MD013 -->
 
    Should show a valid path.
 
 2. **Check SSH keys are added:**
 
+   <!-- markdownlint-disable MD013 -->
+
    ```bash
    ssh-add -l
    ```
 
-3. **Fallback option** (if still not working): Use HTTPS
-   instead of SSH for Git operations, or configure
-   personal access tokens.
+   <!-- markdownlint-enable MD013 -->
+
+3. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git
+   operations, or configure personal access tokens.
 
 **Container Build Fails:**
 
@@ -932,8 +1189,7 @@ If SSH agent forwarding doesn't work after setup:
 **Performance Issues on macOS/Windows:**
 
 - Increase Docker Desktop resource allocation
-- On macOS, ensure VirtioFS is enabled for better
-  performance
+- On macOS, ensure VirtioFS is enabled for better performance
 - On Windows, ensure WSL 2 integration is enabled
 
 ### What's Included in the Dev Container
@@ -944,19 +1200,19 @@ The devcontainer automatically provides:
 - **Git** with safe directory configuration
 - **GitHub CLI** (`gh`) pre-installed
 - **Zsh** with Oh My Zsh configuration
-- **All VS Code extensions** listed in
-  `.devcontainer/devcontainer.json`
-- **Configured settings** for formatting, linting,
-  and spell checking
-- **Port forwarding** for Next.js (3000, 3001),
-  Wrangler (8787), and Vitest UI (51204)
+- **All VS Code extensions** listed in `.devcontainer/devcontainer.json`
+- **Configured settings** for formatting, linting, and spell checking
+- **Port forwarding** for Next.js (3000, 3001), Wrangler (8787), and Vitest UI
+  (51204)
 - **Automatic npm install** on container creation
 
 You don't need to manually install any of these tools!
 
 ## Spell Checking Setup
 
-This project uses [Code Spell Checker (cspell)](https://cspell.org/) for automated spell checking across all code files, markdown content, and documentation.
+This project uses [Code Spell Checker (cspell)](https://cspell.org/) for
+automated spell checking across all code files, markdown content, and
+documentation.
 
 ### Configuration
 
@@ -986,6 +1242,8 @@ The `.cspell.jsonc` file includes:
 
 #### NPM Scripts
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 # Check all files for spelling errors
 npm run spell:check
@@ -997,6 +1255,8 @@ npm run spell:fix
 npx cspell "app/**/*.tsx"
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### VS Code Commands
 
 - `Ctrl/Cmd + Shift + P` → "Spell: Add Words to Dictionary"
@@ -1005,9 +1265,11 @@ npx cspell "app/**/*.tsx"
 
 #### Adding New Words
 
-1. **VS Code**: Right-click on the word → "Add to User Dictionary" or "Add to Workspace Dictionary"
+1. **VS Code**: Right-click on the word → "Add to User Dictionary" or "Add to
+   Workspace Dictionary"
 2. **Manual**: Add words to the `words` array in `.cspell.jsonc`
-3. **Project-specific**: Words added via VS Code are automatically saved to `.cspell.jsonc`
+3. **Project-specific**: Words added via VS Code are automatically saved to
+   `.cspell.jsonc`
 
 ### Automation
 
@@ -1021,6 +1283,8 @@ npx cspell "app/**/*.tsx"
 
 To add spell checking to pre-commit hooks, add this to your pre-commit script:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 #!/bin/sh
 npm run spell:check
@@ -1030,30 +1294,44 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Ignoring False Positives
 
 #### Temporary Ignore
 
 Add `// cspell:disable-next-line` above the line with the "misspelled" word:
 
+<!-- markdownlint-disable MD013 -->
+
 ```typescript
 // cspell:disable-next-line
 const specialTechnicalTerm = \'someUniqueApiName\'
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Ignore Entire File
 
 Add to the top of the file:
+
+<!-- markdownlint-disable MD013 -->
 
 ```text
 // cspell:disable
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Ignore Specific Words in File
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 // cspell:ignore specialword anothertechterm
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Configuration Details
 
@@ -1086,6 +1364,8 @@ The spell checker automatically ignores:
 
 #### Debugging
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 # Verbose output to see what\'s being checked
 npx cspell "**/*.md" --verbose
@@ -1093,6 +1373,8 @@ npx cspell "**/*.md" --verbose
 # Check a specific file with full details
 npx cspell app/page.tsx --show-context --show-suggestions
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Language Extensions
 
@@ -1102,19 +1384,24 @@ This project supports multi-language spell checking:
 
 Swedish spell checking is enabled for:
 
-- Files matching the `**/dictionaries/sv.ts` pattern
-  (if the file is created in the future)
-- Files with `sv` in the filename
-  (e.g., `messages/sv.json`)
+- Files matching the `**/dictionaries/sv.ts` pattern (if the file is created in
+  the future)
+- Files with `sv` in the filename (e.g., `messages/sv.json`)
 - Files with `swedish` in the filename
 
 The configuration includes:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm install --save-dev @cspell/dict-sv
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 Configuration in `.cspell.jsonc`:
+
+<!-- markdownlint-disable MD013 -->
 
 ```json
 {
@@ -1129,15 +1416,23 @@ Configuration in `.cspell.jsonc`:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Additional Language Support
 
 For other languages, install additional dictionaries:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm install --save-dev @cspell/dict-spanish @cspell/dict-french
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 Then add to `.cspell.jsonc`:
+
+<!-- markdownlint-disable MD013 -->
 
 ```json
 {
@@ -1145,9 +1440,12 @@ Then add to `.cspell.jsonc`:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Best Practices
 
-1. **Review before adding**: Don\'t blindly add misspelled words to the dictionary
+1. **Review before adding**: Don\'t blindly add misspelled words to the
+   dictionary
 2. **Keep dictionary clean**: Periodically review custom words
 3. **Use consistent naming**: Follow project conventions for technical terms
 4. **Document decisions**: Add comments in `.cspell.jsonc` for unusual words
@@ -1155,41 +1453,55 @@ Then add to `.cspell.jsonc`:
 
 ## Cloudflare Scripts Documentation
 
-This document describes the Cloudflare-specific scripts in `package.json` that enable deployment to Cloudflare Workers using the OpenNext adapter.
+This document describes the Cloudflare-specific scripts in `package.json` that
+enable deployment to Cloudflare Workers using the OpenNext adapter.
 
 ### Scripts Overview
 
 #### `preview`
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run preview
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **Command**: `opennextjs-cloudflare build && opennextjs-cloudflare preview`
 
-**Purpose**: Tests and previews your Next.js application using the Cloudflare adapter in a local environment that simulates the Cloudflare Workers runtime.
+**Purpose**: Tests and previews your Next.js application using the Cloudflare
+adapter in a local environment that simulates the Cloudflare Workers runtime.
 
 **What it does**:
 
-1. **Build**: Compiles your Next.js application for Cloudflare Workers using the OpenNext adapter
-2. **Preview**: Starts a local server that mimics the Cloudflare Workers environment
+1. **Build**: Compiles your Next.js application for Cloudflare Workers using the
+   OpenNext adapter
+2. **Preview**: Starts a local server that mimics the Cloudflare Workers
+   environment
 
 **When to use**:
 
-- Before deploying to production to ensure your app works correctly in the Cloudflare Workers environment
+- Before deploying to production to ensure your app works correctly in the
+  Cloudflare Workers environment
 - For integration testing with Cloudflare-specific features
 - To verify that your application behaves correctly with the OpenNext adapter
 
 **Difference from `dev`**:
 
 - `npm run dev` uses the Next.js development server for fast development
-- `npm run preview` uses the Cloudflare adapter to simulate the production environment
+- `npm run preview` uses the Cloudflare adapter to simulate the production
+  environment
 
 #### `deploy`
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run deploy
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 **Command**: `opennextjs-cloudflare build && opennextjs-cloudflare deploy`
 
@@ -1198,7 +1510,8 @@ npm run deploy
 **What it does**:
 
 1. **Build**: Compiles your Next.js application for Cloudflare Workers
-2. **Deploy**: Uploads and deploys the application to your Cloudflare Workers environment
+2. **Deploy**: Uploads and deploys the application to your Cloudflare Workers
+   environment
 
 **Deployment targets**:
 
@@ -1212,13 +1525,19 @@ npm run deploy
 
 #### `cf-typegen`
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run cf-typegen
 ```
 
-**Command**: `wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts`
+<!-- markdownlint-enable MD013 -->
 
-**Purpose**: Generates TypeScript type definitions for Cloudflare environment variables and bindings.
+**Command**:
+`wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts`
+
+**Purpose**: Generates TypeScript type definitions for Cloudflare environment
+variables and bindings.
 
 **What it does**:
 
@@ -1234,29 +1553,43 @@ npm run cf-typegen
 
 ### Testing Workflow
 
-Use the standard Next.js development server for the best developer experience with hot reloading.
+Use the standard Next.js development server for the best developer experience
+with hot reloading.
 
 #### Testing with Cloudflare Environment
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run preview
 ```
 
-Test your application in an environment that simulates Cloudflare Workers before deploying.
+<!-- markdownlint-enable MD013 -->
+
+Test your application in an environment that simulates Cloudflare Workers before
+deploying.
 
 #### Production Deployment
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run deploy
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 Deploy your application to Cloudflare Workers.
 
 #### Type Generation
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run cf-typegen
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 Generate TypeScript types for Cloudflare bindings and environment variables.
 
@@ -1266,11 +1599,14 @@ These scripts work in conjunction with:
 
 - **`wrangler.jsonc`**: Cloudflare Workers configuration
 - **`open-next.config.ts`**: OpenNext adapter configuration
-- **`cloudflare-env.d.ts`**: Generated TypeScript types (created by `cf-typegen`)
+- **`cloudflare-env.d.ts`**: Generated TypeScript types (created by
+  `cf-typegen`)
 
 ### Required Dependencies
 
 The following packages enable these scripts:
+
+<!-- markdownlint-disable MD013 -->
 
 ```json
 {
@@ -1283,71 +1619,117 @@ The following packages enable these scripts:
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Additional Resources
 
+<!-- markdownlint-disable MD013 -->
+
 - [Cloudflare Next.js Guide](https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/)
+
+<!-- markdownlint-enable MD013 -->
+
 - [OpenNext Documentation](https://opennext.js.org/cloudflare)
+
+<!-- markdownlint-disable MD013 -->
+
 - [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
+
+<!-- markdownlint-enable MD013 -->
 
 ## Security Testing
 
 ### Dependency Auditing
 
-You can audit updated dependency versions before installing them by generating a lockfile only and running both `npm audit` and Snyk:
+You can audit updated dependency versions before installing them by generating a
+lockfile only and running both `npm audit` and Snyk:
 
 1. Generate or update only the lockfile (without installing packages):
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npm install --package-lock-only
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 2. Run `npm audit` (omit dev dependencies if desired):
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npm audit
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 3. Run a Snyk security test against your `package.json`:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    npx snyk auth
    npx snyk test --file=package.json
    ```
 
+   <!-- markdownlint-enable MD013 -->
+
 4. Once finished, restore your original lockfile and install as usual:
+
+   <!-- markdownlint-disable MD013 -->
 
    ```bash
    git restore package-lock.json
    npm install
    ```
 
-This section explains the security testing approach for the blog data generation process, which handles regular security audits of the build-time sanitization process.
+   <!-- markdownlint-enable MD013 -->
+
+This section explains the security testing approach for the blog data generation
+process, which handles regular security audits of the build-time sanitization
+process.
 
 ### Security Overview
 
-The blog data build process (`scripts/build-blog-data.js`) uses the `sanitize-html` library to prevent XSS attacks by sanitizing HTML content generated from Markdown. To ensure this sanitization continues to work effectively, we have implemented comprehensive security testing.
+The blog data build process (`scripts/build-blog-data.js`) uses the
+`sanitize-html` library to prevent XSS attacks by sanitizing HTML content
+generated from Markdown. To ensure this sanitization continues to work
+effectively, we have implemented comprehensive security testing.
 
 ### Security Test Components
 
+<!-- markdownlint-disable MD013 -->
+
 #### 1. Sanitization Security Tests (`scripts/__tests__/build-blog-data-sanitization.test.js`)
 
-These tests verify that the sanitization configuration properly prevents XSS attacks while preserving legitimate content:
+<!-- markdownlint-enable MD013 -->
+
+These tests verify that the sanitization configuration properly prevents XSS
+attacks while preserving legitimate content:
 
 ##### XSS Prevention Tests
 
-- **Script Tag Removal**: Ensures `<script>` tags and their content are completely removed
-- **Event Handler Removal**: Removes dangerous event handlers like `onclick`, `onload`, etc.
-- **JavaScript URL Prevention**: Blocks `javascript:` URLs in links and other attributes
-- **Style Tag Removal**: Removes `<style>` tags and inline styles that could contain malicious code
+- **Script Tag Removal**: Ensures `<script>` tags and their content are
+  completely removed
+- **Event Handler Removal**: Removes dangerous event handlers like `onclick`,
+  `onload`, etc.
+- **JavaScript URL Prevention**: Blocks `javascript:` URLs in links and other
+  attributes
+- **Style Tag Removal**: Removes `<style>` tags and inline styles that could
+  contain malicious code
 - **Iframe/Embed Blocking**: Prevents potentially dangerous embedded content
 - **Data Attribute Handling**: Verifies data attributes are handled safely
 
 ##### Content Preservation Tests
 
-- **Basic HTML Formatting**: Ensures standard HTML tags like `<h1>`, `<p>`, `<strong>`, `<em>` are preserved
-- **Syntax Highlighting**: Verifies that code syntax highlighting classes and attributes are maintained
+- **Basic HTML Formatting**: Ensures standard HTML tags like `<h1>`, `<p>`,
+  `<strong>`, `<em>` are preserved
+- **Syntax Highlighting**: Verifies that code syntax highlighting classes and
+  attributes are maintained
 - **Table of Contents**: Ensures heading IDs for navigation are preserved
-- **Safe Links**: Confirms that legitimate URLs (https, mailto, relative paths) work correctly
+- **Safe Links**: Confirms that legitimate URLs (https, mailto, relative paths)
+  work correctly
 - **Image Handling**: Documents the current restrictive image policy
 
 ##### Edge Case Testing
@@ -1356,24 +1738,38 @@ These tests verify that the sanitization configuration properly prevents XSS att
 - **Malformed HTML**: Gracefully processes badly formed HTML
 - **Large Content**: Handles very long content without performance issues
 
+<!-- markdownlint-disable MD013 -->
+
 #### 2. Integration Security Tests (`scripts/__tests__/build-blog-data-integration.test.js`)
 
-These tests run the actual build script with malicious content to verify end-to-end security:
+<!-- markdownlint-enable MD013 -->
+
+These tests run the actual build script with malicious content to verify
+end-to-end security:
 
 ##### Full Build Process Testing
 
-- **Malicious Content Removal**: Creates actual blog posts with XSS attempts and verifies they're sanitized
-- **Syntax Highlighting Preservation**: Ensures code blocks maintain their highlighting after processing
-- **Multiple Post Handling**: Tests that sanitization works consistently across multiple posts
-- **Reading Time Calculation**: Verifies that malicious content doesn't affect reading time calculations
+- **Malicious Content Removal**: Creates actual blog posts with XSS attempts and
+  verifies they're sanitized
+- **Syntax Highlighting Preservation**: Ensures code blocks maintain their
+  highlighting after processing
+- **Multiple Post Handling**: Tests that sanitization works consistently across
+  multiple posts
+- **Reading Time Calculation**: Verifies that malicious content doesn't affect
+  reading time calculations
 
 #### 3. Security Audit Script (`scripts/security-audit.js`)
 
-A convenient script that runs all security tests and provides a comprehensive report:
+A convenient script that runs all security tests and provides a comprehensive
+report:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run test:security
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 This script:
 
@@ -1386,6 +1782,8 @@ This script:
 
 #### Individual Test Suites
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 # Run sanitization tests only
 npx jest scripts/__tests__/build-blog-data-sanitization.test.js
@@ -1394,25 +1792,37 @@ npx jest scripts/__tests__/build-blog-data-sanitization.test.js
 npx jest scripts/__tests__/build-blog-data-integration.test.js
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Full Security Audit
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm run test:security
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### As Part of CI/CD
 
 The security tests are included in the main `check` script:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run check  # Includes type-check, formatting, linting, tests, and security audit
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Security Configuration
 
 #### Current Sanitization Rules
 
 The build script uses these sanitization options:
+
+<!-- markdownlint-disable MD013 -->
 
 ```javascript
 const sanitizeOptions = {
@@ -1441,20 +1851,28 @@ const sanitizeOptions = {
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Notable Security Decisions
 
-1. **No Image Tags**: The current configuration does NOT allow `<img>` tags, as images are likely handled through other mechanisms
-2. **Data Attributes Allowed**: While `data-*` attributes are allowed, they cannot execute JavaScript directly
-3. **Restricted Tag Set**: Only a curated set of HTML tags are allowed, blocking dangerous ones like `<script>`, `<iframe>`, `<object>`, etc.
+1. **No Image Tags**: The current configuration does NOT allow `<img>` tags, as
+   images are likely handled through other mechanisms
+2. **Data Attributes Allowed**: While `data-*` attributes are allowed, they
+   cannot execute JavaScript directly
+3. **Restricted Tag Set**: Only a curated set of HTML tags are allowed, blocking
+   dangerous ones like `<script>`, `<iframe>`, `<object>`, etc.
 
 ### Security Recommendations
 
 #### Regular Maintenance
 
 1. **Update Dependencies**: Keep `sanitize-html` updated to latest version
-2. **Review New Attack Vectors**: Periodically review OWASP XSS prevention guidelines
-3. **Monitor Test Results**: Any test failures should be investigated immediately
-4. **Audit Configuration**: Review the sanitization configuration when adding new features
+2. **Review New Attack Vectors**: Periodically review OWASP XSS prevention
+   guidelines
+3. **Monitor Test Results**: Any test failures should be investigated
+   immediately
+4. **Audit Configuration**: Review the sanitization configuration when adding
+   new features
 
 #### Adding New Content Types
 
@@ -1481,34 +1899,45 @@ Ensure that:
 
 If security tests fail:
 
-1. **Check Recent Changes**: Review recent modifications to the build script or sanitization config
-2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are up-to-date
-3. **Review Error Messages**: Test failures indicate specific security vulnerabilities
-4. **Test Manually**: Create test blog posts with suspicious content to verify behavior
+1. **Check Recent Changes**: Review recent modifications to the build script or
+   sanitization config
+2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are
+   up-to-date
+3. **Review Error Messages**: Test failures indicate specific security
+   vulnerabilities
+4. **Test Manually**: Create test blog posts with suspicious content to verify
+   behavior
 
 #### Performance Issues
 
 If tests are slow:
 
-1. **Check Content Size**: Exceptionally large test content can slow down processing
+1. **Check Content Size**: Exceptionally large test content can slow down
+   processing
 2. **Review Complexity**: Deeply nested HTML can cause performance issues
-3. **Monitor Resources**: Integration tests create temporary files and directories
+3. **Monitor Resources**: Integration tests create temporary files and
+   directories
 
 #### False Positives
 
 If legitimate content is being over-sanitized:
 
-1. **Review Sanitization Config**: May need to allow additional tags or attributes
+1. **Review Sanitization Config**: May need to allow additional tags or
+   attributes
 2. **Update Test Expectations**: Ensure tests match the actual desired behavior
-3. **Consider Alternatives**: Some content might need different handling mechanisms
+3. **Consider Alternatives**: Some content might need different handling
+   mechanisms
 
 ## Page Dates Management
 
-This document explains how page last modified dates are managed in the sitemap and individual pages.
+This document explains how page last modified dates are managed in the sitemap
+and individual pages.
 
 ### Overview
 
-The application uses actual Git commit dates for static pages instead of always using the current date (`new Date()`). This improves SEO accuracy by providing real last modified timestamps.
+The application uses actual Git commit dates for static pages instead of always
+using the current date (`new Date()`). This improves SEO accuracy by providing
+real last modified timestamps.
 
 ### How It Works
 
@@ -1534,17 +1963,25 @@ The application uses actual Git commit dates for static pages instead of always 
 
 **In Sitemap (`app/sitemap.ts`):**
 
+<!-- markdownlint-disable MD013 -->
+
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use staticPageDates.privacy, staticPageDates.terms, etc.
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 **In Pages (`app/[locale]/privacy/page.tsx`, etc.):**
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use format.dateTime(staticPageDates.privacy, {...})
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Build Process Integration
 
@@ -1559,9 +1996,13 @@ The page dates are built automatically as part of:
 
 To manually update page dates:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run build:page-dates
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Tracked Pages
 
@@ -1573,9 +2014,11 @@ npm run build:page-dates
 ### Benefits
 
 1. **SEO Accuracy**: Real last modified dates instead of current date
-2. **Environment Compatibility**: Works in Cloudflare Workers and other serverless environments
+2. **Environment Compatibility**: Works in Cloudflare Workers and other
+   serverless environments
 3. **Automatic Updates**: Dates update when files are actually modified
-4. **Build-time Generation**: No runtime Git commands or file system access needed
+4. **Build-time Generation**: No runtime Git commands or file system access
+   needed
 
 ### Adding New Pages
 
@@ -1587,7 +2030,8 @@ To track a new static page:
 
 ## Slug Utilities Documentation
 
-This module provides reusable functions for creating URL-friendly slugs and managing table of contents functionality in blog articles.
+This module provides reusable functions for creating URL-friendly slugs and
+managing table of contents functionality in blog articles.
 
 ### Features
 
@@ -1601,6 +2045,8 @@ This module provides reusable functions for creating URL-friendly slugs and mana
 
 #### Basic Slug Generation
 
+<!-- markdownlint-disable MD013 -->
+
 ```typescript
 import { createSlug } from '@/lib/slug-utils'
 
@@ -1613,7 +2059,11 @@ const slug = createSlug('Custom Slug!', { strict: true })
 // Returns: 'custom-slug'
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Section ID Generation
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 import { createSlugId } from '@/lib/slug-utils'
@@ -1627,7 +2077,11 @@ const id = createSlugId('', 2)
 // Returns: 'heading-2-abc123def' (random suffix)
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Table of Contents Extraction
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 import { extractTableOfContents } from '@/lib/slug-utils'
@@ -1648,7 +2102,11 @@ const toc = extractTableOfContents(htmlContent)
 // ]
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Adding Heading IDs and Anchor Links
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 import { addHeadingIds } from '@/lib/slug-utils'
@@ -1665,6 +2123,8 @@ const processedContent = addHeadingIds(htmlContent)
 //   <a href="#getting-started" class="heading-anchor">...</a>
 // </h2>
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### API Reference
 
@@ -1691,16 +2151,22 @@ Creates a slug ID with automatic fallback for empty content.
 - `level`: The heading level (1-6) for fallback generation
 - `options`: Optional slug configuration
 
+<!-- markdownlint-disable MD013 -->
+
 #### `extractTableOfContents(htmlContent: string, options?: SlugOptions): TocItem[]`
 
-Extracts table of contents from HTML content. Works both server-side and client-side.
+<!-- markdownlint-enable MD013 -->
+
+Extracts table of contents from HTML content. Works both server-side and
+client-side.
 
 **Parameters:**
 
 - `htmlContent`: HTML content to extract headings from
 - `options`: Optional slug configuration
 
-**Returns:** Array of `TocItem` objects with `id`, `text`, and `level` properties.
+**Returns:** Array of `TocItem` objects with `id`, `text`, and `level`
+properties.
 
 #### `addHeadingIds(htmlContent: string, options?: SlugOptions): string`
 
@@ -1716,6 +2182,8 @@ Adds IDs and anchor links to headings in HTML content.
 ### Integration Examples
 
 #### Using with React Components
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 // In a blog post component
@@ -1734,7 +2202,11 @@ const BlogPost = ({ content }: { content: string }) => {
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Custom Section Anchoring
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 // For any section that needs anchor functionality
@@ -1749,7 +2221,11 @@ sections.forEach(sectionTitle => {
 })
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### TypeScript Types
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 interface TocItem {
@@ -1766,6 +2242,8 @@ interface SlugOptions {
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### Benefits Slug Utilities
 
 1. **Consistency**: All slug generation uses the same configuration and rules
@@ -1777,59 +2255,91 @@ interface SlugOptions {
 
 ## Updating Packages
 
-Keeping dependencies up to date is important for security and compatibility. To update packages in this project:
+Keeping dependencies up to date is important for security and compatibility. To
+update packages in this project:
 
 ### 1. Check for Outdated Packages
 
-Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to see which dependencies have newer versions:
+Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to see
+which dependencies have newer versions:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npx npm-check-updates --jsonUpgraded
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 Or use the built-in npm command:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm outdated --json
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 ### 2. Upgrade Dependencies
 
 To upgrade all dependencies to their latest versions:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npx npm-check-updates --upgrade
 npm install
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 Or update a specific package:
+
+<!-- markdownlint-disable MD013 -->
 
 ```bash
 npm install <package-name>@latest
 ```
 
-- **Commit the updated lock file** (`package-lock.json` or `pnpm-lock.yaml`) with your PR. This ensures reviewers and CI use the exact dependency versions you tested.
-- **Run `npm ci` in a clean clone** of your branch to verify reproducible installs. This helps catch any accidental mismatches in dependency versions before review.
+<!-- markdownlint-enable MD013 -->
+
+- **Commit the updated lock file** (`package-lock.json` or `pnpm-lock.yaml`)
+  with your PR. This ensures reviewers and CI use the exact dependency versions
+  you tested.
+- **Run `npm ci` in a clean clone** of your branch to verify reproducible
+  installs. This helps catch any accidental mismatches in dependency versions
+  before review.
 
 ### 3. Verify and Test
 
 After updating, always run the full project check to ensure everything works:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm run check
 ```
 
-This will run type checking, linting, formatting, spell checking, tests, and security audits. Only submit a PR if all checks pass.
+<!-- markdownlint-enable MD013 -->
 
-> **Tip:** Review the [Development Workflow](#development-workflow) section for more details on quality standards.
+This will run type checking, linting, formatting, spell checking, tests, and
+security audits. Only submit a PR if all checks pass.
+
+> **Tip:** Review the [Development Workflow](#development-workflow) section for
+> more details on quality standards.
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior as outlined in the Code of Conduct.
+This project and everyone participating in it is governed by our
+[Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to
+uphold this code. Please report unacceptable behavior as outlined in the Code of
+Conduct.
 
 ## Reporting Bugs
 
-If you find a bug, please report it by creating an issue on the GitHub repository. Provide as much detail as possible:
+If you find a bug, please report it by creating an issue on the GitHub
+repository. Provide as much detail as possible:
 
 - Steps to reproduce the bug.
 - Expected behavior.
@@ -1846,7 +2356,8 @@ If you have questions or need help with your contribution, feel free to:
 
 ## GDPR Cookie Consent Implementation
 
-This implementation provides a complete GDPR-compliant cookie consent solution for the Next.js website.
+This implementation provides a complete GDPR-compliant cookie consent solution
+for the Next.js website.
 
 ### Features Consent
 
@@ -1864,7 +2375,8 @@ These are the different cookie categories the website currently uses.
 
 #### 🛡️ Strictly Necessary
 
-Strictly necessary cookies are essential for the site to function and **cannot be disabled** (GDPR exemption).
+Strictly necessary cookies are essential for the site to function and **cannot
+be disabled** (GDPR exemption).
 
 - Authentication
 - Security
@@ -1887,7 +2399,9 @@ can improve performance and content.
 - Performance monitoring
 - User behavior insights
 
-> **Note**: Marketing cookies have been intentionally excluded as this website does not currently use any marketing or advertising cookies. This keeps the consent interface simple and honest about what data is actually collected.
+> **Note**: Marketing cookies have been intentionally excluded as this website
+> does not currently use any marketing or advertising cookies. This keeps the
+> consent interface simple and honest about what data is actually collected.
 
 ### Files Added/Modified
 
@@ -1915,9 +2429,12 @@ can improve performance and content.
 
 #### Basic Integration
 
-The cookie consent banner automatically appears for new users. It's integrated into the main layout and will show until the user makes a choice.
+The cookie consent banner automatically appears for new users. It's integrated
+into the main layout and will show until the user makes a choice.
 
 #### Checking Consent in Your Code
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 import { hasConsent } from '@/lib/cookie-consent'
@@ -1936,9 +2453,13 @@ function handleLanguageChange(newLanguage: string) {
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 #### Managing Cookie Registry
 
 Add your cookies to the `cookieRegistry` in `lib/cookie-consent.ts`:
+
+<!-- markdownlint-disable MD013 -->
 
 ```typescript
 export const cookieRegistry: CookieInfo[] = [
@@ -1958,6 +2479,8 @@ export const cookieRegistry: CookieInfo[] = [
   },
 ]
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Legal Compliance
 
@@ -2012,9 +2535,13 @@ To add new categories:
 
 Run tests with:
 
+<!-- markdownlint-disable MD013 -->
+
 ```bash
 npm test
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 The implementation includes:
 
@@ -2038,6 +2565,8 @@ The implementation includes:
 
 Monitor cookie consent effectiveness:
 
+<!-- markdownlint-disable MD013 -->
+
 ```typescript
 import { getConsentSettings, getConsentTimestamp } from '@/lib/cookie-consent'
 
@@ -2047,6 +2576,8 @@ const timestamp = getConsentTimestamp()
 
 // Track conversion rates, user preferences, etc.
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 ### Security Consent
 
@@ -2084,6 +2615,7 @@ For questions or issues:
 
 ### License
 
-This implementation is part of the viscalyx.se project and follows the same MIT license.
+This implementation is part of the viscalyx.se project and follows the same MIT
+license.
 
 Thank you for contributing to Viscalyx.se!
