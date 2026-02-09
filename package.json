@@ -48,7 +48,7 @@
     "prismjs": "^1.30.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "rehype-prism-plus": "^2.0.1",
+    "rehype-prism-plus": "^2.0.2",
     "rehype-stringify": "^10.0.1",
     "remark-rehype": "^11.1.2",
     "sanitize-html": "^2.17.0",
