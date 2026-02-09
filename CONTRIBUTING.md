@@ -701,11 +701,16 @@ docs: update contributing guidelines for blog posts
 
 ## Dev Container Setup & Requirements
 
-This project uses VS Code Dev Containers to provide a consistent, cross-platform development environment. The devcontainer automatically handles all dependencies, tools, and configuration.
+This project uses VS Code Dev Containers to provide a
+consistent, cross-platform development environment. The
+devcontainer automatically handles all dependencies, tools,
+and configuration.
 
 ### Cross-Platform Compatibility
 
-The devcontainer is designed to work seamlessly on Linux, macOS, and Windows. The configuration includes a fallback mechanism for SSH agent forwarding:
+The devcontainer is designed to work seamlessly on Linux,
+macOS, and Windows. The configuration includes a fallback
+mechanism for SSH agent forwarding:
 
 ```jsonc
 "mounts": [
@@ -717,7 +722,10 @@ The devcontainer is designed to work seamlessly on Linux, macOS, and Windows. Th
 ]
 ```
 
-This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific path using `HOME` (Linux/macOS) or, if `HOME` is unset, `USERPROFILE` (Windows), joined with `/.ssh-agent-fallback.sock`.
+This uses `SSH_AUTH_SOCK` if available, or falls back to a
+platform-specific path using `HOME` (Linux/macOS) or, if
+`HOME` is unset, `USERPROFILE` (Windows), joined with
+`/.ssh-agent-fallback.sock`.
 
 ### Prerequisites by Platform
 
@@ -731,7 +739,7 @@ This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific pat
    - Extension: **Dev Containers** (`ms-vscode-remote.remote-containers`)
 
 3. **Git**
-   - Configured with user name and email
+   - Configured with username and email
 
 #### Linux-Specific Setup
 
@@ -796,7 +804,9 @@ echo $SSH_AUTH_SOCK
 # Should output: /private/tmp/com.apple.launchd.XXXXXXXXX/Listeners
 ```
 
-**Performance Note:** macOS uses a VM for Docker. The `:cached` mount option in docker-compose.yml helps optimize file system performance.
+**Performance Note:** macOS uses a VM for Docker.
+The `:cached` mount option in docker-compose.yml helps
+optimize file system performance.
 
 #### Windows-Specific Setup
 
@@ -831,7 +841,7 @@ wsl --list --verbose
    - Enable "Use WSL 2 instead of Hyper-V"
    - Enable "Install required Windows components for WSL 2"
 3. In Docker Desktop Settings:
-   - **General**: "Use the WSL 2 based engine" (checked)
+   - **General**: "Use the WSL 2-based engine" (checked)
    - **Resources > WSL Integration**: Enable for your WSL distro
 
 **SSH Agent Setup (Choose One Option):**
@@ -919,7 +929,9 @@ If SSH agent forwarding doesn't work after setup:
    ssh-add -l
    ```
 
-3. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git operations, or configure personal access tokens.
+3. **Fallback option** (if still not working): Use HTTPS
+   instead of SSH for Git operations, or configure
+   personal access tokens.
 
 **Container Build Fails:**
 
@@ -930,7 +942,8 @@ If SSH agent forwarding doesn't work after setup:
 **Performance Issues on macOS/Windows:**
 
 - Increase Docker Desktop resource allocation
-- On macOS, ensure VirtioFS is enabled for better performance
+- On macOS, ensure VirtioFS is enabled for better
+  performance
 - On Windows, ensure WSL 2 integration is enabled
 
 ### What's Included in the Dev Container
@@ -942,8 +955,10 @@ The devcontainer automatically provides:
 - **GitHub CLI** (`gh`) pre-installed
 - **Zsh** with Oh My Zsh configuration
 - **All VS Code extensions** from `.vscode/extensions.json`
-- **Configured settings** for formatting, linting, and spell checking
-- **Port forwarding** for Next.js (3000, 3001), Wrangler (8787), and Vitest UI (51204)
+- **Configured settings** for formatting, linting,
+  and spell checking
+- **Port forwarding** for Next.js (3000, 3001),
+  Wrangler (8787), and Vitest UI (51204)
 - **Automatic npm install** on container creation
 
 You don't need to manually install any of these tools!
