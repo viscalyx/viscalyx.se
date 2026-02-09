@@ -621,25 +621,15 @@ The alerts are processed during the build phase and include proper semantic HTML
 
 ## Brand Guidelines & Visual Style Guide
 
-When contributing to Viscalyx.se, it's important to follow our brand guidelines and visual style guide to maintain consistency across the website. Our brand assets and style guidelines are documented in the `/docs` directory and should be referenced when making design-related changes.
+When contributing to Viscalyx.se, it's important to follow our brand guidelines
+and visual style guide to maintain consistency across the website. Our brand
+assets and style guidelines will be documented in the `/docs` directory once
+created. When making design-related changes, follow the guidelines below.
 
-### Brand Assets
-
-For information about available brand assets, including logos, icons, and other visual elements, see:
-
-📄 **[Brand Assets README](docs/brand-assets-readme.md)** - Overview of all available brand assets, file formats, and usage guidelines.
-
-### Style Guide
-
-Our comprehensive visual style guide covers colors, typography, spacing, and design principles:
-
-📄 **[Brand Style Guide](docs/brand-style-guide.md)** - Detailed documentation of our visual identity, including color palettes, typography, spacing systems, and design principles.
-
-### Brand Usage Examples
-
-For practical examples of how to implement our brand guidelines in code and design:
-
-📄 **[Brand Usage Examples](docs/brand-usage-examples.md)** - Code examples and implementation patterns for maintaining brand consistency.
+> **Note**: The `docs/` directory with brand asset
+> files (`brand-assets-readme.md`,
+> `brand-style-guide.md`, `brand-usage-examples.md`)
+> is planned but does not exist yet.
 
 **Key Points:**
 
@@ -954,7 +944,8 @@ The devcontainer automatically provides:
 - **Git** with safe directory configuration
 - **GitHub CLI** (`gh`) pre-installed
 - **Zsh** with Oh My Zsh configuration
-- **All VS Code extensions** from `.vscode/extensions.json`
+- **All VS Code extensions** listed in
+  `.devcontainer/devcontainer.json`
 - **Configured settings** for formatting, linting,
   and spell checking
 - **Port forwarding** for Next.js (3000, 3001),
@@ -973,7 +964,7 @@ This project uses [Code Spell Checker (cspell)](https://cspell.org/) for automat
 
 - **Extension**: Code Spell Checker is configured in `.vscode/settings.json`
 - **Real-time checking**: Spelling errors are highlighted as you type
-- **Custom dictionary**: Technical terms are pre-configured in `.cspell.json`
+- **Custom dictionary**: Technical terms are pre-configured in `.cspell.jsonc`
 
 #### Files Checked
 
@@ -984,7 +975,7 @@ This project uses [Code Spell Checker (cspell)](https://cspell.org/) for automat
 
 #### Custom Dictionary
 
-The `.cspell.json` file includes:
+The `.cspell.jsonc` file includes:
 
 - Company names (Viscalyx, etc.)
 - Technical terms (DevOps, Kubernetes, PowerShell DSC, etc.)
@@ -1015,8 +1006,8 @@ npx cspell "app/**/*.tsx"
 #### Adding New Words
 
 1. **VS Code**: Right-click on the word → "Add to User Dictionary" or "Add to Workspace Dictionary"
-2. **Manual**: Add words to the `words` array in `.cspell.json`
-3. **Project-specific**: Words added via VS Code are automatically saved to `.cspell.json`
+2. **Manual**: Add words to the `words` array in `.cspell.jsonc`
+3. **Project-specific**: Words added via VS Code are automatically saved to `.cspell.jsonc`
 
 ### Automation
 
@@ -1089,8 +1080,8 @@ The spell checker automatically ignores:
 
 #### Common Issues
 
-1. **False Positives**: Add legitimate technical terms to `.cspell.json`
-2. **Performance**: Adjust `checkLimit` in `.cspell.json` for large files
+1. **False Positives**: Add legitimate technical terms to `.cspell.jsonc`
+2. **Performance**: Adjust `checkLimit` in `.cspell.jsonc` for large files
 3. **Languages**: Add language-specific dictionaries if needed
 
 #### Debugging
@@ -1111,8 +1102,10 @@ This project supports multi-language spell checking:
 
 Swedish spell checking is enabled for:
 
-- Files in the Swedish dictionary (`lib/dictionaries/sv.ts`)
+- Files matching the `**/dictionaries/sv.ts` pattern
+  (if the file is created in the future)
 - Files with `sv` in the filename
+  (e.g., `messages/sv.json`)
 - Files with `swedish` in the filename
 
 The configuration includes:
@@ -1121,7 +1114,7 @@ The configuration includes:
 npm install --save-dev @cspell/dict-sv
 ```
 
-Configuration in `.cspell.json`:
+Configuration in `.cspell.jsonc`:
 
 ```json
 {
@@ -1144,7 +1137,7 @@ For other languages, install additional dictionaries:
 npm install --save-dev @cspell/dict-spanish @cspell/dict-french
 ```
 
-Then add to `.cspell.json`:
+Then add to `.cspell.jsonc`:
 
 ```json
 {
@@ -1157,7 +1150,7 @@ Then add to `.cspell.json`:
 1. **Review before adding**: Don\'t blindly add misspelled words to the dictionary
 2. **Keep dictionary clean**: Periodically review custom words
 3. **Use consistent naming**: Follow project conventions for technical terms
-4. **Document decisions**: Add comments in `.cspell.json` for unusual words
+4. **Document decisions**: Add comments in `.cspell.jsonc` for unusual words
 5. **Team alignment**: Ensure all team members use the same VS Code settings
 
 ## Cloudflare Scripts Documentation
@@ -1223,7 +1216,7 @@ npm run deploy
 npm run cf-typegen
 ```
 
-**Command**: `wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts`
+**Command**: `wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts`
 
 **Purpose**: Generates TypeScript type definitions for Cloudflare environment variables and bindings.
 
@@ -1282,10 +1275,10 @@ The following packages enable these scripts:
 ```json
 {
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.1.0"
+    "@opennextjs/cloudflare": "^1.16.3"
   },
   "devDependencies": {
-    "wrangler": "^4.18.0"
+    "wrangler": "^4.63.0"
   }
 }
 ```
