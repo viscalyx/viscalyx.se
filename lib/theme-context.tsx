@@ -32,51 +32,45 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
+// Helper function to validate theme value
+const isValidTheme = (value: string | null): value is Theme => {
+  return value !== null && ['light', 'dark', 'system'].includes(value)
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // Start with defaults to match server rendering
   const [theme, setTheme] = useState<Theme>('system')
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
   const [isInitialized, setIsInitialized] = useState(false)
   const mediaQueryRef = useRef<MediaQueryList | null>(null)
 
+  // Sync with localStorage and DOM after hydration
+  // This is intentional - we're syncing with external storage state on mount
   useEffect(() => {
-    // Helper function to validate theme value
-    const isValidTheme = (value: string | null): value is Theme => {
-      return value !== null && ['light', 'dark', 'system'].includes(value)
-    }
-
+    /* eslint-disable react-hooks/set-state-in-effect */
     // Load theme from localStorage with error handling
-    let savedTheme: string | null = null
+    let savedTheme: Theme = 'system'
     try {
-      // Only load from localStorage if user has consented to preferences cookies
       if (hasConsent('preferences')) {
-        savedTheme = localStorage.getItem('theme')
+        const stored = localStorage.getItem('theme')
+        if (isValidTheme(stored)) {
+          savedTheme = stored
+        }
       }
     } catch (error) {
       console.error('Failed to access localStorage for theme:', error)
     }
 
-    // Validate and set theme with proper type safety
-    const validTheme: Theme = isValidTheme(savedTheme) ? savedTheme : 'system'
-
     // Check current class on document to sync with blocking script
-    // This syncs with an inline blocking script that should be placed in the <head>
-    // to prevent FOUC (Flash of Unstyled Content). The script applies the theme
-    // immediately before React hydration. For CSP compliance, consider using
-    // nonce or hash-based CSP directives for the inline script, or move theme
-    // application to a separate .js file if strict CSP is required.
     const isDarkApplied = document.documentElement.classList.contains('dark')
+    const initialResolvedTheme: 'light' | 'dark' = isDarkApplied
+      ? 'dark'
+      : 'light'
 
-    // Determine initial resolved theme based on current state
-    let initialResolvedTheme: 'light' | 'dark'
-    if (isDarkApplied) {
-      initialResolvedTheme = 'dark'
-    } else {
-      initialResolvedTheme = 'light'
-    }
-
-    setTheme(validTheme)
+    setTheme(savedTheme)
     setResolvedTheme(initialResolvedTheme)
     setIsInitialized(true)
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
 
   useEffectWhenInitialized(

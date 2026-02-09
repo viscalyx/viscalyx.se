@@ -4,12 +4,8 @@
   "main": ".open-next/worker.js",
   "name": "viscalyx-se",
   // See settings "Default as of" here: https://developers.cloudflare.com/workers/configuration/compatibility-flags/
-  "compatibility_date": "2025-03-25",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public",
-    "enable_navigator_language" // This flag enables the real browser language detection (default as of 2025-05-19)
-  ],
+  "compatibility_date": "2026-01-20",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -24,6 +20,11 @@
       "dataset": "viscalyx-se"
     }
   ],
+  // CPU limits to prevent runaway bills or denial-of-wallet attacks
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#limits
+  // "limits": {
+  //   "cpu_ms": 50 // Maximum CPU time in milliseconds per invocation (default for paid plans is 30000ms)
+  // },
   // https://developers.cloudflare.com/workers/wrangler/configuration/#local-development-settings
   // Development server configuration for preview modem, for more info: npx wrangler dev --help
   "dev": {

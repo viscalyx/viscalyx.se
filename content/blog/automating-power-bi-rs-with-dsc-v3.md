@@ -183,6 +183,9 @@ Author a YAML document (`deploy-PBIRS.dsc.config.yaml`) to define the desired st
 
 > Configuration documents can be in both YAML or JSON. At the time of this writing Microsoft recommends drafting configuration documents in YAML.
 
+> [!NOTE]
+> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a nested `resources` array. The new pattern uses `requireAdapter` in the resource metadata under `Microsoft.DSC`, making configurations flatter and more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for details.
+
 ```yml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 metadata:
@@ -194,17 +197,16 @@ metadata:
     securityContext: elevated
 resources:
   - name: 'Install PBIRS'
-    type: Microsoft.DSC/PowerShell
+    type: SqlServerDsc/SqlRSSetup
+    metadata:
+      Microsoft.DSC:
+        requireAdapter: Microsoft.Adapter/PowerShell
     properties:
-      resources:
-        - name: 'Install PBIRS'
-          type: 'SqlServerDsc/SqlRSSetup'
-          properties:
-            InstanceName: 'PBIRS'
-            Action: 'Install'
-            AcceptLicensingTerms: true
-            MediaPath: '<path to media executable>'
-            Edition: 'Developer'
+      InstanceName: 'PBIRS'
+      Action: 'Install'
+      AcceptLicensingTerms: true
+      MediaPath: '<path to media executable>'
+      Edition: 'Developer'
 ```
 
 ### Declarative Get-operation
@@ -219,7 +221,7 @@ Outputs:
 {
   "metadata": {
     "Microsoft.DSC": {
-      "version": "3.1.0",
+      "version": "3.2.0",
       "operation": "get",
       "executionType": "actual",
       "startDatetime": "2025-07-22T13:14:24.373870900+02:00",
@@ -236,30 +238,22 @@ Outputs:
         }
       },
       "name": "Install PBIRS",
-      "type": "Microsoft.DSC/PowerShell",
+      "type": "SqlServerDsc/SqlRSSetup",
       "result": {
         "actualState": {
-          "result": [
-            {
-              "name": "Install PBIRS",
-              "type": "SqlServerDsc/SqlRSSetup",
-              "properties": {
-                "Action": "0",
-                "InstanceName": "PBIRS",
-                "Timeout": 7200,
-                "ProductKey": null,
-                "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
-                "MediaPath": null,
-                "VersionUpgrade": null,
-                "EditionUpgrade": null,
-                "ForceRestart": null,
-                "AcceptLicensingTerms": false,
-                "LogPath": null,
-                "Edition": null,
-                "SuppressRestart": null
-              }
-            }
-          ]
+          "Action": "0",
+          "InstanceName": "PBIRS",
+          "Timeout": 7200,
+          "ProductKey": null,
+          "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
+          "MediaPath": null,
+          "VersionUpgrade": null,
+          "EditionUpgrade": null,
+          "ForceRestart": null,
+          "AcceptLicensingTerms": false,
+          "LogPath": null,
+          "Edition": null,
+          "SuppressRestart": null
         }
       }
     }
@@ -281,7 +275,7 @@ Outputs:
 {
   "metadata": {
     "Microsoft.DSC": {
-      "version": "3.1.0",
+      "version": "3.2.0",
       "operation": "test",
       "executionType": "actual",
       "startDatetime": "2025-07-22T13:16:47.520018100+02:00",
@@ -298,42 +292,20 @@ Outputs:
         }
       },
       "name": "Install PBIRS",
-      "type": "Microsoft.DSC/PowerShell",
+      "type": "SqlServerDsc/SqlRSSetup",
       "result": {
         "desiredState": {
-          "resources": [
-            {
-              "name": "Install PBIRS",
-              "type": "SqlServerDsc/SqlRSSetup",
-              "properties": {
-                "InstanceName": "PBIRS",
-                "Action": "Install",
-                "AcceptLicensingTerms": true,
-                "MediaPath": "C:\\Users\\user\\AppData\\Local\\Temp\\2\\PowerBIReportServer.exe",
-                "Edition": "Developer"
-              }
-            }
-          ],
-          "metadata": {
-            "Microsoft.DSC": {
-              "context": "configuration"
-            }
-          }
+          "InstanceName": "PBIRS",
+          "Action": "Install",
+          "AcceptLicensingTerms": true,
+          "MediaPath": "C:\\Users\\user\\AppData\\Local\\Temp\\2\\PowerBIReportServer.exe",
+          "Edition": "Developer"
         },
         "actualState": {
-          "_inDesiredState": true,
-          "result": [
-            {
-              "name": "Install PBIRS",
-              "type": "SqlServerDsc/SqlRSSetup",
-              "properties": {
-                "InDesiredState": true
-              }
-            }
-          ]
+          "InDesiredState": true
         },
         "inDesiredState": true,
-        "differingProperties": ["resources", "metadata"]
+        "differingProperties": []
       }
     }
   ],
@@ -354,7 +326,7 @@ Outputs:
 {
   "metadata": {
     "Microsoft.DSC": {
-      "version": "3.1.0",
+      "version": "3.2.0",
       "operation": "set",
       "executionType": "actual",
       "startDatetime": "2025-07-22T13:20:53.908081800+02:00",
@@ -371,55 +343,39 @@ Outputs:
         }
       },
       "name": "Install PBIRS",
-      "type": "Microsoft.DSC/PowerShell",
+      "type": "SqlServerDsc/SqlRSSetup",
       "result": {
         "beforeState": {
-          "resources": [
-            {
-              "name": "Install PBIRS",
-              "type": "SqlServerDsc/SqlRSSetup",
-              "properties": {
-                "Action": "0",
-                "EditionUpgrade": null,
-                "InstanceName": "PBIRS",
-                "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
-                "VersionUpgrade": null,
-                "LogPath": null,
-                "Timeout": 7200,
-                "ForceRestart": null,
-                "Edition": null,
-                "MediaPath": null,
-                "ProductKey": null,
-                "AcceptLicensingTerms": false,
-                "SuppressRestart": null
-              }
-            }
-          ]
+          "Action": "0",
+          "EditionUpgrade": null,
+          "InstanceName": "PBIRS",
+          "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
+          "VersionUpgrade": null,
+          "LogPath": null,
+          "Timeout": 7200,
+          "ForceRestart": null,
+          "Edition": null,
+          "MediaPath": null,
+          "ProductKey": null,
+          "AcceptLicensingTerms": false,
+          "SuppressRestart": null
         },
         "afterState": {
-          "result": [
-            {
-              "name": "Install PBIRS",
-              "type": "SqlServerDsc/SqlRSSetup",
-              "properties": {
-                "Edition": null,
-                "LogPath": null,
-                "ForceRestart": null,
-                "InstanceName": "PBIRS",
-                "MediaPath": null,
-                "SuppressRestart": null,
-                "Action": "0",
-                "ProductKey": null,
-                "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
-                "AcceptLicensingTerms": false,
-                "VersionUpgrade": null,
-                "EditionUpgrade": null,
-                "Timeout": 7200
-              }
-            }
-          ]
+          "Edition": null,
+          "LogPath": null,
+          "ForceRestart": null,
+          "InstanceName": "PBIRS",
+          "MediaPath": null,
+          "SuppressRestart": null,
+          "Action": "0",
+          "ProductKey": null,
+          "InstallFolder": "C:\\Program Files\\Microsoft Power BI Report Server",
+          "AcceptLicensingTerms": false,
+          "VersionUpgrade": null,
+          "EditionUpgrade": null,
+          "Timeout": 7200
         },
-        "changedProperties": ["result"]
+        "changedProperties": ["InstallFolder", "InstanceName"]
       }
     }
   ],

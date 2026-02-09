@@ -1,5 +1,17 @@
 'use client'
 
+import ConfirmationModal from '@/components/ConfirmationModal'
+import {
+  cleanupCookies,
+  type CookieCategory,
+  type CookieConsentSettings,
+  cookieRegistry,
+  defaultConsentSettings,
+  getConsentSettings,
+  getConsentTimestamp,
+  resetConsent,
+  saveConsentSettings,
+} from '@/lib/cookie-consent'
 import { motion } from 'framer-motion'
 import {
   BarChart3,
@@ -12,18 +24,6 @@ import {
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
-import {
-  cleanupCookies,
-  type CookieCategory,
-  type CookieConsentSettings,
-  cookieRegistry,
-  defaultConsentSettings,
-  getConsentSettings,
-  getConsentTimestamp,
-  resetConsent,
-  saveConsentSettings,
-} from '../lib/cookie-consent'
-import ConfirmationModal from './ConfirmationModal'
 
 interface CookieSettingsProps {
   onSettingsChange?: (settings: CookieConsentSettings) => void

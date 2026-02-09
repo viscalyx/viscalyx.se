@@ -1,20 +1,7 @@
 import blogData from './blog-data.json'
 import { isValidDate, normalizeDate } from './date-utils'
 
-export interface BlogPost {
-  slug: string
-  title: string
-  date?: string
-  author: string
-  excerpt: string
-  image: string
-  imageAlt?: string
-  tags: string[]
-  readTime: string
-  category?: string
-  content: string
-}
-
+// BlogPostMetadata without content (for listings - stored in blog-data.json)
 export interface BlogPostMetadata {
   slug: string
   title: string
@@ -28,8 +15,14 @@ export interface BlogPostMetadata {
   category?: string
 }
 
+// BlogPost with content (for single post pages)
+export interface BlogPost extends BlogPostMetadata {
+  content: string
+}
+
+// Blog data now only contains metadata (no content)
 interface BlogData {
-  posts: BlogPost[]
+  posts: BlogPostMetadata[]
   slugs: string[]
 }
 
@@ -49,8 +42,8 @@ function validateBlogData(data: typeof blogData): BlogData {
     throw new Error('Blog data slugs is not an array')
   }
 
-  // Sanitize posts to match BlogPost interface
-  const posts: BlogPost[] = data.posts.map(p => ({
+  // Sanitize posts to match BlogPostMetadata interface (no content)
+  const posts: BlogPostMetadata[] = data.posts.map(p => ({
     slug: p.slug,
     title: p.title,
     date:
@@ -69,7 +62,6 @@ function validateBlogData(data: typeof blogData): BlogData {
       : [],
     readTime: p.readTime,
     category: typeof p.category === 'string' ? p.category : undefined,
-    content: p.content,
   }))
   return {
     posts,
@@ -93,26 +85,28 @@ export function getAllPostSlugs(): string[] {
     : allSlugs
 }
 
-// Get blog post data by slug
-export function getPostData(slug: string): BlogPost | null {
+// Get blog post metadata by slug (without content)
+export function getPostMetadata(slug: string): BlogPostMetadata | null {
   const validatedData = getValidatedBlogData()
   const post = validatedData.posts.find(p => p.slug === slug)
   return post || null
 }
 
+// Get blog post data by slug (with content loaded from separate file)
+// Note: Content is now loaded from /blog-content/[slug].json via API
+export function getPostData(slug: string): BlogPostMetadata | null {
+  return getPostMetadata(slug)
+}
+
 // Alias for getPostData for consistency
-export function getPostBySlug(slug: string): BlogPost | null {
-  return getPostData(slug)
+export function getPostBySlug(slug: string): BlogPostMetadata | null {
+  return getPostMetadata(slug)
 }
 
 // Get all blog posts metadata (for listing pages)
-export function getAllPosts() {
+export function getAllPosts(): BlogPostMetadata[] {
   const validatedData = getValidatedBlogData()
-  const allPosts = validatedData.posts.map(post => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { content, ...metadata } = post
-    return metadata
-  })
+  const allPosts = validatedData.posts
 
   // Filter out template post only if there are more than 1 post
   return allPosts.length > 1

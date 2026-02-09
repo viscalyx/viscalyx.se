@@ -1,11 +1,11 @@
 'use client'
 
+import { saveLanguagePreference } from '@/lib/language-preferences'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { saveLanguagePreference } from '../lib/language-preferences'
 
 const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -37,12 +37,6 @@ const LanguageSwitcher = () => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen])
-
-  // Ensure the component re-renders when locale changes
-  useEffect(() => {
-    // This effect will run whenever locale changes, ensuring proper re-rendering
-    setIsOpen(false) // Close dropdown when locale changes
-  }, [locale])
 
   const handleLanguageChange = (newLocale: string) => {
     const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'

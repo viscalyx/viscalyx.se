@@ -54,6 +54,7 @@ out
 
 # Cloudflare Workers build output
 .open-next
+bundled
 
 # Nuxt.js build / generate output
 .nuxt
@@ -213,6 +214,8 @@ Thumbs.db
 # Generated data during production build
 lib/blog-data.json
 lib/page-dates.json
+public/blog-content/
 
 .wrangler/
+cloudflare-env.d.ts
 test-results/

@@ -1,9 +1,5 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
-import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   cleanupCookies,
   type CookieCategory,
@@ -11,17 +7,35 @@ import {
   cookieRegistry,
   defaultConsentSettings,
   getConsentSettings,
-  hasConsentChoice,
   saveConsentSettings,
-} from '../lib/cookie-consent'
+} from '@/lib/cookie-consent'
+import { AnimatePresence, motion } from 'framer-motion'
+import { BarChart3, Cookie, Palette, Settings, Shield, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const CookieConsentBanner = () => {
   const t = useTranslations('cookieConsent')
+  // Start with false/defaults to match server rendering, then sync after hydration
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [settings, setSettings] = useState<CookieConsentSettings>(
     defaultConsentSettings
   )
+
+  // Sync state with localStorage/cookies after hydration to avoid SSR mismatch
+  // This is intentional - we're syncing with external storage state on mount
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    // Single storage read: getConsentSettings returns null if no choice exists
+    const storedSettings = getConsentSettings()
+    const hasChoice = storedSettings !== null
+    setIsVisible(!hasChoice)
+    if (storedSettings) {
+      setSettings(storedSettings)
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [])
 
   // Refs for focus management
   const bannerRef = useRef<HTMLDivElement>(null)
@@ -125,19 +139,6 @@ const CookieConsentBanner = () => {
       document.body.style.paddingBottom = ''
     }
   }, [isVisible, getFocusableElements])
-
-  useEffect(() => {
-    // Check if user has already made a choice
-    const hasChoice = hasConsentChoice()
-    setIsVisible(!hasChoice)
-
-    if (hasChoice) {
-      const currentSettings = getConsentSettings()
-      if (currentSettings) {
-        setSettings(currentSettings)
-      }
-    }
-  }, [])
 
   const handleAcceptAll = () => {
     const allAccepted: CookieConsentSettings = {

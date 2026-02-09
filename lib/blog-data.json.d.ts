@@ -1,10 +1,12 @@
 // Type declarations for blog-data.json
 // This file ensures TypeScript can properly type the imported JSON module
+// Note: blog-data.json now contains only metadata (no content)
+// Content is stored separately in public/blog-content/[slug].json
 
-import { BlogPost } from './blog'
+import type { BlogPostMetadata } from './blog'
 
 interface BlogDataStructure {
-  posts: BlogPost[]
+  posts: BlogPostMetadata[]
   slugs: string[]
   lastBuilt?: string
 }

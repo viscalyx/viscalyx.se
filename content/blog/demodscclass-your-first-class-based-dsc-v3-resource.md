@@ -297,13 +297,13 @@ This commands adds your current directory to be searchable. PowerShell can now f
 ### List available resources
 
 ```powershell
-dsc resource list --adapter Microsoft.DSC/PowerShell
+dsc resource list --adapter Microsoft.Adapter/PowerShell
 ```
 
 If you want to find the `DemoDscClass`, you can filter on it:
 
 ```powershell
-dsc resource list --adapter Microsoft.DSC/PowerShell DemoDscClass*
+dsc resource list --adapter Microsoft.Adapter/PowerShell DemoDscClass*
 ```
 
 You should see `DemoDscClass` in the list.
@@ -337,17 +337,19 @@ You can also define a configuration document, allowing you to define multiple re
 
 Create `demo.dsc.config.yaml`:
 
+> [!NOTE]
+> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a nested `resources` array. The new pattern uses `requireAdapter` in the resource metadata under `Microsoft.DSC`, making configurations flatter and more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for details.
+
 ```yaml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 resources:
-  - name: Demo Dsc Class
-    type: Microsoft.DSC/PowerShell
+  - name: Demo Dsc Class 1
+    type: DemoDscClass/DemoDscClass
+    metadata:
+      Microsoft.DSC:
+        requireAdapter: Microsoft.Adapter/PowerShell
     properties:
-      resources:
-        - name: Demo Dsc Class 1
-          type: DemoDscClass/DemoDscClass
-          properties:
-            Key: Demo
+      Key: Demo
 ```
 
 ### Run configuration commands

@@ -30,7 +30,6 @@ export default defineConfig({
 
     // Coverage configuration
     coverage: {
-      all: true, // Collect coverage for all files
       provider: 'v8',
       reportsDirectory: './coverage', // Output coverage reports to ./coverage folder
       reporter: ['text', 'json', 'html', 'clover', 'lcov'], // Multiple formats including Codecov-compatible ones

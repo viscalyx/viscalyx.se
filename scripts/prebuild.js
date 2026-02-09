@@ -69,7 +69,16 @@ if (fs.existsSync('.open-next')) {
   })
 }
 
-// Step 4: Rebuild site data
+// Step 4: Generate Cloudflare types
+console.log('☁️  Generating Cloudflare types...')
+try {
+  execSync('npm run cf-typegen', { stdio: 'inherit' })
+} catch {
+  console.error('❌ Failed to generate Cloudflare types')
+  process.exit(1)
+}
+
+// Step 5: Rebuild site data
 console.log('📊 Building site data...')
 try {
   execSync('npm run build:sitedata', { stdio: 'inherit' })

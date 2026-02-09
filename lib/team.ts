@@ -8,6 +8,30 @@ import {
 } from '@/components/SocialIcons'
 import { Mail } from 'lucide-react'
 
+// Icon name type for serializable data
+export type SocialIconName =
+  | 'Email'
+  | 'LinkedIn'
+  | 'Bluesky'
+  | 'Mastodon'
+  | 'X'
+  | 'Discord'
+  | 'GitHub'
+
+// Map of icon names to components (for client-side resolution)
+export const socialIconMap: Record<
+  SocialIconName,
+  React.ComponentType<{ className?: string }>
+> = {
+  Email: Mail,
+  LinkedIn: LinkedInIcon,
+  Bluesky: BlueskyIcon,
+  Mastodon: MastodonIcon,
+  X: XIcon,
+  Discord: DiscordIcon,
+  GitHub: GitHubIcon,
+}
+
 export interface TeamMember {
   id: string
   name: string
@@ -20,6 +44,21 @@ export interface TeamMember {
     name: string
     href: string
     icon: React.ComponentType<{ className?: string }>
+  }>
+}
+
+// Serializable version of TeamMember for Server-to-Client Component data passing
+export interface SerializableTeamMember {
+  id: string
+  name: string
+  role: string
+  image?: string
+  bio: string
+  location: string
+  specialties: string[]
+  socialLinks: Array<{
+    name: SocialIconName
+    href: string
   }>
 }
 
@@ -119,6 +158,29 @@ export function getTeamMemberById(
 ): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return teamMembers.find(member => member.id === id) || null
+}
+
+// Find team member by ID and return serializable version (for Server Components)
+export function getSerializableTeamMemberById(
+  id: string,
+  t: TranslationFunction
+): SerializableTeamMember | null {
+  const member = getTeamMemberById(id, t)
+  if (!member) return null
+
+  return {
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    image: member.image,
+    bio: member.bio,
+    location: member.location,
+    specialties: member.specialties,
+    socialLinks: member.socialLinks.map(link => ({
+      name: link.name as SocialIconName,
+      href: link.href,
+    })),
+  }
 }
 
 // Find team member by name (for blog author matching)

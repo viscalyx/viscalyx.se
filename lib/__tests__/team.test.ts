@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getAuthorInitials,
+  getSerializableTeamMemberById,
   getTeamMemberById,
   getTeamMemberByName,
   getTeamMembers,
+  socialIconMap,
 } from '../team'
 
 // Mock translation function with correct typing
@@ -130,6 +132,77 @@ describe('team utilities', () => {
       const member = getTeamMemberById('', mockT)
 
       expect(member).toBeNull()
+    })
+  })
+
+  describe('getSerializableTeamMemberById', () => {
+    it('should return a serializable team member without icon components', () => {
+      const member = getSerializableTeamMemberById('johlju', mockT)
+
+      expect(member).not.toBeNull()
+      expect(member?.id).toBe('johlju')
+      expect(member?.name).toBe('Johan Ljunggren')
+      expect(member?.socialLinks).toHaveLength(7)
+
+      // Verify socialLinks don't have icon property (serializable format)
+      member?.socialLinks.forEach(link => {
+        expect(link).toHaveProperty('name')
+        expect(link).toHaveProperty('href')
+        expect(link).not.toHaveProperty('icon')
+      })
+    })
+
+    it('should return null for non-existent ID', () => {
+      const member = getSerializableTeamMemberById('nonexistent', mockT)
+
+      expect(member).toBeNull()
+    })
+
+    it('should return null for empty ID', () => {
+      const member = getSerializableTeamMemberById('', mockT)
+
+      expect(member).toBeNull()
+    })
+
+    it('should have all required fields in serializable format', () => {
+      const member = getSerializableTeamMemberById('johlju', mockT)
+
+      expect(member).toMatchObject({
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'Founder & Lead Consultant',
+        image: '/johlju-profile.jpg',
+        bio: 'Passionate automation expert with over 30 years of experience in IT.',
+        location: 'Sweden',
+        specialties: ['PowerShell DSC', 'DevOps', 'Open Source'],
+      })
+    })
+
+    it('should have social link names that match socialIconMap keys', () => {
+      const member = getSerializableTeamMemberById('johlju', mockT)
+
+      member?.socialLinks.forEach(link => {
+        expect(Object.keys(socialIconMap)).toContain(link.name)
+      })
+    })
+  })
+
+  describe('socialIconMap', () => {
+    it('should contain all expected social icon mappings', () => {
+      expect(socialIconMap).toHaveProperty('Email')
+      expect(socialIconMap).toHaveProperty('LinkedIn')
+      expect(socialIconMap).toHaveProperty('Bluesky')
+      expect(socialIconMap).toHaveProperty('Mastodon')
+      expect(socialIconMap).toHaveProperty('X')
+      expect(socialIconMap).toHaveProperty('Discord')
+      expect(socialIconMap).toHaveProperty('GitHub')
+    })
+
+    it('should have valid React components for each icon', () => {
+      Object.values(socialIconMap).forEach(icon => {
+        // React components can be functions or objects (forwardRef returns an object)
+        expect(['function', 'object']).toContain(typeof icon)
+      })
     })
   })
 
