@@ -194,8 +194,21 @@ Key settings explained:
 
 Create `install.sh` in your dotfiles repository:
 
+> [!IMPORTANT]
+> When a dotfiles repository contains an `install.sh` script, GitHub Codespaces
+> **disables automatic symlinking** of dotfiles (including `.gitconfig`). The
+> script must explicitly deploy any dotfiles it needs. Without the deployment
+> lines below, `git config --global user.email` returns empty and the
+> `allowed_signers` file gets a malformed entry.
+> See [Personalizing Codespaces — Dotfiles](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
+> for details.
+
 ```bash
 #!/bin/bash
+
+# Deploy .gitconfig from dotfiles repo (Codespaces won't auto-symlink when install.sh exists)
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+[ -f "$DOTFILES_DIR/.gitconfig" ] && ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
 
 if [ -n "$SSH_PRIVATE_KEY" ]; then
   mkdir -p ~/.ssh
@@ -391,7 +404,7 @@ git commit -m "fix: normalize line endings for install.sh"
 | Private key      | Codespaces secret `SSH_PRIVATE_KEY` | Injected into each Codespace as an environment variable |
 | Public key       | github.com/settings/keys            | Registered as both authentication and signing key       |
 | `.gitconfig`     | Dotfiles repo                       | Configures Git to use SSH signing                       |
-| `install.sh`     | Dotfiles repo                       | Writes the key to disk and sets up allowed signers      |
+| `install.sh`     | Dotfiles repo                       | Deploys `.gitconfig`, writes key, sets up allowed signers |
 | `.gitattributes` | Dotfiles repo                       | Ensures shell scripts keep LF line endings              |
 
 <!-- markdownlint-enable MD013 -->
