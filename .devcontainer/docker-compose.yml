@@ -6,8 +6,8 @@ services:
     volumes:
       # Mount the root folder that contains .git
       - ..:/workspace:cached
-      # Persistent npm cache for faster installs across rebuilds
-      - npm-cache:/home/vscode/.npm
+      # Persistent npm cache for faster installs across rebuilds (commented out - not needed for infrequent rebuilds)
+      # - npm-cache:/home/vscode/.npm
     # Keep container running
     command: sleep infinity
     # Set environment variables
@@ -23,5 +23,5 @@ services:
     # Proper init system for signal handling and zombie process reaping
     init: true
 
-volumes:
-  npm-cache:
+# volumes:
+# npm-cache:
