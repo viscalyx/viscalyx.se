@@ -224,10 +224,13 @@ Create `install.sh` in the root of the dotfiles repository:
 
 ```bash
 #!/bin/bash
+set -e
 
 # Deploy .gitconfig from dotfiles repo (Codespaces won't auto-symlink when install.sh exists)
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-[ -f "$DOTFILES_DIR/.gitconfig" ] && ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
+if [ -f "$DOTFILES_DIR/.gitconfig" ]; then
+  ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
+fi
 
 if [ -n "$SSH_PRIVATE_KEY" ]; then
   mkdir -p ~/.ssh
