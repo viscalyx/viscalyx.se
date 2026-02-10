@@ -2,7 +2,7 @@
 title: 'SSH Signing Keys for GitHub Codespaces – Setup and Rotation Guide'
 date: '2026-02-10'
 author: 'Johan Ljunggren'
-excerpt: 'Generate a dedicated passphrase-less SSH key for commit signing in GitHub Codespaces, configure dotfiles for automatic setup, and learn how to rotate keys.'
+excerpt: 'Generate a passphrase-less SSH key for commit signing in GitHub Codespaces, configure dotfiles for automatic setup, and learn key rotation.'
 image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop&crop=center'
 imageAlt: 'Close-up of a laptop screen displaying lines of code in a dark theme editor.'
 tags:
@@ -139,7 +139,7 @@ Create or update `.gitconfig` in your dotfiles repository:
 [user]
     name = Your Name
     email = your-email@example.com
-    username = YourGitHubUSerName
+    username = YourGitHubUsername
     signingkey = ~/.ssh/id_ed25519.pub
 
 [gpg]
