@@ -124,7 +124,7 @@ The output looks like:
 
 ```text
 -----BEGIN OPENSSH PRIVATE KEY-----
-b3BlbnNzaC1rZXkAAAABbGNlAAAAGXNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29t
+REDACTED_PRIVATE_KEY_CONTENT
 (several lines of base64-encoded data)
 -----END OPENSSH PRIVATE KEY-----
 ```
