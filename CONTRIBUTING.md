@@ -1208,11 +1208,67 @@ If SSH agent forwarding doesn't work after setup:
 - Check Docker has sufficient resources (CPU/RAM)
 - Try rebuilding: Command Palette → "Dev Containers: Rebuild Container"
 
+**Platform Architecture Issues:**
+
+- The setup automatically detects ARM64 (Apple Silicon) vs AMD64
+- If you encounter issues, try: `docker buildx create --use`
+
+**Permission Issues:**
+
+- The container uses a non-root user for security
+- All file permissions are handled automatically
+- On Windows, ensure Docker Desktop has proper file sharing permissions
+
 **Performance Issues on macOS/Windows:**
 
 - Increase Docker Desktop resource allocation
 - On macOS, ensure VirtioFS is enabled for better performance
 - On Windows, ensure WSL 2 integration is enabled
+
+**Slow Builds on Windows:**
+
+- Ensure WSL2 is enabled
+- Consider using WSL2 backend for Docker Desktop
+- Place project files in WSL2 filesystem for better performance
+
+**npm Command Not Found:**
+
+- The Node.js feature installs Node via nvm. If `postCreateCommand` fails, try
+  rebuilding: "Dev Containers: Rebuild Container"
+- As a workaround, you can manually run `npm install` after the container starts
+
+**npm Permission Errors (EACCES):**
+
+- `node_modules` are stored in the workspace bind mount with proper `vscode`
+  user ownership
+- If you encounter permission errors, try rebuilding the container:
+  "Dev Containers: Rebuild Container"
+
+**Port Conflicts:**
+
+- Default ports (3000, 3001, 8787, 51204) can be changed in
+  `docker-compose.yml`
+- VS Code will automatically forward ports and notify you
+
+**Extensions Not Loading:**
+
+- Wait for the container to fully initialize
+- Check the "Output" panel for extension installation logs
+- Some extensions require a reload: "Developer: Reload Window"
+
+**Git Configuration:**
+
+- Git is pre-configured with safe defaults
+- You may need to set your `user.name` and `user.email`:
+
+  <!-- markdownlint-disable MD013 -->
+
+  ```bash
+  git config --global user.name "Your Name"
+  git config --global user.email "your.email@example.com"
+  ```
+
+  <!-- markdownlint-enable MD013 -->
 
 ### What's Included in the Dev Container
 
