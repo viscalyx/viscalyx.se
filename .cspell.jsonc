@@ -341,7 +341,8 @@
     "xattr",
     "setfattr",
     "inotifywait",
-    "sparsebundle"
+    "sparsebundle",
+    "signingkey"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "flagWords": [
