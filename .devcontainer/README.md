@@ -18,7 +18,7 @@ The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image whic
 ### Volume Strategy
 
 - **Source code** - Bind mount with `:cached` flag for performance
-- **npm cache** - Named volume to speed up `npm install` across rebuilds
+- **npm cache** - The `npm-cache` named volume is commented out in docker-compose.yml (not needed for infrequent rebuilds) and therefore not used
 - **node_modules** - Stored in the workspace (bind mount), not a separate volume
 
 ### Platform Handling
@@ -62,11 +62,13 @@ Edit the `extensions` array in `devcontainer.json` to add more VS Code extension
 
 ### Modifying Settings
 
-VS Code settings can be customized in the `customizations.vscode.settings` section of `devcontainer.json`.
+VS Code settings can be customized in the `customizations.vscode.settings`
+section of `devcontainer.json`.
 
 ### Platform-Specific Customizations
 
-The configuration automatically adapts to different platforms, but you can add platform-specific customizations using VS Code's conditional settings.
+The configuration automatically adapts to different platforms, but you can
+add platform-specific customizations using VS Code's conditional settings.
 
 ## Security Considerations
 

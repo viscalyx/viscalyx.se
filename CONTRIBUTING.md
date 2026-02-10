@@ -1274,7 +1274,7 @@ If SSH agent forwarding doesn't work after setup:
 
 The devcontainer automatically provides:
 
-- **Node.js 24 LTS** (Debian Bookworm base)
+- **Node.js 24 LTS** (Ubuntu base)
 - **Git** with safe directory configuration
 - **GitHub CLI** (`gh`) pre-installed
 - **Zsh** with Oh My Zsh configuration
