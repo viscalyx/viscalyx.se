@@ -766,8 +766,8 @@ spec:
 
 - Verify file/directory permissions in the image.
 - Ensure the `USER` has necessary permissions for `.next/cache` writes.
-- Check mounted volumes permissions (especially `node_modules` in devcontainer).
-- The devcontainer uses isolated `workspace-node-modules` volume to avoid host permission issues.
+- Check mounted volumes permissions.
+- The devcontainer uses `remoteUser: "vscode"` and named volume for npm cache.
 
 ### **5. Network Connectivity Issues**
 
@@ -782,9 +782,11 @@ spec:
 This project uses a devcontainer (`.devcontainer/`) with:
 
 - **Base image:** `mcr.microsoft.com/devcontainers/base:ubuntu` with Node 24 installed via devcontainer features
-- **Docker Compose:** Mounts workspace with `:cached`, uses named volumes for `npm-cache` and `node_modules`
-- **Non-root user:** `vscode` (from base image)
+- **Docker Compose:** Mounts workspace with `:cached`, uses named volume for `npm-cache`
+- **Non-root user:** `vscode` (from base image, set via `remoteUser` in devcontainer.json)
 - **Ports:** `3000` (Next.js), `3001` (alt), `8787` (Wrangler), `51204` (Vitest UI)
+- **Cross-platform:** Works on macOS, Linux, and Windows with Docker Desktop
+- **SSH agent:** Handled automatically by VS Code Dev Containers extension
 
 ### Cloudflare Workers Deployment
 
@@ -805,6 +807,79 @@ The build process includes prebuild scripts that generate required data files:
 4. `next build` then produces the final application bundle
 
 Any Dockerfile must ensure these prebuild scripts run before `next build`.
+
+## Cross-Platform DevContainer Best Practices
+
+> **Important:** Many production Docker best practices (multi-stage builds, minimal base images, distroless images, `.dockerignore`, `HEALTHCHECK`) do NOT apply to devcontainers. Devcontainers are development environments, not production images. Prioritize developer experience and tool availability over image size.
+
+### **1. Use Devcontainer-Specific Base Images**
+
+- **Principle:** Use `mcr.microsoft.com/devcontainers/base:ubuntu` or similar devcontainer base images instead of minimal production images.
+- **Guidance for Copilot:**
+  - Devcontainer base images include the `vscode` user, common tools (git, curl, sudo), and are designed for the devcontainer spec.
+  - They support both AMD64 and ARM64 architectures natively.
+  - Do NOT use `alpine`, `slim`, or `distroless` for devcontainers — they lack the tools developers need.
+  - Do NOT use `--platform=$BUILDPLATFORM` in devcontainer Dockerfiles — Docker Desktop handles platform selection automatically.
+
+### **2. Use Devcontainer Features for Tool Installation**
+
+- **Principle:** Install Node.js, Git, GitHub CLI, and other tools via devcontainer features rather than in the Dockerfile.
+- **Guidance for Copilot:**
+  - Features handle cross-platform installation automatically (different architectures, package managers).
+  - Features are cached in Docker layers for fast rebuilds.
+  - Use `userUid: "automatic"` and `userGid: "automatic"` in the common-utils feature to avoid UID conflicts across host systems.
+  - Do NOT set `USER` in the Dockerfile — features need root access to install. Use `remoteUser` in devcontainer.json instead.
+
+### **3. SSH Agent Forwarding**
+
+- **Principle:** Rely on VS Code Dev Containers extension for SSH agent forwarding instead of explicit bind mounts.
+- **Guidance for Copilot:**
+  - The VS Code Dev Containers extension automatically forwards the SSH agent from the host to the container on all platforms (macOS, Linux, Windows).
+  - Do NOT bind-mount `SSH_AUTH_SOCK` in devcontainer.json — this breaks on Windows where Unix sockets are not available.
+  - Do NOT set `SSH_AUTH_SOCK` in `containerEnv` — it overrides VS Code's automatic forwarding.
+  - For SSH signing with git, you may need to unset `gpg.ssh.program` in `postStartCommand`.
+
+### **4. Volume Strategy for Cross-Platform**
+
+- **Principle:** Use bind mounts for source code and named volumes only for caches.
+- **Guidance for Copilot:**
+  - Use `..:/workspace:cached` for the workspace bind mount. The `:cached` flag improves macOS and Windows file system performance.
+  - Use a named volume for npm cache (`npm-cache:/home/vscode/.npm`) to speed up installs across rebuilds.
+  - Do NOT use a named volume for `node_modules` — it causes permission issues, stale dependencies, and makes the volume disconnect from package.json changes.
+  - The VS Code server runs inside the container and has direct access to the container filesystem, so IDE features work with the bind-mounted workspace.
+
+### **5. Container Runtime Settings**
+
+- **Principle:** Use `init: true` in docker-compose and keep the container configuration simple.
+- **Guidance for Copilot:**
+  - Set `init: true` in docker-compose.yml for proper signal handling and zombie process reaping.
+  - Use `sleep infinity` as the command (no `bash -c` wrapper needed).
+  - Do NOT set `user:` in docker-compose.yml — `remoteUser` in devcontainer.json handles this.
+  - Do NOT set `DOCKER_DEFAULT_PLATFORM` as a container env var — it only affects Docker commands run inside the container (Docker-in-Docker), not the devcontainer itself.
+
+### **6. postCreateCommand Best Practices**
+
+- **Principle:** Keep postCreateCommand simple and focused on project setup.
+- **Guidance for Copilot:**
+  - A simple `npm install` is usually sufficient.
+  - Avoid complex shell commands with `chown -R` on the entire workspace — Docker Desktop handles file ownership mapping.
+  - Do NOT run `npm run check` or test suites in postCreateCommand — developers should run these manually.
+  - If Node.js is installed via nvm (devcontainer feature) and `npm` is not found, use `bash -l -c 'npm install'` to load the login profile.
+
+### **7. Git Safe Directory**
+
+- **Principle:** Only add specific directories as git safe directories.
+- **Guidance for Copilot:**
+  - Use `git config --system --add safe.directory /workspace` for the workspace.
+  - Do NOT use `git config --system --add safe.directory '*'` — this is a security risk that allows git operations in any directory.
+
+### **8. `.dockerignore` for Devcontainers**
+
+- **Principle:** A `.dockerignore` is generally not needed for devcontainer Dockerfiles that don't COPY workspace files.
+- **Guidance for Copilot:**
+  - If the Dockerfile doesn't use `COPY` to copy workspace files into the image, the build context size is irrelevant (BuildKit only sends files that are actually needed).
+  - If a `.dockerignore` is used, place it in the build context root (project root), NOT in the `.devcontainer/` directory — a `.dockerignore` in `.devcontainer/` has no effect when the build context is `..`.
+  - Never exclude `package-lock.json` from a `.dockerignore` — lock files ensure reproducible builds.
 
 ## Conclusion
 

@@ -36,18 +36,18 @@ detect_platform() {
     
     case $arch in
         x86_64)
-            DOCKER_PLATFORM="linux/amd64"
+            PLATFORM_DESC="AMD64 (Intel/AMD)"
             ;;
         arm64|aarch64)
-            DOCKER_PLATFORM="linux/arm64"
+            PLATFORM_DESC="ARM64 (Apple Silicon / ARM)"
             ;;
         *)
-            print_warning "Unknown architecture: $arch, defaulting to linux/amd64"
-            DOCKER_PLATFORM="linux/amd64"
+            PLATFORM_DESC="Unknown ($arch)"
             ;;
     esac
     
-    print_status "Detected platform: $DOCKER_PLATFORM on $os"
+    print_status "Detected platform: $PLATFORM_DESC on $os"
+    print_status "Docker Desktop will handle platform selection automatically"
 }
 
 # Function to check prerequisites
@@ -77,14 +77,11 @@ check_prerequisites() {
 
 # Function to build the devcontainer
 build_devcontainer() {
-    print_status "Building devcontainer for platform: $DOCKER_PLATFORM"
+    print_status "Building devcontainer..."
     
     cd "$(dirname "$0")"
     
-    # Set the platform environment variable
-    export DOCKER_DEFAULT_PLATFORM=$DOCKER_PLATFORM
-    
-    # Build the container
+    # Build the container (Docker Desktop handles platform automatically)
     if docker compose build --no-cache; then
         print_success "DevContainer built successfully"
     else
@@ -104,7 +101,7 @@ test_devcontainer() {
     sleep 5
     
     # Test Node.js installation
-    if docker compose exec app node --version; then
+    if docker compose exec -T app node --version; then
         print_success "Node.js is working"
     else
         print_error "Node.js test failed"
@@ -113,7 +110,7 @@ test_devcontainer() {
     fi
     
     # Test npm installation
-    if docker compose exec app npm --version; then
+    if docker compose exec -T app npm --version; then
         print_success "npm is working"
     else
         print_error "npm test failed"
@@ -122,7 +119,7 @@ test_devcontainer() {
     fi
     
     # Test git installation
-    if docker compose exec app git --version; then
+    if docker compose exec -T app git --version; then
         print_success "Git is working"
     else
         print_error "Git test failed"
@@ -131,7 +128,7 @@ test_devcontainer() {
     fi
     
     # Test if workspace is mounted correctly
-    if docker compose exec app test -d /workspace; then
+    if docker compose exec -T app test -d /workspace; then
         print_success "Workspace mount is working"
     else
         print_error "Workspace mount test failed"

@@ -4,12 +4,10 @@ services:
       context: ..
       dockerfile: .devcontainer/Dockerfile
     volumes:
-      # Mount the root folder that contains .git with cross-platform caching
+      # Mount the root folder that contains .git
       - ..:/workspace:cached
-      # Create named volume for npm cache
+      # Persistent npm cache for faster installs across rebuilds
       - npm-cache:/home/vscode/.npm
-      # Isolate node_modules to avoid host permission issues
-      - workspace-node-modules:/workspace/node_modules
     # Keep container running
     command: sleep infinity
     # Set environment variables
@@ -22,9 +20,8 @@ services:
       - '3001:3001'
       - '8787:8787'
       - '51204:51204'
-    # Ensure proper init system for signal handling
+    # Proper init system for signal handling and zombie process reaping
     init: true
 
 volumes:
   npm-cache:
-  workspace-node-modules:

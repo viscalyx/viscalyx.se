@@ -16,10 +16,9 @@ This directory contains the complete development container setup for the Viscaly
 ### Cross-Platform Features
 
 - **Multi-architecture support** - Supports both AMD64 and ARM64 (Apple Silicon)
-- **Optimized builds** - Multi-stage Docker builds for smaller images
-- **Volume optimization** - Named volumes for better performance on all platforms
-- **SSH agent forwarding** - Automatic on Linux/macOS, gracefully handled on Windows
-- **Shell compatibility** - Bash and Zsh support with intelligent defaults
+- **Volume optimization** - Named volumes for npm cache performance
+- **SSH agent forwarding** - Handled automatically by VS Code Dev Containers extension on all platforms
+- **Shell compatibility** - Zsh (default) and Bash available
 
 ### VS Code Extensions
 
@@ -58,7 +57,7 @@ This directory contains the complete development container setup for the Viscaly
 
 - Enable WSL2 for optimal performance
 - Consider using Windows Terminal for better experience
-- SSH agent forwarding requires additional setup (optional)
+- SSH agent forwarding is handled automatically by VS Code
 
 #### macOS
 
@@ -98,24 +97,23 @@ This directory contains the complete development container setup for the Viscaly
 
 ## Architecture & Performance
 
-### Multi-Stage Docker Build
+### Docker Build
 
-The Dockerfile uses multi-stage builds for:
+The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image which:
 
-- **Smaller final images** - Only runtime dependencies included
-- **Better caching** - Separate layers for different concerns
-- **Cross-platform compatibility** - Automatic platform detection
-- **Security** - Minimal attack surface in final image
+- **Supports multi-architecture** - Works on both AMD64 and ARM64 natively
+- **Includes common tools** - git, curl, wget, sudo, and the vscode user
+- **Devcontainer features** - Node.js, Git, GitHub CLI, and Zsh are installed via devcontainer features
 
 ### Volume Strategy
 
-- **Source code** - Bind mount with optimized caching
-- **node_modules** - Named volume for cross-platform performance
-- **npm cache** - Persistent cache to speed up subsequent builds
+- **Source code** - Bind mount with `:cached` flag for performance
+- **npm cache** - Named volume to speed up `npm install` across rebuilds
+- **node_modules** - Stored in the workspace (bind mount), not a separate volume
 
-### Platform Detection
+### Platform Handling
 
-The setup automatically detects and optimizes for:
+Docker Desktop automatically detects and handles:
 
 - **AMD64** (Intel/AMD processors)
 - **ARM64** (Apple Silicon, ARM servers)
@@ -126,10 +124,10 @@ The setup automatically detects and optimizes for:
 ```
 .devcontainer/
 ├── devcontainer.json      # Main configuration file with cross-platform settings
-├── docker-compose.yml     # Multi-platform Docker Compose setup
-├── Dockerfile            # Multi-stage container image definition
-├── .dockerignore         # Optimized build context exclusions
-└── README.md            # This file (comprehensive documentation)
+├── docker-compose.yml     # Docker Compose setup with volume configuration
+├── Dockerfile            # Container image definition
+├── test-build.sh         # Script to test the build outside VS Code
+└── README.md            # This file
 ```
 
 ## Available Ports
@@ -211,21 +209,20 @@ The configuration automatically adapts to different platforms, but you can add p
 
 **npm command not found:**
 
-- This can happen if the postCreateCommand runs before devcontainer features are fully initialized
-- The configuration uses `bash -l` to ensure proper shell initialization
-- If you still encounter this issue, try rebuilding the container: "Dev Containers: Rebuild Container"
+- The Node.js feature installs Node via nvm. If postCreateCommand fails, try rebuilding: "Dev Containers: Rebuild Container"
 - As a workaround, you can manually run `npm install` after the container starts
 
 **npm permission errors (EACCES):**
 
-- This was resolved by removing the node_modules named volume that could cause permission conflicts
-- node_modules are now stored directly in the workspace with proper vscode user ownership
+- node_modules are stored in the workspace bind mount with proper vscode user ownership
 - If you encounter permission errors, try rebuilding the container: "Dev Containers: Rebuild Container"
 
 **SSH agent not working:**
 
-- Linux/macOS: Ensure SSH_AUTH_SOCK environment variable is set
-- Windows: SSH agent forwarding requires additional setup or use Git credentials
+- VS Code Dev Containers extension handles SSH agent forwarding automatically on all platforms
+- Linux/macOS: Ensure `ssh-agent` is running and keys are loaded (`ssh-add -l`)
+- Windows: Ensure the OpenSSH Authentication Agent service is running (see SSH section below)
+- If SSH still doesn't work, you can configure git to use HTTPS credentials instead
 
 **Port conflicts:**
 
@@ -256,18 +253,17 @@ The configuration automatically adapts to different platforms, but you can add p
 
 ## Security Considerations
 
-- **Non-root user**: Container runs as 'vscode' user for security
-- **Minimal base image**: Uses slim Debian image to reduce attack surface
-- **No secrets in image**: All sensitive data handled via environment variables
-- **Read-only configurations**: System configurations are immutable
-- **SSH agent isolation**: SSH agent socket is properly isolated and secured
+- **Non-root user**: Container runs as 'vscode' user via `remoteUser` setting
+- **Devcontainer base image**: Uses Microsoft's official devcontainer image
+- **No secrets in image**: All sensitive data handled via environment variables or SSH agent forwarding
+- **Safe directory**: Only `/workspace` is added as a git safe directory
 
 ## Performance Optimization
 
-- **Multi-stage builds**: Optimized image layers for faster builds and smaller size
 - **Build cache**: Docker layer caching speeds up subsequent builds
-- **Named volumes**: node_modules and npm cache persist across container restarts
-- **Platform detection**: Automatic optimization for ARM64 and AMD64 architectures
+- **Named volumes**: npm cache persists across container restarts
+- **Cached bind mount**: Source code mount uses `:cached` flag for macOS/Windows performance
+- **Devcontainer features**: Tools installed via features are cached in Docker layers
 
 ## Contributing
 
@@ -280,8 +276,6 @@ When modifying the devcontainer configuration:
 5. Follow the project's containerization best practices
 
 For more details about the project setup, see the main [README.md](../README.md) in the project root.
-
-Update the `settings` object in `devcontainer.json` to customize VS Code behavior.
 
 ### Adding System Dependencies
 

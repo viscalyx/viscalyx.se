@@ -4,21 +4,9 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  // Cross-platform volume mounts
-  "mounts": [
-    {
-      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME:${localEnv:USERPROFILE}}/.ssh-agent-fallback.sock}",
-      "target": "/ssh-agent.sock",
-      "type": "bind"
-    }
-  ],
   "containerEnv": {
-    // SSH agent - will be empty on Windows, which is fine
-    "SSH_AUTH_SOCK": "/ssh-agent.sock",
     "NODE_ENV": "development",
-    "NEXT_TELEMETRY_DISABLED": "1",
-    // Add Docker platform support
-    "DOCKER_DEFAULT_PLATFORM": "${localEnv:DOCKER_DEFAULT_PLATFORM:linux/amd64}"
+    "NEXT_TELEMETRY_DISABLED": "1"
   },
 
   // Features to add to the dev container
@@ -38,7 +26,7 @@
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
-      "configureZshAsDefaultShell": false,
+      "configureZshAsDefaultShell": true,
       "installOhMyZsh": true,
       "installOhMyZshConfig": true,
       "upgradePackages": true,
@@ -80,7 +68,7 @@
           "source.fixAll.eslint": "explicit",
           "source.organizeImports": "explicit"
         },
-        "editor.defaultFormatter": null, // Will be set to Prettier once extension is loaded
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
         "editor.detectIndentation": false,
@@ -170,14 +158,14 @@
         "git.enableSmartCommit": true,
         "git.confirmSync": false,
 
-        // Terminal settings - cross-platform compatible
-        "terminal.integrated.defaultProfile.linux": "bash",
+        // Terminal settings
+        "terminal.integrated.defaultProfile.linux": "zsh",
         "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "/bin/bash"
-          },
           "zsh": {
             "path": "/bin/zsh"
+          },
+          "bash": {
+            "path": "/bin/bash"
           }
         },
 
@@ -217,8 +205,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  // Ensure node_modules volume is owned by vscode to avoid permission issues
-  "postCreateCommand": "bash -l -c 'sudo chown -R vscode:vscode /workspace && mkdir -p /workspace/node_modules && sudo chown -R vscode:vscode /workspace/node_modules && sudo mkdir -p /home/vscode/.npm && sudo chown -R vscode:vscode /home/vscode/.npm && npm install && npm run check'",
+  "postCreateCommand": "npm install",
 
   // Use 'postStartCommand' to run commands after the container starts and every time it starts
   // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly
