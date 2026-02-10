@@ -21,8 +21,8 @@ readTime: '8 min read'
 
 ## Why SSH signing in Codespaces?
 
-Git 2.34 introduced **SSH-based commit signing** as an alternative to GPG. For
-Codespaces users this is a game-changer:
+Git 2.34 introduced **SSH-based commit signing** as an alternative to GPG.
+For Codespaces users this is a game-changer:
 
 - **No GPG keyring** to manage — a single SSH key pair handles both
   authentication and signing
@@ -69,6 +69,14 @@ Breaking down the flags:
 | `-N ""`                           | Empty passphrase (the key is stored encrypted in GitHub Secrets) |
 
 <!-- markdownlint-enable MD013 -->
+
+> [!IMPORTANT]
+> The `_codespaces` suffix is a temporary label used only during key generation.
+> After generating the key pair, store both the private and public key in a
+> **secure password vault** (e.g., 1Password, Bitwarden, KeePass). You will
+> retrieve the keys from the vault in the following steps to add them to GitHub
+> and the Codespaces secret. Once stored securely, you can remove the local
+> copies from `~/.ssh/`.
 
 > [!TIP]
 > A passphrase-less key is safe here because GitHub encrypts the Codespaces
