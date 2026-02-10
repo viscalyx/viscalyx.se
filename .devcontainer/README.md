@@ -80,7 +80,6 @@ add platform-specific customizations using VS Code's conditional settings.
 ## Performance Optimization
 
 - **Build cache**: Docker layer caching speeds up subsequent builds
-- **Named volumes**: npm cache persists across container restarts
 - **Cached bind mount**: Source code mount uses `:cached` flag for macOS/Windows performance
 - **Devcontainer features**: Tools installed via features are cached in Docker layers
 

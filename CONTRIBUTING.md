@@ -2562,8 +2562,8 @@ export const cookieRegistry: CookieInfo[] = [
 
 ### Legal Compliance
 
-See [README.md – GDPR Requirements Met](README.md#gdpr-requirements-met) for
-the full compliance checklist.
+See [README.md – GDPR Requirements Met](README.md#gdpr-requirements-met)
+for the full compliance checklist.
 
 #### Data Stored
 
