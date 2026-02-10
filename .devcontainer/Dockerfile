@@ -1,31 +1,23 @@
-# Use the official Node.js 24 LTS image as base
-FROM node:24-bookworm
+# Cross-platform devcontainer base image
+# Supports both AMD64 (Intel/AMD) and ARM64 (Apple Silicon)
+# Includes: git, curl, wget, sudo, zsh, and the vscode user
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
-# Install system dependencies and tools in a single layer
+# Install system dependencies needed for npm native modules (node-gyp)
 RUN apt-get update && \
-    apt-get install -y \
-        git \
-        curl \
-        wget \
-        unzip \
-        ca-certificates \
-        gnupg \
-        lsb-release \
-        software-properties-common \
+    apt-get install -y --no-install-recommends \
         build-essential \
-        python3 \
-        python3-pip \
-        sudo && \
+        python3 && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /workspace
 
-# Further user and shell configuration is provided by the devcontainer "common-utils" feature
+# Configure git for the workspace (security requirement)
 RUN git config --system --add safe.directory /workspace
 
 # Expose the ports that Next.js, Wrangler, and Vitest typically use
 EXPOSE 3000 3001 8787 51204
 
-# Keep container running
+# Keep container running (remoteUser in devcontainer.json handles user switching)
 CMD ["sleep", "infinity"]

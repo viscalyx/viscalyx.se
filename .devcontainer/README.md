@@ -1,63 +1,41 @@
 # DevContainer Configuration
 
-This directory contains the complete development container setup for the Viscalyx.se project. The devcontainer provides a consistent development environment that works across different platforms and ensures all contributors have the same tooling and dependencies.
+This directory contains the development container setup for the Viscalyx.se
+project. For contributor setup instructions, platform-specific prerequisites,
+and troubleshooting, see
+[CONTRIBUTING.md](../CONTRIBUTING.md#dev-container-setup--requirements).
 
-## What's Included
+## Architecture & Performance
 
-### Development Environment
+### Docker Build
 
-- **Node.js 20 LTS** - Latest stable version for optimal performance
-- **TypeScript** - Full TypeScript support with proper tooling
-- **Zsh with Oh My Zsh** - Enhanced shell experience with useful plugins
-- **Git** - Version control with proper configuration
-- **GitHub CLI** - For seamless GitHub integration
+The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image which:
 
-### VS Code Extensions
+- **Supports multi-architecture** - Works on both AMD64 and ARM64 natively
+- **Includes common tools** - git, curl, wget, sudo, and the vscode user
+- **Devcontainer features** - Node.js, Git, GitHub CLI, and Zsh are installed via devcontainer features
 
-- **Language Support**: TypeScript, React, Next.js
-- **Code Quality**: ESLint, Prettier, Error Lens
-- **Productivity**: Auto-rename tag, Path IntelliSense, TODO Tree
-- **Styling**: Tailwind CSS IntelliSense, Material Theme
-- **Documentation**: Markdown support, Spell checker (English + Swedish)
-- **Git Integration**: GitLens, Git Graph, GitHub PR/Issues
+### Volume Strategy
 
-### Pre-configured Settings
+- **Source code** - Bind mount with `:cached` flag for performance
+- **npm cache** - The `npm-cache` named volume is commented out in docker-compose.yml (not needed for infrequent rebuilds) and therefore not used
+- **node_modules** - Stored in the workspace (bind mount), not a separate volume
 
-- Automatic formatting on save
-- ESLint auto-fix on save
-- Optimized TypeScript settings
-- Tailwind CSS IntelliSense configuration
-- Spell checking for multiple languages
-- Git auto-fetch and smart commit
+### Platform Handling
 
-## Quick Start
+Docker Desktop automatically detects and handles:
 
-1. **Prerequisites**
-   - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-   - Install [VS Code](https://code.visualstudio.com/)
-   - Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-2. **Open in DevContainer**
-   - Clone the repository
-   - Open the project in VS Code
-   - When prompted, click "Reopen in Container" or use the Command Palette (`Cmd+Shift+P`) and select "Dev Containers: Reopen in Container"
-
-3. **Wait for Setup**
-   - The container will build automatically (first time may take 5-10 minutes)
-   - Dependencies will be installed automatically
-   - The project will be ready for development
+- **AMD64** (Intel/AMD processors)
+- **ARM64** (Apple Silicon, ARM servers)
+- **Different host OS** (Linux, macOS, Windows)
 
 ## Files Structure
 
-```
+```text
 .devcontainer/
-├── devcontainer.json      # Main configuration file
-├── docker-compose.yml     # Docker Compose setup
+├── devcontainer.json      # Main configuration file with cross-platform settings
+├── docker-compose.yml     # Docker Compose setup with volume configuration
 ├── Dockerfile            # Container image definition
-├── scripts/              # Setup scripts
-│   ├── setup-git.sh     # Git configuration
-│   ├── setup-zsh.sh     # Shell configuration
-│   └── README.md        # Scripts documentation
 └── README.md            # This file
 ```
 
@@ -67,179 +45,52 @@ This directory contains the complete development container setup for the Viscaly
 - **8787** - Cloudflare Wrangler preview / production server
 - **51204** - Vitest UI server
 
-## Development Workflow
-
-The devcontainer includes helpful aliases for common tasks:
-
-```bash
-# Development
-dev          # Start development server (npm run dev)
-build        # Build the project (npm run build)
-start        # Start production server (npm run start)
-
-# Code Quality
-lint         # Run ESLint (npm run lint)
-format       # Format code with Prettier (npm run format)
-typecheck    # Run TypeScript checks (npm run type-check)
-check        # Run all checks (npm run check)
-
-# Git shortcuts
-gs           # git status
-ga           # git add
-gc           # git commit
-gp           # git push
-gl           # git pull
-```
+All ports are automatically forwarded and work across all platforms.
 
 ## Customization
 
 ### Adding Extensions
 
-Edit the `extensions` array in `devcontainer.json` to add more VS Code extensions.
+Edit the `extensions` array in `devcontainer.json` to add more VS Code extensions:
+
+```json
+"extensions": [
+  "existing.extensions",
+  "new.extension.id"
+]
+```
 
 ### Modifying Settings
 
-Update the `settings` object in `devcontainer.json` to customize VS Code behavior.
+VS Code settings can be customized in the `customizations.vscode.settings`
+section of `devcontainer.json`.
 
-### Adding System Dependencies
+### Platform-Specific Customizations
 
-Add packages to the `RUN apt-get install` command in the `Dockerfile`.
+The configuration automatically adapts to different platforms, but you can
+add platform-specific customizations using VS Code's conditional settings.
 
-### Environment Variables
+## Security Considerations
 
-Add environment variables to the `containerEnv` object in `devcontainer.json`.
+- **Non-root user**: Container runs as 'vscode' user via `remoteUser` setting
+- **Devcontainer base image**: Uses Microsoft's official devcontainer image
+- **No secrets in image**: All sensitive data handled via environment variables or SSH agent forwarding
+- **Safe directory**: Only `/workspace` is added as a git safe directory
 
-## Troubleshooting
+## Performance Optimization
 
-### Container Won't Start
-
-1. Ensure Docker Desktop is running
-2. Try rebuilding the container: Command Palette → "Dev Containers: Rebuild Container"
-3. Check Docker logs for specific error messages
-
-### Port Conflicts
-
-If ports 3000 or 3001 are already in use:
-
-1. Stop other services using these ports
-2. Or modify the `forwardPorts` in `devcontainer.json`
-
-### Performance Issues
-
-- Ensure Docker Desktop has sufficient resources allocated (CPU/Memory)
-- The first build will be slower due to downloading base images and dependencies
-- Subsequent starts should be much faster
-
-### Permission Issues
-
-The container runs as the `vscode` user with UID 1000. If you encounter permission issues:
-
-1. Check that your host user has appropriate permissions
-2. Rebuild the container if needed
-
-### SSH Agent and SSH Keys
-
-#### On the Host
-
-```bash
-# Check if ssh-agent is running and list loaded SSH keys
-ssh-add -l
-```
-
-- If you see an error about connecting to the agent, start it and add your key:
-
-```bash
-# Start ssh-agent
-eval "$(ssh-agent -s)"
-# Add your SSH private key (adjust path as needed)
-ssh-add ~/.ssh/id_rsa
-```
-
-- Confirm keys are loaded:
-
-```bash
-ssh-add -l
-```
-
-#### Verifying Services on Windows Host
-
-Open PowerShell as Administrator and run:
-
-```powershell
-# Check SSH Agent service status
-Get-Service -Name ssh-agent
-```
-
-- If the ssh-agent service is not running, start it:
-
-```powershell
-Set-Service ssh-agent -StartupType Automatic
-Start-Service ssh-agent
-```
-
-#### In the DevContainer
-
-```bash
-# Inside the container, list forwarded SSH keys
-ssh-add -l
-```
-
-### GPG Keys
-
-#### On the Host
-
-```bash
-# List secret GPG keys available
-gpg --list-secret-keys
-```
-
-#### Using Kleopatra (Windows Host)
-
-1. Open the Kleopatra application.
-2. In the top menu, select **View → Secret Keys** (or enable the "Secret Keys" filter).
-3. Confirm your GPG key appears and is valid (check expiration date and usage flags).
-
-#### GPG Agent (Gpg4win)
-
-Gpg4win does not install a Windows service for `gpg-agent`. To ensure the agent is running, either launch Kleopatra:
-
-- **From Start Menu**: search for **Kleopatra** and open it.
-- **Or in PowerShell**:
-
-  ```powershell
-  Start-Process "C:\Program Files (x86)\Gpg4win\bin\kleopatra.exe"
-  ```
-
-or can be launched manually:
-
-```powershell
-# Launch GPG agent
-gpgconf --launch gpg-agent
-```
-
-Once Kleopatra is running, the GPG agent starts automatically. You can verify it by looking for `gpg-agent.exe` in Task Manager.
-
-#### In the DevContainer
-
-```bash
-# Inside the container, list secret GPG keys
-gpg --list-secret-keys
-```
-
-## Benefits
-
-- **Consistency**: Every contributor gets the exact same environment
-- **Zero Setup**: New contributors can start coding immediately
-- **Isolation**: Project dependencies don't conflict with host system
-- **Portability**: Works on Windows, macOS, and Linux
-- **Reproducibility**: Environment is version-controlled and reproducible
-- **Productivity**: Pre-configured with all necessary tools and extensions
+- **Build cache**: Docker layer caching speeds up subsequent builds
+- **Cached bind mount**: Source code mount uses `:cached` flag for macOS/Windows performance
+- **Devcontainer features**: Tools installed via features are cached in Docker layers
 
 ## Contributing
 
-When adding new tools or changing the configuration:
+When modifying the devcontainer configuration:
 
-1. Test the changes locally
-2. Update this README if needed
-3. Ensure the container builds and runs correctly on both Windows, Linux and macOS
-4. Document any new features or requirements
+1. Test on multiple platforms if possible (Linux, macOS, Windows)
+2. Ensure the build works for both AMD64 and ARM64
+3. Update this README with any new features or requirements
+4. Consider the impact on build time and image size
+5. Follow the project's containerization best practices
+
+For more details about the project setup, see the main [README.md](../README.md) in the project root.

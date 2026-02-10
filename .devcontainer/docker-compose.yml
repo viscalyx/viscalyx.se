@@ -6,8 +6,10 @@ services:
     volumes:
       # Mount the root folder that contains .git
       - ..:/workspace:cached
-    # Override the workspace ownership in the container
-    command: bash -c "sleep infinity"
+      # Persistent npm cache for faster installs across rebuilds (commented out - not needed for infrequent rebuilds)
+      # - npm-cache:/home/vscode/.npm
+    # Keep container running
+    command: sleep infinity
     # Set environment variables
     environment:
       - NODE_ENV=development
@@ -18,5 +20,8 @@ services:
       - '3001:3001'
       - '8787:8787'
       - '51204:51204'
-    # Use the default shell
-    user: vscode
+    # Proper init system for signal handling and zombie process reaping
+    init: true
+
+# volumes:
+# npm-cache:

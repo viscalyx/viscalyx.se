@@ -4,29 +4,22 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
-  "mounts": [
-    {
-      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME:${localEnv:USERPROFILE}}/.ssh-agent-fallback.sock}",
-      "target": "/ssh-agent.sock",
-      "type": "bind"
-    }
-  ],
   "containerEnv": {
-    "SSH_AUTH_SOCK": "/ssh-agent.sock",
     "NODE_ENV": "development",
     "NEXT_TELEMETRY_DISABLED": "1"
   },
 
   // Features to add to the dev container
   "features": {
-    // "ghcr.io/devcontainers/features/node:1": {
-    //   "nodeGitTagPrefix": "v",
-    //   "version": "24"
-    // },
-    // "ghcr.io/devcontainers/features/git:1": {
-    //   "ppa": true,
-    //   "version": "latest"
-    // },
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGitTagPrefix": "v",
+      "version": "24",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": true,
+      "version": "latest"
+    },
     "ghcr.io/devcontainers/features/github-cli:1": {
       "installDirectlyFromGitHubRelease": false,
       "version": "latest"
@@ -38,8 +31,8 @@
       "installOhMyZshConfig": true,
       "upgradePackages": true,
       "username": "vscode",
-      "userUid": "1002",
-      "userGid": "1002"
+      "userUid": "automatic",
+      "userGid": "automatic"
     }
   },
 
@@ -61,7 +54,6 @@
         "christian-kohler.npm-intellisense",
         "gruntfuggly.todo-tree",
         "usernamehw.errorlens",
-        "GitHub.copilot",
         "GitHub.copilot-chat",
         "vitest.explorer",
         "bierner.markdown-mermaid",
@@ -170,6 +162,9 @@
         "terminal.integrated.profiles.linux": {
           "zsh": {
             "path": "/bin/zsh"
+          },
+          "bash": {
+            "path": "/bin/bash"
           }
         },
 
@@ -210,7 +205,7 @@
 
   // Use 'postCreateCommand' to run commands after the container is created
   // Do not use this git configuration command here, as it will prevent ssh-agent forwarding
-  "postCreateCommand": "sudo npm install -g npm@latest && npm install",
+  "postCreateCommand": "npm install -g npm@latest && npm install",
 
   // Use 'postStartCommand' to run commands after the container starts and every time it starts
   // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly

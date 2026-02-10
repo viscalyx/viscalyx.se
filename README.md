@@ -53,6 +53,16 @@ Our website respects user privacy and complies with GDPR cookie consent requirem
 
 ## Development
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full setup instructions, development
+workflow, and environment configuration.
+
+Quick start:
+
+```bash
+npm install
+npm run dev
+```
+
 ## License
 
 This project's source code is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
