@@ -70,6 +70,8 @@ Breaking down the flags:
 
 <!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD028 -->
+
 > [!IMPORTANT]
 > The `_codespaces` suffix is a temporary label used only during key generation.
 > After generating the key pair, store both the private and public key in a
@@ -82,6 +84,8 @@ Breaking down the flags:
 > A passphrase-less key is safe here because GitHub encrypts the Codespaces
 > secret at rest and injects it only into your ephemeral Codespace environments.
 > The key never touches disk unencrypted outside the Codespace.
+
+<!-- markdownlint-enable MD028 -->
 
 ## Step 2 – Add the public key to GitHub
 
@@ -399,12 +403,12 @@ git commit -m "fix: normalize line endings for install.sh"
 
 <!-- markdownlint-disable MD013 -->
 
-| Component        | Location                            | Purpose                                                 |
-| ---------------- | ----------------------------------- | ------------------------------------------------------- |
-| Private key      | Codespaces secret `SSH_PRIVATE_KEY` | Injected into each Codespace as an environment variable |
-| Public key       | github.com/settings/keys            | Registered as both authentication and signing key       |
-| `.gitconfig`     | Dotfiles repo                       | Configures Git to use SSH signing                       |
+| Component        | Location                            | Purpose                                                   |
+| ---------------- | ----------------------------------- | --------------------------------------------------------- |
+| Private key      | Codespaces secret `SSH_PRIVATE_KEY` | Injected into each Codespace as an environment variable   |
+| Public key       | github.com/settings/keys            | Registered as both authentication and signing key         |
+| `.gitconfig`     | Dotfiles repo                       | Configures Git to use SSH signing                         |
 | `install.sh`     | Dotfiles repo                       | Deploys `.gitconfig`, writes key, sets up allowed signers |
-| `.gitattributes` | Dotfiles repo                       | Ensures shell scripts keep LF line endings              |
+| `.gitattributes` | Dotfiles repo                       | Ensures shell scripts keep LF line endings                |
 
 <!-- markdownlint-enable MD013 -->
