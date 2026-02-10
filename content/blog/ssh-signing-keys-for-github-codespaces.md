@@ -241,11 +241,7 @@ fi
 
 > [!CAUTION]
 > Make sure `install.sh` uses **LF line endings** (Unix-style). Add a
-> `.gitattributes` file to your dotfiles repo to enforce this:
->
-> ```text
-> *.sh text eol=lf
-> ```
+> `.gitattributes` file to your dotfiles repo to enforce this.
 
 ### The `.gitattributes` file
 
