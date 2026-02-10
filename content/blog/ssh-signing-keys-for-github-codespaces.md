@@ -40,9 +40,20 @@ For Codespaces users this is a game-changer:
 
 - A GitHub account with [Codespaces](https://github.com/features/codespaces)
   enabled
-- A [dotfiles repository](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
-  linked in your Codespaces settings
+- A **dotfiles repository** on your GitHub account (see below)
 - Git 2.34 or later (Codespaces ships 2.34+ by default)
+
+### Create a dotfiles repository
+
+If you don't already have one, create a new repository on GitHub named
+`dotfiles` under your account (e.g., `your-username/dotfiles`). This is a
+regular repository where you store configuration files that personalize your
+development environment. GitHub Codespaces recognizes
+[specific repository names](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
+— the most common being `dotfiles`.
+
+The repository will hold the `.gitconfig`, `install.sh`, and `.gitattributes`
+files created in Step 4, and you will link it to Codespaces in Step 5.
 
 ## Step 1 – Generate a dedicated passphrase-less SSH key
 
@@ -139,9 +150,13 @@ REDACTED_PRIVATE_KEY_CONTENT
 
 ## Step 4 – Configure your dotfiles
 
+All files in this step are created in the **dotfiles repository** from the
+prerequisites (e.g., `your-username/dotfiles`). Clone it locally if you
+haven't already, add the files below, then commit and push.
+
 ### The `.gitconfig` file
 
-Create or update `.gitconfig` in your dotfiles repository:
+Create or update `.gitconfig` in the root of the dotfiles repository:
 
 ```ini
 [core]
@@ -196,7 +211,7 @@ Key settings explained:
 
 ### The `install.sh` script
 
-Create `install.sh` in your dotfiles repository:
+Create `install.sh` in the root of the dotfiles repository:
 
 > [!IMPORTANT]
 > When a dotfiles repository contains an `install.sh` script, GitHub Codespaces
@@ -245,7 +260,7 @@ fi
 
 ### The `.gitattributes` file
 
-Create `.gitattributes` in your dotfiles repository root:
+Create `.gitattributes` in the root of the dotfiles repository:
 
 ```text
 *.sh text eol=lf
@@ -262,6 +277,15 @@ This prevents Windows line ending conversion from breaking the shell script.
 When a new Codespace starts, GitHub clones your dotfiles repo and runs
 `install.sh` automatically.
 
+> [!NOTE]
+> With the **Automatically install dotfiles** checkbox enabled, GitHub
+> Codespaces will clone your dotfiles repo into the Codespace. However, because
+> the repo contains an `install.sh` script, Codespaces **skips automatic
+> symlinking** of dotfiles and runs the script instead. The checkbox is still
+> required — without it, neither symlinking nor `install.sh` execution happens.
+> Just be aware that your `install.sh` must handle all file deployment itself
+> (as shown in Step 4).
+
 ## Step 6 – Verify the setup
 
 Create a new Codespace (or rebuild the current one) and run:
@@ -275,10 +299,10 @@ git config --global gpg.format
 git config --global user.signingkey
 # Expected output: ~/.ssh/id_ed25519.pub
 
-# Make a test commit
-echo "test" > /tmp/test-file
+# Make a test commit in a temporary repo
 cd /tmp && git init test-repo && cd test-repo
-git add -A && git commit --allow-empty -m "test: verify SSH signing"
+echo "test" > test-file
+git add -A && git commit -m "test: verify SSH signing"
 
 # Verify the signature
 git log --show-signature -1
