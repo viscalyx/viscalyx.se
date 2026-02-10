@@ -2506,14 +2506,8 @@ export const cookieRegistry: CookieInfo[] = [
 
 ### Legal Compliance
 
-#### GDPR Requirements Met
-
-1. ✅ **Explicit Consent**: Clear opt-in required for non-essential cookies
-2. ✅ **Granular Choice**: Users can select specific cookie categories
-3. ✅ **Easy Withdrawal**: Users can change preferences anytime
-4. ✅ **Clear Information**: Detailed cookie descriptions provided
-5. ✅ **Record Keeping**: Consent timestamp and settings stored
-6. ✅ **No Pre-checked Boxes**: All non-essential cookies disabled by default
+See [README.md – GDPR Requirements Met](README.md#gdpr-requirements-met) for
+the full compliance checklist.
 
 #### Data Stored
 
