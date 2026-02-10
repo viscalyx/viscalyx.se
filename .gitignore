@@ -218,4 +218,5 @@ public/blog-content/
 
 .wrangler/
 cloudflare-env.d.ts
+next-env.d.ts
 test-results/
