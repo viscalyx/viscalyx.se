@@ -5,7 +5,11 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
   "mounts": [
-    "source=${localEnv:SSH_AUTH_SOCK},target=/ssh-agent.sock,type=bind,consistency=cached"
+    {
+      "source": "${localEnv:SSH_AUTH_SOCK:${localEnv:HOME:${localEnv:USERPROFILE}}/.ssh-agent-fallback.sock}",
+      "target": "/ssh-agent.sock",
+      "type": "bind"
+    }
   ],
   "containerEnv": {
     "SSH_AUTH_SOCK": "/ssh-agent.sock",
@@ -210,7 +214,7 @@
 
   // Use 'postStartCommand' to run commands after the container starts and every time it starts
   // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly
-  "postStartCommand": "git config --global --unset gpg.ssh.program || true",
+  "postStartCommand": "git config --global --unset gpg.ssh.program || true && npm run cf-typegen",
 
   // Configure remote user
   "remoteUser": "vscode"
