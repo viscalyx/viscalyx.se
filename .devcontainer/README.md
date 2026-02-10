@@ -121,12 +121,11 @@ Docker Desktop automatically detects and handles:
 
 ## Files Structure
 
-```
+```text
 .devcontainer/
 ├── devcontainer.json      # Main configuration file with cross-platform settings
 ├── docker-compose.yml     # Docker Compose setup with volume configuration
 ├── Dockerfile            # Container image definition
-├── test-build.sh         # Script to test the build outside VS Code
 └── README.md            # This file
 ```
 
