@@ -33,8 +33,8 @@ For Codespaces users this is a game-changer:
 
 > [!NOTE]
 > Codespaces already inject a `GITHUB_TOKEN` for HTTPS Git operations. SSH keys
-> are specifically needed for **commit signing**, not for push/pull
-> authentication.
+> are needed for **commit signing** and for using **SSH remotes** instead of
+> HTTPS, but not for push/pull over HTTPS.
 
 ## Prerequisites
 
