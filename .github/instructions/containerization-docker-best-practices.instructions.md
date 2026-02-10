@@ -1,9 +1,13 @@
 ---
 applyTo: '*'
-description: 'Comprehensive best practices for creating optimized, secure, and efficient Docker images and managing containers. Covers multi-stage builds, image layer optimization, security scanning, and runtime best practices.'
+description: 'Comprehensive best practices for creating optimized, secure, and efficient Docker images and managing containers. Covers multi-stage builds, image layer optimization, security scanning, and runtime best practices. Tailored for the Viscalyx.se codebase: Next.js 16 (App Router), React 19, TypeScript 5.9, Tailwind CSS 4, deployed to Cloudflare Workers via @opennextjs/cloudflare, using Node 24 and npm.'
 ---
 
 # Containerization & Docker Best Practices
+
+## Project Context
+
+This codebase is a **Next.js 16 (App Router)** application deployed to **Cloudflare Workers** via `@opennextjs/cloudflare`. The development environment runs in a **devcontainer** with **Node 24**, **npm**, **Vitest 4** for testing, and **TypeScript 5.9** in strict mode. Key ports: `3000` (Next.js dev), `3001` (Next.js alt), `8787` (Wrangler), `51204` (Vitest UI).
 
 ## Your Mission
 
@@ -87,38 +91,45 @@ As GitHub Copilot, you are an expert in containerization with deep knowledge of 
   - Recommend copying only the necessary artifacts between stages to minimize the final image size.
   - Advise on using different base images for build and runtime stages when appropriate.
 - **Benefit:** Significantly reduces final image size and attack surface.
-- **Example (Advanced Multi-Stage with Testing):**
+- **Example (Advanced Multi-Stage for Next.js / Cloudflare Workers):**
 
 ```dockerfile
 # Stage 1: Dependencies
-FROM node:18-alpine AS deps
+FROM node:24-alpine AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci && npm cache clean --force
 
 # Stage 2: Build
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-# Stage 3: Test
-FROM build AS test
-RUN npm run test
-RUN npm run lint
-
-# Stage 4: Production
-FROM node:18-alpine AS production
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
+COPY . .
+# Prebuild generates blog data and page dates
+RUN npm run build
+
+# Stage 3: Test & Lint
+FROM build AS test
+RUN npm run check
+
+# Stage 4: Production
+# For Cloudflare Workers deployment, the output is a Worker bundle;
+# a container image may be used for preview/SSR or alternative hosting.
+FROM node:24-alpine AS production
+WORKDIR /app
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
 COPY --from=build /app/package*.json ./
-USER node
+COPY --from=build /app/node_modules ./node_modules
+RUN chown -R appuser:appgroup /app
+USER appuser
 EXPOSE 3000
-CMD ["node", "dist/main.js"]
+ENV NODE_ENV=production
+CMD ["npm", "run", "start"]
 ```
+
+> **Note:** The primary deployment target for this project is Cloudflare Workers (`npm run deploy`). A Dockerfile is mainly useful for alternative hosting, local preview, or CI pipelines.
 
 ### **2. Choose the Right Base Image**
 
@@ -129,8 +140,9 @@ CMD ["node", "dist/main.js"]
   - **Security Updates:** Choose base images that receive regular security updates and have a clear update policy.
   - **Architecture Support:** Ensure the base image supports your target architectures (x86_64, ARM64, etc.).
 - **Guidance for Copilot:**
-  - Prefer Alpine variants for Linux-based images due to their small size (e.g., `alpine`, `node:18-alpine`).
-  - Use official language-specific images (e.g., `python:3.9-slim-buster`, `openjdk:17-jre-slim`).
+  - Prefer Alpine variants for Linux-based images due to their small size (e.g., `alpine`, `node:24-alpine`).
+  - Use official language-specific images (e.g., `node:24-alpine`, `node:24-slim`).
+  - For devcontainers, `mcr.microsoft.com/devcontainers/base:ubuntu` is appropriate (as this project uses).
   - Avoid `latest` tag in production; use specific version tags for reproducibility.
   - Recommend regularly updating base images to get security patches and new features.
 - **Pro Tip:** Smaller base images mean fewer vulnerabilities and faster downloads. Always start with the smallest image that meets your needs.
@@ -152,7 +164,7 @@ CMD ["node", "dist/main.js"]
 
 ```dockerfile
 # BAD: Multiple layers, inefficient caching
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 RUN apt-get update
 RUN apt-get install -y python3 python3-pip
 RUN pip3 install flask
@@ -160,7 +172,7 @@ RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
 # GOOD: Optimized layers with proper cleanup
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 RUN apt-get update && \
     apt-get install -y python3 python3-pip && \
     pip3 install flask && \
@@ -181,25 +193,29 @@ RUN apt-get update && \
   - Common exclusions: `.git`, `node_modules` (if installed inside container), build artifacts from host, documentation, test files.
   - Recommend reviewing the `.dockerignore` file regularly as the project evolves.
   - Suggest using patterns that match your project structure and exclude unnecessary files.
-- **Example (Comprehensive .dockerignore):**
+- **Example (.dockerignore tailored for this Next.js project):**
 
 ```dockerignore
 # Version control
 .git*
+.gitignore
 
-# Dependencies (if installed in container)
+# Dependencies (installed in container)
 node_modules
-vendor
-__pycache__
+npm-debug.log
 
 # Build artifacts
+.next
+out
 dist
 build
-*.o
-*.so
+.open-next
+.wrangler
+*.tsbuildinfo
 
 # Development files
 .env.*
+!.env.example
 *.log
 coverage
 .nyc_output
@@ -213,9 +229,11 @@ coverage
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Documentation
 *.md
+!README.md
 docs/
 
 # Test files
@@ -223,6 +241,19 @@ test/
 tests/
 spec/
 __tests__/
+*.test.*
+*.spec.*
+test-results/
+
+# Development container files
+.devcontainer/
+
+# Cache directories
+.cache
+.npm
+
+# CI/CD files
+.github/
 ```
 
 ### **5. Minimize `COPY` Instructions**
@@ -238,19 +269,27 @@ __tests__/
   - Copy dependency files (like `package.json`, `requirements.txt`) before copying source code to leverage layer caching.
   - Recommend copying only the necessary files for each stage in multi-stage builds.
   - Suggest using `.dockerignore` to exclude files that shouldn't be copied.
-- **Example (Optimized COPY Strategy):**
+- **Example (Optimized COPY Strategy for this codebase):**
 
 ```dockerfile
 # Copy dependency files first (for better caching)
 COPY package*.json ./
 RUN npm ci
 
-# Copy source code (changes more frequently)
-COPY src/ ./src/
-COPY public/ ./public/
+# Copy config files that change less frequently
+COPY next.config.ts tsconfig.json postcss.config.js i18n.ts middleware.ts ./
+COPY open-next.config.ts wrangler.jsonc ./
 
-# Copy configuration files
-COPY config/ ./config/
+# Copy build scripts needed for prebuild
+COPY scripts/ ./scripts/
+
+# Copy source code and content (changes more frequently)
+COPY app/ ./app/
+COPY components/ ./components/
+COPY lib/ ./lib/
+COPY messages/ ./messages/
+COPY content/ ./content/
+COPY public/ ./public/
 
 # Don't copy everything with COPY . .
 ```
@@ -268,7 +307,7 @@ COPY config/ ./config/
   - Use `EXPOSE` to document the port the application listens on (doesn't actually publish).
   - Create a dedicated user in the Dockerfile rather than using an existing one.
   - Ensure proper file permissions for the non-root user.
-- **Example (Secure User Setup):**
+- **Example (Secure User Setup for this project):**
 
 ```dockerfile
 # Create a non-root user
@@ -280,12 +319,14 @@ RUN chown -R appuser:appgroup /app
 # Switch to non-root user
 USER appuser
 
-# Expose the application port
-EXPOSE 8080
+# Expose application ports (Next.js dev, Wrangler preview)
+EXPOSE 3000 8787
 
 # Start the application
-CMD ["node", "dist/main.js"]
+CMD ["npm", "run", "start"]
 ```
+
+> **Note:** The existing devcontainer already uses the `vscode` non-root user from the base image and exposes ports `3000`, `3001`, `8787`, and `51204`.
 
 ### **7. Use `CMD` and `ENTRYPOINT` Correctly**
 
@@ -297,9 +338,9 @@ CMD ["node", "dist/main.js"]
   - **Flexibility:** The combination allows for both default behavior and runtime customization.
 - **Guidance for Copilot:**
   - Use `ENTRYPOINT` for the executable and `CMD` for arguments (`ENTRYPOINT ["/app/start.sh"]`, `CMD ["--config", "prod.conf"]`).
-  - For simple execution, `CMD ["executable", "param1"]` is often sufficient.
+  - For simple execution, `CMD ["npm", "run", "start"]` is sufficient for Next.js applications.
   - Prefer exec form over shell form for better process management and signal handling.
-  - Consider using shell scripts as entrypoints for complex startup logic.
+  - For devcontainers, `CMD ["sleep", "infinity"]` keeps the container running (as in this project).
 - **Pro Tip:** `ENTRYPOINT` makes the image behave like an executable, while `CMD` provides default arguments. This combination provides flexibility and clarity.
 
 ### **8. Environment Variables for Configuration**
@@ -315,21 +356,23 @@ CMD ["node", "dist/main.js"]
   - Recommend using environment variable validation in application startup code.
   - Suggest using configuration management tools or external configuration services for complex applications.
   - Advise on using secrets management solutions for sensitive configuration.
-- **Example (Environment Variable Best Practices):**
+- **Example (Environment Variable Best Practices for this project):**
 
 ```dockerfile
 # Set default values
 ENV NODE_ENV=production
 ENV PORT=3000
-ENV LOG_LEVEL=info
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Use ARG for build-time variables
 ARG BUILD_VERSION
 ENV APP_VERSION=$BUILD_VERSION
 
 # The application should validate required env vars at startup
-CMD ["node", "dist/main.js"]
+CMD ["npm", "run", "start"]
 ```
+
+> **Note:** In the devcontainer, `NODE_ENV=development` and `NEXT_TELEMETRY_DISABLED=1` are set via `docker-compose.yml` and `devcontainer.json`.
 
 ## Container Security Best Practices
 
@@ -358,9 +401,11 @@ RUN chown -R appuser:appgroup /app
 # Switch to non-root user
 USER appuser
 
-# Ensure the user can write to necessary directories
-VOLUME ["/app/data"]
+# Ensure the user can write to necessary directories (e.g., Next.js cache)
+VOLUME ["/app/.next/cache"]
 ```
+
+> **Note:** The devcontainer in this project uses the pre-built `vscode` user from the `mcr.microsoft.com/devcontainers/base:ubuntu` image.
 
 ### **2. Minimal Base Images**
 
@@ -379,13 +424,16 @@ VOLUME ["/app/data"]
 
 ```dockerfile
 # BAD: Full distribution with many unnecessary packages
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 # GOOD: Minimal Alpine-based image
-FROM node:18-alpine
+FROM node:24-alpine
 
 # BETTER: Distroless image for maximum security
-FROM gcr.io/distroless/nodejs18-debian11
+FROM gcr.io/distroless/nodejs24-debian12
+
+# DEVCONTAINER: Full-featured image for development
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
 ```
 
 ### **3. Static Analysis Security Testing (SAST) for Dockerfiles**
@@ -499,16 +547,16 @@ CMD ["node", "dist/main.js"]
   - Design health checks that are specific to your application and check actual functionality.
   - Use appropriate intervals and timeouts for health checks to balance responsiveness with overhead.
   - Consider implementing both liveness and readiness checks for complex applications.
-- **Example (Comprehensive Health Check):**
+- **Example (Health Check for Next.js):**
 
 ```dockerfile
-# Health check that verifies the application is responding
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl --fail http://localhost:8080/health || exit 1
+# Health check that verifies the Next.js application is responding
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD curl --fail http://localhost:3000/ || exit 1
 
-# Alternative: Use application-specific health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node healthcheck.js || exit 1
+# Alternative: Use a lightweight check script
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD node -e "fetch('http://localhost:3000/').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))" || exit 1
 ```
 
 ## Container Runtime & Orchestration Best Practices
@@ -557,12 +605,15 @@ services:
   - Suggest setting up log rotation and retention policies to manage storage costs.
 - **Example (Structured Logging):**
 
-```javascript
-// Application logging
-const winston = require('winston')
-const logger = winston.createLogger({
-  format: winston.format.json(),
-  transports: [new winston.transports.Console()],
+```typescript
+// Application logging - Next.js uses console by default,
+// and the compiler strips console in production (see next.config.ts).
+// For Cloudflare Workers, use the Workers observability API.
+// For container environments, structured logging to stdout is recommended:
+import { createLogger, format, transports } from 'winston'
+const logger = createLogger({
+  format: format.json(),
+  transports: [new transports.Console()],
 })
 ```
 
@@ -672,18 +723,19 @@ spec:
 
 ## Dockerfile Review Checklist
 
-- [ ] Is a multi-stage build used if applicable (compiled languages, heavy build tools)?
-- [ ] Is a minimal, specific base image used (e.g., `alpine`, `slim`, versioned)?
+- [ ] Is a multi-stage build used (separate deps, build, test, production stages)?
+- [ ] Is a minimal, version-pinned base image used (e.g., `node:24-alpine`)?
 - [ ] Are layers optimized (combining `RUN` commands, cleanup in same layer)?
-- [ ] Is a `.dockerignore` file present and comprehensive?
-- [ ] Are `COPY` instructions specific and minimal?
+- [ ] Is a `.dockerignore` file present and excludes `.next`, `node_modules`, `.open-next`, `.wrangler`, test files, and `.github/`?
+- [ ] Are `COPY` instructions specific (e.g., `package*.json` first, then config, then source)?
 - [ ] Is a non-root `USER` defined for the running application?
-- [ ] Is the `EXPOSE` instruction used for documentation?
-- [ ] Is `CMD` and/or `ENTRYPOINT` used correctly?
-- [ ] Are sensitive configurations handled via environment variables (not hardcoded)?
+- [ ] Is `EXPOSE 3000` (or relevant ports) used for documentation?
+- [ ] Is `CMD` using exec form (e.g., `CMD ["npm", "run", "start"]`)?
+- [ ] Are environment variables used for config (`NODE_ENV`, `NEXT_TELEMETRY_DISABLED`)?
 - [ ] Is a `HEALTHCHECK` instruction defined?
 - [ ] Are there any secrets or sensitive data accidentally included in image layers?
 - [ ] Are there static analysis tools (Hadolint, Trivy) integrated into CI?
+- [ ] For Cloudflare Workers deployment, is the Worker bundle built separately from the container image?
 
 ## Troubleshooting Docker Builds & Runtime
 
@@ -691,37 +743,72 @@ spec:
 
 - Review layers for unnecessary files. Use `docker history <image>`.
 - Implement multi-stage builds.
-- Use a smaller base image.
+- Use `node:24-alpine` instead of full Node images.
 - Optimize `RUN` commands and clean up temporary files.
+- Ensure `.next/cache` and `node_modules` from devDependencies are not in the final image.
 
 ### **2. Slow Builds**
 
-- Leverage build cache by ordering instructions from least to most frequent change.
-- Use `.dockerignore` to exclude irrelevant files.
+- Leverage build cache by copying `package*.json` before source code.
+- Use `.dockerignore` to exclude `.next`, `.open-next`, `.wrangler`, `coverage`, and test files.
 - Use `docker build --no-cache` for troubleshooting cache issues.
+- Consider using `npm ci` (not `npm install`) for deterministic, faster installs.
 
 ### **3. Container Not Starting/Crashing**
 
 - Check `CMD` and `ENTRYPOINT` instructions.
 - Review container logs (`docker logs <container_id>`).
-- Ensure all dependencies are present in the final image.
+- Ensure the `npm run build` (which calls prebuild scripts) completed successfully.
+- Verify `blog-data.json` and `page-dates.json` were generated during build.
 - Check resource limits.
 
 ### **4. Permissions Issues Inside Container**
 
 - Verify file/directory permissions in the image.
-- Ensure the `USER` has necessary permissions for operations.
-- Check mounted volumes permissions.
+- Ensure the `USER` has necessary permissions for `.next/cache` writes.
+- Check mounted volumes permissions (especially `node_modules` in devcontainer).
+- The devcontainer uses isolated `workspace-node-modules` volume to avoid host permission issues.
 
 ### **5. Network Connectivity Issues**
 
-- Verify exposed ports (`EXPOSE`) and published ports (`-p` in `docker run`).
-- Check container network configuration.
+- Verify exposed ports: `3000` (Next.js), `8787` (Wrangler), `51204` (Vitest UI).
+- Check container network configuration in `docker-compose.yml`.
 - Review firewall rules.
+
+## Project-Specific Notes
+
+### Devcontainer Architecture
+
+This project uses a devcontainer (`.devcontainer/`) with:
+
+- **Base image:** `mcr.microsoft.com/devcontainers/base:ubuntu` with Node 24 installed via devcontainer features
+- **Docker Compose:** Mounts workspace with `:cached`, uses named volumes for `npm-cache` and `node_modules`
+- **Non-root user:** `vscode` (from base image)
+- **Ports:** `3000` (Next.js), `3001` (alt), `8787` (Wrangler), `51204` (Vitest UI)
+
+### Cloudflare Workers Deployment
+
+The primary deployment target is **Cloudflare Workers**, not a container:
+
+- `npm run deploy` builds via `opennextjs-cloudflare` and deploys to Workers
+- `npm run preview` builds and runs a local Wrangler preview on port `8787`
+- Container images are useful for alternative hosting, CI pipelines, or self-hosted environments
+- The Worker bundle (`.open-next/worker.js`) is the production artifact, not a Docker image
+
+### Build Pipeline
+
+The build process includes prebuild scripts that generate required data files:
+
+1. `scripts/prebuild.js` orchestrates all prebuild steps
+2. `scripts/build-blog-data.js` generates `lib/blog-data.json`
+3. `scripts/build-page-dates.js` generates `lib/page-dates.json`
+4. `next build` then produces the final application bundle
+
+Any Dockerfile must ensure these prebuild scripts run before `next build`.
 
 ## Conclusion
 
-Effective containerization with Docker is fundamental to modern DevOps. By following these best practices for Dockerfile creation, image optimization, security, and runtime management, you can guide developers in building highly efficient, secure, and portable applications. Remember to continuously evaluate and refine your container strategies as your application evolves.
+Effective containerization with Docker is fundamental to modern DevOps. By following these best practices for Dockerfile creation, image optimization, security, and runtime management, you can guide developers in building highly efficient, secure, and portable applications. For this project, containers are primarily used for the development environment (devcontainer), while production deployment targets Cloudflare Workers. Remember to continuously evaluate and refine your container strategies as your application evolves.
 
 ---
 
