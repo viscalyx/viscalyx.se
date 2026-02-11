@@ -2,174 +2,161 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Cookie Consent Functionality', () => {
   test.beforeEach(async ({ page }) => {
-    // Clear any existing cookie consent data before each test
+    // Navigate first so we have a page context for localStorage/cookie clearing
     await page.goto('/')
     await page.evaluate(() => {
-      // Clear the specific cookie consent localStorage item
       localStorage.removeItem('viscalyx.se-cookie-consent')
-      
-      // Clear all cookies
+
       document.cookie.split(';').forEach(cookie => {
         const eqPos = cookie.indexOf('=')
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+        const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie
         document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
       })
     })
-    // Reload to ensure clean state
+    // Reload to ensure the banner appears fresh
     await page.reload()
   })
 
+  /**
+   * Helper: wait for the cookie banner to be visible and its entrance animation
+   * (Framer Motion, 300 ms) to settle so that elements are stable for clicks.
+   */
+  const waitForBanner = async (
+    page: import('@playwright/test').Page
+  ) => {
+    const banner = page.locator('[role="dialog"][aria-modal="true"]')
+    await expect(banner).toBeVisible()
+    // Framer Motion animates y:100→0 over 300 ms; give it time to stabilise
+    await page.waitForTimeout(400)
+    return banner
+  }
+
   test('should display cookie consent banner on main page', async ({ page }) => {
     await page.goto('/')
-    
-    // Check that the cookie banner is visible
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    await expect(cookieBanner).toBeVisible()
-    
-    // Check for key elements in the banner - more specific selectors
-    await expect(cookieBanner.locator('h2')).toBeVisible()
-    await expect(cookieBanner.getByRole('button', { name: 'Accept All' })).toBeVisible()
-    await expect(cookieBanner.getByRole('button', { name: 'Reject All' })).toBeVisible()
-    await expect(cookieBanner.getByText('Customize Settings')).toBeVisible()
+
+    const banner = await waitForBanner(page)
+
+    await expect(banner.locator('h2')).toBeVisible()
+    await expect(banner.getByRole('button', { name: 'Accept All' })).toBeVisible()
+    await expect(banner.getByRole('button', { name: 'Reject All' })).toBeVisible()
+    await expect(banner.getByText('Customize Settings')).toBeVisible()
   })
 
   test('should accept all cookies when clicking "Accept All"', async ({ page }) => {
     await page.goto('/')
-    
-    // Wait for cookie banner to be visible
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    await expect(cookieBanner).toBeVisible()
-    
-    // Click Accept All button using more specific selector
-    await cookieBanner.getByRole('button', { name: 'Accept All' }).click()
-    
-    // Banner should disappear
-    await expect(cookieBanner).not.toBeVisible()
-    
-    // Wait a bit for the settings to be saved to localStorage
-    await page.waitForTimeout(500)
-    
-    // Check that all cookie categories are enabled in localStorage
+
+    const banner = await waitForBanner(page)
+
+    await banner.getByRole('button', { name: 'Accept All' }).click()
+
+    await expect(banner).not.toBeVisible()
+
     const consentData = await page.evaluate(() => {
       const stored = localStorage.getItem('viscalyx.se-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
-    
+
     expect(consentData).toBeTruthy()
     expect(consentData.settings).toEqual({
       'strictly-necessary': true,
       analytics: true,
       preferences: true,
     })
-    
-    // Verify consent timestamp was saved
     expect(consentData.timestamp).toBeTruthy()
     expect(consentData.version).toBe('1.0')
   })
 
   test('should reject all cookies when clicking "Reject All"', async ({ page }) => {
     await page.goto('/')
-    
-    // Wait for cookie banner to be visible
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    await expect(cookieBanner).toBeVisible()
-    
-    // Click Reject All button using more specific selector
-    await cookieBanner.getByRole('button', { name: 'Reject All' }).click()
-    
-    // Banner should disappear
-    await expect(cookieBanner).not.toBeVisible()
-    
-    // Wait a bit for the settings to be saved to localStorage
-    await page.waitForTimeout(500)
-    
-    // Check that only strictly necessary cookies are enabled
+
+    const banner = await waitForBanner(page)
+
+    await banner.getByRole('button', { name: 'Reject All' }).click()
+
+    await expect(banner).not.toBeVisible()
+
     const consentData = await page.evaluate(() => {
       const stored = localStorage.getItem('viscalyx.se-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
-    
+
     expect(consentData).toBeTruthy()
     expect(consentData.settings).toEqual({
       'strictly-necessary': true,
       analytics: false,
       preferences: false,
     })
-    
-    // Verify consent timestamp was saved
     expect(consentData.timestamp).toBeTruthy()
     expect(consentData.version).toBe('1.0')
   })
 
-  test('should open detailed cookie settings when clicking "Customize Settings"', async ({ page }) => {
+  test('should open detailed cookie settings when clicking "Customize Settings"', async ({
+    page,
+  }) => {
     await page.goto('/')
-    
-    // Wait for cookie banner to be visible
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    await expect(cookieBanner).toBeVisible()
-    
-    // Click the proper Customize Settings button (not the "Learn more" button)
-    await cookieBanner.getByText('Customize Settings').click()
-    
-    // Check that detailed settings view is shown
-    await expect(cookieBanner.locator('h2', { hasText: 'Cookie Settings' })).toBeVisible()
-    
-    // Check that toggles are present for each category - these are the most important
-    await expect(cookieBanner.locator('#toggle-strictly-necessary')).toBeVisible()
-    await expect(cookieBanner.locator('#toggle-analytics')).toBeVisible()
-    await expect(cookieBanner.locator('#toggle-preferences')).toBeVisible()
-    
-    // Verify strictly necessary is disabled (required)
-    await expect(cookieBanner.locator('#toggle-strictly-necessary')).toBeDisabled()
-    
-    // Verify other toggles are enabled
-    await expect(cookieBanner.locator('#toggle-analytics')).toBeEnabled()
-    await expect(cookieBanner.locator('#toggle-preferences')).toBeEnabled()
-    
-    // Check that save button is present
-    await expect(cookieBanner.getByRole('button', { name: 'Save Preferences' })).toBeVisible()
+
+    const banner = await waitForBanner(page)
+
+    // Use getByText to avoid strict-mode violation: the "Learn more" link
+    // also carries aria-label="Customize Settings"
+    await banner.getByText('Customize Settings').click()
+
+    await expect(
+      banner.locator('h2', { hasText: 'Cookie Settings' })
+    ).toBeVisible()
+
+    // Toggles are sr-only checkboxes — assert they exist in the DOM
+    await expect(banner.locator('#toggle-strictly-necessary')).toBeAttached()
+    await expect(banner.locator('#toggle-analytics')).toBeAttached()
+    await expect(banner.locator('#toggle-preferences')).toBeAttached()
+
+    // Strictly necessary is always checked and disabled
+    await expect(banner.locator('#toggle-strictly-necessary')).toBeChecked()
+    await expect(banner.locator('#toggle-strictly-necessary')).toBeDisabled()
+
+    // Other toggles are enabled
+    await expect(banner.locator('#toggle-analytics')).toBeEnabled()
+    await expect(banner.locator('#toggle-preferences')).toBeEnabled()
+
+    await expect(
+      banner.getByRole('button', { name: 'Save Preferences' })
+    ).toBeVisible()
   })
 
   test('should allow toggling individual cookie categories', async ({ page }) => {
     await page.goto('/')
-    
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    
-    // Open detailed settings
-    await cookieBanner.getByText('Customize Settings').click()
-    
-    // Check initial state - all should be unchecked except strictly necessary
-    await expect(cookieBanner.locator('#toggle-strictly-necessary')).toBeChecked()
-    await expect(cookieBanner.locator('#toggle-analytics')).not.toBeChecked()
-    await expect(cookieBanner.locator('#toggle-preferences')).not.toBeChecked()
-    
-    // Toggle analytics on
-    await cookieBanner.locator('label:has(#toggle-analytics)').click()
-    await expect(cookieBanner.locator('#toggle-analytics')).toBeChecked()
-    
+
+    const banner = await waitForBanner(page)
+
+    await banner.getByText('Customize Settings').click()
+
+    // Initial state — only strictly-necessary is checked
+    await expect(banner.locator('#toggle-strictly-necessary')).toBeChecked()
+    await expect(banner.locator('#toggle-analytics')).not.toBeChecked()
+    await expect(banner.locator('#toggle-preferences')).not.toBeChecked()
+
+    // Toggle analytics on via its wrapping <label>
+    await banner.locator('label:has(#toggle-analytics)').click()
+    await expect(banner.locator('#toggle-analytics')).toBeChecked()
+
     // Toggle preferences on
-    await cookieBanner.locator('label:has(#toggle-preferences)').click()
-    await expect(cookieBanner.locator('#toggle-preferences')).toBeChecked()
-    
+    await banner.locator('label:has(#toggle-preferences)').click()
+    await expect(banner.locator('#toggle-preferences')).toBeChecked()
+
     // Toggle analytics back off
-    await cookieBanner.locator('label:has(#toggle-analytics)').click()
-    await expect(cookieBanner.locator('#toggle-analytics')).not.toBeChecked()
-    
-    // Save preferences
-    await cookieBanner.getByRole('button', { name: 'Save Preferences' }).click()
-    
-    // Banner should disappear
-    await expect(cookieBanner).not.toBeVisible()
-    
-    // Wait for settings to be saved
-    await page.waitForTimeout(500)
-    
-    // Check saved settings
+    await banner.locator('label:has(#toggle-analytics)').click()
+    await expect(banner.locator('#toggle-analytics')).not.toBeChecked()
+
+    // Save
+    await banner.getByRole('button', { name: 'Save Preferences' }).click()
+
+    await expect(banner).not.toBeVisible()
+
     const consentData = await page.evaluate(() => {
       const stored = localStorage.getItem('viscalyx.se-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
-    
+
     expect(consentData).toBeTruthy()
     expect(consentData.settings).toEqual({
       'strictly-necessary': true,
@@ -178,67 +165,75 @@ test.describe('Cookie Consent Functionality', () => {
     })
   })
 
-  test('should persist cookie consent choice across page reloads', async ({ page }) => {
+  test('should persist cookie consent choice across page reloads', async ({
+    page,
+  }) => {
     await page.goto('/')
-    
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    
-    // Accept all cookies
-    await cookieBanner.getByRole('button', { name: 'Accept All' }).click()
-    
-    // Reload the page
+
+    const banner = await waitForBanner(page)
+
+    await banner.getByRole('button', { name: 'Accept All' }).click()
+    await expect(banner).not.toBeVisible()
+
+    // Reload
     await page.reload()
-    
-    // Banner should not appear again
-    await expect(cookieBanner).not.toBeVisible()
-    
-    // Navigate to a different page and back
+    await expect(
+      page.locator('[role="dialog"][aria-modal="true"]')
+    ).not.toBeVisible()
+
+    // Navigate away and back
     await page.goto('/privacy')
     await page.goto('/')
-    
-    // Banner should still not appear
-    await expect(cookieBanner).not.toBeVisible()
+
+    await expect(
+      page.locator('[role="dialog"][aria-modal="true"]')
+    ).not.toBeVisible()
   })
 
-  test('should close detailed settings and return to simple banner view', async ({ page }) => {
+  test('should close detailed settings and return to simple banner view', async ({
+    page,
+  }) => {
     await page.goto('/')
-    
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    
-    // Open detailed settings
-    await cookieBanner.getByText('Customize Settings').click()
-    
-    // Verify we're in detailed view
-    await expect(cookieBanner.locator('h2', { hasText: 'Cookie Settings' })).toBeVisible()
-    
-    // Click the close button (X) - look for X icon or close button
-    await cookieBanner.locator('button').filter({ hasText: '×' }).or(cookieBanner.locator('button[aria-label*="close"]')).or(cookieBanner.locator('button[aria-label*="Close"]')).first().click()
-    
-    // Should return to simple banner view
-    await expect(cookieBanner.locator('h2', { hasText: 'Cookie Settings' })).not.toBeVisible()
-    await expect(cookieBanner.getByRole('button', { name: 'Accept All' })).toBeVisible()
+
+    const banner = await waitForBanner(page)
+
+    await banner.getByText('Customize Settings').click()
+
+    await expect(
+      banner.locator('h2', { hasText: 'Cookie Settings' })
+    ).toBeVisible()
+
+    // The close button uses aria-label={t('close')} which resolves to "Close"
+    await banner.getByRole('button', { name: 'Close' }).click()
+
+    // Should return to the simple banner view
+    await expect(
+      banner.locator('h2', { hasText: 'Cookie Settings' })
+    ).not.toBeVisible()
+    await expect(
+      banner.getByRole('button', { name: 'Accept All' })
+    ).toBeVisible()
   })
 
-  test('should handle keyboard navigation and focus management', async ({ page }) => {
+  test('should handle keyboard navigation and focus management', async ({
+    page,
+  }) => {
     await page.goto('/')
-    
-    // The banner should automatically focus the first interactive element
-    const cookieBanner = page.locator('[role="dialog"][aria-modal="true"]')
-    await expect(cookieBanner).toBeVisible()
-    
-    // Wait for focus to be set automatically
-    await page.waitForTimeout(200)
-    
-    // Tab through the buttons - adjust based on actual focus order
+
+    const banner = await waitForBanner(page)
+
+    // Tab through the interactive elements
     await page.keyboard.press('Tab')
-    // The focus order might be different, so let's just check that we can navigate
-    
-    // Escape should focus reject button or close the banner
+
+    // Escape should focus the Reject All button (as implemented in the component)
     await page.keyboard.press('Escape')
-    
-    // Check if either the reject button is focused or banner behavior is correct
-    // Just verify that the buttons are still visible and accessible
-    await expect(cookieBanner.getByRole('button', { name: 'Reject All' })).toBeVisible()
-    await expect(cookieBanner.getByRole('button', { name: 'Accept All' })).toBeVisible()
+
+    // The banner should still be visible with all buttons accessible
+    await expect(
+      banner.getByRole('button', { name: 'Reject All' })
+    ).toBeVisible()
+    await expect(
+      banner.getByRole('button', { name: 'Accept All' })
+    ).toBeVisible()
   })
 })
