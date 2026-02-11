@@ -14,12 +14,7 @@ services:
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
-    # Expose ports
-    ports:
-      - '3000:3000'
-      - '3001:3001'
-      - '8787:8787'
-      - '51204:51204'
+    # Ports are forwarded via devcontainer.json forwardPorts (VS Code handles this)
     # Proper init system for signal handling and zombie process reaping
     init: true
 

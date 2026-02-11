@@ -76,6 +76,7 @@ add platform-specific customizations using VS Code's conditional settings.
 - **Devcontainer base image**: Uses Microsoft's official devcontainer image
 - **No secrets in image**: All sensitive data handled via environment variables or SSH agent forwarding
 - **Safe directory**: Only `/workspace` is added as a git safe directory
+- **GitHub CLI authentication**: See [CONTRIBUTING.md](../CONTRIBUTING.md#github-cli-authentication) for secure PAT setup instructions
 
 ## Performance Optimization
 

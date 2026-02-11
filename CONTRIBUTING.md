@@ -41,6 +41,7 @@ overview of the project.
   - [Verifying Your Setup](#verifying-your-setup)
   - [Troubleshooting](#troubleshooting)
   - [What's Included in the Dev Container](#whats-included-in-the-dev-container)
+  - [GitHub CLI Authentication](#github-cli-authentication)
 - [Spell Checking Setup](#spell-checking-setup)
   - [Configuration](#configuration)
   - [Usage](#usage)
@@ -1285,6 +1286,67 @@ The devcontainer automatically provides:
 - **Automatic npm install** on container creation
 
 You don't need to manually install any of these tools!
+
+### GitHub CLI Authentication
+
+The GitHub CLI (`gh`) is pre-installed in the devcontainer but needs to be
+authenticated after each container rebuild. The easiest and most secure method
+is the browser-based OAuth flow with the `--clipboard` flag.
+
+#### Authenticate via browser (recommended)
+
+<!-- markdownlint-disable MD013 -->
+
+```bash
+gh auth login --web --clipboard --hostname github.com --git-protocol ssh
+```
+
+<!-- markdownlint-enable MD013 -->
+
+This will:
+
+1. Copy a one-time OAuth device code to your clipboard automatically.
+2. Open a browser on your host (or print a URL to open manually).
+3. Paste the code in the browser and authorize the GitHub CLI.
+
+No token ever appears in your terminal, shell history, or environment variables.
+
+#### Alternative: Paste a PAT manually
+
+If you prefer to use a Personal Access Token (e.g., from a password vault),
+use `read -rs` so the token never appears on screen or in shell history:
+
+<!-- markdownlint-disable MD013 -->
+
+```bash
+printf 'Paste your GitHub PAT and press Enter: '
+read -rs GH_TOKEN && echo
+printf '%s' "$GH_TOKEN" | gh auth login --with-token --hostname github.com --git-protocol ssh
+unset GH_TOKEN
+```
+
+<!-- markdownlint-enable MD013 -->
+
+> **Why this is secure:**
+>
+> - `read -rs` disables terminal echo (`-s`) so the token is not visible on
+>   screen, and reads raw input (`-r`) so backslashes are not interpreted.
+> - The variable assignment via `read` is a shell built-in — it is **not**
+>   recorded in shell history (unlike `export VAR=value` on the command line).
+> - `printf` pipes the value via stdin; the token never appears as a command-line
+>   argument (which would be visible in `ps` output and history).
+> - `unset` removes the variable from the shell session immediately after use.
+
+#### Verify authentication
+
+```bash
+gh auth status
+```
+
+#### Re-authentication
+
+You only need to re-authenticate after a **container rebuild**. Normal
+container stops and starts preserve the `gh` auth state.
 
 ## Spell Checking Setup
 
