@@ -18,11 +18,11 @@ This document describes each integration test case for the cookie consent banner
 
 **Settings shape:**
 
-```json
+```jsonc
 {
   "strictly-necessary": true,
-  "analytics": true | false,
-  "preferences": true | false
+  "analytics": true, // or false
+  "preferences": true // or false
 }
 ```
 

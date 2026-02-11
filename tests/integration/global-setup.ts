@@ -7,7 +7,7 @@ import { existsSync } from 'fs'
  * Checks that the Chromium browser binary is installed and exits with a
  * friendly, actionable message when it is not.
  */
-export default function globalSetup() {
+export default function globalSetup(): void {
   let browserPath: string | undefined
 
   try {
@@ -19,12 +19,12 @@ export default function globalSetup() {
   } catch {
     // If we can't even resolve the path, the binary is certainly missing
     printInstallInstructions()
-    process.exit(1)
+    throw new Error('Playwright Chromium browser is not installed.')
   }
 
   if (!browserPath || !existsSync(browserPath)) {
     printInstallInstructions()
-    process.exit(1)
+    throw new Error('Playwright Chromium browser is not installed.')
   }
 }
 

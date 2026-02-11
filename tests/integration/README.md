@@ -1,6 +1,8 @@
 # Integration Tests
 
-This directory contains Playwright integration tests for the Viscalyx.se website. These tests verify the functionality of the website by running real browser interactions.
+This directory contains Playwright integration tests for the
+Viscalyx.se website. These tests verify the functionality of the
+website by running real browser interactions.
 
 ## Test Structure
 
@@ -80,7 +82,8 @@ Integration tests run automatically on:
 - Pull requests to main branch
 - Pushes to main branch
 
-The GitHub Actions workflow runs tests against both development and preview servers with proper artifact collection for debugging.
+The GitHub Actions workflow runs tests against both development and
+preview servers with proper artifact collection for debugging.
 
 ## Test Files and Artifacts
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 
 test.describe('Cookie Consent Functionality', () => {
   test.beforeEach(async ({ page }) => {
@@ -21,10 +21,11 @@ test.describe('Cookie Consent Functionality', () => {
    * Helper: wait for the cookie banner to be visible and its entrance animation
    * (Framer Motion, 300 ms) to settle so that elements are stable for clicks.
    */
-  const waitForBanner = async (page: import('@playwright/test').Page) => {
+  const waitForBanner = async (page: Page) => {
     const banner = page.locator('[role="dialog"][aria-modal="true"]')
     await expect(banner).toBeVisible()
-    // Framer Motion animates y:100→0 over 300 ms; give it time to stabilize
+    // Framer Motion animates y:100→0 over 300 ms; give it time to stabilize.
+    // TODO: Replace waitForTimeout with a deterministic animation-complete check.
     await page.waitForTimeout(400)
     return banner
   }
