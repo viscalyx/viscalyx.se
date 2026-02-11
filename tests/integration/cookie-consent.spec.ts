@@ -185,15 +185,18 @@ test.describe('Cookie Consent Functionality', () => {
     await banner.getByRole('button', { name: 'Accept All' }).click()
     await expect(banner).not.toBeVisible()
 
-    // Reload
+    // Reload and wait for the page to fully render before checking dialog absence
     await page.reload()
+    await expect(page.locator('role=main')).toBeVisible()
     await expect(
       page.locator('[role="dialog"][aria-modal="true"]')
     ).not.toBeVisible()
 
-    // Navigate away and back
+    // Navigate away and back, waiting for page-ready each time
     await page.goto('/privacy')
+    await expect(page.locator('role=main')).toBeVisible()
     await page.goto('/')
+    await expect(page.locator('role=main')).toBeVisible()
 
     await expect(
       page.locator('[role="dialog"][aria-modal="true"]')
@@ -238,12 +241,16 @@ test.describe('Cookie Consent Functionality', () => {
     // Escape should focus the Reject All button (as implemented in the component)
     await page.keyboard.press('Escape')
 
+    // Assert the Reject All button received focus
+    const rejectAllButton = banner.getByRole('button', { name: 'Reject All' })
+    await expect(rejectAllButton).toBeFocused()
+
+    // Assert that Accept All is NOT focused (focus is specifically on Reject All)
+    const acceptAllButton = banner.getByRole('button', { name: 'Accept All' })
+    await expect(acceptAllButton).not.toBeFocused()
+
     // The banner should still be visible with all buttons accessible
-    await expect(
-      banner.getByRole('button', { name: 'Reject All' })
-    ).toBeVisible()
-    await expect(
-      banner.getByRole('button', { name: 'Accept All' })
-    ).toBeVisible()
+    await expect(rejectAllButton).toBeVisible()
+    await expect(acceptAllButton).toBeVisible()
   })
 })

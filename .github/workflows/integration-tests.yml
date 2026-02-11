@@ -33,7 +33,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run Playwright tests against dev server
-        run: npm run test:integration:dev
+        run: npm run test:integration
         env:
           CI: true
 
@@ -108,14 +108,18 @@ jobs:
           script: |
             const body = '❌ **Integration tests failed!** Please check the test results and fix any issues.\n\n' +
                         'You can run integration tests locally with:\n' +
-                        '- `npm run test:integration:dev` - Test against dev server\n' +
+                        '- `npm run test:integration` - Test against dev server\n' +
                         '- `npm run test:integration:preview` - Test against preview server\n' +
                         '- `npm run test:integration:ui` - Run with Playwright UI for debugging\n\n' +
                         'Check the artifacts for detailed test reports.';
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
-            })
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            } catch (error) {
+              core.error(`Failed to create PR comment: ${error.message}`);
+            }
