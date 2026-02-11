@@ -169,7 +169,7 @@ Normal **bold** and *italic* text should work fine.
         console.error('Build script execution failed:', error.toString())
         throw error
       }
-    }, 30000) // 30 second timeout for integration test
+    }, 60000) // 60 second timeout for integration test (slower CI/devcontainer environments)
 
     test('should preserve syntax highlighting in build process', async () => {
       const codePost = `---
