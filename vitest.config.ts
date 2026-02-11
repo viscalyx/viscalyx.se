@@ -7,6 +7,9 @@ export default defineConfig({
   },
 
   test: {
+    // Serve Vitest UI at root so Codespaces port forwarding works (default is /__vitest__/)
+    uiBase: '/',
+
     // Use jsdom environment for testing React components
     environment: 'jsdom',
 
