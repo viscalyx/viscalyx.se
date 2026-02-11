@@ -22,7 +22,7 @@ This document describes each integration test case for the cookie consent banner
 {
   "strictly-necessary": true,
   "analytics": true, // or false
-  "preferences": true // or false
+  "preferences": true, // or false
 }
 ```
 
