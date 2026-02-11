@@ -77,6 +77,8 @@ const copyBuildScript = tempDir => {
 }
 
 describe('Build Blog Data Integration Tests', () => {
+  const INTEGRATION_TEST_TIMEOUT_MS = 60000
+
   let originalCwd
   let tempDir
 
@@ -169,7 +171,7 @@ Normal **bold** and *italic* text should work fine.
         console.error('Build script execution failed:', error.toString())
         throw error
       }
-    }, 60000) // 60 second timeout for integration test (slower CI/devcontainer environments)
+    }, INTEGRATION_TEST_TIMEOUT_MS)
 
     test('should preserve syntax highlighting in build process', async () => {
       const codePost = `---
@@ -259,7 +261,7 @@ const users: User[] = [
         console.error('Build script execution failed:', error.toString())
         throw error
       }
-    }, 30000)
+    }, INTEGRATION_TEST_TIMEOUT_MS)
 
     test('should handle multiple posts with mixed content safety', async () => {
       // Create multiple test posts
@@ -387,7 +389,7 @@ But styling should be removed while preserving the rest.
         console.error('Build script execution failed:', error.toString())
         throw error
       }
-    }, 30000)
+    }, INTEGRATION_TEST_TIMEOUT_MS)
   })
 
   describe('Reading Time Calculation Security', () => {
@@ -480,6 +482,6 @@ This conclusion paragraph wraps up the content and should also be included in th
         console.error('Build script execution failed:', error.toString())
         throw error
       }
-    }, 30000)
+    }, INTEGRATION_TEST_TIMEOUT_MS)
   })
 })
