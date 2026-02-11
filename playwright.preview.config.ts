@@ -36,7 +36,8 @@ export default defineConfig({
     ? undefined
     : [
         {
-          command: 'npm run preview',
+          command:
+            "npm run preview 2>&1 | grep -v 'kj/async-io-unix\\|Broken pipe\\|Connection reset by peer\\|workerd@'",
           url: 'http://127.0.0.1:8787',
           timeout: 300_000,
           reuseExistingServer: !process.env.CI,
