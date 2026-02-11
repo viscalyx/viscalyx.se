@@ -18,7 +18,7 @@ export default defineConfig({
     ['list'],
   ],
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:8788',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:8787',
 
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
@@ -37,7 +37,7 @@ export default defineConfig({
     : [
         {
           command: 'npm run preview',
-          url: 'http://127.0.0.1:8788',
+          url: 'http://127.0.0.1:8787',
           timeout: 300_000,
           reuseExistingServer: !process.env.CI,
           env: {

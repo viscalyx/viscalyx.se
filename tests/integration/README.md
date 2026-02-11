@@ -69,7 +69,7 @@ npx playwright test --debug
 ## Test Configuration
 
 - **Development Server**: Tests run against `http://127.0.0.1:3000` (Next.js dev server)
-- **Preview Server**: Tests run against `http://127.0.0.1:8788` (OpenNext preview server)
+- **Preview Server**: Tests run against `http://127.0.0.1:8787` (OpenNext preview server)
 - **Browsers**: Chromium (default), additional browsers can be added to the config
 - **Reports**: HTML reports and JUnit XML for CI integration
 
