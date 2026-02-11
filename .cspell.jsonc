@@ -61,6 +61,8 @@
     "gantt",
     "rundll",
     "sysdm",
+    "workerd",
+    "pipefail",
 
     // PowerShell DSC specific
     "DSC",

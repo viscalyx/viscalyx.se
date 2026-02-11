@@ -219,4 +219,11 @@ public/blog-content/
 .wrangler/
 cloudflare-env.d.ts
 next-env.d.ts
-test-results/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright-report-dev/
+/playwright-report-preview/
+/blob-report/
+/playwright/.cache/

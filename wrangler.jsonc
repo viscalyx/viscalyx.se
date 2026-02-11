@@ -20,6 +20,11 @@
       "dataset": "viscalyx-se"
     }
   ],
+  // Cloudflare Images binding for Next.js image optimization
+  // https://developers.cloudflare.com/images/transform-images/bindings/
+  "images": {
+    "binding": "IMAGES"
+  },
   // CPU limits to prevent runaway bills or denial-of-wallet attacks
   // https://developers.cloudflare.com/workers/wrangler/configuration/#limits
   // "limits": {
