@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 test.describe('Cookie Consent Functionality', () => {
   test.beforeEach(async ({ page }) => {
@@ -21,28 +21,34 @@ test.describe('Cookie Consent Functionality', () => {
    * Helper: wait for the cookie banner to be visible and its entrance animation
    * (Framer Motion, 300 ms) to settle so that elements are stable for clicks.
    */
-  const waitForBanner = async (
-    page: import('@playwright/test').Page
-  ) => {
+  const waitForBanner = async (page: import('@playwright/test').Page) => {
     const banner = page.locator('[role="dialog"][aria-modal="true"]')
     await expect(banner).toBeVisible()
-    // Framer Motion animates y:100→0 over 300 ms; give it time to stabilise
+    // Framer Motion animates y:100→0 over 300 ms; give it time to stabilize
     await page.waitForTimeout(400)
     return banner
   }
 
-  test('should display cookie consent banner on main page', async ({ page }) => {
+  test('should display cookie consent banner on main page', async ({
+    page,
+  }) => {
     await page.goto('/')
 
     const banner = await waitForBanner(page)
 
     await expect(banner.locator('h2')).toBeVisible()
-    await expect(banner.getByRole('button', { name: 'Accept All' })).toBeVisible()
-    await expect(banner.getByRole('button', { name: 'Reject All' })).toBeVisible()
+    await expect(
+      banner.getByRole('button', { name: 'Accept All' })
+    ).toBeVisible()
+    await expect(
+      banner.getByRole('button', { name: 'Reject All' })
+    ).toBeVisible()
     await expect(banner.getByText('Customize Settings')).toBeVisible()
   })
 
-  test('should accept all cookies when clicking "Accept All"', async ({ page }) => {
+  test('should accept all cookies when clicking "Accept All"', async ({
+    page,
+  }) => {
     await page.goto('/')
 
     const banner = await waitForBanner(page)
@@ -66,7 +72,9 @@ test.describe('Cookie Consent Functionality', () => {
     expect(consentData.version).toBe('1.0')
   })
 
-  test('should reject all cookies when clicking "Reject All"', async ({ page }) => {
+  test('should reject all cookies when clicking "Reject All"', async ({
+    page,
+  }) => {
     await page.goto('/')
 
     const banner = await waitForBanner(page)
@@ -123,7 +131,9 @@ test.describe('Cookie Consent Functionality', () => {
     ).toBeVisible()
   })
 
-  test('should allow toggling individual cookie categories', async ({ page }) => {
+  test('should allow toggling individual cookie categories', async ({
+    page,
+  }) => {
     await page.goto('/')
 
     const banner = await waitForBanner(page)

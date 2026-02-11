@@ -18,7 +18,7 @@ export default defineConfig({
 
     // Test file patterns (equivalent to Jest's testMatch)
     include: ['**/*.{spec,test}.{ts,tsx,js,jsx,mjs}'],
-    
+
     // Exclude Playwright integration tests
     exclude: ['**/tests/integration/**', '**/node_modules/**'],
 

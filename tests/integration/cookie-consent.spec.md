@@ -8,11 +8,11 @@ This document describes each integration test case for the cookie consent banner
 
 ## Consent Data Model
 
-| Property   | Type     | Description                                        |
-| ---------- | -------- | -------------------------------------------------- |
-| `version`  | `string` | Schema version, currently `"1.0"`                  |
-| `settings` | `object` | Per-category boolean flags                         |
-| `timestamp`| `string` | ISO 8601 date of when the user made their choice   |
+| Property    | Type     | Description                                      |
+| ----------- | -------- | ------------------------------------------------ |
+| `version`   | `string` | Schema version, currently `"1.0"`                |
+| `settings`  | `object` | Per-category boolean flags                       |
+| `timestamp` | `string` | ISO 8601 date of when the user made their choice |
 
 **localStorage key:** `viscalyx.se-cookie-consent`
 

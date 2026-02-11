@@ -10,7 +10,7 @@ Tests the cookie consent banner functionality, including:
 
 - **Basic Display**: Verifies the cookie banner appears on page load
 - **Accept All**: Tests accepting all cookie categories
-- **Reject All**: Tests rejecting non-essential cookies  
+- **Reject All**: Tests rejecting non-essential cookies
 - **Individual Toggles**: Tests toggling specific cookie categories
 - **Settings Persistence**: Verifies settings are saved and persist across page reloads
 - **UI Navigation**: Tests opening/closing detailed settings view
@@ -34,7 +34,7 @@ npx playwright install
 # Run all integration tests against dev server (default)
 npm run test:integration
 
-# Run against development server specifically  
+# Run against development server specifically
 npm run test:integration:dev
 
 # Run against preview/production server
@@ -76,6 +76,7 @@ npx playwright test --debug
 ## Continuous Integration
 
 Integration tests run automatically on:
+
 - Pull requests to main branch
 - Pushes to main branch
 
@@ -99,6 +100,7 @@ The GitHub Actions workflow runs tests against both development and preview serv
 ## Test Coverage
 
 The integration tests focus on:
+
 - ✅ Cookie consent banner functionality
 - ✅ User interactions (clicks, form submissions)
 - ✅ State persistence (localStorage, cookies)
@@ -106,6 +108,7 @@ The integration tests focus on:
 - ✅ Basic accessibility features
 
 Future test areas could include:
+
 - Blog post reading functionality
 - Contact form submissions
 - Search functionality
