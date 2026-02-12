@@ -21,10 +21,7 @@ const CROSS_ORIGIN_PORT = 3099
 /**
  * Wait for a URL to respond with a 2xx/3xx status.
  */
-function waitForServer(
-  url: string,
-  timeoutMs: number = 60_000
-): Promise<void> {
+function waitForServer(url: string, timeoutMs: number = 60_000): Promise<void> {
   return new Promise((resolve, reject) => {
     const deadline = Date.now() + timeoutMs
     const check = () => {
