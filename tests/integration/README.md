@@ -26,8 +26,8 @@ Tests the cookie consent banner functionality, including:
 # Install dependencies (includes Playwright)
 npm install
 
-# Install Playwright browsers
-npx playwright install
+# Install Playwright browsers and their OS-level dependencies
+npx playwright install --with-deps
 ```
 
 ### Local Development
