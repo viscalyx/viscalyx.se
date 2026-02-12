@@ -62,8 +62,8 @@ The current approach reuses the Playwright-managed dev server on port 3000 and v
 
 ### Constants
 
-| Name       | Value  | Description                                                        |
-| ---------- | ------ | ------------------------------------------------------------------ |
+| Name       | Value  | Description                                                                     |
+| ---------- | ------ | ------------------------------------------------------------------------------- |
 | `DEV_PORT` | `3000` | The Playwright-managed dev server port (from `playwright.config.ts` `baseURL`). |
 
 ---
