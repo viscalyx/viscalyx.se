@@ -4,6 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 const nextConfig: NextConfig = {
+  // Allow cross-origin dev requests from 0.0.0.0 (used in devcontainers)
+  // See: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+  allowedDevOrigins: ['0.0.0.0'],
   // Exclude heavy packages from server bundle to reduce Cloudflare Worker size
   // These packages are either client-only or not needed in the worker runtime
   serverExternalPackages: ['mermaid', '@mermaid-js/parser', 'dompurify'],
@@ -79,7 +82,7 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self' ws://localhost:*; frame-ancestors 'none'; base-uri 'self'",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self' ws://localhost:* ws://0.0.0.0:*; frame-ancestors 'none'; base-uri 'self'",
           },
         ],
       },
