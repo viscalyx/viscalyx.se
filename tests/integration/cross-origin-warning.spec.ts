@@ -31,6 +31,7 @@ for (const origin of ['0.0.0.0', '127.0.0.1']) {
     const page = await context.newPage()
 
     // Collect failed requests — cross-origin blocks would surface as network failures
+    // cSpell:ignore requestfailed
     const failedRequests: string[] = []
     page.on('requestfailed', request => {
       failedRequests.push(`${request.url()} → ${request.failure()?.errorText}`)
