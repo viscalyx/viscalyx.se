@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "npx eslint . --format=stylish",
     "lint:fix": "npx eslint . --fix",
-    "type-check": "next typegen && tsc --noEmit",
+    "type-check": "rimraf .next/dev/types && next typegen && tsc --noEmit",
     "format": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",
