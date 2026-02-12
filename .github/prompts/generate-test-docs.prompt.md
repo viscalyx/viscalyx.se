@@ -5,7 +5,7 @@ description: 'Generate test flow documentation (Markdown + Mermaid diagrams) for
 
 # Generate Test Flow Documentation
 
-Create a companion `.md` file co-located with the test file (e.g., `cookie-consent.spec.ts` → `cookie-consent.spec.md`).
+Create a companion `.md` file co-located with the test file (e.g., `cookie-consent.spec.ts` → `cookie-consent.md`).
 
 ## Input
 
@@ -111,4 +111,4 @@ For tests involving decision branches, state transitions, or multi-step toggles,
 
 ## Example
 
-See [`tests/integration/cookie-consent.spec.md`](/tests/integration/cookie-consent.spec.md) for a complete example of this format applied to the cookie consent integration tests.
+See [`tests/integration/cookie-consent.md`](/tests/integration/cookie-consent.md) for a complete example of this format applied to the cookie consent integration tests.
