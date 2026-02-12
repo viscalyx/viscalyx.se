@@ -18,6 +18,13 @@ Tests the cookie consent banner functionality, including:
 - **UI Navigation**: Tests opening/closing detailed settings view
 - **Accessibility**: Basic keyboard navigation testing
 
+### Cross-Origin Warning Tests (`cross-origin-warning.spec.ts`)
+
+Tests that the Next.js dev server does not emit cross-origin warnings when accessed via `0.0.0.0` (common in devcontainer/Docker setups):
+
+- **Runtime Verification**: Spawns a dev server, navigates via `0.0.0.0`, and asserts no cross-origin warnings appear in server output
+- **Config Guard-Rail**: Verifies `next.config.ts` contains `allowedDevOrigins: ['0.0.0.0']`
+
 ## Running Tests
 
 ### Prerequisites
@@ -109,6 +116,7 @@ The integration tests focus on:
 - ✅ State persistence (localStorage, cookies)
 - ✅ Navigation between views
 - ✅ Basic accessibility features
+- ✅ Cross-origin dev server configuration verification
 
 Future test areas could include:
 
