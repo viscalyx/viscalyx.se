@@ -4,9 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 const nextConfig: NextConfig = {
-  // Allow cross-origin dev requests from 0.0.0.0 (used in devcontainers)
+  // Allow cross-origin dev requests from 0.0.0.0 and 127.0.0.1 (used in devcontainers)
   // See: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-  allowedDevOrigins: ['0.0.0.0'],
+  allowedDevOrigins: ['0.0.0.0', '127.0.0.1'],
   // Exclude heavy packages from server bundle to reduce Cloudflare Worker size
   // These packages are either client-only or not needed in the worker runtime
   serverExternalPackages: ['mermaid', '@mermaid-js/parser', 'dompurify'],
