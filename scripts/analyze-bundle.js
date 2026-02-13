@@ -438,9 +438,11 @@ function outputForMarkdown(results) {
       '❌ **Action required:** Bundle exceeds size limits and will fail deployment.'
   }
 
-  const markdown = `## 📦 Bundle Size Report
+  const markdown = `${statusEmoji} **Status:** ${results.statusMessage}
+${warningText}
 
-${statusEmoji} **Status:** ${results.statusMessage}
+<details>
+<summary>📦 Bundle Size Report</summary>
 
 ### Wrangler Bundle (what Cloudflare deploys)
 
@@ -456,8 +458,7 @@ ${statusEmoji} **Status:** ${results.statusMessage}
 | Free | ${LIMITS.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
 | Paid | ${LIMITS.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
 
-<details>
-<summary>📦 Build Output Details</summary>
+### 📦 Build Output Details
 
 | Bundle | Uncompressed | Gzipped |
 |--------|--------------|---------|
@@ -468,10 +469,7 @@ ${statusEmoji} **Status:** ${results.statusMessage}
 
 *Note: Static assets are served via Cloudflare's CDN and don't count against worker limits.*
 
-</details>
-
----
-${warningText}`
+</details>`
 
   console.log(markdown.trim())
 }
