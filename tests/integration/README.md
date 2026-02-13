@@ -18,6 +18,18 @@ Tests the cookie consent banner functionality, including:
 - **UI Navigation**: Tests opening/closing detailed settings view
 - **Accessibility**: Basic keyboard navigation testing
 
+### Blog Listing Tests (`blog-listing.spec.ts`)
+
+Tests the server-rendered blog listing page, including:
+
+- **Server-Side Rendering**: Verifies content is in the initial HTML (no loading spinner)
+- **SEO Metadata**: Checks page title and meta description from `generateMetadata`
+- **Featured Post**: Validates the featured post card display and navigation
+- **Category Filter**: Tests filtering posts by category and resetting to all
+- **Load More Pagination**: Tests progressive loading of post cards
+- **Post Grid Cards**: Validates card structure, images, and navigation links
+- **Locale Support**: Verifies Swedish translations at `/sv/blog`
+
 ### Cross-Origin Warning Tests (`cross-origin-warning.spec.ts`)
 
 Tests that the Next.js dev server does not emit cross-origin warnings when accessed via `0.0.0.0` (common in devcontainer/Docker setups):
@@ -112,6 +124,7 @@ preview servers with proper artifact collection for debugging.
 The integration tests focus on:
 
 - ✅ Cookie consent banner functionality
+- ✅ Blog listing page (SSR, metadata, filtering, pagination, locale)
 - ✅ User interactions (clicks, form submissions)
 - ✅ State persistence (localStorage, cookies)
 - ✅ Navigation between views
@@ -124,4 +137,3 @@ Future test areas could include:
 - Contact form submissions
 - Search functionality
 - Theme switching
-- Language switching
