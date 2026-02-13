@@ -130,10 +130,26 @@ Validates the rendered post content and metadata display.
 
 ### Error Handling (2 tests)
 
-| Test                   | What it checks                              |
-| ---------------------- | ------------------------------------------- |
-| 404 for missing slug   | Returns 404 for non-existent post           |
-| 404 for path traversal | Rejects `../../../etc/passwd` style attacks |
+| Test                   | What it checks                                                     |
+| ---------------------- | ------------------------------------------------------------------ |
+| 404 for missing slug   | Returns 404 for non-existent post                                  |
+| 404 for path traversal | Uses raw HTTP API with percent-encoded traversal to test `validateSlug` |
+
+#### Path Traversal Test Details
+
+The browser normalizes `../` segments before sending the request, so a plain
+`page.goto('/blog/../../../etc/passwd')` never reaches the server with raw
+traversal characters. The test instead uses **Playwright's raw HTTP API**
+(`request.get`) with a percent-encoded path (`%2e%2e%2f`) so the server receives
+the actual traversal payload and `validateSlug` can reject it. The assertion
+checks the response status is **not** 200.
+
+**Important selectors / preconditions:**
+
+- Uses `request` fixture (not `page`) — no DOM assertions possible.
+- Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd`
+- Asserts `response.status()` is not 200 (typically 404 or 400).
+- Depends on `validateSlug` in `lib/blog.ts` rejecting slugs with non-alphanumeric/hyphen/underscore characters.
 
 ### Locale Support (2 tests)
 
@@ -167,3 +183,24 @@ npx playwright test
 # Run with UI mode for debugging
 npx playwright test tests/integration/blog-post.spec.ts --ui
 ```
+
+---
+
+## Fixture Requirements
+
+- **Dev server** must be running on the configured `baseURL` (see `playwright.config.ts`).
+- The test post (`ssh-signing-keys-for-github-codespaces`) must exist in `content/blog/` and have a built JSON in `public/blog-content/`.
+- The `request` fixture is required for the path traversal test (raw HTTP, no browser normalization).
+
+## Important Selectors
+
+| Selector / Locator                          | Used in                   |
+| ------------------------------------------- | ------------------------- |
+| `heading level: 1`                          | SSR title test            |
+| `meta[name="description"]`                  | Meta description test     |
+| `meta[property="og:type"]`                  | OG type test              |
+| `meta[property="og:image"]`                 | OG image test             |
+| `meta[name="twitter:card"]`                 | Twitter card test         |
+| `.prose, article, [class*="blog-content"]`  | Content rendering test    |
+| `a` with text "Back to Blog"               | Navigation test           |
+| `header`, `footer`                          | Layout test               |

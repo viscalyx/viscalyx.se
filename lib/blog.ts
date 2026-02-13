@@ -170,6 +170,12 @@ export function validateSlug(slug: string): string | null {
  * Works in both server components and API routes.
  */
 export async function loadBlogContent(slug: string): Promise<string | null> {
+  // Validate slug to prevent path traversal attacks
+  const validatedSlug = validateSlug(slug)
+  if (!validatedSlug) {
+    return null
+  }
+
   try {
     // Try to use Cloudflare ASSETS binding first (works in production)
     try {
@@ -178,11 +184,12 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
       )
       const { env } = getCloudflareContext()
       if (env?.ASSETS) {
-        const assetUrl = `https://placeholder.local/blog-content/${slug}.json`
+        const assetUrl = `https://placeholder.local/blog-content/${encodeURIComponent(validatedSlug)}.json`
         const assetResponse = await env.ASSETS.fetch(assetUrl)
         if (assetResponse.ok) {
           const data = await assetResponse.json()
-          return (data as { content: string }).content
+          const parsed = data as { content?: unknown }
+          return typeof parsed.content === 'string' ? parsed.content : null
         }
       }
     } catch {
@@ -196,7 +203,7 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
       process.cwd(),
       'public',
       'blog-content',
-      `${slug}.json`
+      `${validatedSlug}.json`
     )
     const contentData = await fs.readFile(contentPath, 'utf-8')
     const parsed = JSON.parse(contentData) as { content?: string }

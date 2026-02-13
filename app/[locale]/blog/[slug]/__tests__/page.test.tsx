@@ -178,15 +178,29 @@ describe('BlogPostPage', () => {
       })
     })
 
-    it('includes OG image from post', async () => {
+    it('includes OG image from post as absolute URL', async () => {
       const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
       const metadata: Metadata = await generateMetadata({ params })
 
       const images = metadata.openGraph?.images
       expect(images).toBeDefined()
       expect(Array.isArray(images) && images[0]).toMatchObject({
-        url: '/test-image.jpg',
+        url: 'https://viscalyx.se/test-image.jpg',
         alt: 'Test image alt',
+      })
+    })
+
+    it('preserves already-absolute OG image URL', async () => {
+      mockGetPostBySlug.mockReturnValue({
+        ...mockPostMetadata,
+        image: 'https://example.com/image.jpg',
+      })
+      const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
+      const metadata: Metadata = await generateMetadata({ params })
+
+      const images = metadata.openGraph?.images
+      expect(Array.isArray(images) && images[0]).toMatchObject({
+        url: 'https://example.com/image.jpg',
       })
     })
 
@@ -210,6 +224,15 @@ describe('BlogPostPage', () => {
       const metadata: Metadata = await generateMetadata({ params })
 
       expect(metadata).toEqual({})
+    })
+
+    it('returns empty object for invalid slug', async () => {
+      mockValidateSlug.mockReturnValue(null)
+      const params = Promise.resolve({ locale: 'en', slug: '../../../etc/passwd' })
+      const metadata: Metadata = await generateMetadata({ params })
+
+      expect(metadata).toEqual({})
+      expect(mockGetPostBySlug).not.toHaveBeenCalled()
     })
 
     it('includes twitter card metadata', async () => {

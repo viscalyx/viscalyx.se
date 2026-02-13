@@ -24,9 +24,17 @@ export function generateStaticParams() {
   return getAllPostSlugs().map(slug => ({ slug }))
 }
 
+const SITE_URL = 'https://viscalyx.se'
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
-  const post = getPostBySlug(slug)
+
+  const validatedSlug = validateSlug(slug)
+  if (!validatedSlug) {
+    return {}
+  }
+
+  const post = getPostBySlug(validatedSlug)
 
   if (!post) {
     return {}
@@ -34,6 +42,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = post.title
   const description = post.excerpt
+
+  // Ensure OG image is always an absolute URL
+  const ogImageUrl = post.image.startsWith('http')
+    ? post.image
+    : `${SITE_URL}${post.image.startsWith('/') ? '' : '/'}${post.image}`
 
   return {
     title,
@@ -45,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === 'sv' ? 'sv_SE' : 'en_US',
       images: [
         {
-          url: post.image,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: post.imageAlt || post.title,

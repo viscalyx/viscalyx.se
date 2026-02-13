@@ -209,11 +209,16 @@ test.describe('Blog Post Page', () => {
       expect(response?.status()).toBe(404)
     })
 
-    test('should return 404 for path traversal attempt', async ({ page }) => {
-      const response = await page.goto('/blog/../../../etc/passwd')
+    test('should return 404 for path traversal attempt', async ({
+      request,
+    }) => {
+      // Use Playwright's raw HTTP API to send the traversal path without
+      // browser URL normalization, so the server receives the raw chars
+      // and validateSlug can reject them.
+      const response = await request.get('/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd')
 
       // Should not leak filesystem content
-      expect(response?.status()).not.toBe(200)
+      expect(response.status()).not.toBe(200)
     })
   })
 
