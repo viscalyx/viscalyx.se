@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === 'sv' ? 'sv_SE' : 'en_US',
       images: [
         {
-          url: '/og-blog.png',
+          url: `/og-blog-${locale}.png`,
           width: 1200,
           height: 630,
           alt: t('og.imageAlt'),

@@ -6,14 +6,19 @@
  * Uses sharp to composite the Viscalyx logo onto a branded gradient
  * background at the standard OG image size (1200×630).
  *
+ * Reads localized text from the translation files in messages/ so each
+ * locale gets its own OG image with the correct language.
+ *
  * Usage:
  *   node scripts/generate-og-images.js
  *
  * Output:
- *   public/og-blog.png   — OG image for the blog listing page
+ *   public/og-blog-en.png   — OG image for the English blog page
+ *   public/og-blog-sv.png   — OG image for the Swedish blog page
  */
 
 const sharp = require('sharp')
+const fs = require('fs')
 const path = require('path')
 
 // Brand colors (from globals.css --color-primary-*)
@@ -26,9 +31,38 @@ const OG_WIDTH = 1200
 const OG_HEIGHT = 630
 const LOGO_SIZE = 280
 
-async function generateBlogOG() {
+const LOCALES = ['en', 'sv']
+
+/**
+ * Escape a string for safe inclusion in SVG text content.
+ */
+function escapeXml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+/**
+ * Read localized blog OG strings from the messages JSON for a given locale.
+ */
+function getLocaleStrings(locale) {
+  const filePath = path.join(__dirname, '..', 'messages', `${locale}.json`)
+  const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  const blog = messages.blog
+  return {
+    title: blog.og.title,
+    tagline: blog.og.tagline,
+  }
+}
+
+async function generateBlogOG(locale) {
   const logoPath = path.join(__dirname, '..', 'public', 'viscalyx_logo.svg')
-  const outputPath = path.join(__dirname, '..', 'public', 'og-blog.png')
+  const outputPath = path.join(
+    __dirname,
+    '..',
+    'public',
+    `og-blog-${locale}.png`
+  )
+
+  const { title, tagline } = getLocaleStrings(locale)
 
   // Render the SVG logo at the target size with a transparent background
   const logo = await sharp(logoPath)
@@ -39,7 +73,7 @@ async function generateBlogOG() {
     .png()
     .toBuffer()
 
-  // Create an SVG background with a gradient and "Blog" text
+  // Create an SVG background with a gradient and localized text
   const backgroundSVG = `
 <svg width="${OG_WIDTH}" height="${OG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -72,7 +106,7 @@ async function generateBlogOG() {
   <!-- Bottom accent line -->
   <rect x="0" y="${OG_HEIGHT - 4}" width="${OG_WIDTH}" height="4" fill="${PRIMARY_600}" />
 
-  <!-- "Blog" text on the right side -->
+  <!-- Title text on the right side -->
   <text
     x="780"
     y="${OG_HEIGHT / 2 - 20}"
@@ -81,7 +115,7 @@ async function generateBlogOG() {
     font-weight="700"
     fill="white"
     text-anchor="middle"
-  >Blog</text>
+  >${escapeXml(title)}</text>
 
   <!-- Tagline -->
   <text
@@ -93,7 +127,7 @@ async function generateBlogOG() {
     fill="white"
     opacity="0.7"
     text-anchor="middle"
-  >Insights &amp; Knowledge</text>
+  >${escapeXml(tagline)}</text>
 
   <!-- Viscalyx name at bottom -->
   <text
@@ -126,16 +160,16 @@ async function generateBlogOG() {
         top: logoY,
       },
     ])
-    .png({ quality: 90, compressionLevel: 9 })
+    .png({ compressionLevel: 9 })
     .toFile(outputPath)
 
-  const stats = require('fs').statSync(outputPath)
+  const stats = fs.statSync(outputPath)
   console.log(
     `✓ Generated ${path.relative(process.cwd(), outputPath)} (${Math.round(stats.size / 1024)}KB)`
   )
 }
 
-generateBlogOG().catch(err => {
-  console.error('Failed to generate OG image:', err)
+Promise.all(LOCALES.map(locale => generateBlogOG(locale))).catch(err => {
+  console.error('Failed to generate OG images:', err)
   process.exit(1)
 })
