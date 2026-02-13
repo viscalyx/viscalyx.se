@@ -110,7 +110,8 @@ export default async function BlogPostPage({ params }: Props) {
   const relatedPosts = getRelatedPosts(validatedSlug, postMetadata.category)
 
   // Track basic page view (no PII — equivalent to server access logs)
-  trackPageView(validatedSlug, postMetadata.category || 'uncategorized')
+  // Fire-and-forget: don't block page render on analytics
+  void trackPageView(validatedSlug, postMetadata.category || 'uncategorized')
 
   // Normalize date for the client component
   const normalizedDate: string | null =

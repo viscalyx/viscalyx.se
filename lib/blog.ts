@@ -218,9 +218,14 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
  * Equivalent to server access logs — slug + timestamp only.
  * Fire-and-forget: errors are silently swallowed.
  */
-export function trackPageView(slug: string, category: string): void {
+export async function trackPageView(
+  slug: string,
+  category: string
+): Promise<void> {
   try {
-    const { getCloudflareContext } = require('@opennextjs/cloudflare')
+    const { getCloudflareContext } = await import(
+      '@opennextjs/cloudflare' as string
+    )
     const { env } = getCloudflareContext()
     if (env?.viscalyx_se?.writeDataPoint) {
       env.viscalyx_se.writeDataPoint({

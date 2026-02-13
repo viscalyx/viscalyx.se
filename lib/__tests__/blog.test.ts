@@ -102,19 +102,21 @@ describe('loadBlogContent', () => {
 })
 
 describe('trackPageView', () => {
-  it('does not throw when cloudflare context unavailable', () => {
-    expect(() => trackPageView('test-post', 'Testing')).not.toThrow()
+  it('does not throw when cloudflare context unavailable', async () => {
+    await expect(trackPageView('test-post', 'Testing')).resolves.not.toThrow()
   })
 
-  it('silently handles missing env bindings', () => {
-    // trackPageView uses require('@opennextjs/cloudflare') which will throw
+  it('silently handles missing env bindings', async () => {
+    // trackPageView uses dynamic import('@opennextjs/cloudflare') which will throw
     // in test environment — the function should swallow the error silently
-    expect(() => trackPageView('test', 'cat')).not.toThrow()
+    await expect(trackPageView('test', 'cat')).resolves.not.toThrow()
   })
 
-  it('accepts any slug and category strings', () => {
+  it('accepts any slug and category strings', async () => {
     // Verify it doesn't throw for various inputs
-    expect(() => trackPageView('', '')).not.toThrow()
-    expect(() => trackPageView('long-slug-name', 'Category Name')).not.toThrow()
+    await expect(trackPageView('', '')).resolves.not.toThrow()
+    await expect(
+      trackPageView('long-slug-name', 'Category Name')
+    ).resolves.not.toThrow()
   })
 })
