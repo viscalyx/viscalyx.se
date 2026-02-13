@@ -4,7 +4,7 @@ import { getStaticPageDates } from '@/lib/file-dates'
 import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://viscalyx.com'
+  const baseUrl = 'https://viscalyx.se'
 
   // Get all blog posts
   const posts = getAllPosts()
