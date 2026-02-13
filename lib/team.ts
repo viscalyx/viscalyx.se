@@ -160,14 +160,8 @@ export function getTeamMemberById(
   return teamMembers.find(member => member.id === id) || null
 }
 
-// Find team member by ID and return serializable version (for Server Components)
-export function getSerializableTeamMemberById(
-  id: string,
-  t: TranslationFunction
-): SerializableTeamMember | null {
-  const member = getTeamMemberById(id, t)
-  if (!member) return null
-
+// Convert a TeamMember to its serializable form (strips icon components)
+function toSerializable(member: TeamMember): SerializableTeamMember {
   return {
     id: member.id,
     name: member.name,
@@ -181,6 +175,16 @@ export function getSerializableTeamMemberById(
       href: link.href,
     })),
   }
+}
+
+// Find team member by ID and return serializable version (for Server Components)
+export function getSerializableTeamMemberById(
+  id: string,
+  t: TranslationFunction
+): SerializableTeamMember | null {
+  const member = getTeamMemberById(id, t)
+  if (!member) return null
+  return toSerializable(member)
 }
 
 // Find team member by name (for blog author matching)
@@ -203,20 +207,7 @@ export function getSerializableTeamMemberByName(
 ): SerializableTeamMember | null {
   const member = getTeamMemberByName(name, t)
   if (!member) return null
-
-  return {
-    id: member.id,
-    name: member.name,
-    role: member.role,
-    image: member.image,
-    bio: member.bio,
-    location: member.location,
-    specialties: member.specialties,
-    socialLinks: member.socialLinks.map(link => ({
-      name: link.name as SocialIconName,
-      href: link.href,
-    })),
-  }
+  return toSerializable(member)
 }
 
 // Generate initials from a name
