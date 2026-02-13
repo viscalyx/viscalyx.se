@@ -185,6 +185,9 @@
       "titleHighlight": "Knowledge",
       "description": "Stay updated with the latest trends, best practices, and insights in automation, DevOps, and open-source development."
     },
+    "og": {
+      "imageAlt": "Viscalyx Blog"
+    },
     "featuredPost": {
       "title": "Featured Article"
     },

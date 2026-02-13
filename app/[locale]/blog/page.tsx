@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: '/og-blog.png',
           width: 1200,
           height: 630,
-          alt: 'Viscalyx Blog',
+          alt: t('og.imageAlt'),
         },
       ],
     },

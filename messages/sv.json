@@ -185,6 +185,9 @@
       "titleHighlight": "Kunskap",
       "description": "Håll dig uppdaterad med de senaste trenderna, bästa praxis och insikterna inom automation, DevOps och utveckling av open source."
     },
+    "og": {
+      "imageAlt": "Viscalyx Blogg"
+    },
     "featuredPost": {
       "title": "Utvald Artikel"
     },
