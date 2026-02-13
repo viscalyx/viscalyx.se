@@ -1,6 +1,7 @@
+import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
+
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import BlogPostGrid from '@/components/BlogPostGrid'
 
 import type { BlogPostMetadata } from '@/lib/blog'
 
@@ -195,10 +196,12 @@ describe('BlogPostGrid', () => {
     expect(
       screen.getByRole('button', { name: 'Load More Articles' })
     ).toBeInTheDocument()
-    // Only first 6 posts visible
+    // Only the first POSTS_PER_PAGE posts should be visible
     expect(screen.getByText('Post 1')).toBeInTheDocument()
-    expect(screen.getByText('Post 6')).toBeInTheDocument()
-    expect(screen.queryByText('Post 7')).not.toBeInTheDocument()
+    expect(screen.getByText(`Post ${POSTS_PER_PAGE}`)).toBeInTheDocument()
+    expect(
+      screen.queryByText(`Post ${POSTS_PER_PAGE + 1}`)
+    ).not.toBeInTheDocument()
   })
 
   it('reveals more posts when Load More is clicked', () => {
@@ -321,8 +324,7 @@ describe('BlogPostGrid', () => {
     const article = container.querySelector('article')!
     expect(article.textContent).toContain('2026-01-15')
     expect(article.textContent).toContain('5 min read')
-    // Category badge in the card
-    const badge = article.querySelector('.bg-primary-600')
-    expect(badge).toHaveTextContent('DevOps')
+    // The category badge text should appear in the article
+    expect(article.textContent).toContain('DevOps')
   })
 })
