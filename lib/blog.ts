@@ -150,3 +150,79 @@ export function getRelatedPosts(
 
   return relatedPosts
 }
+
+// Slug validation pattern: only allow alphanumerics, hyphens, and underscores
+const SAFE_SLUG_PATTERN = /^[a-zA-Z0-9_-]+$/
+
+/**
+ * Validates that a slug is safe and doesn't allow path traversal attacks.
+ * Returns the validated slug or null if invalid.
+ */
+export function validateSlug(slug: string): string | null {
+  if (!SAFE_SLUG_PATTERN.test(slug)) {
+    return null
+  }
+  return slug
+}
+
+/**
+ * Load blog content from static file via Cloudflare ASSETS binding or filesystem fallback.
+ * Works in both server components and API routes.
+ */
+export async function loadBlogContent(slug: string): Promise<string | null> {
+  try {
+    // Try to use Cloudflare ASSETS binding first (works in production)
+    try {
+      const { getCloudflareContext } = await import(
+        '@opennextjs/cloudflare' as string
+      )
+      const { env } = getCloudflareContext()
+      if (env?.ASSETS) {
+        const assetUrl = `https://placeholder.local/blog-content/${slug}.json`
+        const assetResponse = await env.ASSETS.fetch(assetUrl)
+        if (assetResponse.ok) {
+          const data = await assetResponse.json()
+          return (data as { content: string }).content
+        }
+      }
+    } catch {
+      // ASSETS binding not available, fall through to filesystem
+    }
+
+    // Fallback: Read from filesystem (works in local development and build time)
+    const fs = await import('node:fs/promises')
+    const path = await import('node:path')
+    const contentPath = path.join(
+      process.cwd(),
+      'public',
+      'blog-content',
+      `${slug}.json`
+    )
+    const contentData = await fs.readFile(contentPath, 'utf-8')
+    const parsed = JSON.parse(contentData) as { content?: string }
+    return typeof parsed.content === 'string' ? parsed.content : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Track a basic page view for a blog post (no PII).
+ * Equivalent to server access logs — slug + timestamp only.
+ * Fire-and-forget: errors are silently swallowed.
+ */
+export function trackPageView(slug: string, category: string): void {
+  try {
+    const { getCloudflareContext } = require('@opennextjs/cloudflare')
+    const { env } = getCloudflareContext()
+    if (env?.viscalyx_se?.writeDataPoint) {
+      env.viscalyx_se.writeDataPoint({
+        blobs: [slug, category],
+        doubles: [1, Date.now()],
+        indexes: [crypto.randomUUID()],
+      })
+    }
+  } catch {
+    // Don't fail the page render if analytics fails
+  }
+}

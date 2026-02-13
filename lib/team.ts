@@ -196,6 +196,29 @@ export function getTeamMemberByName(
   )
 }
 
+// Find team member by name and return serializable version (for Server Components)
+export function getSerializableTeamMemberByName(
+  name: string,
+  t: TranslationFunction
+): SerializableTeamMember | null {
+  const member = getTeamMemberByName(name, t)
+  if (!member) return null
+
+  return {
+    id: member.id,
+    name: member.name,
+    role: member.role,
+    image: member.image,
+    bio: member.bio,
+    location: member.location,
+    specialties: member.specialties,
+    socialLinks: member.socialLinks.map(link => ({
+      name: link.name as SocialIconName,
+      href: link.href,
+    })),
+  }
+}
+
 // Generate initials from a name
 export function getAuthorInitials(name: string): string {
   return name

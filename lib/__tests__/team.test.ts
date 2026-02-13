@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getAuthorInitials,
   getSerializableTeamMemberById,
+  getSerializableTeamMemberByName,
   getTeamMemberById,
   getTeamMemberByName,
   getTeamMembers,
@@ -241,6 +242,51 @@ describe('team utilities', () => {
       const member = getTeamMemberByName('', mockT)
 
       expect(member).toBeNull()
+    })
+  })
+
+  describe('getSerializableTeamMemberByName', () => {
+    it('should return a serializable team member without icon components', () => {
+      const member = getSerializableTeamMemberByName('Johan Ljunggren', mockT)
+
+      expect(member).not.toBeNull()
+      expect(member?.id).toBe('johlju')
+      expect(member?.name).toBe('Johan Ljunggren')
+      expect(member?.socialLinks).toHaveLength(7)
+
+      // Verify socialLinks don't have icon property (serializable format)
+      member?.socialLinks.forEach(link => {
+        expect(link).toHaveProperty('name')
+        expect(link).toHaveProperty('href')
+        expect(link).not.toHaveProperty('icon')
+      })
+    })
+
+    it('should be case-insensitive', () => {
+      const member = getSerializableTeamMemberByName('johan ljunggren', mockT)
+
+      expect(member).not.toBeNull()
+      expect(member?.id).toBe('johlju')
+    })
+
+    it('should return null for non-existent name', () => {
+      const member = getSerializableTeamMemberByName('Non Existent', mockT)
+
+      expect(member).toBeNull()
+    })
+
+    it('should return null for empty name', () => {
+      const member = getSerializableTeamMemberByName('', mockT)
+
+      expect(member).toBeNull()
+    })
+
+    it('should have social link names that match socialIconMap keys', () => {
+      const member = getSerializableTeamMemberByName('Johan Ljunggren', mockT)
+
+      member?.socialLinks.forEach(link => {
+        expect(Object.keys(socialIconMap)).toContain(link.name)
+      })
     })
   })
 
