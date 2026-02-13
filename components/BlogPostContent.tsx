@@ -69,9 +69,7 @@ const BlogPostContent = ({
 
   // State for share functionality
   const [shareNotification, setShareNotification] = useState<string>('')
-  const [shareTimeoutId, setShareTimeoutId] = useState<NodeJS.Timeout | null>(
-    null
-  )
+  const shareTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Ref for the content container to scope event listeners
   const contentRef = useRef<HTMLDivElement>(null)
@@ -127,18 +125,14 @@ const BlogPostContent = ({
   }, [])
 
   // Helper function to clear existing timeout and set a new one
-  const setNotificationWithTimeout = useCallback(
-    (message: string) => {
-      if (shareTimeoutId) {
-        clearTimeout(shareTimeoutId)
-      }
+  const setNotificationWithTimeout = useCallback((message: string) => {
+    if (shareTimeoutRef.current) {
+      clearTimeout(shareTimeoutRef.current)
+    }
 
-      setShareNotification(message)
-      const newTimeoutId = setTimeout(() => setShareNotification(''), 3000)
-      setShareTimeoutId(newTimeoutId)
-    },
-    [shareTimeoutId]
-  )
+    setShareNotification(message)
+    shareTimeoutRef.current = setTimeout(() => setShareNotification(''), 3000)
+  }, [])
 
   // Function to handle sharing/copying URL
   const handleShare = async () => {
@@ -157,13 +151,13 @@ const BlogPostContent = ({
           const shareData = {
             title: post.title,
             text: post.excerpt
-              ? t('post.notifications.shareTextWithExcerpt')
-                  .replace('{excerpt}', post.excerpt)
-                  .replace('{title}', post.title)
-              : t('post.notifications.shareTextFallback').replace(
-                  '{title}',
-                  post.title
-                ),
+              ? t('post.notifications.shareTextWithExcerpt', {
+                  excerpt: post.excerpt,
+                  title: post.title,
+                })
+              : t('post.notifications.shareTextFallback', {
+                  title: post.title,
+                }),
             url: url,
           }
 
@@ -205,11 +199,11 @@ const BlogPostContent = ({
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (shareTimeoutId) {
-        clearTimeout(shareTimeoutId)
+      if (shareTimeoutRef.current) {
+        clearTimeout(shareTimeoutRef.current)
       }
     }
-  }, [shareTimeoutId])
+  }, [])
 
   // Handle anchor link functionality
   useEffect(() => {
