@@ -215,7 +215,7 @@ test.describe('Blog Post Page', () => {
       // Use Playwright's raw HTTP API to send the traversal path without
       // browser URL normalization, so the server receives the raw chars
       // and validateSlug can reject them.
-      const response = await request.get('/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd')
+      const response = await request.get('/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd') // cSpell:disable-line
 
       // Should not leak filesystem content
       expect(response.status()).not.toBe(200)

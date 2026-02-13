@@ -7,7 +7,7 @@ import {
   getTeamMemberByName,
   getTeamMembers,
   socialIconMap,
-} from '../team'
+} from '@/lib/team'
 
 // Mock translation function with correct typing
 const mockTranslation = vi.fn()

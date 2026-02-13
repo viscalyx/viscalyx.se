@@ -228,7 +228,10 @@ describe('BlogPostPage', () => {
 
     it('returns empty object for invalid slug', async () => {
       mockValidateSlug.mockReturnValue(null)
-      const params = Promise.resolve({ locale: 'en', slug: '../../../etc/passwd' })
+      const params = Promise.resolve({
+        locale: 'en',
+        slug: '../../../etc/passwd',
+      })
       const metadata: Metadata = await generateMetadata({ params })
 
       expect(metadata).toEqual({})

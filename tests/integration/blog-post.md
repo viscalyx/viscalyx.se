@@ -130,9 +130,9 @@ Validates the rendered post content and metadata display.
 
 ### Error Handling (2 tests)
 
-| Test                   | What it checks                                                     |
-| ---------------------- | ------------------------------------------------------------------ |
-| 404 for missing slug   | Returns 404 for non-existent post                                  |
+| Test                   | What it checks                                                          |
+| ---------------------- | ----------------------------------------------------------------------- |
+| 404 for missing slug   | Returns 404 for non-existent post                                       |
 | 404 for path traversal | Uses raw HTTP API with percent-encoded traversal to test `validateSlug` |
 
 #### Path Traversal Test Details
@@ -147,7 +147,7 @@ checks the response status is **not** 200.
 **Important selectors / preconditions:**
 
 - Uses `request` fixture (not `page`) — no DOM assertions possible.
-- Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd`
+- Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd` <!-- cSpell:disable-line -->
 - Asserts `response.status()` is not 200 (typically 404 or 400).
 - Depends on `validateSlug` in `lib/blog.ts` rejecting slugs with non-alphanumeric/hyphen/underscore characters.
 
@@ -194,13 +194,13 @@ npx playwright test tests/integration/blog-post.spec.ts --ui
 
 ## Important Selectors
 
-| Selector / Locator                          | Used in                   |
-| ------------------------------------------- | ------------------------- |
-| `heading level: 1`                          | SSR title test            |
-| `meta[name="description"]`                  | Meta description test     |
-| `meta[property="og:type"]`                  | OG type test              |
-| `meta[property="og:image"]`                 | OG image test             |
-| `meta[name="twitter:card"]`                 | Twitter card test         |
-| `.prose, article, [class*="blog-content"]`  | Content rendering test    |
-| `a` with text "Back to Blog"               | Navigation test           |
-| `header`, `footer`                          | Layout test               |
+| Selector / Locator                         | Used in                |
+| ------------------------------------------ | ---------------------- |
+| `heading level: 1`                         | SSR title test         |
+| `meta[name="description"]`                 | Meta description test  |
+| `meta[property="og:type"]`                 | OG type test           |
+| `meta[property="og:image"]`                | OG image test          |
+| `meta[name="twitter:card"]`                | Twitter card test      |
+| `.prose, article, [class*="blog-content"]` | Content rendering test |
+| `a` with text "Back to Blog"               | Navigation test        |
+| `header`, `footer`                         | Layout test            |
