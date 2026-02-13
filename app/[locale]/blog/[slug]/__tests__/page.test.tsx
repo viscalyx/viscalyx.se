@@ -15,7 +15,9 @@ const {
   mockGetSerializableTeamMemberByName,
   mockGetAuthorInitials,
 } = vi.hoisted(() => ({
-  mockNotFound: vi.fn(),
+  mockNotFound: vi.fn(() => {
+    throw new Error('NEXT_NOT_FOUND')
+  }),
   mockGetAllPostSlugs: vi.fn(),
   mockGetPostBySlug: vi.fn(),
   mockGetRelatedPosts: vi.fn(),
@@ -84,7 +86,10 @@ vi.mock('@/components/Footer', () => ({
 }))
 
 // Import after mocking
-import { generateMetadata, generateStaticParams } from '../page'
+import {
+  generateMetadata,
+  generateStaticParams,
+} from '@/app/[locale]/blog/[slug]/page'
 
 import type { Metadata } from 'next'
 
@@ -183,8 +188,8 @@ describe('BlogPostPage', () => {
       const metadata: Metadata = await generateMetadata({ params })
 
       const images = metadata.openGraph?.images
-      expect(images).toBeDefined()
-      expect(Array.isArray(images) && images[0]).toMatchObject({
+      expect(Array.isArray(images)).toBe(true)
+      expect((images as Array<Record<string, unknown>>)[0]).toMatchObject({
         url: 'https://viscalyx.se/test-image.jpg',
         alt: 'Test image alt',
       })
@@ -199,7 +204,8 @@ describe('BlogPostPage', () => {
       const metadata: Metadata = await generateMetadata({ params })
 
       const images = metadata.openGraph?.images
-      expect(Array.isArray(images) && images[0]).toMatchObject({
+      expect(Array.isArray(images)).toBe(true)
+      expect((images as Array<Record<string, unknown>>)[0]).toMatchObject({
         url: 'https://example.com/image.jpg',
       })
     })
@@ -213,7 +219,8 @@ describe('BlogPostPage', () => {
       const metadata: Metadata = await generateMetadata({ params })
 
       const images = metadata.openGraph?.images
-      expect(Array.isArray(images) && images[0]).toMatchObject({
+      expect(Array.isArray(images)).toBe(true)
+      expect((images as Array<Record<string, unknown>>)[0]).toMatchObject({
         alt: 'Test Post',
       })
     })
@@ -252,10 +259,17 @@ describe('BlogPostPage', () => {
 
   describe('BlogPostPage component', () => {
     // The page is an async server component, so we test it by importing and calling directly
-    let BlogPostPage: typeof import('../page').default
+    let BlogPostPage: typeof import('@/app/[locale]/blog/[slug]/page').default
+
+    function getBlogPostContentProps(result: React.JSX.Element) {
+      const blogContent = result?.props?.children?.[1]
+      if (!blogContent)
+        throw new Error('BlogPostContent not found at expected index')
+      return blogContent.props
+    }
 
     beforeEach(async () => {
-      const mod = await import('../page')
+      const mod = await import('@/app/[locale]/blog/[slug]/page')
       BlogPostPage = mod.default
     })
 
@@ -263,12 +277,9 @@ describe('BlogPostPage', () => {
       mockValidateSlug.mockReturnValue(null)
       const params = Promise.resolve({ locale: 'en', slug: '../etc/passwd' })
 
-      try {
-        await BlogPostPage({ params })
-      } catch {
-        // notFound() throws in Next.js
-      }
-
+      await expect(async () => BlogPostPage({ params })).rejects.toThrow(
+        'NEXT_NOT_FOUND'
+      )
       expect(mockNotFound).toHaveBeenCalled()
     })
 
@@ -276,12 +287,9 @@ describe('BlogPostPage', () => {
       mockGetPostBySlug.mockReturnValue(null)
       const params = Promise.resolve({ locale: 'en', slug: 'non-existent' })
 
-      try {
-        await BlogPostPage({ params })
-      } catch {
-        // notFound() throws
-      }
-
+      await expect(async () => BlogPostPage({ params })).rejects.toThrow(
+        'NEXT_NOT_FOUND'
+      )
       expect(mockNotFound).toHaveBeenCalled()
     })
 
@@ -289,12 +297,9 @@ describe('BlogPostPage', () => {
       mockLoadBlogContent.mockResolvedValue(null)
       const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
 
-      try {
-        await BlogPostPage({ params })
-      } catch {
-        // notFound() throws
-      }
-
+      await expect(async () => BlogPostPage({ params })).rejects.toThrow(
+        'NEXT_NOT_FOUND'
+      )
       expect(mockNotFound).toHaveBeenCalled()
     })
 
@@ -358,24 +363,21 @@ describe('BlogPostPage', () => {
       const result = await BlogPostPage({ params })
 
       // The component returns JSX with the post prop having date: null
-      const blogContent = result?.props?.children?.[1]
-      expect(blogContent?.props?.post?.date).toBeNull()
+      expect(getBlogPostContentProps(result).post.date).toBeNull()
     })
 
     it('passes valid date as-is', async () => {
       const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
       const result = await BlogPostPage({ params })
 
-      const blogContent = result?.props?.children?.[1]
-      expect(blogContent?.props?.post?.date).toBe('2025-01-15')
+      expect(getBlogPostContentProps(result).post.date).toBe('2025-01-15')
     })
 
     it('maps related posts to slug/title/image shape', async () => {
       const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
       const result = await BlogPostPage({ params })
 
-      const blogContent = result?.props?.children?.[1]
-      expect(blogContent?.props?.relatedPosts).toEqual([
+      expect(getBlogPostContentProps(result).relatedPosts).toEqual([
         { slug: 'related', title: 'Related Post', image: '/related.jpg' },
       ])
     })
