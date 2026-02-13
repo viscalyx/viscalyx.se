@@ -540,33 +540,250 @@ describe('analyze-bundle.js', () => {
   })
 
   describe('markdown output format', () => {
-    const generateMarkdownHeader = (status, statusMessage) => {
-      const statusEmoji =
-        status === 'error'
-          ? '❌'
-          : status === 'warning'
-            ? '⚠️'
-            : status === 'info'
-              ? 'ℹ️'
-              : '✅'
-
-      return `## 📦 Bundle Size Report\n\n${statusEmoji} **Status:** ${statusMessage}`
+    const LIMITS = {
+      freeCompressedMB: 3,
+      paidCompressedMB: 10,
     }
 
-    it('should generate markdown header with status', () => {
-      const header = generateMarkdownHeader('success', 'Bundle size OK')
-      expect(header).toContain('## 📦 Bundle Size Report')
-      expect(header).toContain('✅ **Status:** Bundle size OK')
+    const formatBytes = bytes => {
+      if (bytes === 0) return '0 B'
+      const kb = bytes / 1024
+      const mb = kb / 1024
+      if (mb >= 1) {
+        return `${mb.toFixed(2)} MB (${Math.round(kb)} KB)`
+      }
+      return `${kb.toFixed(2)} KB`
+    }
+
+    const getStatusEmoji = status => {
+      switch (status) {
+        case 'error':
+          return '❌'
+        case 'warning':
+          return '⚠️'
+        case 'info':
+          return 'ℹ️'
+        default:
+          return '✅'
+      }
+    }
+
+    /**
+     * Replicates the outputForMarkdown logic from analyze-bundle.js
+     * so we can assert the full markdown structure.
+     */
+    const generateMarkdown = results => {
+      const statusEmoji = getStatusEmoji(results.status)
+
+      const wranglerSize = results.wrangler
+        ? `${results.wrangler.uncompressedKB.toFixed(2)} KB`
+        : 'N/A'
+      const wranglerGzipSize = results.wrangler
+        ? `${results.wrangler.compressedKB.toFixed(2)} KB`
+        : 'N/A'
+
+      const freeStatus = results.usage
+        ? results.usage.exceedsFree
+          ? '❌'
+          : '✅'
+        : 'N/A'
+      const paidStatus = results.usage
+        ? results.usage.exceedsPaid
+          ? '❌'
+          : '✅'
+        : 'N/A'
+      const freePercent = results.usage?.freePercent?.toFixed(1) ?? 'N/A'
+      const paidPercent = results.usage?.paidPercent?.toFixed(1) ?? 'N/A'
+
+      let warningText = ''
+      if (results.status === 'warning') {
+        warningText =
+          '⚠️ Consider optimizing bundle size to stay within comfortable limits.'
+      } else if (results.status === 'error') {
+        warningText =
+          '❌ **Action required:** Bundle exceeds size limits and will fail deployment.'
+      }
+
+      const markdown = `${statusEmoji} **Status:** ${results.statusMessage}
+${warningText}
+
+<details>
+<summary>📦 Bundle Size Report</summary>
+
+### Wrangler Bundle (what Cloudflare deploys)
+
+| Metric | Size |
+|--------|------|
+| Total Upload | ${wranglerSize} |
+| **Gzipped** | **${wranglerGzipSize}** |
+
+### 📊 Plan Usage
+
+| Plan | Limit | Usage | Status |
+|------|-------|-------|--------|
+| Free | ${LIMITS.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
+| Paid | ${LIMITS.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
+
+### 📦 Build Output Details
+
+| Bundle | Uncompressed | Gzipped |
+|--------|--------------|---------|
+| Server Handler | ${formatBytes(results.serverHandler.size)} | ${formatBytes(results.serverHandler.gzipSize)} |
+| Middleware | ${formatBytes(results.middleware.size)} | ${formatBytes(results.middleware.gzipSize)} |
+| Static Assets | ${formatBytes(results.assets.size)} | - |
+| **Total Build** | ${formatBytes(results.total.size)} | - |
+
+*Note: Static assets are served via Cloudflare's CDN and don't count against worker limits.*
+
+</details>`
+
+      return markdown.trim()
+    }
+
+    const makeResults = (overrides = {}) => ({
+      status: 'success',
+      statusMessage: 'Bundle size OK',
+      wrangler: { uncompressedKB: 1500, compressedKB: 450 },
+      usage: {
+        freePercent: 39.2,
+        paidPercent: 11.7,
+        exceedsFree: false,
+        exceedsPaid: false,
+      },
+      serverHandler: { size: 2048, gzipSize: 1024 },
+      middleware: { size: 512, gzipSize: 256 },
+      assets: { size: 4096, gzipSize: 0 },
+      total: { size: 6656, gzipSize: 0 },
+      ...overrides,
     })
 
-    it('should use error emoji for error status', () => {
-      const header = generateMarkdownHeader('error', 'Bundle too large')
-      expect(header).toContain('❌ **Status:**')
+    it('should start with status line (not a heading)', () => {
+      const md = generateMarkdown(makeResults())
+      expect(md).toMatch(/^✅ \*\*Status:\*\*/)
+      expect(md).not.toMatch(/^##/)
     })
 
-    it('should use warning emoji for warning status', () => {
-      const header = generateMarkdownHeader('warning', 'Approaching limit')
-      expect(header).toContain('⚠️ **Status:**')
+    it('should contain a collapsed <details> block', () => {
+      const md = generateMarkdown(makeResults())
+      expect(md).toContain('<details>')
+      expect(md).toContain('<summary>📦 Bundle Size Report</summary>')
+      expect(md).toContain('</details>')
+    })
+
+    it('should place status line before the <details> block', () => {
+      const md = generateMarkdown(makeResults())
+      const statusIdx = md.indexOf('**Status:**')
+      const detailsIdx = md.indexOf('<details>')
+      expect(statusIdx).toBeLessThan(detailsIdx)
+    })
+
+    it('should show ✅ emoji and no warning text for success status', () => {
+      const md = generateMarkdown(makeResults())
+      expect(md).toContain('✅ **Status:** Bundle size OK')
+      expect(md).not.toContain('Consider optimizing')
+      expect(md).not.toContain('Action required')
+    })
+
+    it('should show ⚠️ emoji and warning text for warning status', () => {
+      const md = generateMarkdown(
+        makeResults({
+          status: 'warning',
+          statusMessage: 'Approaching limit',
+        })
+      )
+      expect(md).toContain('⚠️ **Status:** Approaching limit')
+      expect(md).toContain(
+        '⚠️ Consider optimizing bundle size to stay within comfortable limits.'
+      )
+    })
+
+    it('should place warning text before <details> block', () => {
+      const md = generateMarkdown(
+        makeResults({
+          status: 'warning',
+          statusMessage: 'Approaching limit',
+        })
+      )
+      const warningIdx = md.indexOf('Consider optimizing')
+      const detailsIdx = md.indexOf('<details>')
+      expect(warningIdx).toBeLessThan(detailsIdx)
+    })
+
+    it('should show ❌ emoji and action-required text for error status', () => {
+      const md = generateMarkdown(
+        makeResults({ status: 'error', statusMessage: 'Bundle too large' })
+      )
+      expect(md).toContain('❌ **Status:** Bundle too large')
+      expect(md).toContain(
+        '❌ **Action required:** Bundle exceeds size limits and will fail deployment.'
+      )
+    })
+
+    it('should include Wrangler Bundle table inside <details>', () => {
+      const md = generateMarkdown(makeResults())
+      const detailsIdx = md.indexOf('<details>')
+      const closingIdx = md.indexOf('</details>')
+      const wranglerIdx = md.indexOf('### Wrangler Bundle')
+      expect(wranglerIdx).toBeGreaterThan(detailsIdx)
+      expect(wranglerIdx).toBeLessThan(closingIdx)
+      expect(md).toContain('| Total Upload | 1500.00 KB |')
+      expect(md).toContain('| **Gzipped** | **450.00 KB** |')
+    })
+
+    it('should include Plan Usage table inside <details>', () => {
+      const md = generateMarkdown(makeResults())
+      const detailsIdx = md.indexOf('<details>')
+      const closingIdx = md.indexOf('</details>')
+      const planIdx = md.indexOf('### 📊 Plan Usage')
+      expect(planIdx).toBeGreaterThan(detailsIdx)
+      expect(planIdx).toBeLessThan(closingIdx)
+      expect(md).toContain('| Free | 3 MB | 39.2% | ✅ |')
+      expect(md).toContain('| Paid | 10 MB | 11.7% | ✅ |')
+    })
+
+    it('should include Build Output Details table inside <details>', () => {
+      const md = generateMarkdown(makeResults())
+      const detailsIdx = md.indexOf('<details>')
+      const closingIdx = md.indexOf('</details>')
+      const buildIdx = md.indexOf('### 📦 Build Output Details')
+      expect(buildIdx).toBeGreaterThan(detailsIdx)
+      expect(buildIdx).toBeLessThan(closingIdx)
+      expect(md).toContain('| Server Handler |')
+      expect(md).toContain('| Middleware |')
+      expect(md).toContain('| Static Assets |')
+      expect(md).toContain('| **Total Build** |')
+    })
+
+    it('should show N/A when wrangler data is missing', () => {
+      const md = generateMarkdown(makeResults({ wrangler: null }))
+      expect(md).toContain('| Total Upload | N/A |')
+      expect(md).toContain('| **Gzipped** | **N/A** |')
+    })
+
+    it('should show N/A when usage data is missing', () => {
+      const md = generateMarkdown(makeResults({ usage: null }))
+      expect(md).toContain('| Free | 3 MB | N/A% | N/A |')
+      expect(md).toContain('| Paid | 10 MB | N/A% | N/A |')
+    })
+
+    it('should show ❌ status for plan that exceeds limit', () => {
+      const md = generateMarkdown(
+        makeResults({
+          usage: {
+            freePercent: 120,
+            paidPercent: 35,
+            exceedsFree: true,
+            exceedsPaid: false,
+          },
+        })
+      )
+      expect(md).toContain('| Free | 3 MB | 120.0% | ❌ |')
+      expect(md).toContain('| Paid | 10 MB | 35.0% | ✅ |')
+    })
+
+    it('should end with closing </details> tag', () => {
+      const md = generateMarkdown(makeResults())
+      expect(md).toMatch(/<\/details>$/)
     })
   })
 
