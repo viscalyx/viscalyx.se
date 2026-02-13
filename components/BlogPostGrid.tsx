@@ -92,14 +92,16 @@ const BlogPostGrid = ({
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={post.image}
-                    alt={post.title}
+                    alt={post.imageAlt || post.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className="bg-primary-600 text-white px-2 py-1 rounded text-xs font-medium">
-                      {post.category}
-                    </span>
+                    {post.category && (
+                      <span className="bg-primary-600 text-white px-2 py-1 rounded text-xs font-medium">
+                        {post.category}
+                      </span>
+                    )}
                   </div>
                 </div>
 
