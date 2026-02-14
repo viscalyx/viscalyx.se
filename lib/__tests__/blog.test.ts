@@ -1,4 +1,5 @@
 import {
+  _resetBlogDataCache,
   getAllPostSlugs,
   getAllPosts,
   getFeaturedPost,
@@ -71,6 +72,7 @@ vi.mock('@/lib/blog-data.json', () => ({
 
 beforeEach(() => {
   vi.clearAllMocks()
+  _resetBlogDataCache()
 })
 
 describe('getAllPostSlugs', () => {
@@ -538,5 +540,160 @@ describe('sanitizeCategory edge cases', () => {
 
   it('accepts categories with numbers', () => {
     expect(sanitizeCategory('Web3 DevOps')).toBe('Web3 DevOps')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// HI-13: Cache validated blog data — unit tests
+// ---------------------------------------------------------------------------
+
+describe('_resetBlogDataCache', () => {
+  it('clears cached data so next call re-validates', () => {
+    const first = getAllPosts()
+    _resetBlogDataCache()
+    const second = getAllPosts()
+
+    // Same data but different object references (re-validated)
+    expect(second).toEqual(first)
+    expect(second).not.toBe(first)
+    // Individual post objects should also be new references
+    expect(second[0]).toEqual(first[0])
+    expect(second[0]).not.toBe(first[0])
+  })
+
+  it('is safe to call when cache is already empty', () => {
+    _resetBlogDataCache()
+    _resetBlogDataCache()
+    expect(getAllPosts().length).toBeGreaterThan(0)
+  })
+
+  it('returns void', () => {
+    expect(_resetBlogDataCache()).toBeUndefined()
+  })
+})
+
+describe('getValidatedBlogData caching', () => {
+  it('returns referentially identical post objects on consecutive calls', () => {
+    const first = getAllPosts()
+    const second = getAllPosts()
+
+    // Post objects inside the arrays should be the exact same references
+    expect(first[0]).toBe(second[0])
+    expect(first[1]).toBe(second[1])
+  })
+
+  it('returns referentially identical data across different accessor functions', () => {
+    const allPosts = getAllPosts()
+    const single = getPostMetadata('first-post')
+
+    // The object returned by getPostMetadata should be the same reference
+    // as the matching entry inside getAllPosts
+    const match = allPosts.find(p => p.slug === 'first-post')
+    expect(single).toBe(match)
+  })
+
+  it('re-validates after cache reset', () => {
+    const before = getAllPosts()
+    const refBefore = before[0]
+
+    _resetBlogDataCache()
+
+    const after = getAllPosts()
+    const refAfter = after[0]
+
+    expect(refAfter).toEqual(refBefore)
+    expect(refAfter).not.toBe(refBefore)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// HI-13: Cache — integration tests (real page-level call patterns)
+// ---------------------------------------------------------------------------
+
+describe('cache integration with multi-function workflows', () => {
+  it('blog listing page workflow: getAllPosts + getFeaturedPost share cache', () => {
+    const allPosts = getAllPosts()
+    const featured = getFeaturedPost()
+
+    // getFeaturedPost returns allPosts[0] — should be same reference
+    expect(featured).toBe(allPosts[0])
+  })
+
+  it('blog post page workflow: getPostBySlug + getRelatedPosts share cache', () => {
+    const post = getPostBySlug('first-post')
+    const related = getRelatedPosts('first-post', 'DevOps', 3)
+
+    // All returned objects should share references with the cache
+    const allPosts = getAllPosts()
+    expect(post).toBe(allPosts.find(p => p.slug === 'first-post'))
+    related.forEach(r => {
+      expect(r).toBe(allPosts.find(p => p.slug === r.slug))
+    })
+  })
+
+  it('getAllPostSlugs + getAllPosts use same cached validation', () => {
+    const slugs = getAllPostSlugs()
+    const posts = getAllPosts()
+    const single = getPostMetadata('first-post')
+
+    // Slugs should match the posts (both exclude template)
+    expect(slugs).toEqual(posts.map(p => p.slug))
+    // Single lookup shares reference with list
+    expect(single).toBe(posts.find(p => p.slug === 'first-post'))
+  })
+
+  it('getRelatedPosts internal double-getAllPosts call uses cache', () => {
+    // getRelatedPosts calls getAllPosts() twice internally (filter + fill)
+    // After that, a direct getAllPosts() should return cached post objects
+    const related = getRelatedPosts('first-post', 'NonExistentCategory', 3)
+    const allPosts = getAllPosts()
+
+    related.forEach(r => {
+      expect(r).toBe(allPosts.find(p => p.slug === r.slug))
+    })
+  })
+
+  it('cache survives across many sequential function calls', () => {
+    const slugs = getAllPostSlugs()
+    const meta = getPostMetadata('first-post')
+    const allPosts = getAllPosts()
+    const featured = getFeaturedPost()
+    const related = getRelatedPosts('first-post', 'DevOps')
+    const bySlug = getPostBySlug('second-post')
+
+    // All post objects with matching slugs should be referentially identical
+    expect(meta).toBe(allPosts.find(p => p.slug === 'first-post'))
+    expect(featured).toBe(allPosts[0])
+    expect(bySlug).toBe(allPosts.find(p => p.slug === 'second-post'))
+    related.forEach(r => {
+      expect(r).toBe(allPosts.find(p => p.slug === r.slug))
+    })
+    expect(slugs.length).toBe(allPosts.length)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// HI-13: Cache — edge cases
+// ---------------------------------------------------------------------------
+
+describe('cache edge cases', () => {
+  it('cache works correctly when getPostMetadata returns null', () => {
+    const result = getPostMetadata('nonexistent')
+    expect(result).toBeNull()
+
+    // Cache should still be valid for subsequent calls
+    const allPosts = getAllPosts()
+    expect(allPosts.length).toBeGreaterThan(0)
+    expect(allPosts[0]).toBe(getPostMetadata('first-post'))
+  })
+
+  it('cache is not corrupted by repeated null lookups', () => {
+    getPostMetadata('nope1')
+    getPostMetadata('nope2')
+    getPostMetadata('nope3')
+
+    const posts = getAllPosts()
+    expect(posts.length).toBe(3)
+    expect(posts[0].slug).toBe('first-post')
   })
 })
