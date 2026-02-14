@@ -44,11 +44,11 @@
     "purge:install": "rimraf node_modules package-lock.json && npm cache clean --force && npm install"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.16.3",
+    "@opennextjs/cloudflare": "^1.16.5",
     "@tailwindcss/typography": "^0.5.19",
     "dompurify": "^3.3.1",
     "framer-motion": "^12.34.0",
-    "lucide-react": "^0.563.0",
+    "lucide-react": "^0.564.0",
     "next": "^16.1.6",
     "next-intl": "^4.8.2",
     "node-html-parser": "^7.0.2",
@@ -102,14 +102,12 @@
   },
   "overrides": {
     "@swc/helpers": "0.5.18",
-    "lodash-es": "4.17.23",
-    "qs": "6.14.2"
+    "lodash-es": "4.17.23"
   },
   "//overrides": [
     "Overrides pin transitive dependencies to patched versions.",
     "Remove each override when the parent dependency updates to include the fix natively.",
     "@swc/helpers: next@16.1.6 pins 0.5.15, but next-intl's @swc/core@^1.15.2 peer-requires >=0.5.17. Override to 0.5.18 resolves the conflict.",
-    "qs: Prototype pollution fix. Transitive via @opennextjs/cloudflare → express. See https://github.com/ljharb/qs/issues/546",
     "lodash-es: Prototype pollution in _.unset/_.omit (<=4.17.22). Transitive via mermaid → chevrotain. Patched in 4.17.23."
   ]
 }
