@@ -274,7 +274,7 @@ describe('BlogPostPage', () => {
      * tree for a child whose type name is 'default' (from the mock) or
      * that carries a data-testid of 'blog-post-content'.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     function getBlogPostContentProps(
       element: React.JSX.Element
     ): Record<string, any> {
@@ -310,7 +310,7 @@ describe('BlogPostPage', () => {
     // NOTE: Vitest caches dynamic imports by default, so BlogPostPage is the
     // same module reference across tests. This works because we reset mock
     // return values (not module-level side effects) in the outer beforeEach.
-    // If a future test needs to re-evaluate module-level behaviour, add
+    // If a future test needs to re-evaluate module-level behavior, add
     // vi.resetModules() before the import.
     beforeEach(async () => {
       const mod = await import('@/app/[locale]/blog/[slug]/page')
