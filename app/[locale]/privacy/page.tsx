@@ -1,3 +1,4 @@
+import { locales } from '@/i18n'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
 import { getTranslations } from 'next-intl/server'
@@ -14,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'privacy' })
 
-  const title = t('privacy.title')
-  const description = t('privacy.subtitle')
+  const title = t('title')
+  const description = t('subtitle')
   const ogLocale = locale === 'sv' ? 'sv_SE' : 'en_US'
 
   return {
@@ -35,10 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/privacy`,
-      languages: {
-        en: `${SITE_URL}/en/privacy`,
-        sv: `${SITE_URL}/sv/privacy`,
-      },
+      languages: Object.fromEntries(
+        locales.map(l => [l, `${SITE_URL}/${l}/privacy`])
+      ),
     },
   }
 }

@@ -30,6 +30,10 @@ vi.mock('framer-motion', () => {
         animate: _animate,
         transition: _transition,
         whileHover: _whileHover,
+        whileInView: _whileInView,
+        exit: _exit,
+        variants: _variants,
+        viewport: _viewport,
         ...props
       }: Record<string, unknown>) =>
         React.createElement(tag, props, children as React.ReactNode)

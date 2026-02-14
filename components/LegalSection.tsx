@@ -3,15 +3,17 @@
  * Returns an empty array if the value is not an array.
  */
 export const safeTranslationArray = (raw: unknown): string[] =>
-  Array.isArray(raw) ? raw : []
+  Array.isArray(raw)
+    ? raw.filter((item): item is string => typeof item === 'string')
+    : []
 
-interface LegalSectionProps {
+interface ComponentProps {
   title: string
   description: string
   items?: string[]
 }
 
-const LegalSection = ({ title, description, items }: LegalSectionProps) => (
+const LegalSection = ({ title, description, items }: ComponentProps) => (
   <>
     <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
       {title}

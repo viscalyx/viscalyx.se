@@ -80,4 +80,15 @@ describe('safeTranslationArray', () => {
   it('returns empty array when input is an object', () => {
     expect(safeTranslationArray({ key: 'value' })).toEqual([])
   })
+
+  it('filters out non-string elements from arrays', () => {
+    expect(safeTranslationArray(['a', 1, null, 'b', {}, undefined])).toEqual([
+      'a',
+      'b',
+    ])
+  })
+
+  it('returns empty array when array has no string elements', () => {
+    expect(safeTranslationArray([1, null, {}])).toEqual([])
+  })
 })
