@@ -45,6 +45,19 @@ Tests the server-rendered blog post page, including:
 - **Error Handling**: 404 for non-existent slugs and path traversal attempts
 - **Locale Support**: Verifies English and Swedish post rendering
 
+### Homepage Tests (`homepage.spec.ts`)
+
+Tests the server-rendered homepage, including:
+
+- **Server-Side Rendering**: Verifies hero content is in the initial HTML
+- **SEO Metadata**: Checks page title, meta description, and OG tags from `generateMetadata`
+- **Header Navigation**: Validates logo, nav links, and blog link navigation
+- **Hero Section**: Tests badge, stats, Learn More button, and image carousel
+- **About Section**: Validates heading, description, value cards, and hash anchor
+- **Open Source Section**: Tests heading, stats, project cards, CTA links, and hash anchor
+- **Footer**: Validates company/resource/support links, copyright, and social links
+- **Locale Support**: Verifies Swedish translations at `/sv` for all sections
+
 ### Cross-Origin Warning Tests (`cross-origin-warning.spec.ts`)
 
 Tests that the Next.js dev server does not emit cross-origin warnings when accessed via `0.0.0.0` (common in devcontainer/Docker setups):
@@ -138,6 +151,7 @@ preview servers with proper artifact collection for debugging.
 
 The integration tests focus on:
 
+- ✅ Homepage (SSR, metadata, hero, about, open source, footer, locale)
 - ✅ Cookie consent banner functionality
 - ✅ Blog listing page (SSR, metadata, filtering, pagination, locale)
 - ✅ Blog post page (SSR, metadata, content, ToC, navigation, errors, locale)

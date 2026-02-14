@@ -50,7 +50,10 @@
         "label": "Bidrag till Open Source"
       }
     },
-    "altText": "Johan Ljunggrens profilbild"
+    "altText": "Johan Ljunggrens profilbild",
+    "og": {
+      "imageAlt": "Viscalyx - Automationskonsulting för Utvecklare & IT-proffs"
+    }
   },
   "about": {
     "badge": "Om Viscalyx",

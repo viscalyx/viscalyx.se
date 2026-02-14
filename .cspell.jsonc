@@ -461,6 +461,16 @@
       "filename": "tests/integration/blog-listing.md",
       "language": "en",
       "dictionaries": ["en", "sv"]
+    },
+    {
+      "filename": "tests/integration/homepage.spec.ts",
+      "language": "en",
+      "dictionaries": ["en", "sv"]
+    },
+    {
+      "filename": "tests/integration/homepage.md",
+      "language": "en",
+      "dictionaries": ["en", "sv"]
     }
   ],
   "useGitignore": true,
