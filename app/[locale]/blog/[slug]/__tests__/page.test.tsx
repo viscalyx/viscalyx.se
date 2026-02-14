@@ -261,6 +261,19 @@ describe('BlogPostPage', () => {
     // The page is an async server component, so we test it by importing and calling directly
     let BlogPostPage: typeof import('@/app/[locale]/blog/[slug]/page').default
 
+    /**
+     * Extract BlogPostContent props from the rendered page JSX tree.
+     *
+     * Expected structure of the returned JSX:
+     *   <div>            ← root wrapper (min-h-screen)
+     *     [0] <Header />
+     *     [1] <BlogPostContent ... />   ← target
+     *     [2] <Footer />
+     *   </div>
+     *
+     * If the component tree is restructured (e.g. a wrapper is added),
+     * this helper must be updated to match.
+     */
     function getBlogPostContentProps(result: React.JSX.Element) {
       const blogContent = result?.props?.children?.[1]
       if (!blogContent)

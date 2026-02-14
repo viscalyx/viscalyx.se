@@ -124,11 +124,8 @@ test.describe('Blog Post Page', () => {
     }) => {
       await page.goto(TEST_URL)
 
-      // ToC should be present (desktop or mobile)
-      const tocText = page.getByText(/Table of Contents/i)
-      // May be visible on desktop viewport
-      const count = await tocText.count()
-      expect(count).toBeGreaterThanOrEqual(1)
+      // Desktop sidebar ToC should be visible in Desktop Chrome viewport
+      await expect(page.locator('#toc-heading')).toBeVisible()
     })
   })
 
@@ -143,9 +140,8 @@ test.describe('Blog Post Page', () => {
     test('should display View Profile link', async ({ page }) => {
       await page.goto(TEST_URL)
 
-      const viewProfile = page.getByText(/View Profile/i)
-      const count = await viewProfile.count()
-      expect(count).toBeGreaterThanOrEqual(1)
+      const viewProfile = page.getByText(/View Profile/i).first()
+      await expect(viewProfile).toBeVisible()
     })
   })
 

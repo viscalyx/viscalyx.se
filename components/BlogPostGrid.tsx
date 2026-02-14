@@ -62,7 +62,10 @@ const BlogPostGrid = ({
       <div className="container-custom">
         {/* Category Filter */}
         <div className="mb-12">
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div
+            className="flex flex-wrap gap-3 justify-center"
+            data-testid="category-filter"
+          >
             {allCategories.map(category => (
               <button
                 key={category}

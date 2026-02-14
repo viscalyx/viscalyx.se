@@ -83,42 +83,40 @@ const BlogPostContent = ({
 
   // Handle hash fragment navigation on page load
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash
-      if (hash) {
-        const targetId = hash.substring(1)
-        let rafId: number
-        let attempts = 0
-        const maxAttempts = 100
+    const hash = window.location.hash
+    if (hash) {
+      const targetId = hash.substring(1)
+      let rafId: number
+      let attempts = 0
+      const maxAttempts = 100
 
-        const scrollToElement = () => {
-          const element = document.getElementById(targetId)
+      const scrollToElement = () => {
+        const element = document.getElementById(targetId)
 
-          if (element && attempts < maxAttempts) {
-            const rect = element.getBoundingClientRect()
-            const isVisible = rect.width > 0 && rect.height > 0
+        if (element && attempts < maxAttempts) {
+          const rect = element.getBoundingClientRect()
+          const isVisible = rect.width > 0 && rect.height > 0
 
-            if (isVisible || attempts > 20) {
-              element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-              })
-            } else {
-              attempts++
-              rafId = requestAnimationFrame(scrollToElement)
-            }
-          } else if (attempts < maxAttempts) {
+          if (isVisible || attempts > 20) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
+          } else {
             attempts++
             rafId = requestAnimationFrame(scrollToElement)
           }
+        } else if (attempts < maxAttempts) {
+          attempts++
+          rafId = requestAnimationFrame(scrollToElement)
         }
+      }
 
-        rafId = requestAnimationFrame(scrollToElement)
+      rafId = requestAnimationFrame(scrollToElement)
 
-        return () => {
-          if (rafId) {
-            cancelAnimationFrame(rafId)
-          }
+      return () => {
+        if (rafId) {
+          cancelAnimationFrame(rafId)
         }
       }
     }
@@ -344,8 +342,7 @@ const BlogPostContent = ({
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid lg:grid-cols-4 gap-12">
-            {' '}
-            {/* Main Content */}{' '}
+            {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Mobile Table of Contents */}
               {tableOfContents.length > 0 && (
@@ -402,7 +399,6 @@ const BlogPostContent = ({
 
               {/* Tags */}
               <div className="mt-12 pt-8 border-t border-secondary-200 dark:border-secondary-700">
-                {' '}
                 <div className="flex items-center flex-wrap gap-3">
                   <Tag className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                   {post.tags.map((tag: string) => (
@@ -450,7 +446,7 @@ const BlogPostContent = ({
                       </h3>
                       {teamMember && (
                         <Link
-                          href={`/team/${teamMember.id}` as Route}
+                          href={`/${locale}/team/${teamMember.id}` as Route}
                           className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
                         >
                           <span className="font-medium text-sm underline decoration-1 underline-offset-2">
@@ -513,7 +509,7 @@ const BlogPostContent = ({
                   </div>
                 </div>
               </div>
-            </div>{' '}
+            </div>
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-8 max-h-[calc(100vh-8rem)] overflow-y-auto hidden lg:block">

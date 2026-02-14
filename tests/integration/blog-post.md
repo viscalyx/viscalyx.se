@@ -97,9 +97,9 @@ Validates the rendered post content and metadata display.
 
 ### Table of Contents (1 test)
 
-| Test                  | What it checks                   |
-| --------------------- | -------------------------------- |
-| ToC rendered for post | "Table of Contents" text present |
+| Test                  | What it checks                                                   |
+| --------------------- | ---------------------------------------------------------------- |
+| ToC rendered for post | Desktop sidebar ToC heading (`#toc-heading`) visible in viewport |
 
 ### Author Bio (2 tests)
 
@@ -202,5 +202,6 @@ npx playwright test tests/integration/blog-post.spec.ts --ui
 | `meta[property="og:image"]`                | OG image test          |
 | `meta[name="twitter:card"]`                | Twitter card test      |
 | `.prose, article, [class*="blog-content"]` | Content rendering test |
+| `#toc-heading`                             | Table of Contents test |
 | `a` with text "Back to Blog"               | Navigation test        |
 | `header`, `footer`                         | Layout test            |

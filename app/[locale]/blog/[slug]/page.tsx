@@ -9,6 +9,7 @@ import {
   trackPageView,
   validateSlug,
 } from '@/lib/blog'
+import { SITE_URL } from '@/lib/constants'
 import { addHeadingIds, extractTableOfContentsServer } from '@/lib/slug-utils'
 import { getAuthorInitials, getSerializableTeamMemberByName } from '@/lib/team'
 import { getTranslations } from 'next-intl/server'
@@ -23,8 +24,6 @@ type Props = {
 export function generateStaticParams() {
   return getAllPostSlugs().map(slug => ({ slug }))
 }
-
-const SITE_URL = 'https://viscalyx.se'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params

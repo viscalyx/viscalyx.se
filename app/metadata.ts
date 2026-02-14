@@ -1,3 +1,5 @@
+import { SITE_URL } from '@/lib/constants'
+
 export const metadata = {
   title: {
     default:
@@ -22,14 +24,14 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://viscalyx.se'),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://viscalyx.se',
+    url: SITE_URL,
     title: 'Viscalyx - Automation Consulting for Developers & IT Professionals',
     description:
       'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',

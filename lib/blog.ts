@@ -218,19 +218,28 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
  * Track a basic page view for a blog post (no PII).
  * Equivalent to server access logs — slug + timestamp only.
  * Fire-and-forget: errors are silently swallowed.
+ *
+ * The slug is validated with {@link validateSlug} to prevent polluted
+ * analytics blobs.  Invalid slugs are silently dropped.
  */
 export async function trackPageView(
   slug: string,
   category: string
 ): Promise<void> {
   try {
+    // Validate slug to avoid polluting analytics data with unsanitized input
+    const validatedSlug = validateSlug(slug)
+    if (!validatedSlug) {
+      return
+    }
+
     const { getCloudflareContext } = await import(
       '@opennextjs/cloudflare' as string
     )
     const { env } = getCloudflareContext()
     if (env?.viscalyx_se?.writeDataPoint) {
       env.viscalyx_se.writeDataPoint({
-        blobs: [slug, category],
+        blobs: [validatedSlug, category],
         doubles: [1, Date.now()],
         indexes: [crypto.randomUUID()],
       })

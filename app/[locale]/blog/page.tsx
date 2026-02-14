@@ -2,6 +2,7 @@ import BlogPostGrid from '@/components/BlogPostGrid'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import { getAllPosts, getFeaturedPost } from '@/lib/blog'
+import { SITE_URL } from '@/lib/constants'
 import { getCurrentDateISO } from '@/lib/date-utils'
 import { Calendar, Clock, User } from 'lucide-react'
 import { Route } from 'next'
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: locale === 'sv' ? 'sv_SE' : 'en_US',
       images: [
         {
-          url: `/og-blog-${locale}.png`,
+          url: `${SITE_URL}/og-blog-${locale}.png`,
           width: 1200,
           height: 630,
           alt: t('og.imageAlt'),

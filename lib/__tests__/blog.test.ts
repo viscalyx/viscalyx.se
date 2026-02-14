@@ -112,11 +112,106 @@ describe('trackPageView', () => {
     await expect(trackPageView('test', 'cat')).resolves.not.toThrow()
   })
 
-  it('accepts any slug and category strings', async () => {
-    // Verify it doesn't throw for various inputs
-    await expect(trackPageView('', '')).resolves.not.toThrow()
+  it('accepts valid slug and category strings', async () => {
+    // Verify it doesn't throw for various valid inputs
     await expect(
       trackPageView('long-slug-name', 'Category Name')
     ).resolves.not.toThrow()
+  })
+
+  it('silently drops invalid slugs without calling writeDataPoint', async () => {
+    // Slugs that fail validateSlug should be dropped before reaching Cloudflare
+    await expect(trackPageView('../etc/passwd', 'cat')).resolves.not.toThrow()
+    await expect(trackPageView('', '')).resolves.not.toThrow()
+  })
+})
+
+describe('loadBlogContent with mocked Cloudflare ASSETS', () => {
+  const mockFetch = vi.fn()
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+
+    // Mock @opennextjs/cloudflare to provide a working ASSETS binding
+    vi.doMock('@opennextjs/cloudflare', () => ({
+      getCloudflareContext: () => ({
+        env: {
+          ASSETS: {
+            fetch: mockFetch,
+          },
+        },
+      }),
+    }))
+  })
+
+  afterEach(() => {
+    vi.doUnmock('@opennextjs/cloudflare')
+  })
+
+  it('loads content via ASSETS binding when available', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ content: '<p>From ASSETS</p>' }),
+    })
+
+    // Re-import to pick up the mocked module
+    const { loadBlogContent: loadViaAssets } = await import('@/lib/blog')
+    const result = await loadViaAssets('my-post')
+
+    expect(result).toBe('<p>From ASSETS</p>')
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('blog-content/my-post.json')
+    )
+  })
+
+  it('returns null when ASSETS fetch returns non-ok response', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: false })
+    // Filesystem fallback will also fail (mock returns nothing)
+    mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
+
+    const { loadBlogContent: loadViaAssets } = await import('@/lib/blog')
+    const result = await loadViaAssets('missing-post')
+
+    expect(result).toBeNull()
+  })
+})
+
+describe('trackPageView with mocked Cloudflare analytics', () => {
+  const mockWriteDataPoint = vi.fn()
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+
+    vi.doMock('@opennextjs/cloudflare', () => ({
+      getCloudflareContext: () => ({
+        env: {
+          viscalyx_se: {
+            writeDataPoint: mockWriteDataPoint,
+          },
+        },
+      }),
+    }))
+  })
+
+  afterEach(() => {
+    vi.doUnmock('@opennextjs/cloudflare')
+  })
+
+  it('calls writeDataPoint with validated slug and category', async () => {
+    const { trackPageView: trackWithCf } = await import('@/lib/blog')
+    await trackWithCf('valid-slug', 'DevOps')
+
+    expect(mockWriteDataPoint).toHaveBeenCalledWith({
+      blobs: ['valid-slug', 'DevOps'],
+      doubles: [1, expect.any(Number)],
+      indexes: [expect.any(String)],
+    })
+  })
+
+  it('does not call writeDataPoint for invalid slugs', async () => {
+    const { trackPageView: trackWithCf } = await import('@/lib/blog')
+    await trackWithCf('../etc/passwd', 'Hacking')
+
+    expect(mockWriteDataPoint).not.toHaveBeenCalled()
   })
 })

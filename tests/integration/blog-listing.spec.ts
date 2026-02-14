@@ -98,10 +98,12 @@ test.describe('Blog Listing Page', () => {
       await page.goto('/blog')
 
       // "All" button should be present
-      await expect(page.getByRole('button', { name: 'All' })).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: 'All', exact: true })
+      ).toBeVisible()
 
       // At least one real category should exist beyond "All"
-      const categorySection = page.locator('div.flex.flex-wrap')
+      const categorySection = page.locator('[data-testid="category-filter"]')
       const categoryButtons = categorySection.getByRole('button')
       const count = await categoryButtons.count()
       expect(count).toBeGreaterThan(1) // "All" + at least one category
@@ -151,6 +153,8 @@ test.describe('Blog Listing Page', () => {
     })
   })
 
+  // NOTE: Load More tests assume POSTS_PER_PAGE = 6 from components/BlogPostGrid.tsx.
+  // If that constant changes, the hard-coded 6 below must be updated to match.
   test.describe('Load More Pagination', () => {
     test('should show Load More button when posts exceed page size', async ({
       page,
@@ -162,7 +166,7 @@ test.describe('Blog Listing Page', () => {
         page.getByRole('button', { name: /Load More/i })
       ).toBeVisible()
 
-      // Initially only the first page of articles is shown
+      // Initially only the first page of articles is shown (POSTS_PER_PAGE = 6)
       const articles = page.locator('article')
       const count = await articles.count()
       expect(count).toBeGreaterThan(0)
@@ -188,7 +192,7 @@ test.describe('Blog Listing Page', () => {
     }) => {
       await page.goto('/blog')
 
-      // Click Load More until it disappears (max 16 posts / 6 per page = 2-3 clicks)
+      // Click Load More until it disappears (POSTS_PER_PAGE = 6, so ~2-3 clicks for current data set)
       for (let i = 0; i < 5; i++) {
         const loadMore = page.getByRole('button', { name: /Load More/i })
         if (!(await loadMore.isVisible())) break
