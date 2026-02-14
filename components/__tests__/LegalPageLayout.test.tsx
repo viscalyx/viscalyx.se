@@ -44,8 +44,7 @@ vi.mock('@/components/Footer', () => ({
 
 vi.mock('@/components/ScrollToTop', () => ({
   __esModule: true,
-  default: () =>
-    React.createElement('div', { 'data-testid': 'scroll-to-top' }),
+  default: () => React.createElement('div', { 'data-testid': 'scroll-to-top' }),
 }))
 
 import { render, screen } from '@testing-library/react'
