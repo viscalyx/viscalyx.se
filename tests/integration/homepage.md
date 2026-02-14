@@ -8,13 +8,13 @@ These tests validate the homepage. They verify SSR behavior, SEO metadata, secti
 
 ## Key Architecture
 
-| Aspect            | Before (client)                         | After (server component)                         |
-| ----------------- | --------------------------------------- | ------------------------------------------------ |
-| Page directive    | `'use client'`                          | Server component (no directive)                  |
-| Fade-in animation | `motion.main` (Framer Motion)           | CSS `animate-fade-in` class                      |
-| Page `<title>`    | Root fallback only (English hardcoded)  | `generateMetadata` with localized hero title     |
-| Initial render    | Empty shell until JS loads and hydrates | Full HTML with all section content               |
-| Child components  | All `'use client'` (unchanged)          | All `'use client'` (unchanged — client islands)  |
+| Aspect            | Before (client)                         | After (server component)                        |
+| ----------------- | --------------------------------------- | ----------------------------------------------- |
+| Page directive    | `'use client'`                          | Server component (no directive)                 |
+| Fade-in animation | `motion.main` (Framer Motion)           | CSS `animate-fade-in` class                     |
+| Page `<title>`    | Root fallback only (English hardcoded)  | `generateMetadata` with localized hero title    |
+| Initial render    | Empty shell until JS loads and hydrates | Full HTML with all section content              |
+| Child components  | All `'use client'` (unchanged)          | All `'use client'` (unchanged — client islands) |
 
 ---
 
