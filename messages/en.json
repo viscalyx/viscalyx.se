@@ -236,7 +236,8 @@
         "excerpt": "This is a placeholder for your featured blog post. Add markdown files to the content/blog directory to see your actual blog posts here.",
         "author": "Your Name",
         "readTime": "5 min read",
-        "category": "Blog"
+        "category": "Blog",
+        "imageAlt": "Person typing on laptop with coffee cup and notebook on desk"
       }
     }
   },

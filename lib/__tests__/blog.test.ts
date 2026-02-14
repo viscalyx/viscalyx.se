@@ -181,11 +181,20 @@ describe('getRelatedPosts', () => {
     expect(related.length).toBe(1)
   })
 
-  it('matches posts by tag when category matches a tag', () => {
+  it('includes posts when category matches filter', () => {
     const related = getRelatedPosts('second-post', 'DevOps', 3)
     // third-post has category DevOps, so it should be included
     const hasDevOps = related.some(p => p.slug === 'third-post')
     expect(hasDevOps).toBe(true)
+  })
+
+  it('includes posts when filter value matches a tag but not category', () => {
+    // 'TypeScript' exists only in first-post's tags (category is 'DevOps')
+    // and third-post's tags (category is 'DevOps'), but not as a category.
+    // Calling from third-post excludes it, so first-post should match via tag.
+    const related = getRelatedPosts('third-post', 'TypeScript', 3)
+    const hasFirstPost = related.some(p => p.slug === 'first-post')
+    expect(hasFirstPost).toBe(true)
   })
 })
 

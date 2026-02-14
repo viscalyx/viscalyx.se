@@ -64,6 +64,11 @@ vi.mock('@/lib/team', () => ({
   getAuthorInitials: mockGetAuthorInitials,
 }))
 
+// Pin SITE_URL so OG image URL assertions are not environment-dependent
+vi.mock('@/lib/constants', () => ({
+  SITE_URL: 'https://viscalyx.se',
+}))
+
 // Mock child components
 vi.mock('@/components/BlogPostContent', () => ({
   __esModule: true,
@@ -302,6 +307,11 @@ describe('BlogPostPage', () => {
       throw new Error('BlogPostContent not found in JSX tree')
     }
 
+    // NOTE: Vitest caches dynamic imports by default, so BlogPostPage is the
+    // same module reference across tests. This works because we reset mock
+    // return values (not module-level side effects) in the outer beforeEach.
+    // If a future test needs to re-evaluate module-level behaviour, add
+    // vi.resetModules() before the import.
     beforeEach(async () => {
       const mod = await import('@/app/[locale]/blog/[slug]/page')
       BlogPostPage = mod.default

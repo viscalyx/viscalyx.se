@@ -92,8 +92,17 @@ const BlogPostContent = ({
       let rafId: number
       let attempts = 0
       const maxAttempts = 100
+      let timedOut = false
+
+      // Cap polling with a timeout to handle cases where rAF is throttled
+      // (e.g., background tabs where rAF slows to ~1 fps)
+      const timeoutId = setTimeout(() => {
+        timedOut = true
+        cancelAnimationFrame(rafId)
+      }, 5000)
 
       const scrollToElement = () => {
+        if (timedOut) return
         const element = document.getElementById(targetId)
 
         if (element && attempts < maxAttempts) {
@@ -105,6 +114,7 @@ const BlogPostContent = ({
               behavior: 'smooth',
               block: 'start',
             })
+            clearTimeout(timeoutId)
           } else {
             attempts++
             rafId = requestAnimationFrame(scrollToElement)
@@ -112,12 +122,15 @@ const BlogPostContent = ({
         } else if (attempts < maxAttempts) {
           attempts++
           rafId = requestAnimationFrame(scrollToElement)
+        } else {
+          clearTimeout(timeoutId)
         }
       }
 
       rafId = requestAnimationFrame(scrollToElement)
 
       return () => {
+        clearTimeout(timeoutId)
         if (rafId) {
           cancelAnimationFrame(rafId)
         }
@@ -284,7 +297,7 @@ const BlogPostContent = ({
           <div>
             <Link
               href={`/${locale}/blog` as Route}
-              className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 group"
+              className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               {t('post.backToBlog')}
@@ -292,7 +305,7 @@ const BlogPostContent = ({
 
             <div className="max-w-4xl">
               <div className="mb-6">
-                <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <span className="bg-primary-600 dark:bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                   {post.category}
                 </span>
               </div>
@@ -331,6 +344,7 @@ const BlogPostContent = ({
                   onClick={handleShare}
                   className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
                   title={t('post.sharePost')}
+                  aria-label={t('post.sharePost')}
                 >
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
@@ -429,7 +443,7 @@ const BlogPostContent = ({
                   {post.tags.map((tag: string) => (
                     <span
                       key={tag}
-                      className="bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm hover:bg-primary-100 dark:hover:bg-primary-800 hover:text-primary-700 dark:hover:text-primary-300 cursor-pointer transition-colors"
+                      className="bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm transition-colors"
                     >
                       {tag}
                     </span>

@@ -64,7 +64,7 @@ export default async function BlogPage({ params }: Props) {
     date: getCurrentDateISO(),
     readTime: t('fallback.featuredPost.readTime'),
     image: '/default-featured-post.png',
-    imageAlt: 'Person typing on laptop with coffee cup and notebook on desk',
+    imageAlt: t('fallback.featuredPost.imageAlt'),
     category: t('fallback.featuredPost.category'),
     slug: 'welcome-to-my-blog',
   }

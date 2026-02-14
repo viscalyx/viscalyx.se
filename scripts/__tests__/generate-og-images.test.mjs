@@ -13,7 +13,11 @@ import { describe, expect, it } from 'vitest'
 
 describe('generate-og-images.js', () => {
   describe('escapeXml function', () => {
-    // Re-implement the escapeXml logic from the script
+    // Re-implement the escapeXml logic from the script.
+    // NOTE: This is intentionally duplicated rather than imported because
+    // generate-og-images.js is a CommonJS script that requires 'sharp'
+    // at the top level. If the original escapeXml changes (e.g., adds new
+    // entity escapes or changes replacement order), update this copy too.
     const escapeXml = str => {
       return str
         .replace(/&/g, '&amp;')
@@ -151,7 +155,7 @@ describe('generate-og-images.js', () => {
       expect(content).toContain('escapeXml')
       expect(content).toContain('getLocaleStrings')
       expect(content).toContain('generateBlogOG')
-      expect(content).toContain("LOCALES = ['en', 'sv']")
+      expect(content).toMatch(/LOCALES\s*=\s*\[.*'en'.*'sv'.*\]/)
       expect(content).toContain('sharp')
     })
   })
