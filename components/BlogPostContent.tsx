@@ -342,7 +342,7 @@ const BlogPostContent = ({
                         month: 'short',
                         day: 'numeric',
                       })
-                    : '—'}
+                    : t('post.dateFallback')}
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
@@ -491,7 +491,7 @@ const BlogPostContent = ({
                   </div>
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
+                      <h2 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
                         {teamMember ? (
                           <Link
                             href={`/${locale}/team/${teamMember.id}` as Route}
@@ -502,7 +502,7 @@ const BlogPostContent = ({
                         ) : (
                           post.author
                         )}
-                      </h3>
+                      </h2>
                       {teamMember && (
                         <Link
                           href={`/${locale}/team/${teamMember.id}` as Route}
@@ -575,13 +575,13 @@ const BlogPostContent = ({
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                    <h3
+                    <h2
                       id="toc-heading"
                       className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
                     >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
-                    </h3>
+                    </h2>
                     <div>
                       <TableOfContents
                         items={tableOfContents}
@@ -594,9 +594,9 @@ const BlogPostContent = ({
 
                 {/* Related Posts */}
                 <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                  <h3 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4">
+                  <h2 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4">
                     {t('post.relatedArticles')}
-                  </h3>
+                  </h2>
                   <div className="space-y-4">
                     {relatedPosts.map(relatedPost => (
                       <Link
@@ -614,9 +614,9 @@ const BlogPostContent = ({
                           />
                         </div>
                         <div>
-                          <h4 className="text-sm font-medium text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+                          <h3 className="text-sm font-medium text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
                             {relatedPost.title}
-                          </h4>
+                          </h3>
                         </div>
                       </Link>
                     ))}

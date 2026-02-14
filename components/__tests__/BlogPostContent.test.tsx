@@ -309,7 +309,7 @@ describe('BlogPostContent', () => {
 
     it('renders a dash when date is null', () => {
       renderComponent({ post: { ...mockPost, date: null } })
-      expect(screen.getByText('—')).toBeInTheDocument()
+      expect(screen.getByText('post.dateFallback')).toBeInTheDocument()
     })
 
     it('renders Back to Blog link', () => {

@@ -132,8 +132,10 @@ export function getRelatedPosts(
 
   // If category is provided, find posts with matching category or tags
   if (category) {
+    const normalizedCategory = category.toLowerCase()
     relatedPosts = relatedPosts.filter(
-      post => post.category === category || post.tags.includes(category)
+      post =>
+        post.category === category || post.tags.includes(normalizedCategory)
     )
   }
 
