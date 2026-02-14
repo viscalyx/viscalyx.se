@@ -53,6 +53,7 @@ function validateBlogData(data: typeof blogData): BlogData {
     author: p.author,
     excerpt: p.excerpt,
     image: p.image,
+    imageAlt: typeof p.imageAlt === 'string' ? p.imageAlt : undefined,
     tags: Array.isArray(p.tags)
       ? Array.from(
           new Set(
