@@ -1,13 +1,14 @@
 'use client'
 
 import LegalPageLayout from '@/components/LegalPageLayout'
-import { getStaticPageDates } from '@/lib/file-dates'
+import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
 import { useTranslations } from 'next-intl'
 
-// Get the actual last modified date
-const staticPageDates = getStaticPageDates()
+interface PrivacyPageClientProps {
+  lastUpdatedDate: Date
+}
 
-const PrivacyPageClient = () => {
+const PrivacyPageClient = ({ lastUpdatedDate }: PrivacyPageClientProps) => {
   const t = useTranslations('privacy')
 
   return (
@@ -15,83 +16,43 @@ const PrivacyPageClient = () => {
       title={t('privacy.title')}
       subtitle={t('privacy.subtitle')}
       lastUpdatedLabel={t('privacy.lastUpdated')}
-      lastUpdatedDate={staticPageDates.privacy}
+      lastUpdatedDate={lastUpdatedDate}
     >
-      {/* Information We Collect */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.informationWeCollect.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('privacy.sections.informationWeCollect.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('privacy.sections.informationWeCollect.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
+      <LegalSection
+        title={t('privacy.sections.informationWeCollect.title')}
+        description={t('privacy.sections.informationWeCollect.description')}
+        items={safeTranslationArray(
+          t.raw('privacy.sections.informationWeCollect.items')
         )}
-      </ul>
+      />
 
-      {/* How We Use Your Information */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.howWeUse.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('privacy.sections.howWeUse.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('privacy.sections.howWeUse.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
-        )}
-      </ul>
+      <LegalSection
+        title={t('privacy.sections.howWeUse.title')}
+        description={t('privacy.sections.howWeUse.description')}
+        items={safeTranslationArray(t.raw('privacy.sections.howWeUse.items'))}
+      />
 
-      {/* Data Security */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.dataSecurity.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('privacy.sections.dataSecurity.description')}
-      </p>
+      <LegalSection
+        title={t('privacy.sections.dataSecurity.title')}
+        description={t('privacy.sections.dataSecurity.description')}
+      />
 
-      {/* Cookies and Tracking */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.cookies.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('privacy.sections.cookies.description')}
-      </p>
+      <LegalSection
+        title={t('privacy.sections.cookies.title')}
+        description={t('privacy.sections.cookies.description')}
+      />
 
-      {/* Third-Party Services */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.thirdParty.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('privacy.sections.thirdParty.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('privacy.sections.thirdParty.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
-        )}
-      </ul>
+      <LegalSection
+        title={t('privacy.sections.thirdParty.title')}
+        description={t('privacy.sections.thirdParty.description')}
+        items={safeTranslationArray(t.raw('privacy.sections.thirdParty.items'))}
+      />
 
-      {/* Your Rights */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('privacy.sections.yourRights.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('privacy.sections.yourRights.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('privacy.sections.yourRights.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
-        )}
-      </ul>
+      <LegalSection
+        title={t('privacy.sections.yourRights.title')}
+        description={t('privacy.sections.yourRights.description')}
+        items={safeTranslationArray(t.raw('privacy.sections.yourRights.items'))}
+      />
 
       {/* Contact Us */}
       <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">

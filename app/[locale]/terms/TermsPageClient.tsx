@@ -1,13 +1,14 @@
 'use client'
 
 import LegalPageLayout from '@/components/LegalPageLayout'
-import { getStaticPageDates } from '@/lib/file-dates'
+import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
 import { useTranslations } from 'next-intl'
 
-// Get the actual last modified date
-const staticPageDates = getStaticPageDates()
+interface TermsPageClientProps {
+  lastUpdatedDate: Date
+}
 
-const TermsPageClient = () => {
+const TermsPageClient = ({ lastUpdatedDate }: TermsPageClientProps) => {
   const t = useTranslations('terms')
 
   return (
@@ -15,85 +16,51 @@ const TermsPageClient = () => {
       title={t('terms.title')}
       subtitle={t('terms.subtitle')}
       lastUpdatedLabel={t('terms.lastUpdated')}
-      lastUpdatedDate={staticPageDates.terms}
+      lastUpdatedDate={lastUpdatedDate}
     >
-      {/* Agreement */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.agreement.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.agreement.description')}
-      </p>
+      <LegalSection
+        title={t('terms.sections.agreement.title')}
+        description={t('terms.sections.agreement.description')}
+      />
 
-      {/* Services */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.services.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('terms.sections.services.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('terms.sections.services.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
+      <LegalSection
+        title={t('terms.sections.services.title')}
+        description={t('terms.sections.services.description')}
+        items={safeTranslationArray(t.raw('terms.sections.services.items'))}
+      />
+
+      <LegalSection
+        title={t('terms.sections.userResponsibilities.title')}
+        description={t('terms.sections.userResponsibilities.description')}
+        items={safeTranslationArray(
+          t.raw('terms.sections.userResponsibilities.items')
         )}
-      </ul>
+      />
 
-      {/* User Responsibilities */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.userResponsibilities.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-6">
-        {t('terms.sections.userResponsibilities.description')}
-      </p>
-      <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {(t.raw('terms.sections.userResponsibilities.items') as string[]).map(
-          (item, index) => (
-            <li key={index}>{item}</li>
-          )
-        )}
-      </ul>
+      <LegalSection
+        title={t('terms.sections.intellectualProperty.title')}
+        description={t('terms.sections.intellectualProperty.description')}
+      />
 
-      {/* Intellectual Property */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.intellectualProperty.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.intellectualProperty.description')}
-      </p>
+      <LegalSection
+        title={t('terms.sections.limitationOfLiability.title')}
+        description={t('terms.sections.limitationOfLiability.description')}
+      />
 
-      {/* Limitation of Liability */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.limitationOfLiability.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.limitationOfLiability.description')}
-      </p>
+      <LegalSection
+        title={t('terms.sections.termination.title')}
+        description={t('terms.sections.termination.description')}
+      />
 
-      {/* Termination */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.termination.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.termination.description')}
-      </p>
+      <LegalSection
+        title={t('terms.sections.governingLaw.title')}
+        description={t('terms.sections.governingLaw.description')}
+      />
 
-      {/* Governing Law */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.governingLaw.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.governingLaw.description')}
-      </p>
-
-      {/* Changes to Terms */}
-      <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.changes.title')}
-      </h2>
-      <p className="text-secondary-600 dark:text-secondary-400 mb-8">
-        {t('terms.sections.changes.description')}
-      </p>
+      <LegalSection
+        title={t('terms.sections.changes.title')}
+        description={t('terms.sections.changes.description')}
+      />
 
       {/* Contact */}
       <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">

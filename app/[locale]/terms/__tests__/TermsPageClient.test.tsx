@@ -58,17 +58,13 @@ vi.mock('@/components/ScrollToTop', () => ({
   default: () => React.createElement('div', { 'data-testid': 'scroll-to-top' }),
 }))
 
-vi.mock('@/lib/file-dates', () => ({
-  getStaticPageDates: () => ({
-    cookies: new Date('2025-01-01'),
-    privacy: new Date('2025-01-01'),
-    terms: new Date('2025-01-01'),
-  }),
-}))
-
 import { render, screen } from '@testing-library/react'
 
 import TermsPageClient from '@/app/[locale]/terms/TermsPageClient'
+
+const defaultProps = {
+  lastUpdatedDate: new Date('2025-01-01'),
+}
 
 describe('TermsPageClient', () => {
   beforeEach(() => {
@@ -76,47 +72,47 @@ describe('TermsPageClient', () => {
   })
 
   it('renders page heading', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
   })
 
   it('renders header and footer', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
-    expect(screen.getByTestId('header')).toBeInTheDocument()
-    expect(screen.getByTestId('footer')).toBeInTheDocument()
+    expect(screen.getByRole('banner')).toBeInTheDocument()
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 
   it('renders ScrollToTop', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     expect(screen.getByTestId('scroll-to-top')).toBeInTheDocument()
   })
 
   it('renders section headings', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     const headings = screen.getAllByRole('heading', { level: 2 })
     expect(headings.length).toBeGreaterThanOrEqual(9)
   })
 
   it('renders list items from translation arrays', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     const listItems = screen.getAllByRole('listitem')
     expect(listItems.length).toBeGreaterThan(0)
   })
 
   it('renders main element with min-h-screen', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     const main = screen.getByRole('main')
     expect(main).toHaveClass('min-h-screen')
   })
 
   it('renders contact email link', () => {
-    render(<TermsPageClient />)
+    render(<TermsPageClient {...defaultProps} />)
 
     const emailLink = screen.getByRole('link')
     expect(emailLink).toHaveAttribute(

@@ -43,7 +43,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 // Mock child component
-vi.mock('../TeamMemberClient', () => ({
+vi.mock('@/app/[locale]/team/[memberId]/TeamMemberClient', () => ({
   __esModule: true,
   default: ({ member }: { member: { name: string } }) =>
     React.createElement(

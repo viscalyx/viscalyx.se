@@ -1,9 +1,12 @@
 import { SITE_URL } from '@/lib/constants'
+import { getStaticPageDates } from '@/lib/file-dates'
 import { getTranslations } from 'next-intl/server'
 
 import TermsPageClient from './TermsPageClient'
 
 import type { Metadata } from 'next'
+
+const staticPageDates = getStaticPageDates()
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -41,5 +44,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function TermsPage() {
-  return <TermsPageClient />
+  return <TermsPageClient lastUpdatedDate={staticPageDates.terms} />
 }

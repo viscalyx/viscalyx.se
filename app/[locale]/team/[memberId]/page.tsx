@@ -3,7 +3,7 @@ import { getSerializableTeamMemberById, getTeamMemberIds } from '@/lib/team'
 import { locales } from '@/i18n'
 import { getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import TeamMemberClient from './TeamMemberClient'
+import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
 
 import type { Metadata } from 'next'
 

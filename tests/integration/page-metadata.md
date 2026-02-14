@@ -2,7 +2,9 @@
 
 > Test flow documentation for [`page-metadata.spec.ts`](page-metadata.spec.ts)
 
-This test suite validates that every page on the site has correct SEO metadata — page titles, meta descriptions, Open Graph tags, Twitter card tags, and locale-specific values.
+This test suite validates that every page on the site has correct SEO
+metadata — page titles, meta descriptions, Open Graph tags, Twitter card
+tags, and locale-specific values.
 
 ---
 
@@ -34,7 +36,9 @@ flowchart TD
 
 ## Test Setup
 
-No shared `beforeEach` hooks — each test navigates to the target page directly via `page.goto()`. Tests rely on the Next.js development server being available (started by Playwright config).
+No shared `beforeEach` hooks — each test navigates to the target page
+directly via `page.goto()`. Tests rely on the Next.js development server
+being available (started by Playwright config).
 
 ---
 
@@ -123,12 +127,28 @@ sequenceDiagram
 1. Navigate to `/en/team`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team
+    Note over P: ✓ title contains "Viscalyx"
+    Note over P: ✓ title.length > "Viscalyx".length
+```
+
 ### Team Page — should have meta description
 
 **Purpose:** Validates meta description is present on the team page.
 
 1. Navigate to `/en/team`.
 2. Assert `meta[name="description"]` is truthy and longer than 10 characters.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team
+    P->>P: Read meta description
+    Note over P: ✓ description.length > 10
+```
 
 ### Team Page — should have Open Graph metadata
 
@@ -137,12 +157,27 @@ sequenceDiagram
 1. Navigate to `/en/team`.
 2. Assert `og:title` is truthy and `og:type` is `website`.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team
+    Note over P: ✓ og:title present
+    Note over P: ✓ og:type = website
+```
+
 ### Team Page — should have Twitter card metadata
 
 **Purpose:** Validates Twitter card is present on the team page.
 
 1. Navigate to `/en/team`.
 2. Assert `twitter:card` is `summary_large_image`.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team
+    Note over P: ✓ twitter:card = summary_large_image
+```
 
 ### Team Member Page — should have member-specific page title
 
@@ -151,12 +186,27 @@ sequenceDiagram
 1. Navigate to `/en/team/johlju`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team/johlju
+    Note over P: ✓ title contains "Viscalyx"
+    Note over P: ✓ title.length > "Viscalyx".length
+```
+
 ### Team Member Page — should have Open Graph profile type
 
 **Purpose:** Validates that team member pages use the `profile` OG type.
 
 1. Navigate to `/en/team/johlju`.
 2. Assert `og:type` is `profile`.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team/johlju
+    Note over P: ✓ og:type = profile
+```
 
 ### Team Member Page — should have member image in OG metadata
 
@@ -165,12 +215,27 @@ sequenceDiagram
 1. Navigate to `/en/team/johlju`.
 2. Assert `og:image` is truthy.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/team/johlju
+    Note over P: ✓ og:image present
+```
+
 ### Cookies Page — should have cookies-specific page title
 
 **Purpose:** Ensures the cookies page has a unique title.
 
 1. Navigate to `/en/cookies`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/cookies
+    Note over P: ✓ title contains "Viscalyx"
+    Note over P: ✓ title.length > "Viscalyx".length
+```
 
 ### Cookies Page — should have meta description
 
@@ -179,12 +244,27 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert `meta[name="description"]` is truthy.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/cookies
+    P->>P: Read meta description
+    Note over P: ✓ description is truthy
+```
+
 ### Cookies Page — should have Open Graph metadata
 
 **Purpose:** Confirms OG type is `website` on the cookies page.
 
 1. Navigate to `/en/cookies`.
 2. Assert `og:type` is `website`.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/cookies
+    Note over P: ✓ og:type = website
+```
 
 ### Cookies Page — should have Twitter card metadata
 
@@ -193,12 +273,27 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/cookies
+    Note over P: ✓ twitter:card = summary_large_image
+```
+
 ### Privacy Page — should have privacy-specific page title
 
 **Purpose:** Ensures the privacy page has a unique title.
 
 1. Navigate to `/en/privacy`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/privacy
+    Note over P: ✓ title contains "Viscalyx"
+    Note over P: ✓ title.length > "Viscalyx".length
+```
 
 ### Privacy Page — should have meta description
 
@@ -207,12 +302,27 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert `meta[name="description"]` is truthy.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/privacy
+    P->>P: Read meta description
+    Note over P: ✓ description is truthy
+```
+
 ### Privacy Page — should have Open Graph metadata
 
 **Purpose:** Confirms OG type is `website` on the privacy page.
 
 1. Navigate to `/en/privacy`.
 2. Assert `og:type` is `website`.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/privacy
+    Note over P: ✓ og:type = website
+```
 
 ### Privacy Page — should have Twitter card metadata
 
@@ -221,12 +331,27 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/privacy
+    Note over P: ✓ twitter:card = summary_large_image
+```
+
 ### Terms Page — should have terms-specific page title
 
 **Purpose:** Ensures the terms page has a unique title.
 
 1. Navigate to `/en/terms`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/terms
+    Note over P: ✓ title contains "Viscalyx"
+    Note over P: ✓ title.length > "Viscalyx".length
+```
 
 ### Terms Page — should have meta description
 
@@ -235,6 +360,14 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert `meta[name="description"]` is truthy.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/terms
+    P->>P: Read meta description
+    Note over P: ✓ description is truthy
+```
+
 ### Terms Page — should have Open Graph metadata
 
 **Purpose:** Confirms OG type is `website` on the terms page.
@@ -242,12 +375,26 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert `og:type` is `website`.
 
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/terms
+    Note over P: ✓ og:type = website
+```
+
 ### Terms Page — should have Twitter card metadata
 
 **Purpose:** Validates Twitter card is present on the terms page.
 
 1. Navigate to `/en/terms`.
 2. Assert `twitter:card` is `summary_large_image`.
+
+```mermaid
+sequenceDiagram
+    participant P as Page
+    P->>P: goto /en/terms
+    Note over P: ✓ twitter:card = summary_large_image
+```
 
 ### Locale Switching — should use sv_SE locale for Swedish homepage
 

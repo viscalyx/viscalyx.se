@@ -130,8 +130,8 @@ describe('CookiesPage', () => {
     it('renders header and footer', () => {
       render(<CookiesPage />)
 
-      expect(screen.getByTestId('header')).toBeInTheDocument()
-      expect(screen.getByTestId('footer')).toBeInTheDocument()
+      expect(screen.getByRole('banner')).toBeInTheDocument()
+      expect(screen.getByRole('contentinfo')).toBeInTheDocument()
     })
   })
 })

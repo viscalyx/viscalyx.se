@@ -16,6 +16,16 @@ vi.mock('../TermsPageClient', () => ({
     React.createElement('div', { 'data-testid': 'terms-page-client' }),
 }))
 
+vi.mock('@/lib/file-dates', () => ({
+  getStaticPageDates: () => ({
+    home: new Date('2025-01-01'),
+    blog: new Date('2025-01-01'),
+    cookies: new Date('2025-01-01'),
+    privacy: new Date('2025-01-01'),
+    terms: new Date('2025-01-01'),
+  }),
+}))
+
 import { render, screen } from '@testing-library/react'
 
 import TermsPage, { generateMetadata } from '@/app/[locale]/terms/page'
