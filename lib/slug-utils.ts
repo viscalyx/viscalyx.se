@@ -37,16 +37,21 @@ const ANCHOR_LINK_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor"
  * @param str - The string potentially containing HTML entities
  * @returns The string with HTML entities decoded to their literal characters
  */
+function isSafeCodePoint(cp: number): boolean {
+  return cp >= 0 && cp <= 0x10ffff && (cp < 0xd800 || cp > 0xdfff)
+}
+
 function decodeHtmlEntities(str: string): string {
   return str
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
-      String.fromCodePoint(Number.parseInt(hex, 16))
-    )
-    .replace(/&#(\d+);/g, (_, dec) =>
-      String.fromCodePoint(Number.parseInt(dec, 10))
-    )
+    .replace(/&#x([0-9a-fA-F]+);/g, (match, hex) => {
+      const cp = Number.parseInt(hex, 16)
+      return isSafeCodePoint(cp) ? String.fromCodePoint(cp) : match
+    })
+    .replace(/&#(\d+);/g, (match, dec) => {
+      const cp = Number.parseInt(dec, 10)
+      return isSafeCodePoint(cp) ? String.fromCodePoint(cp) : match
+    })
     .replace(/&quot;/g, '"')
-    .replace(/&#x27;/g, "'")
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&amp;/g, '&')
