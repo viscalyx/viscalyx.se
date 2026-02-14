@@ -189,9 +189,11 @@ test.describe('Blog Post Page', () => {
     test('should display Related Articles section', async ({ page }) => {
       await page.goto(TEST_URL)
 
-      const relatedHeading = page.getByText(/Related Articles/i)
-      const count = await relatedHeading.count()
-      expect(count).toBeGreaterThanOrEqual(1)
+      // Use toBeVisible() which auto-waits for React hydration
+      // (the page is client-rendered from RSC flight data)
+      await expect(
+        page.getByText(/Related Articles/i).first()
+      ).toBeVisible()
     })
   })
 
