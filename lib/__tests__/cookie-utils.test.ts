@@ -222,9 +222,14 @@ describe('Cookie Utils', () => {
       expect(getCookie('test')).toBe('value with spaces')
     })
 
-    it('should handle cookies with special characters', () => {
+    it('should handle cookies with URL-encoded = in value', () => {
       cookieMock.value = 'test=value%3Dwith%3Dequals' // cSpell: disable-line
       expect(getCookie('test')).toBe('value=with=equals')
+    })
+
+    it('should handle cookies with literal = in value (e.g., base64)', () => {
+      cookieMock.value = 'token=abc=def=ghi'
+      expect(getCookie('token')).toBe('abc=def=ghi')
     })
 
     it('should return null on server-side (no window)', () => {
