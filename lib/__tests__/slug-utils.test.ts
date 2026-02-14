@@ -40,6 +40,22 @@ describe('slug-utils', () => {
     it('trims whitespace', () => {
       expect(extractCleanText('  <p>Text</p>  ')).toBe('Text')
     })
+
+    it('decodes valid numeric and hex HTML entities', () => {
+      expect(extractCleanText('&#65;&#66;')).toBe('AB')
+      expect(extractCleanText('&#x41;&#x42;')).toBe('AB')
+    })
+
+    it('preserves out-of-range hex entities instead of crashing', () => {
+      // sanitize-html replaces out-of-range entities with U+FFFD before our decoder
+      expect(extractCleanText('&#xDEADBEEF;')).toBe('\uFFFD')
+    })
+
+    it('preserves surrogate code point entities instead of crashing', () => {
+      // sanitize-html replaces surrogates with U+FFFD before our decoder
+      expect(extractCleanText('&#xD800;')).toBe('\uFFFD')
+      expect(extractCleanText('&#55296;')).toBe('\uFFFD')
+    })
   })
 
   describe('generateFallbackId', () => {
@@ -243,6 +259,43 @@ describe('slug-utils', () => {
 
       expect(result).toContain('id="api-reference"')
       expect(result).toContain('href="#api-reference"')
+    })
+
+    it('escapes double quotes in heading text for aria-label and title', () => {
+      const html = '<h2>Config "key=value" pairs</h2>'
+      const result = addHeadingIds(html)
+
+      expect(result).toContain(
+        'aria-label="Link to section: Config &quot;key=value&quot; pairs"'
+      )
+      expect(result).toContain(
+        'title="Copy link to section: Config &quot;key=value&quot; pairs"'
+      )
+    })
+
+    it('escapes angle brackets and ampersands in heading text', () => {
+      // extractCleanText decodes HTML entities first, so "&amp;" becomes "&",
+      // then escapeHtmlAttr re-encodes it once → "&amp;" (no double-encoding)
+      const html = '<h2>A &amp; B</h2>'
+      const result = addHeadingIds(html)
+
+      expect(result).toContain('aria-label="Link to section: A &amp; B"')
+      expect(result).toContain('title="Copy link to section: A &amp; B"')
+      // Verify the escaping prevents attribute breakout
+      expect(result).not.toMatch(/aria-label="[^"]*</)
+    })
+
+    it('escapes quotes in translated strings from translateFn', () => {
+      const html = '<h2>Section</h2>'
+      const mockTranslate = vi
+        .fn()
+        .mockReturnValueOnce('Länk till "Section"')
+        .mockReturnValueOnce('Kopiera länk till "Section"')
+
+      const result = addHeadingIds(html, {}, mockTranslate)
+
+      expect(result).toContain('aria-label="Länk till &quot;Section&quot;"')
+      expect(result).toContain('title="Kopiera länk till &quot;Section&quot;"')
     })
   })
 

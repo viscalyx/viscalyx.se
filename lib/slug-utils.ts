@@ -28,6 +28,55 @@ const ANCHOR_LINK_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor"
 </svg>`
 
 /**
+ * Decodes common HTML entities back to their literal characters.
+ * Used after sanitize-html strips tags, because sanitize-html preserves
+ * entities (e.g. "&amp;" stays as the text "&amp;"). Decoding here
+ * ensures downstream helpers like escapeHtmlAttr receive plain text and
+ * avoid double-encoding.
+ *
+ * @param str - The string potentially containing HTML entities
+ * @returns The string with HTML entities decoded to their literal characters
+ */
+function isSafeCodePoint(cp: number): boolean {
+  return cp >= 0 && cp <= 0x10ffff && (cp < 0xd800 || cp > 0xdfff)
+}
+
+function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&#x([0-9a-fA-F]+);/g, (match, hex) => {
+      const cp = Number.parseInt(hex, 16)
+      return isSafeCodePoint(cp) ? String.fromCodePoint(cp) : match
+    })
+    .replace(/&#(\d+);/g, (match, dec) => {
+      const cp = Number.parseInt(dec, 10)
+      return isSafeCodePoint(cp) ? String.fromCodePoint(cp) : match
+    })
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+}
+
+/**
+ * Escapes special HTML characters in a string for safe interpolation
+ * into HTML attribute values.
+ *
+ * Handles the five characters that can break out of or interfere with
+ * HTML attribute contexts: & " ' < >
+ *
+ * @param str - The string to escape
+ * @returns The escaped string safe for use in HTML attributes
+ */
+function escapeHtmlAttr(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+/**
  * Default slug configuration
  */
 const DEFAULT_SLUG_OPTIONS: SlugOptions = {
@@ -66,10 +115,11 @@ export function generateFallbackId(level: number): string {
  * @returns Clean text content
  */
 export function extractCleanText(htmlContent: string): string {
-  return sanitizeHtml(htmlContent, {
+  const stripped = sanitizeHtml(htmlContent, {
     allowedTags: [],
     allowedAttributes: {},
   }).trim()
+  return decodeHtmlEntities(stripped)
 }
 
 /**
@@ -217,7 +267,7 @@ export function addHeadingIds(
         : `Copy link to section: ${cleanedText}`
 
       // Add anchor link functionality with proper class for styling
-      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${ariaLabel}" title="${title}">
+      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${escapeHtmlAttr(ariaLabel)}" title="${escapeHtmlAttr(title)}">
         ${ANCHOR_LINK_ICON}
       </a>`
 

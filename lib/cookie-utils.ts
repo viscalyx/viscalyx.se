@@ -107,8 +107,8 @@ export function getCookie(name: string): string | null {
     const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`))
 
     if (cookie) {
-      const value = cookie.split('=')[1]
-      return decodeURIComponent(value)
+      const [, ...valueParts] = cookie.split('=')
+      return decodeURIComponent(valueParts.join('='))
     }
 
     return null
