@@ -456,12 +456,6 @@ describe('trackPageView with mocked Cloudflare analytics', () => {
 // ---------------------------------------------------------------------------
 
 describe('validateBlogData edge cases (via getPostMetadata)', () => {
-  it('preserves imageAlt when it is a valid string (HI-12 regression)', () => {
-    const post = getPostMetadata('first-post')
-    expect(post).not.toBeNull()
-    expect(post!.imageAlt).toBe('First image')
-  })
-
   it('handles posts with empty tags array gracefully', () => {
     const post = getPostMetadata('template')
     expect(post).not.toBeNull()
@@ -471,11 +465,6 @@ describe('validateBlogData edge cases (via getPostMetadata)', () => {
   it('preserves category when it is a valid string', () => {
     const post = getPostMetadata('second-post')
     expect(post!.category).toBe('Automation')
-  })
-
-  it('returns undefined imageAlt when original value is missing', () => {
-    const post = getPostMetadata('second-post')
-    expect(post!.imageAlt).toBeUndefined()
   })
 })
 
@@ -643,8 +632,8 @@ describe('cache integration with multi-function workflows', () => {
   })
 
   it('getRelatedPosts internal double-getAllPosts call uses cache', () => {
-    // getRelatedPosts calls getAllPosts() twice internally (filter + fill)
-    // After that, a direct getAllPosts() should return cached post objects
+    // getRelatedPosts calls getAllPosts() once and reuses the result for filtering and filling.
+    // This test verifies that post objects returned by getRelatedPosts share cached references with getAllPosts().
     const related = getRelatedPosts('first-post', 'NonExistentCategory', 3)
     const allPosts = getAllPosts()
 

@@ -52,7 +52,8 @@ const Footer = () => {
     href: string
   ) => {
     if (href.startsWith('#')) {
-      const currentPath = pathname.replace(new RegExp(`^/${locale}`), '') || '/'
+      const currentPath =
+        pathname.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/'
       if (currentPath === '/' || currentPath === '') {
         e.preventDefault()
         requestAnimationFrame(() => {

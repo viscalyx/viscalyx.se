@@ -9,7 +9,9 @@
       "title": "Settings",
       "language": "Language",
       "theme": "Theme"
-    }
+    },
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "footer": {
     "company": "Company",

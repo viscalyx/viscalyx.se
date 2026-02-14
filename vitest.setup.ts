@@ -41,6 +41,11 @@ vi.mock('framer-motion', () => {
     'onUpdate',
     'onBeforeLayoutMeasure',
     'transformTemplate',
+    'onViewportEnter',
+    'onViewportLeave',
+    'layoutScroll',
+    'layoutDependency',
+    'layoutRoot',
   ])
 
   /**
@@ -69,7 +74,8 @@ vi.mock('framer-motion', () => {
   const motionProxy = new Proxy(
     { create: (Component: unknown) => Component },
     {
-      get: (target, prop: string) => {
+      get: (target, prop: string | symbol) => {
+        if (typeof prop !== 'string') return Reflect.get(target, prop)
         if (prop in target) return target[prop as keyof typeof target]
         if (!cache.has(prop)) cache.set(prop, forward(prop))
         return cache.get(prop)

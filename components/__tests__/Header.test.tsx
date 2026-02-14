@@ -1,7 +1,7 @@
+import Header from '@/components/Header'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import Header from '../Header'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -16,11 +16,11 @@ vi.mock('next/navigation', () => ({
 }))
 
 // Mock child components to isolate Header
-vi.mock('../LanguageSwitcher', () => ({
+vi.mock('@/components/LanguageSwitcher', () => ({
   default: () => <div data-testid="language-switcher">LanguageSwitcher</div>,
 }))
 
-vi.mock('../ThemeToggle', () => ({
+vi.mock('@/components/ThemeToggle', () => ({
   default: () => <div data-testid="theme-toggle">ThemeToggle</div>,
 }))
 
@@ -83,10 +83,9 @@ describe('Header', () => {
     it('renders mobile menu toggle button', () => {
       render(<Header />)
 
-      // The mobile menu button has the Menu icon
-      const buttons = screen.getAllByRole('button')
-      // Should find at least one button (mobile menu toggle)
-      expect(buttons.length).toBeGreaterThanOrEqual(1)
+      // The mobile menu button has an aria-label
+      const menuButton = screen.getByRole('button', { name: 'openMenu' })
+      expect(menuButton).toBeInTheDocument()
     })
   })
 
@@ -147,14 +146,8 @@ describe('Header', () => {
     it('opens mobile menu when hamburger button is clicked', () => {
       render(<Header />)
 
-      // Initially no mobile menu links visible outside of desktop nav
-      const mobileMenuBefore = screen.queryByText('about', {
-        selector: '.md\\:hidden a',
-      })
-      // Click the menu toggle (last button in the mobile button group)
-      const buttons = screen.getAllByRole('button')
-      // The hamburger button is typically the last button
-      const hamburgerButton = buttons[buttons.length - 1]
+      // Click the menu toggle
+      const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
       fireEvent.click(hamburgerButton)
 
       // After opening, mobile menu links should be present (4 menu items rendered twice: desktop + mobile)
@@ -166,16 +159,16 @@ describe('Header', () => {
       render(<Header />)
 
       // Open menu
-      const hamburgerBefore = screen.getAllByRole('button')
-      fireEvent.click(hamburgerBefore[hamburgerBefore.length - 1])
+      const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
+      fireEvent.click(hamburgerButton)
 
       // Menu is open — mobile links exist
       const aboutLinksOpen = screen.getAllByRole('link', { name: 'about' })
       expect(aboutLinksOpen.length).toBeGreaterThanOrEqual(2)
 
-      // Close menu — re-query buttons because DOM changed
-      const hamburgerAfter = screen.getAllByRole('button')
-      fireEvent.click(hamburgerAfter[hamburgerAfter.length - 1])
+      // Close menu — re-query button (label changes to closeMenu)
+      const closeButton = screen.getByRole('button', { name: 'closeMenu' })
+      fireEvent.click(closeButton)
 
       // After closing, only desktop links remain
       const aboutLinksClose = screen.getAllByRole('link', { name: 'about' })
@@ -185,8 +178,7 @@ describe('Header', () => {
     it('closes mobile menu when a navigation link is clicked', () => {
       render(<Header />)
 
-      const buttons = screen.getAllByRole('button')
-      const hamburgerButton = buttons[buttons.length - 1]
+      const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
 
       // Open menu
       fireEvent.click(hamburgerButton)
@@ -208,11 +200,10 @@ describe('Header', () => {
     it('opens settings dropdown when settings button is clicked', () => {
       render(<Header />)
 
-      const buttons = screen.getAllByRole('button')
-      // Desktop settings button is the first button
-      const settingsButton = buttons[0]
-
-      fireEvent.click(settingsButton)
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      fireEvent.click(settingsButtons[0])
 
       // Both desktop and mobile dropdowns open (shared isSettingsOpen state)
       const titles = screen.getAllByText('settings.title')
@@ -228,11 +219,12 @@ describe('Header', () => {
     it('closes settings dropdown when clicking outside', () => {
       render(<Header />)
 
-      const buttons = screen.getAllByRole('button')
-      const settingsButton = buttons[0]
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
 
       // Open settings
-      fireEvent.click(settingsButton)
+      fireEvent.click(settingsButtons[0])
       expect(
         screen.getAllByText('settings.title').length
       ).toBeGreaterThanOrEqual(1)
@@ -251,10 +243,11 @@ describe('Header', () => {
     it('contains language switcher and theme toggle', () => {
       render(<Header />)
 
-      const buttons = screen.getAllByRole('button')
-      const settingsButton = buttons[0]
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
 
-      fireEvent.click(settingsButton)
+      fireEvent.click(settingsButtons[0])
 
       // Both desktop and mobile dropdowns contain these
       expect(
@@ -294,15 +287,17 @@ describe('Header', () => {
     it('does not prevent default navigation on non-home pages', () => {
       mockPathname = '/en/blog'
 
+      const querySpy = vi.spyOn(document, 'querySelector')
+
       render(<Header />)
 
       const aboutLink = screen.getAllByRole('link', { name: 'about' })[0]
-      const preventDefaultSpy = vi.fn()
-
-      fireEvent.click(aboutLink, { preventDefault: preventDefaultSpy })
+      fireEvent.click(aboutLink)
 
       // Should not call querySelector for smooth scroll on non-home page
-      expect(preventDefaultSpy).not.toHaveBeenCalled()
+      expect(querySpy).not.toHaveBeenCalled()
+
+      querySpy.mockRestore()
     })
   })
 })

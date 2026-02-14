@@ -75,7 +75,7 @@ function validateBlogData(data: typeof blogData): BlogData {
 
 // Validate the imported blog data (cached after first call)
 function getValidatedBlogData(): BlogData {
-  if (cachedBlogData) return cachedBlogData
+  if (cachedBlogData !== null) return cachedBlogData
   cachedBlogData = validateBlogData(blogData)
   return cachedBlogData
 }

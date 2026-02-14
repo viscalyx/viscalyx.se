@@ -1,7 +1,7 @@
+import ImageEnhancer from '@/components/ImageEnhancer'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { useRef } from 'react'
 import { vi } from 'vitest'
-import ImageEnhancer from '../ImageEnhancer'
 
 // Mock next-intl with a stable translator reference (matches production behavior)
 vi.mock('next-intl', () => {
@@ -21,7 +21,7 @@ interface MockImageModalProps {
 }
 
 // Mock the ImageModal component
-vi.mock('../ImageModal', () => ({
+vi.mock('@/components/ImageModal', () => ({
   default: ({
     isOpen,
     onClose,

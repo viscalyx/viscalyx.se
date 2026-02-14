@@ -1,6 +1,6 @@
+import Footer from '@/components/Footer'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import Footer from '@/components/Footer'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -43,6 +43,10 @@ vi.mock('lucide-react', () => ({
 }))
 
 describe('Footer', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the footer element', () => {
     render(<Footer />)
     const footer = screen.getByRole('contentinfo')
@@ -160,20 +164,11 @@ describe('Footer', () => {
 
   it('does not use buttons for navigation links', () => {
     render(<Footer />)
-    // All navigation in the footer sections should be links, not buttons
     const footer = screen.getByRole('contentinfo')
     const buttons = footer.querySelectorAll('button')
     expect(buttons.length).toBe(0)
-  })
-
-  it('uses Link and anchor elements instead of programmatic navigation', () => {
-    // Verifies the component relies on Link and <a> elements for navigation,
-    // not useRouter-based programmatic navigation
-    render(<Footer />)
-    const footer = screen.getByRole('contentinfo')
-    expect(footer).toBeInTheDocument()
-    // All navigation is via links, no buttons needed
-    const buttons = footer.querySelectorAll('button')
-    expect(buttons.length).toBe(0)
+    // All navigation is via Link or <a> elements
+    const links = footer.querySelectorAll('a')
+    expect(links.length).toBeGreaterThan(0)
   })
 })

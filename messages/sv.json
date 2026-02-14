@@ -9,7 +9,9 @@
       "title": "Inställningar",
       "language": "Språk",
       "theme": "Tema"
-    }
+    },
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny"
   },
   "footer": {
     "company": "Företag",

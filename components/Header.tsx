@@ -183,6 +183,7 @@ const Header = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/70 transition-colors"
+                aria-label={t('settings.title')}
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -227,6 +228,7 @@ const Header = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+                aria-label={t('settings.title')}
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -261,6 +263,7 @@ const Header = () => {
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+              aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
