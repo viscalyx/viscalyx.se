@@ -61,6 +61,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 **Server Components**: static content, data fetching, SEO-critical pages, `generateMetadata`, `generateStaticParams`
 
 **Server page + client island pattern** (preferred for data-driven pages):
+
 - Page in `app/` is a server component that fetches data directly (e.g., `getAllPosts()`)
 - Interactive parts are extracted into `'use client'` components in `components/` that receive data as props
 - Use `getTranslations`/`getFormatter` (async, from `next-intl/server`) in server components
