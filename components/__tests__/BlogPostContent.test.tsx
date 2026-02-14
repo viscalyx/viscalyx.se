@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { vi } from 'vitest'
 
-import type { BlogPostContentProps } from '../BlogPostContent'
+import type { ComponentProps } from '../BlogPostContent'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -213,7 +213,7 @@ const mockTeamMember = {
   ],
 }
 
-const defaultProps: BlogPostContentProps = {
+const defaultProps: ComponentProps = {
   post: mockPost,
   contentWithIds:
     '<h2 id="getting-started">Getting Started</h2><p>Test content</p>',
@@ -223,7 +223,7 @@ const defaultProps: BlogPostContentProps = {
   authorInitials: 'TA',
 }
 
-const renderComponent = (overrides: Partial<BlogPostContentProps> = {}) =>
+const renderComponent = (overrides: Partial<ComponentProps> = {}) =>
   render(<BlogPostContent {...defaultProps} {...overrides} />)
 
 describe('BlogPostContent', () => {
@@ -791,7 +791,7 @@ describe('BlogPostContent', () => {
       })
     })
 
-    it('replaces existing notification on rapid share clicks', async () => {
+    it('disables share button during sharing to prevent rapid clicks', async () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined)
       Object.defineProperty(navigator, 'clipboard', {
         value: { writeText: mockWriteText },
@@ -802,10 +802,17 @@ describe('BlogPostContent', () => {
 
       const shareButton = screen.getByTitle('Share this post')
       fireEvent.click(shareButton)
-      fireEvent.click(shareButton)
+
+      // Button should be disabled while sharing is in progress
+      expect(shareButton).toBeDisabled()
 
       await waitFor(() => {
-        expect(mockWriteText).toHaveBeenCalledTimes(2)
+        expect(mockWriteText).toHaveBeenCalledTimes(1)
+      })
+
+      // Button should be re-enabled after sharing completes
+      await waitFor(() => {
+        expect(shareButton).not.toBeDisabled()
       })
     })
   })

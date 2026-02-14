@@ -9,6 +9,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import { socialIconMap } from '@/lib/team'
+
 import {
   ArrowLeft,
   BookOpen,
@@ -18,10 +19,12 @@ import {
   Tag,
   User,
 } from 'lucide-react'
+
 import { Route } from 'next'
 import { useFormatter, useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { TocItem } from '@/lib/slug-utils'
@@ -46,7 +49,7 @@ interface RelatedPost {
   image: string
 }
 
-export interface BlogPostContentProps {
+export interface ComponentProps {
   post: BlogPostData
   contentWithIds: string
   relatedPosts: RelatedPost[]
@@ -62,7 +65,7 @@ const BlogPostContent = ({
   tableOfContents,
   teamMember,
   authorInitials,
-}: BlogPostContentProps) => {
+}: ComponentProps) => {
   const t = useTranslations('blog')
   const format = useFormatter()
   const locale = useLocale()
@@ -72,6 +75,7 @@ const BlogPostContent = ({
     message: string
     type: 'success' | 'error'
   } | null>(null)
+  const [isSharing, setIsSharing] = useState(false)
   const shareTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Ref for the content container to scope event listeners
@@ -156,66 +160,77 @@ const BlogPostContent = ({
 
   // Function to handle sharing/copying URL
   const handleShare = async () => {
-    const url = window.location.href
-
-    // Always try clipboard first as it's more reliable
+    setIsSharing(true)
     try {
-      await navigator.clipboard.writeText(url)
-      setNotificationWithTimeout(t('post.notifications.linkCopied'), 'success')
-      return
-    } catch (clipboardError) {
-      console.warn('Clipboard API failed:', clipboardError)
-      // If clipboard fails, try native share API
-      try {
-        if (navigator.share && navigator.canShare) {
-          const shareData = {
-            title: post.title,
-            text: post.excerpt
-              ? t('post.notifications.shareTextWithExcerpt', {
-                  excerpt: post.excerpt,
-                  title: post.title,
-                })
-              : t('post.notifications.shareTextFallback', {
-                  title: post.title,
-                }),
-            url: url,
-          }
+      const url = window.location.href
 
-          if (navigator.canShare(shareData)) {
-            await navigator.share(shareData)
-            return
+      // Always try clipboard first as it's more reliable
+      try {
+        await navigator.clipboard.writeText(url)
+        setNotificationWithTimeout(
+          t('post.notifications.linkCopied'),
+          'success'
+        )
+        return
+      } catch (clipboardError) {
+        console.warn('Clipboard API failed:', clipboardError)
+        // If clipboard fails, try native share API
+        try {
+          if (navigator.share && navigator.canShare) {
+            const shareData = {
+              title: post.title,
+              text: post.excerpt
+                ? t('post.notifications.shareTextWithExcerpt', {
+                    excerpt: post.excerpt,
+                    title: post.title,
+                  })
+                : t('post.notifications.shareTextFallback', {
+                    title: post.title,
+                  }),
+              url: url,
+            }
+
+            if (navigator.canShare(shareData)) {
+              await navigator.share(shareData)
+              return
+            }
           }
+        } catch (shareError) {
+          console.warn('Native share failed:', shareError)
         }
-      } catch (shareError) {
-        console.warn('Native share failed:', shareError)
-      }
 
-      // Final fallback - try to create a temporary input for manual copy
-      try {
-        const textArea = document.createElement('textarea')
-        textArea.value = url
-        textArea.style.position = 'fixed'
-        textArea.style.left = '-999999px'
-        textArea.style.top = '-999999px'
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
+        // Final fallback - try to create a temporary input for manual copy
+        try {
+          const textArea = document.createElement('textarea')
+          textArea.value = url
+          textArea.style.position = 'fixed'
+          textArea.style.left = '-999999px'
+          textArea.style.top = '-999999px'
+          document.body.appendChild(textArea)
+          textArea.focus()
+          textArea.select()
 
-        const successful = document.execCommand('copy')
-        document.body.removeChild(textArea)
+          const successful = document.execCommand('copy')
+          document.body.removeChild(textArea)
 
-        if (successful) {
+          if (successful) {
+            setNotificationWithTimeout(
+              t('post.notifications.linkCopied'),
+              'success'
+            )
+          } else {
+            throw new Error('execCommand failed')
+          }
+        } catch (fallbackError) {
+          console.error('All share methods failed:', fallbackError)
           setNotificationWithTimeout(
-            t('post.notifications.linkCopied'),
-            'success'
+            t('post.notifications.shareError'),
+            'error'
           )
-        } else {
-          throw new Error('execCommand failed')
         }
-      } catch (fallbackError) {
-        console.error('All share methods failed:', fallbackError)
-        setNotificationWithTimeout(t('post.notifications.shareError'), 'error')
       }
+    } finally {
+      setIsSharing(false)
     }
   }
 
@@ -337,12 +352,14 @@ const BlogPostContent = ({
 
               <div className="flex items-center space-x-4">
                 <span className="text-secondary-600 dark:text-secondary-400">
-                  {t('post.share')}
+                  {isSharing ? t('post.sharing') : t('post.share')}
                 </span>
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+                  disabled={isSharing}
+                  aria-busy={isSharing}
+                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
                   title={t('post.sharePost')}
                   aria-label={t('post.sharePost')}
                 >

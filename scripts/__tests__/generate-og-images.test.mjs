@@ -117,9 +117,17 @@ describe('generate-og-images.js', () => {
     const widthMatch = scriptContent.match(/OG_WIDTH\s*=\s*(\d+)/)
     const heightMatch = scriptContent.match(/OG_HEIGHT\s*=\s*(\d+)/)
     const logoMatch = scriptContent.match(/LOGO_SIZE\s*=\s*(\d+)/)
-    const OG_WIDTH = widthMatch ? Number(widthMatch[1]) : NaN
-    const OG_HEIGHT = heightMatch ? Number(heightMatch[1]) : NaN
-    const LOGO_SIZE = logoMatch ? Number(logoMatch[1]) : NaN
+
+    // Ensure constants were found in source
+    if (!widthMatch || !heightMatch || !logoMatch) {
+      throw new Error(
+        'Failed to extract OG constants from script source - regex patterns may need updating'
+      )
+    }
+
+    const OG_WIDTH = Number(widthMatch[1])
+    const OG_HEIGHT = Number(heightMatch[1])
+    const LOGO_SIZE = Number(logoMatch[1])
 
     it('has standard OG image width', () => {
       expect(OG_WIDTH).toBe(1200)
@@ -130,6 +138,7 @@ describe('generate-og-images.js', () => {
     })
 
     it('calculates logo position correctly', () => {
+      // NOTE: Formula duplicated from generate-og-images.js - keep in sync
       const logoX = Math.round(OG_WIDTH * 0.18 - LOGO_SIZE / 2)
       const logoY = Math.round((OG_HEIGHT - LOGO_SIZE) / 2)
 
@@ -155,7 +164,7 @@ describe('generate-og-images.js', () => {
       expect(content).toContain('escapeXml')
       expect(content).toContain('getLocaleStrings')
       expect(content).toContain('generateBlogOG')
-      expect(content).toMatch(/LOCALES\s*=\s*\[.*'en'.*'sv'.*\]/)
+      expect(content).toMatch(/LOCALES\s*=\s*\[[\s\S]*'en'[\s\S]*'sv'[\s\S]*\]/)
       expect(content).toContain('sharp')
     })
   })

@@ -275,9 +275,19 @@ describe('BlogPostPage', () => {
      * that carries a data-testid of 'blog-post-content'.
      */
 
+    interface BlogPostContentTestProps {
+      post: {
+        date: string | null
+        [key: string]: unknown
+      }
+      tableOfContents?: unknown[]
+      relatedPosts?: Array<{ slug: string; title: string; image: string }>
+      [key: string]: unknown
+    }
+
     function getBlogPostContentProps(
       element: React.JSX.Element
-    ): Record<string, any> {
+    ): BlogPostContentTestProps {
       // Check current element
       const typeName =
         typeof element?.type === 'function'
