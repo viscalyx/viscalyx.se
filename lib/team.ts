@@ -210,9 +210,12 @@ export function getSerializableTeamMemberByName(
   return toSerializable(member)
 }
 
+// Canonical list of team member IDs (source of truth for both getTeamMembers and generateStaticParams)
+export const TEAM_MEMBER_IDS = ['johlju'] as const
+
 // Get all team member IDs without requiring translations (for generateStaticParams)
 export function getTeamMemberIds(): string[] {
-  return ['johlju']
+  return [...TEAM_MEMBER_IDS]
 }
 
 // Generate initials from a name
