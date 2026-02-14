@@ -11,7 +11,7 @@
           "Blog reading analytics (article views, reading progress, time spent on pages)",
           "Technical information (IP address, user agent, browser type, referring website)",
           "Geographic information (country-level location from Cloudflare)",
-          "Website preferences (theme and language settings stored locally in your browser)"
+          "Website preferences (theme stored in local storage, language stored as a cookie in your browser)"
         ]
       },
       "howWeUse": {
@@ -36,8 +36,7 @@
         "title": "Third-Party Services",
         "description": "We use the following third-party services that may process data when you visit our website:",
         "items": [
-          "Cloudflare: Content delivery network, security, and server-side analytics processing (processes IP addresses, user agents, and request headers)",
-          "Google Fonts: Font files (Inter typeface) are self-hosted on our servers via Next.js optimization - no requests are made to Google when you visit our site"
+          "Cloudflare: Content delivery network, security, and server-side analytics processing (processes IP addresses, user agents, and request headers)"
         ]
       },
       "yourRights": {

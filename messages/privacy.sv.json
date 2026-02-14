@@ -11,7 +11,7 @@
           "Bloggläsningsanalyser (artikelvisningar, lässtatus, tid spenderad på sidor)",
           "Teknisk information (IP-adress, användaragent, webbläsartyp, hänvisande webbplats)",
           "Geografisk information (land-nivå plats från Cloudflare)",
-          "Webbplatspreferenser (tema- och språkinställningar lagrade lokalt i din webbläsare)"
+          "Webbplatspreferenser (tema lagrat i lokal lagring, språk lagrat som en kaka i din webbläsare)"
         ]
       },
       "howWeUse": {
@@ -36,8 +36,7 @@
         "title": "Tredjepartstjänster",
         "description": "Vi använder följande tredjepartstjänster som kan behandla data när du besöker vår webbplats:",
         "items": [
-          "Cloudflare: Innehållsleveransnätverk, säkerhet och serverbaserad analysbehandling (behandlar IP-adresser, användaragenter och förfrågningshuvuden)",
-          "Google Fonts: Typsnittsfiler (Inter-typsnitt) lagras på våra servrar via Next.js-optimering - inga förfrågningar görs till Google när du besöker vår webbplats"
+          "Cloudflare: Innehållsleveransnätverk, säkerhet och serverbaserad analysbehandling (behandlar IP-adresser, användaragenter och förfrågningshuvuden)"
         ]
       },
       "yourRights": {
