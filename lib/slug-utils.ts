@@ -28,6 +28,25 @@ const ANCHOR_LINK_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor"
 </svg>`
 
 /**
+ * Escapes special HTML characters in a string for safe interpolation
+ * into HTML attribute values.
+ *
+ * Handles the five characters that can break out of or interfere with
+ * HTML attribute contexts: & " ' < >
+ *
+ * @param str - The string to escape
+ * @returns The escaped string safe for use in HTML attributes
+ */
+function escapeHtmlAttr(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+/**
  * Default slug configuration
  */
 const DEFAULT_SLUG_OPTIONS: SlugOptions = {
@@ -217,7 +236,7 @@ export function addHeadingIds(
         : `Copy link to section: ${cleanedText}`
 
       // Add anchor link functionality with proper class for styling
-      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${ariaLabel}" title="${title}">
+      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${escapeHtmlAttr(ariaLabel)}" title="${escapeHtmlAttr(title)}">
         ${ANCHOR_LINK_ICON}
       </a>`
 
