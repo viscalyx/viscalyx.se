@@ -191,9 +191,7 @@ test.describe('Blog Post Page', () => {
 
       // Use toBeVisible() which auto-waits for React hydration
       // (the page is client-rendered from RSC flight data)
-      await expect(
-        page.getByText(/Related Articles/i).first()
-      ).toBeVisible()
+      await expect(page.getByText(/Related Articles/i).first()).toBeVisible()
     })
   })
 
