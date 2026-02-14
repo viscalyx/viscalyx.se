@@ -9,7 +9,10 @@
 
 import { readFileSync } from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { describe, expect, it } from 'vitest'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('generate-og-images.js', () => {
   describe('escapeXml function', () => {

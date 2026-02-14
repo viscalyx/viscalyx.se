@@ -40,6 +40,15 @@ vi.mock('next-intl/server', () => ({
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   notFound: mockNotFound,
+  useRouter: () => ({ push: vi.fn(), back: vi.fn() }),
+  usePathname: () => '/en',
+}))
+
+// Mock next/image
+vi.mock('next/image', () => ({
+  __esModule: true,
+  default: ({ src, alt, ...props }: Record<string, unknown>) =>
+    React.createElement('img', { src, alt, ...props }),
 }))
 
 // Mock blog utilities

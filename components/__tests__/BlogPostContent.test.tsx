@@ -1,31 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import React from 'react'
 import { vi } from 'vitest'
 
-import type { ComponentProps } from '../BlogPostContent'
+import React from 'react'
+
+import type { ComponentProps } from '@/components/BlogPostContent'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => {
-    const t = (key: string) => {
-      const translations: { [key: string]: string } = {
-        'post.notifications.linkCopied': 'Link copied to clipboard!',
-        'post.notifications.shareError': 'Failed to share link',
-        'post.notifications.shareTextWithExcerpt':
-          'Check out this post: {excerpt} - {title}',
-        'post.notifications.shareTextFallback': 'Check out this post: {title}',
-        'post.readingProgress': 'Reading Progress',
-        'post.backToBlog': 'Back to Blog',
-        'post.share': 'Share:',
-        'post.sharePost': 'Share this post',
-        'post.tableOfContents': 'Table of Contents',
-        'post.relatedArticles': 'Related Articles',
-        'post.authorBio.viewProfile': 'View Profile',
-      }
-      return translations[key] || key
-    }
-    return t
-  },
+  useTranslations: () => (key: string) => key,
   useFormatter: () => ({
     dateTime: () => 'Jan 1, 2025',
   }),
@@ -35,8 +17,29 @@ vi.mock('next-intl', () => ({
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), back: vi.fn() }),
-  usePathname: () => '/en/blog/test-post',
+  usePathname: () => '/en',
 }))
+
+// Mock framer-motion
+vi.mock('framer-motion', () => {
+  const ReactFM = require('react')
+  const motion: Record<string, unknown> = {}
+  ;['div', 'section', 'button', 'span', 'h1', 'h2', 'p'].forEach(tag => {
+    motion[tag] = ({
+      children,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      ...props
+    }: Record<string, unknown>) => ReactFM.createElement(tag, props, children)
+  })
+  return {
+    motion,
+    useInView: () => true,
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  }
+})
 
 // Mock components
 vi.mock('@/components/AlertIconInjector', () => ({
@@ -52,30 +55,46 @@ vi.mock('@/components/AlertIconInjector', () => ({
 vi.mock('@/components/CodeBlockEnhancer', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('div', { 'data-testid': 'code-block-enhancer' }),
+    React.createElement('div', {
+      role: 'region',
+      'aria-label': 'Code block enhancer',
+    }),
 }))
 
 vi.mock('@/components/ImageEnhancer', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('div', { 'data-testid': 'image-enhancer' }),
+    React.createElement('div', {
+      role: 'region',
+      'aria-label': 'Image enhancer',
+    }),
 }))
 
 vi.mock('@/components/MermaidRenderer', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('div', { 'data-testid': 'mermaid-renderer' }),
+    React.createElement('div', {
+      role: 'region',
+      'aria-label': 'Mermaid renderer',
+    }),
 }))
 
 vi.mock('@/components/ReadingProgress', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('div', { 'data-testid': 'reading-progress' }),
+    React.createElement('div', {
+      role: 'progressbar',
+      'aria-label': 'Reading progress',
+    }),
 }))
 
 vi.mock('@/components/ScrollToTop', () => ({
   __esModule: true,
-  default: () => React.createElement('div', { 'data-testid': 'scroll-to-top' }),
+  default: () =>
+    React.createElement('button', {
+      role: 'button',
+      'aria-label': 'Scroll to top',
+    }),
 }))
 
 vi.mock('@/components/TableOfContents', () => ({
@@ -87,7 +106,7 @@ vi.mock('@/components/TableOfContents', () => ({
   }) =>
     React.createElement(
       'nav',
-      { 'data-testid': 'table-of-contents' },
+      { 'aria-label': 'Table of contents' },
       items.map(item =>
         React.createElement(
           'a',
@@ -172,7 +191,7 @@ vi.mock('next/link', () => ({
 }))
 
 // Import the component after mocks
-import BlogPostContent from '../BlogPostContent'
+import BlogPostContent from '@/components/BlogPostContent'
 
 const mockPost = {
   title: 'Test Blog Post',
@@ -228,12 +247,14 @@ const renderComponent = (overrides: Partial<ComponentProps> = {}) =>
 
 describe('BlogPostContent', () => {
   let originalClipboard: Clipboard | undefined
-  let originalNavigator: Navigator
+  let originalShare: typeof navigator.share
+  let originalCanShare: typeof navigator.canShare
 
   beforeEach(() => {
     vi.clearAllMocks()
     originalClipboard = navigator.clipboard
-    originalNavigator = navigator
+    originalShare = navigator.share
+    originalCanShare = navigator.canShare
 
     // Mock window.location
     Object.defineProperty(window, 'location', {
@@ -261,11 +282,11 @@ describe('BlogPostContent', () => {
       configurable: true,
     })
     Object.defineProperty(navigator, 'share', {
-      value: originalNavigator.share,
+      value: originalShare,
       configurable: true,
     })
     Object.defineProperty(navigator, 'canShare', {
-      value: originalNavigator.canShare,
+      value: originalCanShare,
       configurable: true,
     })
     vi.restoreAllMocks()
@@ -314,7 +335,7 @@ describe('BlogPostContent', () => {
 
     it('renders Back to Blog link', () => {
       renderComponent()
-      expect(screen.getByText('Back to Blog')).toBeInTheDocument()
+      expect(screen.getByText('post.backToBlog')).toBeInTheDocument()
     })
 
     it('renders post content via dangerouslySetInnerHTML', () => {
@@ -326,46 +347,60 @@ describe('BlogPostContent', () => {
   describe('sub-components', () => {
     it('renders ReadingProgress', () => {
       renderComponent()
-      expect(screen.getByTestId('reading-progress')).toBeInTheDocument()
+      expect(
+        screen.getByRole('progressbar', { name: /reading progress/i })
+      ).toBeInTheDocument()
     })
 
     it('renders CodeBlockEnhancer', () => {
       renderComponent()
-      expect(screen.getByTestId('code-block-enhancer')).toBeInTheDocument()
+      expect(
+        screen.getByRole('region', { name: /code block enhancer/i })
+      ).toBeInTheDocument()
     })
 
     it('renders MermaidRenderer', () => {
       renderComponent()
-      expect(screen.getByTestId('mermaid-renderer')).toBeInTheDocument()
+      expect(
+        screen.getByRole('region', { name: /mermaid renderer/i })
+      ).toBeInTheDocument()
     })
 
     it('renders ImageEnhancer', () => {
       renderComponent()
-      expect(screen.getByTestId('image-enhancer')).toBeInTheDocument()
+      expect(
+        screen.getByRole('region', { name: /image enhancer/i })
+      ).toBeInTheDocument()
     })
 
     it('renders ScrollToTop', () => {
       renderComponent()
-      expect(screen.getByTestId('scroll-to-top')).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /scroll to top/i })
+      ).toBeInTheDocument()
     })
   })
 
   describe('table of contents', () => {
     it('renders desktop ToC with items', () => {
       renderComponent()
-      const tocElements = screen.getAllByTestId('table-of-contents')
+      const tocElements = screen.getAllByRole('navigation', {
+        name: /table of contents/i,
+      })
       // Desktop + mobile
       expect(tocElements.length).toBeGreaterThanOrEqual(1)
     })
 
     it('does not render ToC when empty', () => {
       renderComponent({ tableOfContents: [] })
-      expect(screen.queryByTestId('table-of-contents')).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('navigation', { name: /table of contents/i })
+      ).not.toBeInTheDocument()
     })
 
     it('renders ToC heading text', () => {
       renderComponent()
-      const headings = screen.getAllByText('Table of Contents')
+      const headings = screen.getAllByText('post.tableOfContents')
       expect(headings.length).toBeGreaterThan(0)
     })
   })
@@ -385,7 +420,7 @@ describe('BlogPostContent', () => {
 
     it('renders related articles heading', () => {
       renderComponent()
-      expect(screen.getByText('Related Articles')).toBeInTheDocument()
+      expect(screen.getByText('post.relatedArticles')).toBeInTheDocument()
     })
   })
 
@@ -410,7 +445,7 @@ describe('BlogPostContent', () => {
 
     it('renders View Profile link', () => {
       renderComponent()
-      expect(screen.getByText('View Profile')).toBeInTheDocument()
+      expect(screen.getByText('post.authorBio.viewProfile')).toBeInTheDocument()
     })
 
     it('renders social icon links from serializable data', () => {
@@ -446,7 +481,7 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
@@ -478,7 +513,7 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
@@ -506,7 +541,7 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
@@ -584,7 +619,9 @@ describe('BlogPostContent', () => {
       fireEvent.click(anchorLink)
 
       await waitFor(() => {
-        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+        expect(
+          screen.getByText('post.notifications.shareError')
+        ).toBeInTheDocument()
       })
     })
 
@@ -697,7 +734,7 @@ describe('BlogPostContent', () => {
 
       renderComponent({ post: { ...mockPost, excerpt: '' } })
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
@@ -725,7 +762,7 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
@@ -753,11 +790,13 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+        expect(
+          screen.getByText('post.notifications.shareError')
+        ).toBeInTheDocument()
       })
     })
 
@@ -783,11 +822,13 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       await waitFor(() => {
-        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+        expect(
+          screen.getByText('post.notifications.shareError')
+        ).toBeInTheDocument()
       })
     })
 
@@ -800,7 +841,7 @@ describe('BlogPostContent', () => {
 
       renderComponent()
 
-      const shareButton = screen.getByTitle('Share this post')
+      const shareButton = screen.getByTitle('post.sharePost')
       fireEvent.click(shareButton)
 
       // Button should be disabled while sharing is in progress
