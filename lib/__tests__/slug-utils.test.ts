@@ -40,6 +40,22 @@ describe('slug-utils', () => {
     it('trims whitespace', () => {
       expect(extractCleanText('  <p>Text</p>  ')).toBe('Text')
     })
+
+    it('decodes valid numeric and hex HTML entities', () => {
+      expect(extractCleanText('&#65;&#66;')).toBe('AB')
+      expect(extractCleanText('&#x41;&#x42;')).toBe('AB')
+    })
+
+    it('preserves out-of-range hex entities instead of crashing', () => {
+      // sanitize-html replaces out-of-range entities with U+FFFD before our decoder
+      expect(extractCleanText('&#xDEADBEEF;')).toBe('\uFFFD')
+    })
+
+    it('preserves surrogate code point entities instead of crashing', () => {
+      // sanitize-html replaces surrogates with U+FFFD before our decoder
+      expect(extractCleanText('&#xD800;')).toBe('\uFFFD')
+      expect(extractCleanText('&#55296;')).toBe('\uFFFD')
+    })
   })
 
   describe('generateFallbackId', () => {
