@@ -19,7 +19,7 @@ excerpt: 'Max 160 chars for SEO'
 image: '/temporary-image.png'
 imageAlt: 'Alt text describing the subject the final image should depict'
 tags: ['tag1', 'tag2']
-category: 'DevOps|PowerShell|Azure|Infrastructure|Automation'
+category: 'Any category — reuse existing ones when possible (e.g., DevOps, PowerShell, Azure, Infrastructure, Automation)'
 ---
 ```
 
