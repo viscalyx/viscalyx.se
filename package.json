@@ -43,7 +43,7 @@
     "purge:install": "rimraf node_modules package-lock.json && npm cache clean --force && npm install"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.16.3",
+    "@opennextjs/cloudflare": "^1.16.5",
     "@tailwindcss/typography": "^0.5.19",
     "dompurify": "^3.3.1",
     "framer-motion": "^12.34.0",
