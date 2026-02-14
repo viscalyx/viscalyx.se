@@ -252,6 +252,19 @@
       }
     }
   },
+  "notFound": {
+    "title": "Page Not Found",
+    "heading": "Page Not Found",
+    "description": "Sorry, the page you are looking for does not exist or has been moved.",
+    "goHome": "Go to Homepage"
+  },
+  "error": {
+    "title": "Something Went Wrong",
+    "heading": "Something Went Wrong",
+    "description": "An unexpected error occurred. Please try again or return to the homepage.",
+    "tryAgain": "Try Again",
+    "goHome": "Go to Homepage"
+  },
   "cookieConsent": {
     "title": "We Use Cookies",
     "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies.",
