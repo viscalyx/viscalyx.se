@@ -5,6 +5,7 @@ import {
   getSerializableTeamMemberByName,
   getTeamMemberById,
   getTeamMemberByName,
+  getTeamMemberIds,
   getTeamMembers,
   socialIconMap,
 } from '@/lib/team'
@@ -349,6 +350,27 @@ describe('team utilities', () => {
       const initials = getAuthorInitials('Mary-Jane Watson')
 
       expect(initials).toBe('MW')
+    })
+  })
+
+  describe('getTeamMemberIds', () => {
+    it('should return an array of strings', () => {
+      const ids = getTeamMemberIds()
+
+      expect(Array.isArray(ids)).toBe(true)
+      ids.forEach(id => expect(typeof id).toBe('string'))
+    })
+
+    it('should include johlju', () => {
+      const ids = getTeamMemberIds()
+
+      expect(ids).toContain('johlju')
+    })
+
+    it('should return a non-empty array', () => {
+      const ids = getTeamMemberIds()
+
+      expect(ids.length).toBeGreaterThan(0)
     })
   })
 })

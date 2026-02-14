@@ -1,25 +1,45 @@
-'use client'
+import { SITE_URL } from '@/lib/constants'
+import { getTranslations } from 'next-intl/server'
 
-import { motion } from 'framer-motion'
-import Header from '@/components/Header'
-import Team from '@/components/Team'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
+import TeamPageClient from './TeamPageClient'
+
+import type { Metadata } from 'next'
+
+type Props = { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'team' })
+
+  const title = t('title')
+  const description = t('description')
+  const ogLocale = locale === 'sv' ? 'sv_SE' : 'en_US'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      type: 'website',
+      locale: ogLocale,
+      title,
+      description,
+      url: `${SITE_URL}/${locale}/team`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/${locale}/team`,
+      languages: {
+        en: `${SITE_URL}/en/team`,
+        sv: `${SITE_URL}/sv/team`,
+      },
+    },
+  }
+}
 
 export default function TeamPage() {
-  return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen"
-    >
-      <Header />
-      <div className="pt-20">
-        <Team />
-      </div>
-      <Footer />
-      <ScrollToTop />
-    </motion.main>
-  )
+  return <TeamPageClient />
 }

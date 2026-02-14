@@ -210,6 +210,11 @@ export function getSerializableTeamMemberByName(
   return toSerializable(member)
 }
 
+// Get all team member IDs without requiring translations (for generateStaticParams)
+export function getTeamMemberIds(): string[] {
+  return ['johlju']
+}
+
 // Generate initials from a name
 export function getAuthorInitials(name: string): string {
   return name

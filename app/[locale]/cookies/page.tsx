@@ -4,9 +4,40 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import { getStaticPageDates } from '@/lib/file-dates'
 import { useFormatter, useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
+
+import type { Metadata } from 'next'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()
+
+type Props = {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'cookies' })
+
+  const title = t('title')
+  const description = t('description')
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      locale: locale === 'sv' ? 'sv_SE' : 'en_US',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  }
+}
 
 export default function CookiesPage() {
   const translations = useTranslations('cookies')
