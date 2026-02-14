@@ -12,9 +12,17 @@ applyTo: 'components/**/*.tsx'
 4. Arrow function component
 5. `export default`
 
+## Client Islands
+
+Components in `components/` are typically `'use client'` islands that receive data as props from server page components in `app/`. Keep them focused on interactivity — data fetching and heavy processing belong in the server page.
+
+Examples:
+- `BlogPostGrid` — receives `allPosts` from server, handles client-side category filtering and pagination
+- `BlogPostContent` — receives post data and processed HTML from server, handles share, analytics, scroll tracking
+
 ## Required
 
-- `useTranslations('section')` for all UI text
+- `useTranslations('section')` for all UI text (client components only; server components use `getTranslations`)
 - `dark:` variants in Tailwind classes
 - Mobile-first: `sm:`, `md:`, `lg:` breakpoints
 - ARIA labels on interactive elements

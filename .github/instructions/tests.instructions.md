@@ -48,6 +48,29 @@ describe('ComponentName', () => {
 })
 ```
 
+## Server Component / Page Tests
+
+For async server components (`generateMetadata`, `generateStaticParams`, page default exports):
+
+```tsx
+// Mock next-intl/server for server components
+vi.mock('next-intl/server', () => ({
+  getTranslations: vi.fn(async () => ((key: string) => key)),
+  getFormatter: vi.fn(async () => ({
+    dateTime: (date: Date) => date.toISOString(),
+  })),
+}))
+
+// Test generateMetadata
+const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
+const metadata = await generateMetadata({ params })
+expect(metadata.title).toBeDefined()
+
+// Test generateStaticParams
+const result = generateStaticParams()
+expect(result).toEqual([{ slug: 'post-1' }, { slug: 'post-2' }])
+```
+
 ## Guidelines
 
 - Use `screen.getByRole()` over `getByTestId()`
