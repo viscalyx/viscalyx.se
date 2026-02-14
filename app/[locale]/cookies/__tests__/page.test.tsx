@@ -16,6 +16,11 @@ vi.mock('next-intl', () => ({
   }),
 }))
 
+// Mock constants
+vi.mock('@/lib/constants', () => ({
+  SITE_URL: 'https://example.com',
+}))
+
 // Mock child components
 vi.mock('@/components/Header', () => ({
   __esModule: true,
@@ -94,6 +99,24 @@ describe('CookiesPage', () => {
       })
       expect(metadata.twitter?.title).toBeDefined()
       expect(metadata.twitter?.description).toBeDefined()
+    })
+
+    it('includes alternates with canonical and languages', async () => {
+      const metadata: Metadata = await generateMetadata({
+        params: Promise.resolve({ locale: 'en' }),
+      })
+
+      expect(metadata.alternates?.canonical).toContain('/en/cookies')
+      expect(metadata.alternates?.languages).toHaveProperty('en')
+      expect(metadata.alternates?.languages).toHaveProperty('sv')
+    })
+
+    it('includes cookies page URL in openGraph', async () => {
+      const metadata: Metadata = await generateMetadata({
+        params: Promise.resolve({ locale: 'en' }),
+      })
+
+      expect(metadata.openGraph?.url).toContain('/en/cookies')
     })
   })
 

@@ -2,6 +2,7 @@ import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
+import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
 import { useFormatter, useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
@@ -30,11 +31,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: 'website',
       locale: locale === 'sv' ? 'sv_SE' : 'en_US',
+      url: `${SITE_URL}/${locale}/cookies`,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/${locale}/cookies`,
+      languages: {
+        en: `${SITE_URL}/en/cookies`,
+        sv: `${SITE_URL}/sv/cookies`,
+      },
     },
   }
 }

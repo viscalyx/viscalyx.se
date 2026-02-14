@@ -169,6 +169,15 @@ describe('TeamMemberPage', () => {
 
       expect(metadata.openGraph?.images).toBeUndefined()
     })
+
+    it('includes alternates with canonical and languages', async () => {
+      const params = Promise.resolve({ locale: 'en', memberId: 'johlju' })
+      const metadata: Metadata = await generateMetadata({ params })
+
+      expect(metadata.alternates?.canonical).toContain('/en/team/johlju')
+      expect(metadata.alternates?.languages).toHaveProperty('en')
+      expect(metadata.alternates?.languages).toHaveProperty('sv')
+    })
   })
 
   describe('TeamMemberPage component', () => {

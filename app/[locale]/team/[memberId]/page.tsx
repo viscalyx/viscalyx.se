@@ -52,6 +52,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
     },
+    alternates: {
+      canonical: `${SITE_URL}/${locale}/team/${memberId}`,
+      languages: {
+        en: `${SITE_URL}/en/team/${memberId}`,
+        sv: `${SITE_URL}/sv/team/${memberId}`,
+      },
+    },
   }
 }
 

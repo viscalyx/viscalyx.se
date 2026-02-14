@@ -86,6 +86,15 @@ test.describe('Page Metadata', () => {
         .getAttribute('content')
       expect(ogType).toBe('website')
     })
+
+    test('should have Twitter card metadata', async ({ page }) => {
+      await page.goto('/en/team')
+
+      const twitterCard = await page
+        .locator('meta[name="twitter:card"]')
+        .getAttribute('content')
+      expect(twitterCard).toBe('summary_large_image')
+    })
   })
 
   test.describe('Team Member Page', () => {
@@ -142,6 +151,15 @@ test.describe('Page Metadata', () => {
         .getAttribute('content')
       expect(ogType).toBe('website')
     })
+
+    test('should have Twitter card metadata', async ({ page }) => {
+      await page.goto('/en/cookies')
+
+      const twitterCard = await page
+        .locator('meta[name="twitter:card"]')
+        .getAttribute('content')
+      expect(twitterCard).toBe('summary_large_image')
+    })
   })
 
   test.describe('Privacy Page', () => {
@@ -170,6 +188,15 @@ test.describe('Page Metadata', () => {
         .getAttribute('content')
       expect(ogType).toBe('website')
     })
+
+    test('should have Twitter card metadata', async ({ page }) => {
+      await page.goto('/en/privacy')
+
+      const twitterCard = await page
+        .locator('meta[name="twitter:card"]')
+        .getAttribute('content')
+      expect(twitterCard).toBe('summary_large_image')
+    })
   })
 
   test.describe('Terms Page', () => {
@@ -197,6 +224,15 @@ test.describe('Page Metadata', () => {
         .locator('meta[property="og:type"]')
         .getAttribute('content')
       expect(ogType).toBe('website')
+    })
+
+    test('should have Twitter card metadata', async ({ page }) => {
+      await page.goto('/en/terms')
+
+      const twitterCard = await page
+        .locator('meta[name="twitter:card"]')
+        .getAttribute('content')
+      expect(twitterCard).toBe('summary_large_image')
     })
   })
 
