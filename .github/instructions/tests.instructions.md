@@ -55,7 +55,7 @@ For async server components (`generateMetadata`, `generateStaticParams`, page de
 ```tsx
 // Mock next-intl/server for server components
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(async () => ((key: string) => key)),
+  getTranslations: vi.fn(async () => (key: string) => key),
   getFormatter: vi.fn(async () => ({
     dateTime: (date: Date) => date.toISOString(),
   })),
