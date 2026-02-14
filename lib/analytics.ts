@@ -207,13 +207,18 @@ export function useBlogAnalytics(
       if (navigator.sendBeacon) {
         navigator.sendBeacon(
           '/api/analytics/blog-read',
-          JSON.stringify({
-            slug: dataRef.current.slug,
-            category: dataRef.current.category,
-            title: dataRef.current.title,
-            readProgress: maxScrollProgress.current,
-            timeSpent,
-          })
+          new Blob(
+            [
+              JSON.stringify({
+                slug: dataRef.current.slug,
+                category: dataRef.current.category,
+                title: dataRef.current.title,
+                readProgress: maxScrollProgress.current,
+                timeSpent,
+              }),
+            ],
+            { type: 'application/json' }
+          )
         )
       }
     }

@@ -251,14 +251,22 @@ describe('useBlogAnalytics', () => {
     })
 
     expect(navigator.sendBeacon).toHaveBeenCalledTimes(1)
-    expect(navigator.sendBeacon).toHaveBeenCalledWith(
-      '/api/analytics/blog-read',
-      expect.stringContaining('"readProgress":0')
-    )
 
-    // Verify that timeSpent is calculated correctly
+    // Verify payload is a Blob with application/json Content-Type
     const sendBeaconCall = vi.mocked(navigator.sendBeacon).mock.calls[0]
-    const requestBody = JSON.parse(sendBeaconCall[1] as string)
-    expect(requestBody.timeSpent).toBe(3)
+    expect(sendBeaconCall[0]).toBe('/api/analytics/blog-read')
+    const blob = sendBeaconCall[1] as Blob
+    expect(blob).toBeInstanceOf(Blob)
+    expect(blob.type).toBe('application/json')
+
+    // Verify payload contents by comparing blob size with expected JSON
+    const expectedPayload = JSON.stringify({
+      slug: 'test-blog-post',
+      category: 'Technology',
+      title: 'Test Blog Post',
+      readProgress: 0,
+      timeSpent: 3,
+    })
+    expect(blob.size).toBe(expectedPayload.length)
   })
 })
