@@ -233,6 +233,12 @@
       "anchorLink": {
         "ariaLabel": "Länk till avsnitt: {heading}",
         "title": "Kopiera länk till avsnitt: {heading}"
+      },
+      "image": {
+        "viewFullImage": "Visa i full storlek: {alt}",
+        "viewImage": "Visa bild i full storlek",
+        "imagePreview": "Förhandsgranskning av bild",
+        "closeImagePreview": "Stäng förhandsgranskning av bild"
       }
     },
     "fallback": {

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import React, { useEffect, useRef, useState } from 'react'
 import ImageModal from './ImageModal'
 
@@ -8,14 +9,17 @@ interface ImageEnhancerProps {
 }
 
 const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
+  const t = useTranslations('blog')
   const [modalState, setModalState] = useState<{
     isOpen: boolean
     imageSrc: string
     imageAlt: string
+    triggerElement: HTMLElement | null
   }>({
     isOpen: false,
     imageSrc: '',
     imageAlt: '',
+    triggerElement: null,
   })
 
   const enhancedRef = useRef(false)
@@ -32,6 +36,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         mouseEnter: () => void
         mouseLeave: () => void
         click: (event: Event) => void
+        keydown: (event: KeyboardEvent) => void
       }
     > | null = null
 
@@ -45,6 +50,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           mouseEnter: () => void
           mouseLeave: () => void
           click: (event: Event) => void
+          keydown: (event: KeyboardEvent) => void
         }
       >()
 
@@ -54,6 +60,9 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
 
         // Skip if already enhanced
         if (imageElement.dataset.enhanced === 'true') return
+
+        // Skip images wrapped in anchor tags to avoid button-inside-link
+        if (imageElement.closest('a')) return
 
         // Create handlers
         const handleMouseEnter = () => {
@@ -76,7 +85,15 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
             isOpen: true,
             imageSrc: imageElement.src,
             imageAlt: imageElement.alt || '',
+            triggerElement: imageElement,
           })
+        }
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            handleClick(event)
+          }
         }
 
         // Store handlers for cleanup
@@ -84,12 +101,25 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           mouseEnter: handleMouseEnter,
           mouseLeave: handleMouseLeave,
           click: handleClick,
+          keydown: handleKeyDown,
         })
 
         // Add event listeners
         imageElement.addEventListener('mouseenter', handleMouseEnter)
         imageElement.addEventListener('mouseleave', handleMouseLeave)
         imageElement.addEventListener('click', handleClick)
+        imageElement.addEventListener('keydown', handleKeyDown as EventListener)
+
+        // Add accessibility attributes
+        imageElement.setAttribute('role', 'button')
+        imageElement.setAttribute('tabindex', '0')
+        imageElement.setAttribute(
+          'aria-label',
+          imageElement.alt
+            ? t('accessibility.image.viewFullImage', { alt: imageElement.alt })
+            : t('accessibility.image.viewImage')
+        )
+        imageElement.style.cursor = 'pointer'
 
         // Mark as enhanced
         imageElement.dataset.enhanced = 'true'
@@ -108,6 +138,16 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           imageElement.removeEventListener('mouseenter', handlers.mouseEnter)
           imageElement.removeEventListener('mouseleave', handlers.mouseLeave)
           imageElement.removeEventListener('click', handlers.click)
+          imageElement.removeEventListener(
+            'keydown',
+            handlers.keydown as EventListener
+          )
+
+          // Remove accessibility attributes
+          imageElement.removeAttribute('role')
+          imageElement.removeAttribute('tabindex')
+          imageElement.removeAttribute('aria-label')
+          imageElement.style.cursor = ''
 
           // Reset the enhanced flag
           delete imageElement.dataset.enhanced
@@ -115,13 +155,14 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         imageHandlers.clear()
       }
     }
-  }, [contentRef])
+  }, [contentRef, t])
 
   const closeModal = () => {
     setModalState({
       isOpen: false,
       imageSrc: '',
       imageAlt: '',
+      triggerElement: null,
     })
   }
 
@@ -131,6 +172,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
       onClose={closeModal}
       imageSrc={modalState.imageSrc}
       imageAlt={modalState.imageAlt}
+      triggerElement={modalState.triggerElement}
     />
   )
 }

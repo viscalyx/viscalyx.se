@@ -233,6 +233,12 @@
       "anchorLink": {
         "ariaLabel": "Link to section: {heading}",
         "title": "Copy link to section: {heading}"
+      },
+      "image": {
+        "viewFullImage": "View full size: {alt}",
+        "viewImage": "View full size image",
+        "imagePreview": "Image preview",
+        "closeImagePreview": "Close image preview"
       }
     },
     "fallback": {
