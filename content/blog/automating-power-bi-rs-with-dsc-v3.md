@@ -3,8 +3,8 @@ title: 'Automating Power BI Report Server with DSC v3 – Three Invocation Patte
 date: '2025-07-20'
 author: 'Johan Ljunggren'
 excerpt: 'Explore three advanced patterns for automating Power BI Report Server deployments using DSC v3: imperative, declarative, and Winget-based approaches.'
-image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop&crop=center'
-imageAlt: 'Server racks filled with networking cables and glowing indicator lights in a data center.'
+image: '/server-racks-green-leds-mesh-data-center.png'
+imageAlt: 'Front view of server racks behind mesh doors, glowing with green LEDs and threaded with orange and blue network cables in a dark data center.'
 tags:
   - 'SQL Server'
   - 'DSC'

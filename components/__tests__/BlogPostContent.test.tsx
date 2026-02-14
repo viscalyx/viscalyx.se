@@ -131,39 +131,43 @@ vi.mock('@/lib/team', () => ({
     Email: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-email' },
+        { className, role: 'img', 'aria-label': 'Email' },
         'Email'
       ),
     LinkedIn: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-linkedin' },
+        { className, role: 'img', 'aria-label': 'LinkedIn' },
         'LinkedIn'
       ),
     GitHub: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-github' },
+        { className, role: 'img', 'aria-label': 'GitHub' },
         'GitHub'
       ),
     Bluesky: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-bluesky' },
+        { className, role: 'img', 'aria-label': 'Bluesky' },
         'Bluesky'
       ),
     Mastodon: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-mastodon' },
+        { className, role: 'img', 'aria-label': 'Mastodon' },
         'Mastodon'
       ),
     X: ({ className }: { className?: string }) =>
-      React.createElement('span', { className, 'data-testid': 'icon-x' }, 'X'),
+      React.createElement(
+        'span',
+        { className, role: 'img', 'aria-label': 'X' },
+        'X'
+      ),
     Discord: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
-        { className, 'data-testid': 'icon-discord' },
+        { className, role: 'img', 'aria-label': 'Discord' },
         'Discord'
       ),
   },
@@ -450,9 +454,9 @@ describe('BlogPostContent', () => {
 
     it('renders social icon links from serializable data', () => {
       renderComponent()
-      expect(screen.getByTestId('icon-linkedin')).toBeInTheDocument()
-      expect(screen.getByTestId('icon-github')).toBeInTheDocument()
-      expect(screen.getByTestId('icon-email')).toBeInTheDocument()
+      expect(screen.getByRole('img', { name: 'LinkedIn' })).toBeInTheDocument()
+      expect(screen.getByRole('img', { name: 'GitHub' })).toBeInTheDocument()
+      expect(screen.getByRole('img', { name: 'Email' })).toBeInTheDocument()
     })
 
     it('renders author initials when no team member found', () => {
@@ -888,14 +892,16 @@ describe('BlogPostContent', () => {
 
     it('renders social links with correct target for mailto links', () => {
       renderComponent()
-      const emailLink = screen.getByTestId('icon-email').closest('a')
+      const emailLink = screen.getByRole('img', { name: 'Email' }).closest('a')
       expect(emailLink).toHaveAttribute('target', '_self')
       expect(emailLink).not.toHaveAttribute('rel')
     })
 
     it('renders social links with _blank target for external links', () => {
       renderComponent()
-      const linkedInLink = screen.getByTestId('icon-linkedin').closest('a')
+      const linkedInLink = screen
+        .getByRole('img', { name: 'LinkedIn' })
+        .closest('a')
       expect(linkedInLink).toHaveAttribute('target', '_blank')
       expect(linkedInLink).toHaveAttribute('rel', 'noopener noreferrer')
     })
@@ -904,7 +910,9 @@ describe('BlogPostContent', () => {
       renderComponent({
         teamMember: { ...mockTeamMember, socialLinks: [] },
       })
-      expect(screen.queryByTestId('icon-linkedin')).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('img', { name: 'LinkedIn' })
+      ).not.toBeInTheDocument()
     })
 
     it('skips social icon when icon name not in map', () => {
@@ -917,7 +925,9 @@ describe('BlogPostContent', () => {
         },
       })
       // Should not render any social icons
-      expect(screen.queryByTestId('icon-linkedin')).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('img', { name: 'LinkedIn' })
+      ).not.toBeInTheDocument()
     })
   })
 })

@@ -38,7 +38,7 @@ export const metadata = {
     siteName: 'Viscalyx',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&h=630&fit=crop&crop=center',
+        url: '/laptop-rising-market-chart-modern-office.png',
         width: 1200,
         height: 630,
         alt: 'Viscalyx - Automation Consulting',
@@ -50,9 +50,7 @@ export const metadata = {
     title: 'Viscalyx - Automation Consulting for Developers & IT Professionals',
     description:
       'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation. Transform your workflows with our proven solutions.',
-    images: [
-      'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&h=630&fit=crop&crop=center',
-    ],
+    images: ['/laptop-rising-market-chart-modern-office.png'],
   },
   robots: {
     index: true,

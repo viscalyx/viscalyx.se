@@ -69,6 +69,10 @@ vi.mock('@/lib/blog-data.json', () => ({
   default: mockBlogData,
 }))
 
+beforeEach(() => {
+  vi.clearAllMocks()
+})
+
 describe('getAllPostSlugs', () => {
   it('returns all slugs except template when multiple exist', () => {
     const slugs = getAllPostSlugs()

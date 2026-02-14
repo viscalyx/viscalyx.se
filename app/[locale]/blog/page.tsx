@@ -105,7 +105,7 @@ export default async function BlogPage({ params }: Props) {
             </h2>
 
             <Link
-              href={`/blog/${displayFeaturedPost.slug}` as Route}
+              href={`/${locale}/blog/${displayFeaturedPost.slug}` as Route}
               className="block"
             >
               <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 transform">

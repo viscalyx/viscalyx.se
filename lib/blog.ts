@@ -135,7 +135,8 @@ export function getRelatedPosts(
     const normalizedCategory = category.toLowerCase()
     relatedPosts = relatedPosts.filter(
       post =>
-        post.category === category || post.tags.includes(normalizedCategory)
+        post.category?.toLowerCase() === normalizedCategory ||
+        post.tags.includes(normalizedCategory)
     )
   }
 
