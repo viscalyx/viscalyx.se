@@ -17,7 +17,21 @@
  *   public/og-blog-sv.png   — OG image for the Swedish blog page
  */
 
-const sharp = require('sharp')
+let sharp
+try {
+  sharp = require('sharp')
+} catch {
+  console.error(
+    '\n\x1b[31mError: "sharp" is not installed.\x1b[0m\n\n' +
+      'This script requires the sharp package to generate OG images.\n' +
+      'Install it manually and re-run:\n\n' +
+      '  npm install sharp\n\n' +
+      'sharp is intentionally not a project devDependency because this\n' +
+      'script is run rarely. You can remove it afterwards with:\n\n' +
+      '  npm uninstall sharp\n'
+  )
+  process.exit(1)
+}
 const fs = require('fs')
 const path = require('path')
 
@@ -47,6 +61,9 @@ function getLocaleStrings(locale) {
   const filePath = path.join(__dirname, '..', 'messages', `${locale}.json`)
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   const blog = messages.blog
+  if (!blog?.og?.title || !blog?.og?.tagline) {
+    throw new Error(`Missing blog.og.title or blog.og.tagline in messages/${locale}.json`)
+  }
   return {
     title: blog.og.title,
     tagline: blog.og.tagline,
@@ -169,7 +186,10 @@ async function generateBlogOG(locale) {
   )
 }
 
-Promise.all(LOCALES.map(locale => generateBlogOG(locale))).catch(err => {
-  console.error('Failed to generate OG images:', err)
-  process.exit(1)
+Promise.allSettled(LOCALES.map(locale => generateBlogOG(locale))).then(results => {
+  const failures = results.filter(r => r.status === 'rejected')
+  if (failures.length > 0) {
+    failures.forEach(f => console.error('OG image generation failed:', f.reason))
+    process.exit(1)
+  }
 })
