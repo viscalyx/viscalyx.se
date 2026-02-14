@@ -938,6 +938,11 @@ joined with `/.ssh-agent-fallback.sock`.
 
 1. **Docker Desktop** (or Docker Engine + Docker Compose)
    - Minimum version: Docker 20.10+
+   - **Memory**: Certain development scenarios—such as running integration tests
+     (Playwright) alongside the Next.js dev server—can consume up to **11 GB of
+     memory** inside the container. In Docker Desktop, go to
+     **Settings → Resources → Memory** and allocate at least **12 GB** to avoid
+     out-of-memory failures.
    - Download:
 
      <!-- markdownlint-disable MD013 -->
