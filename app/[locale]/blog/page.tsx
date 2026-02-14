@@ -113,7 +113,10 @@ export default async function BlogPage({ params }: Props) {
                   <div className="relative h-64 lg:h-full">
                     <Image
                       src={displayFeaturedPost.image}
-                      alt={displayFeaturedPost.imageAlt || displayFeaturedPost.title}
+                      alt={
+                        displayFeaturedPost.imageAlt ||
+                        displayFeaturedPost.title
+                      }
                       fill
                       sizes="100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"

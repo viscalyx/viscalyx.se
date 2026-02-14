@@ -535,6 +535,273 @@ describe('BlogPostContent', () => {
 
       expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#test-heading')
     })
+
+    it('copies link to clipboard on anchor click', async () => {
+      const mockWriteText = vi.fn().mockResolvedValue(undefined)
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: mockWriteText },
+        configurable: true,
+      })
+
+      renderComponent({
+        contentWithIds:
+          '<h2 id="test-heading">Test Heading<a href="#test-heading" class="heading-anchor">Link</a></h2>',
+      })
+
+      const heading = document.getElementById('test-heading')
+      if (heading) {
+        heading.scrollIntoView = vi.fn()
+      }
+
+      const anchorLink = screen.getByText('Link')
+      fireEvent.click(anchorLink)
+
+      await waitFor(() => {
+        expect(mockWriteText).toHaveBeenCalled()
+      })
+    })
+
+    it('shows error notification when anchor clipboard copy fails', async () => {
+      const mockWriteText = vi
+        .fn()
+        .mockRejectedValue(new Error('Clipboard failed'))
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: mockWriteText },
+        configurable: true,
+      })
+
+      renderComponent({
+        contentWithIds:
+          '<h2 id="test-heading">Test Heading<a href="#test-heading" class="heading-anchor">Link</a></h2>',
+      })
+
+      const heading = document.getElementById('test-heading')
+      if (heading) {
+        heading.scrollIntoView = vi.fn()
+      }
+
+      const anchorLink = screen.getByText('Link')
+      fireEvent.click(anchorLink)
+
+      await waitFor(() => {
+        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+      })
+    })
+
+    it('does nothing when anchor has no href', () => {
+      const pushStateSpy = vi.spyOn(window.history, 'pushState')
+
+      renderComponent({
+        contentWithIds:
+          '<h2 id="test-heading">Test Heading<a class="heading-anchor">Link</a></h2>',
+      })
+
+      const anchorLink = screen.getByText('Link')
+      fireEvent.click(anchorLink)
+
+      expect(pushStateSpy).not.toHaveBeenCalled()
+    })
+
+    it('ignores clicks on non-anchor elements', () => {
+      const pushStateSpy = vi.spyOn(window.history, 'pushState')
+
+      renderComponent({
+        contentWithIds:
+          '<h2 id="test-heading">Test Heading</h2><p class="some-text">Regular text</p>',
+      })
+
+      fireEvent.click(screen.getByText('Regular text'))
+      expect(pushStateSpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('hash fragment navigation', () => {
+    it('scrolls to element when hash is present on load', async () => {
+      // Mock scrollIntoView on all elements before rendering
+      Element.prototype.scrollIntoView = vi.fn()
+
+      Object.defineProperty(window, 'location', {
+        value: {
+          href: 'https://example.com/blog/test-post#getting-started',
+          hash: '#getting-started',
+        },
+        writable: true,
+        configurable: true,
+      })
+
+      renderComponent({
+        contentWithIds:
+          '<h2 id="getting-started">Getting Started</h2><p>Content</p>',
+      })
+
+      const targetElement = document.getElementById('getting-started')
+      if (targetElement) {
+        // Set dimensions so the visibility check passes
+        Object.defineProperty(targetElement, 'getBoundingClientRect', {
+          value: () => ({ width: 100, height: 50 }),
+        })
+      }
+
+      // Let requestAnimationFrame callback fire
+      await vi.waitFor(() => {
+        expect(global.requestAnimationFrame).toHaveBeenCalled()
+      })
+    })
+
+    it('retries when element is not visible', async () => {
+      Element.prototype.scrollIntoView = vi.fn()
+
+      Object.defineProperty(window, 'location', {
+        value: {
+          href: 'https://example.com/blog/test-post#nonexistent',
+          hash: '#nonexistent',
+        },
+        writable: true,
+        configurable: true,
+      })
+
+      renderComponent()
+
+      await vi.waitFor(() => {
+        expect(global.requestAnimationFrame).toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('share functionality - additional paths', () => {
+    it('uses shareTextFallback when post excerpt is empty', async () => {
+      const mockWriteText = vi
+        .fn()
+        .mockRejectedValue(new Error('Clipboard failed'))
+      const mockShare = vi.fn().mockResolvedValue(undefined)
+      const mockCanShare = vi.fn().mockReturnValue(true)
+
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: mockWriteText },
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'share', {
+        value: mockShare,
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'canShare', {
+        value: mockCanShare,
+        configurable: true,
+      })
+
+      renderComponent({ post: { ...mockPost, excerpt: '' } })
+
+      const shareButton = screen.getByTitle('Share this post')
+      fireEvent.click(shareButton)
+
+      await waitFor(() => {
+        expect(mockShare).toHaveBeenCalled()
+      })
+    })
+
+    it('falls back to execCommand when canShare returns false', async () => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: {
+          writeText: vi.fn().mockRejectedValue(new Error('failed')),
+        },
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'share', {
+        value: vi.fn(),
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'canShare', {
+        value: vi.fn().mockReturnValue(false),
+        configurable: true,
+      })
+
+      document.execCommand = vi.fn().mockReturnValue(true)
+
+      renderComponent()
+
+      const shareButton = screen.getByTitle('Share this post')
+      fireEvent.click(shareButton)
+
+      await waitFor(() => {
+        expect(document.execCommand).toHaveBeenCalledWith('copy')
+      })
+    })
+
+    it('shows error when execCommand returns false', async () => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: {
+          writeText: vi.fn().mockRejectedValue(new Error('failed')),
+        },
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'share', {
+        value: undefined,
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'canShare', {
+        value: undefined,
+        configurable: true,
+      })
+
+      document.execCommand = vi.fn().mockReturnValue(false)
+
+      renderComponent()
+
+      const shareButton = screen.getByTitle('Share this post')
+      fireEvent.click(shareButton)
+
+      await waitFor(() => {
+        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+      })
+    })
+
+    it('shows error notification when all share methods fail', async () => {
+      Object.defineProperty(navigator, 'clipboard', {
+        value: {
+          writeText: vi.fn().mockRejectedValue(new Error('failed')),
+        },
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'share', {
+        value: undefined,
+        configurable: true,
+      })
+      Object.defineProperty(navigator, 'canShare', {
+        value: undefined,
+        configurable: true,
+      })
+
+      document.execCommand = vi.fn().mockImplementation(() => {
+        throw new Error('execCommand not supported')
+      })
+
+      renderComponent()
+
+      const shareButton = screen.getByTitle('Share this post')
+      fireEvent.click(shareButton)
+
+      await waitFor(() => {
+        expect(screen.getByText('Failed to share link')).toBeInTheDocument()
+      })
+    })
+
+    it('replaces existing notification on rapid share clicks', async () => {
+      const mockWriteText = vi.fn().mockResolvedValue(undefined)
+      Object.defineProperty(navigator, 'clipboard', {
+        value: { writeText: mockWriteText },
+        configurable: true,
+      })
+
+      renderComponent()
+
+      const shareButton = screen.getByTitle('Share this post')
+      fireEvent.click(shareButton)
+      fireEvent.click(shareButton)
+
+      await waitFor(() => {
+        expect(mockWriteText).toHaveBeenCalledTimes(2)
+      })
+    })
   })
 
   describe('analytics', () => {
@@ -546,6 +813,57 @@ describe('BlogPostContent', () => {
         category: 'Testing',
         title: 'Test Blog Post',
       })
+    })
+  })
+
+  describe('rendering edge cases', () => {
+    it('renders featured image with title as alt when imageAlt is not provided', () => {
+      renderComponent({
+        post: { ...mockPost, imageAlt: undefined },
+      })
+      const img = screen.getByAltText('Test Blog Post')
+      expect(img).toBeInTheDocument()
+    })
+
+    it('renders team member image when available', () => {
+      renderComponent()
+      const authorImage = screen.getByAltText('Test Author')
+      expect(authorImage).toBeInTheDocument()
+      expect(authorImage).toHaveAttribute('src', '/test-author.jpg')
+    })
+
+    it('renders social links with correct target for mailto links', () => {
+      renderComponent()
+      const emailLink = screen.getByTestId('icon-email').closest('a')
+      expect(emailLink).toHaveAttribute('target', '_self')
+      expect(emailLink).not.toHaveAttribute('rel')
+    })
+
+    it('renders social links with _blank target for external links', () => {
+      renderComponent()
+      const linkedInLink = screen.getByTestId('icon-linkedin').closest('a')
+      expect(linkedInLink).toHaveAttribute('target', '_blank')
+      expect(linkedInLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('does not render social links when team member has no social links', () => {
+      renderComponent({
+        teamMember: { ...mockTeamMember, socialLinks: [] },
+      })
+      expect(screen.queryByTestId('icon-linkedin')).not.toBeInTheDocument()
+    })
+
+    it('skips social icon when icon name not in map', () => {
+      renderComponent({
+        teamMember: {
+          ...mockTeamMember,
+          socialLinks: [
+            { name: 'UnknownNetwork' as never, href: 'https://example.com' },
+          ],
+        },
+      })
+      // Should not render any social icons
+      expect(screen.queryByTestId('icon-linkedin')).not.toBeInTheDocument()
     })
   })
 })

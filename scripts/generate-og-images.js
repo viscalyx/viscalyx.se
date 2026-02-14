@@ -62,7 +62,9 @@ function getLocaleStrings(locale) {
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   const blog = messages.blog
   if (!blog?.og?.title || !blog?.og?.tagline) {
-    throw new Error(`Missing blog.og.title or blog.og.tagline in messages/${locale}.json`)
+    throw new Error(
+      `Missing blog.og.title or blog.og.tagline in messages/${locale}.json`
+    )
   }
   return {
     title: blog.og.title,
@@ -186,10 +188,14 @@ async function generateBlogOG(locale) {
   )
 }
 
-Promise.allSettled(LOCALES.map(locale => generateBlogOG(locale))).then(results => {
-  const failures = results.filter(r => r.status === 'rejected')
-  if (failures.length > 0) {
-    failures.forEach(f => console.error('OG image generation failed:', f.reason))
-    process.exit(1)
+Promise.allSettled(LOCALES.map(locale => generateBlogOG(locale))).then(
+  results => {
+    const failures = results.filter(r => r.status === 'rejected')
+    if (failures.length > 0) {
+      failures.forEach(f =>
+        console.error('OG image generation failed:', f.reason)
+      )
+      process.exit(1)
+    }
   }
-})
+)

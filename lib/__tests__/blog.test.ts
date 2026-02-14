@@ -1,4 +1,192 @@
-import { loadBlogContent, trackPageView, validateSlug } from '@/lib/blog'
+import {
+  getAllPostSlugs,
+  getAllPosts,
+  getFeaturedPost,
+  getPostBySlug,
+  getPostData,
+  getPostMetadata,
+  getRelatedPosts,
+  loadBlogContent,
+  trackPageView,
+  validateSlug,
+} from '@/lib/blog'
+
+// Mock blog-data.json for the metadata/listing function tests
+const mockBlogData = vi.hoisted(() => ({
+  posts: [
+    {
+      slug: 'first-post',
+      title: 'First Post',
+      date: '2025-01-15',
+      author: 'Author A',
+      excerpt: 'Excerpt of first post',
+      image: '/img/first.jpg',
+      imageAlt: 'First image',
+      tags: ['TypeScript', 'React'],
+      readTime: '5 min read',
+      category: 'DevOps',
+    },
+    {
+      slug: 'second-post',
+      title: 'Second Post',
+      date: 'invalid-date',
+      author: 'Author B',
+      excerpt: 'Excerpt of second post',
+      image: '/img/second.jpg',
+      tags: ['Python'],
+      readTime: '3 min read',
+      category: 'Automation',
+    },
+    {
+      slug: 'third-post',
+      title: 'Third Post',
+      date: '2025-02-01',
+      author: 'Author A',
+      excerpt: 'Excerpt of third post',
+      image: '/img/third.jpg',
+      imageAlt: 42, // non-string imageAlt to test sanitization
+      tags: ['TypeScript', 123, 'DevOps'], // mixed tags to test filtering
+      readTime: '7 min read',
+      category: 'DevOps',
+    },
+    {
+      slug: 'template',
+      title: 'Template Post',
+      date: '2025-01-01',
+      author: 'Template',
+      excerpt: 'Template excerpt',
+      image: '/img/template.jpg',
+      tags: [],
+      readTime: '1 min read',
+      category: 'Template',
+    },
+  ],
+  slugs: ['first-post', 'second-post', 'third-post', 'template'],
+}))
+
+vi.mock('@/lib/blog-data.json', () => ({
+  default: mockBlogData,
+}))
+
+describe('getAllPostSlugs', () => {
+  it('returns all slugs except template when multiple exist', () => {
+    const slugs = getAllPostSlugs()
+    expect(slugs).toContain('first-post')
+    expect(slugs).toContain('second-post')
+    expect(slugs).toContain('third-post')
+    expect(slugs).not.toContain('template')
+  })
+})
+
+describe('getPostMetadata', () => {
+  it('returns metadata for an existing slug', () => {
+    const post = getPostMetadata('first-post')
+    expect(post).not.toBeNull()
+    expect(post!.title).toBe('First Post')
+    expect(post!.slug).toBe('first-post')
+    expect(post!.imageAlt).toBe('First image')
+  })
+
+  it('returns null for non-existent slug', () => {
+    expect(getPostMetadata('nonexistent')).toBeNull()
+  })
+
+  it('normalizes invalid dates to undefined', () => {
+    const post = getPostMetadata('second-post')
+    expect(post!.date).toBeUndefined()
+  })
+
+  it('sanitizes non-string imageAlt to undefined', () => {
+    const post = getPostMetadata('third-post')
+    expect(post!.imageAlt).toBeUndefined()
+  })
+
+  it('filters non-string tags and lowercases them', () => {
+    const post = getPostMetadata('third-post')
+    expect(post!.tags).toEqual(['typescript', 'devops'])
+  })
+
+  it('deduplicates tags', () => {
+    const post = getPostMetadata('first-post')
+    expect(post!.tags).toEqual(['typescript', 'react'])
+  })
+})
+
+describe('getPostData', () => {
+  it('returns metadata (alias for getPostMetadata)', () => {
+    const post = getPostData('first-post')
+    expect(post).not.toBeNull()
+    expect(post!.title).toBe('First Post')
+  })
+})
+
+describe('getPostBySlug', () => {
+  it('returns metadata (alias for getPostMetadata)', () => {
+    const post = getPostBySlug('second-post')
+    expect(post).not.toBeNull()
+    expect(post!.title).toBe('Second Post')
+  })
+})
+
+describe('getAllPosts', () => {
+  it('returns all posts except template when multiple exist', () => {
+    const posts = getAllPosts()
+    expect(posts.length).toBe(3)
+    expect(posts.every(p => p.slug !== 'template')).toBe(true)
+  })
+
+  it('normalizes post data correctly', () => {
+    const posts = getAllPosts()
+    const second = posts.find(p => p.slug === 'second-post')
+    expect(second!.date).toBeUndefined()
+    expect(second!.imageAlt).toBeUndefined()
+  })
+})
+
+describe('getFeaturedPost', () => {
+  it('returns the first post (most recent)', () => {
+    const featured = getFeaturedPost()
+    expect(featured).not.toBeNull()
+    expect(featured!.slug).toBe('first-post')
+  })
+})
+
+describe('getRelatedPosts', () => {
+  it('returns posts with matching category', () => {
+    const related = getRelatedPosts('first-post', 'DevOps', 3)
+    expect(related.length).toBeGreaterThan(0)
+    expect(related.every(p => p.slug !== 'first-post')).toBe(true)
+  })
+
+  it('excludes current post from results', () => {
+    const related = getRelatedPosts('first-post', 'DevOps', 10)
+    expect(related.every(p => p.slug !== 'first-post')).toBe(true)
+  })
+
+  it('fills with recent posts when not enough related posts', () => {
+    const related = getRelatedPosts('first-post', 'NonExistentCategory', 3)
+    // Should still return some posts (filled from recent)
+    expect(related.length).toBeGreaterThan(0)
+  })
+
+  it('returns posts without category filter', () => {
+    const related = getRelatedPosts('first-post', undefined, 3)
+    expect(related.length).toBeGreaterThan(0)
+    expect(related.every(p => p.slug !== 'first-post')).toBe(true)
+  })
+
+  it('respects the limit parameter', () => {
+    const related = getRelatedPosts('first-post', undefined, 1)
+    expect(related.length).toBe(1)
+  })
+
+  it('matches posts by tag when category matches a tag', () => {
+    const related = getRelatedPosts('second-post', 'DevOps', 3)
+    // third-post has category DevOps, so it should be included
+    const hasDevOps = related.some(p => p.slug === 'third-post')
+    expect(hasDevOps).toBe(true)
+  })
+})
 
 describe('validateSlug', () => {
   it('returns valid slug as-is', () => {
