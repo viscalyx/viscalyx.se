@@ -3,22 +3,6 @@ import { Trash2 } from 'lucide-react'
 import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({
-      children,
-      ...props
-    }: {
-      children: React.ReactNode
-      [key: string]: any
-    }) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}))
-
 describe('ConfirmationModal', () => {
   const defaultProps = {
     isOpen: true,

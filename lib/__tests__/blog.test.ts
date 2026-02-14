@@ -448,3 +448,95 @@ describe('trackPageView with mocked Cloudflare analytics', () => {
     expect(mockWriteDataPoint).not.toHaveBeenCalled()
   })
 })
+
+// ---------------------------------------------------------------------------
+// Additional edge-case tests (HI-08 gap coverage)
+// ---------------------------------------------------------------------------
+
+describe('validateBlogData edge cases (via getPostMetadata)', () => {
+  it('preserves imageAlt when it is a valid string (HI-12 regression)', () => {
+    const post = getPostMetadata('first-post')
+    expect(post).not.toBeNull()
+    expect(post!.imageAlt).toBe('First image')
+  })
+
+  it('handles posts with empty tags array gracefully', () => {
+    const post = getPostMetadata('template')
+    expect(post).not.toBeNull()
+    expect(post!.tags).toEqual([])
+  })
+
+  it('preserves category when it is a valid string', () => {
+    const post = getPostMetadata('second-post')
+    expect(post!.category).toBe('Automation')
+  })
+
+  it('returns undefined imageAlt when original value is missing', () => {
+    const post = getPostMetadata('second-post')
+    expect(post!.imageAlt).toBeUndefined()
+  })
+})
+
+describe('getRelatedPosts edge cases', () => {
+  it('returns empty array when limit is 0', () => {
+    const related = getRelatedPosts('first-post', 'NonExistent', 0)
+    expect(related).toEqual([])
+  })
+
+  it('does not duplicate posts in fill logic', () => {
+    const related = getRelatedPosts('first-post', 'DevOps', 10)
+    const slugs = related.map(p => p.slug)
+    const uniqueSlugs = new Set(slugs)
+    expect(slugs.length).toBe(uniqueSlugs.size)
+  })
+
+  it('never includes current post even when filling', () => {
+    const related = getRelatedPosts('first-post', undefined, 10)
+    expect(related.every(p => p.slug !== 'first-post')).toBe(true)
+  })
+
+  it('returns at most limit posts when many match', () => {
+    const related = getRelatedPosts('second-post', 'DevOps', 1)
+    expect(related).toHaveLength(1)
+  })
+})
+
+describe('loadBlogContent edge cases', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns null when JSON parse fails on filesystem fallback', async () => {
+    mockReadFile.mockResolvedValueOnce('not valid json{{{')
+    const result = await loadBlogContent('bad-json-post')
+    expect(result).toBeNull()
+  })
+
+  it('returns null for slugs that are technically valid but have no file', async () => {
+    mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
+    const result = await loadBlogContent('---')
+    expect(result).toBeNull()
+  })
+})
+
+describe('sanitizeCategory edge cases', () => {
+  it('accepts single character categories', () => {
+    expect(sanitizeCategory('A')).toBe('A')
+  })
+
+  it('rejects category with only whitespace after trim', () => {
+    expect(sanitizeCategory('   \t  ')).toBe('uncategorized')
+  })
+
+  it('rejects categories with unicode special characters', () => {
+    expect(sanitizeCategory('café☕')).toBe('uncategorized')
+  })
+
+  it('accepts categories with underscores', () => {
+    expect(sanitizeCategory('my_category')).toBe('my_category')
+  })
+
+  it('accepts categories with numbers', () => {
+    expect(sanitizeCategory('Web3 DevOps')).toBe('Web3 DevOps')
+  })
+})

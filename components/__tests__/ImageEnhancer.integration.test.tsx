@@ -12,43 +12,6 @@ vi.mock('next-intl', () => {
   return { useTranslations: () => translator }
 })
 
-// Override the global framer-motion mock to include AnimatePresence
-vi.mock('framer-motion', () => {
-  const React = require('react')
-
-  interface MotionProps {
-    children?: React.ReactNode
-    initial?: Record<string, unknown>
-    animate?: Record<string, unknown>
-    exit?: Record<string, unknown>
-    transition?: Record<string, unknown>
-    [key: string]: unknown
-  }
-
-  const forward = (tag: string) => {
-    const ForwardedComponent = (props: MotionProps) => {
-      const { children, initial, animate, exit, transition, ...rest } = props
-      void initial
-      void animate
-      void exit
-      void transition
-      return React.createElement(tag, rest, children)
-    }
-    ForwardedComponent.displayName = `Motion${tag.charAt(0).toUpperCase() + tag.slice(1)}`
-    return ForwardedComponent
-  }
-
-  return {
-    motion: {
-      div: forward('div'),
-      button: forward('button'),
-      a: forward('a'),
-    },
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-    useInView: () => true,
-  }
-})
-
 // Do NOT mock ImageModal — use the real component for integration tests
 
 // Test component that provides a ref with blog content

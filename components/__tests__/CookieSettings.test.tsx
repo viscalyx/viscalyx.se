@@ -72,22 +72,6 @@ vi.mock('next-intl', () => ({
   },
 }))
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({
-      children,
-      ...props
-    }: {
-      children: React.ReactNode
-      [key: string]: any
-    }) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}))
-
 describe('CookieSettings', () => {
   beforeEach(() => {
     vi.clearAllMocks()

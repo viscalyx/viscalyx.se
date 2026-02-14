@@ -9,29 +9,6 @@ vi.mock('next-intl', () => ({
   }),
 }))
 
-// Mock framer-motion
-vi.mock('framer-motion', () => {
-  const motion: Record<string, React.FC<Record<string, unknown>>> = {}
-  ;['div', 'section', 'button', 'span', 'h1', 'h2', 'p', 'main'].forEach(
-    tag => {
-      motion[tag] = ({
-        children,
-        initial: _initial,
-        animate: _animate,
-        transition: _transition,
-        whileHover: _whileHover,
-        ...props
-      }: Record<string, unknown>) =>
-        React.createElement(tag, props, children as React.ReactNode)
-    }
-  )
-  return {
-    motion,
-    useInView: () => true,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-  }
-})
-
 // Mock child components
 vi.mock('@/components/Header', () => ({
   __esModule: true,

@@ -1,39 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
-import type { AnimatePresenceProps } from 'framer-motion'
-import React from 'react' // Import React
+import React from 'react'
 import About from '../About'
 
 // Mock translations
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
-}))
-
-// Mock framer-motion to filter out animation props and provide necessary tags
-vi.mock('framer-motion', () => {
-  const React = require('react')
-  const motion: Record<
-    string,
-    React.FC<React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }>
-  > = {}
-  ;['div', 'span', 'h2', 'p'].forEach(tag => {
-    motion[tag] = (
-      props: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }
-    ) => React.createElement(tag, props, props.children)
-  })
-  return {
-    motion,
-    useInView: () => true,
-    AnimatePresence: (props: React.PropsWithChildren<AnimatePresenceProps>) =>
-      React.createElement(React.Fragment, null, props.children),
-  }
-})
-
-// Mock next/image
-vi.mock('next/image', () => ({
-  __esModule: true,
-  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) =>
-    React.createElement('img', props),
 }))
 
 describe('About component', () => {

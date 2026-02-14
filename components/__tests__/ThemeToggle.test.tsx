@@ -9,25 +9,6 @@ vi.mock('@/lib/theme-context', () => ({
   useTheme: () => ({ theme: 'light', setTheme: setThemeMock }),
 }))
 
-// Mock framer-motion
-vi.mock('framer-motion', () => {
-  const React = require('react')
-  return {
-    motion: {
-      div: ({
-        children,
-        layoutId,
-        initial,
-        animate,
-        transition,
-        whileHover,
-        whileTap,
-        ...rest
-      }: any) => <div {...rest}>{children}</div>,
-    },
-  }
-})
-
 describe('ThemeToggle component', () => {
   beforeEach(() => {
     setThemeMock.mockClear()

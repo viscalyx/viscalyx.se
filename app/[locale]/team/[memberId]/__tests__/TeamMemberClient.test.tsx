@@ -21,29 +21,6 @@ vi.mock('next-intl', () => ({
   useLocale: () => 'en',
 }))
 
-// Mock framer-motion with all elements used by TeamMemberClient
-vi.mock('framer-motion', () => {
-  const React = require('react')
-  const motion: Record<string, React.FC<Record<string, unknown>>> = {}
-  ;['div', 'main', 'section', 'h1', 'h2', 'span', 'p', 'a'].forEach(tag => {
-    motion[tag] = ({
-      children,
-      initial,
-      animate,
-      transition,
-      whileHover,
-      whileTap,
-      variants,
-      ...props
-    }: Record<string, unknown>) =>
-      React.createElement(tag, props, children as React.ReactNode)
-  })
-  return {
-    motion,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-  }
-})
-
 // Mock next/image
 vi.mock('next/image', () => ({
   default: ({ src, alt, ...props }: Record<string, unknown>) => (

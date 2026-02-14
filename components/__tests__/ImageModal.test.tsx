@@ -2,14 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
 import ImageModal from '../ImageModal'
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}))
-
 // Mock next-intl
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
