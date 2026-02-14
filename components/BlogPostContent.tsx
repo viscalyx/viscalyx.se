@@ -109,7 +109,7 @@ const BlogPostContent = ({
         if (timedOut) return
         const element = document.getElementById(targetId)
 
-        if (element && attempts < maxAttempts) {
+        if (element) {
           const rect = element.getBoundingClientRect()
           const isVisible = rect.width > 0 && rect.height > 0
 
@@ -119,9 +119,11 @@ const BlogPostContent = ({
               block: 'start',
             })
             clearTimeout(timeoutId)
-          } else {
+          } else if (attempts < maxAttempts) {
             attempts++
             rafId = requestAnimationFrame(scrollToElement)
+          } else {
+            clearTimeout(timeoutId)
           }
         } else if (attempts < maxAttempts) {
           attempts++
@@ -594,35 +596,37 @@ const BlogPostContent = ({
                 )}
 
                 {/* Related Posts */}
-                <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
-                  <h2 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4">
-                    {t('post.relatedArticles')}
-                  </h2>
-                  <div className="space-y-4">
-                    {relatedPosts.map(relatedPost => (
-                      <Link
-                        key={relatedPost.slug}
-                        href={`/${locale}/blog/${relatedPost.slug}` as Route}
-                        className="flex space-x-3 group"
-                      >
-                        <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image
-                            src={relatedPost.image}
-                            alt={relatedPost.title}
-                            fill
-                            sizes="64px"
-                            className="object-cover transition-transform group-hover:scale-110"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-medium text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
-                            {relatedPost.title}
-                          </h3>
-                        </div>
-                      </Link>
-                    ))}
+                {relatedPosts.length > 0 && (
+                  <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
+                    <h2 className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4">
+                      {t('post.relatedArticles')}
+                    </h2>
+                    <div className="space-y-4">
+                      {relatedPosts.map(relatedPost => (
+                        <Link
+                          key={relatedPost.slug}
+                          href={`/${locale}/blog/${relatedPost.slug}` as Route}
+                          className="flex space-x-3 group"
+                        >
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                            <Image
+                              src={relatedPost.image}
+                              alt={relatedPost.title}
+                              fill
+                              sizes="64px"
+                              className="object-cover transition-transform group-hover:scale-110"
+                            />
+                          </div>
+                          <div>
+                            <h3 className="text-sm font-medium text-secondary-900 dark:text-secondary-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+                              {relatedPost.title}
+                            </h3>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
