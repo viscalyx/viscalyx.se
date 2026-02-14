@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getAuthorInitials,
   getSerializableTeamMemberById,
@@ -9,6 +8,7 @@ import {
   getTeamMembers,
   socialIconMap,
 } from '@/lib/team'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock translation function with correct typing
 const mockTranslation = vi.fn()
@@ -358,7 +358,9 @@ describe('team utilities', () => {
       const ids = getTeamMemberIds()
 
       expect(Array.isArray(ids)).toBe(true)
-      ids.forEach(id => expect(typeof id).toBe('string'))
+      for (const id of ids) {
+        expect(typeof id).toBe('string')
+      }
     })
 
     it('should include johlju', () => {

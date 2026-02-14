@@ -49,7 +49,7 @@ const LegalPageLayout = ({
             <p className="text-xl text-secondary-600 dark:text-secondary-400 mb-8">
               {subtitle}
             </p>
-            <p className="text-secondary-500 dark:text-secondary-500">
+            <p className="text-secondary-500 dark:text-secondary-300">
               {lastUpdatedLabel}:{' '}
               {format.dateTime(lastUpdatedDate, {
                 year: 'numeric',
