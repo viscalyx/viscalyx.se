@@ -469,4 +469,18 @@
       opacity: 1;
     }
   }
+
+  /* Page fade-in animation (replaces Framer Motion motion.main) */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
 }
