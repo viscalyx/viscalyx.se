@@ -3,8 +3,8 @@ title: 'DemoDscClass: Your First Class‑Based DSC v3 Resource'
 date: '2025-07-13'
 author: 'Johan Ljunggren'
 excerpt: 'A step-by-step beginner’s guide to designing, coding, testing, and running your first class-based DSC v3 resource in PowerShell.'
-image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=600&fit=crop&crop=center'
-imageAlt: 'Top-down view of a busy workspace with multiple laptops, smartphones, notebooks, and drinks, surrounded by people working and collaborating.'
+image: '/collaborative-workspace-overhead-laptops-facing-away..png'
+imageAlt: "Bird's-eye view of a team working around a light wooden table with laptops, phones, headphones, and coffee, with screens at the top facing away."
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
 category: 'DSC'
 readTime: '8 min read'

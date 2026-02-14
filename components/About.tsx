@@ -134,7 +134,7 @@ const About = () => {
                 className="relative z-10"
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop"
+                  src="/team-huddle-open-office-wide.png"
                   alt={t('visualAlt')}
                   width={600}
                   height={400}

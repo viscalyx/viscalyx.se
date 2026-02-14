@@ -53,6 +53,7 @@ function validateBlogData(data: typeof blogData): BlogData {
     author: p.author,
     excerpt: p.excerpt,
     image: p.image,
+    imageAlt: typeof p.imageAlt === 'string' ? p.imageAlt : undefined,
     tags: Array.isArray(p.tags)
       ? Array.from(
           new Set(
@@ -131,8 +132,11 @@ export function getRelatedPosts(
 
   // If category is provided, find posts with matching category or tags
   if (category) {
+    const normalizedCategory = category.toLowerCase()
     relatedPosts = relatedPosts.filter(
-      post => post.category === category || post.tags.includes(category)
+      post =>
+        post.category?.toLowerCase() === normalizedCategory ||
+        post.tags.includes(normalizedCategory)
     )
   }
 
@@ -149,4 +153,127 @@ export function getRelatedPosts(
   }
 
   return relatedPosts
+}
+
+// Slug validation pattern: only allow alphanumerics, hyphens, and underscores
+const SAFE_SLUG_PATTERN = /^[a-zA-Z0-9_-]+$/
+
+/**
+ * Validates that a slug is safe and doesn't allow path traversal attacks.
+ * Returns the validated slug or null if invalid.
+ */
+export function validateSlug(slug: string): string | null {
+  if (!SAFE_SLUG_PATTERN.test(slug)) {
+    return null
+  }
+  return slug
+}
+
+/**
+ * Load blog content from static file via Cloudflare ASSETS binding or filesystem fallback.
+ * Works in both server components and API routes.
+ */
+export async function loadBlogContent(slug: string): Promise<string | null> {
+  // Validate slug to prevent path traversal attacks
+  const validatedSlug = validateSlug(slug)
+  if (!validatedSlug) {
+    return null
+  }
+
+  try {
+    // Try to use Cloudflare ASSETS binding first (works in production)
+    try {
+      const { getCloudflareContext } = await import(
+        '@opennextjs/cloudflare' as string
+      )
+      const { env } = getCloudflareContext()
+      if (env?.ASSETS) {
+        const assetUrl = `https://placeholder.local/blog-content/${encodeURIComponent(validatedSlug)}.json`
+        const assetResponse = await env.ASSETS.fetch(assetUrl)
+        if (assetResponse.ok) {
+          const data = await assetResponse.json()
+          const parsed = data as { content?: unknown }
+          return typeof parsed.content === 'string' ? parsed.content : null
+        }
+      }
+    } catch {
+      // ASSETS binding not available, fall through to filesystem
+    }
+
+    // Fallback: Read from filesystem (works in local development and build time)
+    const fs = await import('node:fs/promises')
+    const path = await import('node:path')
+    const contentPath = path.join(
+      process.cwd(),
+      'public',
+      'blog-content',
+      `${validatedSlug}.json`
+    )
+    const contentData = await fs.readFile(contentPath, 'utf-8')
+    const parsed = JSON.parse(contentData) as { content?: string }
+    return typeof parsed.content === 'string' ? parsed.content : null
+  } catch {
+    return null
+  }
+}
+
+/** Maximum allowed length for a category string in analytics. */
+const MAX_CATEGORY_LENGTH = 50
+
+/** Pattern for valid category strings: word characters, spaces, hyphens. */
+const SAFE_CATEGORY_PATTERN = /^[\w\s-]+$/
+
+/**
+ * Validate and sanitize a category string for analytics.
+ * Returns the trimmed category or `'uncategorized'` if invalid.
+ */
+export function sanitizeCategory(category: string): string {
+  const trimmed = category.trim()
+  if (
+    trimmed.length === 0 ||
+    trimmed.length > MAX_CATEGORY_LENGTH ||
+    !SAFE_CATEGORY_PATTERN.test(trimmed)
+  ) {
+    return 'uncategorized'
+  }
+  return trimmed
+}
+
+/**
+ * Track a basic page view for a blog post (no PII).
+ * Equivalent to server access logs — slug + timestamp only.
+ * Fire-and-forget: errors are silently swallowed.
+ *
+ * The slug is validated with {@link validateSlug} to prevent polluted
+ * analytics blobs.  Invalid slugs are silently dropped.
+ * The category is validated with {@link sanitizeCategory} to prevent
+ * arbitrary strings from polluting analytics data.
+ */
+export async function trackPageView(
+  slug: string,
+  category: string
+): Promise<void> {
+  try {
+    // Validate slug to avoid polluting analytics data with unsanitized input
+    const validatedSlug = validateSlug(slug)
+    if (!validatedSlug) {
+      return
+    }
+
+    const validatedCategory = sanitizeCategory(category)
+
+    const { getCloudflareContext } = await import(
+      '@opennextjs/cloudflare' as string
+    )
+    const { env } = getCloudflareContext()
+    if (env?.viscalyx_se?.writeDataPoint) {
+      env.viscalyx_se.writeDataPoint({
+        blobs: [validatedSlug, validatedCategory],
+        doubles: [1, Date.now()],
+        indexes: [crypto.randomUUID()],
+      })
+    }
+  } catch {
+    // Don't fail the page render if analytics fails
+  }
 }

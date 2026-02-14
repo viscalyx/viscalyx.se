@@ -35,7 +35,7 @@ Download the current ISO (`x86_64`, \~550 MB) from the release page([IPFire.org]
 
 ## 1 – Plan your network setup
 
-<img src="/ipfire-deploy.png" alt="IPFire network zone deployment diagram" style="float: right; margin: 0 0 1rem 1rem; max-width: 400px; height: auto;" />
+<img src="/blog-images/ipfire-deploy.png" alt="IPFire network zone deployment diagram" style="float: right; margin: 0 0 1rem 1rem; max-width: 400px; height: auto;" />
 
 IPFire separates traffic into up to four security zones:
 

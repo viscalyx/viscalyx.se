@@ -14,7 +14,7 @@ export default defineConfig({
   /* Limit workers to avoid overwhelming the Next.js dev server */
   workers: process.env.CI ? 1 : 2,
   reporter: [
-    ['html', { outputFolder: 'playwright-report-dev' }],
+    ['html', { outputFolder: 'playwright-report-dev', open: 'never' }],
     ['junit', { outputFile: 'test-results/dev/playwright-junit.xml' }],
     ['list'],
   ],

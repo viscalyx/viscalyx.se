@@ -41,24 +41,21 @@ const OpenSource = () => {
       description: t('projects.powershellDsc.description'),
       language: t('projects.powershellDsc.language'),
       link: 'https://github.com/dsccommunity',
-      image:
-        'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop&crop=center',
+      image: '/macbook-typescript-two-pane-editor.png',
     },
     {
       name: t('projects.dscResourceKit.name'),
       description: t('projects.dscResourceKit.description'),
       language: t('projects.dscResourceKit.language'),
       link: 'https://github.com/PowerShell/DscResources',
-      image:
-        'https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?w=400&h=300&fit=crop&crop=center',
+      image: '/macro-syntax-highlighted-source-code-pixels.png',
     },
     {
       name: t('projects.automationToolkits.name'),
       description: t('projects.automationToolkits.description'),
       language: t('projects.automationToolkits.language'),
       link: 'https://github.com/gaelcolas/Sampler',
-      image:
-        'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=400&h=300&fit=crop&crop=center',
+      image: '/laptop-rising-market-chart-modern-office.png',
     },
   ]
 

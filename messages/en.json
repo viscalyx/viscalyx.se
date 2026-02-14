@@ -76,7 +76,7 @@
         "description": "Actively contributing to the community and sharing knowledge through open-source projects."
       }
     },
-    "visualAlt": "Developer working on automation",
+    "visualAlt": "Three coworkers sit in rolling chairs pulled into a circle, talking mid-conversation in the middle of a modern open-plan office while other employees work at surrounding desks.",
     "stats": {
       "taskReduction": {
         "value": "98%",
@@ -185,6 +185,11 @@
       "titleHighlight": "Knowledge",
       "description": "Stay updated with the latest trends, best practices, and insights in automation, DevOps, and open-source development."
     },
+    "og": {
+      "imageAlt": "Viscalyx Blog",
+      "title": "Blog",
+      "tagline": "Insights & Knowledge"
+    },
     "featuredPost": {
       "title": "Featured Article"
     },
@@ -195,10 +200,12 @@
       "loadingBlogPost": "Showing blog post...",
       "backToBlog": "Back to Blog",
       "share": "Share:",
+      "sharing": "Sharing...",
       "sharePost": "Share this post",
       "tableOfContents": "Table of Contents",
       "relatedArticles": "Related Articles",
       "readingProgress": "Reading Progress",
+      "dateFallback": "—",
       "tags": "Tags",
       "notifications": {
         "linkCopied": "Link copied to clipboard!",
@@ -230,7 +237,9 @@
         "title": "Welcome to My Blog",
         "excerpt": "This is a placeholder for your featured blog post. Add markdown files to the content/blog directory to see your actual blog posts here.",
         "author": "Your Name",
-        "category": "Blog"
+        "readTime": "5 min read",
+        "category": "Blog",
+        "imageAlt": "Person typing on laptop with coffee cup and notebook on desk"
       }
     }
   },

@@ -3,7 +3,8 @@ title: 'Create a dsc configuration repository'
 date: '2017-08-13'
 author: 'Johan Ljunggren'
 excerpt: "Learn how to create a PowerShell DSC configuration repository using Microsoft's templates and common tests. This comprehensive guide walks you through setting up GitHub, AppVeyor, and Azure integration to build, test, and deploy DSC configurations for automated infrastructure management."
-image: 'https://images.unsplash.com/photo-1580894894513-541e068a3e2b?w=800&h=600&fit=crop&crop=center'
+image: '/top-down-developer-workstation-multi-monitor-coding.png'
+imageAlt: "Bird's-eye view of a developer working at a white desk with three screens showing code, hands on keyboard and mouse, with small desk toys and a tissue box."
 tags:
   [
     'Infrastructure as Code',

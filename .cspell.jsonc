@@ -13,6 +13,8 @@
     "bradlc",
     "gruntfuggly",
     "usernamehw",
+    "Shiki",
+    "macbook",
 
     // Technical terms - DevOps & Infrastructure
     "Kubernetes",
@@ -319,6 +321,8 @@
     "stockouts",
     "Toolkits",
     "dynamicupdate",
+    "viewports",
+    "autoprefixing",
 
     // GitHub usernames and specific terms
     "johlju",
@@ -336,6 +340,7 @@
 
     // Strange words or part of words that cSpell is not able to handle
     "issal", // dismissal
+    "hrefs",
 
     // Added technical/IT terms used in blog posts
     "smbstatus",
@@ -444,6 +449,16 @@
     },
     {
       "filename": "lib/__tests__/slug-utils.test.ts",
+      "language": "en",
+      "dictionaries": ["en", "sv"]
+    },
+    {
+      "filename": "tests/integration/blog-listing.spec.ts",
+      "language": "en",
+      "dictionaries": ["en", "sv"]
+    },
+    {
+      "filename": "tests/integration/blog-listing.md",
       "language": "en",
       "dictionaries": ["en", "sv"]
     }

@@ -58,12 +58,22 @@ import LanguageSwitcher from './LanguageSwitcher'
 ### Client vs Server Components
 
 **Use `'use client'`**: hooks, browser APIs, event handlers, Framer Motion, `useTranslations`
-**Server Components**: static content, data fetching, SEO-critical pages
+**Server Components**: static content, data fetching, SEO-critical pages, `generateMetadata`, `generateStaticParams`
 
-## Component Pattern
+**Server page + client island pattern** (preferred for data-driven pages):
+
+- Page in `app/` is a server component that fetches data directly (e.g., `getAllPosts()`)
+- Interactive parts are extracted into `'use client'` components in `components/` that receive data as props
+- Use `getTranslations`/`getFormatter` (async, from `next-intl/server`) in server components
+- Use `useTranslations`/`useFormatter` (hooks, from `next-intl`) in client components
+- Examples: `blog/page.tsx` (server) → `BlogPostGrid` (client island), `blog/[slug]/page.tsx` (server) → `BlogPostContent` (client island)
+
+## Component Patterns
+
+### Client Component (interactive UI in `components/`)
 
 ```tsx
-'use client' // Only if needed
+'use client'
 
 import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
@@ -89,6 +99,36 @@ const Component = ({ title }: ComponentProps) => {
 export default Component
 ```
 
+### Server Page Component (data-driven pages in `app/`)
+
+```tsx
+import ClientIsland from '@/components/ClientIsland'
+import { getData } from '@/lib/data'
+import { getTranslations } from 'next-intl/server'
+
+import type { Metadata } from 'next'
+
+type Props = { params: Promise<{ locale: string }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'section' })
+  return { title: t('title'), description: t('description') }
+}
+
+export default async function Page({ params }: Props) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'section' })
+  const data = getData()
+  return (
+    <main>
+      <h1>{t('heading')}</h1>
+      <ClientIsland items={data} />
+    </main>
+  )
+}
+```
+
 ## Styling
 
 - Mobile-first: `text-sm sm:text-base lg:text-lg`
@@ -104,7 +144,8 @@ export default Component
 
 - Keys: `section.item.property` (e.g., `hero.title`)
 - Always update both `en.json` AND `sv.json`
-- Usage: `const t = useTranslations('section')` → `{t('key')}`
+- **Client components**: `const t = useTranslations('section')` → `{t('key')}`
+- **Server components**: `const t = await getTranslations({ locale, namespace: 'section' })` → `{t('key')}`
 - **Exceptions**: Decorative icon aria-labels when parent has accessible text
 
 ## Accessibility

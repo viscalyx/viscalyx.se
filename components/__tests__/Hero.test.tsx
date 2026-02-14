@@ -73,7 +73,7 @@ describe('Hero component', () => {
     expect(images.length).toBeGreaterThan(0)
     expect(images[0]).toHaveAttribute(
       'src',
-      expect.stringContaining('unsplash.com')
+      expect.stringContaining('calm-productive-engineering-culture')
     )
   })
 })

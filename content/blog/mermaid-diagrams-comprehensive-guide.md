@@ -3,7 +3,8 @@ title: 'Complete Guide to Mermaid Diagrams: Every Type Explained with Examples'
 date: '2025-04-29'
 author: 'Viscalyx Team'
 excerpt: 'A comprehensive guide showcasing all Mermaid diagram types with practical examples, from flowcharts to Kanban boards'
-image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop&crop=center'
+image: '/dark-analytics-dashboard-monitor.png'
+imageAlt: 'Angled view of a monitor displaying a dark-themed analytics dashboard with colorful charts for page load time, bounce rate, sessions, and traffic sources, with a blurred plant in the background.'
 tags:
   ['Mermaid', 'Diagrams', 'Documentation', 'Visual Guide', 'Technical Writing']
 category: 'Template'

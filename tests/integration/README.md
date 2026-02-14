@@ -18,6 +18,33 @@ Tests the cookie consent banner functionality, including:
 - **UI Navigation**: Tests opening/closing detailed settings view
 - **Accessibility**: Basic keyboard navigation testing
 
+### Blog Listing Tests (`blog-listing.spec.ts`)
+
+Tests the server-rendered blog listing page, including:
+
+- **Server-Side Rendering**: Verifies content is in the initial HTML (no loading spinner)
+- **SEO Metadata**: Checks page title and meta description from `generateMetadata`
+- **Featured Post**: Validates the featured post card display and navigation
+- **Category Filter**: Tests filtering posts by category and resetting to all
+- **Load More Pagination**: Tests progressive loading of post cards
+- **Post Grid Cards**: Validates card structure, images, and navigation links
+- **Locale Support**: Verifies Swedish translations at `/sv/blog`
+
+### Blog Post Tests (`blog-post.spec.ts`)
+
+Tests the server-rendered blog post page, including:
+
+- **Server-Side Rendering**: Verifies content is in the initial HTML (no loading spinner)
+- **SEO Metadata**: Checks page title, meta description, OG tags, and Twitter card
+- **Post Content**: Validates featured image, author, category, read time, and tags
+- **Table of Contents**: Verifies the desktop sidebar ToC renders for posts with headings
+- **Author Bio**: Validates author bio section and View Profile link
+- **Navigation**: Tests Back to Blog link, header/footer, and navigation flow
+- **Share Functionality**: Verifies the share button is present
+- **Related Posts**: Checks the Related Articles section
+- **Error Handling**: 404 for non-existent slugs and path traversal attempts
+- **Locale Support**: Verifies English and Swedish post rendering
+
 ### Cross-Origin Warning Tests (`cross-origin-warning.spec.ts`)
 
 Tests that the Next.js dev server does not emit cross-origin warnings when accessed via `0.0.0.0` (common in devcontainer/Docker setups):
@@ -112,6 +139,8 @@ preview servers with proper artifact collection for debugging.
 The integration tests focus on:
 
 - ✅ Cookie consent banner functionality
+- ✅ Blog listing page (SSR, metadata, filtering, pagination, locale)
+- ✅ Blog post page (SSR, metadata, content, ToC, navigation, errors, locale)
 - ✅ User interactions (clicks, form submissions)
 - ✅ State persistence (localStorage, cookies)
 - ✅ Navigation between views
@@ -120,8 +149,6 @@ The integration tests focus on:
 
 Future test areas could include:
 
-- Blog post reading functionality
 - Contact form submissions
 - Search functionality
 - Theme switching
-- Language switching

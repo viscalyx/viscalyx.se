@@ -11,14 +11,6 @@ const nextConfig: NextConfig = {
   // These packages are either client-only or not needed in the worker runtime
   serverExternalPackages: ['mermaid', '@mermaid-js/parser', 'dompurify'],
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
     formats: ['image/webp', 'image/avif'],
   },
   typescript: {
@@ -56,7 +48,7 @@ const nextConfig: NextConfig = {
             {
               key: 'Content-Security-Policy',
               value:
-                "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
+                "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
             },
           ],
         },
@@ -82,7 +74,7 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; font-src 'self'; connect-src 'self' ws://localhost:* ws://0.0.0.0:*; frame-ancestors 'none'; base-uri 'self'",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' ws://localhost:* ws://0.0.0.0:*; frame-ancestors 'none'; base-uri 'self'",
           },
         ],
       },

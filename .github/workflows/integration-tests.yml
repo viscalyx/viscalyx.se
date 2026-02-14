@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
@@ -43,7 +43,7 @@ jobs:
 
       - name: Upload test results (dev)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report-dev
           path: playwright-report-dev/
@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload test results XML (dev)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-junit-dev
           path: test-results/dev/playwright-junit.xml
@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'npm'
@@ -85,7 +85,7 @@ jobs:
 
       - name: Upload test results (preview)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report-preview
           path: playwright-report-preview/
@@ -93,7 +93,7 @@ jobs:
 
       - name: Upload test results XML (preview)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-junit-preview
           path: test-results/preview/playwright-junit.xml
@@ -107,7 +107,7 @@ jobs:
 
     steps:
       - name: Comment on PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const body = '❌ **Integration tests failed!** Please check the test results and fix any issues.\n\n' +

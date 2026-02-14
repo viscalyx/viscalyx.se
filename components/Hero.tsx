@@ -16,20 +16,20 @@ const Hero = () => {
   // Images representing productivity, automation, and business processes
   const heroImages = [
     {
-      src: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=800&fit=crop&crop=faces&auto=format&q=80',
-      alt: 'Team collaboration and productivity',
+      src: '/calm-productive-engineering-culture.png',
+      alt: 'A man in glasses works at a tidy desk with a raised laptop and large monitor showing code, while another coworker focuses at a side-by-side desk in the background of a bright, plant-filled office.',
     },
     {
-      src: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
-      alt: 'Business automation and technology',
+      src: '/laptop-rising-market-chart-modern-office.png',
+      alt: 'Side-angle close-up of a laptop displaying a rising financial market chart in a blurred glass office.',
     },
     {
-      src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
-      alt: 'Data analysis and business intelligence',
+      src: '/laptop-analytics-dashboard-glossy-table.png',
+      alt: 'Open silver laptop on a glossy table displaying a web analytics dashboard with KPIs and charts.',
     },
     {
-      src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=800&fit=crop&crop=center&auto=format&q=80',
-      alt: 'Professional workflow and processes',
+      src: '/collaborative-planning-hands-diagram-laptops.png',
+      alt: 'Two people collaborate over a diagram-filled sheet of paper, one pointing with a pencil while laptops and pens surround the workspace.',
     },
   ]
 
