@@ -2,45 +2,43 @@ import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 interface PrivacyTranslations {
-  privacy: {
-    title: string
-    subtitle: string
-    lastUpdated: string
-    sections: {
-      informationWeCollect: {
-        title: string
-        description: string
-        items: string[]
-      }
-      howWeUse: {
-        title: string
-        description: string
-        items: string[]
-      }
-      dataSecurity: {
-        title: string
-        description: string
-      }
-      cookies: {
-        title: string
-        description: string
-      }
-      thirdParty: {
-        title: string
-        description: string
-        items: string[]
-      }
-      yourRights: {
-        title: string
-        description: string
-        items: string[]
-      }
-      contact: {
-        title: string
-        description: string
-        email: string
-        emailAddress: string
-      }
+  title: string
+  subtitle: string
+  lastUpdated: string
+  sections: {
+    informationWeCollect: {
+      title: string
+      description: string
+      items: string[]
+    }
+    howWeUse: {
+      title: string
+      description: string
+      items: string[]
+    }
+    dataSecurity: {
+      title: string
+      description: string
+    }
+    cookies: {
+      title: string
+      description: string
+    }
+    thirdParty: {
+      title: string
+      description: string
+      items: string[]
+    }
+    yourRights: {
+      title: string
+      description: string
+      items: string[]
+    }
+    contact: {
+      title: string
+      description: string
+      email: string
+      emailAddress: string
     }
   }
 }

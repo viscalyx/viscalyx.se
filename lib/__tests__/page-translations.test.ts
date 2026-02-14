@@ -47,11 +47,10 @@ describe('usePrivacyTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.privacy).toBeTruthy()
-      expect(result.current.translations.privacy.title).toBeTruthy()
-      expect(result.current.translations.privacy.sections).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
       expect(
-        result.current.translations.privacy.sections.informationWeCollect
+        result.current.translations.sections.informationWeCollect
       ).toBeTruthy()
     }
   })
@@ -69,9 +68,8 @@ describe('usePrivacyTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.privacy).toBeTruthy()
-      expect(result.current.translations.privacy.title).toBeTruthy()
-      expect(result.current.translations.privacy.sections).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
     }
   })
 
@@ -132,8 +130,8 @@ describe('usePrivacyTranslations', () => {
 
     // Both should have the same structure
     if (enResult.current.translations && svResult.current.translations) {
-      const enKeys = Object.keys(enResult.current.translations.privacy.sections)
-      const svKeys = Object.keys(svResult.current.translations.privacy.sections)
+      const enKeys = Object.keys(enResult.current.translations.sections)
+      const svKeys = Object.keys(svResult.current.translations.sections)
       expect(enKeys).toEqual(svKeys)
     }
   })

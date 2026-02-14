@@ -61,6 +61,8 @@ import { render, screen } from '@testing-library/react'
 
 import Home, { generateMetadata } from '@/app/[locale]/page'
 
+import type { Metadata } from 'next'
+
 describe('Home', () => {
   beforeEach(() => {
     vi.clearAllMocks()
