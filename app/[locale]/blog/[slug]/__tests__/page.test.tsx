@@ -282,6 +282,12 @@ describe('BlogPostPage', () => {
      * This is resilient to structural changes — it searches the entire
      * tree for a child whose type name is 'default' (from the mock) or
      * that carries a data-testid of 'blog-post-content'.
+     *
+     * NOTE: This walker is inherently fragile — if the page layout adds
+     * new wrappers or changes the component hierarchy, this function
+     * will need updating. The mock serializes props as data-* attributes
+     * (see mock setup above), so an alternative approach would be to
+     * render the JSX to a DOM and read those attributes directly.
      */
 
     interface BlogPostContentTestProps {

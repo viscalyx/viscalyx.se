@@ -469,7 +469,8 @@ const BlogPostContent = ({
               </div>
 
               {/* Author Bio */}
-              <div
+              <section
+                aria-label="Author biography"
                 data-testid="author-bio"
                 className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
               >
@@ -567,7 +568,7 @@ const BlogPostContent = ({
                     )}
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
             {/* Sidebar */}
             <div className="lg:col-span-1">

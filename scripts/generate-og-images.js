@@ -41,6 +41,7 @@ const PRIMARY_700 = '#1d4ed8'
 const PRIMARY_900 = '#1e3a8a'
 const SECONDARY_900 = '#0f172a'
 
+// NOTE: These constants are also verified in generate-og-images.test.mjs — keep both in sync.
 const OG_WIDTH = 1200
 const OG_HEIGHT = 630
 const LOGO_SIZE = 280

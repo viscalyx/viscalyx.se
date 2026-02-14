@@ -23,6 +23,8 @@ category: 'DevOps|PowerShell|Azure|Infrastructure|Automation'
 ---
 ```
 
+**Image**: Use `/temporary-image.png` as a placeholder until you add a final image to the `/public` folder. Write descriptive `imageAlt` text that guides what the final image should depict.
+
 ## Content Rules
 
 - Start sections with `##`, subsections with `###`
