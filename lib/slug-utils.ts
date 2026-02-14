@@ -28,6 +28,31 @@ const ANCHOR_LINK_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor"
 </svg>`
 
 /**
+ * Decodes common HTML entities back to their literal characters.
+ * Used after sanitize-html strips tags, because sanitize-html preserves
+ * entities (e.g. "&amp;" stays as the text "&amp;"). Decoding here
+ * ensures downstream helpers like escapeHtmlAttr receive plain text and
+ * avoid double-encoding.
+ *
+ * @param str - The string potentially containing HTML entities
+ * @returns The string with HTML entities decoded to their literal characters
+ */
+function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
+      String.fromCodePoint(Number.parseInt(hex, 16))
+    )
+    .replace(/&#(\d+);/g, (_, dec) =>
+      String.fromCodePoint(Number.parseInt(dec, 10))
+    )
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+}
+
+/**
  * Escapes special HTML characters in a string for safe interpolation
  * into HTML attribute values.
  *
@@ -85,10 +110,11 @@ export function generateFallbackId(level: number): string {
  * @returns Clean text content
  */
 export function extractCleanText(htmlContent: string): string {
-  return sanitizeHtml(htmlContent, {
+  const stripped = sanitizeHtml(htmlContent, {
     allowedTags: [],
     allowedAttributes: {},
   }).trim()
+  return decodeHtmlEntities(stripped)
 }
 
 /**

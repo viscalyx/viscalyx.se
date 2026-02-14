@@ -258,13 +258,13 @@ describe('slug-utils', () => {
     })
 
     it('escapes angle brackets and ampersands in heading text', () => {
-      // sanitize-html preserves &amp; as the literal text "&amp;" in extractCleanText,
-      // then escapeHtmlAttr escapes the & → &amp;, producing &amp;amp; in the attribute
+      // extractCleanText decodes HTML entities first, so "&amp;" becomes "&",
+      // then escapeHtmlAttr re-encodes it once → "&amp;" (no double-encoding)
       const html = '<h2>A &amp; B</h2>'
       const result = addHeadingIds(html)
 
-      expect(result).toContain('aria-label="Link to section: A &amp;amp; B"')
-      expect(result).toContain('title="Copy link to section: A &amp;amp; B"')
+      expect(result).toContain('aria-label="Link to section: A &amp; B"')
+      expect(result).toContain('title="Copy link to section: A &amp; B"')
       // Verify the escaping prevents attribute breakout
       expect(result).not.toMatch(/aria-label="[^"]*</)
     })
