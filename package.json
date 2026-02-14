@@ -27,7 +27,7 @@
     "test:security": "node scripts/security-audit.js",
     "test:integration": "playwright test",
     "test:integration:preview": "playwright test --config=playwright.preview.config.ts",
-    "test:integration:ui": "playwright test --ui",
+    "test:integration:ui": "playwright test --ui-host 0.0.0.0 --ui",
     "test:integration:report:dev": "playwright show-report --host 0.0.0.0 playwright-report-dev",
     "test:integration:report:preview": "playwright show-report --host 0.0.0.0 playwright-report-preview",
     "test:integration:all": "npm run test:integration && npm run test:integration:preview",
