@@ -235,6 +235,7 @@
         "title": "Välkommen till Min Blogg",
         "excerpt": "Detta är en platshållare för din utvalda blogginlägg. Lägg till markdown-filer i content/blog-katalogen för att se dina faktiska blogginlägg här.",
         "author": "Ditt Namn",
+        "readTime": "5 min läsning",
         "category": "Blogg"
       }
     }

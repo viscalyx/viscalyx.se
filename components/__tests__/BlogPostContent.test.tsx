@@ -380,7 +380,7 @@ describe('BlogPostContent', () => {
     it('renders related post links with correct hrefs', () => {
       renderComponent()
       const link1 = screen.getByText('Related Post 1').closest('a')
-      expect(link1).toHaveAttribute('href', '/blog/related-1')
+      expect(link1).toHaveAttribute('href', '/en/blog/related-1')
     })
 
     it('renders related articles heading', () => {
@@ -430,7 +430,7 @@ describe('BlogPostContent', () => {
       // Author name displayed but not as a link
       const authorTexts = screen.getAllByText('Test Author')
       const authorInBio = authorTexts.find(
-        el => !el.closest('a') && el.closest('.author-bio')
+        el => !el.closest('a') && el.closest('[data-testid="author-bio"]')
       )
       expect(authorInBio).toBeInTheDocument()
     })
@@ -616,6 +616,12 @@ describe('BlogPostContent', () => {
   })
 
   describe('hash fragment navigation', () => {
+    const originalScrollIntoView = Element.prototype.scrollIntoView
+
+    afterEach(() => {
+      Element.prototype.scrollIntoView = originalScrollIntoView
+    })
+
     it('scrolls to element when hash is present on load', async () => {
       // Mock scrollIntoView on all elements before rendering
       Element.prototype.scrollIntoView = vi.fn()

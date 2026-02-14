@@ -51,7 +51,12 @@ const LOCALES = ['en', 'sv']
  * Escape a string for safe inclusion in SVG text content.
  */
 function escapeXml(str) {
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;') // cSpell:disable-line
 }
 
 /**
@@ -192,9 +197,9 @@ Promise.allSettled(LOCALES.map(locale => generateBlogOG(locale))).then(
   results => {
     const failures = results.filter(r => r.status === 'rejected')
     if (failures.length > 0) {
-      failures.forEach(f =>
+      failures.forEach(f => {
         console.error('OG image generation failed:', f.reason)
-      )
+      })
       process.exit(1)
     }
   }

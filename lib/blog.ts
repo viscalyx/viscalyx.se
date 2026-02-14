@@ -214,6 +214,28 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
   }
 }
 
+/** Maximum allowed length for a category string in analytics. */
+const MAX_CATEGORY_LENGTH = 50
+
+/** Pattern for valid category strings: word characters, spaces, hyphens. */
+const SAFE_CATEGORY_PATTERN = /^[\w\s-]+$/
+
+/**
+ * Validate and sanitize a category string for analytics.
+ * Returns the trimmed category or `'uncategorized'` if invalid.
+ */
+export function sanitizeCategory(category: string): string {
+  const trimmed = category.trim()
+  if (
+    trimmed.length === 0 ||
+    trimmed.length > MAX_CATEGORY_LENGTH ||
+    !SAFE_CATEGORY_PATTERN.test(trimmed)
+  ) {
+    return 'uncategorized'
+  }
+  return trimmed
+}
+
 /**
  * Track a basic page view for a blog post (no PII).
  * Equivalent to server access logs — slug + timestamp only.
@@ -221,6 +243,8 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
  *
  * The slug is validated with {@link validateSlug} to prevent polluted
  * analytics blobs.  Invalid slugs are silently dropped.
+ * The category is validated with {@link sanitizeCategory} to prevent
+ * arbitrary strings from polluting analytics data.
  */
 export async function trackPageView(
   slug: string,
@@ -233,13 +257,15 @@ export async function trackPageView(
       return
     }
 
+    const validatedCategory = sanitizeCategory(category)
+
     const { getCloudflareContext } = await import(
       '@opennextjs/cloudflare' as string
     )
     const { env } = getCloudflareContext()
     if (env?.viscalyx_se?.writeDataPoint) {
       env.viscalyx_se.writeDataPoint({
-        blobs: [validatedSlug, category],
+        blobs: [validatedSlug, validatedCategory],
         doubles: [1, Date.now()],
         indexes: [crypto.randomUUID()],
       })

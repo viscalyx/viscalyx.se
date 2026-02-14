@@ -67,12 +67,13 @@ vi.mock('@/lib/team', () => ({
 // Mock child components
 vi.mock('@/components/BlogPostContent', () => ({
   __esModule: true,
-  default: (props: Record<string, unknown>) =>
-    React.createElement('div', {
+  default: function MockBlogPostContent(props: Record<string, unknown>) {
+    return React.createElement('div', {
       'data-testid': 'blog-post-content',
       'data-post': JSON.stringify(props.post),
       'data-toc': JSON.stringify(props.tableOfContents),
-    }),
+    })
+  },
 }))
 
 vi.mock('@/components/Header', () => ({
@@ -262,23 +263,43 @@ describe('BlogPostPage', () => {
     let BlogPostPage: typeof import('@/app/[locale]/blog/[slug]/page').default
 
     /**
-     * Extract BlogPostContent props from the rendered page JSX tree.
+     * Recursively walk the JSX tree to find BlogPostContent props.
      *
-     * Expected structure of the returned JSX:
-     *   <div>            ← root wrapper (min-h-screen)
-     *     [0] <Header />
-     *     [1] <BlogPostContent ... />   ← target
-     *     [2] <Footer />
-     *   </div>
-     *
-     * If the component tree is restructured (e.g. a wrapper is added),
-     * this helper must be updated to match.
+     * This is resilient to structural changes — it searches the entire
+     * tree for a child whose type name is 'default' (from the mock) or
+     * that carries a data-testid of 'blog-post-content'.
      */
-    function getBlogPostContentProps(result: React.JSX.Element) {
-      const blogContent = result?.props?.children?.[1]
-      if (!blogContent)
-        throw new Error('BlogPostContent not found at expected index')
-      return blogContent.props
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function getBlogPostContentProps(
+      element: React.JSX.Element
+    ): Record<string, any> {
+      // Check current element
+      const typeName =
+        typeof element?.type === 'function'
+          ? element.type.name
+          : typeof element?.type === 'string'
+            ? element.type
+            : undefined
+      if (
+        typeName === 'MockBlogPostContent' ||
+        element?.props?.['data-testid'] === 'blog-post-content'
+      ) {
+        return element.props
+      }
+      // Recurse into children
+      const children = Array.isArray(element?.props?.children)
+        ? element.props.children
+        : [element?.props?.children]
+      for (const child of children) {
+        if (child && typeof child === 'object') {
+          try {
+            return getBlogPostContentProps(child as React.JSX.Element)
+          } catch {
+            // Not found in this branch, keep searching
+          }
+        }
+      }
+      throw new Error('BlogPostContent not found in JSX tree')
     }
 
     beforeEach(async () => {

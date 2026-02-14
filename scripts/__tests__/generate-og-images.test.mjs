@@ -19,6 +19,8 @@ describe('generate-og-images.js', () => {
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
     }
 
     it('escapes ampersands', () => {
@@ -35,6 +37,14 @@ describe('generate-og-images.js', () => {
 
     it('escapes multiple special characters', () => {
       expect(escapeXml('<a>&b</a>')).toBe('&lt;a&gt;&amp;b&lt;/a&gt;')
+    })
+
+    it('escapes double quotes', () => {
+      expect(escapeXml('say "hello"')).toBe('say &quot;hello&quot;')
+    })
+
+    it('escapes single quotes (apostrophes)', () => {
+      expect(escapeXml("it's")).toBe('it&apos;s')
     })
 
     it('returns unchanged string when no special characters', () => {
@@ -89,10 +99,23 @@ describe('generate-og-images.js', () => {
   })
 
   describe('SVG generation constants', () => {
-    // Verify the constants used in the script match expected OG image dimensions
-    const OG_WIDTH = 1200
-    const OG_HEIGHT = 630
-    const LOGO_SIZE = 280
+    // Read actual constants from the script source to avoid tautological assertions
+    const scriptPath = path.join(
+      __dirname,
+      '..',
+      '..',
+      'scripts',
+      'generate-og-images.js'
+    )
+    const scriptContent = readFileSync(scriptPath, 'utf-8')
+
+    // Extract constants from the script source
+    const widthMatch = scriptContent.match(/OG_WIDTH\s*=\s*(\d+)/)
+    const heightMatch = scriptContent.match(/OG_HEIGHT\s*=\s*(\d+)/)
+    const logoMatch = scriptContent.match(/LOGO_SIZE\s*=\s*(\d+)/)
+    const OG_WIDTH = widthMatch ? Number(widthMatch[1]) : NaN
+    const OG_HEIGHT = heightMatch ? Number(heightMatch[1]) : NaN
+    const LOGO_SIZE = logoMatch ? Number(logoMatch[1]) : NaN
 
     it('has standard OG image width', () => {
       expect(OG_WIDTH).toBe(1200)

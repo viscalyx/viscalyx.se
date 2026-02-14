@@ -7,6 +7,7 @@ import {
   getPostMetadata,
   getRelatedPosts,
   loadBlogContent,
+  sanitizeCategory,
   trackPageView,
   validateSlug,
 } from '@/lib/blog'
@@ -286,6 +287,37 @@ describe('loadBlogContent', () => {
 
     const result = await loadBlogContent('post-without-content')
     expect(result).toBeNull()
+  })
+})
+
+describe('sanitizeCategory', () => {
+  it('returns a valid category trimmed', () => {
+    expect(sanitizeCategory('  DevOps  ')).toBe('DevOps')
+  })
+
+  it('accepts categories with hyphens and spaces', () => {
+    expect(sanitizeCategory('PowerShell DSC')).toBe('PowerShell DSC')
+    expect(sanitizeCategory('my-category')).toBe('my-category')
+  })
+
+  it('returns "uncategorized" for empty strings', () => {
+    expect(sanitizeCategory('')).toBe('uncategorized')
+    expect(sanitizeCategory('   ')).toBe('uncategorized')
+  })
+
+  it('returns "uncategorized" for strings exceeding max length', () => {
+    const long = 'a'.repeat(51)
+    expect(sanitizeCategory(long)).toBe('uncategorized')
+  })
+
+  it('returns "uncategorized" for strings with special characters', () => {
+    expect(sanitizeCategory('<script>')).toBe('uncategorized')
+    expect(sanitizeCategory('cat;drop table')).toBe('uncategorized')
+  })
+
+  it('accepts the exact max length', () => {
+    const exactly50 = 'a'.repeat(50)
+    expect(sanitizeCategory(exactly50)).toBe(exactly50)
   })
 })
 

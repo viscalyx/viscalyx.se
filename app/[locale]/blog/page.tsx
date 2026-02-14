@@ -62,7 +62,7 @@ export default async function BlogPage({ params }: Props) {
     excerpt: t('fallback.featuredPost.excerpt'),
     author: t('fallback.featuredPost.author'),
     date: getCurrentDateISO(),
-    readTime: '5 min read',
+    readTime: t('fallback.featuredPost.readTime'),
     image: '/default-featured-post.png',
     imageAlt: 'Person typing on laptop with coffee cup and notebook on desk',
     category: t('fallback.featuredPost.category'),
@@ -118,7 +118,7 @@ export default async function BlogPage({ params }: Props) {
                         displayFeaturedPost.title
                       }
                       fill
-                      sizes="100vw"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute top-4 left-4">

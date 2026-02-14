@@ -153,8 +153,10 @@ test.describe('Blog Listing Page', () => {
     })
   })
 
-  // NOTE: Load More tests assume POSTS_PER_PAGE = 6 from components/BlogPostGrid.tsx.
-  // If that constant changes, the hard-coded 6 below must be updated to match.
+  // Shared constant: must match POSTS_PER_PAGE in components/BlogPostGrid.tsx.
+  // If BlogPostGrid.POSTS_PER_PAGE changes, update this value to match.
+  const POSTS_PER_PAGE = 6
+
   test.describe('Load More Pagination', () => {
     test('should show Load More button when posts exceed page size', async ({
       page,
@@ -166,11 +168,11 @@ test.describe('Blog Listing Page', () => {
         page.getByRole('button', { name: /Load More/i })
       ).toBeVisible()
 
-      // Initially only the first page of articles is shown (POSTS_PER_PAGE = 6)
+      // Initially only the first page of articles is shown
       const articles = page.locator('article')
       const count = await articles.count()
       expect(count).toBeGreaterThan(0)
-      expect(count).toBeLessThanOrEqual(6)
+      expect(count).toBeLessThanOrEqual(POSTS_PER_PAGE)
     })
 
     test('should reveal more posts when Load More is clicked', async ({
@@ -192,8 +194,10 @@ test.describe('Blog Listing Page', () => {
     }) => {
       await page.goto('/blog')
 
-      // Click Load More until it disappears (POSTS_PER_PAGE = 6, so ~2-3 clicks for current data set)
-      for (let i = 0; i < 5; i++) {
+      // Click Load More until it disappears.
+      // Max iterations is generous to accommodate blog growth.
+      const MAX_LOAD_MORE_CLICKS = 20
+      for (let i = 0; i < MAX_LOAD_MORE_CLICKS; i++) {
         const loadMore = page.getByRole('button', { name: /Load More/i })
         if (!(await loadMore.isVisible())) break
         await loadMore.click()

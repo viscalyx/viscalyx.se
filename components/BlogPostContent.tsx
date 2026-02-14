@@ -68,7 +68,10 @@ const BlogPostContent = ({
   const locale = useLocale()
 
   // State for share functionality
-  const [shareNotification, setShareNotification] = useState<string>('')
+  const [shareNotification, setShareNotification] = useState<{
+    message: string
+    type: 'success' | 'error'
+  } | null>(null)
   const shareTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Ref for the content container to scope event listeners
@@ -123,14 +126,20 @@ const BlogPostContent = ({
   }, [])
 
   // Helper function to clear existing timeout and set a new one
-  const setNotificationWithTimeout = useCallback((message: string) => {
-    if (shareTimeoutRef.current) {
-      clearTimeout(shareTimeoutRef.current)
-    }
+  const setNotificationWithTimeout = useCallback(
+    (message: string, type: 'success' | 'error' = 'success') => {
+      if (shareTimeoutRef.current) {
+        clearTimeout(shareTimeoutRef.current)
+      }
 
-    setShareNotification(message)
-    shareTimeoutRef.current = setTimeout(() => setShareNotification(''), 3000)
-  }, [])
+      setShareNotification({ message, type })
+      shareTimeoutRef.current = setTimeout(
+        () => setShareNotification(null),
+        3000
+      )
+    },
+    []
+  )
 
   // Function to handle sharing/copying URL
   const handleShare = async () => {
@@ -139,7 +148,7 @@ const BlogPostContent = ({
     // Always try clipboard first as it's more reliable
     try {
       await navigator.clipboard.writeText(url)
-      setNotificationWithTimeout(t('post.notifications.linkCopied'))
+      setNotificationWithTimeout(t('post.notifications.linkCopied'), 'success')
       return
     } catch (clipboardError) {
       console.warn('Clipboard API failed:', clipboardError)
@@ -183,13 +192,16 @@ const BlogPostContent = ({
         document.body.removeChild(textArea)
 
         if (successful) {
-          setNotificationWithTimeout(t('post.notifications.linkCopied'))
+          setNotificationWithTimeout(
+            t('post.notifications.linkCopied'),
+            'success'
+          )
         } else {
           throw new Error('execCommand failed')
         }
       } catch (fallbackError) {
         console.error('All share methods failed:', fallbackError)
-        setNotificationWithTimeout(t('post.notifications.shareError'))
+        setNotificationWithTimeout(t('post.notifications.shareError'), 'error')
       }
     }
   }
@@ -206,34 +218,41 @@ const BlogPostContent = ({
   // Handle anchor link functionality
   useEffect(() => {
     const handleAnchorClick = (e: Event) => {
-      const target = e.target as HTMLAnchorElement
-      if (target.classList.contains('heading-anchor')) {
-        e.preventDefault()
-        const href = target.getAttribute('href')
-        if (href) {
-          const targetId = href.substring(1)
-          const targetElement = document.getElementById(targetId)
+      const clicked = e.target as HTMLElement
+      const anchor = clicked.closest<HTMLAnchorElement>('a.heading-anchor')
+      if (!anchor) return
 
-          if (targetElement) {
-            window.history.pushState(null, '', href)
+      e.preventDefault()
+      const href = anchor.getAttribute('href')
+      if (href) {
+        const targetId = href.substring(1)
+        const targetElement = document.getElementById(targetId)
 
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            })
+        if (targetElement) {
+          window.history.pushState(null, '', href)
 
-            // Copy link to clipboard
-            const fullUrl = window.location.href
-            if (navigator.clipboard) {
-              navigator.clipboard
-                .writeText(fullUrl)
-                .then(() => {
-                  setNotificationWithTimeout(t('post.notifications.linkCopied'))
-                })
-                .catch(() => {
-                  setNotificationWithTimeout(t('post.notifications.shareError'))
-                })
-            }
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+
+          // Copy link to clipboard
+          const fullUrl = window.location.href
+          if (navigator.clipboard) {
+            navigator.clipboard
+              .writeText(fullUrl)
+              .then(() => {
+                setNotificationWithTimeout(
+                  t('post.notifications.linkCopied'),
+                  'success'
+                )
+              })
+              .catch(() => {
+                setNotificationWithTimeout(
+                  t('post.notifications.shareError'),
+                  'error'
+                )
+              })
           }
         }
       }
@@ -264,7 +283,7 @@ const BlogPostContent = ({
         <div className="container-custom">
           <div>
             <Link
-              href="/blog"
+              href={`/${locale}/blog` as Route}
               className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-8 group"
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
@@ -316,8 +335,14 @@ const BlogPostContent = ({
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
                 {shareNotification && (
-                  <div className="text-sm text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-md">
-                    {shareNotification}
+                  <div
+                    className={`text-sm px-3 py-1 rounded-md ${
+                      shareNotification.type === 'error'
+                        ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20'
+                        : 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20'
+                    }`}
+                  >
+                    {shareNotification.message}
                   </div>
                 )}
               </div>
@@ -413,7 +438,10 @@ const BlogPostContent = ({
               </div>
 
               {/* Author Bio */}
-              <div className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700">
+              <div
+                data-testid="author-bio"
+                className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
+              >
                 <div className="flex items-start space-x-4">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden flex-shrink-0">
                     {teamMember?.image ? (
@@ -435,7 +463,7 @@ const BlogPostContent = ({
                       <h3 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
                         {teamMember ? (
                           <Link
-                            href={`/${locale}/team/${teamMember.id}`}
+                            href={`/${locale}/team/${teamMember.id}` as Route}
                             className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                           >
                             {teamMember.name}
@@ -542,7 +570,7 @@ const BlogPostContent = ({
                     {relatedPosts.map(relatedPost => (
                       <Link
                         key={relatedPost.slug}
-                        href={`/blog/${relatedPost.slug}` as Route}
+                        href={`/${locale}/blog/${relatedPost.slug}` as Route}
                         className="flex space-x-3 group"
                       >
                         <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
