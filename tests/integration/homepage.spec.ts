@@ -210,6 +210,7 @@ test.describe('Homepage', () => {
 
       // View Project links
       const viewProjectLinks = page.getByRole('link', {
+        // cspell:disable-next-line
         name: /View (P|p)roject/i,
       })
       const count = await viewProjectLinks.count()
