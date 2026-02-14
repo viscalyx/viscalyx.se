@@ -1,8 +1,6 @@
-'use client'
-
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import LocaleError from '../error'
+import LocaleError from '@/app/[locale]/error'
 
 vi.mock('@/components/ErrorPage', () => ({
   default: ({
@@ -24,6 +22,10 @@ describe('Locale error page', () => {
     digest: 'test-digest',
   })
   const mockReset = vi.fn()
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
   it('renders the ErrorPage component', () => {
     render(<LocaleError error={mockError} reset={mockReset} />)

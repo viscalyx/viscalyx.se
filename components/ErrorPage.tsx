@@ -19,7 +19,8 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
 
   return (
     <main className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <h1 className="mb-4 text-6xl font-bold text-red-600 dark:text-red-400">
+      {/* "!" is a universal warning symbol — intentionally not translated */}
+      <h1 className="mb-4 text-4xl font-bold text-red-600 sm:text-5xl lg:text-6xl dark:text-red-400">
         !
       </h1>
       <h2 className="mb-4 text-2xl font-semibold text-secondary-800 dark:text-secondary-200">

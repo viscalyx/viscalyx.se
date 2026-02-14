@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import ErrorPage from '../ErrorPage'
+import ErrorPage from '@/components/ErrorPage'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -13,6 +13,10 @@ describe('ErrorPage', () => {
     digest: 'test-digest',
   })
   const mockReset = vi.fn()
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
   it('renders the error heading', () => {
     render(<ErrorPage error={mockError} reset={mockReset} />)

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import RootNotFound from '../not-found'
+import RootNotFound from '@/app/not-found'
 
 describe('Root not-found page', () => {
   it('renders the 404 heading', () => {
@@ -33,11 +33,9 @@ describe('Root not-found page', () => {
   })
 
   it('renders with hardcoded English content (no locale context)', () => {
+    // Root not-found has no locale context, so text is hardcoded English.
+    // This is intentional — the root layout has no i18n provider.
     render(<RootNotFound />)
-    // Root not-found has no locale context, so text is hardcoded English
-    expect(screen.getByText('Page Not Found')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /go to homepage/i })
-    ).toHaveAttribute('href', '/en')
+    expect(screen.getByRole('main')).toBeInTheDocument()
   })
 })

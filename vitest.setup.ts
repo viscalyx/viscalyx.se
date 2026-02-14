@@ -63,12 +63,17 @@ vi.mock('framer-motion', () => {
     return Component
   }
 
+  const cache = new Map<string, ReturnType<typeof forward>>()
+
   // Proxy dynamically generates a forwarding component for any motion.* element
   const motionProxy = new Proxy(
     { create: (Component: unknown) => Component },
     {
-      get: (target, prop: string) =>
-        prop in target ? target[prop as keyof typeof target] : forward(prop),
+      get: (target, prop: string) => {
+        if (prop in target) return target[prop as keyof typeof target]
+        if (!cache.has(prop)) cache.set(prop, forward(prop))
+        return cache.get(prop)
+      },
     }
   )
 

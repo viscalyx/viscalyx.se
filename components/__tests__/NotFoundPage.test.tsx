@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import NotFoundPage from '../NotFoundPage'
+import NotFoundPage from '@/components/NotFoundPage'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -8,6 +8,10 @@ vi.mock('next-intl', () => ({
 }))
 
 describe('NotFoundPage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the 404 heading', () => {
     render(<NotFoundPage />)
     expect(screen.getByText('404')).toBeInTheDocument()

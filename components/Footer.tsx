@@ -1,23 +1,25 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ExternalLink, Mail } from 'lucide-react'
-import { Route } from 'next'
-import { useLocale, useTranslations } from 'next-intl'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
   BlueskyIcon,
   GitHubIcon,
   LinkedInIcon,
   MastodonIcon,
   XIcon,
-} from './SocialIcons'
+} from '@/components/SocialIcons'
+import { motion } from 'framer-motion'
+import { ExternalLink, Mail } from 'lucide-react'
+import { Route } from 'next'
+import { useLocale, useTranslations } from 'next-intl'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 interface FooterLink {
   name: string
   href: string
 }
+
+const ABSOLUTE_URL_REGEX = /^[a-z][a-z0-9+.-]*:/i
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -26,11 +28,13 @@ const Footer = () => {
   const tNav = useTranslations('navigation')
   const locale = useLocale()
 
+  const isExternal = (href: string): boolean => {
+    return ABSOLUTE_URL_REGEX.test(href) || href.startsWith('//')
+  }
+
   // Helper function to generate proper URLs for links
   const getHrefUrl = (href: string): string => {
-    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
-
-    if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
+    if (isExternal(href)) {
       return href
     }
 
@@ -61,11 +65,6 @@ const Footer = () => {
     }
   }
 
-  const isExternal = (href: string): boolean => {
-    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
-    return absoluteUrlRegex.test(href) || href.startsWith('//')
-  }
-
   const renderLink = (link: FooterLink) => {
     if (isExternal(link.href)) {
       return (
@@ -76,7 +75,11 @@ const Footer = () => {
           className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
         >
           {link.name}
-          <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
+          <ExternalLink
+            className="w-3 h-3 ml-1 opacity-60"
+            aria-hidden="true"
+          />
+          <span className="sr-only"> (opens in new tab)</span>
         </a>
       )
     }

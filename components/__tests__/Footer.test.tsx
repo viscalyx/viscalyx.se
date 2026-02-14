@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import Footer from '../Footer'
+import Footer from '@/components/Footer'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -14,7 +14,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 // Mock SocialIcons
-vi.mock('../SocialIcons', () => ({
+vi.mock('@/components/SocialIcons', () => ({
   GitHubIcon: ({ className }: { className?: string }) => (
     <svg data-testid="github-icon" className={className} />
   ),
@@ -166,12 +166,14 @@ describe('Footer', () => {
     expect(buttons.length).toBe(0)
   })
 
-  it('does not use useRouter for navigation', () => {
-    // This test verifies the import - useRouter should not be imported
-    // The component should use Link and <a> elements instead
+  it('uses Link and anchor elements instead of programmatic navigation', () => {
+    // Verifies the component relies on Link and <a> elements for navigation,
+    // not useRouter-based programmatic navigation
     render(<Footer />)
-    // If it renders without error and has no buttons, useRouter is not needed
     const footer = screen.getByRole('contentinfo')
     expect(footer).toBeInTheDocument()
+    // All navigation is via links, no buttons needed
+    const buttons = footer.querySelectorAll('button')
+    expect(buttons.length).toBe(0)
   })
 })
