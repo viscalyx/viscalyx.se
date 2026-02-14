@@ -154,6 +154,9 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         })
         imageHandlers.clear()
       }
+
+      // Allow re-enhancement if effect re-runs (e.g., locale change)
+      enhancedRef.current = false
     }
   }, [contentRef, t])
 

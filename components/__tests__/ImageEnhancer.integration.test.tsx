@@ -3,13 +3,14 @@ import { useRef } from 'react'
 import { vi } from 'vitest'
 import ImageEnhancer from '../ImageEnhancer'
 
-// Mock next-intl
-vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string, params?: Record<string, string>) => {
+// Mock next-intl with a stable translator reference (matches production behavior)
+vi.mock('next-intl', () => {
+  const translator = (key: string, params?: Record<string, string>) => {
     if (params?.alt) return `${key}: ${params.alt}`
     return key
-  },
-}))
+  }
+  return { useTranslations: () => translator }
+})
 
 // Override the global framer-motion mock to include AnimatePresence
 vi.mock('framer-motion', () => {
