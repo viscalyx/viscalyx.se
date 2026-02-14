@@ -1787,7 +1787,7 @@ The following packages enable these scripts:
 ### Dependency Auditing
 
 You can audit updated dependency versions before installing them by generating a
-lockfile only and running both `npm audit` and Snyk:
+lockfile only and running `npm audit`:
 
 1. Generate or update only the lockfile (without installing packages):
 
@@ -1809,18 +1809,7 @@ lockfile only and running both `npm audit` and Snyk:
 
    <!-- markdownlint-enable MD013 -->
 
-3. Run a Snyk security test against your `package.json`:
-
-   <!-- markdownlint-disable MD013 -->
-
-   ```bash
-   npx snyk auth
-   npx snyk test --file=package.json
-   ```
-
-   <!-- markdownlint-enable MD013 -->
-
-4. Once finished, restore your original lockfile and install as usual:
+3. Once finished, restore your original lockfile and install as usual:
 
    <!-- markdownlint-disable MD013 -->
 
