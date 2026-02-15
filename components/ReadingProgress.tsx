@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface ReadingProgressProps {
   target?: string // CSS selector for the content area to track
@@ -18,12 +18,25 @@ const ReadingProgress = ({
   const [isVisible, setIsVisible] = useState(false)
   const [showOnLeft, setShowOnLeft] = useState(true)
 
+  // Cache DOM refs to avoid querying on every scroll event
+  const targetRef = useRef<Element | null>(null)
+  const endTargetRef = useRef<Element | null>(null)
+  const sidebarRef = useRef<Element | null>(null)
+  const rafId = useRef<number>(0)
+
   useEffect(() => {
+    // Query DOM elements once on mount / when selectors change
+    targetRef.current = document.querySelector(target)
+    endTargetRef.current = endTarget
+      ? document.querySelector(endTarget)
+      : null
+    sidebarRef.current = document.querySelector('.lg\\:col-span-1')
+
     const updateScrollProgress = () => {
-      const targetElement = document.querySelector(target)
+      const targetElement = targetRef.current
 
       // Check if sidebar is visible (on large screens and has content)
-      const sidebar = document.querySelector('.lg\\:col-span-1')
+      const sidebar = sidebarRef.current
       const isLargeScreen = window.innerWidth >= 1024 // lg breakpoint
       const sidebarVisible =
         sidebar && isLargeScreen && getComputedStyle(sidebar).display !== 'none'
@@ -35,7 +48,10 @@ const ReadingProgress = ({
         // Fallback to full page scroll
         const totalHeight =
           document.documentElement.scrollHeight - window.innerHeight
-        const progress = Math.min((window.scrollY / totalHeight) * 100, 100)
+        const progress =
+          totalHeight > 0
+            ? Math.min((window.scrollY / totalHeight) * 100, 100)
+            : 0
         setScrollProgress(progress)
         setIsVisible(window.scrollY > 100)
         return
@@ -52,16 +68,12 @@ const ReadingProgress = ({
 
       // If endTarget is specified, use it to determine where 100% should be reached
       let endPoint = elementTop + elementHeight
-      if (endTarget) {
-        const endElement = document.querySelector(endTarget)
-        if (endElement) {
-          // Set 100% to be reached when we scroll to the beginning of the endTarget element
-          // This means 100% is at the end of content, just before the author bio
-          endPoint =
-            endElement.getBoundingClientRect().top +
-            window.scrollY -
-            windowHeight
-        }
+      const endElement = endTargetRef.current
+      if (endElement) {
+        endPoint =
+          endElement.getBoundingClientRect().top +
+          window.scrollY -
+          windowHeight
       }
 
       const currentScroll = window.scrollY
@@ -73,23 +85,32 @@ const ReadingProgress = ({
         setScrollProgress(100)
         setIsVisible(true)
       } else {
+        const range = endPoint - startPoint
         const progress =
-          ((currentScroll - startPoint) / (endPoint - startPoint)) * 100
+          range > 0
+            ? ((currentScroll - startPoint) / range) * 100
+            : 0
         setScrollProgress(Math.min(Math.max(progress, 0), 100))
         setIsVisible(true)
       }
     }
 
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId.current)
+      rafId.current = requestAnimationFrame(updateScrollProgress)
+    }
+
     // Update on mount
     updateScrollProgress()
 
-    // Add scroll listener
-    window.addEventListener('scroll', updateScrollProgress, { passive: true })
-    window.addEventListener('resize', updateScrollProgress, { passive: true })
+    // Add scroll listener with RAF throttle
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
 
     return () => {
-      window.removeEventListener('scroll', updateScrollProgress)
-      window.removeEventListener('resize', updateScrollProgress)
+      cancelAnimationFrame(rafId.current)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
   }, [target, endTarget])
 
