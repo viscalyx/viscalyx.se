@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, Info, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import { ReactNode, useEffect, useRef } from 'react'
 
 interface ConfirmationModalProps {
@@ -16,6 +15,7 @@ interface ConfirmationModalProps {
   variant?: 'danger' | 'warning' | 'info'
   confirmLoading?: boolean
   confirmIcon?: ReactNode
+  closeAriaLabel?: string
 }
 
 const ConfirmationModal = ({
@@ -29,6 +29,7 @@ const ConfirmationModal = ({
   variant = 'warning',
   confirmLoading = false,
   confirmIcon,
+  closeAriaLabel = 'Close modal',
 }: ConfirmationModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
@@ -94,7 +95,6 @@ const ConfirmationModal = ({
   }
 
   const styles = getVariantStyles()
-  const t = useTranslations('confirmationModal')
 
   return (
     <AnimatePresence>
@@ -142,7 +142,7 @@ const ConfirmationModal = ({
                   type="button"
                   onClick={onClose}
                   className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  aria-label={t('close')}
+                  aria-label={closeAriaLabel}
                 >
                   <X className="w-5 h-5" />
                 </button>
