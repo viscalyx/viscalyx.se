@@ -1,40 +1,18 @@
 'use client'
 
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
-import { Route } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
 import { GitHubIcon } from './SocialIcons'
 
 const OpenSource = () => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const { handleNavigation } = useSectionNavigation({
+    handleExternalLinks: true,
+  })
   const t = useTranslations('openSource')
 
-  const handleNavigation = (href: string) => {
-    // Check if it's a section link (starts with #)
-    if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
-      if (pathname !== '/') {
-        router.push(`/${href}`)
-      } else {
-        // We're already on home page, just scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
-      return
-    }
-    // Regular page navigation or external links
-    if (href.startsWith('http')) {
-      window.open(href, '_blank', 'noopener noreferrer')
-    } else {
-      router.push(href as Route)
-    }
-  }
   const contributions = [
     {
       name: t('projects.powershellDsc.name'),

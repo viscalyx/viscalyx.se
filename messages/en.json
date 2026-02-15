@@ -11,7 +11,8 @@
       "theme": "Theme"
     },
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "mobileMenu": "Mobile navigation"
   },
   "footer": {
     "company": "Company",
@@ -27,7 +28,8 @@
   },
   "language": {
     "english": "English",
-    "swedish": "Swedish"
+    "swedish": "Swedish",
+    "selectLanguage": "Select language"
   },
   "hero": {
     "badge": "Automation & DevOps Excellence",

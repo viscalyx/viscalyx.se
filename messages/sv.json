@@ -11,7 +11,8 @@
       "theme": "Tema"
     },
     "openMenu": "Öppna meny",
-    "closeMenu": "Stäng meny"
+    "closeMenu": "Stäng meny",
+    "mobileMenu": "Mobilnavigering"
   },
   "footer": {
     "company": "Företag",
@@ -27,7 +28,8 @@
   },
   "language": {
     "english": "Engelska",
-    "swedish": "Svenska"
+    "swedish": "Svenska",
+    "selectLanguage": "Välj språk"
   },
   "hero": {
     "badge": "Automation & DevOps Excellens",
