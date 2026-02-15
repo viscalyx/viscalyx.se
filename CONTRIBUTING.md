@@ -575,7 +575,7 @@ To make blockquotes more visually appealing:
 
 ```css
 .blog-content-colorful blockquote {
-  @apply bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
+  @apply bg-linear-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
 }
 ```
 

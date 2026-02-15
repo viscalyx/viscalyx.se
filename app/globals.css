@@ -68,7 +68,7 @@
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-secondary-900 dark:via-secondary-800 dark:to-secondary-900;
+    @apply bg-linear-to-br from-primary-50 via-white to-secondary-50 dark:from-secondary-900 dark:via-secondary-800 dark:to-secondary-900;
   }
 
   .card-hover {
@@ -76,7 +76,7 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
   }
 }
 

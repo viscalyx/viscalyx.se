@@ -1,3 +1,5 @@
+import ScrollToTop from '@/components/ScrollToTop'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -5,11 +7,9 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }))
 
-import ScrollToTop from '@/components/ScrollToTop'
-
 describe('ScrollToTop', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.restoreAllMocks()
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,
@@ -102,8 +102,12 @@ describe('ScrollToTop', () => {
   })
 
   it('cleans up event listeners on unmount', () => {
+    const addSpy = vi.spyOn(window, 'addEventListener')
     const removeSpy = vi.spyOn(window, 'removeEventListener')
     const { unmount } = render(<ScrollToTop />)
+    expect(addSpy).toHaveBeenCalledWith('scroll', expect.any(Function), {
+      passive: true,
+    })
     unmount()
     expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function))
   })

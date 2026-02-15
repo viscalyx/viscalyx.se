@@ -381,7 +381,7 @@ const BlogPostContent = ({
       </section>
 
       {/* Featured Image */}
-      <section className="relative h-96 md:h-[500px]">
+      <section className="relative h-96 md:h-125">
         <Image
           src={post.image}
           alt={post.imageAlt || post.title}
@@ -389,7 +389,7 @@ const BlogPostContent = ({
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
       </section>
 
       {/* Content */}
@@ -473,7 +473,7 @@ const BlogPostContent = ({
                 className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden flex-shrink-0">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden shrink-0">
                     {teamMember?.image ? (
                       <Image
                         src={teamMember.image}
@@ -604,7 +604,7 @@ const BlogPostContent = ({
                           href={`/${locale}/blog/${relatedPost.slug}` as Route}
                           className="flex space-x-3 group"
                         >
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
                             <Image
                               src={relatedPost.image}
                               alt={relatedPost.title}

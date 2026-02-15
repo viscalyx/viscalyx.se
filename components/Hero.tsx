@@ -98,7 +98,7 @@ const Hero = () => {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-primary-400/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-primary-200/30 to-primary-400/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
@@ -110,7 +110,7 @@ const Hero = () => {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl"
         />
       </div>
 
@@ -220,7 +220,7 @@ const Hero = () => {
                 }}
                 className="relative"
               >
-                <div className="relative overflow-hidden rounded-2xl aspect-[3/4] w-full max-w-md mx-auto">
+                <div className="relative overflow-hidden rounded-2xl aspect-3/4 w-full max-w-md mx-auto">
                   {heroImages.map((image, index) => (
                     <motion.div
                       key={index}
@@ -250,14 +250,14 @@ const Hero = () => {
 
                       {/* Loading placeholder */}
                       {!imagesLoaded[index] && !imageLoadErrors[index] && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
                           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
                         </div>
                       )}
 
                       {/* Error fallback */}
                       {imageLoadErrors[index] && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-800 dark:to-primary-900 rounded-2xl flex items-center justify-center">
+                        <div className="absolute inset-0 bg-linear-to-br from-primary-100 to-primary-200 dark:from-primary-800 dark:to-primary-900 rounded-2xl flex items-center justify-center">
                           <div className="text-center">
                             <Code className="h-16 w-16 text-primary-600 dark:text-primary-400 mx-auto mb-4" />
                             <p className="text-primary-700 dark:text-primary-300 font-medium">
@@ -270,7 +270,7 @@ const Hero = () => {
                   ))}
 
                   {/* Image overlay for better contrast with floating elements */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/10 rounded-2xl z-20" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/10 via-transparent to-black/10 rounded-2xl z-20" />
                 </div>
 
                 {/* Image indicators */}
@@ -293,7 +293,7 @@ const Hero = () => {
             </div>
 
             {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-3xl transform scale-110" />
+            <div className="absolute inset-0 bg-linear-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-3xl transform scale-110" />
           </motion.div>
         </div>
       </div>
