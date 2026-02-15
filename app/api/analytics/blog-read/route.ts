@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
+import { SITE_URL } from '@/lib/constants'
 
 interface BlogReadEvent {
   slug: string
@@ -9,8 +10,61 @@ interface BlogReadEvent {
   timeSpent?: number
 }
 
+/** In-memory rate limiter: hashed-IP → last request timestamp */
+const rateLimitMap = new Map<string, number>()
+const RATE_LIMIT_WINDOW_MS = 5_000 // 5 seconds between requests per IP
+
+/**
+ * Generate a SHA-256 hash of an IP address with a daily-rotating salt.
+ * This allows unique-visitor counting without storing raw IP addresses (GDPR).
+ */
+async function hashIP(ip: string): Promise<string> {
+  const dailySalt = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
+  const data = new TextEncoder().encode(`${dailySalt}:${ip}`)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * Validate that the request originates from the same site.
+ * Checks both Origin and Referer headers against the configured SITE_URL.
+ */
+function isValidOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin')
+  const referer = request.headers.get('referer')
+  const siteHost = new URL(SITE_URL).host
+
+  if (origin) {
+    try {
+      return new URL(origin).host === siteHost
+    } catch {
+      return false
+    }
+  }
+
+  if (referer) {
+    try {
+      return new URL(referer).host === siteHost
+    } catch {
+      return false
+    }
+  }
+
+  // Neither header present — reject (sendBeacon always sends Origin)
+  return false
+}
+
 export async function POST(request: Request) {
   try {
+    // Validate request origin to prevent cross-site abuse
+    if (!isValidOrigin(request)) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
+      )
+    }
+
     const body: BlogReadEvent = await request.json()
 
     // Validate required fields
@@ -28,6 +82,28 @@ export async function POST(request: Request) {
     const country = request.headers.get('cf-ipcountry') || 'unknown'
     const clientIP = request.headers.get('cf-connecting-ip') || 'unknown'
 
+    // Hash the IP for GDPR compliance — never store raw IPs
+    const hashedIP = await hashIP(clientIP)
+
+    // Rate limiting per hashed IP
+    const now = Date.now()
+    const lastRequest = rateLimitMap.get(hashedIP)
+    if (lastRequest && now - lastRequest < RATE_LIMIT_WINDOW_MS) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        { status: 429 }
+      )
+    }
+    rateLimitMap.set(hashedIP, now)
+
+    // Periodically clean old entries to prevent memory growth
+    if (rateLimitMap.size > 10_000) {
+      const cutoff = now - RATE_LIMIT_WINDOW_MS
+      for (const [key, ts] of rateLimitMap) {
+        if (ts < cutoff) rateLimitMap.delete(key)
+      }
+    }
+
     // Create a unique request ID for sampling
     const requestId = crypto.randomUUID()
 
@@ -43,7 +119,7 @@ export async function POST(request: Request) {
             referer, // blob4: Referrer
             userAgent.substring(0, 100), // blob5: User agent (truncated)
             body.title.substring(0, 100), // blob6: Article title (truncated)
-            clientIP, // blob7: Client IP (for unique visitors)
+            hashedIP, // blob7: Hashed IP (GDPR-safe, for unique visitors)
           ],
           doubles: [
             1, // double1: Read count (always 1)
