@@ -156,6 +156,8 @@
         "git.autofetch": true,
         "git.enableSmartCommit": true,
         "git.confirmSync": false,
+        // Prefer signed commits when a signing key is available
+        "git.enableCommitSigning": true,
 
         // Terminal settings
         "terminal.integrated.defaultProfile.linux": "zsh",
