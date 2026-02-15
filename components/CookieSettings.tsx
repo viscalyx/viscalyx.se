@@ -1,5 +1,7 @@
 'use client'
 
+import CookieCategoryIcon from '@/components/CookieCategoryIcon'
+import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import ConfirmationModal from '@/components/ConfirmationModal'
 import {
   cleanupCookies,
@@ -12,16 +14,9 @@ import {
   resetConsent,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
+import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 import { motion } from 'framer-motion'
-import {
-  BarChart3,
-  Cookie,
-  Download,
-  Palette,
-  Settings,
-  Shield,
-  Trash2,
-} from 'lucide-react'
+import { Download, Settings, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
@@ -182,27 +177,6 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     }
   }
 
-  const getCategoryIcon = (category: CookieCategory) => {
-    switch (category) {
-      case 'strictly-necessary':
-        return <Shield className="w-5 h-5 text-green-600 dark:text-green-400" />
-      case 'analytics':
-        return (
-          <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        )
-      case 'preferences':
-        return (
-          <Palette className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-        )
-      default:
-        return <Cookie className="w-5 h-5" />
-    }
-  }
-
-  const getCookiesForCategory = (category: CookieCategory) => {
-    return cookieRegistry.filter(cookie => cookie.category === category)
-  }
-
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
@@ -317,7 +291,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  {getCategoryIcon(category)}
+                  <CookieCategoryIcon category={category} />
                   <div>
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                       {categoryName}
@@ -329,34 +303,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                     </h3>
                   </div>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={settings[category]}
-                    onChange={() => handleCategoryToggle(category)}
-                    disabled={isRequired}
-                    className="sr-only"
-                    aria-describedby={`${category}-description`}
-                  />
-                  <div
-                    className={`
-                    w-12 h-6 rounded-full transition-colors duration-200 ease-in-out
-                    ${
-                      settings[category]
-                        ? 'bg-primary-600 dark:bg-primary-500'
-                        : 'bg-gray-300 dark:bg-gray-600'
-                    }
-                    ${isRequired ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-                  `}
-                  >
-                    <div
-                      className={`
-                      w-5 h-5 rounded-full bg-white transition-transform duration-200 ease-in-out transform mt-0.5 ml-0.5
-                      ${settings[category] ? 'translate-x-6' : 'translate-x-0'}
-                    `}
-                    />
-                  </div>
-                </label>
+                <CookieCategoryToggle
+                  category={category}
+                  checked={settings[category]}
+                  categoryName={categoryName}
+                  requiredLabel={t('required')}
+                  onChange={handleCategoryToggle}
+                />
               </div>
 
               <p
