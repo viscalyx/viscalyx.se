@@ -17,7 +17,6 @@
   .blog-content {
     @apply text-secondary-700 dark:text-secondary-300;
     overflow-wrap: break-word;
-    word-break: break-word;
     min-width: 0;
   }
 

@@ -283,6 +283,9 @@
     "system": "System",
     "switchToTheme": "Byt till {theme}-tema"
   },
+  "readingProgress": {
+    "ariaLabel": "Läsförlopp"
+  },
   "scrollToTop": {
     "ariaLabel": "Scrolla till toppen"
   },

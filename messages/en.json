@@ -283,6 +283,9 @@
     "system": "System",
     "switchToTheme": "Switch to {theme} theme"
   },
+  "readingProgress": {
+    "ariaLabel": "Reading progress"
+  },
   "scrollToTop": {
     "ariaLabel": "Scroll to top"
   },

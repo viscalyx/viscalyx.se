@@ -1,7 +1,11 @@
+import ReadingProgress from '@/components/ReadingProgress'
+
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import ReadingProgress from '@/components/ReadingProgress'
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}))
 
 describe('ReadingProgress', () => {
   let proseElement: HTMLDivElement
@@ -56,6 +60,12 @@ describe('ReadingProgress', () => {
     render(<ReadingProgress />)
     const progressBar = screen.getByRole('progressbar')
     expect(progressBar).toBeInTheDocument()
+  })
+
+  it('has accessible aria-label from translations', () => {
+    render(<ReadingProgress />)
+    const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toHaveAttribute('aria-label', 'ariaLabel')
   })
 
   it('does not render circular progress indicator', () => {

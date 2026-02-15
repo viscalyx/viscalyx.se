@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 interface ReadingProgressProps {
@@ -12,6 +13,7 @@ const ReadingProgress = ({
   target = '.prose',
   endTarget,
 }: ReadingProgressProps) => {
+  const t = useTranslations('readingProgress')
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
 
@@ -111,6 +113,7 @@ const ReadingProgress = ({
       transition={{ duration: 0.1 }}
       className="fixed top-0 left-0 right-0 h-1 bg-linear-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400 z-50 origin-left"
       role="progressbar"
+      aria-label={t('ariaLabel')}
       aria-valuenow={Math.round(scrollProgress)}
       aria-valuemin={0}
       aria-valuemax={100}
