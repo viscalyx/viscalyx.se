@@ -75,7 +75,7 @@ vi.mock('@/lib/team', () => ({
 
 // Pin SITE_URL so OG image URL assertions are not environment-dependent
 vi.mock('@/lib/constants', () => ({
-  SITE_URL: 'https://viscalyx.se',
+  SITE_URL: 'https://viscalyx.org',
 }))
 
 // Mock child components
@@ -205,7 +205,7 @@ describe('BlogPostPage', () => {
       const images = metadata.openGraph?.images
       expect(Array.isArray(images)).toBe(true)
       expect((images as Array<Record<string, unknown>>)[0]).toMatchObject({
-        url: 'https://viscalyx.se/test-image.jpg',
+        url: 'https://viscalyx.org/test-image.jpg',
         alt: 'Test image alt',
       })
     })

@@ -86,35 +86,34 @@ export default function CodeBlockEnhancer({
     // Cleanup function
     return () => {
       clearTimeout(timer)
-      // Perform cleanup: unmount roots synchronously so test environments
-      // observe immediate unmount behavior
-      const cleanupRoots = () => {
-        createdContainers.forEach(container => {
-          const root = roots.get(container)
-          if (root) {
-            try {
-              root.unmount()
-            } catch (error) {
-              console.warn('Error unmounting React root:', error)
-            }
-            roots.delete(container)
-          }
 
-          if (container.parentNode) {
-            container.remove()
+      // Remove DOM elements synchronously so the UI updates immediately
+      createdContainers.forEach(container => {
+        if (container.parentNode) {
+          container.remove()
+        }
+      })
+
+      // Reset enhanced flag only on wrappers enhanced by this instance
+      enhancedWrappers.forEach(wrapper => {
+        if (wrapper.isConnected) {
+          wrapper.removeAttribute('data-enhanced')
+        }
+      })
+
+      // Defer root unmounts to avoid "synchronously unmount during render"
+      // race condition in React 19 (roots are already detached from the DOM
+      // above, so this is safe to run asynchronously).
+      setTimeout(() => {
+        roots.forEach(root => {
+          try {
+            root.unmount()
+          } catch {
+            // Root may already be unmounted if React cleaned it up
           }
         })
-
-        // Reset enhanced flag only on wrappers enhanced by this instance
-        enhancedWrappers.forEach(wrapper => {
-          if (wrapper.isConnected) {
-            wrapper.removeAttribute('data-enhanced')
-          }
-        })
-      }
-
-      // Run cleanup synchronously to match test expectations
-      cleanupRoots()
+        roots.clear()
+      }, 0)
     }
   }, [contentLoaded, locale])
 

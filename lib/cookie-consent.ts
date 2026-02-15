@@ -43,7 +43,7 @@ export const cookieRegistry: CookieInfo[] = [
     duration: '1 year',
   },
   {
-    name: 'viscalyx.se-cookie-consent',
+    name: 'viscalyx.org-cookie-consent',
     category: 'strictly-necessary',
     purpose: 'Stores user cookie consent preferences',
     duration: '1 year',
@@ -72,7 +72,7 @@ export const cookieRegistry: CookieInfo[] = [
   },
 ]
 
-const CONSENT_COOKIE_NAME = 'viscalyx.se-cookie-consent'
+const CONSENT_COOKIE_NAME = 'viscalyx.org-cookie-consent'
 const CONSENT_VERSION = '1.0'
 
 /**
