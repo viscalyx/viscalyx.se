@@ -1,40 +1,18 @@
 'use client'
 
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
-import { Route } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
 import { GitHubIcon } from './SocialIcons'
 
 const OpenSource = () => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const { handleNavigation } = useSectionNavigation({
+    handleExternalLinks: true,
+  })
   const t = useTranslations('openSource')
 
-  const handleNavigation = (href: string) => {
-    // Check if it's a section link (starts with #)
-    if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
-      if (pathname !== '/') {
-        router.push(`/${href}`)
-      } else {
-        // We're already on home page, just scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
-      return
-    }
-    // Regular page navigation or external links
-    if (href.startsWith('http')) {
-      window.open(href, '_blank', 'noopener noreferrer')
-    } else {
-      router.push(href as Route)
-    }
-  }
   const contributions = [
     {
       name: t('projects.powershellDsc.name'),
@@ -140,7 +118,7 @@ const OpenSource = () => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                   <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
                     <GitHubIcon className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
                   </div>

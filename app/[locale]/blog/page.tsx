@@ -45,6 +45,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
     },
+    alternates: {
+      languages: {
+        en: `${SITE_URL}/en/blog`,
+        sv: `${SITE_URL}/sv/blog`,
+      },
+    },
   }
 }
 

@@ -5,7 +5,7 @@ test.describe('Cookie Consent Functionality', () => {
     // Navigate first so we have a page context for localStorage/cookie clearing
     await page.goto('/')
     await page.evaluate(() => {
-      localStorage.removeItem('viscalyx.se-cookie-consent')
+      localStorage.removeItem('viscalyx.org-cookie-consent')
 
       document.cookie.split(';').forEach(cookie => {
         const eqPos = cookie.indexOf('=')
@@ -59,7 +59,7 @@ test.describe('Cookie Consent Functionality', () => {
     await expect(banner).not.toBeVisible()
 
     const consentData = await page.evaluate(() => {
-      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      const stored = localStorage.getItem('viscalyx.org-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
 
@@ -85,7 +85,7 @@ test.describe('Cookie Consent Functionality', () => {
     await expect(banner).not.toBeVisible()
 
     const consentData = await page.evaluate(() => {
-      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      const stored = localStorage.getItem('viscalyx.org-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
 
@@ -164,7 +164,7 @@ test.describe('Cookie Consent Functionality', () => {
     await expect(banner).not.toBeVisible()
 
     const consentData = await page.evaluate(() => {
-      const stored = localStorage.getItem('viscalyx.se-cookie-consent')
+      const stored = localStorage.getItem('viscalyx.org-cookie-consent')
       return stored ? JSON.parse(stored) : null
     })
 

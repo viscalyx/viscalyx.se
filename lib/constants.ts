@@ -5,4 +5,4 @@
  * so that OG images, sitemaps, and canonical URLs point to the correct host.
  */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://viscalyx.se'
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://viscalyx.org'

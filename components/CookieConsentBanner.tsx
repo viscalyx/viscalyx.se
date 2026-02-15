@@ -198,7 +198,7 @@ const CookieConsentBanner = () => {
             // Simple banner view
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
               <div className="flex items-start gap-3 flex-1">
-                <Cookie className="w-6 h-6 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-1" />
+                <Cookie className="w-6 h-6 text-primary-600 dark:text-primary-400 shrink-0 mt-1" />
                 <div>
                   <h2
                     id="cookie-banner-title"

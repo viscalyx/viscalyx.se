@@ -11,7 +11,8 @@
       "theme": "Tema"
     },
     "openMenu": "Öppna meny",
-    "closeMenu": "Stäng meny"
+    "closeMenu": "Stäng meny",
+    "mobileMenu": "Mobilnavigering"
   },
   "footer": {
     "company": "Företag",
@@ -27,7 +28,8 @@
   },
   "language": {
     "english": "Engelska",
-    "swedish": "Svenska"
+    "swedish": "Svenska",
+    "selectLanguage": "Välj språk"
   },
   "hero": {
     "badge": "Automation & DevOps Excellens",
@@ -209,7 +211,6 @@
       "sharePost": "Dela detta inlägg",
       "tableOfContents": "Innehållsförteckning",
       "relatedArticles": "Relaterade Artiklar",
-      "readingProgress": "Läsförlopp",
       "dateFallback": "—",
       "tags": "Taggar",
       "notifications": {
@@ -283,6 +284,9 @@
     "dark": "Mörkt",
     "system": "System",
     "switchToTheme": "Byt till {theme}-tema"
+  },
+  "readingProgress": {
+    "ariaLabel": "Läsförlopp"
   },
   "scrollToTop": {
     "ariaLabel": "Scrolla till toppen"

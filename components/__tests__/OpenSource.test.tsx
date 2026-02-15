@@ -9,7 +9,10 @@ vi.mock('next/navigation', () => ({
 }))
 
 // Mock translations
-vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en',
+}))
 
 // Shared router mock for consistent push calls
 const mockRouter = {

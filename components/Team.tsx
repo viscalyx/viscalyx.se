@@ -54,7 +54,7 @@ const Team = () => {
   return (
     <section
       id="team"
-      className="py-20 bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-900 dark:to-primary-900/20"
+      className="py-20 bg-linear-to-br from-secondary-50 to-primary-50 dark:from-secondary-900 dark:to-primary-900/20"
     >
       <div className="container-custom section-padding">
         <motion.div
@@ -108,7 +108,7 @@ const Team = () => {
                 <div className="relative mb-6">
                   <div className="relative w-32 h-32 mx-auto">
                     {!member.image ? (
-                      <div className="w-full h-full rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center ring-4 ring-primary-100 dark:ring-primary-900/50">
+                      <div className="w-full h-full rounded-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center ring-4 ring-primary-100 dark:ring-primary-900/50">
                         <Camera className="h-12 w-12 text-white" />
                       </div>
                     ) : (
@@ -119,7 +119,7 @@ const Team = () => {
                         className="rounded-full object-cover ring-4 ring-primary-100 dark:ring-primary-900/50"
                       />
                     )}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary-600/20 to-transparent group-hover:from-primary-600/30 transition-all duration-300" />
+                    <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary-600/20 to-transparent group-hover:from-primary-600/30 transition-all duration-300" />
                   </div>
                 </div>
 
@@ -208,7 +208,7 @@ const Team = () => {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
+          <div className="bg-linear-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
               {t('joinTeam.title')}
             </h3>

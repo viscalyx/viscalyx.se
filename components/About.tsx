@@ -100,7 +100,7 @@ const About = () => {
                   transition={{ delay: 0.6 + index * 0.1 }}
                   className="flex items-start space-x-4 p-4 rounded-lg hover:bg-primary-50/50 dark:hover:bg-primary-900/20 transition-colors duration-200"
                 >
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <value.icon className="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" />
                   </div>
                   <div>
@@ -171,7 +171,7 @@ const About = () => {
               </motion.div>
 
               {/* Background Element */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 rounded-2xl blur-3xl transform scale-110 -z-10" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 rounded-2xl blur-3xl transform scale-110 -z-10" />
             </div>
           </motion.div>
         </div>

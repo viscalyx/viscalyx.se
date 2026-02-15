@@ -11,7 +11,8 @@
       "theme": "Theme"
     },
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "mobileMenu": "Mobile navigation"
   },
   "footer": {
     "company": "Company",
@@ -27,7 +28,8 @@
   },
   "language": {
     "english": "English",
-    "swedish": "Swedish"
+    "swedish": "Swedish",
+    "selectLanguage": "Select language"
   },
   "hero": {
     "badge": "Automation & DevOps Excellence",
@@ -209,7 +211,6 @@
       "sharePost": "Share this post",
       "tableOfContents": "Table of Contents",
       "relatedArticles": "Related Articles",
-      "readingProgress": "Reading Progress",
       "dateFallback": "—",
       "tags": "Tags",
       "notifications": {
@@ -283,6 +284,9 @@
     "dark": "Dark",
     "system": "System",
     "switchToTheme": "Switch to {theme} theme"
+  },
+  "readingProgress": {
+    "ariaLabel": "Reading progress"
   },
   "scrollToTop": {
     "ariaLabel": "Scroll to top"

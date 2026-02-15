@@ -1,3 +1,4 @@
+import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import dynamic from 'next/dynamic'
@@ -35,6 +36,18 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getOrganizationJsonLd()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getWebSiteJsonLd()),
+        }}
+      />
       {children}
       <CookieConsentBanner />
     </NextIntlClientProvider>
