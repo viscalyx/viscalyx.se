@@ -299,7 +299,8 @@ export function addHeadingIds(
       const outputAttributes = hasClass
         ? finalAttributes.replace(
             /\bclass\s*=\s*"([^"]*)"/i,
-            (_: string, existing: string) => `class="${existing} heading-with-anchor"`
+            (_: string, existing: string) =>
+              `class="${existing} heading-with-anchor"`
           )
         : `${finalAttributes} class="heading-with-anchor"`
 
