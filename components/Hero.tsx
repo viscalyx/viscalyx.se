@@ -1,16 +1,14 @@
 'use client'
 
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { Code, Sparkles } from 'lucide-react'
-import { Route } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Hero = () => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const { handleNavigation } = useSectionNavigation()
   const t = useTranslations('hero')
 
   // Images representing productivity, automation, and business processes
@@ -63,25 +61,6 @@ const Hero = () => {
       newLoaded[index] = true
       return newLoaded
     })
-  }
-
-  const handleNavigation = (href: string) => {
-    // Check if it's a section link (starts with #)
-    if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
-      if (pathname !== '/') {
-        router.push(`/${href}`)
-      } else {
-        // We're already on home page, just scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
-    } else {
-      // Regular page navigation
-      router.push(href as Route)
-    }
   }
 
   return (

@@ -184,6 +184,8 @@ const Header = () => {
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/70 transition-colors"
                 aria-label={t('settings.title')}
+                aria-expanded={isSettingsOpen}
+                aria-controls="desktop-settings-menu"
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -191,6 +193,9 @@ const Header = () => {
               <AnimatePresence>
                 {isSettingsOpen && (
                   <motion.div
+                    id="desktop-settings-menu"
+                    role="dialog"
+                    aria-label={t('settings.title')}
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -229,6 +234,8 @@ const Header = () => {
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
                 aria-label={t('settings.title')}
+                aria-expanded={isSettingsOpen}
+                aria-controls="mobile-settings-menu"
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -236,6 +243,9 @@ const Header = () => {
               <AnimatePresence>
                 {isSettingsOpen && (
                   <motion.div
+                    id="mobile-settings-menu"
+                    role="dialog"
+                    aria-label={t('settings.title')}
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -264,6 +274,8 @@ const Header = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
               aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -277,7 +289,9 @@ const Header = () => {
         {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div
+            <motion.nav
+              id="mobile-menu"
+              aria-label={t('mobileMenu')}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -301,7 +315,7 @@ const Header = () => {
                   </motion.div>
                 ))}
               </div>
-            </motion.div>
+            </motion.nav>
           )}
         </AnimatePresence>
       </nav>
