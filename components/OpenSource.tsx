@@ -118,7 +118,7 @@ const OpenSource = () => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                   <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
                     <GitHubIcon className="w-5 h-5 text-secondary-700 dark:text-secondary-300" />
                   </div>

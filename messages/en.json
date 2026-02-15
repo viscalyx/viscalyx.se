@@ -211,7 +211,6 @@
       "sharePost": "Share this post",
       "tableOfContents": "Table of Contents",
       "relatedArticles": "Related Articles",
-      "readingProgress": "Reading Progress",
       "dateFallback": "—",
       "tags": "Tags",
       "notifications": {
@@ -285,6 +284,9 @@
     "dark": "Dark",
     "system": "System",
     "switchToTheme": "Switch to {theme} theme"
+  },
+  "readingProgress": {
+    "ariaLabel": "Reading progress"
   },
   "scrollToTop": {
     "ariaLabel": "Scroll to top"

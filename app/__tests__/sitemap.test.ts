@@ -37,21 +37,23 @@ describe('sitemap', () => {
     })
   })
 
-  it('includes static pages', async () => {
+  it('includes static pages with locale prefixes', async () => {
     mockGetAllPosts.mockReturnValue([])
 
     const result = await sitemap()
 
     const urls = result.map(entry => entry.url)
-    expect(urls).toContain('https://example.com')
-    expect(urls).toContain('https://example.com/blog')
+    expect(urls).toContain('https://example.com/en')
+    expect(urls).toContain('https://example.com/sv')
+    expect(urls).toContain('https://example.com/en/blog')
+    expect(urls).toContain('https://example.com/sv/blog')
     expect(urls).toContain('https://example.com/en/privacy')
     expect(urls).toContain('https://example.com/sv/privacy')
     expect(urls).toContain('https://example.com/en/terms')
     expect(urls).toContain('https://example.com/sv/terms')
   })
 
-  it('includes blog post pages', async () => {
+  it('includes blog post pages with locale prefixes', async () => {
     mockGetAllPosts.mockReturnValue([
       {
         slug: 'test-post',
@@ -68,10 +70,11 @@ describe('sitemap', () => {
     const result = await sitemap()
 
     const urls = result.map(entry => entry.url)
-    expect(urls).toContain('https://example.com/blog/test-post')
+    expect(urls).toContain('https://example.com/en/blog/test-post')
+    expect(urls).toContain('https://example.com/sv/blog/test-post')
   })
 
-  it('includes fallback blog pages when no matching real posts exist', async () => {
+  it('does not include fallback blog pages', async () => {
     mockGetAllPosts.mockReturnValue([])
 
     const result = await sitemap()
@@ -79,13 +82,13 @@ describe('sitemap', () => {
     const urls = result.map(entry => entry.url)
     expect(
       urls.some(u => u.includes('future-infrastructure-automation-2025'))
-    ).toBe(true)
+    ).toBe(false)
     expect(urls.some(u => u.includes('powershell-dsc-best-practices'))).toBe(
-      true
+      false
     )
   })
 
-  it('excludes fallback posts when real post with same slug exists', async () => {
+  it('generates one entry per locale for each blog post', async () => {
     mockGetAllPosts.mockReturnValue([
       {
         slug: 'future-infrastructure-automation-2025',
@@ -101,11 +104,11 @@ describe('sitemap', () => {
 
     const result = await sitemap()
 
-    // Should only appear once (from dynamic posts, not from fallback)
     const matchingUrls = result.filter(entry =>
       entry.url.includes('future-infrastructure-automation-2025')
     )
-    expect(matchingUrls.length).toBe(1)
+    // Two entries: one per locale
+    expect(matchingUrls.length).toBe(2)
   })
 
   it('sets correct priorities for different page types', async () => {
@@ -124,13 +127,13 @@ describe('sitemap', () => {
 
     const result = await sitemap()
 
-    const homeEntry = result.find(e => e.url === 'https://example.com')
+    const homeEntry = result.find(e => e.url === 'https://example.com/en')
     expect(homeEntry?.priority).toBe(1)
 
-    const blogEntry = result.find(e => e.url === 'https://example.com/blog')
+    const blogEntry = result.find(e => e.url === 'https://example.com/en/blog')
     expect(blogEntry?.priority).toBe(0.8)
 
-    const postEntry = result.find(e => e.url.includes('/blog/test-post'))
+    const postEntry = result.find(e => e.url.includes('/en/blog/test-post'))
     expect(postEntry?.priority).toBe(0.6)
   })
 
@@ -150,7 +153,7 @@ describe('sitemap', () => {
 
     const result = await sitemap()
 
-    const postEntry = result.find(e => e.url.includes('/blog/no-date-post'))
+    const postEntry = result.find(e => e.url.includes('/en/blog/no-date-post'))
     expect(postEntry).toBeDefined()
     expect(postEntry?.lastModified).toEqual(new Date('1970-01-01'))
   })

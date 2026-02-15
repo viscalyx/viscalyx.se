@@ -4,8 +4,16 @@
   "main": ".open-next/worker.js",
   "name": "viscalyx-se",
   // See settings "Default as of" here: https://developers.cloudflare.com/workers/configuration/compatibility-flags/
-  "compatibility_date": "2026-01-20",
+  "compatibility_date": "2026-02-13",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Change this to false to disable the default *.workers.dev route — traffic arrives only via custom domain
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "viscalyx.org",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"

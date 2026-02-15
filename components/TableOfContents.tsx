@@ -152,7 +152,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
     >
       {/* Top scroll indicator */}
       {canScrollUp && (
-        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-start justify-center">
+        <div className="absolute top-0 left-0 right-0 h-4 bg-linear-to-b from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-start justify-center">
           <ChevronUpIcon className="w-4 h-4 text-secondary-400 dark:text-secondary-500 mt-0.5 scroll-indicator" />
         </div>
       )}
@@ -193,7 +193,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
       {/* Bottom scroll indicator */}
       {canScrollDown && (
-        <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-end justify-center">
+        <div className="absolute bottom-0 left-0 right-0 h-4 bg-linear-to-t from-white dark:from-secondary-800 to-transparent pointer-events-none z-10 flex items-end justify-center">
           <ChevronDownIcon className="w-4 h-4 text-secondary-400 dark:text-secondary-500 mb-0.5 scroll-indicator" />
         </div>
       )}

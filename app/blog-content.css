@@ -1,0 +1,410 @@
+/* Reference globals.css to access Tailwind theme, custom colors, and utilities
+   without emitting duplicate styles (Tailwind v4.1+ @reference) */
+@reference "./globals.css";
+
+@layer utilities {
+  /* Utility for alert icons - scoped to blog content */
+  .blog-content .github-alert-icon {
+    @apply w-5 h-5 mr-2 inline-block;
+    background-color: currentcolor;
+    /* Light mode icon mask */
+    mask: var(--alert-icon-light) no-repeat center/contain;
+    -webkit-mask: var(--alert-icon-light) no-repeat center/contain;
+  }
+
+  /* Blog Content Styles - Optimized for Typography Plugin */
+  /* Override prose defaults with custom colors and behavior */
+  .blog-content {
+    @apply text-secondary-700 dark:text-secondary-300;
+
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  /* Headings - Override prose defaults with scroll behavior and custom colors */
+  .blog-content h1,
+  .blog-content h2,
+  .blog-content h3,
+  .blog-content h4,
+  .blog-content h5,
+  .blog-content h6 {
+    @apply text-secondary-900 dark:text-secondary-100 scroll-mt-24;
+  }
+
+  /* Table styling for markdown tables */
+  .blog-content table {
+    @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
+    width: auto;
+    min-width: 300px;
+    max-width: 100%;
+  }
+
+  .blog-content th {
+    @apply bg-secondary-50 dark:bg-secondary-800 text-secondary-900 dark:text-secondary-100 font-bold px-4 py-3 text-left border border-secondary-200 dark:border-secondary-700;
+  }
+
+  .blog-content td {
+    @apply px-4 py-3 border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300;
+  }
+
+  .blog-content tbody tr:nth-child(even) {
+    @apply bg-secondary-50 dark:bg-secondary-800;
+  }
+
+  .blog-content tbody tr:hover {
+    @apply bg-secondary-200 dark:bg-secondary-600;
+  }
+
+  /* Ensure bold and italic text use normal text colors */
+  .blog-content strong,
+  .blog-content b {
+    @apply text-secondary-700 dark:text-secondary-300 font-bold;
+  }
+
+  .blog-content em,
+  .blog-content i {
+    @apply text-secondary-700 dark:text-secondary-300 italic;
+  }
+
+  /* Custom blockquote styling to match site theme */
+  .blog-content blockquote {
+    @apply border-l-4 border-primary-300 dark:border-primary-600 pl-4 italic text-secondary-600 dark:text-secondary-400;
+  }
+
+  /* Remove quote marks from standard blockquotes */
+  .blog-content blockquote p:first-of-type::before,
+  .blog-content blockquote p:last-of-type::after {
+    content: none;
+  }
+
+  /* GitHub-style alerts/blockquotes */
+  .blog-content .github-alert {
+    @apply my-6 rounded-lg border-l-4 p-4 bg-secondary-50 dark:bg-secondary-800;
+    /* Use CSS variable for border color */
+    border-color: var(--alert-border-color, var(--color-gray-200));
+  }
+
+  /* Common alert-title styles */
+  .blog-content .github-alert .github-alert-title {
+    @apply font-bold mb-3 flex items-center gap-2 mt-0;
+    /* Use CSS variable for title color */
+    color: var(--alert-title-color-light);
+  }
+  /* Generic dark mode title color override for all alert types */
+  .dark .blog-content .github-alert .github-alert-title {
+    color: var(--alert-title-color-dark) !important;
+  }
+  /* The following per-variant dark title overrides are now redundant and can be removed:
+       .dark .blog-content .github-alert-warning .github-alert-title { color: var(--alert-title-color-dark) !important; }
+       .dark .blog-content .github-alert-caution .github-alert-title { color: var(--alert-title-color-dark) !important; }
+     */
+
+  /* Alert content */
+  .blog-content .github-alert-content {
+    @apply text-secondary-700 dark:text-secondary-300;
+    font-style: normal;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .blog-content .github-alert-content p {
+    @apply text-secondary-700 dark:text-secondary-300 mb-3;
+  }
+
+  .blog-content .github-alert-content p:last-child {
+    @apply mb-0;
+  }
+
+  /* Note variant */
+  .blog-content .github-alert-note {
+    --alert-border-color: #3b82f6; /* blue-500 */
+    --alert-title-color-light: #2563eb; /* blue-600 */
+    --alert-title-color-dark: #60a5fa; /* blue-400 */
+  }
+
+  /* Tip variant - set CSS variables for border, title color */
+  .blog-content .github-alert-tip {
+    --alert-border-color: #10b981; /* green-500 */
+    --alert-title-color-light: #16a34a; /* green-600 */
+    --alert-title-color-dark: #34d399; /* green-400 */
+  }
+
+  /* Important - Purple with exclamation in speech bubble */
+  .blog-content .github-alert-important {
+    --alert-border-color: #a855f7; /* purple-500 */
+    --alert-title-color-light: #7c3aed; /* purple-600 */
+    --alert-title-color-dark: #a78bfa; /* purple-400 */
+  }
+
+  /* Warning - Orange/Yellow with triangle exclamation */
+  .blog-content .github-alert-warning {
+    --alert-border-color: #f97316; /* orange-500 */
+    --alert-title-color-light: #d97706; /* orange-600 */
+    --alert-title-color-dark: #fb923c; /* orange-400 */
+  }
+
+  /* Caution alert variant */
+  .blog-content .github-alert-caution {
+    /* Remove @apply since border-color is set by variable */
+    --alert-border-color: #ef4444; /* red-500 */
+    --alert-title-color-light: #dc2626; /* red-600 */
+    --alert-title-color-dark: #f87171; /* red-400 */
+  }
+
+  /* Quote - Styled like regular blockquote but with visible quote marks */
+  .blog-content .github-alert-quote {
+    /* Override alert styling to match regular blockquotes */
+    @apply border-l-4 border-gray-400 dark:border-gray-500 pl-4 italic text-secondary-600 dark:text-secondary-400 bg-transparent dark:bg-transparent my-6 p-0 rounded-none;
+  }
+
+  /* Hide the title for quote alerts */
+  .blog-content .github-alert-quote .github-alert-title {
+    display: none !important;
+  }
+
+  /* Style the content like a regular blockquote */
+  .blog-content .github-alert-quote .github-alert-content {
+    @apply text-secondary-600 dark:text-secondary-400;
+    font-style: italic !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p {
+    @apply text-secondary-600 dark:text-secondary-400 mb-3;
+  }
+
+  .blog-content .github-alert-quote .github-alert-content p:last-child {
+    @apply mb-0;
+  }
+
+  /* Add quote marks specifically for QUOTE alerts */
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:first-of-type::before {
+    content: open-quote;
+  }
+
+  .blog-content
+    .github-alert-quote
+    .github-alert-content
+    p:last-of-type::after {
+    content: close-quote;
+  }
+
+  .blog-content code {
+    @apply bg-secondary-100 dark:bg-secondary-800 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded text-sm;
+  }
+
+  /* Remove graphical backticks added by prose plugin */
+  .blog-content code::before,
+  .blog-content code::after {
+    content: none !important;
+  }
+
+  /* Ensure inline code in blockquotes and alerts has better contrast */
+  .blog-content blockquote code,
+  .blog-content .github-alert code {
+    @apply bg-white dark:bg-secondary-900 text-secondary-900 dark:text-secondary-100 border border-secondary-300 dark:border-secondary-600;
+  }
+
+  /* Also remove prose backticks specifically for blockquote and alert code */
+  .blog-content blockquote code::before,
+  .blog-content blockquote code::after,
+  .blog-content .github-alert code::before,
+  .blog-content .github-alert code::after {
+    content: none !important;
+  }
+
+  .blog-content a {
+    @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline;
+  }
+
+  /* Image styling for blog content - 3D shadow effect and normalized sizing */
+  .blog-content img {
+    @apply max-w-full h-auto rounded-lg border border-secondary-200 dark:border-secondary-700;
+    /* Normalize image size - max width for large screens, responsive for smaller screens */
+    max-width: min(600px, 100%);
+    /* Center images horizontally */
+    margin: 2rem auto;
+    display: block;
+    /* Cursor to indicate clickability */
+    cursor: pointer;
+    /* 3D shadow effect */
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 20px 40px -10px rgba(0, 0, 0, 0.1),
+      0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    /* Enhanced 3D effect with transform perspective */
+    transform: perspective(1000px) rotateX(2deg);
+    transition: all 0.3s ease;
+  }
+
+  /* Hover effect for blog images */
+  .blog-content img:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+    box-shadow:
+      0 20px 40px -5px rgba(0, 0, 0, 0.15),
+      0 30px 60px -15px rgba(0, 0, 0, 0.15),
+      0 5px 15px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  /* Dark mode adjustments for image shadows */
+  .dark .blog-content img {
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.3),
+      0 20px 40px -10px rgba(0, 0, 0, 0.2),
+      0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .dark .blog-content img:hover {
+    box-shadow:
+      0 20px 40px -5px rgba(0, 0, 0, 0.4),
+      0 30px 60px -15px rgba(0, 0, 0, 0.3),
+      0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  /* Disable motion effects for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .blog-content img {
+      transform: none;
+      transition: none;
+    }
+
+    .blog-content img:hover {
+      transform: none;
+      transition: none;
+    }
+
+    .scroll-indicator {
+      animation: none;
+    }
+  }
+
+  /* Responsive adjustments for mobile devices */
+  @media (max-width: 768px) {
+    .blog-content img {
+      max-width: 100%;
+      margin: 1.5rem auto;
+      /* Reduce 3D effect on mobile for better performance */
+      transform: perspective(500px) rotateX(1deg);
+    }
+
+    .blog-content img:hover {
+      transform: perspective(500px) rotateX(0deg) translateY(-2px);
+    }
+  }
+
+  /* Table of Contents custom scrollbar styles */
+  .toc-scrollable {
+    /* Show scrollbar always when content overflows */
+    overflow-y: auto;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) transparent; /* gray-400 for scrollbar thumb */
+  }
+
+  /* Webkit scrollbar styling (Chrome, Safari, Edge) */
+  .toc-scrollable::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .toc-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  .toc-scrollable::-webkit-scrollbar-thumb {
+    @apply bg-secondary-400;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background-clip: content-box;
+  }
+
+  .toc-scrollable::-webkit-scrollbar-thumb:hover {
+    @apply bg-secondary-500;
+  }
+
+  /* Dark mode scrollbar */
+  .dark .toc-scrollable {
+    scrollbar-color: var(--color-secondary-600) transparent;
+  }
+
+  .dark .toc-scrollable::-webkit-scrollbar-thumb {
+    background-color: rgb(75 85 99); /* gray-600 */
+  }
+
+  .dark .toc-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(107 114 128); /* gray-500 */
+  }
+
+  /* Scroll indicator animations */
+  .scroll-indicator {
+    animation: scroll-pulse 2s ease-in-out infinite;
+    will-change: opacity;
+  }
+
+  @keyframes scroll-pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* Heading anchor link styles */
+  .heading-with-anchor {
+    position: relative;
+  }
+
+  .heading-anchor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: var(--color-gray-500);
+    text-decoration: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.25rem;
+    vertical-align: middle;
+  }
+
+  .heading-anchor:hover {
+    color: var(--color-blue-600);
+    background-color: var(--color-gray-100);
+  }
+
+  .dark .heading-anchor:hover {
+    color: var(--color-blue-400);
+    background-color: var(--color-gray-700);
+  }
+
+  .heading-with-anchor:hover .heading-anchor {
+    opacity: 1;
+  }
+
+  .heading-anchor:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--color-blue-600);
+    outline-offset: 2px;
+  }
+
+  .dark .heading-anchor:focus-visible {
+    outline-color: var(--color-blue-400);
+  }
+
+  @media (max-width: 768px) {
+    .heading-anchor {
+      opacity: 1;
+    }
+  }
+}
