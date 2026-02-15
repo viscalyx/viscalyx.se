@@ -99,13 +99,35 @@ export function createSlug(text: string, options: SlugOptions = {}): string {
 }
 
 /**
- * Generates a fallback ID for empty or invalid headings
+ * Simple DJB2 hash function for generating deterministic IDs.
+ * Produces a short, URL-safe string from arbitrary input.
+ *
+ * @param str - The string to hash
+ * @returns A base-36 hash string
+ */
+function djb2Hash(str: string): string {
+  let hash = 5381
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 33) ^ str.charCodeAt(i)
+  }
+  return (hash >>> 0).toString(36)
+}
+
+/**
+ * Generates a deterministic fallback ID for empty or invalid headings.
+ * Uses a content-based hash instead of random UUIDs to avoid
+ * server/client hydration mismatches.
  *
  * @param level - The heading level (1-6)
- * @returns A unique fallback ID
+ * @param content - Optional content hint for hash uniqueness
+ * @returns A deterministic fallback ID
  */
-export function generateFallbackId(level: number): string {
-  return `heading-${level}-${crypto.randomUUID().replace(/-/g, '')}`
+export function generateFallbackId(
+  level: number,
+  content: string = ''
+): string {
+  const hash = djb2Hash(`${level}-${content}`)
+  return `heading-${level}-${hash}`
 }
 
 /**
@@ -138,8 +160,9 @@ export function createSlugId(
   const cleanText = extractCleanText(text)
   const slug = createSlug(cleanText, options)
 
-  // Ensure the id is not empty
-  return slug || generateFallbackId(level)
+  // Ensure the id is not empty — pass original text as content hint
+  // so that different empty-slug headings get different fallback IDs
+  return slug || generateFallbackId(level, text)
 }
 
 /**
@@ -271,8 +294,17 @@ export function addHeadingIds(
         ${ANCHOR_LINK_ICON}
       </a>`
 
+      // Merge heading-with-anchor class with any existing class attribute
+      const hasClass = /\bclass\s*=\s*"([^"]*)"/i.test(finalAttributes)
+      const outputAttributes = hasClass
+        ? finalAttributes.replace(
+            /\bclass\s*=\s*"([^"]*)"/i,
+            (_, existing) => `class="${existing} heading-with-anchor"`
+          )
+        : `${finalAttributes} class="heading-with-anchor"`
+
       // Return the heading with proper ID and anchor link
-      return `<h${level}${finalAttributes} class="heading-with-anchor">${text}${anchorLink}</h${level}>`
+      return `<h${level}${outputAttributes}>${text}${anchorLink}</h${level}>`
     }
   )
 }
