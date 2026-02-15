@@ -165,7 +165,10 @@ export function useBlogAnalytics(
           window.pageYOffset || document.documentElement.scrollTop
         const documentHeight =
           document.documentElement.scrollHeight - window.innerHeight
-        const scrollProgress = Math.min((scrollTop / documentHeight) * 100, 100)
+        const scrollProgress =
+          documentHeight > 0
+            ? Math.min((scrollTop / documentHeight) * 100, 100)
+            : 0
 
         // Track the maximum scroll progress
         maxScrollProgress.current = Math.max(

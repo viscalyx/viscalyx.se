@@ -1,3 +1,5 @@
+import '@/app/blog-content.css'
+
 import BlogPostContent from '@/components/BlogPostContent'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -68,6 +70,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title,
       description,
+    },
+    alternates: {
+      languages: {
+        en: `${SITE_URL}/en/blog/${validatedSlug}`,
+        sv: `${SITE_URL}/sv/blog/${validatedSlug}`,
+      },
     },
   }
 }

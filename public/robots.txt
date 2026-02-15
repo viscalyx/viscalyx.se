@@ -15,4 +15,4 @@ User-agent: ClaudeBot
 Disallow: /
 
 # Sitemap
-Sitemap: https://viscalyx.se/sitemap.xml
+Sitemap: https://viscalyx.org/sitemap.xml
