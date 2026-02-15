@@ -9,6 +9,16 @@
     "NEXT_TELEMETRY_DISABLED": "1"
   },
 
+  // Unset Codespaces GIT_COMMITTER overrides ("GitHub <noreply@github.com>") so git
+  // falls back to user.name/user.email from .gitconfig. This ensures SSH-signed commits
+  // from VS Code's Git extension show as "Verified" on GitHub.
+  // null removes the variable from the VS Code server and all extension processes.
+  "remoteEnv": {
+    "GITHUB_TOKEN": null,
+    "GIT_COMMITTER_NAME": null,
+    "GIT_COMMITTER_EMAIL": null
+  },
+
   // Features to add to the dev container
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
