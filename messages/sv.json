@@ -267,6 +267,32 @@
     "tryAgain": "Försök Igen",
     "goHome": "Gå till Startsidan"
   },
+  "loadingScreen": {
+    "redirecting": "Omdirigerar...",
+    "loading": "Laddar..."
+  },
+  "copyButton": {
+    "copy": "Kopiera",
+    "copied": "Kopierat!",
+    "copyToClipboard": "Kopiera till urklipp",
+    "copiedToClipboard": "Kopierat till urklipp",
+    "copyCodeToClipboard": "Kopiera kod till urklipp"
+  },
+  "themeToggle": {
+    "light": "Ljust",
+    "dark": "Mörkt",
+    "system": "System",
+    "switchToTheme": "Byt till {theme}-tema"
+  },
+  "scrollToTop": {
+    "ariaLabel": "Scrolla till toppen"
+  },
+  "loadingSpinner": {
+    "ariaLabel": "Laddar"
+  },
+  "confirmationModal": {
+    "close": "Stäng modal"
+  },
   "cookieConsent": {
     "title": "Vi Använder Kakor",
     "description": "Vi använder kakor för att förbättra din surfupplevelse, leverera personaliserat innehåll och analysera vår trafik. Genom att klicka på 'Acceptera alla' samtycker du till vår användning av kakor.",

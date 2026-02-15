@@ -1,7 +1,10 @@
 'use client'
 
+import { CopyIcon, CheckmarkIcon } from '@/components/BlogIcons'
+
+import { useTranslations } from 'next-intl'
+
 import { useState } from 'react'
-import { CopyIcon, CheckmarkIcon } from './BlogIcons'
 
 interface CopyButtonProps {
   text: string
@@ -9,6 +12,7 @@ interface CopyButtonProps {
 }
 
 export default function CopyButton({ text, className = '' }: CopyButtonProps) {
+  const t = useTranslations('copyButton')
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -48,8 +52,8 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
       type="button"
       onClick={handleCopy}
       className={`group relative p-2 rounded-md bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200 dark:border-gray-600 backdrop-blur-sm shadow-sm hover:shadow-md ${className}`}
-      title={copied ? 'Copied!' : 'Copy to clipboard'}
-      aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
+      title={copied ? t('copied') : t('copyToClipboard')}
+      aria-label={copied ? t('copiedToClipboard') : t('copyCodeToClipboard')}
     >
       {copied ? (
         <CheckmarkIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -59,7 +63,7 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
 
       {/* Tooltip */}
       <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
-        {copied ? 'Copied!' : 'Copy'}
+        {copied ? t('copied') : t('copy')}
       </span>
     </button>
   )

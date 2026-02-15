@@ -60,13 +60,8 @@ describe('ConfirmationModal', () => {
   it('calls onClose when backdrop is clicked', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
-    // Click the backdrop (the overlay div)
-    const backdrop =
-      screen.getByRole('dialog').parentElement?.previousElementSibling
-    if (backdrop) {
-      fireEvent.click(backdrop)
-      expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
-    }
+    fireEvent.click(screen.getByTestId('modal-backdrop'))
+    expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 
   it('handles escape key press', () => {

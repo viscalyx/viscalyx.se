@@ -1,5 +1,6 @@
 'use client'
 import { type TocItem } from '@/lib/slug-utils'
+import { useTranslations } from 'next-intl'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
@@ -14,6 +15,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   maxHeight = 'lg',
   headingId,
 }) => {
+  const t = useTranslations('blog.post')
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
@@ -146,7 +148,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       className="relative"
       {...(headingId
         ? { 'aria-labelledby': headingId }
-        : { 'aria-label': 'Table of contents' })}
+        : { 'aria-label': t('tableOfContents') })}
     >
       {/* Top scroll indicator */}
       {canScrollUp && (
@@ -161,7 +163,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         className={`toc-scrollable ${heightClass} overflow-y-auto`}
         tabIndex={0}
         role="region"
-        aria-label="Scrollable table of contents"
+        aria-label={t('tableOfContents')}
       >
         <ul className="space-y-1">
           {items.map((item, index) => (

@@ -1,10 +1,17 @@
 import { render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import LoadingSpinner from '../LoadingSpinner'
+
+// Mock next-intl
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}))
 
 describe('LoadingSpinner', () => {
   it('renders an accessible spinner', () => {
     render(<LoadingSpinner />)
-    const spinner = screen.getByRole('status', { name: /loading/i })
+    // cspell:disable-next-line -- translation key returned by mock
+    const spinner = screen.getByRole('status', { name: /arialabel/i })
     expect(spinner).toBeInTheDocument()
   })
 
@@ -83,11 +90,12 @@ describe('LoadingSpinner', () => {
   describe('accessibility', () => {
     it('has correct ARIA attributes and is announced to screen readers', () => {
       render(<LoadingSpinner />)
-      const spinner = screen.getByRole('status', { name: /loading/i })
+      // cspell:disable-next-line -- translation key returned by mock
+      const spinner = screen.getByRole('status', { name: /arialabel/i })
 
       expect(spinner).toBeInTheDocument()
       expect(spinner).toHaveAttribute('role', 'status')
-      expect(spinner).toHaveAttribute('aria-label', 'Loading')
+      expect(spinner).toHaveAttribute('aria-label', 'ariaLabel')
     })
   })
 

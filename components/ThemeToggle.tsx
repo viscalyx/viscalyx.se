@@ -3,20 +3,22 @@
 import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
 import { Monitor, Moon, Sun } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
+  const t = useTranslations('themeToggle')
 
   const themes = [
-    { value: 'light', icon: Sun, label: 'Light' },
-    { value: 'dark', icon: Moon, label: 'Dark' },
-    { value: 'system', icon: Monitor, label: 'System' },
+    { value: 'light', icon: Sun, labelKey: 'light' },
+    { value: 'dark', icon: Moon, labelKey: 'dark' },
+    { value: 'system', icon: Monitor, labelKey: 'system' },
   ] as const
 
   return (
     <div className="relative">
       <div className="flex items-center gap-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
-        {themes.map(({ value, icon: Icon, label }) => (
+        {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
             key={value}
             onClick={() => setTheme(value)}
@@ -28,8 +30,8 @@ const ThemeToggle = () => {
                   : 'text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-100'
               }
             `}
-            title={`Switch to ${label} theme`}
-            aria-label={`Switch to ${label} theme`}
+            title={t('switchToTheme', { theme: t(labelKey) })}
+            aria-label={t('switchToTheme', { theme: t(labelKey) })}
           >
             {theme === value && (
               <motion.div
