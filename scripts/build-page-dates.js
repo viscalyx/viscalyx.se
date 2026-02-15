@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 const { promisify } = require('node:util')
-const { exec } = require('node:child_process')
+const { execFile } = require('node:child_process')
 const fs = require('node:fs')
 const path = require('node:path')
 
-const execAsync = promisify(exec)
+const execFileAsync = promisify(execFile)
 
 /**
  * Get the last modified date of multiple files from Git history
@@ -16,15 +16,15 @@ async function getFilesLastModified(filePaths) {
   // Execute git log commands in parallel for all files
   const gitCommands = filePaths.map(async filePath => {
     try {
-      const command = `git log --follow --format="%ci" -- "${filePath}" | head -1`
-      const { stdout } = await execAsync(command, {
-        encoding: 'utf8',
-        cwd: process.cwd(),
-      })
+      const { stdout } = await execFileAsync(
+        'git',
+        ['log', '--follow', '--format=%ci', '--', filePath],
+        { encoding: 'utf8', cwd: process.cwd() }
+      )
 
-      const result = stdout.trim()
-      if (result) {
-        return new Date(result)
+      const firstLine = stdout.split('\n')[0].trim()
+      if (firstLine) {
+        return new Date(firstLine)
       }
       return null
     } catch (error) {
