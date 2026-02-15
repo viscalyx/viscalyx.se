@@ -27,7 +27,10 @@ const localStorageMock = (() => {
   }
 })()
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock, configurable: true })
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  configurable: true,
+})
 
 // --- matchMedia mock ---
 // Mutable object so tests can change .matches and the ref in ThemeProvider sees it
@@ -52,7 +55,10 @@ const mediaQueryObject = {
 
 const matchMediaMock = vi.fn(() => mediaQueryObject)
 
-Object.defineProperty(window, 'matchMedia', { value: matchMediaMock, configurable: true })
+Object.defineProperty(window, 'matchMedia', {
+  value: matchMediaMock,
+  configurable: true,
+})
 
 // --- Helper ---
 const wrapper = ({ children }: { children: ReactNode }) => (
