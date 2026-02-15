@@ -200,7 +200,7 @@ describe('ThemeProvider', () => {
       expect(document.documentElement.classList.contains('dark')).toBe(false)
     })
 
-    it('writes to localStorage when consent exists, skips when absent', () => {
+    it('writes to localStorage when consent exists', () => {
       const { result } = renderHook(() => useTheme(), { wrapper })
 
       localStorageMock.setItem.mockClear()
@@ -209,9 +209,13 @@ describe('ThemeProvider', () => {
         result.current.setTheme('dark')
       })
       expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'dark')
+    })
 
-      // Now disable consent
+    it('skips localStorage write when consent is absent', () => {
       hasConsentMock.mockReturnValue(false)
+
+      const { result } = renderHook(() => useTheme(), { wrapper })
+
       localStorageMock.setItem.mockClear()
 
       act(() => {

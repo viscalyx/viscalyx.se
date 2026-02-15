@@ -1,6 +1,6 @@
 import LocaleNotFound from '@/app/[locale]/not-found'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/components/NotFoundPage', () => ({
   default: () => <div data-testid="not-found-page">NotFoundPage</div>,

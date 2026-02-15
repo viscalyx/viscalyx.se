@@ -46,6 +46,16 @@ vi.mock('framer-motion', () => {
     'layoutScroll',
     'layoutDependency',
     'layoutRoot',
+    'onHoverStart',
+    'onHoverEnd',
+    'onTapStart',
+    'onTap',
+    'onTapCancel',
+    'onPanStart',
+    'onPan',
+    'onPanEnd',
+    'dragPropagation',
+    'dragListener',
   ])
 
   /**

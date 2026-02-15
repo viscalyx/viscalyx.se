@@ -9,10 +9,11 @@ import {
 } from '@/components/SocialIcons'
 import { motion } from 'framer-motion'
 import { ExternalLink, Mail } from 'lucide-react'
-import { Route } from 'next'
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+
+import type { Route } from 'next'
 
 interface FooterLink {
   name: string

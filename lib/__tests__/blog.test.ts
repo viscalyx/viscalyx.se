@@ -631,9 +631,9 @@ describe('cache integration with multi-function workflows', () => {
     expect(single).toBe(posts.find(p => p.slug === 'first-post'))
   })
 
-  it('getRelatedPosts internal double-getAllPosts call uses cache', () => {
-    // getRelatedPosts calls getAllPosts() once and reuses the result for filtering and filling.
-    // This test verifies that post objects returned by getRelatedPosts share cached references with getAllPosts().
+  it('getRelatedPosts internal getAllPosts call uses cache', () => {
+    // getRelatedPosts calls getAllPosts() internally — a subsequent direct
+    // call should return the same cached post objects
     const related = getRelatedPosts('first-post', 'NonExistentCategory', 3)
     const allPosts = getAllPosts()
 

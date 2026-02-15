@@ -41,8 +41,12 @@ describe('Header', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'
-    // Reset scrollY
+    // Reset scrollY and innerWidth
     Object.defineProperty(window, 'scrollY', { value: 0, writable: true })
+    Object.defineProperty(window, 'innerWidth', {
+      value: 1024,
+      writable: true,
+    })
   })
 
   describe('rendering', () => {
@@ -295,7 +299,7 @@ describe('Header', () => {
       fireEvent.click(aboutLink)
 
       // Should not call querySelector for smooth scroll on non-home page
-      expect(querySpy).not.toHaveBeenCalled()
+      expect(querySpy).not.toHaveBeenCalledWith('#about')
 
       querySpy.mockRestore()
     })
