@@ -59,10 +59,7 @@ export async function POST(request: Request) {
   try {
     // Validate request origin to prevent cross-site abuse
     if (!isValidOrigin(request)) {
-      return NextResponse.json(
-        { error: 'Forbidden' },
-        { status: 403 }
-      )
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const body: BlogReadEvent = await request.json()
@@ -89,10 +86,7 @@ export async function POST(request: Request) {
     const now = Date.now()
     const lastRequest = rateLimitMap.get(hashedIP)
     if (lastRequest && now - lastRequest < RATE_LIMIT_WINDOW_MS) {
-      return NextResponse.json(
-        { error: 'Too many requests' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
     }
     rateLimitMap.set(hashedIP, now)
 
