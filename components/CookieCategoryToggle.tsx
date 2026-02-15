@@ -14,6 +14,11 @@ interface CookieCategoryToggleProps {
  * Shared toggle switch for cookie categories.
  * Provides consistent sizing and behavior across
  * CookieConsentBanner and CookieSettings.
+ *
+ * @remarks
+ * The `aria-describedby` attribute references `${category}-description`.
+ * The parent component must render an element with that `id` to provide
+ * a meaningful description to screen readers.
  */
 const CookieCategoryToggle = ({
   category,
@@ -25,7 +30,9 @@ const CookieCategoryToggle = ({
   const isRequired = category === 'strictly-necessary'
 
   return (
-    <label className="relative inline-flex items-center cursor-pointer">
+    <label
+      className={`relative inline-flex items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+    >
       <input
         type="checkbox"
         checked={checked}

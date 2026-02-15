@@ -1,5 +1,3 @@
-'use client'
-
 import { BarChart3, Cookie, Palette, Shield } from 'lucide-react'
 
 import type { CookieCategory } from '@/lib/cookie-consent'
@@ -26,7 +24,7 @@ const CookieCategoryIcon = ({
         <Palette className="w-5 h-5 text-purple-600 dark:text-purple-400" />
       )
     default:
-      return <Cookie className="w-5 h-5" />
+      return <Cookie className="w-5 h-5 text-gray-600 dark:text-gray-400" />
   }
 }
 

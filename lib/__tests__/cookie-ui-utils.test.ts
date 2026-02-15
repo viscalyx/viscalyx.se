@@ -1,5 +1,5 @@
+import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 import { describe, expect, it } from 'vitest'
-import { getCookiesForCategory } from '../cookie-ui-utils'
 
 // The function uses the real cookieRegistry from cookie-consent
 // We test against the actual registry to ensure correct filtering
@@ -15,6 +15,7 @@ describe('getCookiesForCategory', () => {
 
   it('returns cookies for analytics category', () => {
     const result = getCookiesForCategory('analytics')
+    expect(result.length).toBeGreaterThan(0)
     result.forEach(cookie => {
       expect(cookie.category).toBe('analytics')
     })
@@ -22,6 +23,7 @@ describe('getCookiesForCategory', () => {
 
   it('returns cookies for preferences category', () => {
     const result = getCookiesForCategory('preferences')
+    expect(result.length).toBeGreaterThan(0)
     result.forEach(cookie => {
       expect(cookie.category).toBe('preferences')
     })

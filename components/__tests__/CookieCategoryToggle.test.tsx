@@ -1,6 +1,6 @@
+import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
-import CookieCategoryToggle from '../CookieCategoryToggle'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('CookieCategoryToggle', () => {
   const defaultProps = {
@@ -10,6 +10,10 @@ describe('CookieCategoryToggle', () => {
     requiredLabel: 'Required',
     onChange: vi.fn(),
   }
+
+  beforeEach(() => {
+    defaultProps.onChange.mockClear()
+  })
 
   it('renders an unchecked toggle', () => {
     render(<CookieCategoryToggle {...defaultProps} />)
