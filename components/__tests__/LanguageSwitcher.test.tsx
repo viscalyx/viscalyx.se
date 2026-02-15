@@ -15,9 +15,18 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/en/test',
 }))
 
+// Mock language preferences for test isolation
+const { saveLanguagePreferenceMock } = vi.hoisted(() => ({
+  saveLanguagePreferenceMock: vi.fn(),
+}))
+vi.mock('@/lib/language-preferences', () => ({
+  saveLanguagePreference: saveLanguagePreferenceMock,
+}))
+
 describe('LanguageSwitcher component', () => {
   beforeEach(() => {
     pushMock.mockClear()
+    saveLanguagePreferenceMock.mockClear()
   })
 
   describe('rendering', () => {
@@ -47,6 +56,7 @@ describe('LanguageSwitcher component', () => {
       const swedishOption = screen.getByRole('option', { name: /swedish/i })
       fireEvent.click(swedishOption)
       expect(pushMock).toHaveBeenCalledWith('/sv/test')
+      expect(saveLanguagePreferenceMock).toHaveBeenCalledWith('sv')
     })
   })
 
@@ -66,9 +76,7 @@ describe('LanguageSwitcher component', () => {
 
     it('dropdown has listbox role and aria-label', () => {
       render(<LanguageSwitcher />)
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
 
       const listbox = screen.getByRole('listbox', { name: 'selectLanguage' })
       expect(listbox).toBeInTheDocument()
@@ -76,9 +84,7 @@ describe('LanguageSwitcher component', () => {
 
     it('options have correct role and aria-selected', () => {
       render(<LanguageSwitcher />)
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
 
       const options = screen.getAllByRole('option')
       expect(options).toHaveLength(2)
@@ -122,9 +128,7 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
       expect(screen.getByRole('listbox')).toBeInTheDocument()
 
       // Close with Escape
@@ -139,16 +143,16 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open dropdown
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
 
       // Current locale is 'en', so focusedIndex starts at 0 (english)
       // ArrowDown moves to index 1 (swedish)
       fireEvent.keyDown(container, { key: 'ArrowDown' })
 
-      const listbox = screen.getByRole('listbox')
-      expect(listbox).toHaveAttribute(
+      const toggleButton = screen.getByRole('button', {
+        name: 'selectLanguage',
+      })
+      expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
         'language-option-sv'
       )
@@ -156,7 +160,7 @@ describe('LanguageSwitcher component', () => {
       // ArrowUp wraps back to english
       // First ArrowDown moved to index 1, another ArrowDown wraps to 0
       fireEvent.keyDown(container, { key: 'ArrowDown' })
-      expect(listbox).toHaveAttribute(
+      expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
         'language-option-en'
       )
@@ -169,9 +173,7 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open dropdown
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
 
       // Move to swedish (index 1)
       fireEvent.keyDown(container, { key: 'ArrowDown' })
@@ -188,9 +190,7 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open dropdown
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
 
       // Move to swedish (index 1)
       fireEvent.keyDown(container, { key: 'ArrowDown' })
@@ -207,16 +207,13 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open and move to last
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
       fireEvent.keyDown(container, { key: 'End' })
       fireEvent.keyDown(container, { key: 'Home' })
 
-      expect(screen.getByRole('listbox')).toHaveAttribute(
-        'aria-activedescendant',
-        'language-option-en'
-      )
+      expect(
+        screen.getByRole('button', { name: 'selectLanguage' })
+      ).toHaveAttribute('aria-activedescendant', 'language-option-en')
     })
 
     it('End key moves focus to last option', () => {
@@ -226,15 +223,12 @@ describe('LanguageSwitcher component', () => {
       }).parentElement!
 
       // Open
-      fireEvent.click(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      )
+      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
       fireEvent.keyDown(container, { key: 'End' })
 
-      expect(screen.getByRole('listbox')).toHaveAttribute(
-        'aria-activedescendant',
-        'language-option-sv'
-      )
+      expect(
+        screen.getByRole('button', { name: 'selectLanguage' })
+      ).toHaveAttribute('aria-activedescendant', 'language-option-sv')
     })
   })
 })

@@ -5,12 +5,13 @@ import Hero from '../Hero'
 // Mock next-intl translations
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
+  useLocale: () => 'en',
 }))
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
-  usePathname: () => '/',
+  usePathname: () => '/en',
 }))
 
 describe('Hero component', () => {

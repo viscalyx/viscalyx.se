@@ -258,6 +258,7 @@ const Hero = () => {
                     <motion.button
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
+                      aria-label={`Show image ${index + 1} of ${heroImages.length}`}
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         index === currentImageIndex
                           ? 'bg-white shadow-lg'

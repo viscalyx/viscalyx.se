@@ -167,8 +167,8 @@ describe('Header', () => {
       const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
       fireEvent.click(hamburgerButton)
 
-      // The mobile menu should be a nav element with an id
-      const mobileNav = document.getElementById('mobile-menu')
+      // The mobile menu should be a nav element with an aria-label
+      const mobileNav = screen.getByRole('navigation', { name: 'mobileMenu' })
       expect(mobileNav).toBeInTheDocument()
       expect(mobileNav).toHaveAttribute('aria-label', 'mobileMenu')
     })

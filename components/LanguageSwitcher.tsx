@@ -79,15 +79,11 @@ const LanguageSwitcher = () => {
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault()
-          setFocusedIndex(prev =>
-            prev < languageCount - 1 ? prev + 1 : 0
-          )
+          setFocusedIndex(prev => (prev < languageCount - 1 ? prev + 1 : 0))
           break
         case 'ArrowUp':
           e.preventDefault()
-          setFocusedIndex(prev =>
-            prev > 0 ? prev - 1 : languageCount - 1
-          )
+          setFocusedIndex(prev => (prev > 0 ? prev - 1 : languageCount - 1))
           break
         case 'Enter':
         case ' ':
@@ -125,6 +121,11 @@ const LanguageSwitcher = () => {
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={t('selectLanguage')}
+        aria-activedescendant={
+          isOpen && focusedIndex >= 0
+            ? `language-option-${languages[focusedIndex].code}`
+            : undefined
+        }
       >
         <Globe className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
         <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
@@ -137,24 +138,20 @@ const LanguageSwitcher = () => {
           ref={listboxRef}
           role="listbox"
           aria-label={t('selectLanguage')}
-          aria-activedescendant={
-            focusedIndex >= 0
-              ? `language-option-${languages[focusedIndex].code}`
-              : undefined
-          }
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
         >
           {languages.map((language, index) => (
-            <button
+            <div
               key={language.code}
               id={`language-option-${language.code}`}
               role="option"
               aria-selected={locale === language.code}
               onClick={() => handleLanguageChange(language.code)}
-              className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200 ${
+              tabIndex={-1}
+              className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer ${
                 locale === language.code
                   ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                   : 'text-secondary-700 dark:text-secondary-300'
@@ -162,7 +159,7 @@ const LanguageSwitcher = () => {
             >
               <span className="text-lg">{language.flag}</span>
               <span className="text-sm font-medium">{language.name}</span>
-            </button>
+            </div>
           ))}
         </motion.div>
       )}

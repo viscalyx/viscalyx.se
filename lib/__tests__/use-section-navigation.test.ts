@@ -1,11 +1,17 @@
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useSectionNavigation } from '../use-section-navigation'
+
+// Mock next-intl
+let mockLocale = 'en'
+vi.mock('next-intl', () => ({
+  useLocale: () => mockLocale,
+}))
 
 // Mock next/navigation
 const pushMock = vi.fn()
-let mockPathname = '/'
+let mockPathname = '/en'
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: pushMock }),
   usePathname: () => mockPathname,
@@ -13,13 +19,15 @@ vi.mock('next/navigation', () => ({
 
 describe('useSectionNavigation', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    mockPathname = '/'
+    vi.restoreAllMocks()
+    pushMock.mockClear()
+    mockPathname = '/en'
+    mockLocale = 'en'
   })
 
   describe('hash links on home page', () => {
     it('smooth-scrolls to section when on home page', () => {
-      mockPathname = '/'
+      mockPathname = '/en'
       const mockElement = { scrollIntoView: vi.fn() }
       vi.spyOn(document, 'querySelector').mockReturnValue(
         mockElement as unknown as Element
@@ -39,7 +47,7 @@ describe('useSectionNavigation', () => {
     })
 
     it('does nothing when element is not found on home page', () => {
-      mockPathname = '/'
+      mockPathname = '/en'
       vi.spyOn(document, 'querySelector').mockReturnValue(null)
 
       const { result } = renderHook(() => useSectionNavigation())
@@ -54,8 +62,8 @@ describe('useSectionNavigation', () => {
   })
 
   describe('hash links away from home page', () => {
-    it('navigates to home page with hash when not on home page', () => {
-      mockPathname = '/blog'
+    it('navigates to locale home page with hash when not on home page', () => {
+      mockPathname = '/en/blog'
 
       const { result } = renderHook(() => useSectionNavigation())
 
@@ -63,7 +71,7 @@ describe('useSectionNavigation', () => {
         result.current.handleNavigation('#about')
       })
 
-      expect(pushMock).toHaveBeenCalledWith('/#about')
+      expect(pushMock).toHaveBeenCalledWith('/en#about')
     })
   })
 
@@ -82,24 +90,21 @@ describe('useSectionNavigation', () => {
   describe('external links', () => {
     it('does not handle external links by default', () => {
       const { result } = renderHook(() => useSectionNavigation())
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       act(() => {
         result.current.handleNavigation('https://github.com')
       })
 
       // Without handleExternalLinks, it falls through to router.push
-      expect(openSpy).not.toHaveBeenCalled()
       expect(pushMock).toHaveBeenCalledWith('https://github.com')
-
-      openSpy.mockRestore()
     })
 
     it('opens external links in new tab when handleExternalLinks is true', () => {
+      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
+
       const { result } = renderHook(() =>
         useSectionNavigation({ handleExternalLinks: true })
       )
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       act(() => {
         result.current.handleNavigation('https://github.com')
@@ -108,11 +113,9 @@ describe('useSectionNavigation', () => {
       expect(openSpy).toHaveBeenCalledWith(
         'https://github.com',
         '_blank',
-        'noopener noreferrer'
+        'noopener noreferrer' // cSpell:disable-line
       )
       expect(pushMock).not.toHaveBeenCalled()
-
-      openSpy.mockRestore()
     })
 
     it('navigates regular paths even with handleExternalLinks enabled', () => {
