@@ -329,7 +329,7 @@ const CookieConsentBanner = () => {
                           <details className="text-xs text-gray-500 dark:text-gray-400">
                             <summary
                               className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
-                              aria-label={`${t('viewCookies')} for ${categoryName} (${cookiesInCategory.length} cookies)`}
+                              aria-label={t('viewCookiesAriaLabel', { categoryName, count: cookiesInCategory.length })}
                             >
                               {t('viewCookies')} ({cookiesInCategory.length})
                             </summary>

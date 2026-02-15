@@ -37,6 +37,7 @@ const messages = {
     close: 'Close',
     required: 'Required',
     viewCookies: 'View Cookies',
+    viewCookiesAriaLabel: 'View Cookies for {categoryName} ({count} cookies)',
     duration: 'Duration',
     provider: 'Provider',
     categories: {
@@ -243,6 +244,9 @@ describe('CookieConsentBanner', () => {
         expect(viewCookiesButton).toHaveAttribute('aria-label')
         expect(viewCookiesButton.getAttribute('aria-label')).toContain(
           'View Cookies for'
+        )
+        expect(viewCookiesButton.getAttribute('aria-label')).toMatch(
+          /\(\d+ cookies\)/
         )
       })
     })
