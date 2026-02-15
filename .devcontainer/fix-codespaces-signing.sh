@@ -35,12 +35,12 @@ for rcfile in "$HOME/.bashrc" "$HOME/.zshrc"; do
       continue
     fi
 
-    cat >> "$rcfile" << EOF
-
-$MARKER
-export GIT_COMMITTER_NAME="$GIT_NAME"
-export GIT_COMMITTER_EMAIL="$GIT_EMAIL"
-EOF
+    {
+      echo ""
+      echo "$MARKER"
+      echo "export GIT_COMMITTER_NAME=\"${GIT_NAME}\""
+      echo "export GIT_COMMITTER_EMAIL=\"${GIT_EMAIL}\""
+    } >> "$rcfile"
     echo "Patched $rcfile with GIT_COMMITTER identity"
   fi
 done
