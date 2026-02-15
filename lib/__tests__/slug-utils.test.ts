@@ -64,10 +64,29 @@ describe('slug-utils', () => {
       expect(id).toMatch(/^heading-2-[a-z0-9]+$/)
     })
 
-    it('generates unique IDs on multiple calls', () => {
-      const id1 = generateFallbackId(2)
-      const id2 = generateFallbackId(2)
+    it('returns deterministic IDs for the same inputs', () => {
+      const id1 = generateFallbackId(2, 'some content')
+      const id2 = generateFallbackId(2, 'some content')
+      expect(id1).toBe(id2)
+    })
+
+    it('returns different IDs for different levels', () => {
+      const id1 = generateFallbackId(2, 'content')
+      const id2 = generateFallbackId(3, 'content')
       expect(id1).not.toBe(id2)
+    })
+
+    it('returns different IDs for different content', () => {
+      const id1 = generateFallbackId(2, 'content-a')
+      const id2 = generateFallbackId(2, 'content-b')
+      expect(id1).not.toBe(id2)
+    })
+
+    it('works without content parameter', () => {
+      const id = generateFallbackId(2)
+      expect(id).toMatch(/^heading-2-[a-z0-9]+$/)
+      // Deterministic — same call gives same result
+      expect(generateFallbackId(2)).toBe(id)
     })
   })
 
@@ -112,6 +131,8 @@ describe('slug-utils', () => {
     it('generates fallback for empty text', () => {
       const id = createSlugId('', 2)
       expect(id).toMatch(/^heading-2-[a-z0-9]+$/)
+      // Deterministic — same inputs give same result
+      expect(createSlugId('', 2)).toBe(id)
     })
 
     it('handles HTML content', () => {
@@ -237,12 +258,16 @@ describe('slug-utils', () => {
       expect(result).toContain('href="#prerequisites-1"')
     })
 
-    it('preserves existing attributes', () => {
+    it('preserves existing attributes and merges class', () => {
       const html = '<h2 class="custom-class">My Section</h2>'
       const result = addHeadingIds(html)
 
-      expect(result).toContain('class="custom-class"')
+      // Should merge heading-with-anchor into the existing class, not create a duplicate class attr
+      expect(result).toContain('class="custom-class heading-with-anchor"')
       expect(result).toContain('id="my-section"')
+      // Ensure there's only one class attribute on the heading tag itself
+      const classCount = (result.match(/\bclass\s*=/g) || []).length
+      expect(classCount).toBe(3) // heading, anchor link, SVG icon
     })
 
     it('does not override existing ID attributes', () => {
@@ -348,6 +373,67 @@ describe('slug-utils', () => {
       expect(toc).toHaveLength(2)
       expect(toc[0]).toEqual({ id: 'setup', text: 'Setup', level: 2 })
       expect(toc[1]).toEqual({ id: 'setup-1', text: 'Setup', level: 2 })
+    })
+  })
+
+  describe('Anchor link URL validation', () => {
+    it('should create valid anchor URLs', () => {
+      const headings = [
+        'Introduction',
+        'Core Principles',
+        'Best Practices & Guidelines',
+        "What's Next?",
+      ]
+
+      headings.forEach(heading => {
+        const slug = createSlug(heading)
+        const url = `#${slug}`
+
+        // Valid anchor URLs should:
+        // - Start with #
+        // - Contain only lowercase letters, numbers, and special characters allowed by strict: false
+        // - Be URL-safe
+        expect(url).toMatch(/^#[a-z0-9&@$%*!?'".+-]+([a-z0-9&@$%*!?'".+-]*)?$/)
+      })
+    })
+  })
+
+  describe('Real-world blog content', () => {
+    it('should handle typical blog post structure', () => {
+      const blogContent = `
+        <h1>Infrastructure as Code Best Practices</h1>
+        <h2>Why Infrastructure as Code Matters</h2>
+        <p>Traditional infrastructure management is often manual...</p>
+        <h2>Core Principles</h2>
+        <h3>1. Declarative Configuration</h3>
+        <p>Define the desired state...</p>
+        <h3>2. Immutable Infrastructure</h3>
+        <p>Create new infrastructure...</p>
+        <h2>Implementation Strategies</h2>
+        <h3>Version Control</h3>
+        <h4>Branching Strategy</h4>
+        <h2>Conclusion</h2>
+      `
+
+      const toc = extractTableOfContents(blogContent)
+
+      expect(toc).toHaveLength(8)
+
+      const expectedStructure = [
+        { level: 2, id: 'why-infrastructure-as-code-matters' },
+        { level: 2, id: 'core-principles' },
+        { level: 3, id: '1.-declarative-configuration' },
+        { level: 3, id: '2.-immutable-infrastructure' },
+        { level: 2, id: 'implementation-strategies' },
+        { level: 3, id: 'version-control' },
+        { level: 4, id: 'branching-strategy' },
+        { level: 2, id: 'conclusion' },
+      ]
+
+      expectedStructure.forEach((expected, index) => {
+        expect(toc[index].level).toBe(expected.level)
+        expect(toc[index].id).toBe(expected.id)
+      })
     })
   })
 
