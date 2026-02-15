@@ -172,4 +172,4 @@ vi.mock('next/image', () => {
 vi.mock('**/*.css', () => ({}))
 
 // Mock static assets
-vi.mock('*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')
+vi.mock('**/*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')

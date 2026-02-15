@@ -265,10 +265,6 @@ vi.mock('node:path', () => ({
 }))
 
 describe('loadBlogContent', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('loads content from filesystem for existing post', async () => {
     mockReadFile.mockResolvedValueOnce(
       JSON.stringify({ content: '# Hello World\nSome blog content.' })
@@ -493,10 +489,6 @@ describe('getRelatedPosts edge cases', () => {
 })
 
 describe('loadBlogContent edge cases', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('returns null when JSON parse fails on filesystem fallback', async () => {
     mockReadFile.mockResolvedValueOnce('not valid json{{{')
     const result = await loadBlogContent('bad-json-post')
