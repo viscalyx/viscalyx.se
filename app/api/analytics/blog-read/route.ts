@@ -134,7 +134,14 @@ export async function POST(request: Request) {
     // Hash the IP for GDPR compliance — never store raw IPs
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
-    const hashedIP = clientIP ? await hashIP(clientIP) : null
+    let hashedIP: string | null = null
+    if (clientIP) {
+      try {
+        hashedIP = await hashIP(clientIP)
+      } catch (hashError) {
+        console.warn('Failed to hash client IP:', hashError)
+      }
+    }
 
     // Create a unique request ID for sampling
     const requestId = crypto.randomUUID()
