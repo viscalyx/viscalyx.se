@@ -321,6 +321,7 @@
     "close": "Close",
     "required": "Required",
     "viewCookies": "View Cookies",
+    "viewCookiesAriaLabel": "View Cookies for {categoryName} ({count} cookies)",
     "duration": "Duration",
     "provider": "Provider",
     "categories": {

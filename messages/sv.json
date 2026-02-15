@@ -321,6 +321,7 @@
     "close": "Stäng",
     "required": "Obligatorisk",
     "viewCookies": "Visa Kakor",
+    "viewCookiesAriaLabel": "Visa kakor för {categoryName} ({count} kakor)",
     "duration": "Varaktighet",
     "provider": "Leverantör",
     "categories": {
