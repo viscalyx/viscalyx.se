@@ -14,7 +14,7 @@ This document describes each integration test case for the cookie consent banner
 | `settings`  | `object` | Per-category boolean flags                       |
 | `timestamp` | `string` | ISO 8601 date of when the user made their choice |
 
-**localStorage key:** `viscalyx.se-cookie-consent`
+**localStorage key:** `viscalyx.org-cookie-consent`
 
 **Settings shape:**
 
@@ -62,7 +62,7 @@ flowchart TD
 Every test starts with a clean slate:
 
 1. Navigate to `/` to establish a page context.
-2. Clear `localStorage` key `viscalyx.se-cookie-consent`.
+2. Clear `localStorage` key `viscalyx.org-cookie-consent`.
 3. Clear all browser cookies.
 4. Reload the page so the banner appears fresh.
 
@@ -121,7 +121,7 @@ sequenceDiagram
 2. Wait for the banner.
 3. Click "Accept All".
 4. Assert the banner is no longer visible.
-5. Read `localStorage` key `viscalyx.se-cookie-consent`.
+5. Read `localStorage` key `viscalyx.org-cookie-consent`.
 6. Assert `settings` has `strictly-necessary: true`, `analytics: true`, `preferences: true`.
 7. Assert `timestamp` is present.
 8. Assert `version` is `"1.0"`.
@@ -153,7 +153,7 @@ sequenceDiagram
 2. Wait for the banner.
 3. Click "Reject All".
 4. Assert the banner is no longer visible.
-5. Read `localStorage` key `viscalyx.se-cookie-consent`.
+5. Read `localStorage` key `viscalyx.org-cookie-consent`.
 6. Assert `settings` has `strictly-necessary: true`, `analytics: false`, `preferences: false`.
 7. Assert `timestamp` is present.
 8. Assert `version` is `"1.0"`.
