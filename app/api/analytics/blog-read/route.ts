@@ -22,7 +22,7 @@ interface BlogReadEvent {
  * This moves enforcement to the edge (before the Worker runs) and is reliable
  * across all isolates. Steps to enable:
  *   1. Upgrade to Cloudflare Pro plan ($20/mo) or higher.
- *   2. Go to Cloudflare Dashboard → Security → WAF → Rate limiting rules.
+ *   2. Go to Cloudflare Dashboard → Protect & Connect → Application Security → WAF → Rate limiting rules.
  *   3. Create a rule with:
  *      - Name: "Analytics blog-read rate limit"
  *      - Expression: (http.request.uri.path eq "/api/analytics/blog-read"
