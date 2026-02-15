@@ -130,25 +130,33 @@ Validates the rendered post content and metadata display.
 
 ### Error Handling (2 tests)
 
-| Test                   | What it checks                                                          |
-| ---------------------- | ----------------------------------------------------------------------- |
-| 404 for missing slug   | Returns 404 for non-existent post                                       |
-| 404 for path traversal | Uses raw HTTP API with percent-encoded traversal to test `validateSlug` |
+| Test                   | What it checks                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| 404 for missing slug   | Navigates to a non-existent slug and asserts the "404" heading is visible              |
+| 404 for path traversal | Navigates to a percent-encoded traversal path and asserts the "404" heading is visible |
 
 #### Path Traversal Test Details
 
-The browser normalizes `../` segments before sending the request, so a plain
-`page.goto('/blog/../../../etc/passwd')` never reaches the server with raw
-traversal characters. The test instead uses **Playwright's raw HTTP API**
-(`request.get`) with a percent-encoded path (`%2e%2e%2f`) so the server receives
-the actual traversal payload and `validateSlug` can reject it. The assertion
-checks the response status is **not** 200.
+Both error-handling tests use the `page` fixture (not the `request` fixture)
+and validate DOM visibility of a "404" heading rather than asserting HTTP
+response status codes.
+
+The non-existent slug test navigates to `/blog/this-post-absolutely-does-not-exist`
+via `page.goto(...)` and asserts the not-found page renders a visible `<h1>` with
+text "404" using `page.getByRole('heading', { level: 1, name: '404' })`.
+
+The path traversal test navigates to `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd` <!-- cSpell:disable-line -->
+via `page.goto(...)`. The percent-encoded path ensures the traversal payload
+reaches the server before browser normalization can strip it. The assertion is
+identical: the not-found page must render a visible `<h1>404</h1>` heading,
+confirming the server rejected the malicious slug without leaking filesystem
+content.
 
 **Important selectors / preconditions:**
 
-- Uses `request` fixture (not `page`) — no DOM assertions possible.
+- Uses `page` fixture — navigates with `page.goto(...)` and performs DOM assertions.
+- Asserts `page.getByRole('heading', { level: 1, name: '404' })` is visible.
 - Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd` <!-- cSpell:disable-line -->
-- Asserts `response.status()` is not 200 (typically 404 or 400).
 - Depends on `validateSlug` in `lib/blog.ts` rejecting slugs with non-alphanumeric/hyphen/underscore characters.
 
 ### Locale Support (2 tests)
@@ -190,7 +198,7 @@ npx playwright test tests/integration/blog-post.spec.ts --ui
 
 - **Dev server** must be running on the configured `baseURL` (see `playwright.config.ts`).
 - The test post (`ssh-signing-keys-for-github-codespaces`) must exist in `content/blog/` and have a built JSON in `public/blog-content/`.
-- The `request` fixture is required for the path traversal test (raw HTTP, no browser normalization).
+- Both error-handling tests use the `page` fixture to navigate and assert DOM visibility of the "404" heading.
 
 ## Important Selectors
 

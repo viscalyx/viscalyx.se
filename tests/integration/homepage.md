@@ -304,14 +304,14 @@ sequenceDiagram
 
 #### should display footer with company info and links
 
-**Purpose:** Validates the footer renders with all navigation columns (Company, Resources, Support).
+**Purpose:** Validates the footer renders with all navigation columns (Company, Resources, Support) and asserts the correct element types for each link category.
 
 **Steps:**
 
 1. Navigate to `/`.
 2. Assert footer is visible.
-3. Assert Company links: "About Us", "Open Source".
-4. Assert Resource links: "Blog", "Community".
+3. Assert Company links "About Us" and "Open Source" are rendered as Next.js `<Link>` components with `onClick` handlers (client-side navigation).
+4. Assert Resource links: "Blog" is an internal `<a>` tag; "Community" is an external `<a>` tag — both standard anchor elements.
 5. Assert Support links: "Privacy Policy", "Terms of Service", "Cookie Policy".
 
 ```mermaid
@@ -320,9 +320,14 @@ sequenceDiagram
     participant F as Footer
 
     B->>F: Scroll to bottom
-    Note over F: ✓ Company: "About Us", "Open Source"
-    Note over F: ✓ Resources: "Blog", "Community"
-    Note over F: ✓ Support: "Privacy Policy", "Terms of Service", "Cookie Policy"
+    Note over F: Company (Link + onClick handler)
+    Note over F: ✓ <Link onClick={handler}> "About Us"
+    Note over F: ✓ <Link onClick={handler}> "Open Source"
+    Note over F: Resources (anchor tags)
+    Note over F: ✓ <a href="/blog"> "Blog" (internal)
+    Note over F: ✓ <a href="…" target="_blank"> "Community" (external)
+    Note over F: Support
+    Note over F: ✓ "Privacy Policy", "Terms of Service", "Cookie Policy"
 ```
 
 #### should display copyright notice
