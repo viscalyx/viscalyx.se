@@ -217,7 +217,8 @@
   // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly
   // Fix Codespaces overriding GIT_COMMITTER with "GitHub <noreply@github.com>" which causes
   // SSH-signed commits to show as "Unverified" on GitHub
-  "postStartCommand": "git config --global --unset gpg.ssh.program || true && ./.devcontainer/fix-codespaces-signing.sh && npm run cf-typegen",
+  // Check GitHub CLI authentication and suggest setup if needed
+  "postStartCommand": "git config --global --unset gpg.ssh.program || true && ./.devcontainer/fix-codespaces-signing.sh && npm run cf-typegen && ./.devcontainer/check-gh-auth.sh",
 
   // Configure remote user
   "remoteUser": "vscode"
