@@ -197,24 +197,21 @@ test.describe('Blog Post Page', () => {
 
   test.describe('Error Handling', () => {
     test('should return 404 for non-existent post', async ({ page }) => {
-      const response = await page.goto(
-        '/blog/this-post-absolutely-does-not-exist'
-      )
+      await page.goto('/blog/this-post-absolutely-does-not-exist')
 
-      // Next.js returns a 404 page
-      expect(response?.status()).toBe(404)
+      // Next.js renders the not-found page with a visible "404" heading
+      await expect(
+        page.getByRole('heading', { level: 1, name: '404' })
+      ).toBeVisible()
     })
 
-    test('should return 404 for path traversal attempt', async ({
-      request,
-    }) => {
-      // Use Playwright's raw HTTP API to send the traversal path without
-      // browser URL normalization, so the server receives the raw chars
-      // and validateSlug can reject them.
-      const response = await request.get('/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd') // cSpell:disable-line
+    test('should return 404 for path traversal attempt', async ({ page }) => {
+      await page.goto('/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd') // cSpell:disable-line
 
-      // Should not leak filesystem content
-      expect(response.status()).not.toBe(200)
+      // Should render not-found page, not leak filesystem content
+      await expect(
+        page.getByRole('heading', { level: 1, name: '404' })
+      ).toBeVisible()
     })
   })
 

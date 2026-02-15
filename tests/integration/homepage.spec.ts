@@ -253,18 +253,18 @@ test.describe('Homepage', () => {
       const footer = page.locator('footer')
       await expect(footer).toBeVisible()
 
-      // Company links (rendered as buttons since they use handleNavigation)
+      // Company links (rendered as <Link> elements with onClick handlers)
       await expect(
-        footer.getByRole('button', { name: /About Us/i })
+        footer.getByRole('link', { name: /About Us/i })
       ).toBeVisible()
       await expect(
-        footer.getByRole('button', { name: /Open Source/i })
+        footer.getByRole('link', { name: /Open Source/i })
       ).toBeVisible()
 
-      // Resource links (Blog is a <Link>, Community is a button)
+      // Resource links (Blog is internal, Community is external — both <a> tags)
       await expect(footer.getByRole('link', { name: /Blog/i })).toBeVisible()
       await expect(
-        footer.getByRole('button', { name: /Community/i })
+        footer.getByRole('link', { name: /Community/i })
       ).toBeVisible()
 
       // Support links
