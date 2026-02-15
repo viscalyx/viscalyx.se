@@ -22,8 +22,18 @@ interface BlogReadEvent {
  * This moves enforcement to the edge (before the Worker runs) and is reliable
  * across all isolates. Steps to enable:
  *   1. Upgrade to Cloudflare Pro plan ($20/mo) or higher.
- *   2. Go to Cloudflare Dashboard → Protect & Connect → Application Security → WAF → Rate limiting rules.
- *   3. Create a rule with:
+ *   2. Add the custom domain in Cloudflare Dashboard → Domains and switch to
+ *      Cloudflare nameservers. WAF (and other proxy features) require traffic
+ *      to flow through Cloudflare's network, which needs the domain on
+ *      Cloudflare. On the Free and Pro plans this means migrating DNS to
+ *      Cloudflare's nameservers entirely — custom nameservers are only
+ *      available on the Business plan ($200/mo) or higher, where you can keep
+ *      your existing nameservers and proxy individual CNAME records to the
+ *      Cloudflare network (e.g. CNAME www → {hostname}.cdn.cloudflare.net).
+ *      In short: Free/Pro cannot use WAF without moving DNS to Cloudflare.
+ *   3. Go to Cloudflare Dashboard → Protect & Connect → Application Security
+ *      → WAF → Rate limiting rules.
+ *   4. Create a rule with:
  *      - Name: "Analytics blog-read rate limit"
  *      - Expression: (http.request.uri.path eq "/api/analytics/blog-read"
  *                      and http.request.method eq "POST")
@@ -31,7 +41,7 @@ interface BlogReadEvent {
  *      - Rate: 12 requests per 1 minute
  *      - Mitigation timeout: 60 seconds
  *      - Action: Block (returns 429)
- *   4. Remove rateLimitMap, RATE_LIMIT_WINDOW_MS, and the rate-limit check
+ *   5. Remove rateLimitMap, RATE_LIMIT_WINDOW_MS, and the rate-limit check
  *      block from this file.
  */
 const rateLimitMap = new Map<string, number>()
