@@ -10,7 +10,11 @@ import ScrollToTop from '@/components/ScrollToTop'
 describe('ScrollToTop', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    Object.defineProperty(window, 'scrollY', { value: 0, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      writable: true,
+      configurable: true,
+    })
     window.scrollTo = vi.fn()
     vi.spyOn(window, 'requestAnimationFrame').mockImplementation(
       (cb: FrameRequestCallback) => {
@@ -27,14 +31,22 @@ describe('ScrollToTop', () => {
 
   it('appears when scrollY exceeds 300', () => {
     render(<ScrollToTop />)
-    Object.defineProperty(window, 'scrollY', { value: 500, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     expect(screen.getByRole('button')).toBeInTheDocument()
   })
 
   it('has correct aria-label from translations', () => {
     render(<ScrollToTop />)
-    Object.defineProperty(window, 'scrollY', { value: 500, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     expect(screen.getByRole('button')).toHaveAttribute(
       'aria-label',
@@ -44,7 +56,11 @@ describe('ScrollToTop', () => {
 
   it('includes dark mode variants in className', () => {
     render(<ScrollToTop />)
-    Object.defineProperty(window, 'scrollY', { value: 500, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     const button = screen.getByRole('button')
     expect(button.className).toContain('dark:bg-primary-500')
@@ -53,7 +69,11 @@ describe('ScrollToTop', () => {
 
   it('scrolls to top when clicked', () => {
     render(<ScrollToTop />)
-    Object.defineProperty(window, 'scrollY', { value: 500, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     fireEvent.click(screen.getByRole('button'))
     expect(window.scrollTo).toHaveBeenCalledWith({
@@ -64,11 +84,19 @@ describe('ScrollToTop', () => {
 
   it('hides when scrolling back to top', () => {
     render(<ScrollToTop />)
-    Object.defineProperty(window, 'scrollY', { value: 500, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     expect(screen.getByRole('button')).toBeInTheDocument()
 
-    Object.defineProperty(window, 'scrollY', { value: 100, writable: true })
+    Object.defineProperty(window, 'scrollY', {
+      value: 100,
+      writable: true,
+      configurable: true,
+    })
     fireEvent.scroll(window)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
   })
