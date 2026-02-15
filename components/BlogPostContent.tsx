@@ -302,11 +302,7 @@ const BlogPostContent = ({
 
   return (
     <>
-      <ReadingProgress
-        target=".markdown-content"
-        endTarget=".author-bio"
-        readingProgressText={t('post.readingProgress')}
-      />
+      <ReadingProgress target=".markdown-content" endTarget=".author-bio" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50 dark:bg-secondary-800">
@@ -399,9 +395,9 @@ const BlogPostContent = ({
       {/* Content */}
       <section className="section-padding">
         <div className="container-custom">
-          <div className="grid lg:grid-cols-4 gap-12">
+          <div className="grid lg:grid-cols-4 gap-12 min-w-0">
             {/* Main Content */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 min-w-0">
               {/* Mobile Table of Contents */}
               {tableOfContents.length > 0 && (
                 <div className="lg:hidden bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 mb-8 border border-secondary-100 dark:border-secondary-700">
@@ -440,7 +436,7 @@ const BlogPostContent = ({
               )}
 
               <div
-                className="blog-content prose prose-lg max-w-none"
+                className="blog-content prose prose-lg max-w-none overflow-x-hidden"
                 ref={contentRef}
               >
                 <AlertIconInjector contentKey={post.slug}>
