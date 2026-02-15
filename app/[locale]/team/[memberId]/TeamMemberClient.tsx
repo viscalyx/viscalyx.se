@@ -65,7 +65,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
       <Header />
 
       <div className="pt-20">
-        <section className="py-20 bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-900 dark:to-primary-900/20">
+        <section className="py-20 bg-linear-to-br from-secondary-50 to-primary-50 dark:from-secondary-900 dark:to-primary-900/20">
           <div className="container-custom section-padding">
             {/* Back Button */}
             <motion.div
@@ -175,7 +175,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                 className="lg:sticky lg:top-24"
               >
                 <div className="relative">
-                  <div className="relative aspect-[4/5] w-full max-w-lg mx-auto rounded-2xl overflow-hidden shadow-2xl">
+                  <div className="relative aspect-4/5 w-full max-w-lg mx-auto rounded-2xl overflow-hidden shadow-2xl">
                     {member.image ? (
                       <Image
                         src={member.image}
@@ -185,7 +185,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                         priority
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                      <div className="w-full h-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center">
                         <span className="text-6xl font-bold text-white">
                           {member.name
                             .split(' ')
@@ -194,7 +194,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                         </span>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary-900/20 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-primary-900/20 to-transparent" />
                   </div>
 
                   {/* Decorative elements */}
