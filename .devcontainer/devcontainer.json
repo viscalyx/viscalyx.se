@@ -9,16 +9,6 @@
     "NEXT_TELEMETRY_DISABLED": "1"
   },
 
-  // Unset Codespaces GIT_COMMITTER overrides ("GitHub <noreply@github.com>") so git
-  // falls back to user.name/user.email from .gitconfig. This ensures SSH-signed commits
-  // from VS Code's Git extension show as "Verified" on GitHub.
-  // null removes the variable from the VS Code server and all extension processes.
-  "remoteEnv": {
-    "GITHUB_TOKEN": null,
-    "GIT_COMMITTER_NAME": null,
-    "GIT_COMMITTER_EMAIL": null
-  },
-
   // Features to add to the dev container
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -225,10 +215,7 @@
 
   // Use 'postStartCommand' to run commands after the container starts and every time it starts
   // Unset the gpg.ssh.program for the vscode user so that SSH agent forwarding works correctly
-  // Fix Codespaces overriding GIT_COMMITTER with "GitHub <noreply@github.com>" which causes
-  // SSH-signed commits to show as "Unverified" on GitHub
-  // Append project tips and GitHub CLI auth status to the first-run terminal notice
-  "postStartCommand": "git config --global --unset gpg.ssh.program || true && npm run cf-typegen && ./.devcontainer/modify-first-run-notice.sh",
+  "postStartCommand": "git config --global --unset gpg.ssh.program || true && npm run cf-typegen",
 
   // Configure remote user
   "remoteUser": "vscode"
