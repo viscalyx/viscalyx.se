@@ -2,14 +2,16 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 interface ImageModalProps {
   isOpen: boolean
   onClose: () => void
   imageSrc: string
   imageAlt: string
+  triggerElement?: HTMLElement | null
 }
 
 const ImageModal: React.FC<ImageModalProps> = ({
@@ -17,23 +19,44 @@ const ImageModal: React.FC<ImageModalProps> = ({
   onClose,
   imageSrc,
   imageAlt,
+  triggerElement,
 }) => {
-  // Handle escape key
+  const t = useTranslations('blog')
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const previousActiveElement = useRef<HTMLElement | null>(null)
+
+  // Focus management
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+    if (isOpen) {
+      previousActiveElement.current =
+        triggerElement || (document.activeElement as HTMLElement)
+      // Auto-focus close button when modal opens
+      closeButtonRef.current?.focus()
+    } else if (previousActiveElement.current) {
+      previousActiveElement.current.focus()
+      previousActiveElement.current = null
+    }
+  }, [isOpen, triggerElement])
+
+  // Handle keyboard: escape to close, tab trap
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose()
+      } else if (event.key === 'Tab') {
+        // Focus trap: only one focusable element (close button), prevent Tab from escaping
+        event.preventDefault()
       }
     }
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('keydown', handleKeyDown)
       // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden'
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = 'unset'
     }
   }, [isOpen, onClose])
@@ -43,6 +66,9 @@ const ImageModal: React.FC<ImageModalProps> = ({
   return (
     <AnimatePresence>
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={imageAlt || t('accessibility.image.imagePreview')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -64,10 +90,11 @@ const ImageModal: React.FC<ImageModalProps> = ({
         >
           {/* Close Button */}
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={onClose}
             className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-black"
-            aria-label="Close modal"
+            aria-label={t('accessibility.image.closeImagePreview')}
           >
             <X className="w-6 h-6" />
           </button>

@@ -15,33 +15,6 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/en/test',
 }))
 
-// Mock framer-motion
-vi.mock('framer-motion', () => {
-  const React = require('react')
-  return {
-    motion: {
-      button: ({
-        children,
-        initial,
-        animate,
-        exit,
-        whileHover,
-        whileTap,
-        ...props
-      }: any) => <button {...props}>{children}</button>,
-      div: ({
-        children,
-        initial,
-        animate,
-        exit,
-        whileHover,
-        whileTap,
-        ...props
-      }: any) => <div {...props}>{children}</div>,
-    },
-  }
-})
-
 describe('LanguageSwitcher component', () => {
   beforeEach(() => {
     pushMock.mockClear()

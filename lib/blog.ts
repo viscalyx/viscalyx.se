@@ -26,6 +26,9 @@ interface BlogData {
   slugs: string[]
 }
 
+// Module-level cache for validated blog data (lazy, populated on first access)
+let cachedBlogData: BlogData | null = null
+
 // Since we have a .d.ts file for blog-data.json, TypeScript knows the structure
 // We only need minimal validation to ensure runtime safety
 function validateBlogData(data: typeof blogData): BlogData {
@@ -70,9 +73,16 @@ function validateBlogData(data: typeof blogData): BlogData {
   }
 }
 
-// Validate the imported blog data
+// Validate the imported blog data (cached after first call)
 function getValidatedBlogData(): BlogData {
-  return validateBlogData(blogData)
+  if (cachedBlogData !== null) return cachedBlogData
+  cachedBlogData = validateBlogData(blogData)
+  return cachedBlogData
+}
+
+// Reset the blog data cache (test-only helper)
+export function _resetBlogDataCache(): void {
+  cachedBlogData = null
 }
 
 // Get all blog post slugs for static generation

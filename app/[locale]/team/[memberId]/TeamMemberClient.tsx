@@ -6,9 +6,11 @@ import ScrollToTop from '@/components/ScrollToTop'
 import { SerializableTeamMember, socialIconMap } from '@/lib/team'
 import { motion, Variants } from 'framer-motion'
 import { ArrowLeft, MapPin } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import type { Route } from 'next'
 
 interface TeamMemberClientProps {
   member: SerializableTeamMember
@@ -16,6 +18,7 @@ interface TeamMemberClientProps {
 
 const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
   const t = useTranslations('teamMember')
+  const locale = useLocale()
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -72,7 +75,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
               className="mb-8"
             >
               <Link
-                href="/team"
+                href={`/${locale}/team` as Route}
                 className="inline-flex items-center text-secondary-600 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />

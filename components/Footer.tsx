@@ -1,55 +1,100 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ExternalLink, Mail } from 'lucide-react'
-import { Route } from 'next'
-import { useLocale, useTranslations } from 'next-intl'
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
 import {
   BlueskyIcon,
   GitHubIcon,
   LinkedInIcon,
   MastodonIcon,
   XIcon,
-} from './SocialIcons'
+} from '@/components/SocialIcons'
+import { motion } from 'framer-motion'
+import { ExternalLink, Mail } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import type { Route } from 'next'
+
+interface FooterLink {
+  name: string
+  href: string
+}
+
+const ABSOLUTE_URL_REGEX = /^[a-z][a-z0-9+.-]*:/i
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
-  const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations('footer')
   const tNav = useTranslations('navigation')
   const locale = useLocale()
 
-  const handleNavigation = (href: string) => {
-    // Check if it's a section link (starts with #)
+  const isExternal = (href: string): boolean => {
+    return ABSOLUTE_URL_REGEX.test(href) || href.startsWith('//')
+  }
+
+  // Helper function to generate proper URLs for links
+  const getHrefUrl = (href: string): string => {
+    if (isExternal(href)) {
+      return href
+    }
+
     if (href.startsWith('#')) {
-      // If we're not on the home page, navigate to home first
-      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
-      if (currentPath !== '/') {
-        router.push(`/${locale}/${href}` as Route)
-      } else {
-        // We're already on home page, just scroll to section
-        const element = document.querySelector(href)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }
-    } else {
-      // Regular page navigation or external links
-      if (href === '#') {
-        // Do nothing for placeholder links
-        return
-      } else if (href.startsWith('http')) {
-        // External link
-        window.open(href, '_blank', 'noopener noreferrer')
-      } else {
-        // Internal page navigation - preserve locale
-        const cleanHref = href.startsWith('/') ? href : `/${href}`
-        router.push(`/${locale}${cleanHref}`)
+      return `/${locale}${href}`
+    }
+
+    const cleanHref = href.startsWith('/') ? href : `/${href}`
+    return `/${locale}${cleanHref}`
+  }
+
+  // Handle click for section links that need smooth scrolling
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href.startsWith('#')) {
+      const currentPath =
+        pathname.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/'
+      if (currentPath === '/' || currentPath === '') {
+        e.preventDefault()
+        requestAnimationFrame(() => {
+          const element = document.querySelector(href)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        })
       }
     }
+  }
+
+  const renderLink = (link: FooterLink) => {
+    if (isExternal(link.href)) {
+      return (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
+        >
+          {link.name}
+          <ExternalLink
+            className="w-3 h-3 ml-1 opacity-60"
+            aria-hidden="true"
+          />
+          <span className="sr-only"> (opens in new tab)</span>
+        </a>
+      )
+    }
+
+    return (
+      <Link
+        href={getHrefUrl(link.href) as Route}
+        onClick={e => handleLinkClick(e, link.href)}
+        className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
+      >
+        {link.name}
+      </Link>
+    )
   }
 
   const footerLinks = {
@@ -151,14 +196,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">{t('company')}</h4>
             <ul className="space-y-3">
               {footerLinks.company.map(link => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => handleNavigation(link.href)}
-                    className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline bg-transparent border-none cursor-pointer text-left p-0"
-                  >
-                    {link.name}
-                  </button>
-                </li>
+                <li key={link.name}>{renderLink(link)}</li>
               ))}
             </ul>
           </motion.div>
@@ -170,33 +208,10 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h4 className="text-lg font-semibold mb-6">Resources</h4>
+            <h4 className="text-lg font-semibold mb-6">{t('resources')}</h4>
             <ul className="space-y-3">
               {footerLinks.resources.map(link => (
-                <li key={link.name}>
-                  {link.href.startsWith('#') || link.href.startsWith('http') ? (
-                    <button
-                      type="button"
-                      onClick={() => handleNavigation(link.href)}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
-                    >
-                      {link.name}
-                      {link.href.startsWith('http') && (
-                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
-                      )}
-                    </button>
-                  ) : (
-                    <Link
-                      href={link.href as Route}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
-                    >
-                      {link.name}
-                      {link.href.startsWith('http') && (
-                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
-                      )}
-                    </Link>
-                  )}
-                </li>
+                <li key={link.name}>{renderLink(link)}</li>
               ))}
             </ul>
           </motion.div>
@@ -211,30 +226,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">{t('support')}</h4>
             <ul className="space-y-3">
               {footerLinks.support.map(link => (
-                <li key={link.name}>
-                  {link.href.startsWith('#') || link.href.startsWith('http') ? (
-                    <button
-                      type="button"
-                      onClick={() => handleNavigation(link.href)}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center bg-transparent border-none cursor-pointer text-left p-0"
-                    >
-                      {link.name}
-                      {link.href.startsWith('http') && (
-                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
-                      )}
-                    </button>
-                  ) : (
-                    <Link
-                      href={link.href as Route}
-                      className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
-                    >
-                      {link.name}
-                      {link.href.startsWith('http') && (
-                        <ExternalLink className="w-3 h-3 ml-1 opacity-60" />
-                      )}
-                    </Link>
-                  )}
-                </li>
+                <li key={link.name}>{renderLink(link)}</li>
               ))}
             </ul>
           </motion.div>

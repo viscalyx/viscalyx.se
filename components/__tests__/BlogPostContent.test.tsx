@@ -20,27 +20,6 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/en',
 }))
 
-// Mock framer-motion
-vi.mock('framer-motion', () => {
-  const ReactFM = require('react')
-  const motion: Record<string, unknown> = {}
-  ;['div', 'section', 'button', 'span', 'h1', 'h2', 'p'].forEach(tag => {
-    motion[tag] = ({
-      children,
-      initial,
-      animate,
-      transition,
-      whileHover,
-      ...props
-    }: Record<string, unknown>) => ReactFM.createElement(tag, props, children)
-  })
-  return {
-    motion,
-    useInView: () => true,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
-  }
-})
-
 // Mock components
 vi.mock('@/components/AlertIconInjector', () => ({
   __esModule: true,

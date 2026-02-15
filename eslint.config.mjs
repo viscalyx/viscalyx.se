@@ -16,6 +16,7 @@ const config = [
       '.wrangler/**',
       'bundled/**',
       'cloudflare-env.d.ts',
+      'temp-test-content/**',
     ],
   },
   ...nextConfig,

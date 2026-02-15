@@ -33,7 +33,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 // Helper function to validate theme value
-const isValidTheme = (value: string | null): value is Theme => {
+export const isValidTheme = (value: string | null): value is Theme => {
   return value !== null && ['light', 'dark', 'system'].includes(value)
 }
 

@@ -3,14 +3,6 @@ import { NextIntlClientProvider } from 'next-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieConsentBanner from '../CookieConsentBanner'
 
-// Mock framer-motion
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}))
-
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({
   getConsentSettings: vi.fn(() => null),

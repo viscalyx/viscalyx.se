@@ -9,7 +9,9 @@
       "title": "Settings",
       "language": "Language",
       "theme": "Theme"
-    }
+    },
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "footer": {
     "company": "Company",
@@ -233,6 +235,12 @@
       "anchorLink": {
         "ariaLabel": "Link to section: {heading}",
         "title": "Copy link to section: {heading}"
+      },
+      "image": {
+        "viewFullImage": "View full size: {alt}",
+        "viewImage": "View full size image",
+        "imagePreview": "Image preview",
+        "closeImagePreview": "Close image preview"
       }
     },
     "fallback": {
@@ -245,6 +253,19 @@
         "imageAlt": "Person typing on laptop with coffee cup and notebook on desk"
       }
     }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "heading": "Page Not Found",
+    "description": "Sorry, the page you are looking for does not exist or has been moved.",
+    "goHome": "Go to Homepage"
+  },
+  "error": {
+    "title": "Something Went Wrong",
+    "heading": "Something Went Wrong",
+    "description": "An unexpected error occurred. Please try again or return to the homepage.",
+    "tryAgain": "Try Again",
+    "goHome": "Go to Homepage"
   },
   "cookieConsent": {
     "title": "We Use Cookies",

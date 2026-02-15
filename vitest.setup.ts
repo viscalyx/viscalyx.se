@@ -3,61 +3,106 @@
 import '@testing-library/jest-dom/vitest'
 import { vi } from 'vitest'
 
-// Mock framer-motion
+// Mock framer-motion globally — all motion.* elements are handled via Proxy.
+// Individual test files should NOT re-mock framer-motion.
 vi.mock('framer-motion', () => {
-  const { createElement } = require('react')
+  const { createElement, forwardRef } = require('react')
 
-  interface MotionProps {
-    children?: React.ReactNode
-    layoutId?: string
-    initial?: Record<string, unknown>
-    animate?: Record<string, unknown>
-    transition?: Record<string, unknown>
-    whileHover?: Record<string, unknown>
-    whileTap?: Record<string, unknown>
-    whileInView?: Record<string, unknown>
-    viewport?: Record<string, unknown>
-    [key: string]: unknown
-  }
+  // Complete set of framer-motion props that must not reach the DOM
+  const motionPropNames = new Set([
+    'layoutId',
+    'initial',
+    'animate',
+    'exit',
+    'transition',
+    'whileHover',
+    'whileTap',
+    'whileInView',
+    'whileFocus',
+    'whileDrag',
+    'viewport',
+    'variants',
+    'layout',
+    'drag',
+    'dragConstraints',
+    'dragElastic',
+    'dragMomentum',
+    'dragSnapToOrigin',
+    'dragTransition',
+    'onDragStart',
+    'onDrag',
+    'onDragEnd',
+    'onAnimationStart',
+    'onAnimationComplete',
+    'onLayoutAnimationStart',
+    'onLayoutAnimationComplete',
+    'custom',
+    'inherit',
+    'onUpdate',
+    'onBeforeLayoutMeasure',
+    'transformTemplate',
+    'onViewportEnter',
+    'onViewportLeave',
+    'layoutScroll',
+    'layoutDependency',
+    'layoutRoot',
+    'onHoverStart',
+    'onHoverEnd',
+    'onTapStart',
+    'onTap',
+    'onTapCancel',
+    'onPanStart',
+    'onPan',
+    'onPanEnd',
+    'dragPropagation',
+    'dragListener',
+  ])
 
+  /**
+   * Creates a ref-forwarding component that renders the given HTML tag,
+   * stripping all framer-motion specific props to avoid React DOM warnings.
+   */
   const forward = (tag: string) => {
-    const ForwardedComponent = (props: MotionProps) => {
-      const {
-        children,
-        // Motion-specific props that we ignore in tests
-        layoutId,
-        initial,
-        animate,
-        transition,
-        whileHover,
-        whileTap,
-        whileInView,
-        viewport,
-        ...rest
-      } = props
-
-      // Suppress unused variable warnings for motion props
-      void layoutId
-      void initial
-      void animate
-      void transition
-      void whileHover
-      void whileTap
-      void whileInView
-      void viewport
-      return createElement(tag, rest, children)
-    }
-    ForwardedComponent.displayName = `Motion${tag.charAt(0).toUpperCase() + tag.slice(1)}`
-    return ForwardedComponent
+    const Component = forwardRef(
+      (props: Record<string, unknown>, ref: unknown) => {
+        const filtered: Record<string, unknown> = { ref }
+        for (const [key, value] of Object.entries(props)) {
+          if (key !== 'children' && !motionPropNames.has(key)) {
+            filtered[key] = value
+          }
+        }
+        return createElement(tag, filtered, props.children as React.ReactNode)
+      }
+    )
+    Component.displayName = `Motion${tag.charAt(0).toUpperCase() + tag.slice(1)}`
+    return Component
   }
+
+  const cache = new Map<string, ReturnType<typeof forward>>()
+
+  // Proxy dynamically generates a forwarding component for any motion.* element
+  const motionProxy = new Proxy(
+    { create: (Component: unknown) => Component },
+    {
+      get: (target, prop: string | symbol) => {
+        if (typeof prop !== 'string') return Reflect.get(target, prop)
+        if (prop in target) return target[prop as keyof typeof target]
+        if (!cache.has(prop)) cache.set(prop, forward(prop))
+        return cache.get(prop)
+      },
+    }
+  )
 
   return {
-    motion: {
-      div: forward('div'),
-      button: forward('button'),
-      a: forward('a'),
-    },
+    motion: motionProxy,
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
     useInView: () => true,
+    useAnimation: () => ({ start: vi.fn(), stop: vi.fn() }),
+    useMotionValue: <T>(initial: T) => ({
+      get: () => initial as T,
+      set: vi.fn(),
+      onChange: vi.fn(),
+    }),
   }
 })
 
@@ -127,4 +172,4 @@ vi.mock('next/image', () => {
 vi.mock('**/*.css', () => ({}))
 
 // Mock static assets
-vi.mock('*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')
+vi.mock('**/*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')

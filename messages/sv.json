@@ -9,7 +9,9 @@
       "title": "Inställningar",
       "language": "Språk",
       "theme": "Tema"
-    }
+    },
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny"
   },
   "footer": {
     "company": "Företag",
@@ -233,6 +235,12 @@
       "anchorLink": {
         "ariaLabel": "Länk till avsnitt: {heading}",
         "title": "Kopiera länk till avsnitt: {heading}"
+      },
+      "image": {
+        "viewFullImage": "Visa i full storlek: {alt}",
+        "viewImage": "Visa bild i full storlek",
+        "imagePreview": "Förhandsgranskning av bild",
+        "closeImagePreview": "Stäng förhandsgranskning av bild"
       }
     },
     "fallback": {
@@ -245,6 +253,19 @@
         "imageAlt": "Person som skriver på bärbar dator med kaffekopp och anteckningsbok på skrivbordet"
       }
     }
+  },
+  "notFound": {
+    "title": "Sidan Hittades Inte",
+    "heading": "Sidan Hittades Inte",
+    "description": "Tyvärr, sidan du letar efter finns inte eller har flyttats.",
+    "goHome": "Gå till Startsidan"
+  },
+  "error": {
+    "title": "Något Gick Fel",
+    "heading": "Något Gick Fel",
+    "description": "Ett oväntat fel inträffade. Försök igen eller gå tillbaka till startsidan.",
+    "tryAgain": "Försök Igen",
+    "goHome": "Gå till Startsidan"
   },
   "cookieConsent": {
     "title": "Vi Använder Kakor",

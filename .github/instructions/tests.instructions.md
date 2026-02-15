@@ -6,35 +6,16 @@ applyTo: '**/*.test.tsx,**/*.test.ts,components/__tests__/**'
 
 ## Required Mocks
 
+> **Note:** `framer-motion` and `next/image` are globally mocked in `vitest.setup.ts`.
+> Do **not** re-mock them in individual test files. The global framer-motion mock
+> uses a `Proxy` that handles any `motion.*` element, `AnimatePresence`,
+> `useInView`, and `motion.create()`.
+
 ```tsx
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
-vi.mock('framer-motion', () => {
-  const React = require('react')
-  const motion: Record<string, any> = {}
-  ;['div', 'section', 'button', 'span', 'h1', 'h2', 'p'].forEach(tag => {
-    motion[tag] = ({
-      children,
-      initial,
-      animate,
-      transition,
-      whileHover,
-      ...props
-    }: any) => React.createElement(tag, props, children)
-  })
-  return {
-    motion,
-    useInView: () => true,
-    AnimatePresence: ({ children }: any) => children,
-  }
-})
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), back: vi.fn() }),
   usePathname: () => '/en',
-}))
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: any) => (
-    <img src={src} alt={alt} {...props} />
-  ),
 }))
 ```
 

@@ -22,23 +22,22 @@
   --color-highlight-line-bg: rgba(59, 130, 246, 0.1); /* blue with opacity */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Core syntax token colors - Dark theme */
-    --color-token-comment: #9ca3af; /* gray-400 */
-    --color-token-punctuation: #d1d5db; /* gray-300 */
-    --color-token-property: #f87171; /* red-400 */
-    --color-token-selector: #34d399; /* green-400 */
-    --color-token-operator: #fbbf24; /* amber-400 */
-    --color-token-keyword: #60a5fa; /* blue-400 */
-    --color-token-function: #a78bfa; /* violet-400 */
-    --color-token-variable: #fb923c; /* orange-400 */
+/* Class-based dark mode to match app's .dark class on <html> */
+.dark {
+  /* Core syntax token colors - Dark theme */
+  --color-token-comment: #9ca3af; /* gray-400 */
+  --color-token-punctuation: #d1d5db; /* gray-300 */
+  --color-token-property: #f87171; /* red-400 */
+  --color-token-selector: #34d399; /* green-400 */
+  --color-token-operator: #fbbf24; /* amber-400 */
+  --color-token-keyword: #60a5fa; /* blue-400 */
+  --color-token-function: #a78bfa; /* violet-400 */
+  --color-token-variable: #fb923c; /* orange-400 */
 
-    /* PowerShell-specific token colors - Dark theme */
-    --color-token-powershell-variable: #60a5fa; /* blue-400 */
-    --color-token-powershell-cmdlet: #a78bfa; /* violet-400 */
-    --color-token-powershell-parameter: #34d399; /* green-400 */
-  }
+  /* PowerShell-specific token colors - Dark theme */
+  --color-token-powershell-variable: #60a5fa; /* blue-400 */
+  --color-token-powershell-cmdlet: #a78bfa; /* violet-400 */
+  --color-token-powershell-parameter: #34d399; /* green-400 */
 }
 
 /* Syntax highlighting tokens - Light theme */
