@@ -69,7 +69,9 @@ const ReadingProgress = ({
       } else {
         const range = endPoint - startPoint
         const progress =
-          range === 0 ? 0 : ((currentScroll - startPoint) / range) * 100
+          Math.abs(range) < 0.0001
+            ? 0
+            : ((currentScroll - startPoint) / range) * 100
         setScrollProgress(Math.min(Math.max(progress, 0), 100))
         setIsVisible(true)
       }
