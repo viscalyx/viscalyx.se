@@ -1,5 +1,7 @@
 'use client'
 
+import { useLocale, useMessages } from 'next-intl'
+import { NextIntlClientProvider } from 'next-intl'
 import { useEffect } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import CopyButton from './CopyButton'
@@ -11,6 +13,9 @@ interface CodeBlockEnhancerProps {
 export default function CodeBlockEnhancer({
   contentLoaded = true,
 }: CodeBlockEnhancerProps) {
+  const locale = useLocale()
+  const messages = useMessages()
+
   useEffect(() => {
     // Only run if content is loaded
     if (!contentLoaded) return
@@ -59,7 +64,11 @@ export default function CodeBlockEnhancer({
           scrollWrapper.appendChild(copyContainer)
           createdContainers.push(copyContainer)
           const root = createRoot(copyContainer)
-          root.render(<CopyButton text={text} />)
+          root.render(
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <CopyButton text={text} />
+            </NextIntlClientProvider>
+          )
           roots.set(copyContainer, root)
         }
       })
@@ -114,7 +123,7 @@ export default function CodeBlockEnhancer({
       // Use queueMicrotask to defer the cleanup
       queueMicrotask(cleanupRoots)
     }
-  }, [contentLoaded])
+  }, [contentLoaded, locale, messages])
 
   // This component doesn't render anything visible itself
   return null

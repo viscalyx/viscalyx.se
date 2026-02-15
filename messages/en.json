@@ -267,6 +267,29 @@
     "tryAgain": "Try Again",
     "goHome": "Go to Homepage"
   },
+  "loadingScreen": {
+    "redirecting": "Redirecting...",
+    "loading": "Loading..."
+  },
+  "copyButton": {
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyToClipboard": "Copy to clipboard",
+    "copiedToClipboard": "Copied to clipboard",
+    "copyCodeToClipboard": "Copy code to clipboard"
+  },
+  "themeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "switchToTheme": "Switch to {theme} theme"
+  },
+  "scrollToTop": {
+    "ariaLabel": "Scroll to top"
+  },
+  "loadingSpinner": {
+    "ariaLabel": "Loading"
+  },
   "cookieConsent": {
     "title": "We Use Cookies",
     "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies.",

@@ -211,6 +211,14 @@ function validateFilePrefix(filePrefix: string): string {
  * @param filePrefix - The prefix of the translation file (e.g., 'privacy', 'terms')
  * @returns Object containing translations, loading state, and error state
  */
+function validateLocale(locale: string): string {
+  const allowedLocales = ['en', 'sv']
+  if (!allowedLocales.includes(locale)) {
+    throw new Error(`Invalid locale: "${locale}"`)
+  }
+  return locale
+}
+
 function usePageTranslations<T>(filePrefix: string) {
   const locale = useLocale()
   const [translations, setTranslations] = useState<T | null>(null)
@@ -225,9 +233,10 @@ function usePageTranslations<T>(filePrefix: string) {
 
         // Validate and sanitize the filePrefix before using it in dynamic import
         const validatedPrefix = validateFilePrefix(filePrefix)
+        const validatedLocale = validateLocale(locale)
 
         const data = await import(
-          `../messages/${validatedPrefix}.${locale}.json`
+          `../messages/${validatedPrefix}.${validatedLocale}.json`
         )
         setTranslations(data.default as T)
       } catch (error) {
@@ -275,5 +284,5 @@ export function useCookiesTranslations() {
   return usePageTranslations<CookiesTranslations>('cookies')
 }
 
-// Export validation function for testing purposes
-export { validateFilePrefix }
+// Export validation functions for testing purposes
+export { validateFilePrefix, validateLocale }

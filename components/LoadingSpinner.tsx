@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
@@ -12,6 +13,8 @@ const LoadingSpinner = ({
   size = 'md',
   color = 'primary',
 }: LoadingSpinnerProps) => {
+  const t = useTranslations('loadingSpinner')
+
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
@@ -19,9 +22,9 @@ const LoadingSpinner = ({
   }
 
   const colorClasses = {
-    primary: 'text-primary-600',
+    primary: 'text-primary-600 dark:text-primary-400',
     white: 'text-white',
-    secondary: 'text-secondary-600',
+    secondary: 'text-secondary-600 dark:text-secondary-400',
   }
 
   return (
@@ -29,7 +32,7 @@ const LoadingSpinner = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       role="status"
-      aria-label="Loading"
+      aria-label={t('ariaLabel')}
       className="flex items-center justify-center"
     >
       <Loader2
