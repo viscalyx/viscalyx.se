@@ -147,6 +147,32 @@ describe('Header', () => {
   })
 
   describe('mobile menu', () => {
+    it('mobile menu button has aria-expanded and aria-controls', () => {
+      render(<Header />)
+
+      const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
+      expect(hamburgerButton).toHaveAttribute('aria-expanded', 'false')
+      expect(hamburgerButton).toHaveAttribute('aria-controls', 'mobile-menu')
+
+      fireEvent.click(hamburgerButton)
+
+      const closeButton = screen.getByRole('button', { name: 'closeMenu' })
+      expect(closeButton).toHaveAttribute('aria-expanded', 'true')
+      expect(closeButton).toHaveAttribute('aria-controls', 'mobile-menu')
+    })
+
+    it('mobile menu has navigation role and aria-label', () => {
+      render(<Header />)
+
+      const hamburgerButton = screen.getByRole('button', { name: 'openMenu' })
+      fireEvent.click(hamburgerButton)
+
+      // The mobile menu should be a nav element with an aria-label
+      const mobileNav = screen.getByRole('navigation', { name: 'mobileMenu' })
+      expect(mobileNav).toBeInTheDocument()
+      expect(mobileNav).toHaveAttribute('aria-label', 'mobileMenu')
+    })
+
     it('opens mobile menu when hamburger button is clicked', () => {
       render(<Header />)
 
@@ -218,6 +244,39 @@ describe('Header', () => {
       expect(
         screen.getAllByText('settings.theme').length
       ).toBeGreaterThanOrEqual(1)
+    })
+
+    it('has aria-expanded on settings buttons', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+
+      // Before clicking — collapsed
+      settingsButtons.forEach(btn => {
+        expect(btn).toHaveAttribute('aria-expanded', 'false')
+      })
+
+      // After clicking — expanded
+      fireEvent.click(settingsButtons[0])
+      settingsButtons.forEach(btn => {
+        expect(btn).toHaveAttribute('aria-expanded', 'true')
+      })
+    })
+
+    it('settings dropdown has dialog role and aria-label', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      fireEvent.click(settingsButtons[0])
+
+      const dialogs = screen.getAllByRole('dialog', {
+        name: 'settings.title',
+      })
+      expect(dialogs.length).toBeGreaterThanOrEqual(1)
     })
 
     it('closes settings dropdown when clicking outside', () => {

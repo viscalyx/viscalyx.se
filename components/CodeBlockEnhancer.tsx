@@ -18,10 +18,6 @@ export default function CodeBlockEnhancer({
   const locale = useLocale()
   const messages = useMessages()
 
-  // We intentionally exclude `messages` from the dependency array because
-  // `useMessages()` returns a new object reference on each render but message
-  // changes are captured by `locale`. Disable the exhaustive-deps rule here.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // Only run if content is loaded
     if (!contentLoaded) return
@@ -115,7 +111,7 @@ export default function CodeBlockEnhancer({
         roots.clear()
       }, 0)
     }
-  }, [contentLoaded, locale])
+  }, [contentLoaded, locale, messages])
 
   // This component doesn't render anything visible itself
   return null
