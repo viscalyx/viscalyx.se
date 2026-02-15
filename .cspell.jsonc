@@ -349,7 +349,8 @@
     "setfattr",
     "inotifywait",
     "sparsebundle",
-    "signingkey"
+    "signingkey",
+    "lightbox"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "flagWords": [
