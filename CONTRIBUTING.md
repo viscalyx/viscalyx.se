@@ -1324,7 +1324,7 @@ use `read -rs` so the token never appears on screen or in shell history:
 <!-- markdownlint-disable MD013 -->
 
 ```bash
-unset GITHUB_TOKEN # Remov the repo token that Codespaces added
+unset GITHUB_TOKEN # Remove the repo token that Codespaces added
 printf 'Paste your GitHub PAT and press Enter: '
 read -rs GH_TOKEN && echo
 printf '%s' "$GH_TOKEN" | gh auth login --with-token --hostname github.com --git-protocol ssh

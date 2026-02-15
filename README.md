@@ -1,6 +1,7 @@
 # Viscalyx Website
 
-The official website for Viscalyx, built with Next.js 16 and deployed to Cloudflare Workers via OpenNext.
+The official website for Viscalyx, built with Next.js 16
+and deployed to Cloudflare Workers via OpenNext.
 
 ## Features
 
@@ -12,7 +13,7 @@ The official website for Viscalyx, built with Next.js 16 and deployed to Cloudfl
 - 📖 Table of contents with active heading tracking
 - 📈 Reading progress indicator for blog posts
 - 👥 Team member profiles
-- 💻 Open source contributions showcase
+- 💻 Open-source contributions showcase
 - 🌙 Dark/light/system theme toggle with Framer Motion animations
 - 🖼️ Image lightbox with zoom
 - 🍪 GDPR-compliant cookie consent with granular controls
@@ -49,22 +50,37 @@ Our website respects user privacy and complies with GDPR cookie consent requirem
 
 ## Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) 16 with App Router and React 19
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) 4 with `@tailwindcss/typography`
+- **Framework**:
+  [Next.js](https://nextjs.org/) 16 with App Router
+  and React 19
+- **Styling**:
+  [Tailwind CSS](https://tailwindcss.com/) 4
+  with `@tailwindcss/typography`
 - **Animations**: [Framer Motion](https://motion.dev/)
-- **Internationalization**: [next-intl](https://next-intl.dev/) (en/sv)
-- **Content**: Markdown processed via remark + remark-gfm → rehype-prism-plus → rehype-stringify
-- **Syntax Highlighting**: [Prism.js](https://prismjs.com/) (build-time via rehype-prism-plus)
-- **Diagrams**: [Mermaid](https://mermaid.js.org/) (lazy-loaded at runtime)
+- **Internationalization**:
+  [next-intl](https://next-intl.dev/) (en/sv)
+- **Content**: Markdown processed via remark +
+  remark-gfm → rehype-prism-plus → rehype-stringify
+- **Syntax Highlighting**:
+  [Prism.js](https://prismjs.com/)
+  (build-time via rehype-prism-plus)
+- **Diagrams**:
+  [Mermaid](https://mermaid.js.org/)
+  (lazy-loaded at runtime)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **TypeScript**: Strict mode with typed routes
-- **Unit Testing**: [Vitest](https://vitest.dev/) with Testing Library and coverage via V8
-- **Integration Testing**: [Playwright](https://playwright.dev/)
-- **Deployment**: [Cloudflare Workers](https://workers.cloudflare.com/) via [@opennextjs/cloudflare](https://opennext.js.org/cloudflare)
+- **Unit Testing**:
+  [Vitest](https://vitest.dev/) with Testing Library
+  and coverage via V8
+- **Integration Testing**:
+  [Playwright](https://playwright.dev/)
+- **Deployment**:
+  [Cloudflare Workers](https://workers.cloudflare.com/)
+  via [@opennextjs/cloudflare](https://opennext.js.org/cloudflare)
 
 ## Project Structure
 
-```
+```text
 app/[locale]/             → Pages (blog, team, cookies, privacy, terms)
 app/api/analytics/        → Blog read tracking API endpoint
 components/               → React components (client islands + shared UI)
