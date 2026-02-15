@@ -290,6 +290,9 @@
   "loadingSpinner": {
     "ariaLabel": "Loading"
   },
+  "confirmationModal": {
+    "close": "Close modal"
+  },
   "cookieConsent": {
     "title": "We Use Cookies",
     "description": "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept All', you consent to our use of cookies.",

@@ -1,7 +1,7 @@
 import { act, render } from '@testing-library/react'
 import React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import CodeBlockEnhancer from '../CodeBlockEnhancer'
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 
 // Mock react-dom/client
 const mockRender = vi.fn()
@@ -207,6 +207,10 @@ describe('CodeBlockEnhancer', () => {
     act(() => {
       vi.advanceTimersByTime(0)
     })
+    // Verify cleanup occurred: React roots were unmounted and containers removed
+    expect(mockUnmount).toHaveBeenCalled()
+    const containers = document.querySelectorAll('.copy-button-container')
+    expect(containers.length).toBe(0)
   })
 
   it('creates copy-button-container inside scroll wrapper', () => {

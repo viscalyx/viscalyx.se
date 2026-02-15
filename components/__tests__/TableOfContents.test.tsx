@@ -44,10 +44,7 @@ class MockResizeObserver {
   constructor(public callback: ResizeObserverCallback) {}
 }
 
-beforeEach(() => {
-  vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
-  vi.stubGlobal('ResizeObserver', MockResizeObserver)
-})
+// Global observers are stubbed in the inner beforeEach where mocks are cleared
 
 const mockItems: TocItem[] = [
   { id: 'introduction', text: 'Introduction', level: 2 },
@@ -160,7 +157,9 @@ describe('TableOfContents', () => {
     expect(mockObserve).toHaveBeenCalledTimes(mockItems.length)
 
     // Cleanup
-    headings.forEach(el => document.body.removeChild(el))
+    headings.forEach(el => {
+      document.body.removeChild(el)
+    })
   })
 
   it('applies sm maxHeight class', () => {

@@ -1,10 +1,12 @@
 'use client'
 
+import CopyButton from '@/components/CopyButton'
+
+import { createRoot, type Root } from 'react-dom/client'
+import { useEffect } from 'react'
+
 import { useLocale, useMessages } from 'next-intl'
 import { NextIntlClientProvider } from 'next-intl'
-import { useEffect } from 'react'
-import { createRoot, type Root } from 'react-dom/client'
-import CopyButton from './CopyButton'
 
 interface CodeBlockEnhancerProps {
   contentLoaded?: boolean
@@ -123,7 +125,7 @@ export default function CodeBlockEnhancer({
       // Use queueMicrotask to defer the cleanup
       queueMicrotask(cleanupRoots)
     }
-  }, [contentLoaded, locale, messages])
+  }, [contentLoaded, locale])
 
   // This component doesn't render anything visible itself
   return null

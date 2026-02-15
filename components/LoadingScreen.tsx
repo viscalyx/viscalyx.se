@@ -1,8 +1,10 @@
 'use client'
 
+import LoadingSpinner from '@/components/LoadingSpinner'
+
 import { motion } from 'framer-motion'
+
 import { useTranslations } from 'next-intl'
-import LoadingSpinner from './LoadingSpinner'
 
 interface LoadingScreenProps {
   message?: string

@@ -290,6 +290,9 @@
   "loadingSpinner": {
     "ariaLabel": "Laddar"
   },
+  "confirmationModal": {
+    "close": "Stäng modal"
+  },
   "cookieConsent": {
     "title": "Vi Använder Kakor",
     "description": "Vi använder kakor för att förbättra din surfupplevelse, leverera personaliserat innehåll och analysera vår trafik. Genom att klicka på 'Acceptera alla' samtycker du till vår användning av kakor.",
