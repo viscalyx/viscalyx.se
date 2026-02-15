@@ -46,6 +46,22 @@ interface BlogReadEvent {
  */
 const rateLimitMap = new Map<string, number>()
 const RATE_LIMIT_WINDOW_MS = 5_000 // 5 seconds between requests per IP
+const RATE_LIMIT_MAX_ENTRIES = 50_000 // Hard cap to prevent unbounded growth
+
+/** Parsed host from SITE_URL — validated once at module load for fail-fast. */
+let siteHost: string
+try {
+  siteHost = new URL(SITE_URL).host
+} catch {
+  throw new Error(
+    `SITE_URL is not a valid URL: "${SITE_URL}". ` +
+      'Check the SITE_URL constant in @/lib/constants.'
+  )
+}
+
+/** Cached HMAC key — re-imported only when the secret changes. */
+let cachedKey: CryptoKey | null = null
+let cachedSecret: string | null = null
 
 /**
  * Generate an HMAC-SHA-256 hash of an IP address with a daily-rotating salt.
@@ -60,16 +76,21 @@ async function hashIP(ip: string): Promise<string> {
     )
   }
 
+  // Cache the imported key — re-import only when the secret rotates
+  if (!cachedKey || cachedSecret !== secret) {
+    cachedKey = await crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(secret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    )
+    cachedSecret = secret
+  }
+
   const dailySalt = new Date().toISOString().slice(0, 10) // YYYY-MM-DD
-  const key = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  )
   const data = new TextEncoder().encode(`${dailySalt}:${ip}`)
-  const signature = await crypto.subtle.sign('HMAC', key, data)
+  const signature = await crypto.subtle.sign('HMAC', cachedKey, data)
   const hashArray = Array.from(new Uint8Array(signature))
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
 }
@@ -81,7 +102,6 @@ async function hashIP(ip: string): Promise<string> {
 function isValidOrigin(request: Request): boolean {
   const origin = request.headers.get('origin')
   const referer = request.headers.get('referer')
-  const siteHost = new URL(SITE_URL).host
 
   if (origin) {
     try {
@@ -153,6 +173,13 @@ export async function POST(request: Request) {
       const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS
       for (const [key, ts] of rateLimitMap) {
         if (ts < cutoff) rateLimitMap.delete(key)
+      }
+      // Hard cap: if the map is still too large after sweeping expired
+      // entries (e.g. sustained attack from many unique IPs), clear it
+      // entirely. The serverless isolate already acts as an implicit
+      // reset, so losing in-flight rate-limit state is acceptable.
+      if (rateLimitMap.size > RATE_LIMIT_MAX_ENTRIES) {
+        rateLimitMap.clear()
       }
     }
 
