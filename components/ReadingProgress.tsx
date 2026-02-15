@@ -26,6 +26,14 @@ const ReadingProgress = ({
     endTargetRef.current = endTarget ? document.querySelector(endTarget) : null
 
     const updateScrollProgress = () => {
+      // Lazily re-query refs that haven't been found yet (handles lazy rendering)
+      if (!targetRef.current) {
+        targetRef.current = document.querySelector(target)
+      }
+      if (!endTargetRef.current && endTarget) {
+        endTargetRef.current = document.querySelector(endTarget)
+      }
+
       const targetElement = targetRef.current
 
       if (!targetElement) {
