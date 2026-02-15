@@ -11,42 +11,23 @@ interface BlogReadEvent {
 }
 
 /**
- * In-memory rate limiter: hashed-IP → last request timestamp.
+ * Rate limiting is enforced at the Cloudflare edge via a WAF Rate Limiting Rule,
+ * configured in the Cloudflare Dashboard under:
+ *   Protect & Connect → Application Security → WAF → Rate limiting rules.
  *
- * NOTE: This is a best-effort mitigation. In serverless/edge deployments
- * (e.g. Cloudflare Workers via @opennextjs/cloudflare), each isolate gets its
- * own map instance, so requests hitting different isolates bypass this limit.
- * Isolate recycling also resets the map.
+ * Active rule: "Analytics blog-read rate limit"
+ *   - Expression: URI Path equals /api/analytics/blog-read AND Method equals POST
+ *   - Characteristics: IP address
+ *   - Rate: 12 requests per 10 seconds (unable to choose different)
+ *   - Mitigation timeout: 10 seconds (unable to choose different)
+ *   - Action: Block (returns 429)
  *
- * TODO: Switch to Cloudflare WAF Rate Limiting Rules once on a paid plan.
- * This moves enforcement to the edge (before the Worker runs) and is reliable
- * across all isolates. Steps to enable:
- *   1. Upgrade to Cloudflare Pro plan ($20/mo) or higher.
- *   2. Add the custom domain in Cloudflare Dashboard → Domains and switch to
- *      Cloudflare nameservers. WAF (and other proxy features) require traffic
- *      to flow through Cloudflare's network, which needs the domain on
- *      Cloudflare. On the Free and Pro plans this means migrating DNS to
- *      Cloudflare's nameservers entirely — custom nameservers are only
- *      available on the Business plan ($200/mo) or higher, where you can keep
- *      your existing nameservers and proxy individual CNAME records to the
- *      Cloudflare network (e.g. CNAME www → {hostname}.cdn.cloudflare.net).
- *      In short: Free/Pro cannot use WAF without moving DNS to Cloudflare.
- *   3. Go to Cloudflare Dashboard → Protect & Connect → Application Security
- *      → WAF → Rate limiting rules.
- *   4. Create a rule with:
- *      - Name: "Analytics blog-read rate limit"
- *      - Expression: (http.request.uri.path eq "/api/analytics/blog-read"
- *                      and http.request.method eq "POST")
- *      - Characteristics: IP address
- *      - Rate: 12 requests per 1 minute
- *      - Mitigation timeout: 60 seconds
- *      - Action: Block (returns 429)
- *   5. Remove rateLimitMap, RATE_LIMIT_WINDOW_MS, and the rate-limit check
- *      block from this file.
+ * This requires the custom domain to be added in Cloudflare Dashboard → Domains
+ * with Cloudflare nameservers (DNS must be delegated to Cloudflare on the Free
+ * and Pro plans). To keep existing/custom nameservers, the Business plan ($200/mo)
+ * or higher is required, which allows proxying individual CNAME records to the
+ * Cloudflare network (e.g. CNAME www → {hostname}.cdn.cloudflare.net).
  */
-const rateLimitMap = new Map<string, number>()
-const RATE_LIMIT_WINDOW_MS = 5_000 // 5 seconds between requests per IP
-const RATE_LIMIT_MAX_ENTRIES = 50_000 // Hard cap to prevent unbounded growth
 
 /** Parsed host from SITE_URL — validated once at module load for fail-fast. */
 let siteHost: string
@@ -154,34 +135,6 @@ export async function POST(request: Request) {
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
     const hashedIP = clientIP ? await hashIP(clientIP) : null
-
-    if (hashedIP) {
-      // Rate limiting per hashed IP
-      const now = Date.now()
-      const lastRequest = rateLimitMap.get(hashedIP)
-      if (lastRequest && now - lastRequest < RATE_LIMIT_WINDOW_MS) {
-        return NextResponse.json(
-          { error: 'Too many requests' },
-          { status: 429 }
-        )
-      }
-      rateLimitMap.set(hashedIP, now)
-    }
-
-    // Periodically clean old entries to prevent memory growth
-    if (rateLimitMap.size > 10_000) {
-      const cutoff = Date.now() - RATE_LIMIT_WINDOW_MS
-      for (const [key, ts] of rateLimitMap) {
-        if (ts < cutoff) rateLimitMap.delete(key)
-      }
-      // Hard cap: if the map is still too large after sweeping expired
-      // entries (e.g. sustained attack from many unique IPs), clear it
-      // entirely. The serverless isolate already acts as an implicit
-      // reset, so losing in-flight rate-limit state is acceptable.
-      if (rateLimitMap.size > RATE_LIMIT_MAX_ENTRIES) {
-        rateLimitMap.clear()
-      }
-    }
 
     // Create a unique request ID for sampling
     const requestId = crypto.randomUUID()
