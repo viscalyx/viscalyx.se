@@ -109,8 +109,11 @@ const ReadingProgress = ({
       initial={{ scaleX: 0 }}
       animate={{ scaleX: isVisible ? scrollProgress / 100 : 0 }}
       transition={{ duration: 0.1 }}
-      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-600 to-secondary-600 z-50 origin-left"
-      style={{ transformOrigin: 'left' }}
+      className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400 z-50 origin-left"
+      role="progressbar"
+      aria-valuenow={Math.round(scrollProgress)}
+      aria-valuemin={0}
+      aria-valuemax={100}
     />
   )
 }

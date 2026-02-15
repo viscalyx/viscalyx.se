@@ -569,7 +569,7 @@ const BlogPostContent = ({
               </section>
             </div>
             {/* Sidebar */}
-            <div className="lg:col-span-1" data-sidebar>
+            <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-8 max-h-[calc(100vh-8rem)] overflow-y-auto hidden lg:block">
                 {/* Table of Contents */}
                 {tableOfContents.length > 0 && (
