@@ -11,6 +11,10 @@ const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
 // Separate directory for individual post content files (not bundled into server)
 const contentOutputDir = path.join(process.cwd(), 'public/blog-content')
 
+function ensureDir(dir) {
+  fs.mkdirSync(dir, { recursive: true })
+}
+
 // Function to calculate reading time based on word count
 function calculateReadingTime(content) {
   // Sanitize HTML first, then extract text content for accurate word count
@@ -96,10 +100,7 @@ async function buildBlogData() {
         slugs: [],
         lastBuilt: new Date().toISOString(),
       }
-      const outputDir = path.dirname(outputPath)
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true })
-      }
+      ensureDir(path.dirname(outputPath))
       fs.writeFileSync(outputPath, JSON.stringify(emptyData, null, 2))
       return
     }
@@ -223,9 +224,7 @@ async function buildBlogData() {
 
         // Write content to separate file in public/blog-content/
         // This keeps content out of the server bundle and serves it as static files
-        if (!fs.existsSync(contentOutputDir)) {
-          fs.mkdirSync(contentOutputDir, { recursive: true })
-        }
+        ensureDir(contentOutputDir)
         const contentFilePath = path.join(contentOutputDir, `${slug}.json`)
         fs.writeFileSync(
           contentFilePath,
@@ -292,10 +291,7 @@ async function buildBlogData() {
     }
 
     // Ensure the output directory exists before writing the file
-    const outputDir = path.dirname(outputPath)
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true })
-    }
+    ensureDir(path.dirname(outputPath))
 
     // Write the blog data to a JSON file (metadata only, no content)
     fs.writeFileSync(outputPath, JSON.stringify(blogData, null, 2))

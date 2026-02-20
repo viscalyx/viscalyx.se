@@ -13,6 +13,8 @@
  *   --dry-run     Run wrangler deploy --dry-run to get actual bundle size
  *   --json        Output as JSON
  *   --help        Show help
+ *
+ * Exports marked with @internal are intended for tests and are not a stable public API.
  */
 
 const fs = require('fs')
@@ -114,6 +116,7 @@ function getFileSize(filePath) {
 /**
  * Get directory size recursively
  */
+/** @internal Exported for testing. */
 function getDirSize(dirPath) {
   let totalSize = 0
   try {
@@ -135,6 +138,7 @@ function getDirSize(dirPath) {
 /**
  * Get gzipped size of a file using Node.js zlib
  */
+/** @internal Exported for testing. */
 function getGzipSize(filePath) {
   try {
     const content = fs.readFileSync(filePath)
@@ -175,6 +179,7 @@ function parseWranglerOutput(output) {
 }
 
 /* c8 ignore start */
+/** @internal Exported for testing. */
 function getWranglerBundleSize() {
   try {
     console.error('📦 Running wrangler dry-run to get actual bundle size...\n')
@@ -198,6 +203,7 @@ function getWranglerBundleSize() {
 /**
  * Check if build exists and is recent (default: 30 minutes)
  */
+/** @internal Exported for testing. */
 function isBuildFresh(maxAgeMinutes = 30) {
   const buildDir = path.join(process.cwd(), '.open-next')
   const serverHandler = path.join(
@@ -227,6 +233,7 @@ function isBuildFresh(maxAgeMinutes = 30) {
  * Run the OpenNext build
  */
 /* c8 ignore start */
+/** @internal Exported for testing. */
 function runBuild() {
   console.error('🔨 Building for Cloudflare Workers...\n')
   try {
@@ -251,7 +258,7 @@ function analyzeBuild(options = {}, deps = {}) {
     getWranglerBundleSize,
     ...deps,
   }
-  const limits = impl.LIMITS || LIMITS
+  const limits = { ...LIMITS, ...(impl.LIMITS || {}) }
   const buildDir = path.join(process.cwd(), '.open-next')
 
   if (!fs.existsSync(buildDir)) {
@@ -261,12 +268,14 @@ function analyzeBuild(options = {}, deps = {}) {
     )
     return {
       ...cloneDefaultAnalyzeResult(),
+      limits,
       status: 'error',
       statusMessage: 'Build directory .open-next not found',
     }
   }
 
   const results = cloneDefaultAnalyzeResult()
+  results.limits = limits
 
   // Analyze server handler
   const serverHandlerPath = path.join(
@@ -430,6 +439,7 @@ function outputForCI(results) {
  * Output results as Markdown (for PR comments)
  */
 function outputForMarkdown(results) {
+  const limits = results.limits || LIMITS
   const statusEmoji = getStatusEmoji(results.status)
 
   const wranglerSize = results.wrangler
@@ -478,8 +488,8 @@ ${warningText}
 
 | Plan | Limit | Usage | Status |
 |------|-------|-------|--------|
-| Free | ${LIMITS.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
-| Paid | ${LIMITS.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
+| Free | ${limits.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
+| Paid | ${limits.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
 
 ### 📦 Build Output Details
 
@@ -501,6 +511,7 @@ ${warningText}
  * Output results for terminal (human readable)
  */
 function outputForTerminal(results) {
+  const limits = results.limits || LIMITS
   const statusEmoji = getStatusEmoji(results.status)
 
   console.log('\n📦 Bundle Size Analysis\n')
@@ -550,14 +561,14 @@ function outputForTerminal(results) {
     const paidStatus = results.usage.exceedsPaid ? '❌ EXCEEDS' : '✅'
 
     console.log(
-      `  Free        ${LIMITS.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
+      `  Free        ${limits.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
     )
     console.log(
-      `  Paid        ${LIMITS.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
+      `  Paid        ${limits.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
     )
   } else {
-    console.log(`  Free        ${LIMITS.freeCompressedMB} MB`)
-    console.log(`  Paid        ${LIMITS.paidCompressedMB} MB`)
+    console.log(`  Free        ${limits.freeCompressedMB} MB`)
+    console.log(`  Paid        ${limits.paidCompressedMB} MB`)
   }
 
   console.log('')

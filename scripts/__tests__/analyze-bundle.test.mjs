@@ -84,6 +84,11 @@ describe('analyze-bundle.js', () => {
         'Total Upload: 1.50 MiB / gzip: 0.45 MiB'
       )
     ).toEqual({ uncompressedKB: 1536, compressedKB: 460.8 })
+    expect(
+      analyzeBundle.parseWranglerOutput(
+        'Total Upload: 1,50 MiB / gzip: 0,45 MiB'
+      )
+    ).toEqual({ uncompressedKB: 1536, compressedKB: 460.8 })
 
     expect(analyzeBundle.parseWranglerOutput('no size info')).toBeNull()
   })

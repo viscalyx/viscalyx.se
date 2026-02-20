@@ -200,6 +200,6 @@ describe('generate-og-images.js', () => {
       throw new Error('sharp failed')
     }
 
-    await expect(() => og.main(failingSharp, ['en'])).rejects.toThrow('exit:1')
+    await expect(og.main(failingSharp, ['en'])).rejects.toThrow('exit:1')
   })
 })

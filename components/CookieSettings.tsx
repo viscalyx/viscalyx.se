@@ -145,17 +145,18 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     }
   }
 
+  const showExportError = (error: unknown) => {
+    console.error('Failed to export cookie data:', error)
+    setShowError(true)
+    setTimeout(() => setShowError(false), 5000)
+  }
+
   const handleExportData = () => {
     const data = {
       consentSettings: settings,
       consentTimestamp: consentTimestamp?.toISOString(),
       cookieRegistry: cookieRegistry,
       exportTimestamp: new Date().toISOString(),
-    }
-    const showExportError = (error: unknown) => {
-      console.error('Failed to export cookie data:', error)
-      setShowError(true)
-      setTimeout(() => setShowError(false), 5000)
     }
 
     let url: string | null = null

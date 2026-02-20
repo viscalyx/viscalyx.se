@@ -10,6 +10,7 @@ const mockRouter = {
   push: vi.fn(),
   replace: vi.fn(),
   prefetch: vi.fn(),
+  back: vi.fn(),
 }
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
