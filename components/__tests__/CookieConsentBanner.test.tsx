@@ -346,12 +346,14 @@ describe('CookieConsentBanner', () => {
       const learnMoreButton = screen.getByText('Learn more')
       const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
 
+      // This asserts the banner's custom keydown focus-trap logic, which wraps
+      // focus between the last and first focusable controls in the dialog.
       acceptAllButton.focus()
-      fireEvent.keyDown(document, { key: 'Tab' })
+      await user.tab()
       expect(learnMoreButton).toHaveFocus()
 
       learnMoreButton.focus()
-      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+      await user.tab({ shift: true })
       expect(acceptAllButton).toHaveFocus()
     })
 

@@ -261,7 +261,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
             onClick={handleExportData}
             className="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
           >
-            <Download className="w-4 h-4 inline mr-2" />
+            <Download aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('exportData')}
           </button>
           <button
@@ -270,7 +270,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
             disabled={isLoading}
             className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Trash2 className="w-4 h-4 inline mr-2" />
+            <Trash2 aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('resetConsent')}
           </button>
         </div>
