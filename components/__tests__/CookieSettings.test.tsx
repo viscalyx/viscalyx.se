@@ -330,4 +330,49 @@ describe('CookieSettings', () => {
       )
     })
   })
+
+  it('shows error when appending download element fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
+    vi.spyOn(document.body, 'appendChild').mockImplementation(node => {
+      if (node instanceof HTMLAnchorElement) {
+        throw new Error('append failed')
+      }
+      return HTMLBodyElement.prototype.appendChild.call(document.body, node)
+    })
+
+    render(<CookieSettings />)
+    fireEvent.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to export cookie data:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('shows error when triggering download click fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {
+      throw new Error('click failed')
+    })
+
+    render(<CookieSettings />)
+    fireEvent.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to export cookie data:',
+        expect.any(Error)
+      )
+    })
+  })
 })

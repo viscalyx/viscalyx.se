@@ -1,8 +1,8 @@
 'use client'
 
+import ConfirmationModal from '@/components/ConfirmationModal'
 import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import CookieCategoryToggle from '@/components/CookieCategoryToggle'
-import ConfirmationModal from '@/components/ConfirmationModal'
 import {
   cleanupCookies,
   type CookieCategory,
@@ -161,13 +161,34 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       const blob = new Blob([JSON.stringify(data, null, 2)], {
         type: 'application/json',
       })
-      url = URL.createObjectURL(blob)
+      try {
+        url = URL.createObjectURL(blob)
+      } catch (createErr) {
+        console.error('Failed to export cookie data:', createErr)
+        setShowError(true)
+        setTimeout(() => setShowError(false), 5000)
+        return
+      }
       element = document.createElement('a')
       element.href = url
       element.download = 'cookie-consent-data.json'
-      document.body.appendChild(element)
-      elementAppended = true
-      element.click()
+      try {
+        document.body.appendChild(element)
+        elementAppended = true
+      } catch (appendErr) {
+        console.error('Failed to export cookie data:', appendErr)
+        setShowError(true)
+        setTimeout(() => setShowError(false), 5000)
+        return
+      }
+      try {
+        element.click()
+      } catch (clickErr) {
+        console.error('Failed to export cookie data:', clickErr)
+        setShowError(true)
+        setTimeout(() => setShowError(false), 5000)
+        return
+      }
     } catch (error) {
       console.error('Failed to export cookie data:', error)
       setShowError(true)
