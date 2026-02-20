@@ -96,6 +96,10 @@ async function buildBlogData() {
         slugs: [],
         lastBuilt: new Date().toISOString(),
       }
+      const outputDir = path.dirname(outputPath)
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true })
+      }
       fs.writeFileSync(outputPath, JSON.stringify(emptyData, null, 2))
       return
     }

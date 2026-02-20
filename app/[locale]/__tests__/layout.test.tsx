@@ -1,7 +1,7 @@
+import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
 import { render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import LocaleLayout, { generateStaticParams } from '../layout'
 
 const mockNotFound = vi.fn()
 const { dynamicMock } = vi.hoisted(() => ({
@@ -86,7 +86,7 @@ describe('LocaleLayout', () => {
     })
 
     it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
-      await import('../layout')
+      await import('@/app/[locale]/layout')
 
       expect(dynamicMock).toHaveBeenCalledTimes(1)
 

@@ -217,7 +217,33 @@ function analyzeBuild(options = {}, deps = {}) {
     console.error(
       '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.'
     )
-    process.exit(1)
+    return {
+      serverHandler: {
+        path: '.open-next/server-functions/default/handler.mjs',
+        size: 0,
+        gzipSize: 0,
+      },
+      middleware: {
+        path: '.open-next/middleware/handler.mjs',
+        size: 0,
+        gzipSize: 0,
+      },
+      assets: {
+        path: '.open-next/assets',
+        size: 0,
+      },
+      serverFunctions: {
+        path: '.open-next/server-functions',
+        size: 0,
+      },
+      total: {
+        path: '.open-next',
+        size: 0,
+      },
+      wrangler: null,
+      status: 'error',
+      statusMessage: 'Build directory .open-next not found',
+    }
   }
 
   const results = {

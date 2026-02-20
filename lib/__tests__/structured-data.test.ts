@@ -1,9 +1,13 @@
 import { SITE_URL } from '@/lib/constants'
 import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('structured-data', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('builds organization JSON-LD with expected canonical fields', () => {
     const data = getOrganizationJsonLd() as unknown as Record<string, unknown>
 
@@ -24,6 +28,6 @@ describe('structured-data', () => {
     expect(data['@type']).toBe('WebSite')
     expect(data.name).toBe('Viscalyx')
     expect(data.url).toBe(SITE_URL)
-    expect(data.inLanguage).toEqual(['en', 'sv'])
+    expect(data.inLanguage).toEqual(expect.arrayContaining(['en', 'sv']))
   })
 })

@@ -16,6 +16,17 @@ const makeTempDir = () => {
   return dir
 }
 
+const withTempCwd = run => {
+  const dir = makeTempDir()
+  const originalCwd = process.cwd()
+  process.chdir(dir)
+  try {
+    return run(dir)
+  } finally {
+    process.chdir(originalCwd)
+  }
+}
+
 const writeFile = (filePath, content) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, content)
@@ -97,11 +108,7 @@ describe('analyze-bundle.js', () => {
   })
 
   it('detects fresh and stale builds', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
-    process.chdir(dir)
-
-    try {
+    withTempCwd(dir => {
       expect(analyzeBundle.isBuildFresh(30).fresh).toBe(false)
 
       const handler = path.join(
@@ -115,17 +122,11 @@ describe('analyze-bundle.js', () => {
 
       const fresh = analyzeBundle.isBuildFresh(30)
       expect(fresh.fresh).toBe(true)
-    } finally {
-      process.chdir(originalCwd)
-    }
+    })
   })
 
   it('analyzes build output and computes usage', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
-    process.chdir(dir)
-
-    try {
+    withTempCwd(dir => {
       const handler = path.join(
         dir,
         '.open-next',
@@ -151,89 +152,71 @@ describe('analyze-bundle.js', () => {
       expect(results.total.size).toBeGreaterThan(0)
       expect(results.usage).toBeDefined()
       expect(['success', 'info', 'warning', 'error']).toContain(results.status)
-    } finally {
-      process.chdir(originalCwd)
-    }
+    })
   })
 
   it('sets warning/error/info status branches based on usage thresholds', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
     const originalLimits = { ...analyzeBundle.LIMITS }
-    process.chdir(dir)
-
     try {
-      const handler = path.join(
-        dir,
-        '.open-next',
-        'server-functions',
-        'default',
-        'handler.mjs'
-      )
-      writeFile(handler, 'console.log("handler")')
+      withTempCwd(dir => {
+        const handler = path.join(
+          dir,
+          '.open-next',
+          'server-functions',
+          'default',
+          'handler.mjs'
+        )
+        writeFile(handler, 'console.log("handler")')
 
-      analyzeBundle.LIMITS.freeCompressedMB = 0.000001
-      analyzeBundle.LIMITS.paidCompressedMB = 1
-      analyzeBundle.LIMITS.warnPercentage = 99
-      expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
-        'warning'
-      )
+        analyzeBundle.LIMITS.freeCompressedMB = 0.000001
+        analyzeBundle.LIMITS.paidCompressedMB = 1
+        analyzeBundle.LIMITS.warnPercentage = 99
+        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
+          'warning'
+        )
 
-      analyzeBundle.LIMITS.freeCompressedMB = 10
-      analyzeBundle.LIMITS.paidCompressedMB = 0.000001
-      analyzeBundle.LIMITS.warnPercentage = 99
-      expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe('error')
+        analyzeBundle.LIMITS.freeCompressedMB = 10
+        analyzeBundle.LIMITS.paidCompressedMB = 0.000001
+        analyzeBundle.LIMITS.warnPercentage = 99
+        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
+          'error'
+        )
 
-      analyzeBundle.LIMITS.freeCompressedMB = 10
-      analyzeBundle.LIMITS.paidCompressedMB = 1
-      analyzeBundle.LIMITS.warnPercentage = 0.001
-      expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe('info')
+        analyzeBundle.LIMITS.freeCompressedMB = 10
+        analyzeBundle.LIMITS.paidCompressedMB = 1
+        analyzeBundle.LIMITS.warnPercentage = 0.001
+        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
+          'info'
+        )
+      })
     } finally {
-      process.chdir(originalCwd)
       Object.assign(analyzeBundle.LIMITS, originalLimits)
     }
   })
 
   it('returns error result when server handler missing and dryRun is false', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
-    process.chdir(dir)
-
-    try {
+    withTempCwd(dir => {
       fs.mkdirSync(path.join(dir, '.open-next', 'assets'), { recursive: true })
       const results = analyzeBundle.analyzeBuild({ dryRun: false })
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('Server handler not found')
-    } finally {
-      process.chdir(originalCwd)
-    }
+    })
   })
 
-  it('exits when build directory is missing', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
-    process.chdir(dir)
-    vi.spyOn(process, 'exit').mockImplementation(code => {
-      throw new Error(`exit:${code}`)
-    })
+  it('returns error result when build directory is missing', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    try {
-      expect(() => analyzeBundle.analyzeBuild({ dryRun: false })).toThrow(
-        'exit:1'
-      )
-    } finally {
-      process.chdir(originalCwd)
-    }
+    withTempCwd(() => {
+      const results = analyzeBundle.analyzeBuild({ dryRun: false })
+      expect(results.status).toBe('error')
+      expect(results.statusMessage).toBe('Build directory .open-next not found')
+    })
   })
 
   it('returns error result when dry-run cannot determine wrangler sizes', () => {
-    const dir = makeTempDir()
-    const originalCwd = process.cwd()
-    process.chdir(dir)
     vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    try {
+    withTempCwd(dir => {
       const handler = path.join(
         dir,
         '.open-next',
@@ -248,9 +231,7 @@ describe('analyze-bundle.js', () => {
       )
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('dry-run requested')
-    } finally {
-      process.chdir(originalCwd)
-    }
+    })
   })
 
   it('writes CI output including usage fields', () => {
@@ -393,7 +374,7 @@ describe('analyze-bundle.js', () => {
     expect(logs.join('\n')).toContain('Wrangler Bundle (what Cloudflare sees)')
   })
 
-  it('main prints help and exits 0', async () => {
+  it('main prints help and exits 0', () => {
     const logs = []
     vi.spyOn(console, 'log').mockImplementation(message =>
       logs.push(String(message))

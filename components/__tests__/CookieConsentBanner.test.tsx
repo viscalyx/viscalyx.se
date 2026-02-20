@@ -4,9 +4,9 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ReactNode } from 'react'
-
 import { NextIntlClientProvider } from 'next-intl'
+
+import type { ReactNode } from 'react'
 
 import CookieConsentBanner from '../CookieConsentBanner'
 
@@ -259,13 +259,13 @@ describe('CookieConsentBanner', () => {
     it('closes detailed settings view using close button', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
       })
 
-      fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+      await user.click(screen.getByRole('button', { name: 'Close' }))
 
       await waitFor(() => {
         expect(screen.queryByText('Cookie Settings')).not.toBeInTheDocument()
@@ -275,7 +275,7 @@ describe('CookieConsentBanner', () => {
 
     it('saves custom preferences from detailed view', async () => {
       renderWithIntl(<CookieConsentBanner />)
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         expect(
@@ -284,8 +284,8 @@ describe('CookieConsentBanner', () => {
       })
 
       const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
-      fireEvent.click(analyticsToggle)
-      fireEvent.click(screen.getByRole('button', { name: 'Save Preferences' }))
+      await user.click(analyticsToggle)
+      await user.click(screen.getByRole('button', { name: 'Save Preferences' }))
 
       await waitFor(() => {
         expect(mockSaveConsentSettings).toHaveBeenCalledWith({

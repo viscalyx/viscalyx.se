@@ -84,10 +84,9 @@ describe('generate-og-images.js', () => {
     const tempMessagesDir = fs.mkdtempSync(path.join(os.tmpdir(), 'og-msg-'))
     const filePath = path.join(tempMessagesDir, `${testLocale}.json`)
     return withPreservedFile(filePath, async () => {
-      fs.mkdirSync(tempMessagesDir, { recursive: true })
       fs.writeFileSync(filePath, JSON.stringify({ blog: {} }))
       expect(() => og.getLocaleStrings(testLocale, tempMessagesDir)).toThrow(
-        `Missing blog.og.title or blog.og.tagline in messages/${testLocale}.json`
+        `Missing blog.og.title or blog.og.tagline in ${filePath}`
       )
     }).finally(() => {
       fs.rmSync(tempMessagesDir, { recursive: true, force: true })
@@ -155,11 +154,43 @@ describe('generate-og-images.js', () => {
   })
 
   it('main runs successfully with injected sharp and locale list', async () => {
-    const outputPath = path.join(process.cwd(), 'public', 'og-blog-en.png')
-    await withPreservedFile(outputPath, async () => {
-      await og.main(createSharpMock(), ['en'])
-      expect(fs.existsSync(outputPath)).toBe(true)
-    })
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'og-main-'))
+    const tempScriptsDir = path.join(tempRoot, 'scripts')
+    const tempMessagesDir = path.join(tempRoot, 'messages')
+    const tempPublicDir = path.join(tempRoot, 'public')
+    const copiedScriptPath = path.join(tempScriptsDir, 'generate-og-images.js')
+    const originalCwd = process.cwd()
+
+    fs.mkdirSync(tempScriptsDir, { recursive: true })
+    fs.mkdirSync(tempMessagesDir, { recursive: true })
+    fs.mkdirSync(tempPublicDir, { recursive: true })
+    fs.copyFileSync(
+      path.join(process.cwd(), 'scripts', 'generate-og-images.js'),
+      copiedScriptPath
+    )
+    fs.copyFileSync(
+      path.join(process.cwd(), 'messages', 'en.json'),
+      path.join(tempMessagesDir, 'en.json')
+    )
+    fs.copyFileSync(
+      path.join(process.cwd(), 'public', 'viscalyx_logo.svg'),
+      path.join(tempPublicDir, 'viscalyx_logo.svg')
+    )
+
+    const tempRequire = createRequire(copiedScriptPath)
+    const tempOg = tempRequire('./generate-og-images.js')
+    const outputPath = path.join(tempRoot, 'public', 'og-blog-en.png')
+
+    try {
+      process.chdir(tempRoot)
+      await withPreservedFile(outputPath, async () => {
+        await tempOg.main(createSharpMock(), ['en'])
+        expect(fs.existsSync(outputPath)).toBe(true)
+      })
+    } finally {
+      process.chdir(originalCwd)
+      fs.rmSync(tempRoot, { recursive: true, force: true })
+    }
   })
 
   it('main exits when at least one locale generation fails', async () => {

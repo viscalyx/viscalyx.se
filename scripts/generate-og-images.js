@@ -65,9 +65,7 @@ function getLocaleStrings(
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   const blog = messages.blog
   if (!blog?.og?.title || !blog?.og?.tagline) {
-    throw new Error(
-      `Missing blog.og.title or blog.og.tagline in messages/${locale}.json`
-    )
+    throw new Error(`Missing blog.og.title or blog.og.tagline in ${filePath}`)
   }
   return {
     title: blog.og.title,
@@ -203,7 +201,6 @@ async function generateBlogOG(locale, sharpImpl = loadSharp()) {
   )
 }
 
-/* c8 ignore start */
 async function main(sharpImpl = loadSharp(), locales = LOCALES) {
   if (!sharpImpl) {
     console.error(
@@ -215,6 +212,7 @@ async function main(sharpImpl = loadSharp(), locales = LOCALES) {
         'script is run rarely. You can remove it afterwards with:\n\n' +
         '  npm uninstall sharp\n'
     )
+    /* c8 ignore next */
     process.exit(1)
   }
 
@@ -226,10 +224,10 @@ async function main(sharpImpl = loadSharp(), locales = LOCALES) {
     failures.forEach(f => {
       console.error('OG image generation failed:', f.reason)
     })
+    /* c8 ignore next */
     process.exit(1)
   }
 }
-/* c8 ignore stop */
 
 /* c8 ignore next 3 */
 if (require.main === module) {

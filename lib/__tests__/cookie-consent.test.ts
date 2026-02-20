@@ -211,14 +211,17 @@ describe('Cookie Consent', () => {
         .spyOn(console, 'error')
         .mockImplementation(() => {})
 
-      saveConsentSettings(defaultConsentSettings)
+      try {
+        saveConsentSettings(defaultConsentSettings)
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to save cookie consent:',
-        expect.any(Error)
-      )
-      setItemSpy.mockRestore()
-      consoleErrorSpy.mockRestore()
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          'Failed to save cookie consent:',
+          expect.any(Error)
+        )
+      } finally {
+        setItemSpy.mockRestore()
+        consoleErrorSpy.mockRestore()
+      }
     })
   })
 

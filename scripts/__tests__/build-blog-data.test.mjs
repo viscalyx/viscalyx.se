@@ -8,6 +8,57 @@ import { waitForFile } from './test-helpers.mjs'
 const require = createRequire(import.meta.url)
 const scriptPath = require.resolve('../build-blog-data.js')
 
+const clearModuleDependencyTree = entryPath => {
+  const resolvedEntry = require.resolve(entryPath)
+  const rootDir = path.dirname(resolvedEntry)
+  const visited = new Set()
+  const stack = [resolvedEntry]
+
+  while (stack.length > 0) {
+    const moduleId = stack.pop()
+    if (!moduleId || visited.has(moduleId)) {
+      continue
+    }
+    visited.add(moduleId)
+    const cachedModule = require.cache[moduleId]
+    if (!cachedModule) {
+      continue
+    }
+
+    cachedModule.children.forEach(child => {
+      if (child?.id && child.id.startsWith(rootDir)) {
+        stack.push(child.id)
+      }
+    })
+
+    delete require.cache[moduleId]
+  }
+
+  Object.keys(require.cache).forEach(moduleId => {
+    if (moduleId.startsWith(rootDir)) {
+      delete require.cache[moduleId]
+    }
+  })
+}
+
+const requireScriptAndWait = async outputFilePath => {
+  let onUnhandledRejection
+  const unhandledRejectionPromise = new Promise((_, reject) => {
+    onUnhandledRejection = reason => {
+      const error = reason instanceof Error ? reason : new Error(String(reason))
+      reject(error)
+    }
+    process.once('unhandledRejection', onUnhandledRejection)
+  })
+
+  try {
+    require(scriptPath)
+    await Promise.race([waitForFile(outputFilePath), unhandledRejectionPromise])
+  } finally {
+    process.removeListener('unhandledRejection', onUnhandledRejection)
+  }
+}
+
 describe('build-blog-data script', () => {
   const originalCwd = process.cwd()
   let tempDir
@@ -24,7 +75,7 @@ describe('build-blog-data script', () => {
     }
     tempDir = undefined
 
-    delete require.cache[scriptPath]
+    clearModuleDependencyTree(scriptPath)
   })
 
   it('builds metadata and per-post content files from markdown', async () => {
@@ -78,10 +129,8 @@ const a = 1
       .mockImplementation(() => undefined)
 
     process.chdir(tempDir)
-    require(scriptPath)
-
     const metadataPath = path.join(tempDir, 'lib/blog-data.json')
-    await waitForFile(metadataPath)
+    await requireScriptAndWait(metadataPath)
 
     const blogData = JSON.parse(fs.readFileSync(metadataPath, 'utf8'))
     expect(blogData.posts).toHaveLength(2)
@@ -123,7 +172,6 @@ const a = 1
 
   it('writes empty output when content/blog is missing', async () => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'build-blog-data-empty-'))
-    fs.mkdirSync(path.join(tempDir, 'lib'), { recursive: true })
 
     vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -133,10 +181,8 @@ const a = 1
       .mockImplementation(() => undefined)
 
     process.chdir(tempDir)
-    require(scriptPath)
-
     const metadataPath = path.join(tempDir, 'lib/blog-data.json')
-    await waitForFile(metadataPath)
+    await requireScriptAndWait(metadataPath)
 
     const data = JSON.parse(fs.readFileSync(metadataPath, 'utf8'))
     expect(data.posts).toEqual([])
