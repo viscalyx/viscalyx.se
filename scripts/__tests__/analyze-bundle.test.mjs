@@ -1,7 +1,7 @@
 import fs from 'node:fs'
+import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
-import { createRequire } from 'node:module'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -32,21 +32,9 @@ afterEach(() => {
   delete process.env.GITHUB_OUTPUT
 })
 
-const withPatchedProcessExit = fn => {
-  const originalExit = process.exit
-  process.exit = code => {
-    throw new Error(`exit:${code}`)
-  }
-  return Promise.resolve()
-    .then(fn)
-    .finally(() => {
-      process.exit = originalExit
-    })
-}
-
 describe('analyze-bundle.js', () => {
   beforeEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
   })
 
   it('formats bytes correctly', () => {
@@ -243,6 +231,7 @@ describe('analyze-bundle.js', () => {
     const dir = makeTempDir()
     const originalCwd = process.cwd()
     process.chdir(dir)
+    vi.spyOn(console, 'error').mockImplementation(() => {})
 
     try {
       const handler = path.join(
@@ -253,7 +242,10 @@ describe('analyze-bundle.js', () => {
         'handler.mjs'
       )
       writeFile(handler, 'console.log("handler")')
-      const results = analyzeBundle.analyzeBuild({ dryRun: true })
+      const results = analyzeBundle.analyzeBuild(
+        { dryRun: true },
+        { getWranglerBundleSize: () => null }
+      )
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('dry-run requested')
     } finally {
@@ -290,32 +282,27 @@ describe('analyze-bundle.js', () => {
   })
 
   it('renders markdown output with expected sections', () => {
-    const originalLog = console.log
     const lines = []
-    console.log = message => {
+    vi.spyOn(console, 'log').mockImplementation(message => {
       lines.push(String(message))
-    }
+    })
 
-    try {
-      analyzeBundle.outputForMarkdown({
-        serverHandler: { size: 2048, gzipSize: 1024 },
-        middleware: { size: 1024, gzipSize: 512 },
-        assets: { size: 4096 },
-        total: { size: 8192 },
-        wrangler: { uncompressedKB: 1500, compressedKB: 450 },
-        usage: {
-          compressedMB: 0.439,
-          freePercent: 14.6,
-          paidPercent: 4.4,
-          exceedsFree: false,
-          exceedsPaid: false,
-        },
-        status: 'success',
-        statusMessage: 'Bundle size OK',
-      })
-    } finally {
-      console.log = originalLog
-    }
+    analyzeBundle.outputForMarkdown({
+      serverHandler: { size: 2048, gzipSize: 1024 },
+      middleware: { size: 1024, gzipSize: 512 },
+      assets: { size: 4096 },
+      total: { size: 8192 },
+      wrangler: { uncompressedKB: 1500, compressedKB: 450 },
+      usage: {
+        compressedMB: 0.439,
+        freePercent: 14.6,
+        paidPercent: 4.4,
+        exceedsFree: false,
+        exceedsPaid: false,
+      },
+      status: 'success',
+      statusMessage: 'Bundle size OK',
+    })
 
     const captured = lines.join('\n')
     expect(captured).toContain('Bundle Size Report')
@@ -325,9 +312,10 @@ describe('analyze-bundle.js', () => {
   })
 
   it('renders markdown warning and error advisory text', () => {
-    const originalLog = console.log
     const lines = []
-    console.log = message => lines.push(String(message))
+    vi.spyOn(console, 'log').mockImplementation(message =>
+      lines.push(String(message))
+    )
 
     const base = {
       serverHandler: { size: 2048, gzipSize: 1024 },
@@ -338,20 +326,16 @@ describe('analyze-bundle.js', () => {
       usage: null,
     }
 
-    try {
-      analyzeBundle.outputForMarkdown({
-        ...base,
-        status: 'warning',
-        statusMessage: 'warning',
-      })
-      analyzeBundle.outputForMarkdown({
-        ...base,
-        status: 'error',
-        statusMessage: 'error',
-      })
-    } finally {
-      console.log = originalLog
-    }
+    analyzeBundle.outputForMarkdown({
+      ...base,
+      status: 'warning',
+      statusMessage: 'warning',
+    })
+    analyzeBundle.outputForMarkdown({
+      ...base,
+      status: 'error',
+      statusMessage: 'error',
+    })
 
     const combined = lines.join('\n')
     expect(combined).toContain('Consider optimizing bundle size')
@@ -360,33 +344,28 @@ describe('analyze-bundle.js', () => {
   })
 
   it('renders terminal output with plan limits', () => {
-    const originalLog = console.log
     const logs = []
-    console.log = message => {
+    vi.spyOn(console, 'log').mockImplementation(message => {
       logs.push(String(message))
-    }
+    })
 
-    try {
-      analyzeBundle.outputForTerminal({
-        serverHandler: { size: 2048, gzipSize: 1024 },
-        middleware: { size: 1024, gzipSize: 512 },
-        assets: { size: 4096 },
-        serverFunctions: { size: 2048 },
-        total: { size: 8192 },
-        wrangler: null,
-        usage: {
-          compressedMB: 0.439,
-          freePercent: 14.6,
-          paidPercent: 4.4,
-          exceedsFree: false,
-          exceedsPaid: false,
-        },
-        status: 'success',
-        statusMessage: 'Bundle size OK',
-      })
-    } finally {
-      console.log = originalLog
-    }
+    analyzeBundle.outputForTerminal({
+      serverHandler: { size: 2048, gzipSize: 1024 },
+      middleware: { size: 1024, gzipSize: 512 },
+      assets: { size: 4096 },
+      serverFunctions: { size: 2048 },
+      total: { size: 8192 },
+      wrangler: null,
+      usage: {
+        compressedMB: 0.439,
+        freePercent: 14.6,
+        paidPercent: 4.4,
+        exceedsFree: false,
+        exceedsPaid: false,
+      },
+      status: 'success',
+      statusMessage: 'Bundle size OK',
+    })
 
     const combined = logs.join('\n')
     expect(combined).toContain('Bundle Size Analysis')
@@ -394,69 +373,61 @@ describe('analyze-bundle.js', () => {
   })
 
   it('renders terminal output including wrangler section', () => {
-    const originalLog = console.log
     const logs = []
-    console.log = message => {
+    vi.spyOn(console, 'log').mockImplementation(message => {
       logs.push(String(message))
-    }
+    })
 
-    try {
-      analyzeBundle.outputForTerminal({
-        serverHandler: { size: 2048, gzipSize: 1024 },
-        middleware: { size: 1024, gzipSize: 512 },
-        assets: { size: 4096 },
-        serverFunctions: { size: 2048 },
-        total: { size: 8192 },
-        wrangler: { uncompressedKB: 1500, compressedKB: 450 },
-        usage: null,
-        status: 'success',
-        statusMessage: 'Bundle size OK',
-      })
-    } finally {
-      console.log = originalLog
-    }
+    analyzeBundle.outputForTerminal({
+      serverHandler: { size: 2048, gzipSize: 1024 },
+      middleware: { size: 1024, gzipSize: 512 },
+      assets: { size: 4096 },
+      serverFunctions: { size: 2048 },
+      total: { size: 8192 },
+      wrangler: { uncompressedKB: 1500, compressedKB: 450 },
+      usage: null,
+      status: 'success',
+      statusMessage: 'Bundle size OK',
+    })
 
     expect(logs.join('\n')).toContain('Wrangler Bundle (what Cloudflare sees)')
   })
 
   it('main prints help and exits 0', async () => {
-    const originalLog = console.log
     const logs = []
-    console.log = message => logs.push(String(message))
+    vi.spyOn(console, 'log').mockImplementation(message =>
+      logs.push(String(message))
+    )
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
+    })
 
-    try {
-      await withPatchedProcessExit(() => {
-        expect(() => analyzeBundle.main(['--help'])).toThrow('exit:0')
-      })
-    } finally {
-      console.log = originalLog
-    }
+    expect(() => analyzeBundle.main(['--help'])).toThrow('exit:0')
 
     expect(logs.join('\n')).toContain(
       'Bundle Size Analyzer for Cloudflare Workers'
     )
   })
 
-  it('main rejects invalid --max-age and exits 1', async () => {
-    const originalError = console.error
+  it('main rejects invalid --max-age and exits 1', () => {
     const errs = []
-    console.error = message => errs.push(String(message))
+    vi.spyOn(console, 'error').mockImplementation(message =>
+      errs.push(String(message))
+    )
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
+    })
 
-    try {
-      await withPatchedProcessExit(() => {
-        expect(() => analyzeBundle.main(['--max-age=abc'])).toThrow('exit:1')
-      })
-    } finally {
-      console.error = originalError
-    }
+    expect(() => analyzeBundle.main(['--max-age=abc'])).toThrow('exit:1')
 
     expect(errs.join('\n')).toContain('Invalid --max-age value')
   })
 
   it('main routes to JSON/markdown/ci/terminal outputs', () => {
-    const originalLog = console.log
     const logs = []
-    console.log = message => logs.push(String(message))
+    vi.spyOn(console, 'log').mockImplementation(message =>
+      logs.push(String(message))
+    )
 
     const mockResults = {
       serverHandler: { size: 1, gzipSize: 1 },
@@ -468,25 +439,21 @@ describe('analyze-bundle.js', () => {
       statusMessage: 'ok',
     }
 
-    try {
-      analyzeBundle.main(['--json', '--no-build'], {
-        analyzeBuild: () => mockResults,
-      })
-      analyzeBundle.main(['--markdown', '--no-build'], {
-        analyzeBuild: () => mockResults,
-        outputForMarkdown: () => logs.push('markdown-out'),
-      })
-      analyzeBundle.main(['--ci', '--no-build'], {
-        analyzeBuild: () => mockResults,
-        outputForCI: () => logs.push('ci-out'),
-      })
-      analyzeBundle.main(['--no-build'], {
-        analyzeBuild: () => mockResults,
-        outputForTerminal: () => logs.push('terminal-out'),
-      })
-    } finally {
-      console.log = originalLog
-    }
+    analyzeBundle.main(['--json', '--no-build'], {
+      analyzeBuild: () => mockResults,
+    })
+    analyzeBundle.main(['--markdown', '--no-build'], {
+      analyzeBuild: () => mockResults,
+      outputForMarkdown: () => logs.push('markdown-out'),
+    })
+    analyzeBundle.main(['--ci', '--no-build'], {
+      analyzeBuild: () => mockResults,
+      outputForCI: () => logs.push('ci-out'),
+    })
+    analyzeBundle.main(['--no-build'], {
+      analyzeBuild: () => mockResults,
+      outputForTerminal: () => logs.push('terminal-out'),
+    })
 
     const combined = logs.join('\n')
     expect(combined).toContain('"status": "success"')
@@ -495,73 +462,66 @@ describe('analyze-bundle.js', () => {
     expect(combined).toContain('terminal-out')
   })
 
-  it('main exits when build is stale and rebuild fails', async () => {
-    const originalError = console.error
-    console.error = () => {}
-    try {
-      await withPatchedProcessExit(() => {
-        expect(() =>
-          analyzeBundle.main(['--max-age=1'], {
-            isBuildFresh: () => ({ fresh: false, reason: 'stale build' }),
-            runBuild: () => false,
-          })
-        ).toThrow('exit:1')
+  it('main exits when build is stale and rebuild fails', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
+    })
+
+    expect(() =>
+      analyzeBundle.main(['--max-age=1'], {
+        isBuildFresh: () => ({ fresh: false, reason: 'stale build' }),
+        runBuild: () => false,
       })
-    } finally {
-      console.error = originalError
-    }
+    ).toThrow('exit:1')
   })
 
-  it('main exits when analysis status is error', async () => {
-    const originalError = console.error
-    console.error = () => {}
-    try {
-      await withPatchedProcessExit(() => {
-        expect(() =>
-          analyzeBundle.main(['--no-build'], {
-            analyzeBuild: () => ({
-              serverHandler: { size: 0, gzipSize: 0 },
-              middleware: { size: 0, gzipSize: 0 },
-              assets: { size: 0 },
-              serverFunctions: { size: 0 },
-              total: { size: 0 },
-              status: 'error',
-              statusMessage: 'too big',
-            }),
-          })
-        ).toThrow('exit:1')
+  it('main exits when analysis status is error', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
+    })
+
+    expect(() =>
+      analyzeBundle.main(['--no-build'], {
+        analyzeBuild: () => ({
+          serverHandler: { size: 0, gzipSize: 0 },
+          middleware: { size: 0, gzipSize: 0 },
+          assets: { size: 0 },
+          serverFunctions: { size: 0 },
+          total: { size: 0 },
+          status: 'error',
+          statusMessage: 'too big',
+        }),
+        outputForTerminal: () => {},
       })
-    } finally {
-      console.error = originalError
-    }
+    ).toThrow('exit:1')
   })
 
   it('main uses existing build when fresh and sets dry-run by default', () => {
-    const originalError = console.error
     const errs = []
-    console.error = message => errs.push(String(message))
+    vi.spyOn(console, 'error').mockImplementation(message =>
+      errs.push(String(message))
+    )
 
     const seen = []
-    try {
-      analyzeBundle.main([], {
-        isBuildFresh: () => ({ fresh: true, ageMinutes: 2 }),
-        analyzeBuild: options => {
-          seen.push(options)
-          return {
-            serverHandler: { size: 0, gzipSize: 0 },
-            middleware: { size: 0, gzipSize: 0 },
-            assets: { size: 0 },
-            serverFunctions: { size: 0 },
-            total: { size: 0 },
-            status: 'success',
-            statusMessage: 'ok',
-          }
-        },
-        outputForTerminal: () => {},
-      })
-    } finally {
-      console.error = originalError
-    }
+    analyzeBundle.main([], {
+      isBuildFresh: () => ({ fresh: true, ageMinutes: 2 }),
+      analyzeBuild: options => {
+        seen.push(options)
+        return {
+          serverHandler: { size: 0, gzipSize: 0 },
+          middleware: { size: 0, gzipSize: 0 },
+          assets: { size: 0 },
+          serverFunctions: { size: 0 },
+          total: { size: 0 },
+          status: 'success',
+          statusMessage: 'ok',
+        }
+      },
+      outputForTerminal: () => {},
+    })
 
     expect(errs.join('\n')).toContain('Using existing build')
     expect(seen[0].dryRun).toBe(true)

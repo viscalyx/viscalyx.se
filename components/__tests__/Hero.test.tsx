@@ -78,12 +78,17 @@ describe('Hero component', () => {
   it('hides the loading placeholder once image has loaded', () => {
     const { container } = render(<Hero />)
 
-    expect(container.querySelector('.animate-spin')).toBeInTheDocument()
+    const initialSpinnerCount =
+      container.querySelectorAll('.animate-spin').length
+    expect(initialSpinnerCount).toBeGreaterThan(0)
 
     const firstImage = screen.getAllByRole('img')[0]
     fireEvent.load(firstImage)
 
     expect(firstImage).toHaveClass('opacity-100')
+    expect(container.querySelectorAll('.animate-spin')).toHaveLength(
+      initialSpinnerCount - 1
+    )
   })
 
   it('cycles active image over time', () => {

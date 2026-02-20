@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import LocaleLayout, { generateStaticParams } from '../layout'
 
 const mockNotFound = vi.fn()
@@ -67,19 +66,6 @@ describe('LocaleLayout', () => {
     ).toHaveLength(2)
   })
 
-  it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
-    vi.resetModules()
-    await import('../layout')
-
-    expect(dynamicMock).toHaveBeenCalledTimes(1)
-
-    const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
-      default: unknown
-    }>
-    const loadedModule = await loader()
-    expect(loadedModule).toHaveProperty('default')
-  })
-
   it('calls notFound for unsupported locale', async () => {
     const ui = await LocaleLayout({
       children: <div>child</div>,
@@ -88,5 +74,27 @@ describe('LocaleLayout', () => {
     render(ui)
 
     expect(mockNotFound).toHaveBeenCalledTimes(1)
+  })
+
+  describe('dynamic import wiring', () => {
+    beforeEach(() => {
+      vi.resetModules()
+    })
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
+      await import('../layout')
+
+      expect(dynamicMock).toHaveBeenCalledTimes(1)
+
+      const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
+        default: unknown
+      }>
+      const loadedModule = await loader()
+      expect(loadedModule).toHaveProperty('default')
+    })
   })
 })

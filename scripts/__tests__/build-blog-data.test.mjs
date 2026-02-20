@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { waitForFile } from './test-helpers.mjs'
 
 const require = createRequire(import.meta.url)
@@ -11,6 +11,10 @@ const scriptPath = require.resolve('../build-blog-data.js')
 describe('build-blog-data script', () => {
   const originalCwd = process.cwd()
   let tempDir
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
   afterEach(() => {
     process.chdir(originalCwd)

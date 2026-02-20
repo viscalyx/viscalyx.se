@@ -1,5 +1,6 @@
 import { SITE_URL } from '@/lib/constants'
 import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
+
 import { describe, expect, it } from 'vitest'
 
 describe('structured-data', () => {

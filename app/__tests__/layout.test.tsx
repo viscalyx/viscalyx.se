@@ -1,7 +1,7 @@
+import RootLayout, { metadata } from '@/app/layout'
+import { metadata as metadataObject } from '@/app/metadata'
 import type { ReactNode } from 'react'
-import { describe, expect, it, vi } from 'vitest'
-import RootLayout, { metadata } from '../layout'
-import { metadata as metadataObject } from '../metadata'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('next-intl/server', () => ({
   getLocale: vi.fn(async () => 'en'),
@@ -18,6 +18,34 @@ vi.mock('@/lib/theme-context', () => ({
 }))
 
 describe('RootLayout', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  const findNodeWithProp = (
+    node: unknown,
+    propName: string
+  ): { props: Record<string, unknown> } | null => {
+    if (!node || typeof node !== 'object') {
+      return null
+    }
+    const candidate = node as {
+      props?: Record<string, unknown>
+      type?: unknown
+    }
+    if (candidate.props && propName in candidate.props) {
+      return candidate as { props: Record<string, unknown> }
+    }
+
+    const children = candidate.props?.children
+    const childList = Array.isArray(children) ? children : [children]
+    for (const child of childList) {
+      const found = findNodeWithProp(child, propName)
+      if (found) return found
+    }
+    return null
+  }
+
   it('renders html/body shell with locale and theme provider', async () => {
     const ui = await RootLayout({
       children: <main data-testid="child">child</main>,
@@ -35,14 +63,12 @@ describe('RootLayout', () => {
 
   it('injects anti-FOUC theme bootstrap script', async () => {
     const ui = await RootLayout({ children: <div /> })
-    const htmlElement = ui as unknown as { props: { children: unknown[] } }
-    const head = htmlElement.props.children[0] as {
-      props: {
-        children: { props: { dangerouslySetInnerHTML: { __html: string } } }
-      }
-    }
-    const scriptContent =
-      head.props.children.props.dangerouslySetInnerHTML.__html
+    const scriptNode = findNodeWithProp(ui, 'dangerouslySetInnerHTML') as {
+      props: { dangerouslySetInnerHTML: { __html: string } }
+    } | null
+
+    expect(scriptNode).not.toBeNull()
+    const scriptContent = scriptNode!.props.dangerouslySetInnerHTML.__html
 
     expect(scriptContent).toContain("localStorage.getItem('theme')")
     expect(scriptContent).toContain('document.documentElement.classList')

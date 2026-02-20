@@ -57,8 +57,11 @@ function escapeXml(str) {
 /**
  * Read localized blog OG strings from the messages JSON for a given locale.
  */
-function getLocaleStrings(locale) {
-  const filePath = path.join(__dirname, '..', 'messages', `${locale}.json`)
+function getLocaleStrings(
+  locale,
+  basePath = path.join(__dirname, '..', 'messages')
+) {
+  const filePath = path.join(basePath, `${locale}.json`)
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   const blog = messages.blog
   if (!blog?.og?.title || !blog?.og?.tagline) {

@@ -1,16 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { consentEvents } from '../consent-events'
+import { consentEvents } from '@/lib/consent-events'
 import {
   cleanupCookies,
   clearInternalCaches,
   defaultConsentSettings,
-  getConsentTimestamp,
   getConsentSettings,
+  getConsentTimestamp,
   hasConsent,
   hasConsentChoice,
   resetConsent,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Don't mock cookie-utils, so we test the actual integration
 
@@ -605,15 +605,16 @@ describe('Cookie Consent', () => {
 
     it('returns null when window is unavailable', () => {
       const originalWindow = global.window
-      Reflect.deleteProperty(globalThis, 'window')
-
-      expect(getConsentTimestamp()).toBeNull()
-
-      Object.defineProperty(globalThis, 'window', {
-        value: originalWindow,
-        writable: true,
-        configurable: true,
-      })
+      try {
+        Reflect.deleteProperty(globalThis, 'window')
+        expect(getConsentTimestamp()).toBeNull()
+      } finally {
+        Object.defineProperty(globalThis, 'window', {
+          value: originalWindow,
+          writable: true,
+          configurable: true,
+        })
+      }
     })
   })
 })

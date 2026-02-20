@@ -1,6 +1,6 @@
 import TableOfContents from '@/components/TableOfContents'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { TocItem } from '@/lib/slug-utils'
 
@@ -63,6 +63,10 @@ describe('TableOfContents', () => {
     intersectionObserverInstances.length = 0
     vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
     vi.stubGlobal('ResizeObserver', MockResizeObserver)
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('renders all heading items', () => {
@@ -144,7 +148,6 @@ describe('TableOfContents', () => {
     })
 
     document.body.removeChild(heading)
-    vi.restoreAllMocks()
   })
 
   it('observes headings with IntersectionObserver', () => {
@@ -199,6 +202,7 @@ describe('TableOfContents', () => {
 
     try {
       render(<TableOfContents items={mockItems} />)
+      expect(intersectionObserverInstances.length).toBeGreaterThan(0)
       act(() => {
         intersectionObserverInstances[0].callback(
           [
@@ -271,6 +275,7 @@ describe('TableOfContents', () => {
         toJSON: vi.fn(),
       }))
 
+      expect(intersectionObserverInstances.length).toBeGreaterThan(0)
       act(() => {
         intersectionObserverInstances[0].callback(
           [
@@ -298,6 +303,5 @@ describe('TableOfContents', () => {
     fireEvent.click(screen.getByText('Introduction'))
 
     expect(pushStateSpy).not.toHaveBeenCalled()
-    pushStateSpy.mockRestore()
   })
 })

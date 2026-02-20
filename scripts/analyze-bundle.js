@@ -150,6 +150,7 @@ function getWranglerBundleSize() {
     return parsed ? { ...parsed, raw: errorOutput } : null
   }
 }
+/* c8 ignore stop */
 
 /**
  * Check if build exists and is recent (default: 30 minutes)
@@ -182,6 +183,7 @@ function isBuildFresh(maxAgeMinutes = 30) {
 /**
  * Run the OpenNext build
  */
+/* c8 ignore start */
 function runBuild() {
   console.error('🔨 Building for Cloudflare Workers...\n')
   try {
@@ -201,8 +203,11 @@ function runBuild() {
 /**
  * Analyze the bundle and return results
  */
-/* c8 ignore start */
-function analyzeBuild(options = {}) {
+function analyzeBuild(options = {}, deps = {}) {
+  const impl = {
+    getWranglerBundleSize,
+    ...deps,
+  }
   const buildDir = path.join(process.cwd(), '.open-next')
 
   if (!fs.existsSync(buildDir)) {
@@ -283,7 +288,7 @@ function analyzeBuild(options = {}) {
 
   // Get actual wrangler bundle size if requested
   if (options.dryRun) {
-    results.wrangler = getWranglerBundleSize()
+    results.wrangler = impl.getWranglerBundleSize()
 
     // Fail fast if dry-run was requested but wrangler sizes are unavailable
     if (!results.wrangler) {
@@ -330,12 +335,10 @@ function analyzeBuild(options = {}) {
 
   return results
 }
-/* c8 ignore stop */
 
 /**
  * Output results for GitHub Actions
  */
-/* c8 ignore start */
 function outputForCI(results) {
   const output = []
 
@@ -537,7 +540,6 @@ function outputForTerminal(results) {
 
   console.log('')
 }
-/* c8 ignore stop */
 
 /**
  * Create a simple progress bar
@@ -552,7 +554,6 @@ function createProgressBar(percent, width) {
 /**
  * Main function
  */
-/* c8 ignore start */
 function main(args = process.argv.slice(2), deps = {}) {
   const impl = {
     isBuildFresh,
@@ -656,7 +657,6 @@ Examples:
     process.exit(1)
   }
 }
-/* c8 ignore stop */
 
 /* c8 ignore next 3 */
 if (require.main === module) {
