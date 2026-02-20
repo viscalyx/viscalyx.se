@@ -11,7 +11,10 @@ vi.mock('@/components/LoadingSpinner', () => ({
 describe('BlogLoading', () => {
   it('renders centered large LoadingSpinner', () => {
     const { container } = render(<BlogLoading />)
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute('data-size', 'lg')
+    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
+      'data-size',
+      'lg'
+    )
     expect(container.firstChild).toHaveClass('min-h-[50vh]')
   })
 })

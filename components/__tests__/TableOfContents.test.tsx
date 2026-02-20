@@ -204,7 +204,7 @@ describe('TableOfContents', () => {
           {
             isIntersecting: true,
             target: heading,
-          } as IntersectionObserverEntry,
+          } as unknown as IntersectionObserverEntry,
         ],
         intersectionObserverInstances[0] as unknown as IntersectionObserver
       )
@@ -272,7 +272,7 @@ describe('TableOfContents', () => {
           {
             isIntersecting: true,
             target: heading,
-          } as IntersectionObserverEntry,
+          } as unknown as IntersectionObserverEntry,
         ],
         intersectionObserverInstances[0] as unknown as IntersectionObserver
       )

@@ -36,12 +36,15 @@ describe('RootLayout', () => {
     const ui = await RootLayout({ children: <div /> })
     const htmlElement = ui as unknown as { props: { children: unknown[] } }
     const head = htmlElement.props.children[0] as {
-      props: { children: { props: { dangerouslySetInnerHTML: { __html: string } } } }
+      props: {
+        children: { props: { dangerouslySetInnerHTML: { __html: string } } }
+      }
     }
-    const scriptContent = head.props.children.props.dangerouslySetInnerHTML.__html
+    const scriptContent =
+      head.props.children.props.dangerouslySetInnerHTML.__html
 
     expect(scriptContent).toContain("localStorage.getItem('theme')")
-    expect(scriptContent).toContain("document.documentElement.classList")
+    expect(scriptContent).toContain('document.documentElement.classList')
   })
 
   it('re-exports metadata object', () => {

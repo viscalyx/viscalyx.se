@@ -207,7 +207,9 @@ describe('Cookie Consent', () => {
         .mockImplementation(() => {
           throw new Error('storage write failed')
         })
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
 
       saveConsentSettings(defaultConsentSettings)
 
@@ -602,14 +604,15 @@ describe('Cookie Consent', () => {
 
     it('returns null when window is unavailable', () => {
       const originalWindow = global.window
-      // @ts-expect-error intentional test for SSR branch
-      delete global.window
+      Reflect.deleteProperty(globalThis, 'window')
 
       expect(getConsentTimestamp()).toBeNull()
 
-      // Restore jsdom window
-      // @ts-expect-error window restored for test environment
-      global.window = originalWindow
+      Object.defineProperty(globalThis, 'window', {
+        value: originalWindow,
+        writable: true,
+        configurable: true,
+      })
     })
   })
 })

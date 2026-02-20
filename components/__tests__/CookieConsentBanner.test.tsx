@@ -1,8 +1,8 @@
+import * as cookieConsent from '@/lib/cookie-consent'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieConsentBanner from '../CookieConsentBanner'
-import * as cookieConsent from '@/lib/cookie-consent'
 
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({
@@ -324,7 +324,7 @@ describe('CookieConsentBanner', () => {
       })
     })
 
-    it('traps focus within banner with Tab and Shift+Tab and reuses cached focusables', async () => {
+    it('traps focus within banner with Tab and Shift+Tab and reuses cached focusable', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {

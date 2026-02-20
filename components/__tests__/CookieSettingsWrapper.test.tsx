@@ -39,8 +39,8 @@ describe('CookieSettingsWrapper', () => {
     const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
       default: unknown
     }>
-    const module = await loader()
-    expect(module).toHaveProperty('default')
+    const loadedModule = await loader()
+    expect(loadedModule).toHaveProperty('default')
   })
 
   it('renders the dynamically imported CookieSettings component', () => {

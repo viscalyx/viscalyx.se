@@ -56,15 +56,17 @@ describe('LocaleLayout', () => {
     expect(screen.getByTestId('provider-en')).toBeInTheDocument()
     expect(screen.getByTestId('child')).toBeInTheDocument()
     expect(screen.getByTestId('cookie-consent-banner')).toBeInTheDocument()
-    expect(container.querySelectorAll('script[type="application/ld+json"]')).toHaveLength(2)
+    expect(
+      container.querySelectorAll('script[type="application/ld+json"]')
+    ).toHaveLength(2)
   })
 
   it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
     const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
       default: unknown
     }>
-    const module = await loader()
-    expect(module).toHaveProperty('default')
+    const loadedModule = await loader()
+    expect(loadedModule).toHaveProperty('default')
   })
 
   it('calls notFound for unsupported locale', async () => {

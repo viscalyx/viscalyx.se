@@ -121,7 +121,9 @@ describe('Language Preferences', () => {
     })
 
     it('should handle save errors gracefully', () => {
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
       vi.mocked(setCookie).mockImplementation(() => {
         throw new Error('cookie write failed')
       })
@@ -161,7 +163,9 @@ describe('Language Preferences', () => {
     })
 
     it('should handle clear errors gracefully', () => {
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
       vi.mocked(deleteCookie).mockImplementation(() => {
         throw new Error('cookie delete failed')
       })
