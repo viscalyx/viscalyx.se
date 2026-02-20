@@ -189,11 +189,16 @@ describe('Footer', () => {
         return 1
       })
 
-    render(<Footer />)
-    fireEvent.click(screen.getByText('aboutUs'))
+    try {
+      render(<Footer />)
+      fireEvent.click(screen.getByText('aboutUs'))
 
-    expect(rafSpy).toHaveBeenCalled()
-    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth' })
+      expect(rafSpy).toHaveBeenCalled()
+      expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth' })
+    } finally {
+      rafSpy.mockRestore()
+      section.remove()
+    }
   })
 
   it('does not intercept section links when not on home page', () => {

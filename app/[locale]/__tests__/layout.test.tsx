@@ -62,6 +62,8 @@ describe('LocaleLayout', () => {
   })
 
   it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
+    expect(dynamicMock).toHaveBeenCalledTimes(1)
+
     const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
       default: unknown
     }>

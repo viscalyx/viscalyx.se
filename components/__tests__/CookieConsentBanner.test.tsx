@@ -1,5 +1,6 @@
 import * as cookieConsent from '@/lib/cookie-consent'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { NextIntlClientProvider } from 'next-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieConsentBanner from '../CookieConsentBanner'
@@ -69,6 +70,7 @@ const renderWithIntl = (component: React.ReactNode) => {
 }
 
 describe('CookieConsentBanner', () => {
+  const user = userEvent.setup()
   const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
   const mockSaveConsentSettings = vi.mocked(cookieConsent.saveConsentSettings)
   const mockCleanupCookies = vi.mocked(cookieConsent.cleanupCookies)
@@ -129,7 +131,7 @@ describe('CookieConsentBanner', () => {
       expect(screen.getByText('Accept All')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Accept All'))
+    await user.click(screen.getByText('Accept All'))
 
     await waitFor(() => {
       expect(saveConsentSettings).toHaveBeenCalledWith({
@@ -243,7 +245,7 @@ describe('CookieConsentBanner', () => {
         expect(screen.getByText('Accept All')).toBeInTheDocument()
       })
 
-      fireEvent.click(screen.getByText('Accept All'))
+      await user.click(screen.getByText('Accept All'))
 
       await waitFor(() => {
         expect(document.body.style.paddingBottom).toBe('')
@@ -317,7 +319,7 @@ describe('CookieConsentBanner', () => {
         expect(screen.getByText('Accept All')).toBeInTheDocument()
       })
 
-      fireEvent.click(screen.getByText('Accept All'))
+      await user.click(screen.getByText('Accept All'))
 
       await waitFor(() => {
         expect(outsideButton).toHaveFocus()

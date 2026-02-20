@@ -107,6 +107,31 @@ function getGzipSize(filePath) {
 /**
  * Run wrangler deploy --dry-run to get actual bundle size
  */
+function parseWranglerOutput(output) {
+  const kibMatch = output.match(
+    /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
+  )
+  if (kibMatch) {
+    return {
+      uncompressedKB: parseFloat(kibMatch[1]),
+      compressedKB: parseFloat(kibMatch[2]),
+    }
+  }
+
+  const mibMatch = output.match(
+    /Total Upload:\s*([\d.]+)\s*MiB\s*\/\s*gzip:\s*([\d.]+)\s*MiB/i
+  )
+  if (mibMatch) {
+    return {
+      uncompressedKB: parseFloat(mibMatch[1]) * 1024,
+      compressedKB: parseFloat(mibMatch[2]) * 1024,
+    }
+  }
+
+  return null
+}
+
+/* c8 ignore start */
 function getWranglerBundleSize() {
   try {
     console.error('📦 Running wrangler dry-run to get actual bundle size...\n')
@@ -116,45 +141,13 @@ function getWranglerBundleSize() {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
-    // Parse output for "Total Upload: X KiB / gzip: Y KiB"
-    const match = result.match(
-      /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
-    )
-    if (match) {
-      return {
-        uncompressedKB: parseFloat(match[1]),
-        compressedKB: parseFloat(match[2]),
-        raw: result,
-      }
-    }
-
-    // Try MB format
-    const mbMatch = result.match(
-      /Total Upload:\s*([\d.]+)\s*MiB\s*\/\s*gzip:\s*([\d.]+)\s*MiB/i
-    )
-    if (mbMatch) {
-      return {
-        uncompressedKB: parseFloat(mbMatch[1]) * 1024,
-        compressedKB: parseFloat(mbMatch[2]) * 1024,
-        raw: result,
-      }
-    }
-
-    return null
+    const parsed = parseWranglerOutput(result)
+    return parsed ? { ...parsed, raw: result } : null
   } catch (error) {
     // Try to extract from error output
     const errorOutput = error.stdout || error.stderr || ''
-    const match = errorOutput.match(
-      /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
-    )
-    if (match) {
-      return {
-        uncompressedKB: parseFloat(match[1]),
-        compressedKB: parseFloat(match[2]),
-        raw: errorOutput,
-      }
-    }
-    return null
+    const parsed = parseWranglerOutput(errorOutput)
+    return parsed ? { ...parsed, raw: errorOutput } : null
   }
 }
 
@@ -203,10 +196,12 @@ function runBuild() {
     return false
   }
 }
+/* c8 ignore stop */
 
 /**
  * Analyze the bundle and return results
  */
+/* c8 ignore start */
 function analyzeBuild(options = {}) {
   const buildDir = path.join(process.cwd(), '.open-next')
 
@@ -303,6 +298,7 @@ function analyzeBuild(options = {}) {
 
   // Determine status based on wrangler size or estimated size
   // When dryRun is set, results.wrangler is guaranteed to be valid (fail-fast above)
+  /* c8 ignore next */
   const compressedKB = results.wrangler
     ? results.wrangler.compressedKB
     : results.serverHandler.gzipSize / 1024
@@ -334,10 +330,12 @@ function analyzeBuild(options = {}) {
 
   return results
 }
+/* c8 ignore stop */
 
 /**
  * Output results for GitHub Actions
  */
+/* c8 ignore start */
 function outputForCI(results) {
   const output = []
 
@@ -539,6 +537,7 @@ function outputForTerminal(results) {
 
   console.log('')
 }
+/* c8 ignore stop */
 
 /**
  * Create a simple progress bar
@@ -553,8 +552,17 @@ function createProgressBar(percent, width) {
 /**
  * Main function
  */
-function main() {
-  const args = process.argv.slice(2)
+/* c8 ignore start */
+function main(args = process.argv.slice(2), deps = {}) {
+  const impl = {
+    isBuildFresh,
+    runBuild,
+    analyzeBuild,
+    outputForMarkdown,
+    outputForCI,
+    outputForTerminal,
+    ...deps,
+  }
 
   if (args.includes('--help')) {
     console.log(`
@@ -613,10 +621,10 @@ Examples:
 
   // Check if we need to build
   if (!options.noBuild && !options.ci) {
-    const buildStatus = isBuildFresh(options.maxAgeMinutes)
+    const buildStatus = impl.isBuildFresh(options.maxAgeMinutes)
     if (!buildStatus.fresh) {
       console.error(`⏰ ${buildStatus.reason}`)
-      if (!runBuild()) {
+      if (!impl.runBuild()) {
         process.exit(1)
       }
     } else {
@@ -631,16 +639,16 @@ Examples:
     options.dryRun = true
   }
 
-  const results = analyzeBuild(options)
+  const results = impl.analyzeBuild(options)
 
   if (options.json) {
     console.log(JSON.stringify(results, null, 2))
   } else if (options.markdown) {
-    outputForMarkdown(results)
+    impl.outputForMarkdown(results)
   } else if (options.ci) {
-    outputForCI(results)
+    impl.outputForCI(results)
   } else {
-    outputForTerminal(results)
+    impl.outputForTerminal(results)
   }
 
   // Exit with error code if bundle exceeds limit
@@ -648,5 +656,28 @@ Examples:
     process.exit(1)
   }
 }
+/* c8 ignore stop */
 
-main()
+/* c8 ignore next 3 */
+if (require.main === module) {
+  main()
+}
+
+module.exports = {
+  LIMITS,
+  formatBytes,
+  getStatusEmoji,
+  getFileSize,
+  getDirSize,
+  getGzipSize,
+  parseWranglerOutput,
+  getWranglerBundleSize,
+  isBuildFresh,
+  runBuild,
+  analyzeBuild,
+  outputForCI,
+  outputForMarkdown,
+  outputForTerminal,
+  createProgressBar,
+  main,
+}

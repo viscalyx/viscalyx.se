@@ -88,18 +88,21 @@ describe('Hero component', () => {
 
   it('cycles active image over time', () => {
     vi.useFakeTimers()
-    render(<Hero />)
+    try {
+      render(<Hero />)
 
-    const secondIndicator = screen.getByRole('button', {
-      name: 'Show image 2 of 4',
-    })
-    expect(secondIndicator.className).toContain('bg-white/50')
+      const secondIndicator = screen.getByRole('button', {
+        name: 'Show image 2 of 4',
+      })
+      expect(secondIndicator.className).toContain('bg-white/50')
 
-    act(() => {
-      vi.advanceTimersByTime(4000)
-    })
+      act(() => {
+        vi.advanceTimersByTime(4000)
+      })
 
-    expect(secondIndicator.className).toContain('bg-white shadow-lg')
-    vi.useRealTimers()
+      expect(secondIndicator.className).toContain('bg-white shadow-lg')
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })
