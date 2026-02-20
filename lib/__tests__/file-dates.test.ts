@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import pageDatesData from '../page-dates.json'
-import { getStaticPageDates } from '../file-dates'
+import { getStaticPageDates } from '@/lib/file-dates'
+import pageDatesData from '@/lib/page-dates.json'
 
 describe('file-dates', () => {
   it('returns Date objects for all static pages', () => {

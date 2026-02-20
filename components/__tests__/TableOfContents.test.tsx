@@ -197,21 +197,25 @@ describe('TableOfContents', () => {
     heading.id = 'installation'
     document.body.appendChild(heading)
 
-    render(<TableOfContents items={mockItems} />)
-    act(() => {
-      intersectionObserverInstances[0].callback(
-        [
-          {
-            isIntersecting: true,
-            target: heading,
-          } as unknown as IntersectionObserverEntry,
-        ],
-        intersectionObserverInstances[0] as unknown as IntersectionObserver
-      )
-    })
+    try {
+      render(<TableOfContents items={mockItems} />)
+      act(() => {
+        intersectionObserverInstances[0].callback(
+          [
+            {
+              isIntersecting: true,
+              target: heading,
+            } as unknown as IntersectionObserverEntry,
+          ],
+          intersectionObserverInstances[0] as unknown as IntersectionObserver
+        )
+      })
 
-    const activeButton = screen.getByRole('button', { name: 'Installation' })
-    expect(activeButton).toHaveAttribute('aria-current', 'location')
+      const activeButton = screen.getByRole('button', { name: 'Installation' })
+      expect(activeButton).toHaveAttribute('aria-current', 'location')
+    } finally {
+      heading.remove()
+    }
   })
 
   it('auto-scrolls toc when active item is outside visible area', async () => {
@@ -219,68 +223,72 @@ describe('TableOfContents', () => {
     heading.id = 'conclusion'
     document.body.appendChild(heading)
 
-    const { container } = render(<TableOfContents items={mockItems} />)
-    const scrollContainer = container.querySelector(
-      '.toc-scrollable'
-    ) as HTMLDivElement
-    const scrollToSpy = vi.fn()
-    Object.defineProperty(scrollContainer, 'scrollTo', {
-      value: scrollToSpy,
-      writable: true,
-      configurable: true,
-    })
+    try {
+      const { container } = render(<TableOfContents items={mockItems} />)
+      const scrollContainer = container.querySelector(
+        '.toc-scrollable'
+      ) as HTMLDivElement
+      const scrollToSpy = vi.fn()
+      Object.defineProperty(scrollContainer, 'scrollTo', {
+        value: scrollToSpy,
+        writable: true,
+        configurable: true,
+      })
 
-    const targetButton = screen.getByRole('button', { name: 'Conclusion' })
-    Object.defineProperty(targetButton, 'offsetTop', {
-      value: 400,
-      configurable: true,
-    })
-    Object.defineProperty(targetButton, 'offsetHeight', {
-      value: 20,
-      configurable: true,
-    })
-    Object.defineProperty(scrollContainer, 'clientHeight', {
-      value: 100,
-      configurable: true,
-    })
-    scrollContainer.getBoundingClientRect = vi.fn(() => ({
-      top: 0,
-      left: 0,
-      right: 200,
-      bottom: 100,
-      width: 200,
-      height: 100,
-      x: 0,
-      y: 0,
-      toJSON: vi.fn(),
-    }))
-    ;(targetButton as HTMLElement).getBoundingClientRect = vi.fn(() => ({
-      top: 200,
-      left: 0,
-      right: 200,
-      bottom: 220,
-      width: 200,
-      height: 20,
-      x: 0,
-      y: 200,
-      toJSON: vi.fn(),
-    }))
+      const targetButton = screen.getByRole('button', { name: 'Conclusion' })
+      Object.defineProperty(targetButton, 'offsetTop', {
+        value: 400,
+        configurable: true,
+      })
+      Object.defineProperty(targetButton, 'offsetHeight', {
+        value: 20,
+        configurable: true,
+      })
+      Object.defineProperty(scrollContainer, 'clientHeight', {
+        value: 100,
+        configurable: true,
+      })
+      scrollContainer.getBoundingClientRect = vi.fn(() => ({
+        top: 0,
+        left: 0,
+        right: 200,
+        bottom: 100,
+        width: 200,
+        height: 100,
+        x: 0,
+        y: 0,
+        toJSON: vi.fn(),
+      }))
+      ;(targetButton as HTMLElement).getBoundingClientRect = vi.fn(() => ({
+        top: 200,
+        left: 0,
+        right: 200,
+        bottom: 220,
+        width: 200,
+        height: 20,
+        x: 0,
+        y: 200,
+        toJSON: vi.fn(),
+      }))
 
-    act(() => {
-      intersectionObserverInstances[0].callback(
-        [
-          {
-            isIntersecting: true,
-            target: heading,
-          } as unknown as IntersectionObserverEntry,
-        ],
-        intersectionObserverInstances[0] as unknown as IntersectionObserver
-      )
-    })
+      act(() => {
+        intersectionObserverInstances[0].callback(
+          [
+            {
+              isIntersecting: true,
+              target: heading,
+            } as unknown as IntersectionObserverEntry,
+          ],
+          intersectionObserverInstances[0] as unknown as IntersectionObserver
+        )
+      })
 
-    await waitFor(() => {
-      expect(scrollToSpy).toHaveBeenCalled()
-    })
+      await waitFor(() => {
+        expect(scrollToSpy).toHaveBeenCalled()
+      })
+    } finally {
+      heading.remove()
+    }
   })
 
   it('does not push hash or scroll when clicked heading is missing', () => {
@@ -290,5 +298,6 @@ describe('TableOfContents', () => {
     fireEvent.click(screen.getByText('Introduction'))
 
     expect(pushStateSpy).not.toHaveBeenCalled()
+    pushStateSpy.mockRestore()
   })
 })

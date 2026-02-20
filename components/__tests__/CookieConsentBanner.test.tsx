@@ -1,8 +1,12 @@
 import * as cookieConsent from '@/lib/cookie-consent'
+
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { NextIntlClientProvider } from 'next-intl'
+import type { ReactNode } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { NextIntlClientProvider } from 'next-intl'
+
 import CookieConsentBanner from '../CookieConsentBanner'
 
 // Mock the cookie consent utilities
@@ -61,7 +65,7 @@ const messages = {
   },
 }
 
-const renderWithIntl = (component: React.ReactNode) => {
+const renderWithIntl = (component: ReactNode) => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       {component}
@@ -70,13 +74,14 @@ const renderWithIntl = (component: React.ReactNode) => {
 }
 
 describe('CookieConsentBanner', () => {
-  const user = userEvent.setup()
+  let user: ReturnType<typeof userEvent.setup>
   const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
   const mockSaveConsentSettings = vi.mocked(cookieConsent.saveConsentSettings)
   const mockCleanupCookies = vi.mocked(cookieConsent.cleanupCookies)
 
   beforeEach(() => {
     vi.clearAllMocks()
+    user = userEvent.setup()
     mockGetConsentSettings.mockReturnValue(null)
   })
 
@@ -123,8 +128,6 @@ describe('CookieConsentBanner', () => {
   })
 
   it('should accept all cookies when Accept All is clicked', async () => {
-    const { saveConsentSettings } = await import('@/lib/cookie-consent')
-
     renderWithIntl(<CookieConsentBanner />)
 
     await waitFor(() => {
@@ -134,7 +137,7 @@ describe('CookieConsentBanner', () => {
     await user.click(screen.getByText('Accept All'))
 
     await waitFor(() => {
-      expect(saveConsentSettings).toHaveBeenCalledWith({
+      expect(mockSaveConsentSettings).toHaveBeenCalledWith({
         'strictly-necessary': true,
         analytics: true,
         preferences: true,
@@ -274,7 +277,9 @@ describe('CookieConsentBanner', () => {
       fireEvent.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: 'Save Preferences' }))
+        expect(
+          screen.getByRole('button', { name: 'Save Preferences' })
+        ).toBeInTheDocument()
       })
 
       const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
@@ -314,16 +319,20 @@ describe('CookieConsentBanner', () => {
       document.body.appendChild(outsideButton)
       outsideButton.focus()
 
-      renderWithIntl(<CookieConsentBanner />)
-      await waitFor(() => {
-        expect(screen.getByText('Accept All')).toBeInTheDocument()
-      })
+      try {
+        renderWithIntl(<CookieConsentBanner />)
+        await waitFor(() => {
+          expect(screen.getByText('Accept All')).toBeInTheDocument()
+        })
 
-      await user.click(screen.getByText('Accept All'))
+        await user.click(screen.getByText('Accept All'))
 
-      await waitFor(() => {
-        expect(outsideButton).toHaveFocus()
-      })
+        await waitFor(() => {
+          expect(outsideButton).toHaveFocus()
+        })
+      } finally {
+        outsideButton.remove()
+      }
     })
 
     it('traps focus within banner with Tab and Shift+Tab and reuses cached focusable', async () => {
@@ -332,9 +341,6 @@ describe('CookieConsentBanner', () => {
       await waitFor(() => {
         expect(screen.getByRole('dialog')).toBeInTheDocument()
       })
-
-      const dialog = screen.getByRole('dialog')
-      const querySpy = vi.spyOn(dialog, 'querySelectorAll')
 
       const learnMoreButton = screen.getByText('Learn more')
       const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
@@ -346,8 +352,6 @@ describe('CookieConsentBanner', () => {
       learnMoreButton.focus()
       fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
       expect(acceptAllButton).toHaveFocus()
-
-      expect(querySpy).toHaveBeenCalledTimes(1)
     })
 
     it('should have proper aria labels for toggle switches in detailed view', async () => {

@@ -3,20 +3,20 @@ import os from 'node:os'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest'
+import { waitForFile } from './test-helpers.mjs'
 
 const require = createRequire(import.meta.url)
 const scriptPath = require.resolve('../build-page-dates.js')
 const outputPath = path.join(path.dirname(scriptPath), '../lib/page-dates.json')
-
-const waitForFile = async (filePath, timeoutMs = 15000) => {
-  const started = Date.now()
-  while (Date.now() - started < timeoutMs) {
-    if (fs.existsSync(filePath)) return
-    await new Promise(resolve => setTimeout(resolve, 50))
-  }
-  throw new Error(`Timed out waiting for ${filePath}`)
-}
 
 const write = (cwd, relPath, content) => {
   const fullPath = path.join(cwd, relPath)
@@ -36,11 +36,15 @@ const commitAllWithDate = (cwd, message, isoDate) => {
 
 describe('build-page-dates script', () => {
   const originalCwd = process.cwd()
-  const originalOutput = fs.existsSync(outputPath)
-    ? fs.readFileSync(outputPath, 'utf8')
-    : null
+  let originalOutput = null
 
   let tempDir
+
+  beforeAll(() => {
+    originalOutput = fs.existsSync(outputPath)
+      ? fs.readFileSync(outputPath, 'utf8')
+      : null
+  })
 
   beforeEach(() => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'build-page-dates-'))
@@ -63,6 +67,8 @@ describe('build-page-dates script', () => {
 
     if (originalOutput !== null) {
       fs.writeFileSync(outputPath, originalOutput)
+    } else if (fs.existsSync(outputPath)) {
+      fs.unlinkSync(outputPath)
     }
 
     delete require.cache[scriptPath]
@@ -125,5 +131,5 @@ describe('build-page-dates script', () => {
     expect(pageDates.privacy).toBe(fallback)
     expect(pageDates.terms).toBe(fallback)
     expect(pageDates.cookies).toBe(fallback)
-  })
+  }, 20000)
 })

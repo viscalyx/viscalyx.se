@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const require = createRequire(import.meta.url)
 const og = require('../generate-og-images.js')
@@ -40,6 +40,10 @@ const withPreservedFile = async (filePath, run) => {
 }
 
 describe('generate-og-images.js', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('exports expected OG constants', () => {
     expect(og.OG_WIDTH).toBe(1200)
     expect(og.OG_HEIGHT).toBe(630)
@@ -73,14 +77,12 @@ describe('generate-og-images.js', () => {
   it('throws when locale file exists but required keys are missing', () => {
     const testLocale = 'unit-test-missing-og'
     const filePath = path.join(process.cwd(), 'messages', `${testLocale}.json`)
-    fs.writeFileSync(filePath, JSON.stringify({ blog: {} }))
-    try {
+    return withPreservedFile(filePath, async () => {
+      fs.writeFileSync(filePath, JSON.stringify({ blog: {} }))
       expect(() => og.getLocaleStrings(testLocale)).toThrow(
         `Missing blog.og.title or blog.og.tagline in messages/${testLocale}.json`
       )
-    } finally {
-      fs.unlinkSync(filePath)
-    }
+    })
   })
 
   it('builds background svg and escapes injected content', () => {
@@ -109,16 +111,10 @@ describe('generate-og-images.js', () => {
   })
 
   it('main exits when sharp is unavailable', async () => {
-    const originalExit = process.exit
-    process.exit = code => {
+    vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
-    }
-
-    try {
-      await expect(() => og.main(null)).rejects.toThrow('exit:1')
-    } finally {
-      process.exit = originalExit
-    }
+    })
+    await expect(() => og.main(null)).rejects.toThrow('exit:1')
   })
 
   it('main runs successfully with injected sharp and locale list', async () => {
@@ -130,21 +126,14 @@ describe('generate-og-images.js', () => {
   })
 
   it('main exits when at least one locale generation fails', async () => {
-    const originalExit = process.exit
-    process.exit = code => {
+    vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
-    }
+    })
 
     const failingSharp = () => {
       throw new Error('sharp failed')
     }
 
-    try {
-      await expect(() => og.main(failingSharp, ['en'])).rejects.toThrow(
-        'exit:1'
-      )
-    } finally {
-      process.exit = originalExit
-    }
+    await expect(() => og.main(failingSharp, ['en'])).rejects.toThrow('exit:1')
   })
 })

@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import type { ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import LocaleLayout, { generateStaticParams } from '../layout'
 
 const mockNotFound = vi.fn()
@@ -10,7 +12,7 @@ const { dynamicMock } = vi.hoisted(() => ({
   }),
 }))
 
-vi.mock('../../../i18n', () => ({
+vi.mock('@/i18n', () => ({
   locales: ['en', 'sv'],
 }))
 
@@ -27,7 +29,7 @@ vi.mock('next-intl', () => ({
     children,
     locale,
   }: {
-    children: React.ReactNode
+    children: ReactNode
     locale: string
   }) => <div data-testid={`provider-${locale}`}>{children}</div>,
 }))
@@ -42,6 +44,10 @@ vi.mock('next/dynamic', () => ({
 }))
 
 describe('LocaleLayout', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('returns static params for supported locales', () => {
     expect(generateStaticParams()).toEqual([{ locale: 'en' }, { locale: 'sv' }])
   })
@@ -62,6 +68,9 @@ describe('LocaleLayout', () => {
   })
 
   it('uses a dynamic loader that resolves CookieConsentBanner module', async () => {
+    vi.resetModules()
+    await import('../layout')
+
     expect(dynamicMock).toHaveBeenCalledTimes(1)
 
     const loader = dynamicMock.mock.calls[0][0] as () => Promise<{

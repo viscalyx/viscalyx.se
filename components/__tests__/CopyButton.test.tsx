@@ -69,22 +69,38 @@ describe('CopyButton', () => {
 
   it('falls back to document.execCommand when clipboard API fails', async () => {
     mockWriteText.mockRejectedValueOnce(new Error('clipboard unavailable'))
-    const execSpy = vi.fn(() => true)
-    Object.defineProperty(document, 'execCommand', {
-      value: execSpy,
-      configurable: true,
-      writable: true,
-    })
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    const originalExecCommand = document.execCommand
+    if (!('execCommand' in document)) {
+      Object.defineProperty(document, 'execCommand', {
+        value: () => false,
+        configurable: true,
+        writable: true,
+      })
+    }
+    const execSpy = vi
+      .spyOn(document, 'execCommand')
+      .mockImplementation(() => true)
 
-    render(<CopyButton text={text} />)
-    const button = screen.getByRole('button')
+    try {
+      render(<CopyButton text={text} />)
+      const button = screen.getByRole('button')
 
-    fireEvent.click(button)
+      fireEvent.click(button)
 
-    await waitFor(() => {
-      expect(execSpy).toHaveBeenCalledWith('copy')
-      expect(button).toHaveAttribute('title', 'copied')
-    })
+      await waitFor(() => {
+        expect(execSpy).toHaveBeenCalledWith('copy')
+        expect(button).toHaveAttribute('title', 'copied')
+      })
+    } finally {
+      execSpy.mockRestore()
+      if (originalExecCommand === undefined) {
+        Reflect.deleteProperty(document, 'execCommand')
+      }
+      consoleErrorSpy.mockRestore()
+    }
   })
 
   it('logs fallback errors when both copy methods fail', async () => {
@@ -115,5 +131,6 @@ describe('CopyButton', () => {
     })
 
     createElementSpy.mockRestore()
+    outerErrorSpy.mockRestore()
   })
 })

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { POST } from '../route'
+import { POST } from '@/app/api/analytics/blog-read/route'
 
 const mockWriteDataPoint = vi.fn()
 const mockGetCloudflareContext = vi.fn()
@@ -10,6 +10,7 @@ vi.mock('@opennextjs/cloudflare', () => ({
 
 describe('blog-read analytics route', () => {
   beforeEach(() => {
+    vi.restoreAllMocks()
     vi.clearAllMocks()
     process.env.ANALYTICS_HASH_SECRET = 'test-secret'
     mockGetCloudflareContext.mockReturnValue({

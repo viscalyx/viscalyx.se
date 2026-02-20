@@ -1,20 +1,12 @@
 import fs from 'node:fs'
+import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
-import { createRequire } from 'node:module'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { waitForFile } from './test-helpers.mjs'
 
 const require = createRequire(import.meta.url)
 const scriptPath = require.resolve('../build-blog-data.js')
-
-const waitForFile = async (filePath, timeoutMs = 15000) => {
-  const started = Date.now()
-  while (Date.now() - started < timeoutMs) {
-    if (fs.existsSync(filePath)) return
-    await new Promise(resolve => setTimeout(resolve, 50))
-  }
-  throw new Error(`Timed out waiting for ${filePath}`)
-}
 
 describe('build-blog-data script', () => {
   const originalCwd = process.cwd()
@@ -77,9 +69,9 @@ const a = 1
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(code => {
-      throw new Error(`exit:${code}`)
-    })
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => undefined)
 
     process.chdir(tempDir)
     require(scriptPath)
@@ -92,6 +84,7 @@ const a = 1
     expect(blogData.slugs).toEqual(
       expect.arrayContaining(['newest', 'old-no-date'])
     )
+    expect(typeof blogData.lastBuilt).toBe('string')
 
     // Valid dated posts should be sorted first.
     expect(blogData.posts[0].slug).toBe('newest')
@@ -117,10 +110,10 @@ const a = 1
     expect(newestContent).not.toContain('<script>')
 
     expect(logSpy).toHaveBeenCalled()
-    expect(warnSpy).toHaveBeenCalled()
-    expect(errorSpy).not.toHaveBeenCalledWith(
-      expect.stringContaining('Error building blog data:')
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('old-no-date.md')
     )
+    expect(errorSpy).not.toHaveBeenCalled()
     expect(exitSpy).not.toHaveBeenCalled()
   })
 

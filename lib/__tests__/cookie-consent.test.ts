@@ -10,7 +10,7 @@ import {
   hasConsentChoice,
   resetConsent,
   saveConsentSettings,
-} from '../cookie-consent'
+} from '@/lib/cookie-consent'
 
 // Don't mock cookie-utils, so we test the actual integration
 
@@ -218,6 +218,7 @@ describe('Cookie Consent', () => {
         expect.any(Error)
       )
       setItemSpy.mockRestore()
+      consoleErrorSpy.mockRestore()
     })
   })
 

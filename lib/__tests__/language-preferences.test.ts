@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { hasConsent } from '../cookie-consent'
 import { setCookie, deleteCookie, getCookie } from '../cookie-utils'
 import {
@@ -32,6 +32,10 @@ describe('Language Preferences', () => {
     vi.clearAllMocks()
   })
 
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   describe('getLanguagePreference', () => {
     it('should return null when no language cookie exists', () => {
       vi.mocked(getCookie).mockReturnValue(null)
@@ -59,7 +63,7 @@ describe('Language Preferences', () => {
     })
 
     it('should return null if reading cookie throws', () => {
-      vi.mocked(getCookie).mockImplementation(() => {
+      vi.mocked(getCookie).mockImplementationOnce(() => {
         throw new Error('cookie read failed')
       })
 
@@ -124,7 +128,7 @@ describe('Language Preferences', () => {
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
         .mockImplementation(() => {})
-      vi.mocked(setCookie).mockImplementation(() => {
+      vi.mocked(setCookie).mockImplementationOnce(() => {
         throw new Error('cookie write failed')
       })
 
@@ -166,7 +170,7 @@ describe('Language Preferences', () => {
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
         .mockImplementation(() => {})
-      vi.mocked(deleteCookie).mockImplementation(() => {
+      vi.mocked(deleteCookie).mockImplementationOnce(() => {
         throw new Error('cookie delete failed')
       })
 
@@ -215,6 +219,9 @@ describe('Language Preferences', () => {
     })
 
     it('should use navigator.languages when navigator.language is empty', () => {
+      const originalLanguage = navigator.language
+      const originalLanguages = navigator.languages
+
       Object.defineProperty(navigator, 'language', {
         writable: true,
         value: '',
@@ -224,7 +231,18 @@ describe('Language Preferences', () => {
         value: ['sv-FI'],
       })
 
-      expect(getDefaultLanguage()).toBe('sv')
+      try {
+        expect(getDefaultLanguage()).toBe('sv')
+      } finally {
+        Object.defineProperty(navigator, 'language', {
+          writable: true,
+          value: originalLanguage,
+        })
+        Object.defineProperty(navigator, 'languages', {
+          writable: true,
+          value: originalLanguages,
+        })
+      }
     })
 
     it('should return fallback when navigator access throws', () => {
@@ -236,12 +254,14 @@ describe('Language Preferences', () => {
         },
       })
 
-      expect(getDefaultLanguage()).toBe('en')
-
-      Object.defineProperty(global, 'navigator', {
-        configurable: true,
-        value: originalNavigator,
-      })
+      try {
+        expect(getDefaultLanguage()).toBe('en')
+      } finally {
+        Object.defineProperty(global, 'navigator', {
+          configurable: true,
+          value: originalNavigator,
+        })
+      }
     })
   })
 })

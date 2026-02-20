@@ -1,5 +1,4 @@
 import { createRequire } from 'node:module'
-import { describe, expect, it } from 'vitest'
 
 const require = createRequire(import.meta.url)
 const remarkImagePaths = require('../plugins/remark-image-paths')
@@ -35,6 +34,11 @@ describe('remark-image-paths plugin', () => {
     expect(run('http://example.com/a.png', { mode: 'build' })).toBe(
       'http://example.com/a.png'
     )
+  })
+
+  it('keeps non-/public relative asset paths unchanged in build mode', () => {
+    expect(run('/images/foo.png', { mode: 'build' })).toBe('/images/foo.png')
+    expect(run('/assets/icon.svg', { mode: 'build' })).toBe('/assets/icon.svg')
   })
 
   it('handles image nodes without url', () => {

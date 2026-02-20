@@ -1,15 +1,19 @@
+import { AlertIconInjector } from '@/components/AlertIconInjector'
+
 import { act, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { AlertIconInjector } from '../AlertIconInjector'
-
 // Mock react-dom/client so we can observe createRoot calls without creating real React roots.
-const renderMock = vi.fn()
-const unmountMock = vi.fn()
-const createRootMock = vi.fn((_container?: unknown) => ({
-  render: renderMock,
-  unmount: unmountMock,
-}))
+const { renderMock, unmountMock, createRootMock } = vi.hoisted(() => {
+  const renderMock = vi.fn()
+  const unmountMock = vi.fn()
+  const createRootMock = vi.fn((_container?: unknown) => ({
+    render: renderMock,
+    unmount: unmountMock,
+  }))
+
+  return { renderMock, unmountMock, createRootMock }
+})
 
 vi.mock('react-dom/client', () => ({
   // Forward the first argument only (the container element). This avoids TS2556

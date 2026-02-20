@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import type { ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
+import type { ReactElement } from 'react'
 
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
@@ -46,6 +46,6 @@ describe('CookieSettingsWrapper', () => {
   it('renders the dynamically imported CookieSettings component', () => {
     render(<CookieSettingsWrapper />)
 
-    expect(screen.getByTestId('cookie-settings-dynamic')).toBeInTheDocument()
+    expect(screen.getByText('Cookie Settings Dynamic')).toBeInTheDocument()
   })
 })

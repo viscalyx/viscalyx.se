@@ -37,7 +37,7 @@ describe('Hero component', () => {
   it('navigates to about section when Learn More is clicked', () => {
     render(<Hero />)
 
-    fireEvent.click(screen.getByText('buttons.learnMore'))
+    fireEvent.click(screen.getByRole('button', { name: 'buttons.learnMore' }))
 
     expect(mockHandleNavigation).toHaveBeenCalledWith('#about')
   })
@@ -59,7 +59,7 @@ describe('Hero component', () => {
     const indicator = screen.getByRole('button', { name: 'Show image 3 of 4' })
     fireEvent.click(indicator)
 
-    expect(indicator.className).toContain('bg-white shadow-lg')
+    expect(indicator).toHaveClass('bg-white', 'shadow-lg')
   })
 
   it('shows image fallback UI when image loading fails', () => {
@@ -83,24 +83,24 @@ describe('Hero component', () => {
     const firstImage = screen.getAllByRole('img')[0]
     fireEvent.load(firstImage)
 
-    expect(firstImage.className).toContain('opacity-100')
+    expect(firstImage).toHaveClass('opacity-100')
   })
 
   it('cycles active image over time', () => {
-    vi.useFakeTimers()
     try {
+      vi.useFakeTimers()
       render(<Hero />)
 
       const secondIndicator = screen.getByRole('button', {
         name: 'Show image 2 of 4',
       })
-      expect(secondIndicator.className).toContain('bg-white/50')
+      expect(secondIndicator).toHaveClass('bg-white/50')
 
       act(() => {
         vi.advanceTimersByTime(4000)
       })
 
-      expect(secondIndicator.className).toContain('bg-white shadow-lg')
+      expect(secondIndicator).toHaveClass('bg-white', 'shadow-lg')
     } finally {
       vi.useRealTimers()
     }

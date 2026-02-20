@@ -9,9 +9,14 @@ vi.mock('next-intl', () => ({
 
 describe('ReadingProgress', () => {
   let proseElement: HTMLDivElement
+  let originalScrollHeightDescriptor: PropertyDescriptor | undefined
 
   beforeEach(() => {
     vi.clearAllMocks()
+    originalScrollHeightDescriptor = Object.getOwnPropertyDescriptor(
+      document.documentElement,
+      'scrollHeight'
+    )
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,
@@ -54,6 +59,16 @@ describe('ReadingProgress', () => {
 
   afterEach(() => {
     document.body.innerHTML = ''
+    if (originalScrollHeightDescriptor) {
+      Object.defineProperty(
+        document.documentElement,
+        'scrollHeight',
+        originalScrollHeightDescriptor
+      )
+    } else {
+      // Remove test-defined override and fall back to jsdom's default behavior.
+      Reflect.deleteProperty(document.documentElement, 'scrollHeight')
+    }
   })
 
   it('renders the top progress bar', () => {
@@ -103,7 +118,7 @@ describe('ReadingProgress', () => {
     render(<ReadingProgress target=".missing-target" />)
     const progressBar = screen.getByRole('progressbar')
 
-    expect(progressBar).toHaveAttribute('aria-valuenow', '27')
+    expect(progressBar).toHaveAttribute('aria-valuenow', '27') // 600 / (3000 - 800) ~= 27%
   })
 
   it('sets progress to 0 before reaching the tracked content start', () => {
@@ -118,12 +133,6 @@ describe('ReadingProgress', () => {
       y: 1200,
       toJSON: vi.fn(),
     }))
-    Object.defineProperty(window, 'scrollY', {
-      value: 0,
-      writable: true,
-      configurable: true,
-    })
-
     render(<ReadingProgress />)
     const progressBar = screen.getByRole('progressbar')
 

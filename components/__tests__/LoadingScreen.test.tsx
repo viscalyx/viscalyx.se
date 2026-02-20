@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
-import LoadingScreen from '../LoadingScreen'
+import LoadingScreen from '@/components/LoadingScreen'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }))
 
 vi.mock('@/components/LoadingSpinner', () => ({
-  __esModule: true,
   default: ({ size, color }: { size: string; color: string }) => (
     <div data-testid="loading-spinner" data-color={color} data-size={size} />
   ),

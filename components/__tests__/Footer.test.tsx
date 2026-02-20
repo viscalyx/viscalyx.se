@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -48,6 +48,10 @@ describe('Footer', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('renders the footer element', () => {

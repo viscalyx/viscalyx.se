@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import RootLayout, { metadata } from '../layout'
 import { metadata as metadataObject } from '../metadata'
@@ -11,7 +12,7 @@ vi.mock('next/font/google', () => ({
 }))
 
 vi.mock('@/lib/theme-context', () => ({
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => (
+  ThemeProvider: ({ children }: { children: ReactNode }) => (
     <div data-testid="theme-provider">{children}</div>
   ),
 }))
