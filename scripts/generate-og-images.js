@@ -154,6 +154,9 @@ async function generateBlogOG(locale, sharpImpl = loadSharp()) {
   }
 
   const logoPath = path.join(__dirname, '..', 'public', 'viscalyx_logo.svg')
+  if (!fs.existsSync(logoPath)) {
+    throw new Error(`Missing logo asset at ${logoPath}`)
+  }
   const outputPath = path.join(
     __dirname,
     '..',

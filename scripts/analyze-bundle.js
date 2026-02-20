@@ -108,23 +108,25 @@ function getGzipSize(filePath) {
  * Run wrangler deploy --dry-run to get actual bundle size
  */
 function parseWranglerOutput(output) {
-  const kibMatch = output.match(
-    /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
-  )
+  const normalize = s => String(s).replace(/,/g, '.')
+  const SIZE_LINE_RE_KIB =
+    /^\s*Total Upload:\s*([\d.,]+)\s*KiB\s*\/\s*gzip:\s*([\d.,]+)\s*KiB\s*$/im
+  const SIZE_LINE_RE_MIB =
+    /^\s*Total Upload:\s*([\d.,]+)\s*MiB\s*\/\s*gzip:\s*([\d.,]+)\s*MiB\s*$/im
+
+  const kibMatch = output.match(SIZE_LINE_RE_KIB)
   if (kibMatch) {
     return {
-      uncompressedKB: parseFloat(kibMatch[1]),
-      compressedKB: parseFloat(kibMatch[2]),
+      uncompressedKB: parseFloat(normalize(kibMatch[1])),
+      compressedKB: parseFloat(normalize(kibMatch[2])),
     }
   }
 
-  const mibMatch = output.match(
-    /Total Upload:\s*([\d.]+)\s*MiB\s*\/\s*gzip:\s*([\d.]+)\s*MiB/i
-  )
+  const mibMatch = output.match(SIZE_LINE_RE_MIB)
   if (mibMatch) {
     return {
-      uncompressedKB: parseFloat(mibMatch[1]) * 1024,
-      compressedKB: parseFloat(mibMatch[2]) * 1024,
+      uncompressedKB: parseFloat(normalize(mibMatch[1])) * 1024,
+      compressedKB: parseFloat(normalize(mibMatch[2])) * 1024,
     }
   }
 
