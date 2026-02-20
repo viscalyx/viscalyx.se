@@ -111,6 +111,6 @@
     "Remove each override when the parent dependency updates to include the fix natively.",
     "@swc/helpers: next@16.1.6 pins 0.5.15, but next-intl's @swc/core@^1.15.2 peer-requires >=0.5.17. Override to 0.5.18 resolves the conflict.",
     "lodash-es: Prototype pollution in _.unset/_.omit (<=4.17.22). Transitive via mermaid → chevrotain. Patched in 4.17.23.",
-    "fast-xml-parser: Entity expansion DoS (<5.3.6). Transitive via @opennextjs/cloudflare. Override to 5.3.6."
+    "fast-xml-parser: CVE-2026-26278 (entity expansion DoS) and CVE-2026-25128 (RangeError DoS from out-of-range numeric entities, fixed in 5.3.4). Transitive via @opennextjs/cloudflare → @opennextjs/aws → @aws-sdk/client-s3 → @aws-sdk/core → @aws-sdk/xml-builder. Override to 5.3.6 addresses both."
   ]
 }
