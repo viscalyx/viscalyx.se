@@ -1,11 +1,14 @@
 import RootLayout, { metadata } from '@/app/layout'
 import { metadata as metadataObject } from '@/app/metadata'
+
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ReactNode } from 'react'
 
 vi.mock('next-intl/server', () => ({
   getLocale: vi.fn(async () => 'en'),
+  getTranslations: vi.fn(async () => ({})),
+  getFormatter: vi.fn(() => (value: unknown) => value),
 }))
 
 vi.mock('next/font/google', () => ({

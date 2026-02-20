@@ -1,6 +1,9 @@
+import * as cookieConsent from '@/lib/cookie-consent'
+
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
 import CookieSettings from '../CookieSettings'
 
 // Mock cookie-consent lib
@@ -25,9 +28,6 @@ vi.mock('@/lib/cookie-consent', () => ({
     },
   ],
 }))
-
-// Import the mocked functions
-import * as cookieConsent from '@/lib/cookie-consent'
 
 const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
 const mockGetConsentTimestamp = vi.mocked(cookieConsent.getConsentTimestamp)

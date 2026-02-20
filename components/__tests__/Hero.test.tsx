@@ -4,6 +4,16 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockHandleNavigation = vi.fn()
+const mockRouter = {
+  push: vi.fn(),
+  replace: vi.fn(),
+  prefetch: vi.fn(),
+}
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => mockRouter,
+  usePathname: () => '/',
+}))
 
 vi.mock('@/lib/use-section-navigation', () => ({
   useSectionNavigation: () => ({
@@ -69,11 +79,7 @@ describe('Hero component', () => {
     const firstImage = screen.getAllByRole('img')[0]
     fireEvent.error(firstImage)
 
-    expect(
-      screen.getByText(
-        /A man in glasses works at a tidy desk with a raised laptop/i
-      )
-    ).toBeInTheDocument()
+    expect(screen.getByText('errorFallback')).toBeInTheDocument()
   })
 
   it('hides the loading placeholder once image has loaded', () => {

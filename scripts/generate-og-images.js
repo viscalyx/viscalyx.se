@@ -31,6 +31,7 @@ const OG_WIDTH = 1200
 const OG_HEIGHT = 630
 const LOGO_SIZE = 280
 
+// Keep in sync with `locales` in i18n.ts (single source for supported locales).
 const LOCALES = ['en', 'sv']
 
 /* c8 ignore next 7 */

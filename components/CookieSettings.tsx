@@ -152,6 +152,11 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       cookieRegistry: cookieRegistry,
       exportTimestamp: new Date().toISOString(),
     }
+    const showExportError = (error: unknown) => {
+      console.error('Failed to export cookie data:', error)
+      setShowError(true)
+      setTimeout(() => setShowError(false), 5000)
+    }
 
     let url: string | null = null
     let element: HTMLAnchorElement | null = null
@@ -161,11 +166,6 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       const blob = new Blob([JSON.stringify(data, null, 2)], {
         type: 'application/json',
       })
-      const showExportError = (error: unknown) => {
-        console.error('Failed to export cookie data:', error)
-        setShowError(true)
-        setTimeout(() => setShowError(false), 5000)
-      }
 
       element = document.createElement('a')
       try {
@@ -180,9 +180,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
         return
       }
     } catch (error) {
-      console.error('Failed to export cookie data:', error)
-      setShowError(true)
-      setTimeout(() => setShowError(false), 5000)
+      showExportError(error)
     } finally {
       cleanupDownloadResources(element, elementAppended, url)
     }
