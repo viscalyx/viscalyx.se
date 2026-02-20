@@ -1,3 +1,4 @@
+import CookieConsentBanner from '@/components/CookieConsentBanner'
 import * as cookieConsent from '@/lib/cookie-consent'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -7,8 +8,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextIntlClientProvider } from 'next-intl'
 
 import type { ReactNode } from 'react'
-
-import CookieConsentBanner from '../CookieConsentBanner'
 
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({

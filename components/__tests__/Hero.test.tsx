@@ -8,11 +8,12 @@ const mockRouter = {
   push: vi.fn(),
   replace: vi.fn(),
   prefetch: vi.fn(),
+  back: vi.fn(),
 }
 
 vi.mock('next/navigation', () => ({
   useRouter: () => mockRouter,
-  usePathname: () => '/',
+  usePathname: () => '/en',
 }))
 
 vi.mock('@/lib/use-section-navigation', () => ({

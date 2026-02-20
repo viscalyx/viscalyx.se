@@ -1,12 +1,21 @@
 import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
+
 import { render, screen } from '@testing-library/react'
-import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { ReactNode } from 'react'
+
 const mockNotFound = vi.fn()
+const mockRouter = {
+  push: vi.fn(),
+  replace: vi.fn(),
+  prefetch: vi.fn(),
+}
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
-    const DynamicComponent = () => <div data-testid="cookie-consent-banner" />
+    const DynamicComponent = () => (
+      <aside role="complementary" aria-label="cookie consent banner" />
+    )
     return DynamicComponent
   }),
 }))
@@ -16,21 +25,32 @@ vi.mock('@/i18n', () => ({
 }))
 
 vi.mock('next/navigation', () => ({
+  useRouter: () => mockRouter,
+  usePathname: () => '/en',
   notFound: () => mockNotFound(),
 }))
 
 vi.mock('next-intl/server', () => ({
   getMessages: vi.fn(async () => ({ test: 'message' })),
+  getTranslations: vi.fn(async () => (key: string) => key),
+  getFormatter: vi.fn(async () => ({
+    dateTime: (d: string | number | Date) => new Date(d).toISOString(),
+  })),
 }))
 
 vi.mock('next-intl', () => ({
+  useTranslations: vi.fn(() => (key: string) => key),
   NextIntlClientProvider: ({
     children,
     locale,
   }: {
     children: ReactNode
     locale: string
-  }) => <div data-testid={`provider-${locale}`}>{children}</div>,
+  }) => (
+    <div role="region" aria-label={`provider ${locale}`}>
+      {children}
+    </div>
+  ),
 }))
 
 vi.mock('@/lib/structured-data', () => ({
@@ -53,14 +73,20 @@ describe('LocaleLayout', () => {
 
   it('renders provider, structured-data scripts and cookie banner for valid locale', async () => {
     const ui = await LocaleLayout({
-      children: <div data-testid="child">child</div>,
+      children: <main aria-label="layout child">child</main>,
       params: Promise.resolve({ locale: 'en' }),
     })
     const { container } = render(ui)
 
-    expect(screen.getByTestId('provider-en')).toBeInTheDocument()
-    expect(screen.getByTestId('child')).toBeInTheDocument()
-    expect(screen.getByTestId('cookie-consent-banner')).toBeInTheDocument()
+    expect(
+      screen.getByRole('region', { name: 'provider en' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('main', { name: 'layout child' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('complementary', { name: 'cookie consent banner' })
+    ).toBeInTheDocument()
     expect(
       container.querySelectorAll('script[type="application/ld+json"]')
     ).toHaveLength(2)
