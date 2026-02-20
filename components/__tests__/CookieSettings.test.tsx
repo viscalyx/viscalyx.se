@@ -76,7 +76,7 @@ describe('CookieSettings', () => {
   let user: ReturnType<typeof userEvent.setup>
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.resetAllMocks()
     user = userEvent.setup()
     mockGetConsentSettings.mockReturnValue(null)
     mockGetConsentTimestamp.mockReturnValue(null)

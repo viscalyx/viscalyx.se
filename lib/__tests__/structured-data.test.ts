@@ -16,6 +16,9 @@ describe('structured-data', () => {
     expect(data.name).toBe('Viscalyx')
     expect(data.url).toBe(SITE_URL)
     expect(data.logo).toBe(`${SITE_URL}/viscalyx_logo_128x128.png`)
+    expect(data.description).toBe(
+      'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation.'
+    )
     expect(data.sameAs).toEqual(
       expect.arrayContaining(['https://github.com/viscalyx'])
     )
@@ -28,6 +31,6 @@ describe('structured-data', () => {
     expect(data['@type']).toBe('WebSite')
     expect(data.name).toBe('Viscalyx')
     expect(data.url).toBe(SITE_URL)
-    expect(data.inLanguage).toEqual(expect.arrayContaining(['en', 'sv']))
+    expect(data.inLanguage).toEqual(['en', 'sv'])
   })
 })

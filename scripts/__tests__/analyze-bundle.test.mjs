@@ -224,12 +224,18 @@ describe('analyze-bundle.js', () => {
   })
 
   it('returns error result when server handler missing and dryRun is false', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
     withTempCwd(dir => {
       fs.mkdirSync(path.join(dir, '.open-next', 'assets'), { recursive: true })
       const results = analyzeBundle.analyzeBuild({ dryRun: false })
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('Server handler not found')
     })
+
+    consoleErrorSpy.mockRestore()
   })
 
   it('returns error result when build directory is missing', () => {

@@ -179,7 +179,7 @@ function parseWranglerOutput(output) {
 }
 
 /* c8 ignore start */
-/** @internal Exported for testing. */
+/** @internal Helper used by analyzeBuild dry-run mode. */
 function getWranglerBundleSize() {
   try {
     console.error('📦 Running wrangler dry-run to get actual bundle size...\n')

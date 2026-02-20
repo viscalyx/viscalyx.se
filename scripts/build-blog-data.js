@@ -112,6 +112,7 @@ async function buildBlogData() {
 
     const posts = []
     const slugs = []
+    ensureDir(contentOutputDir)
 
     for (const fileName of markdownFiles) {
       const slug = fileName.replace(/\.md$/, '')
@@ -224,7 +225,6 @@ async function buildBlogData() {
 
         // Write content to separate file in public/blog-content/
         // This keeps content out of the server bundle and serves it as static files
-        ensureDir(contentOutputDir)
         const contentFilePath = path.join(contentOutputDir, `${slug}.json`)
         fs.writeFileSync(
           contentFilePath,
