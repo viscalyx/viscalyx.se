@@ -89,6 +89,16 @@ describe('analyze-bundle.js', () => {
         'Total Upload: 1,50 MiB / gzip: 0,45 MiB'
       )
     ).toEqual({ uncompressedKB: 1536, compressedKB: 460.8 })
+    expect(
+      analyzeBundle.parseWranglerOutput(
+        'Total Upload: 1,500.00 KiB / gzip: 450.00 KiB'
+      )
+    ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
+    expect(
+      analyzeBundle.parseWranglerOutput(
+        'Total Upload: 1500,00 KiB / gzip: 450,00 KiB'
+      )
+    ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
 
     expect(analyzeBundle.parseWranglerOutput('no size info')).toBeNull()
   })
@@ -132,6 +142,10 @@ describe('analyze-bundle.js', () => {
 
       const fresh = analyzeBundle.isBuildFresh(30)
       expect(fresh.fresh).toBe(true)
+
+      const stale = analyzeBundle.isBuildFresh(0)
+      expect(stale.fresh).toBe(false)
+      expect(stale.reason).toContain('minutes old')
     })
   })
 

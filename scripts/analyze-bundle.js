@@ -114,9 +114,9 @@ function getFileSize(filePath) {
 }
 
 /**
- * Get directory size recursively
+ * Get directory size recursively.
+ * @internal Exported for testing.
  */
-/** @internal Exported for testing. */
 function getDirSize(dirPath) {
   let totalSize = 0
   try {
@@ -136,9 +136,9 @@ function getDirSize(dirPath) {
 }
 
 /**
- * Get gzipped size of a file using Node.js zlib
+ * Get gzipped size of a file using Node.js zlib.
+ * @internal Exported for testing.
  */
-/** @internal Exported for testing. */
 function getGzipSize(filePath) {
   try {
     const content = fs.readFileSync(filePath)
@@ -150,10 +150,36 @@ function getGzipSize(filePath) {
 }
 
 /**
- * Run wrangler deploy --dry-run to get actual bundle size
+ * Parse wrangler output and extract upload + gzip sizes.
+ * Supports decimals using either "." or "," while preserving thousands separators.
  */
 function parseWranglerOutput(output) {
-  const normalize = s => String(s).replace(/,/g, '.')
+  const normalize = s => {
+    const value = String(s).trim()
+    const lastComma = value.lastIndexOf(',')
+    const lastDot = value.lastIndexOf('.')
+
+    if (lastComma !== -1 && lastDot !== -1) {
+      if (lastComma > lastDot) {
+        // Locale style: 1.500,00 -> 1500.00
+        return value.replace(/\./g, '').replace(',', '.')
+      }
+      // Locale style: 1,500.00 -> 1500.00
+      return value.replace(/,/g, '')
+    }
+
+    if (lastComma !== -1) {
+      const fractionalDigits = value.length - lastComma - 1
+      // Decimal comma (e.g. 1500,00 or 1,50)
+      if (fractionalDigits > 0 && fractionalDigits <= 2) {
+        return value.replace(',', '.')
+      }
+      // Thousands separators with comma (e.g. 1,500)
+      return value.replace(/,/g, '')
+    }
+
+    return value
+  }
   const SIZE_LINE_RE_KIB =
     /^\s*Total Upload:\s*([\d.,]+)\s*KiB\s*\/\s*gzip:\s*([\d.,]+)\s*KiB\s*$/im
   const SIZE_LINE_RE_MIB =
@@ -201,9 +227,9 @@ function getWranglerBundleSize() {
 /* c8 ignore stop */
 
 /**
- * Check if build exists and is recent (default: 30 minutes)
+ * Check if build exists and is recent (default: 30 minutes).
+ * @internal Exported for testing.
  */
-/** @internal Exported for testing. */
 function isBuildFresh(maxAgeMinutes = 30) {
   const buildDir = path.join(process.cwd(), '.open-next')
   const serverHandler = path.join(
@@ -229,11 +255,11 @@ function isBuildFresh(maxAgeMinutes = 30) {
   return { fresh: true, ageMinutes: Math.round(ageMinutes) }
 }
 
-/**
- * Run the OpenNext build
- */
 /* c8 ignore start */
-/** @internal Exported for testing. */
+/**
+ * Run the OpenNext build.
+ * @internal Exported for testing.
+ */
 function runBuild() {
   console.error('🔨 Building for Cloudflare Workers...\n')
   try {
