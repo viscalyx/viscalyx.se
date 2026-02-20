@@ -349,12 +349,16 @@ describe('CookieConsentBanner', () => {
       // This asserts the banner's custom keydown focus-trap logic, which wraps
       // focus between the last and first focusable controls in the dialog.
       acceptAllButton.focus()
-      await user.tab()
-      expect(learnMoreButton).toHaveFocus()
+      fireEvent.keyDown(document, { key: 'Tab' })
+      await waitFor(() => {
+        expect(learnMoreButton).toHaveFocus()
+      })
 
       learnMoreButton.focus()
-      await user.tab({ shift: true })
-      expect(acceptAllButton).toHaveFocus()
+      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+      await waitFor(() => {
+        expect(acceptAllButton).toHaveFocus()
+      })
     })
 
     it('should have proper aria labels for toggle switches in detailed view', async () => {
