@@ -35,6 +35,7 @@ next-env.d.ts
 # AI instructions (minimize token overhead from formatting)
 .github/copilot-instructions.md
 .github/instructions/
+.github/prompts/
 
 # Coverage directory used by tools like istanbul
 coverage/
