@@ -14,7 +14,7 @@ applyTo: 'scripts/**/*.js,scripts/**/*.mjs'
 ## What to Include in Coverage
 
 - Data/build logic
-- Deterministic utilities (for example analyzers/parsers with stable inputs/outputs)`
+- Deterministic utilities (for example analyzers/parsers with stable inputs/outputs)
 - Utility scripts with parse/transform logic (for example bundle report parsers)
 
 ## What to Exclude from Coverage
