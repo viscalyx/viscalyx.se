@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.test.tsx,**/*.test.ts,components/__tests__/**'
+applyTo: '**/*.{test,spec}.{ts,tsx,js,mjs,cjs},**/__tests__/**/*'
 ---
 
 # Tests
