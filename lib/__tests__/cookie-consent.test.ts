@@ -4,6 +4,7 @@ import {
   cleanupCookies,
   clearInternalCaches,
   defaultConsentSettings,
+  getConsentTimestamp,
   getConsentSettings,
   hasConsent,
   hasConsentChoice,
@@ -198,6 +199,23 @@ describe('Cookie Consent', () => {
         cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastCookieOperation).not.toContain('Secure')
       expect(lastCookieOperation).toContain('SameSite=Lax')
+    })
+
+    it('should handle storage errors gracefully', () => {
+      const setItemSpy = vi
+        .spyOn(localStorageMock, 'setItem')
+        .mockImplementation(() => {
+          throw new Error('storage write failed')
+        })
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      saveConsentSettings(defaultConsentSettings)
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to save cookie consent:',
+        expect.any(Error)
+      )
+      setItemSpy.mockRestore()
     })
   })
 
@@ -555,6 +573,43 @@ describe('Cookie Consent', () => {
         analytics: false,
         preferences: false,
       })
+    })
+  })
+
+  describe('getConsentTimestamp', () => {
+    it('returns null when no consent is stored', () => {
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns parsed timestamp when consent exists', () => {
+      const timestamp = '2026-02-20T00:00:00.000Z'
+      localStorageMock.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          version: '1.0',
+          settings: defaultConsentSettings,
+          timestamp,
+        })
+      )
+
+      expect(getConsentTimestamp()?.toISOString()).toBe(timestamp)
+    })
+
+    it('returns null for invalid stored timestamp payload', () => {
+      localStorageMock.setItem('viscalyx.org-cookie-consent', 'not-json')
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns null when window is unavailable', () => {
+      const originalWindow = global.window
+      // @ts-expect-error intentional test for SSR branch
+      delete global.window
+
+      expect(getConsentTimestamp()).toBeNull()
+
+      // Restore jsdom window
+      // @ts-expect-error window restored for test environment
+      global.window = originalWindow
     })
   })
 })

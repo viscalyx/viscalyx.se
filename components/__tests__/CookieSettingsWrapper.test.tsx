@@ -35,6 +35,14 @@ describe('CookieSettingsWrapper', () => {
     expect(container.querySelectorAll('.h-4, .h-6')).toHaveLength(3)
   })
 
+  it('uses a loader that resolves to CookieSettings module', async () => {
+    const loader = dynamicMock.mock.calls[0][0] as () => Promise<{
+      default: unknown
+    }>
+    const module = await loader()
+    expect(module).toHaveProperty('default')
+  })
+
   it('renders the dynamically imported CookieSettings component', () => {
     render(<CookieSettingsWrapper />)
 

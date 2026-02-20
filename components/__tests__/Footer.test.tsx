@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
 // Mock next-intl
@@ -8,9 +8,11 @@ vi.mock('next-intl', () => ({
   useLocale: () => 'en',
 }))
 
+let mockPathname = '/en'
+
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
-  usePathname: () => '/en',
+  usePathname: () => mockPathname,
 }))
 
 // Mock SocialIcons
@@ -45,6 +47,7 @@ vi.mock('lucide-react', () => ({
 describe('Footer', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockPathname = '/en'
   })
 
   it('renders the footer element', () => {
@@ -170,5 +173,36 @@ describe('Footer', () => {
     // All navigation is via Link or <a> elements
     const links = footer.querySelectorAll('a')
     expect(links.length).toBeGreaterThan(0)
+  })
+
+  it('smooth-scrolls section links when already on locale home page', () => {
+    const section = document.createElement('div')
+    section.id = 'about'
+    const scrollIntoViewSpy = vi.fn()
+    section.scrollIntoView = scrollIntoViewSpy
+    document.body.appendChild(section)
+
+    const rafSpy = vi
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation(callback => {
+        callback(0)
+        return 1
+      })
+
+    render(<Footer />)
+    fireEvent.click(screen.getByText('aboutUs'))
+
+    expect(rafSpy).toHaveBeenCalled()
+    expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth' })
+  })
+
+  it('does not intercept section links when not on home page', () => {
+    mockPathname = '/en/blog'
+    const rafSpy = vi.spyOn(window, 'requestAnimationFrame')
+
+    render(<Footer />)
+    fireEvent.click(screen.getByText('aboutUs'))
+
+    expect(rafSpy).not.toHaveBeenCalled()
   })
 })

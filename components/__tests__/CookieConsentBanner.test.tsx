@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieConsentBanner from '../CookieConsentBanner'
+import * as cookieConsent from '@/lib/cookie-consent'
 
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({
@@ -68,8 +69,13 @@ const renderWithIntl = (component: React.ReactNode) => {
 }
 
 describe('CookieConsentBanner', () => {
+  const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
+  const mockSaveConsentSettings = vi.mocked(cookieConsent.saveConsentSettings)
+  const mockCleanupCookies = vi.mocked(cookieConsent.cleanupCookies)
+
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetConsentSettings.mockReturnValue(null)
   })
 
   it('should render the banner when no consent choice has been made', async () => {
@@ -100,6 +106,20 @@ describe('CookieConsentBanner', () => {
     })
   })
 
+  it('opens detailed settings when Learn more is clicked', async () => {
+    renderWithIntl(<CookieConsentBanner />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Learn more')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByText('Learn more'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
+    })
+  })
+
   it('should accept all cookies when Accept All is clicked', async () => {
     const { saveConsentSettings } = await import('@/lib/cookie-consent')
 
@@ -121,9 +141,6 @@ describe('CookieConsentBanner', () => {
   })
 
   it('should reject all cookies when Reject All is clicked', async () => {
-    const { saveConsentSettings, cleanupCookies } =
-      await import('@/lib/cookie-consent')
-
     renderWithIntl(<CookieConsentBanner />)
 
     await waitFor(() => {
@@ -133,12 +150,26 @@ describe('CookieConsentBanner', () => {
     fireEvent.click(screen.getByText('Reject All'))
 
     await waitFor(() => {
-      expect(saveConsentSettings).toHaveBeenCalledWith({
+      expect(mockSaveConsentSettings).toHaveBeenCalledWith({
         'strictly-necessary': true,
         analytics: false,
         preferences: false,
       })
-      expect(cleanupCookies).toHaveBeenCalled()
+      expect(mockCleanupCookies).toHaveBeenCalled()
+    })
+  })
+
+  it('does not render banner when consent already exists', async () => {
+    mockGetConsentSettings.mockReturnValue({
+      'strictly-necessary': true,
+      analytics: true,
+      preferences: true,
+    })
+
+    renderWithIntl(<CookieConsentBanner />)
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
   })
 
@@ -217,6 +248,104 @@ describe('CookieConsentBanner', () => {
       await waitFor(() => {
         expect(document.body.style.paddingBottom).toBe('')
       })
+    })
+
+    it('closes detailed settings view using close button', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      fireEvent.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
+      })
+
+      fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+
+      await waitFor(() => {
+        expect(screen.queryByText('Cookie Settings')).not.toBeInTheDocument()
+        expect(screen.getByText('We Use Cookies')).toBeInTheDocument()
+      })
+    })
+
+    it('saves custom preferences from detailed view', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+      fireEvent.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Save Preferences' }))
+      })
+
+      const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
+      fireEvent.click(analyticsToggle)
+      fireEvent.click(screen.getByRole('button', { name: 'Save Preferences' }))
+
+      await waitFor(() => {
+        expect(mockSaveConsentSettings).toHaveBeenCalledWith({
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: false,
+        })
+        expect(mockCleanupCookies).toHaveBeenCalledWith({
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: false,
+        })
+      })
+    })
+
+    it('moves focus to reject button when Escape is pressed', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Accept All')).toBeInTheDocument()
+      })
+
+      fireEvent.keyDown(document, { key: 'Escape' })
+
+      const rejectButton = screen.getByRole('button', { name: 'Reject All' })
+      expect(rejectButton).toHaveFocus()
+    })
+
+    it('restores previously focused element after closing banner', async () => {
+      const outsideButton = document.createElement('button')
+      outsideButton.textContent = 'outside'
+      document.body.appendChild(outsideButton)
+      outsideButton.focus()
+
+      renderWithIntl(<CookieConsentBanner />)
+      await waitFor(() => {
+        expect(screen.getByText('Accept All')).toBeInTheDocument()
+      })
+
+      fireEvent.click(screen.getByText('Accept All'))
+
+      await waitFor(() => {
+        expect(outsideButton).toHaveFocus()
+      })
+    })
+
+    it('traps focus within banner with Tab and Shift+Tab and reuses cached focusables', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+      })
+
+      const dialog = screen.getByRole('dialog')
+      const querySpy = vi.spyOn(dialog, 'querySelectorAll')
+
+      const learnMoreButton = screen.getByText('Learn more')
+      const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
+
+      acceptAllButton.focus()
+      fireEvent.keyDown(document, { key: 'Tab' })
+      expect(learnMoreButton).toHaveFocus()
+
+      learnMoreButton.focus()
+      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+      expect(acceptAllButton).toHaveFocus()
+
+      expect(querySpy).toHaveBeenCalledTimes(1)
     })
 
     it('should have proper aria labels for toggle switches in detailed view', async () => {
