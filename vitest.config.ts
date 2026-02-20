@@ -43,16 +43,16 @@ export default defineConfig({
         'app/**/*.{ts,tsx}',
         'components/**/*.{ts,tsx}',
         'lib/**/*.{ts,tsx}',
-        'scripts/build-blog-data.js',
-        'scripts/build-page-dates.js',
-        'scripts/plugins/blockquote-types.js',
-        'scripts/plugins/remark-floating-images.js',
-        'scripts/plugins/remark-image-paths.js',
+        // Include deterministic script logic in coverage.
+        'scripts/**/*.{js,mjs}',
       ],
       exclude: [
         '**/*.d.ts',
-        'scripts/analyze-bundle.js',
-        'scripts/generate-og-images.js',
+        '**/__tests__/**',
+        '**/*.{test,spec}.{ts,tsx,js,jsx,mjs}',
+        'test-utils/**',
+        'vitest.setup.ts',
+        // Exclude orchestration-only scripts that mainly shell out / wire env.
         'scripts/prebuild.js',
         'scripts/security-audit.js',
       ],

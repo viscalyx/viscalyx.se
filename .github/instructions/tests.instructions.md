@@ -58,3 +58,9 @@ expect(result).toEqual([{ slug: 'post-1' }, { slug: 'post-2' }])
 - Test user behavior, not implementation
 - Clear mocks in `beforeEach`
 - Use `@/lib/` path alias in mocks (not `../../lib/`)
+
+## Coverage Policy
+
+- For all newly added production code, target `>= 85%` coverage for `lines`, `statements`, `functions`, and `branches` in changed files.
+- When modifying existing production code, keep or improve coverage; do not let changed files regress; add or update tests in the same change.
+- If the target cannot be met immediately, document the gap and add the most direct missing tests next.
