@@ -21,11 +21,22 @@ const withTempCwd = run => {
   const dir = makeTempDir()
   const originalCwd = process.cwd()
   process.chdir(dir)
+  let result
   try {
-    return run(dir)
-  } finally {
+    result = run(dir)
+  } catch (error) {
     process.chdir(originalCwd)
+    throw error
   }
+
+  if (result && typeof result.then === 'function') {
+    return result.finally(() => {
+      process.chdir(originalCwd)
+    })
+  }
+
+  process.chdir(originalCwd)
+  return result
 }
 
 const writeFile = (filePath, content) => {
@@ -442,6 +453,7 @@ describe('analyze-bundle.js', () => {
 
   it('main rejects invalid --max-age and exits 1', () => {
     const errs = []
+    vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'error').mockImplementation(message =>
       errs.push(String(message))
     )
@@ -494,6 +506,7 @@ describe('analyze-bundle.js', () => {
   })
 
   it('main exits when build is stale and rebuild fails', () => {
+    vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'error').mockImplementation(() => {})
     vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
