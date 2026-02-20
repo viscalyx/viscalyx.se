@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieSettings from '../CookieSettings'
 
@@ -73,8 +74,11 @@ vi.mock('next-intl', () => ({
 }))
 
 describe('CookieSettings', () => {
+  let user: ReturnType<typeof userEvent.setup>
+
   beforeEach(() => {
     vi.clearAllMocks()
+    user = userEvent.setup()
     mockGetConsentSettings.mockReturnValue(null)
     mockGetConsentTimestamp.mockReturnValue(null)
   })
@@ -106,7 +110,7 @@ describe('CookieSettings', () => {
   it('shows confirmation modal when reset is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Reset Cookie Preferences')).toBeInTheDocument()
@@ -121,13 +125,13 @@ describe('CookieSettings', () => {
   it('closes confirmation modal when cancel is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Cancel'))
+    await user.click(screen.getByText('Cancel'))
 
     await waitFor(() => {
       expect(
@@ -139,13 +143,13 @@ describe('CookieSettings', () => {
   it('resets consent when confirmed', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Reset Preferences'))
+    await user.click(screen.getByText('Reset Preferences'))
 
     await waitFor(() => {
       expect(mockResetConsent).toHaveBeenCalledTimes(1)
@@ -155,7 +159,7 @@ describe('CookieSettings', () => {
   it('saves settings when save button is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Save Preferences'))
+    await user.click(screen.getByText('Save Preferences'))
 
     await waitFor(() => {
       expect(mockSaveConsentSettings).toHaveBeenCalledTimes(1)
@@ -163,11 +167,11 @@ describe('CookieSettings', () => {
     })
   })
 
-  it('accepts all cookies when Accept All is clicked', () => {
+  it('accepts all cookies when Accept All is clicked', async () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    fireEvent.click(screen.getByText('Accept All'))
+    await user.click(screen.getByText('Accept All'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -176,11 +180,11 @@ describe('CookieSettings', () => {
     })
   })
 
-  it('rejects all optional cookies when Reject All is clicked', () => {
+  it('rejects all optional cookies when Reject All is clicked', async () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    fireEvent.click(screen.getByText('Reject All'))
+    await user.click(screen.getByText('Reject All'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -223,7 +227,7 @@ describe('CookieSettings', () => {
 
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Save Preferences'))
+    await user.click(screen.getByText('Save Preferences'))
 
     await waitFor(() => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
@@ -244,12 +248,12 @@ describe('CookieSettings', () => {
 
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
     await waitFor(() => {
       expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Reset Preferences'))
+    await user.click(screen.getByText('Reset Preferences'))
 
     await waitFor(() => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
@@ -271,7 +275,7 @@ describe('CookieSettings', () => {
     const removeChildSpy = vi.spyOn(document.body, 'removeChild')
 
     render(<CookieSettings />)
-    fireEvent.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('Export Data'))
 
     await waitFor(() => {
       expect(createObjectUrlSpy).toHaveBeenCalledTimes(1)
@@ -297,7 +301,7 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    fireEvent.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('Export Data'))
 
     await waitFor(() => {
       expect(consoleWarnSpy).toHaveBeenCalledWith(
@@ -320,7 +324,7 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    fireEvent.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('Export Data'))
 
     await waitFor(() => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
@@ -336,15 +340,17 @@ describe('CookieSettings', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => {})
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
-    vi.spyOn(document.body, 'appendChild').mockImplementation(node => {
+
+    render(<CookieSettings />)
+
+    vi.spyOn(document.body, 'appendChild').mockImplementationOnce(node => {
       if (node instanceof HTMLAnchorElement) {
         throw new Error('append failed')
       }
       return HTMLBodyElement.prototype.appendChild.call(document.body, node)
     })
 
-    render(<CookieSettings />)
-    fireEvent.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('Export Data'))
 
     await waitFor(() => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
@@ -365,7 +371,7 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    fireEvent.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('Export Data'))
 
     await waitFor(() => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()

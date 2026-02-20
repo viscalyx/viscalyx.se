@@ -208,8 +208,10 @@ function runBuild() {
 function analyzeBuild(options = {}, deps = {}) {
   const impl = {
     getWranglerBundleSize,
+    ...(options.deps || {}),
     ...deps,
   }
+  const limits = impl.LIMITS || LIMITS
   const buildDir = path.join(process.cwd(), '.open-next')
 
   if (!fs.existsSync(buildDir)) {
@@ -339,24 +341,24 @@ function analyzeBuild(options = {}, deps = {}) {
   const compressedMB = compressedKB / 1024
 
   // Calculate percentages for both plans
-  const freeUsagePercent = (compressedMB / LIMITS.freeCompressedMB) * 100
-  const paidUsagePercent = (compressedMB / LIMITS.paidCompressedMB) * 100
+  const freeUsagePercent = (compressedMB / limits.freeCompressedMB) * 100
+  const paidUsagePercent = (compressedMB / limits.paidCompressedMB) * 100
 
   results.usage = {
     compressedMB,
     freePercent: freeUsagePercent,
     paidPercent: paidUsagePercent,
-    exceedsFree: compressedMB > LIMITS.freeCompressedMB,
-    exceedsPaid: compressedMB > LIMITS.paidCompressedMB,
+    exceedsFree: compressedMB > limits.freeCompressedMB,
+    exceedsPaid: compressedMB > limits.paidCompressedMB,
   }
 
-  if (compressedMB > LIMITS.paidCompressedMB) {
+  if (compressedMB > limits.paidCompressedMB) {
     results.status = 'error'
-    results.statusMessage = `Bundle exceeds paid plan limit (${LIMITS.paidCompressedMB}MB)!`
-  } else if (compressedMB > LIMITS.freeCompressedMB) {
+    results.statusMessage = `Bundle exceeds paid plan limit (${limits.paidCompressedMB}MB)!`
+  } else if (compressedMB > limits.freeCompressedMB) {
     results.status = 'warning'
-    results.statusMessage = `Bundle exceeds free plan limit (${LIMITS.freeCompressedMB}MB) - requires paid plan`
-  } else if (paidUsagePercent > LIMITS.warnPercentage) {
+    results.statusMessage = `Bundle exceeds free plan limit (${limits.freeCompressedMB}MB) - requires paid plan`
+  } else if (paidUsagePercent > limits.warnPercentage) {
     results.status = 'info'
     results.statusMessage = 'Bundle size OK but approaching limits'
   }

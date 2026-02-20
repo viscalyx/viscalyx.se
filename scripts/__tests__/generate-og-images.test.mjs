@@ -113,15 +113,10 @@ describe('generate-og-images.js', () => {
     const tempScriptsDir = path.join(tempRoot, 'scripts')
     const tempMessagesDir = path.join(tempRoot, 'messages')
     const tempPublicDir = path.join(tempRoot, 'public')
-    const copiedScriptPath = path.join(tempScriptsDir, 'generate-og-images.js')
     fs.mkdirSync(tempScriptsDir, { recursive: true })
     fs.mkdirSync(tempMessagesDir, { recursive: true })
     fs.mkdirSync(tempPublicDir, { recursive: true })
 
-    fs.copyFileSync(
-      path.join(process.cwd(), 'scripts', 'generate-og-images.js'),
-      copiedScriptPath
-    )
     fs.copyFileSync(
       path.join(process.cwd(), 'messages', 'en.json'),
       path.join(tempMessagesDir, 'en.json')
@@ -131,12 +126,10 @@ describe('generate-og-images.js', () => {
       path.join(tempPublicDir, 'viscalyx_logo.svg')
     )
 
-    const tempRequire = createRequire(copiedScriptPath)
-    const tempOg = tempRequire('./generate-og-images.js')
     const outputPath = path.join(tempPublicDir, 'og-blog-en.png')
     try {
       await withPreservedFile(outputPath, async () => {
-        await tempOg.generateBlogOG('en', createSharpMock())
+        await og.generateBlogOG('en', createSharpMock(), tempScriptsDir)
         expect(fs.existsSync(outputPath)).toBe(true)
         const stat = fs.statSync(outputPath)
         expect(stat.size).toBeGreaterThan(0)

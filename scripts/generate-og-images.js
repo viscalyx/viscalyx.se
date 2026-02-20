@@ -144,25 +144,32 @@ function buildBackgroundSVG(title, tagline) {
 </svg>`
 }
 
-async function generateBlogOG(locale, sharpImpl = loadSharp()) {
+async function generateBlogOG(
+  locale,
+  sharpImpl = loadSharp(),
+  basePath = __dirname
+) {
   if (!sharpImpl) {
     throw new Error(
       'sharp is not installed. Install with "npm install sharp" to generate OG images.'
     )
   }
 
-  const logoPath = path.join(__dirname, '..', 'public', 'viscalyx_logo.svg')
+  const logoPath = path.join(basePath, '..', 'public', 'viscalyx_logo.svg')
   if (!fs.existsSync(logoPath)) {
     throw new Error(`Missing logo asset at ${logoPath}`)
   }
   const outputPath = path.join(
-    __dirname,
+    basePath,
     '..',
     'public',
     `og-blog-${locale}.png`
   )
 
-  const { title, tagline } = getLocaleStrings(locale)
+  const { title, tagline } = getLocaleStrings(
+    locale,
+    path.join(basePath, '..', 'messages')
+  )
 
   // Render the SVG logo at the target size with a transparent background
   const logo = await sharpImpl(logoPath)

@@ -104,7 +104,7 @@ describe('CookieConsentBanner', () => {
       expect(screen.getByText('Customize Settings')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
@@ -121,7 +121,7 @@ describe('CookieConsentBanner', () => {
       expect(screen.getByText('Learn more')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Learn more'))
+    await user.click(screen.getByText('Learn more'))
 
     await waitFor(() => {
       expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
@@ -153,7 +153,7 @@ describe('CookieConsentBanner', () => {
       expect(screen.getByText('Reject All')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Reject All'))
+    await user.click(screen.getByText('Reject All'))
 
     await waitFor(() => {
       expect(mockSaveConsentSettings).toHaveBeenCalledWith({
@@ -182,7 +182,7 @@ describe('CookieConsentBanner', () => {
   it('should show required badge for strictly necessary cookies', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       expect(screen.getByText('Required')).toBeInTheDocument()
@@ -192,22 +192,23 @@ describe('CookieConsentBanner', () => {
   it('should allow toggling of non-essential cookie categories', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
       expect(analyticsToggle).toBeInTheDocument()
       expect(analyticsToggle).not.toBeChecked()
-
-      fireEvent.click(analyticsToggle)
-      expect(analyticsToggle).toBeChecked()
     })
+
+    const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
+    await user.click(analyticsToggle)
+    expect(analyticsToggle).toBeChecked()
   })
 
   it('should not allow toggling of strictly necessary cookies', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       const necessaryToggle = screen.getByLabelText(
@@ -336,7 +337,7 @@ describe('CookieConsentBanner', () => {
       }
     })
 
-    it('traps focus within banner with Tab and Shift+Tab and reuses cached focusable', async () => {
+    it('traps focus within banner with Tab and Shift+Tab', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
@@ -358,7 +359,7 @@ describe('CookieConsentBanner', () => {
     it('should have proper aria labels for toggle switches in detailed view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
@@ -373,7 +374,7 @@ describe('CookieConsentBanner', () => {
     it('should have accessible cookie details in settings view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         const viewCookiesButton = screen.getByText(/View Cookies \(1\)/)

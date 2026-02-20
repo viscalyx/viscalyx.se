@@ -161,32 +161,22 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       const blob = new Blob([JSON.stringify(data, null, 2)], {
         type: 'application/json',
       })
+      const showExportError = (error: unknown) => {
+        console.error('Failed to export cookie data:', error)
+        setShowError(true)
+        setTimeout(() => setShowError(false), 5000)
+      }
+
+      element = document.createElement('a')
       try {
         url = URL.createObjectURL(blob)
-      } catch (createErr) {
-        console.error('Failed to export cookie data:', createErr)
-        setShowError(true)
-        setTimeout(() => setShowError(false), 5000)
-        return
-      }
-      element = document.createElement('a')
-      element.href = url
-      element.download = 'cookie-consent-data.json'
-      try {
+        element.href = url
+        element.download = 'cookie-consent-data.json'
         document.body.appendChild(element)
         elementAppended = true
-      } catch (appendErr) {
-        console.error('Failed to export cookie data:', appendErr)
-        setShowError(true)
-        setTimeout(() => setShowError(false), 5000)
-        return
-      }
-      try {
         element.click()
-      } catch (clickErr) {
-        console.error('Failed to export cookie data:', clickErr)
-        setShowError(true)
-        setTimeout(() => setShowError(false), 5000)
+      } catch (error) {
+        showExportError(error)
         return
       }
     } catch (error) {

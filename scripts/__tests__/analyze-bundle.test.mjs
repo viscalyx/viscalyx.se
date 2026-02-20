@@ -156,42 +156,55 @@ describe('analyze-bundle.js', () => {
   })
 
   it('sets warning/error/info status branches based on usage thresholds', () => {
-    const originalLimits = { ...analyzeBundle.LIMITS }
-    try {
-      withTempCwd(dir => {
-        const handler = path.join(
-          dir,
-          '.open-next',
-          'server-functions',
-          'default',
-          'handler.mjs'
-        )
-        writeFile(handler, 'console.log("handler")')
+    withTempCwd(dir => {
+      const handler = path.join(
+        dir,
+        '.open-next',
+        'server-functions',
+        'default',
+        'handler.mjs'
+      )
+      writeFile(handler, 'console.log("handler")')
 
-        analyzeBundle.LIMITS.freeCompressedMB = 0.000001
-        analyzeBundle.LIMITS.paidCompressedMB = 1
-        analyzeBundle.LIMITS.warnPercentage = 99
-        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
-          'warning'
-        )
+      expect(
+        analyzeBundle.analyzeBuild({
+          dryRun: false,
+          deps: {
+            LIMITS: {
+              freeCompressedMB: 0.000001,
+              paidCompressedMB: 1,
+              warnPercentage: 99,
+            },
+          },
+        }).status
+      ).toBe('warning')
 
-        analyzeBundle.LIMITS.freeCompressedMB = 10
-        analyzeBundle.LIMITS.paidCompressedMB = 0.000001
-        analyzeBundle.LIMITS.warnPercentage = 99
-        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
-          'error'
-        )
+      expect(
+        analyzeBundle.analyzeBuild({
+          dryRun: false,
+          deps: {
+            LIMITS: {
+              freeCompressedMB: 10,
+              paidCompressedMB: 0.000001,
+              warnPercentage: 99,
+            },
+          },
+        }).status
+      ).toBe('error')
 
-        analyzeBundle.LIMITS.freeCompressedMB = 10
-        analyzeBundle.LIMITS.paidCompressedMB = 1
-        analyzeBundle.LIMITS.warnPercentage = 0.001
-        expect(analyzeBundle.analyzeBuild({ dryRun: false }).status).toBe(
-          'info'
-        )
-      })
-    } finally {
-      Object.assign(analyzeBundle.LIMITS, originalLimits)
-    }
+      expect(
+        analyzeBundle.analyzeBuild({
+          dryRun: false,
+          deps: {
+            LIMITS: {
+              freeCompressedMB: 10,
+              paidCompressedMB: 1,
+              warnPercentage: 0.001,
+            },
+          },
+        }).status
+      ).toBe('info')
+    })
   })
 
   it('returns error result when server handler missing and dryRun is false', () => {
