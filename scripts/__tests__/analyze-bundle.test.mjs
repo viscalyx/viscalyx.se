@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url)
 const analyzeBundle = require('../analyze-bundle.js')
 
 const createdTempDirs = []
+const originalGithubOutput = process.env.GITHUB_OUTPUT
 
 const makeTempDir = () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-test-'))
@@ -40,7 +41,11 @@ afterEach(() => {
     }
   })
   createdTempDirs.length = 0
-  delete process.env.GITHUB_OUTPUT
+  if (originalGithubOutput === undefined) {
+    delete process.env.GITHUB_OUTPUT
+  } else {
+    process.env.GITHUB_OUTPUT = originalGithubOutput
+  }
 })
 
 describe('analyze-bundle.js', () => {

@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import CookieSettings from '../CookieSettings'
+import CookieSettings from '@/components/CookieSettings'
 
 // Mock cookie-consent lib
 vi.mock('@/lib/cookie-consent', () => ({
