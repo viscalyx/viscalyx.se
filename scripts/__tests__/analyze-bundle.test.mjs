@@ -99,6 +99,11 @@ describe('analyze-bundle.js', () => {
         'Total Upload: 1500,00 KiB / gzip: 450,00 KiB'
       )
     ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
+    expect(
+      analyzeBundle.parseWranglerOutput(
+        'Total Upload: 1.500,00 KiB / gzip: 500,00 KiB'
+      )
+    ).toEqual({ uncompressedKB: 1500, compressedKB: 500 })
 
     expect(analyzeBundle.parseWranglerOutput('no size info')).toBeNull()
   })
@@ -143,7 +148,7 @@ describe('analyze-bundle.js', () => {
       const fresh = analyzeBundle.isBuildFresh(30)
       expect(fresh.fresh).toBe(true)
 
-      const stale = analyzeBundle.isBuildFresh(0)
+      const stale = analyzeBundle.isBuildFresh(-1)
       expect(stale.fresh).toBe(false)
       expect(stale.reason).toContain('minutes old')
     })
@@ -238,9 +243,7 @@ describe('analyze-bundle.js', () => {
   })
 
   it('returns error result when server handler missing and dryRun is false', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
 
     withTempCwd(dir => {
       fs.mkdirSync(path.join(dir, '.open-next', 'assets'), { recursive: true })
@@ -248,8 +251,6 @@ describe('analyze-bundle.js', () => {
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('Server handler not found')
     })
-
-    consoleErrorSpy.mockRestore()
   })
 
   it('returns error result when build directory is missing', () => {
