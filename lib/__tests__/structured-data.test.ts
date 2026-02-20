@@ -1,6 +1,6 @@
 import { SITE_URL } from '@/lib/constants'
+import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 import { describe, expect, it } from 'vitest'
-import { getOrganizationJsonLd, getWebSiteJsonLd } from '../structured-data'
 
 describe('structured-data', () => {
   it('builds organization JSON-LD with expected canonical fields', () => {
@@ -10,7 +10,7 @@ describe('structured-data', () => {
     expect(data['@type']).toBe('Organization')
     expect(data.name).toBe('Viscalyx')
     expect(data.url).toBe(SITE_URL)
-    expect(data.logo).toBe(`${SITE_URL}/logo.png`)
+    expect(data.logo).toBe(`${SITE_URL}/viscalyx_logo_128x128.png`)
     expect(data.sameAs).toEqual(
       expect.arrayContaining(['https://github.com/viscalyx'])
     )
