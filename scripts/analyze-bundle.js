@@ -671,7 +671,6 @@ module.exports = {
   getDirSize,
   getGzipSize,
   parseWranglerOutput,
-  getWranglerBundleSize,
   isBuildFresh,
   runBuild,
   analyzeBuild,

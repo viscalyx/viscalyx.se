@@ -3,12 +3,18 @@ import os from 'node:os'
 import path from 'node:path'
 import { createRequire } from 'node:module'
 
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const require = createRequire(import.meta.url)
 const analyzeBundle = require('../analyze-bundle.js')
 
-const makeTempDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-test-'))
+const createdTempDirs = []
+
+const makeTempDir = () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-test-'))
+  createdTempDirs.push(dir)
+  return dir
+}
 
 const writeFile = (filePath, content) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
@@ -16,6 +22,13 @@ const writeFile = (filePath, content) => {
 }
 
 afterEach(() => {
+  vi.restoreAllMocks()
+  createdTempDirs.forEach(dir => {
+    if (fs.existsSync(dir)) {
+      fs.rmSync(dir, { recursive: true, force: true })
+    }
+  })
+  createdTempDirs.length = 0
   delete process.env.GITHUB_OUTPUT
 })
 
@@ -32,6 +45,10 @@ const withPatchedProcessExit = fn => {
 }
 
 describe('analyze-bundle.js', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('formats bytes correctly', () => {
     expect(analyzeBundle.formatBytes(0)).toBe('0 B')
     expect(analyzeBundle.formatBytes(1024)).toBe('1.00 KB')
@@ -207,13 +224,11 @@ describe('analyze-bundle.js', () => {
   it('exits when build directory is missing', () => {
     const dir = makeTempDir()
     const originalCwd = process.cwd()
-    const originalExit = process.exit
-    const originalError = console.error
     process.chdir(dir)
-    process.exit = code => {
+    vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
-    }
-    console.error = () => {}
+    })
+    vi.spyOn(console, 'error').mockImplementation(() => {})
 
     try {
       expect(() => analyzeBundle.analyzeBuild({ dryRun: false })).toThrow(
@@ -221,8 +236,6 @@ describe('analyze-bundle.js', () => {
       )
     } finally {
       process.chdir(originalCwd)
-      process.exit = originalExit
-      console.error = originalError
     }
   })
 
@@ -278,9 +291,9 @@ describe('analyze-bundle.js', () => {
 
   it('renders markdown output with expected sections', () => {
     const originalLog = console.log
-    let captured = ''
+    const lines = []
     console.log = message => {
-      captured = String(message)
+      lines.push(String(message))
     }
 
     try {
@@ -304,6 +317,7 @@ describe('analyze-bundle.js', () => {
       console.log = originalLog
     }
 
+    const captured = lines.join('\n')
     expect(captured).toContain('Bundle Size Report')
     expect(captured).toContain('Wrangler Bundle')
     expect(captured).toContain('Plan Usage')
@@ -482,32 +496,44 @@ describe('analyze-bundle.js', () => {
   })
 
   it('main exits when build is stale and rebuild fails', async () => {
-    await withPatchedProcessExit(() => {
-      expect(() =>
-        analyzeBundle.main(['--max-age=1'], {
-          isBuildFresh: () => ({ fresh: false, reason: 'stale build' }),
-          runBuild: () => false,
-        })
-      ).toThrow('exit:1')
-    })
+    const originalError = console.error
+    console.error = () => {}
+    try {
+      await withPatchedProcessExit(() => {
+        expect(() =>
+          analyzeBundle.main(['--max-age=1'], {
+            isBuildFresh: () => ({ fresh: false, reason: 'stale build' }),
+            runBuild: () => false,
+          })
+        ).toThrow('exit:1')
+      })
+    } finally {
+      console.error = originalError
+    }
   })
 
   it('main exits when analysis status is error', async () => {
-    await withPatchedProcessExit(() => {
-      expect(() =>
-        analyzeBundle.main(['--no-build'], {
-          analyzeBuild: () => ({
-            serverHandler: { size: 0, gzipSize: 0 },
-            middleware: { size: 0, gzipSize: 0 },
-            assets: { size: 0 },
-            serverFunctions: { size: 0 },
-            total: { size: 0 },
-            status: 'error',
-            statusMessage: 'too big',
-          }),
-        })
-      ).toThrow('exit:1')
-    })
+    const originalError = console.error
+    console.error = () => {}
+    try {
+      await withPatchedProcessExit(() => {
+        expect(() =>
+          analyzeBundle.main(['--no-build'], {
+            analyzeBuild: () => ({
+              serverHandler: { size: 0, gzipSize: 0 },
+              middleware: { size: 0, gzipSize: 0 },
+              assets: { size: 0 },
+              serverFunctions: { size: 0 },
+              total: { size: 0 },
+              status: 'error',
+              statusMessage: 'too big',
+            }),
+          })
+        ).toThrow('exit:1')
+      })
+    } finally {
+      console.error = originalError
+    }
   })
 
   it('main uses existing build when fresh and sets dry-run by default', () => {
