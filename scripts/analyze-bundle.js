@@ -30,6 +30,47 @@ const LIMITS = {
   warnPercentage: 50,
 }
 
+const DEFAULT_ANALYZE_RESULT = {
+  serverHandler: {
+    path: '.open-next/server-functions/default/handler.mjs',
+    size: 0,
+    gzipSize: 0,
+  },
+  middleware: {
+    path: '.open-next/middleware/handler.mjs',
+    size: 0,
+    gzipSize: 0,
+  },
+  assets: {
+    path: '.open-next/assets',
+    size: 0,
+  },
+  serverFunctions: {
+    path: '.open-next/server-functions',
+    size: 0,
+  },
+  total: {
+    path: '.open-next',
+    size: 0,
+  },
+  wrangler: null,
+  status: 'success',
+  statusMessage: 'Bundle size OK',
+}
+
+function cloneDefaultAnalyzeResult() {
+  return {
+    serverHandler: { ...DEFAULT_ANALYZE_RESULT.serverHandler },
+    middleware: { ...DEFAULT_ANALYZE_RESULT.middleware },
+    assets: { ...DEFAULT_ANALYZE_RESULT.assets },
+    serverFunctions: { ...DEFAULT_ANALYZE_RESULT.serverFunctions },
+    total: { ...DEFAULT_ANALYZE_RESULT.total },
+    wrangler: DEFAULT_ANALYZE_RESULT.wrangler,
+    status: DEFAULT_ANALYZE_RESULT.status,
+    statusMessage: DEFAULT_ANALYZE_RESULT.statusMessage,
+  }
+}
+
 /**
  * Format bytes to human readable string
  */
@@ -219,61 +260,13 @@ function analyzeBuild(options = {}, deps = {}) {
       '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.'
     )
     return {
-      serverHandler: {
-        path: '.open-next/server-functions/default/handler.mjs',
-        size: 0,
-        gzipSize: 0,
-      },
-      middleware: {
-        path: '.open-next/middleware/handler.mjs',
-        size: 0,
-        gzipSize: 0,
-      },
-      assets: {
-        path: '.open-next/assets',
-        size: 0,
-      },
-      serverFunctions: {
-        path: '.open-next/server-functions',
-        size: 0,
-      },
-      total: {
-        path: '.open-next',
-        size: 0,
-      },
-      wrangler: null,
+      ...cloneDefaultAnalyzeResult(),
       status: 'error',
       statusMessage: 'Build directory .open-next not found',
     }
   }
 
-  const results = {
-    serverHandler: {
-      path: '.open-next/server-functions/default/handler.mjs',
-      size: 0,
-      gzipSize: 0,
-    },
-    middleware: {
-      path: '.open-next/middleware/handler.mjs',
-      size: 0,
-      gzipSize: 0,
-    },
-    assets: {
-      path: '.open-next/assets',
-      size: 0,
-    },
-    serverFunctions: {
-      path: '.open-next/server-functions',
-      size: 0,
-    },
-    total: {
-      path: '.open-next',
-      size: 0,
-    },
-    wrangler: null,
-    status: 'success',
-    statusMessage: 'Bundle size OK',
-  }
+  const results = cloneDefaultAnalyzeResult()
 
   // Analyze server handler
   const serverHandlerPath = path.join(

@@ -1,10 +1,10 @@
+import { locales } from '@/i18n'
+
 import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
-
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { locales } from '../../i18n.ts'
 
 const require = createRequire(import.meta.url)
 const og = require('../generate-og-images.js')
@@ -148,7 +148,7 @@ describe('generate-og-images.js', () => {
     vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
     })
-    await expect(() => og.main(null)).rejects.toThrow('exit:1')
+    await expect(og.main(null)).rejects.toThrow('exit:1')
   })
 
   it('main runs successfully with injected sharp and locale list', async () => {
