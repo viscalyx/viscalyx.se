@@ -36,6 +36,7 @@ next-env.d.ts
 .github/copilot-instructions.md
 .github/instructions/
 .github/prompts/
+.github/skills/
 
 # Coverage directory used by tools like istanbul
 coverage/
