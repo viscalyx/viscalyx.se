@@ -278,8 +278,17 @@ export function getConsentTimestamp(): Date | null {
     const stored = localStorage.getItem(CONSENT_COOKIE_NAME)
     if (!stored) return null
 
-    const data = JSON.parse(stored)
-    return new Date(data.timestamp)
+    const data = JSON.parse(stored) as { timestamp?: unknown }
+    if (typeof data.timestamp !== 'string' || !data.timestamp) {
+      return null
+    }
+
+    const parsed = new Date(data.timestamp)
+    if (Number.isNaN(parsed.getTime())) {
+      return null
+    }
+
+    return parsed
   } catch {
     return null
   }

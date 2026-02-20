@@ -208,7 +208,6 @@ function runBuild() {
 function analyzeBuild(options = {}, deps = {}) {
   const impl = {
     getWranglerBundleSize,
-    ...(options.deps || {}),
     ...deps,
   }
   const limits = impl.LIMITS || LIMITS

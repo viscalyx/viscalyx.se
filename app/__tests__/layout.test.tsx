@@ -7,7 +7,7 @@ import type { ReactNode } from 'react'
 
 vi.mock('next-intl/server', () => ({
   getLocale: vi.fn(async () => 'en'),
-  getTranslations: vi.fn(async () => async (key: string) => key),
+  getTranslations: vi.fn(async () => (key: string) => key),
   getFormatter: vi.fn(async () => ({
     dateTime: (d: string | number | Date) => new Date(d).toISOString(),
   })),

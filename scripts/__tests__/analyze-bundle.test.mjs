@@ -172,42 +172,48 @@ describe('analyze-bundle.js', () => {
       writeFile(handler, 'console.log("handler")')
 
       expect(
-        analyzeBundle.analyzeBuild({
-          dryRun: false,
-          deps: {
+        analyzeBundle.analyzeBuild(
+          {
+            dryRun: false,
+          },
+          {
             LIMITS: {
               freeCompressedMB: 0.000001,
               paidCompressedMB: 1,
               warnPercentage: 99,
             },
-          },
-        }).status
+          }
+        ).status
       ).toBe('warning')
 
       expect(
-        analyzeBundle.analyzeBuild({
-          dryRun: false,
-          deps: {
+        analyzeBundle.analyzeBuild(
+          {
+            dryRun: false,
+          },
+          {
             LIMITS: {
               freeCompressedMB: 10,
               paidCompressedMB: 0.000001,
               warnPercentage: 99,
             },
-          },
-        }).status
+          }
+        ).status
       ).toBe('error')
 
       expect(
-        analyzeBundle.analyzeBuild({
-          dryRun: false,
-          deps: {
+        analyzeBundle.analyzeBuild(
+          {
+            dryRun: false,
+          },
+          {
             LIMITS: {
               freeCompressedMB: 10,
               paidCompressedMB: 1,
               warnPercentage: 0.001,
             },
-          },
-        }).status
+          }
+        ).status
       ).toBe('info')
     })
   })

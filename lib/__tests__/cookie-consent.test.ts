@@ -606,7 +606,7 @@ describe('Cookie Consent', () => {
       expect(getConsentTimestamp()).toBeNull()
     })
 
-    it('returns an invalid Date when timestamp field is missing', () => {
+    it('returns null when timestamp field is missing', () => {
       localStorageMock.setItem(
         'viscalyx.org-cookie-consent',
         JSON.stringify({
@@ -615,9 +615,20 @@ describe('Cookie Consent', () => {
         })
       )
 
-      const timestamp = getConsentTimestamp()
-      expect(timestamp).toBeInstanceOf(Date)
-      expect(timestamp?.getTime()).toBeNaN()
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns null when timestamp field is invalid', () => {
+      localStorageMock.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          version: '1.0',
+          settings: defaultConsentSettings,
+          timestamp: 'not-a-date',
+        })
+      )
+
+      expect(getConsentTimestamp()).toBeNull()
     })
 
     it('returns null when window is unavailable', () => {
