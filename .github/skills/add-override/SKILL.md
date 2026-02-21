@@ -23,6 +23,9 @@ Add an npm override to `package.json` and add a matching reason in `//overrides`
    - Add concrete context: affected dependency path, issue/CVE, and fixed version when known.
 4. Keep key order and formatting consistent with the file.
 5. Return a short summary of changed lines.
+6. After applying updates, run:
+- `npm run purge:install`
+- `npm run check`
 
 ## Missing Context Rule
 

@@ -23,6 +23,8 @@ Add an npm override to `package.json` for a given package name and version, and 
    - Add one new line for the new override with concrete context (affected parent dependency, issue/CVE, and fixed version when known).
 4. Keep keys and notes tidy and consistent with existing formatting.
 5. Return a short summary of what changed.
+6. After applying updates, run `npm run purge:install` to clean `node_modules`, `package-lock.json` and do a fresh install.
+7. Run `npm run check` to verify nothing is broken.
 
 ## Missing Context Rule
 
