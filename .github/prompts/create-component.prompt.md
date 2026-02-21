@@ -1,3 +1,8 @@
+---
+agent: agent
+description: 'Scaffold a React component (client/server) and related artifacts (tests, translations)'
+---
+
 # Create Component
 
 Create `/components/ComponentName.tsx`:

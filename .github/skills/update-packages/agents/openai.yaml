@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Packages"
+  short_description: "Analyze npm deps and recommend LTS-safe upgrades"
+  default_prompt: "Use $update-packages to analyze package.json, apply LTS policy, and output safe and major npm update commands with verification steps."
