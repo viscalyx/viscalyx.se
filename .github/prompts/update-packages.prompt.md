@@ -44,9 +44,13 @@ Bold the **Latest** column when a major bump is available. Flag deprecated or vu
    - **Excluded** — list any packages skipped due to non-LTS policy with a brief explanation
 
 4. Call out pinned versions (no `^`/`~`) and packages in the `overrides` section.
+5. Evaluate whether each `overrides` entry is still needed:
+   - Check if upstream packages now include the required fixes/versions.
+   - Recommend removing overrides that are no longer necessary.
+   - Clearly list which overrides should be kept and why.
 
-5. Suggest update order: patch/minor first (batch), then major one at a time.
+6. Suggest update order: patch/minor first (batch), then major one at a time.
 
-6. After applying updates, run `npm run purge:install` to clean `node_modules`, `package-lock.json` and do a fresh install.
+7. After applying updates, run `npm run purge:install` to clean `node_modules`, `package-lock.json` and do a fresh install.
 
-7. Run `npm run check` to verify nothing is broken.
+8. Run `npm run check` to verify nothing is broken.

@@ -40,7 +40,11 @@ Analyze `dependencies` and `devDependencies` in `package.json` and produce actio
 - **Major updates**: one `npm install` command per package plus a short breaking-change and stack-compatibility note (Next.js, React, TypeScript, Tailwind, etc., as relevant).
 - **Excluded**: list skipped non-LTS packages with a short reason.
 2. Call out pinned versions (no `^` or `~`) and entries under `overrides`.
-3. Recommend execution order: patch/minor batch first, then major updates one at a time.
-4. After applying updates, run:
+3. Evaluate whether each `overrides` entry is still needed:
+- Check whether upstream dependencies now include the required fix/version.
+- Recommend removing overrides that are no longer necessary.
+- Clearly list which overrides should remain and why.
+4. Recommend execution order: patch/minor batch first, then major updates one at a time.
+5. After applying updates, run:
 - `npm run purge:install`
 - `npm run check`
