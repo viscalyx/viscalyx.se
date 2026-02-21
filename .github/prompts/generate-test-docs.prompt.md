@@ -1,5 +1,5 @@
 ---
-mode: 'agent'
+agent: agent
 description: 'Generate test flow documentation (Markdown + Mermaid diagrams) for integration or unit test files'
 ---
 

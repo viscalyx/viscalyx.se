@@ -1,6 +1,6 @@
 ---
 name: review-comments-validator
-description: Validate code review comments before making changes. Use when handling reviewer findings, nitpicks, or AI-generated feedback where each claim must be checked against the current code and only valid issues should be fixed.
+description: Validate AI code review comments before making changes. Use when handling reviewer findings, nitpicks, or AI-generated feedback where each claim must be checked against the current code and only valid issues should be fixed.
 ---
 
 # Review Comments Validator

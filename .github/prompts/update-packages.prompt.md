@@ -1,3 +1,8 @@
+---
+agent: Plan
+description: 'Analyze package.json, recommend safe updates following the project LTS policy, and provide update commands'
+---
+
 # Update Packages
 
 Check all dependencies and devDependencies in `package.json` for available updates.

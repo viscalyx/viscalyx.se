@@ -1,3 +1,8 @@
+---
+agent: agent
+description: 'Scaffold a Vitest unit test for a component, with common mocks and examples'
+---
+
 # Create Test
 
 Create `/components/__tests__/ComponentName.test.tsx`:

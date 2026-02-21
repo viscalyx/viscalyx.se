@@ -1,3 +1,8 @@
+---
+agent: agent
+description: 'Create a blog post Markdown file with required front-matter and rules'
+---
+
 # Create Blog Post
 
 Create `/content/blog/post-slug.md`:
