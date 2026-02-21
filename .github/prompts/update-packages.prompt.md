@@ -1,5 +1,5 @@
 ---
-agent: Plan
+agent: agent
 description: 'Analyze package.json, recommend safe updates following the project LTS policy, and provide update commands'
 ---
 
@@ -25,10 +25,10 @@ If you discover additional packages with LTS release cycles during analysis, app
 
 1. Run `npm outdated --json` to gather version data. For packages needing more detail, use `npm view <package> versions --json`.
 
-2. Present a table for **Dependencies** and **Dev Dependencies** (sorted alphabetically):
+2. Present a markdown table for **Dependencies** and **Dev Dependencies** (sorted alphabetically):
 
-| Package | Current | Latest (Same Major) | Latest | Recommendation |
-| --- | --- | --- | --- | --- |
+| Id | Package | Current | Latest (Same Major) | Latest | Recommendation |
+| --- | --- | --- | --- | --- | --- |
 
 Where **Recommendation** is one of:
 - **Patch/Minor** — safe update, no breaking changes
@@ -37,6 +37,7 @@ Where **Recommendation** is one of:
 - **Up to date** — already latest
 
 Bold the **Latest** column when a major bump is available. Flag deprecated or vulnerable packages.
+Id is a unique identifier for each package (e.g. `1`, `2`, `3`…), to allow simple reference in further prompts.
 
 3. Provide update commands:
    - **Safe updates** — single `npm install` for all patch/minor updates

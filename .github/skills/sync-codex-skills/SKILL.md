@@ -30,7 +30,7 @@ if [ ! -d "$CODEX_ROOT" ]; then
   echo "Skipping sync: Codex home does not exist: $CODEX_ROOT"
   exit 0
 fi
-TARGET="${CODEX_HOME:-$HOME/.codex}/skills"
+TARGET="$CODEX_ROOT/skills"
 cp -R .github/skills/. "$TARGET/"
 find "$TARGET" -maxdepth 2 -name SKILL.md | sort
 ```

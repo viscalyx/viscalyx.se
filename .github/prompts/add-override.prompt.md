@@ -16,8 +16,8 @@ Add an npm override to `package.json` for a given package name and version, and 
 ## Steps
 
 1. Open `package.json`.
-2. Add or update the entry under `overrides`:
-   - `"package-name": "version"`
+2. Add or update the entry under `overrides` using an exact (unprefixed) version:
+   - `"package-name": "version"` (no `^` or `~`)
 3. Add a matching human-readable explanation in the `//overrides` section.
    - Keep existing explanations.
    - Add one new line for the new override with concrete context (affected parent dependency, issue/CVE, and fixed version when known).
