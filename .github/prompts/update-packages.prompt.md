@@ -25,30 +25,46 @@ If you discover additional packages with LTS release cycles during analysis, app
 
 1. Run `npm outdated --json` to gather version data. For packages needing more detail, use `npm view <package> versions --json`.
 
-2. Present a markdown table for **Dependencies** and **Dev Dependencies** (sorted alphabetically):
+`npm outdated` only reports packages where the installed version differs from the wanted/latest version. It will **not** list a package when the installed version already satisfies `wanted` — even if `package.json` declares an older range. To catch these gaps:
+- After collecting `npm outdated` results, run `npm ls --json --depth=0` (or `npm ls <package> --json` selectively) to obtain the **actual installed version** of every dependency.
+   - Compare each installed version against the version range in `package.json`. If the installed version is newer (e.g., `4.8.3` installed but `package.json` says `^4.8.2`), the package is outdated in `package.json` and must appear in the report.
+   - The **Current** column must always reflect the version declared in `package.json` (the range minimum, e.g., `4.8.2` from `^4.8.2`).
+   - The **Latest (Same Major)** and **Latest** columns must show the highest available version — which may be the **installed** version if it is newer than what `package.json` declares, or a yet-newer registry version. Always verify against the registry with `npm view <package> dist-tags --json` or `npm view <package> versions --json`.
+
+2. Evaluate whether each `overrides` entry is still needed:
+   - Check if upstream packages now include the required fixes/versions.
+   - Recommend removing overrides that are no longer necessary.
+   - Clearly list which overrides should be kept and why.
+   - For overrides that should be kept, check if they can be updated to newer versions.
+
+3. Audit all packages for known vulnerabilities using `npm audit --json`
+
+4. Present a markdown table for all **Dependencies**, **Dev Dependencies** and **Overrides** (sorted alphabetically):
 
 | Id | Package | Current | Latest (Same Major) | Latest | Recommendation |
 | --- | --- | --- | --- | --- | --- |
 
 Where **Recommendation** is one of:
 - **Patch/Minor** — safe update, no breaking changes
+- **Patch/Minor, Vulnerable** — Available update, no breaking changes, but with known vulnerabilities that should be considered before updating
 - **Major available** — new major version, review changelog
 - **Skip (non-LTS)** — latest major is a non-LTS release, do not update
-- **Up to date** — already latest
+- **Up to date** — already latest and have no known vulnerabilities
+- **Keep override** — for entries in `overrides` that should be retained (with explanation)
+- **Remove override** — for entries in `overrides` that can be removed (with explanation)
+- **Update override** — for entries in `overrides` that should be updated to a newer version (with explanation)
+- **Pinned** — for packages with pinned versions (no `^`/`~`) that should be reviewed for updates (with explanation)
+- **Flagged** — for packages that are deprecated or have known vulnerabilities (with explanation)
+- **Vulnerable** - packages that has known vulnerabilities without newer versions available (with explanation of the vulnerabilities and recommended actions)
 
 Bold the **Latest** column when a major bump is available. Flag deprecated or vulnerable packages.
 Id is a unique identifier for each package (e.g. `1`, `2`, `3`…), to allow simple reference in further prompts.
+Never recommend updating to a lower version even if it would resolve vulnerabilities, as that can cause other issues. Instead, flag it and recommend manual review.
 
-3. Provide update commands:
+5. Provide update commands:
    - **Safe updates** — single `npm install` for all patch/minor updates
    - **Major updates** — separate `npm install` per package with breaking change summary and compatibility notes for the stack (Next.js, React, TypeScript, Tailwind, etc.)
    - **Excluded** — list any packages skipped due to non-LTS policy with a brief explanation
-
-4. Call out pinned versions (no `^`/`~`) and packages in the `overrides` section.
-5. Evaluate whether each `overrides` entry is still needed:
-   - Check if upstream packages now include the required fixes/versions.
-   - Recommend removing overrides that are no longer necessary.
-   - Clearly list which overrides should be kept and why.
 
 6. Suggest update order: patch/minor first (batch), then major one at a time.
 

@@ -31,6 +31,7 @@ if [ ! -d "$CODEX_ROOT" ]; then
   exit 0
 fi
 TARGET="$CODEX_ROOT/skills"
+mkdir -p "$TARGET"
 cp -R .github/skills/. "$TARGET/"
 find "$TARGET" -maxdepth 2 -name SKILL.md | sort
 ```
