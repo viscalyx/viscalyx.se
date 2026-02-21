@@ -42,4 +42,13 @@ describe('CookieCategoryIcon', () => {
       unmount()
     })
   })
+
+  it('falls back to Cookie icon for unknown category values', () => {
+    const { container } = render(
+      <CookieCategoryIcon category={'unknown' as never} />
+    )
+    const svg = container.querySelector('svg')
+    expect(svg).toBeInTheDocument()
+    expect(svg).toHaveClass('text-gray-600')
+  })
 })

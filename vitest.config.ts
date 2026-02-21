@@ -43,7 +43,18 @@ export default defineConfig({
         'app/**/*.{ts,tsx}',
         'components/**/*.{ts,tsx}',
         'lib/**/*.{ts,tsx}',
-        'scripts/**/*.{js,ts}',
+        // Include deterministic script logic in coverage.
+        'scripts/**/*.{js,mjs}',
+      ],
+      exclude: [
+        '**/*.d.ts',
+        '**/__tests__/**',
+        '**/*.{test,spec}.{ts,tsx,js,jsx,mjs}',
+        'test-utils/**',
+        'vitest.setup.ts',
+        // Exclude orchestration-only scripts that mainly shell out / wire env.
+        'scripts/prebuild.js',
+        'scripts/security-audit.js',
       ],
       thresholds: {
         branches: 20,

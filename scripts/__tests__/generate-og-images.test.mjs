@@ -1,174 +1,205 @@
-/**
- * Unit tests for the generate-og-images.js script
- *
- * Since generate-og-images.js is a CommonJS script that requires 'sharp'
- * at the top level (which may not be installed), we test the core logic
- * by re-implementing and testing the algorithm functions rather than
- * importing the script directly.
- */
+import { locales } from '@/i18n'
 
-import { readFileSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { describe, expect, it } from 'vitest'
+import fs from 'node:fs'
+import { createRequire } from 'node:module'
+import os from 'node:os'
+import path from 'node:path'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url)
+const og = require('../generate-og-images.js')
+
+const createSharpMock = () => {
+  const sharpImpl = input => {
+    const api = {
+      resize: () => api,
+      png: () => api,
+      composite: () => api,
+      toBuffer: async () => Buffer.from(String(input).slice(0, 8)),
+      toFile: async outputPath => {
+        fs.mkdirSync(path.dirname(outputPath), { recursive: true })
+        fs.writeFileSync(outputPath, 'png-data')
+      },
+    }
+    return api
+  }
+  return sharpImpl
+}
+
+const withPreservedFile = async (filePath, run) => {
+  const existed = fs.existsSync(filePath)
+  const original = existed ? fs.readFileSync(filePath) : null
+
+  try {
+    await run()
+  } finally {
+    if (existed) {
+      fs.writeFileSync(filePath, original)
+    } else if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath)
+    }
+  }
+}
 
 describe('generate-og-images.js', () => {
-  describe('escapeXml function', () => {
-    // Re-implement the escapeXml logic from the script.
-    // NOTE: This is intentionally duplicated rather than imported because
-    // generate-og-images.js is a CommonJS script that requires 'sharp'
-    // at the top level. If the original escapeXml changes (e.g., adds new
-    // entity escapes or changes replacement order), update this copy too.
-    const escapeXml = str => {
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;')
-    }
-
-    it('escapes ampersands', () => {
-      expect(escapeXml('A & B')).toBe('A &amp; B')
-    })
-
-    it('escapes less-than signs', () => {
-      expect(escapeXml('a < b')).toBe('a &lt; b')
-    })
-
-    it('escapes greater-than signs', () => {
-      expect(escapeXml('a > b')).toBe('a &gt; b')
-    })
-
-    it('escapes multiple special characters', () => {
-      expect(escapeXml('<a>&b</a>')).toBe('&lt;a&gt;&amp;b&lt;/a&gt;')
-    })
-
-    it('escapes double quotes', () => {
-      expect(escapeXml('say "hello"')).toBe('say &quot;hello&quot;')
-    })
-
-    it('escapes single quotes (apostrophes)', () => {
-      expect(escapeXml("it's")).toBe('it&apos;s')
-    })
-
-    it('returns unchanged string when no special characters', () => {
-      expect(escapeXml('Hello World')).toBe('Hello World')
-    })
-
-    it('handles empty string', () => {
-      expect(escapeXml('')).toBe('')
-    })
+  beforeEach(() => {
+    vi.clearAllMocks()
   })
 
-  describe('getLocaleStrings function', () => {
-    // Re-implement the getLocaleStrings logic from the script
-    const getLocaleStrings = locale => {
-      const filePath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'messages',
-        `${locale}.json`
-      )
-      const messages = JSON.parse(readFileSync(filePath, 'utf-8'))
-      const blog = messages.blog
-      if (!blog?.og?.title || !blog?.og?.tagline) {
-        throw new Error(
-          `Missing blog.og.title or blog.og.tagline in messages/${locale}.json`
-        )
-      }
-      return {
-        title: blog.og.title,
-        tagline: blog.og.tagline,
-      }
-    }
-
-    it('loads English locale strings', () => {
-      const strings = getLocaleStrings('en')
-      expect(strings.title).toBeDefined()
-      expect(strings.tagline).toBeDefined()
-      expect(typeof strings.title).toBe('string')
-      expect(typeof strings.tagline).toBe('string')
-    })
-
-    it('loads Swedish locale strings', () => {
-      const strings = getLocaleStrings('sv')
-      expect(strings.title).toBeDefined()
-      expect(strings.tagline).toBeDefined()
-    })
-
-    it('throws for missing locale file', () => {
-      expect(() => getLocaleStrings('xx')).toThrow()
-    })
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  describe('SVG generation constants', () => {
-    // Read actual constants from the script source to avoid tautological assertions
-    const scriptPath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'scripts',
-      'generate-og-images.js'
+  it('exports expected OG constants', () => {
+    expect(og.OG_WIDTH).toBe(1200)
+    expect(og.OG_HEIGHT).toBe(630)
+    expect(og.LOGO_SIZE).toBe(280)
+    expect(og.LOCALES).toEqual(['en', 'sv'])
+  })
+
+  it('keeps LOCALES in sync with locales from i18n.ts', () => {
+    expect(og.LOCALES).toEqual(locales)
+  })
+
+  it('loadSharp returns null or a function depending on environment', () => {
+    const sharp = og.loadSharp()
+    expect(sharp === null || typeof sharp === 'function').toBe(true)
+  })
+
+  it('escapes xml-sensitive characters', () => {
+    expect(og.escapeXml(`A & B <tag> "x" 'y'`)).toBe(
+      'A &amp; B &lt;tag&gt; &quot;x&quot; &apos;y&apos;'
     )
-    const scriptContent = readFileSync(scriptPath, 'utf-8')
+  })
 
-    // Extract constants from the script source
-    const widthMatch = scriptContent.match(/OG_WIDTH\s*=\s*(\d+)/)
-    const heightMatch = scriptContent.match(/OG_HEIGHT\s*=\s*(\d+)/)
-    const logoMatch = scriptContent.match(/LOGO_SIZE\s*=\s*(\d+)/)
+  it('loads locale strings from messages', () => {
+    const en = og.getLocaleStrings('en')
+    expect(en.title).toBeTypeOf('string')
+    expect(en.tagline).toBeTypeOf('string')
+    expect(en.title.length).toBeGreaterThan(0)
+    expect(en.tagline.length).toBeGreaterThan(0)
+  })
 
-    // Ensure constants were found in source
-    if (!widthMatch || !heightMatch || !logoMatch) {
-      throw new Error(
-        'Failed to extract OG constants from script source - regex patterns may need updating'
+  it('throws for missing locale file', () => {
+    expect(() => og.getLocaleStrings('xx')).toThrow()
+  })
+
+  it('throws when locale file exists but required keys are missing', () => {
+    const testLocale = 'unit-test-missing-og'
+    const tempMessagesDir = fs.mkdtempSync(path.join(os.tmpdir(), 'og-msg-'))
+    const filePath = path.join(tempMessagesDir, `${testLocale}.json`)
+    return withPreservedFile(filePath, async () => {
+      fs.writeFileSync(filePath, JSON.stringify({ blog: {} }))
+      expect(() => og.getLocaleStrings(testLocale, tempMessagesDir)).toThrow(
+        `Missing blog.og.title or blog.og.tagline in ${filePath}`
       )
-    }
-
-    const OG_WIDTH = Number(widthMatch[1])
-    const OG_HEIGHT = Number(heightMatch[1])
-    const LOGO_SIZE = Number(logoMatch[1])
-
-    it('has standard OG image width', () => {
-      expect(OG_WIDTH).toBe(1200)
-    })
-
-    it('has standard OG image height', () => {
-      expect(OG_HEIGHT).toBe(630)
-    })
-
-    it('calculates logo position correctly', () => {
-      // NOTE: Formula duplicated from generate-og-images.js - keep in sync
-      const logoX = Math.round(OG_WIDTH * 0.18 - LOGO_SIZE / 2)
-      const logoY = Math.round((OG_HEIGHT - LOGO_SIZE) / 2)
-
-      // Logo should be positioned in the left-center area
-      expect(logoX).toBeGreaterThan(0)
-      expect(logoX).toBeLessThan(OG_WIDTH / 2)
-      expect(logoY).toBeGreaterThan(0)
-      expect(logoY).toBeLessThan(OG_HEIGHT)
+    }).finally(() => {
+      fs.rmSync(tempMessagesDir, { recursive: true, force: true })
     })
   })
 
-  describe('script source validation', () => {
-    it('script file exists and contains expected structure', () => {
-      const scriptPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'scripts',
-        'generate-og-images.js'
-      )
-      const content = readFileSync(scriptPath, 'utf-8')
+  it('builds background svg and escapes injected content', () => {
+    const svg = og.buildBackgroundSVG(`A & B`, `<unsafe>`)
+    expect(svg).toContain('<svg')
+    expect(svg).toContain('A &amp; B')
+    expect(svg).toContain('&lt;unsafe&gt;')
+    expect(svg).toContain(`width="${og.OG_WIDTH}"`)
+    expect(svg).toContain(`height="${og.OG_HEIGHT}"`)
+  })
 
-      expect(content).toContain('escapeXml')
-      expect(content).toContain('getLocaleStrings')
-      expect(content).toContain('generateBlogOG')
-      expect(content).toMatch(/LOCALES\s*=\s*\[[\s\S]*'en'[\s\S]*'sv'[\s\S]*\]/)
-      expect(content).toContain('sharp')
+  it('throws when generateBlogOG is called without sharp', async () => {
+    await expect(og.generateBlogOG('en', null)).rejects.toThrow(
+      'sharp is not installed'
+    )
+  })
+
+  it('generates an OG image using injected sharp implementation', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'og-script-'))
+    const tempScriptsDir = path.join(tempRoot, 'scripts')
+    const tempMessagesDir = path.join(tempRoot, 'messages')
+    const tempPublicDir = path.join(tempRoot, 'public')
+    fs.mkdirSync(tempScriptsDir, { recursive: true })
+    fs.mkdirSync(tempMessagesDir, { recursive: true })
+    fs.mkdirSync(tempPublicDir, { recursive: true })
+
+    fs.copyFileSync(
+      path.join(process.cwd(), 'messages', 'en.json'),
+      path.join(tempMessagesDir, 'en.json')
+    )
+    fs.copyFileSync(
+      path.join(process.cwd(), 'public', 'viscalyx_logo.svg'),
+      path.join(tempPublicDir, 'viscalyx_logo.svg')
+    )
+
+    const outputPath = path.join(tempPublicDir, 'og-blog-en.png')
+    try {
+      await withPreservedFile(outputPath, async () => {
+        await og.generateBlogOG('en', createSharpMock(), tempScriptsDir)
+        expect(fs.existsSync(outputPath)).toBe(true)
+        const stat = fs.statSync(outputPath)
+        expect(stat.size).toBeGreaterThan(0)
+      })
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true })
+    }
+  })
+
+  it('main exits when sharp is unavailable', async () => {
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
     })
+    await expect(og.main(null)).rejects.toThrow('exit:1')
+  })
+
+  it('main runs successfully with injected sharp and locale list', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'og-main-'))
+    const tempScriptsDir = path.join(tempRoot, 'scripts')
+    const tempMessagesDir = path.join(tempRoot, 'messages')
+    const tempPublicDir = path.join(tempRoot, 'public')
+    const copiedScriptPath = path.join(tempScriptsDir, 'generate-og-images.js')
+    const originalCwd = process.cwd()
+
+    fs.mkdirSync(tempScriptsDir, { recursive: true })
+    fs.mkdirSync(tempMessagesDir, { recursive: true })
+    fs.mkdirSync(tempPublicDir, { recursive: true })
+    fs.copyFileSync(
+      path.join(process.cwd(), 'scripts', 'generate-og-images.js'),
+      copiedScriptPath
+    )
+    fs.copyFileSync(
+      path.join(process.cwd(), 'messages', 'en.json'),
+      path.join(tempMessagesDir, 'en.json')
+    )
+    fs.copyFileSync(
+      path.join(process.cwd(), 'public', 'viscalyx_logo.svg'),
+      path.join(tempPublicDir, 'viscalyx_logo.svg')
+    )
+
+    const tempRequire = createRequire(copiedScriptPath)
+    const tempOg = tempRequire('./generate-og-images.js')
+    const outputPath = path.join(tempRoot, 'public', 'og-blog-en.png')
+
+    try {
+      process.chdir(tempRoot)
+      await withPreservedFile(outputPath, async () => {
+        await tempOg.main(createSharpMock(), ['en'])
+        expect(fs.existsSync(outputPath)).toBe(true)
+      })
+    } finally {
+      process.chdir(originalCwd)
+      fs.rmSync(tempRoot, { recursive: true, force: true })
+    }
+  })
+
+  it('main exits when at least one locale generation fails', async () => {
+    vi.spyOn(process, 'exit').mockImplementation(code => {
+      throw new Error(`exit:${code}`)
+    })
+
+    const failingSharp = () => {
+      throw new Error('sharp failed')
+    }
+
+    await expect(og.main(failingSharp, ['en'])).rejects.toThrow('exit:1')
   })
 })

@@ -1,15 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { consentEvents } from '../consent-events'
+import { consentEvents } from '@/lib/consent-events'
 import {
   cleanupCookies,
   clearInternalCaches,
   defaultConsentSettings,
   getConsentSettings,
+  getConsentTimestamp,
   hasConsent,
   hasConsentChoice,
   resetConsent,
   saveConsentSettings,
-} from '../cookie-consent'
+} from '@/lib/cookie-consent'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Don't mock cookie-utils, so we test the actual integration
 
@@ -198,6 +199,29 @@ describe('Cookie Consent', () => {
         cookieMock.operations[cookieMock.operations.length - 1]
       expect(lastCookieOperation).not.toContain('Secure')
       expect(lastCookieOperation).toContain('SameSite=Lax')
+    })
+
+    it('should handle storage errors gracefully', () => {
+      const setItemSpy = vi
+        .spyOn(localStorageMock, 'setItem')
+        .mockImplementation(() => {
+          throw new Error('storage write failed')
+        })
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
+
+      try {
+        saveConsentSettings(defaultConsentSettings)
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          'Failed to save cookie consent:',
+          expect.any(Error)
+        )
+      } finally {
+        setItemSpy.mockRestore()
+        consoleErrorSpy.mockRestore()
+      }
     })
   })
 
@@ -555,6 +579,70 @@ describe('Cookie Consent', () => {
         analytics: false,
         preferences: false,
       })
+    })
+  })
+
+  describe('getConsentTimestamp', () => {
+    it('returns null when no consent is stored', () => {
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns parsed timestamp when consent exists', () => {
+      const timestamp = '2026-02-20T00:00:00.000Z'
+      localStorageMock.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          version: '1.0',
+          settings: defaultConsentSettings,
+          timestamp,
+        })
+      )
+
+      expect(getConsentTimestamp()?.toISOString()).toBe(timestamp)
+    })
+
+    it('returns null for invalid stored timestamp payload', () => {
+      localStorageMock.setItem('viscalyx.org-cookie-consent', 'not-json')
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns null when timestamp field is missing', () => {
+      localStorageMock.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          version: '1.0',
+          settings: defaultConsentSettings,
+        })
+      )
+
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns null when timestamp field is invalid', () => {
+      localStorageMock.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          version: '1.0',
+          settings: defaultConsentSettings,
+          timestamp: 'not-a-date',
+        })
+      )
+
+      expect(getConsentTimestamp()).toBeNull()
+    })
+
+    it('returns null when window is unavailable', () => {
+      const originalWindow = global.window
+      try {
+        Reflect.deleteProperty(globalThis, 'window')
+        expect(getConsentTimestamp()).toBeNull()
+      } finally {
+        Object.defineProperty(globalThis, 'window', {
+          value: originalWindow,
+          writable: true,
+          configurable: true,
+        })
+      }
     })
   })
 })

@@ -12,7 +12,7 @@ export function getOrganizationJsonLd(): WithContext<Organization> {
     '@type': 'Organization',
     name: 'Viscalyx',
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
+    logo: `${SITE_URL}/viscalyx_logo_128x128.png`,
     description:
       'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation.',
     sameAs: ['https://github.com/viscalyx'],

@@ -240,7 +240,7 @@ const Hero = () => {
                           <div className="text-center">
                             <Code className="h-16 w-16 text-primary-600 dark:text-primary-400 mx-auto mb-4" />
                             <p className="text-primary-700 dark:text-primary-300 font-medium">
-                              {image.alt}
+                              {t('errorFallback')}
                             </p>
                           </div>
                         </div>

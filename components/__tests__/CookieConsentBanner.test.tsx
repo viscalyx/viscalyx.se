@@ -1,7 +1,13 @@
+import CookieConsentBanner from '@/components/CookieConsentBanner'
+import * as cookieConsent from '@/lib/cookie-consent'
+
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { NextIntlClientProvider } from 'next-intl'
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import CookieConsentBanner from '../CookieConsentBanner'
+
+import { NextIntlClientProvider } from 'next-intl'
+
+import type { ReactNode } from 'react'
 
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({
@@ -59,7 +65,7 @@ const messages = {
   },
 }
 
-const renderWithIntl = (component: React.ReactNode) => {
+const renderWithIntl = (component: ReactNode) => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       {component}
@@ -68,8 +74,15 @@ const renderWithIntl = (component: React.ReactNode) => {
 }
 
 describe('CookieConsentBanner', () => {
+  let user: ReturnType<typeof userEvent.setup>
+  const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
+  const mockSaveConsentSettings = vi.mocked(cookieConsent.saveConsentSettings)
+  const mockCleanupCookies = vi.mocked(cookieConsent.cleanupCookies)
+
   beforeEach(() => {
     vi.clearAllMocks()
+    user = userEvent.setup()
+    mockGetConsentSettings.mockReturnValue(null)
   })
 
   it('should render the banner when no consent choice has been made', async () => {
@@ -90,7 +103,7 @@ describe('CookieConsentBanner', () => {
       expect(screen.getByText('Customize Settings')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
@@ -100,19 +113,31 @@ describe('CookieConsentBanner', () => {
     })
   })
 
-  it('should accept all cookies when Accept All is clicked', async () => {
-    const { saveConsentSettings } = await import('@/lib/cookie-consent')
+  it('opens detailed settings when Learn more is clicked', async () => {
+    renderWithIntl(<CookieConsentBanner />)
 
+    await waitFor(() => {
+      expect(screen.getByText('Learn more')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByText('Learn more'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
+    })
+  })
+
+  it('should accept all cookies when Accept All is clicked', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
     await waitFor(() => {
       expect(screen.getByText('Accept All')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Accept All'))
+    await user.click(screen.getByText('Accept All'))
 
     await waitFor(() => {
-      expect(saveConsentSettings).toHaveBeenCalledWith({
+      expect(mockSaveConsentSettings).toHaveBeenCalledWith({
         'strictly-necessary': true,
         analytics: true,
         preferences: true,
@@ -121,31 +146,42 @@ describe('CookieConsentBanner', () => {
   })
 
   it('should reject all cookies when Reject All is clicked', async () => {
-    const { saveConsentSettings, cleanupCookies } =
-      await import('@/lib/cookie-consent')
-
     renderWithIntl(<CookieConsentBanner />)
 
     await waitFor(() => {
       expect(screen.getByText('Reject All')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Reject All'))
+    await user.click(screen.getByText('Reject All'))
 
     await waitFor(() => {
-      expect(saveConsentSettings).toHaveBeenCalledWith({
+      expect(mockSaveConsentSettings).toHaveBeenCalledWith({
         'strictly-necessary': true,
         analytics: false,
         preferences: false,
       })
-      expect(cleanupCookies).toHaveBeenCalled()
+      expect(mockCleanupCookies).toHaveBeenCalled()
+    })
+  })
+
+  it('does not render banner when consent already exists', async () => {
+    mockGetConsentSettings.mockReturnValue({
+      'strictly-necessary': true,
+      analytics: true,
+      preferences: true,
+    })
+
+    renderWithIntl(<CookieConsentBanner />)
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
   })
 
   it('should show required badge for strictly necessary cookies', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       expect(screen.getByText('Required')).toBeInTheDocument()
@@ -155,22 +191,23 @@ describe('CookieConsentBanner', () => {
   it('should allow toggling of non-essential cookie categories', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
       expect(analyticsToggle).toBeInTheDocument()
       expect(analyticsToggle).not.toBeChecked()
-
-      fireEvent.click(analyticsToggle)
-      expect(analyticsToggle).toBeChecked()
     })
+
+    const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
+    await user.click(analyticsToggle)
+    expect(analyticsToggle).toBeChecked()
   })
 
   it('should not allow toggling of strictly necessary cookies', async () => {
     renderWithIntl(<CookieConsentBanner />)
 
-    fireEvent.click(screen.getByText('Customize Settings'))
+    await user.click(screen.getByText('Customize Settings'))
 
     await waitFor(() => {
       const necessaryToggle = screen.getByLabelText(
@@ -212,17 +249,122 @@ describe('CookieConsentBanner', () => {
         expect(screen.getByText('Accept All')).toBeInTheDocument()
       })
 
-      fireEvent.click(screen.getByText('Accept All'))
+      await user.click(screen.getByText('Accept All'))
 
       await waitFor(() => {
         expect(document.body.style.paddingBottom).toBe('')
       })
     })
 
+    it('closes detailed settings view using close button', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await user.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
+      })
+
+      await user.click(screen.getByRole('button', { name: 'Close' }))
+
+      await waitFor(() => {
+        expect(screen.queryByText('Cookie Settings')).not.toBeInTheDocument()
+        expect(screen.getByText('We Use Cookies')).toBeInTheDocument()
+      })
+    })
+
+    it('saves custom preferences from detailed view', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+      await user.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(
+          screen.getByRole('button', { name: 'Save Preferences' })
+        ).toBeInTheDocument()
+      })
+
+      const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
+      await user.click(analyticsToggle)
+      await user.click(screen.getByRole('button', { name: 'Save Preferences' }))
+
+      await waitFor(() => {
+        expect(mockSaveConsentSettings).toHaveBeenCalledWith({
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: false,
+        })
+        expect(mockCleanupCookies).toHaveBeenCalledWith({
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: false,
+        })
+      })
+    })
+
+    it('moves focus to reject button when Escape is pressed', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByText('Accept All')).toBeInTheDocument()
+      })
+
+      fireEvent.keyDown(document, { key: 'Escape' })
+
+      const rejectButton = screen.getByRole('button', { name: 'Reject All' })
+      expect(rejectButton).toHaveFocus()
+    })
+
+    it('restores previously focused element after closing banner', async () => {
+      const outsideButton = document.createElement('button')
+      outsideButton.textContent = 'outside'
+      document.body.appendChild(outsideButton)
+      outsideButton.focus()
+
+      try {
+        renderWithIntl(<CookieConsentBanner />)
+        await waitFor(() => {
+          expect(screen.getByText('Accept All')).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByText('Accept All'))
+
+        await waitFor(() => {
+          expect(outsideButton).toHaveFocus()
+        })
+      } finally {
+        outsideButton.remove()
+      }
+    })
+
+    it('traps focus within banner with Tab and Shift+Tab', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+      })
+
+      const learnMoreButton = screen.getByText('Learn more')
+      const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
+
+      // This asserts the banner's custom keydown focus-trap logic, which wraps
+      // focus between the last and first focusable controls in the dialog.
+      acceptAllButton.focus()
+      fireEvent.keyDown(document, { key: 'Tab' })
+      await waitFor(() => {
+        expect(learnMoreButton).toHaveFocus()
+      })
+
+      learnMoreButton.focus()
+      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+      await waitFor(() => {
+        expect(acceptAllButton).toHaveFocus()
+      })
+    })
+
     it('should have proper aria labels for toggle switches in detailed view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
@@ -237,7 +379,7 @@ describe('CookieConsentBanner', () => {
     it('should have accessible cookie details in settings view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
-      fireEvent.click(screen.getByText('Customize Settings'))
+      await user.click(screen.getByText('Customize Settings'))
 
       await waitFor(() => {
         const viewCookiesButton = screen.getByText(/View Cookies \(1\)/)

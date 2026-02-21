@@ -13,6 +13,8 @@
  *   --dry-run     Run wrangler deploy --dry-run to get actual bundle size
  *   --json        Output as JSON
  *   --help        Show help
+ *
+ * Exports marked with @internal are intended for tests and are not a stable public API.
  */
 
 const fs = require('fs')
@@ -28,6 +30,47 @@ const LIMITS = {
   paidCompressedMB: 10,
   // Warning threshold (percentage of paid limit)
   warnPercentage: 50,
+}
+
+const DEFAULT_ANALYZE_RESULT = {
+  serverHandler: {
+    path: '.open-next/server-functions/default/handler.mjs',
+    size: 0,
+    gzipSize: 0,
+  },
+  middleware: {
+    path: '.open-next/middleware/handler.mjs',
+    size: 0,
+    gzipSize: 0,
+  },
+  assets: {
+    path: '.open-next/assets',
+    size: 0,
+  },
+  serverFunctions: {
+    path: '.open-next/server-functions',
+    size: 0,
+  },
+  total: {
+    path: '.open-next',
+    size: 0,
+  },
+  wrangler: null,
+  status: 'success',
+  statusMessage: 'Bundle size OK',
+}
+
+function cloneDefaultAnalyzeResult() {
+  return {
+    serverHandler: { ...DEFAULT_ANALYZE_RESULT.serverHandler },
+    middleware: { ...DEFAULT_ANALYZE_RESULT.middleware },
+    assets: { ...DEFAULT_ANALYZE_RESULT.assets },
+    serverFunctions: { ...DEFAULT_ANALYZE_RESULT.serverFunctions },
+    total: { ...DEFAULT_ANALYZE_RESULT.total },
+    wrangler: DEFAULT_ANALYZE_RESULT.wrangler,
+    status: DEFAULT_ANALYZE_RESULT.status,
+    statusMessage: DEFAULT_ANALYZE_RESULT.statusMessage,
+  }
 }
 
 /**
@@ -71,7 +114,8 @@ function getFileSize(filePath) {
 }
 
 /**
- * Get directory size recursively
+ * Get directory size recursively.
+ * @internal Exported for testing.
  */
 function getDirSize(dirPath) {
   let totalSize = 0
@@ -92,7 +136,8 @@ function getDirSize(dirPath) {
 }
 
 /**
- * Get gzipped size of a file using Node.js zlib
+ * Get gzipped size of a file using Node.js zlib.
+ * @internal Exported for testing.
  */
 function getGzipSize(filePath) {
   try {
@@ -105,8 +150,62 @@ function getGzipSize(filePath) {
 }
 
 /**
- * Run wrangler deploy --dry-run to get actual bundle size
+ * Parse wrangler output and extract upload + gzip sizes.
+ * Supports decimals using either "." or "," while preserving thousands separators.
  */
+function parseWranglerOutput(output) {
+  const normalize = s => {
+    const value = String(s).trim()
+    const lastComma = value.lastIndexOf(',')
+    const lastDot = value.lastIndexOf('.')
+
+    if (lastComma !== -1 && lastDot !== -1) {
+      if (lastComma > lastDot) {
+        // Locale style: 1.500,00 -> 1500.00
+        return value.replace(/\./g, '').replace(',', '.')
+      }
+      // Locale style: 1,500.00 -> 1500.00
+      return value.replace(/,/g, '')
+    }
+
+    if (lastComma !== -1) {
+      const fractionalDigits = value.length - lastComma - 1
+      // Decimal comma (e.g. 1500,00 or 1,50)
+      if (fractionalDigits > 0 && fractionalDigits <= 2) {
+        return value.replace(',', '.')
+      }
+      // Thousands separators with comma (e.g. 1,500)
+      return value.replace(/,/g, '')
+    }
+
+    return value
+  }
+  const SIZE_LINE_RE_KIB =
+    /^\s*Total Upload:\s*([\d.,]+)\s*KiB\s*\/\s*gzip:\s*([\d.,]+)\s*KiB\s*$/im
+  const SIZE_LINE_RE_MIB =
+    /^\s*Total Upload:\s*([\d.,]+)\s*MiB\s*\/\s*gzip:\s*([\d.,]+)\s*MiB\s*$/im
+
+  const kibMatch = output.match(SIZE_LINE_RE_KIB)
+  if (kibMatch) {
+    return {
+      uncompressedKB: parseFloat(normalize(kibMatch[1])),
+      compressedKB: parseFloat(normalize(kibMatch[2])),
+    }
+  }
+
+  const mibMatch = output.match(SIZE_LINE_RE_MIB)
+  if (mibMatch) {
+    return {
+      uncompressedKB: parseFloat(normalize(mibMatch[1])) * 1024,
+      compressedKB: parseFloat(normalize(mibMatch[2])) * 1024,
+    }
+  }
+
+  return null
+}
+
+/* c8 ignore start */
+/** @internal Helper used by analyzeBuild dry-run mode. */
 function getWranglerBundleSize() {
   try {
     console.error('📦 Running wrangler dry-run to get actual bundle size...\n')
@@ -116,50 +215,20 @@ function getWranglerBundleSize() {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
-    // Parse output for "Total Upload: X KiB / gzip: Y KiB"
-    const match = result.match(
-      /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
-    )
-    if (match) {
-      return {
-        uncompressedKB: parseFloat(match[1]),
-        compressedKB: parseFloat(match[2]),
-        raw: result,
-      }
-    }
-
-    // Try MB format
-    const mbMatch = result.match(
-      /Total Upload:\s*([\d.]+)\s*MiB\s*\/\s*gzip:\s*([\d.]+)\s*MiB/i
-    )
-    if (mbMatch) {
-      return {
-        uncompressedKB: parseFloat(mbMatch[1]) * 1024,
-        compressedKB: parseFloat(mbMatch[2]) * 1024,
-        raw: result,
-      }
-    }
-
-    return null
+    const parsed = parseWranglerOutput(result)
+    return parsed ? { ...parsed, raw: result } : null
   } catch (error) {
     // Try to extract from error output
     const errorOutput = error.stdout || error.stderr || ''
-    const match = errorOutput.match(
-      /Total Upload:\s*([\d.]+)\s*KiB\s*\/\s*gzip:\s*([\d.]+)\s*KiB/i
-    )
-    if (match) {
-      return {
-        uncompressedKB: parseFloat(match[1]),
-        compressedKB: parseFloat(match[2]),
-        raw: errorOutput,
-      }
-    }
-    return null
+    const parsed = parseWranglerOutput(errorOutput)
+    return parsed ? { ...parsed, raw: errorOutput } : null
   }
 }
+/* c8 ignore stop */
 
 /**
- * Check if build exists and is recent (default: 30 minutes)
+ * Check if build exists and is recent (default: 30 minutes).
+ * @internal Exported for testing.
  */
 function isBuildFresh(maxAgeMinutes = 30) {
   const buildDir = path.join(process.cwd(), '.open-next')
@@ -186,8 +255,10 @@ function isBuildFresh(maxAgeMinutes = 30) {
   return { fresh: true, ageMinutes: Math.round(ageMinutes) }
 }
 
+/* c8 ignore start */
 /**
- * Run the OpenNext build
+ * Run the OpenNext build.
+ * @internal Exported for testing.
  */
 function runBuild() {
   console.error('🔨 Building for Cloudflare Workers...\n')
@@ -203,11 +274,17 @@ function runBuild() {
     return false
   }
 }
+/* c8 ignore stop */
 
 /**
  * Analyze the bundle and return results
  */
-function analyzeBuild(options = {}) {
+function analyzeBuild(options = {}, deps = {}) {
+  const impl = {
+    getWranglerBundleSize,
+    ...deps,
+  }
+  const limits = { ...LIMITS, ...(impl.LIMITS || {}) }
   const buildDir = path.join(process.cwd(), '.open-next')
 
   if (!fs.existsSync(buildDir)) {
@@ -215,36 +292,16 @@ function analyzeBuild(options = {}) {
     console.error(
       '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.'
     )
-    process.exit(1)
+    return {
+      ...cloneDefaultAnalyzeResult(),
+      limits,
+      status: 'error',
+      statusMessage: 'Build directory .open-next not found',
+    }
   }
 
-  const results = {
-    serverHandler: {
-      path: '.open-next/server-functions/default/handler.mjs',
-      size: 0,
-      gzipSize: 0,
-    },
-    middleware: {
-      path: '.open-next/middleware/handler.mjs',
-      size: 0,
-      gzipSize: 0,
-    },
-    assets: {
-      path: '.open-next/assets',
-      size: 0,
-    },
-    serverFunctions: {
-      path: '.open-next/server-functions',
-      size: 0,
-    },
-    total: {
-      path: '.open-next',
-      size: 0,
-    },
-    wrangler: null,
-    status: 'success',
-    statusMessage: 'Bundle size OK',
-  }
+  const results = cloneDefaultAnalyzeResult()
+  results.limits = limits
 
   // Analyze server handler
   const serverHandlerPath = path.join(
@@ -288,7 +345,7 @@ function analyzeBuild(options = {}) {
 
   // Get actual wrangler bundle size if requested
   if (options.dryRun) {
-    results.wrangler = getWranglerBundleSize()
+    results.wrangler = impl.getWranglerBundleSize()
 
     // Fail fast if dry-run was requested but wrangler sizes are unavailable
     if (!results.wrangler) {
@@ -303,6 +360,7 @@ function analyzeBuild(options = {}) {
 
   // Determine status based on wrangler size or estimated size
   // When dryRun is set, results.wrangler is guaranteed to be valid (fail-fast above)
+  /* c8 ignore next */
   const compressedKB = results.wrangler
     ? results.wrangler.compressedKB
     : results.serverHandler.gzipSize / 1024
@@ -310,24 +368,24 @@ function analyzeBuild(options = {}) {
   const compressedMB = compressedKB / 1024
 
   // Calculate percentages for both plans
-  const freeUsagePercent = (compressedMB / LIMITS.freeCompressedMB) * 100
-  const paidUsagePercent = (compressedMB / LIMITS.paidCompressedMB) * 100
+  const freeUsagePercent = (compressedMB / limits.freeCompressedMB) * 100
+  const paidUsagePercent = (compressedMB / limits.paidCompressedMB) * 100
 
   results.usage = {
     compressedMB,
     freePercent: freeUsagePercent,
     paidPercent: paidUsagePercent,
-    exceedsFree: compressedMB > LIMITS.freeCompressedMB,
-    exceedsPaid: compressedMB > LIMITS.paidCompressedMB,
+    exceedsFree: compressedMB > limits.freeCompressedMB,
+    exceedsPaid: compressedMB > limits.paidCompressedMB,
   }
 
-  if (compressedMB > LIMITS.paidCompressedMB) {
+  if (compressedMB > limits.paidCompressedMB) {
     results.status = 'error'
-    results.statusMessage = `Bundle exceeds paid plan limit (${LIMITS.paidCompressedMB}MB)!`
-  } else if (compressedMB > LIMITS.freeCompressedMB) {
+    results.statusMessage = `Bundle exceeds paid plan limit (${limits.paidCompressedMB}MB)!`
+  } else if (compressedMB > limits.freeCompressedMB) {
     results.status = 'warning'
-    results.statusMessage = `Bundle exceeds free plan limit (${LIMITS.freeCompressedMB}MB) - requires paid plan`
-  } else if (paidUsagePercent > LIMITS.warnPercentage) {
+    results.statusMessage = `Bundle exceeds free plan limit (${limits.freeCompressedMB}MB) - requires paid plan`
+  } else if (paidUsagePercent > limits.warnPercentage) {
     results.status = 'info'
     results.statusMessage = 'Bundle size OK but approaching limits'
   }
@@ -407,6 +465,7 @@ function outputForCI(results) {
  * Output results as Markdown (for PR comments)
  */
 function outputForMarkdown(results) {
+  const limits = results.limits || LIMITS
   const statusEmoji = getStatusEmoji(results.status)
 
   const wranglerSize = results.wrangler
@@ -455,8 +514,8 @@ ${warningText}
 
 | Plan | Limit | Usage | Status |
 |------|-------|-------|--------|
-| Free | ${LIMITS.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
-| Paid | ${LIMITS.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
+| Free | ${limits.freeCompressedMB} MB | ${freePercent}% | ${freeStatus} |
+| Paid | ${limits.paidCompressedMB} MB | ${paidPercent}% | ${paidStatus} |
 
 ### 📦 Build Output Details
 
@@ -478,6 +537,7 @@ ${warningText}
  * Output results for terminal (human readable)
  */
 function outputForTerminal(results) {
+  const limits = results.limits || LIMITS
   const statusEmoji = getStatusEmoji(results.status)
 
   console.log('\n📦 Bundle Size Analysis\n')
@@ -527,14 +587,14 @@ function outputForTerminal(results) {
     const paidStatus = results.usage.exceedsPaid ? '❌ EXCEEDS' : '✅'
 
     console.log(
-      `  Free        ${LIMITS.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
+      `  Free        ${limits.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
     )
     console.log(
-      `  Paid        ${LIMITS.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
+      `  Paid        ${limits.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
     )
   } else {
-    console.log(`  Free        ${LIMITS.freeCompressedMB} MB`)
-    console.log(`  Paid        ${LIMITS.paidCompressedMB} MB`)
+    console.log(`  Free        ${limits.freeCompressedMB} MB`)
+    console.log(`  Paid        ${limits.paidCompressedMB} MB`)
   }
 
   console.log('')
@@ -553,8 +613,16 @@ function createProgressBar(percent, width) {
 /**
  * Main function
  */
-function main() {
-  const args = process.argv.slice(2)
+function main(args = process.argv.slice(2), deps = {}) {
+  const impl = {
+    isBuildFresh,
+    runBuild,
+    analyzeBuild,
+    outputForMarkdown,
+    outputForCI,
+    outputForTerminal,
+    ...deps,
+  }
 
   if (args.includes('--help')) {
     console.log(`
@@ -613,10 +681,10 @@ Examples:
 
   // Check if we need to build
   if (!options.noBuild && !options.ci) {
-    const buildStatus = isBuildFresh(options.maxAgeMinutes)
+    const buildStatus = impl.isBuildFresh(options.maxAgeMinutes)
     if (!buildStatus.fresh) {
       console.error(`⏰ ${buildStatus.reason}`)
-      if (!runBuild()) {
+      if (!impl.runBuild()) {
         process.exit(1)
       }
     } else {
@@ -631,16 +699,16 @@ Examples:
     options.dryRun = true
   }
 
-  const results = analyzeBuild(options)
+  const results = impl.analyzeBuild(options)
 
   if (options.json) {
     console.log(JSON.stringify(results, null, 2))
   } else if (options.markdown) {
-    outputForMarkdown(results)
+    impl.outputForMarkdown(results)
   } else if (options.ci) {
-    outputForCI(results)
+    impl.outputForCI(results)
   } else {
-    outputForTerminal(results)
+    impl.outputForTerminal(results)
   }
 
   // Exit with error code if bundle exceeds limit
@@ -649,4 +717,25 @@ Examples:
   }
 }
 
-main()
+/* c8 ignore next 3 */
+if (require.main === module) {
+  main()
+}
+
+module.exports = {
+  LIMITS,
+  formatBytes,
+  getStatusEmoji,
+  getFileSize,
+  getDirSize,
+  getGzipSize,
+  parseWranglerOutput,
+  isBuildFresh,
+  runBuild,
+  analyzeBuild,
+  outputForCI,
+  outputForMarkdown,
+  outputForTerminal,
+  createProgressBar,
+  main,
+}

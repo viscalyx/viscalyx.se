@@ -1,6 +1,6 @@
 import TableOfContents from '@/components/TableOfContents'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { TocItem } from '@/lib/slug-utils'
 
@@ -22,6 +22,7 @@ vi.mock('@/components/BlogIcons', () => ({
 // Mock IntersectionObserver
 const mockObserve = vi.fn()
 const mockDisconnect = vi.fn()
+const intersectionObserverInstances: MockIntersectionObserver[] = []
 
 class MockIntersectionObserver {
   observe = mockObserve
@@ -30,7 +31,9 @@ class MockIntersectionObserver {
   constructor(
     public callback: IntersectionObserverCallback,
     public options?: IntersectionObserverInit
-  ) {}
+  ) {
+    intersectionObserverInstances.push(this)
+  }
 }
 
 // Mock ResizeObserver
@@ -57,8 +60,13 @@ const mockItems: TocItem[] = [
 describe('TableOfContents', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    intersectionObserverInstances.length = 0
     vi.stubGlobal('IntersectionObserver', MockIntersectionObserver)
     vi.stubGlobal('ResizeObserver', MockResizeObserver)
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('renders all heading items', () => {
@@ -140,7 +148,6 @@ describe('TableOfContents', () => {
     })
 
     document.body.removeChild(heading)
-    vi.restoreAllMocks()
   })
 
   it('observes headings with IntersectionObserver', () => {
@@ -186,5 +193,115 @@ describe('TableOfContents', () => {
     const buttons = screen.getAllByRole('button')
     expect(buttons[0]).toHaveAttribute('data-id', 'introduction')
     expect(buttons[1]).toHaveAttribute('data-id', 'getting-started')
+  })
+
+  it('marks intersecting heading as active', () => {
+    const heading = document.createElement('h2')
+    heading.id = 'installation'
+    document.body.appendChild(heading)
+
+    try {
+      render(<TableOfContents items={mockItems} />)
+      expect(intersectionObserverInstances.length).toBeGreaterThan(0)
+      act(() => {
+        intersectionObserverInstances[0].callback(
+          [
+            {
+              isIntersecting: true,
+              target: heading,
+            } as unknown as IntersectionObserverEntry,
+          ],
+          intersectionObserverInstances[0] as unknown as IntersectionObserver
+        )
+      })
+
+      const activeButton = screen.getByRole('button', { name: 'Installation' })
+      expect(activeButton).toHaveAttribute('aria-current', 'location')
+    } finally {
+      heading.remove()
+    }
+  })
+
+  it('auto-scrolls toc when active item is outside visible area', async () => {
+    const heading = document.createElement('h2')
+    heading.id = 'conclusion'
+    document.body.appendChild(heading)
+
+    try {
+      const { container } = render(<TableOfContents items={mockItems} />)
+      const scrollContainer = container.querySelector(
+        '.toc-scrollable'
+      ) as HTMLDivElement
+      const scrollToSpy = vi.fn()
+      Object.defineProperty(scrollContainer, 'scrollTo', {
+        value: scrollToSpy,
+        writable: true,
+        configurable: true,
+      })
+
+      const targetButton = screen.getByRole('button', { name: 'Conclusion' })
+      Object.defineProperty(targetButton, 'offsetTop', {
+        value: 400,
+        configurable: true,
+      })
+      Object.defineProperty(targetButton, 'offsetHeight', {
+        value: 20,
+        configurable: true,
+      })
+      Object.defineProperty(scrollContainer, 'clientHeight', {
+        value: 100,
+        configurable: true,
+      })
+      scrollContainer.getBoundingClientRect = vi.fn(() => ({
+        top: 0,
+        left: 0,
+        right: 200,
+        bottom: 100,
+        width: 200,
+        height: 100,
+        x: 0,
+        y: 0,
+        toJSON: vi.fn(),
+      }))
+      ;(targetButton as HTMLElement).getBoundingClientRect = vi.fn(() => ({
+        top: 200,
+        left: 0,
+        right: 200,
+        bottom: 220,
+        width: 200,
+        height: 20,
+        x: 0,
+        y: 200,
+        toJSON: vi.fn(),
+      }))
+
+      expect(intersectionObserverInstances.length).toBeGreaterThan(0)
+      act(() => {
+        intersectionObserverInstances[0].callback(
+          [
+            {
+              isIntersecting: true,
+              target: heading,
+            } as unknown as IntersectionObserverEntry,
+          ],
+          intersectionObserverInstances[0] as unknown as IntersectionObserver
+        )
+      })
+
+      await waitFor(() => {
+        expect(scrollToSpy).toHaveBeenCalled()
+      })
+    } finally {
+      heading.remove()
+    }
+  })
+
+  it('does not push hash or scroll when clicked heading is missing', () => {
+    const pushStateSpy = vi.spyOn(window.history, 'pushState')
+    render(<TableOfContents items={mockItems} />)
+
+    fireEvent.click(screen.getByText('Introduction'))
+
+    expect(pushStateSpy).not.toHaveBeenCalled()
   })
 })

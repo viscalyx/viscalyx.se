@@ -17,21 +17,6 @@
  *   public/og-blog-sv.png   — OG image for the Swedish blog page
  */
 
-let sharp
-try {
-  sharp = require('sharp')
-} catch {
-  console.error(
-    '\n\x1b[31mError: "sharp" is not installed.\x1b[0m\n\n' +
-      'This script requires the sharp package to generate OG images.\n' +
-      'Install it manually and re-run:\n\n' +
-      '  npm install sharp\n\n' +
-      'sharp is intentionally not a project devDependency because this\n' +
-      'script is run rarely. You can remove it afterwards with:\n\n' +
-      '  npm uninstall sharp\n'
-  )
-  process.exit(1)
-}
 const fs = require('fs')
 const path = require('path')
 
@@ -46,7 +31,17 @@ const OG_WIDTH = 1200
 const OG_HEIGHT = 630
 const LOGO_SIZE = 280
 
+// Keep in sync with `locales` in i18n.ts (single source for supported locales).
 const LOCALES = ['en', 'sv']
+
+/* c8 ignore next 7 */
+function loadSharp() {
+  try {
+    return require('sharp')
+  } catch {
+    return null
+  }
+}
 
 /**
  * Escape a string for safe inclusion in SVG text content.
@@ -63,14 +58,15 @@ function escapeXml(str) {
 /**
  * Read localized blog OG strings from the messages JSON for a given locale.
  */
-function getLocaleStrings(locale) {
-  const filePath = path.join(__dirname, '..', 'messages', `${locale}.json`)
+function getLocaleStrings(
+  locale,
+  basePath = path.join(__dirname, '..', 'messages')
+) {
+  const filePath = path.join(basePath, `${locale}.json`)
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   const blog = messages.blog
   if (!blog?.og?.title || !blog?.og?.tagline) {
-    throw new Error(
-      `Missing blog.og.title or blog.og.tagline in messages/${locale}.json`
-    )
+    throw new Error(`Missing blog.og.title or blog.og.tagline in ${filePath}`)
   }
   return {
     title: blog.og.title,
@@ -78,28 +74,8 @@ function getLocaleStrings(locale) {
   }
 }
 
-async function generateBlogOG(locale) {
-  const logoPath = path.join(__dirname, '..', 'public', 'viscalyx_logo.svg')
-  const outputPath = path.join(
-    __dirname,
-    '..',
-    'public',
-    `og-blog-${locale}.png`
-  )
-
-  const { title, tagline } = getLocaleStrings(locale)
-
-  // Render the SVG logo at the target size with a transparent background
-  const logo = await sharp(logoPath)
-    .resize(LOGO_SIZE, LOGO_SIZE, {
-      fit: 'contain',
-      background: { r: 0, g: 0, b: 0, alpha: 0 },
-    })
-    .png()
-    .toBuffer()
-
-  // Create an SVG background with a gradient and localized text
-  const backgroundSVG = `
+function buildBackgroundSVG(title, tagline) {
+  return `
 <svg width="${OG_WIDTH}" height="${OG_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -167,8 +143,47 @@ async function generateBlogOG(locale) {
     letter-spacing="4"
   >VISCALYX</text>
 </svg>`
+}
 
-  const background = await sharp(Buffer.from(backgroundSVG))
+async function generateBlogOG(
+  locale,
+  sharpImpl = loadSharp(),
+  basePath = __dirname
+) {
+  if (!sharpImpl) {
+    throw new Error(
+      'sharp is not installed. Install with "npm install sharp" to generate OG images.'
+    )
+  }
+
+  const logoPath = path.join(basePath, '..', 'public', 'viscalyx_logo.svg')
+  if (!fs.existsSync(logoPath)) {
+    throw new Error(`Missing logo asset at ${logoPath}`)
+  }
+  const outputPath = path.join(
+    basePath,
+    '..',
+    'public',
+    `og-blog-${locale}.png`
+  )
+
+  const { title, tagline } = getLocaleStrings(
+    locale,
+    path.join(basePath, '..', 'messages')
+  )
+
+  // Render the SVG logo at the target size with a transparent background
+  const logo = await sharpImpl(logoPath)
+    .resize(LOGO_SIZE, LOGO_SIZE, {
+      fit: 'contain',
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .png()
+    .toBuffer()
+
+  const backgroundSVG = buildBackgroundSVG(title, tagline)
+
+  const background = await sharpImpl(Buffer.from(backgroundSVG))
     .resize(OG_WIDTH, OG_HEIGHT)
     .png()
     .toBuffer()
@@ -177,7 +192,7 @@ async function generateBlogOG(locale) {
   const logoX = Math.round(OG_WIDTH * 0.18 - LOGO_SIZE / 2) // ~216 - 140 = 76
   const logoY = Math.round((OG_HEIGHT - LOGO_SIZE) / 2)
 
-  await sharp(background)
+  await sharpImpl(background)
     .composite([
       {
         input: logo,
@@ -194,14 +209,48 @@ async function generateBlogOG(locale) {
   )
 }
 
-Promise.allSettled(LOCALES.map(locale => generateBlogOG(locale))).then(
-  results => {
-    const failures = results.filter(r => r.status === 'rejected')
-    if (failures.length > 0) {
-      failures.forEach(f => {
-        console.error('OG image generation failed:', f.reason)
-      })
-      process.exit(1)
-    }
+async function main(sharpImpl = loadSharp(), locales = LOCALES) {
+  if (!sharpImpl) {
+    console.error(
+      '\n\x1b[31mError: "sharp" is not installed.\x1b[0m\n\n' +
+        'This script requires the sharp package to generate OG images.\n' +
+        'Install it manually and re-run:\n\n' +
+        '  npm install sharp\n\n' +
+        'sharp is intentionally not a project devDependency because this\n' +
+        'script is run rarely. You can remove it afterwards with:\n\n' +
+        '  npm uninstall sharp\n'
+    )
+    /* c8 ignore next */
+    process.exit(1)
   }
-)
+
+  const results = await Promise.allSettled(
+    locales.map(locale => generateBlogOG(locale, sharpImpl))
+  )
+  const failures = results.filter(r => r.status === 'rejected')
+  if (failures.length > 0) {
+    failures.forEach(f => {
+      console.error('OG image generation failed:', f.reason)
+    })
+    /* c8 ignore next */
+    process.exit(1)
+  }
+}
+
+/* c8 ignore next 3 */
+if (require.main === module) {
+  main()
+}
+
+module.exports = {
+  OG_WIDTH,
+  OG_HEIGHT,
+  LOGO_SIZE,
+  LOCALES,
+  loadSharp,
+  escapeXml,
+  getLocaleStrings,
+  buildBackgroundSVG,
+  generateBlogOG,
+  main,
+}

@@ -1,6 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { vi } from 'vitest'
-import CookieSettings from '../CookieSettings'
+import CookieSettings from '@/components/CookieSettings'
+import * as cookieConsent from '@/lib/cookie-consent'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock cookie-consent lib
 vi.mock('@/lib/cookie-consent', () => ({
@@ -24,9 +27,6 @@ vi.mock('@/lib/cookie-consent', () => ({
     },
   ],
 }))
-
-// Import the mocked functions
-import * as cookieConsent from '@/lib/cookie-consent'
 
 const mockGetConsentSettings = vi.mocked(cookieConsent.getConsentSettings)
 const mockGetConsentTimestamp = vi.mocked(cookieConsent.getConsentTimestamp)
@@ -73,10 +73,17 @@ vi.mock('next-intl', () => ({
 }))
 
 describe('CookieSettings', () => {
+  let user: ReturnType<typeof userEvent.setup>
+
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.resetAllMocks()
+    user = userEvent.setup()
     mockGetConsentSettings.mockReturnValue(null)
     mockGetConsentTimestamp.mockReturnValue(null)
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
   it('renders cookie settings interface', () => {
@@ -102,7 +109,7 @@ describe('CookieSettings', () => {
   it('shows confirmation modal when reset is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Reset Cookie Preferences')).toBeInTheDocument()
@@ -117,13 +124,13 @@ describe('CookieSettings', () => {
   it('closes confirmation modal when cancel is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Cancel')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Cancel'))
+    await user.click(screen.getByText('Cancel'))
 
     await waitFor(() => {
       expect(
@@ -135,13 +142,13 @@ describe('CookieSettings', () => {
   it('resets consent when confirmed', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('Reset Consent'))
 
     await waitFor(() => {
       expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Reset Preferences'))
+    await user.click(screen.getByText('Reset Preferences'))
 
     await waitFor(() => {
       expect(mockResetConsent).toHaveBeenCalledTimes(1)
@@ -151,7 +158,7 @@ describe('CookieSettings', () => {
   it('saves settings when save button is clicked', async () => {
     render(<CookieSettings />)
 
-    fireEvent.click(screen.getByText('Save Preferences'))
+    await user.click(screen.getByText('Save Preferences'))
 
     await waitFor(() => {
       expect(mockSaveConsentSettings).toHaveBeenCalledTimes(1)
@@ -159,11 +166,11 @@ describe('CookieSettings', () => {
     })
   })
 
-  it('accepts all cookies when Accept All is clicked', () => {
+  it('accepts all cookies when Accept All is clicked', async () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    fireEvent.click(screen.getByText('Accept All'))
+    await user.click(screen.getByText('Accept All'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -172,11 +179,11 @@ describe('CookieSettings', () => {
     })
   })
 
-  it('rejects all optional cookies when Reject All is clicked', () => {
+  it('rejects all optional cookies when Reject All is clicked', async () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    fireEvent.click(screen.getByText('Reject All'))
+    await user.click(screen.getByText('Reject All'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -207,5 +214,170 @@ describe('CookieSettings', () => {
     const toggleContainer =
       strictlyNecessarySection?.querySelector('.opacity-50')
     expect(toggleContainer).toBeInTheDocument()
+  })
+
+  it('shows an error message when saving settings fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    mockSaveConsentSettings.mockImplementation(() => {
+      throw new Error('save failed')
+    })
+
+    render(<CookieSettings />)
+
+    await user.click(screen.getByText('Save Preferences'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to save cookie settings:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('shows an error message when reset fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    mockResetConsent.mockImplementation(() => {
+      throw new Error('reset failed')
+    })
+
+    render(<CookieSettings />)
+
+    await user.click(screen.getByText('Reset Consent'))
+    await waitFor(() => {
+      expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByText('Reset Preferences'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to reset consent:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('exports data and revokes created object URL', async () => {
+    const createObjectUrlSpy = vi
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:cookie-data')
+    const revokeObjectUrlSpy = vi.spyOn(URL, 'revokeObjectURL')
+    const anchorClickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(() => {})
+    const removeChildSpy = vi.spyOn(document.body, 'removeChild')
+
+    render(<CookieSettings />)
+    await user.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(createObjectUrlSpy).toHaveBeenCalledTimes(1)
+      expect(anchorClickSpy).toHaveBeenCalledTimes(1)
+      expect(revokeObjectUrlSpy).toHaveBeenCalledWith('blob:cookie-data')
+      expect(removeChildSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('handles export cleanup failures and warns instead of crashing', async () => {
+    const consoleWarnSpy = vi
+      .spyOn(console, 'warn')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {
+      throw new Error('revoke failed')
+    })
+
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+    vi.spyOn(document.body, 'contains').mockReturnValue(true)
+    vi.spyOn(document.body, 'removeChild').mockImplementation(() => {
+      throw new Error('remove failed')
+    })
+
+    render(<CookieSettings />)
+    await user.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Failed to remove download element:',
+        expect.any(Error)
+      )
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        'Failed to revoke blob URL:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('shows error when export throws before download link is created', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockImplementation(() => {
+      throw new Error('blob failed')
+    })
+
+    render(<CookieSettings />)
+    await user.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to export cookie data:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('shows error when appending download element fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
+
+    render(<CookieSettings />)
+
+    vi.spyOn(document.body, 'appendChild').mockImplementationOnce(node => {
+      if (node instanceof HTMLAnchorElement) {
+        throw new Error('append failed')
+      }
+      return HTMLBodyElement.prototype.appendChild.call(document.body, node)
+    })
+
+    await user.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to export cookie data:',
+        expect.any(Error)
+      )
+    })
+  })
+
+  it('shows error when triggering download click fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:cookie-data')
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {
+      throw new Error('click failed')
+    })
+
+    render(<CookieSettings />)
+    await user.click(screen.getByText('Export Data'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to export cookie data:',
+        expect.any(Error)
+      )
+    })
   })
 })

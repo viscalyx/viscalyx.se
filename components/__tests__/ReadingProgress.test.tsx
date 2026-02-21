@@ -9,9 +9,14 @@ vi.mock('next-intl', () => ({
 
 describe('ReadingProgress', () => {
   let proseElement: HTMLDivElement
+  let originalScrollHeightDescriptor: PropertyDescriptor | undefined
 
   beforeEach(() => {
     vi.clearAllMocks()
+    originalScrollHeightDescriptor = Object.getOwnPropertyDescriptor(
+      document.documentElement,
+      'scrollHeight'
+    )
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,
@@ -54,6 +59,16 @@ describe('ReadingProgress', () => {
 
   afterEach(() => {
     document.body.innerHTML = ''
+    if (originalScrollHeightDescriptor) {
+      Object.defineProperty(
+        document.documentElement,
+        'scrollHeight',
+        originalScrollHeightDescriptor
+      )
+    } else {
+      // Remove test-defined override and fall back to jsdom's default behavior.
+      Reflect.deleteProperty(document.documentElement, 'scrollHeight')
+    }
   })
 
   it('renders the top progress bar', () => {
@@ -87,5 +102,67 @@ describe('ReadingProgress', () => {
     unmount()
     expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function))
     expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+  })
+
+  it('falls back to full-page progress when target selector is missing', () => {
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      configurable: true,
+    })
+    Object.defineProperty(window, 'scrollY', {
+      value: 600,
+      writable: true,
+      configurable: true,
+    })
+
+    render(<ReadingProgress target=".missing-target" />)
+    const progressBar = screen.getByRole('progressbar')
+
+    expect(progressBar).toHaveAttribute('aria-valuenow', '27') // 600 / (3000 - 800) ~= 27%
+  })
+
+  it('sets progress to 0 before reaching the tracked content start', () => {
+    proseElement.getBoundingClientRect = vi.fn(() => ({
+      top: 1200,
+      left: 0,
+      right: 0,
+      bottom: 3200,
+      width: 0,
+      height: 2000,
+      x: 0,
+      y: 1200,
+      toJSON: vi.fn(),
+    }))
+    render(<ReadingProgress />)
+    const progressBar = screen.getByRole('progressbar')
+
+    expect(progressBar).toHaveAttribute('aria-valuenow', '0')
+  })
+
+  it('reaches 100% when endTarget has been passed', () => {
+    const endElement = document.createElement('div')
+    endElement.id = 'author-bio'
+    endElement.getBoundingClientRect = vi.fn(() => ({
+      top: -1000,
+      left: 0,
+      right: 0,
+      bottom: -800,
+      width: 0,
+      height: 200,
+      x: 0,
+      y: -1000,
+      toJSON: vi.fn(),
+    }))
+    document.body.appendChild(endElement)
+
+    Object.defineProperty(window, 'scrollY', {
+      value: 4000,
+      writable: true,
+      configurable: true,
+    })
+
+    render(<ReadingProgress endTarget="#author-bio" />)
+    const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toHaveAttribute('aria-valuenow', '100')
   })
 })

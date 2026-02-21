@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { hasConsent } from '../cookie-consent'
 import { setCookie, deleteCookie, getCookie } from '../cookie-utils'
 import {
@@ -32,6 +32,10 @@ describe('Language Preferences', () => {
     vi.clearAllMocks()
   })
 
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   describe('getLanguagePreference', () => {
     it('should return null when no language cookie exists', () => {
       vi.mocked(getCookie).mockReturnValue(null)
@@ -56,6 +60,14 @@ describe('Language Preferences', () => {
     it('should handle URL encoded values', () => {
       vi.mocked(getCookie).mockReturnValue('en-US')
       expect(getLanguagePreference()).toBe('en-US')
+    })
+
+    it('should return null if reading cookie throws', () => {
+      vi.mocked(getCookie).mockImplementationOnce(() => {
+        throw new Error('cookie read failed')
+      })
+
+      expect(getLanguagePreference()).toBeNull()
     })
   })
 
@@ -111,6 +123,22 @@ describe('Language Preferences', () => {
         maxAge: 365 * 24 * 60 * 60,
       })
     })
+
+    it('should handle save errors gracefully', () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
+      vi.mocked(setCookie).mockImplementationOnce(() => {
+        throw new Error('cookie write failed')
+      })
+
+      saveLanguagePreference('sv')
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to save language preference:',
+        expect.any(Error)
+      )
+    })
   })
 
   describe('clearLanguagePreference', () => {
@@ -136,6 +164,22 @@ describe('Language Preferences', () => {
       clearLanguagePreference()
 
       expect(mockDeleteCookie).toHaveBeenCalledWith('language')
+    })
+
+    it('should handle clear errors gracefully', () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {})
+      vi.mocked(deleteCookie).mockImplementationOnce(() => {
+        throw new Error('cookie delete failed')
+      })
+
+      clearLanguagePreference()
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to clear language preference:',
+        expect.any(Error)
+      )
     })
   })
 
@@ -172,6 +216,52 @@ describe('Language Preferences', () => {
       expect(getDefaultLanguage()).toBe('en')
 
       global.navigator = originalNavigator
+    })
+
+    it('should use navigator.languages when navigator.language is empty', () => {
+      const originalLanguage = navigator.language
+      const originalLanguages = navigator.languages
+
+      Object.defineProperty(navigator, 'language', {
+        writable: true,
+        value: '',
+      })
+      Object.defineProperty(navigator, 'languages', {
+        writable: true,
+        value: ['sv-FI'],
+      })
+
+      try {
+        expect(getDefaultLanguage()).toBe('sv')
+      } finally {
+        Object.defineProperty(navigator, 'language', {
+          writable: true,
+          value: originalLanguage,
+        })
+        Object.defineProperty(navigator, 'languages', {
+          writable: true,
+          value: originalLanguages,
+        })
+      }
+    })
+
+    it('should return fallback when navigator access throws', () => {
+      const originalNavigator = global.navigator
+      Object.defineProperty(global, 'navigator', {
+        configurable: true,
+        get: () => {
+          throw new Error('navigator unavailable')
+        },
+      })
+
+      try {
+        expect(getDefaultLanguage()).toBe('en')
+      } finally {
+        Object.defineProperty(global, 'navigator', {
+          configurable: true,
+          value: originalNavigator,
+        })
+      }
     })
   })
 })
