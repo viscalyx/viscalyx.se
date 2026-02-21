@@ -129,6 +129,70 @@ test.describe('Blog Post Page', () => {
     })
   })
 
+  test.describe('Mobile Table Behavior', () => {
+    test.use({
+      viewport: { width: 390, height: 844 }, // iPhone 12/13 logical viewport
+      isMobile: true,
+      hasTouch: true,
+    })
+
+    test('should keep page width stable and allow table horizontal scroll', async ({
+      page,
+    }) => {
+      await page.goto(TEST_URL)
+
+      const pageDimensions = await page.evaluate(() => {
+        const html = document.documentElement
+        const body = document.body
+        return {
+          htmlClientWidth: html.clientWidth,
+          htmlScrollWidth: html.scrollWidth,
+          bodyClientWidth: body.clientWidth,
+          bodyScrollWidth: body.scrollWidth,
+        }
+      })
+
+      expect(pageDimensions.htmlScrollWidth).toBeLessThanOrEqual(
+        pageDimensions.htmlClientWidth + 1
+      )
+      expect(pageDimensions.bodyScrollWidth).toBeLessThanOrEqual(
+        pageDimensions.bodyClientWidth + 1
+      )
+
+      const tableBehavior = await page.evaluate(() => {
+        const tables = Array.from(
+          document.querySelectorAll<HTMLTableElement>('.blog-content table')
+        )
+
+        if (tables.length === 0) {
+          return { hasTable: false, hasOverflow: false, before: 0, after: 0 }
+        }
+
+        const table =
+          tables.find(node => node.scrollWidth > node.clientWidth + 1) ??
+          tables[0]
+
+        const before = table.scrollLeft
+        table.scrollLeft = before + 120
+        const after = table.scrollLeft
+
+        return {
+          hasTable: true,
+          hasOverflow: table.scrollWidth > table.clientWidth + 1,
+          before,
+          after,
+        }
+      })
+
+      expect(tableBehavior.hasTable).toBe(true)
+      if (!tableBehavior.hasTable) {
+        return
+      }
+      expect(tableBehavior.hasOverflow).toBe(true)
+      expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+    })
+  })
+
   test.describe('Author Bio', () => {
     test('should display author bio section', async ({ page }) => {
       await page.goto(TEST_URL)

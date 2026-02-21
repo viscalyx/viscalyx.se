@@ -34,9 +34,38 @@
   /* Table styling for markdown tables */
   .blog-content table {
     @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
-    width: auto;
-    min-width: 300px;
+    display: block;
+    width: max-content;
+    min-width: 100%;
     max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) transparent;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .blog-content table::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .blog-content table::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .blog-content table::-webkit-scrollbar-thumb {
+    @apply bg-secondary-400;
+    border-radius: 9999px;
+  }
+
+  .dark .blog-content table {
+    scrollbar-color: rgb(75 85 99) transparent;
+  }
+
+  .dark .blog-content table::-webkit-scrollbar-thumb {
+    background-color: rgb(75 85 99); /* gray-600 */
   }
 
   .blog-content th {
@@ -286,6 +315,41 @@
 
   /* Responsive adjustments for mobile devices */
   @media (max-width: 768px) {
+    .blog-content table::after {
+      content: '';
+      position: sticky;
+      right: 0;
+      top: 0;
+      float: right;
+      width: 2rem;
+      height: 100%;
+      margin-left: -2rem;
+      pointer-events: none;
+      z-index: 1;
+      background: linear-gradient(
+        to left,
+        rgb(248 250 252 / 0.92),
+        rgb(248 250 252 / 0)
+      );
+    }
+
+    .dark .blog-content table::after {
+      background: linear-gradient(
+        to left,
+        rgb(10 12 20 / 0.92),
+        rgb(10 12 20 / 0)
+      );
+    }
+
+    .blog-content td > :not(code):not(pre) {
+      overflow-wrap: anywhere;
+    }
+
+    .blog-content td code {
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
     .blog-content img {
       max-width: 100%;
       margin: 1.5rem auto;
