@@ -34,13 +34,13 @@
   /* Table styling for markdown tables */
   .blog-content table {
     @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
+
     display: block;
     width: max-content;
     min-width: 100%;
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: rgb(156 163 175) transparent;
     position: relative;
@@ -259,6 +259,7 @@
     max-width: min(600px, 100%);
     /* Center images horizontally */
     margin: 2rem auto;
+
     display: block;
     /* Cursor to indicate clickability */
     cursor: pointer;

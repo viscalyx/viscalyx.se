@@ -28,7 +28,9 @@ flowchart TD
     C --> D{Page title correct?}
     D -- Yes --> E[✓ generateMetadata working]
     D -- No --> Y[✗ Metadata not exported]
-    E --> F[Header Navigation Tests]
+    E --> ML[Mobile Layout]
+    ML --> ML1[should not allow horizontal scrolling on the homepage]
+    ML1 --> F[Header Navigation Tests]
     F --> F1[Logo and nav links visible]
     F --> F2[Blog link navigates to /blog]
     F1 --> G[Hero Section Tests]

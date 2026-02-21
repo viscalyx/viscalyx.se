@@ -40,7 +40,9 @@ flowchart TD
     G --> G4[Read time]
     G --> G5[Tags]
     G1 & G2 & G3 & G4 & G5 --> H[Table of Contents]
-    H --> I[Author Bio Section]
+    H --> MT[Mobile Table Behavior]
+    MT --> MT1[keep page width stable + table scroll]
+    MT1 --> I[Author Bio Section]
     I --> I1[Author name + role]
     I --> I2[View Profile link]
     I1 & I2 --> J[Navigation Tests]
@@ -178,11 +180,28 @@ content.
 - `isMobile: true`
 - `hasTouch: true`
 
+**Steps:**
+
+1. Set viewport to iPhone 12/13 logical size (`390x844`) with `isMobile: true` and `hasTouch: true`.
+2. Navigate to the test post (`/blog/ssh-signing-keys-for-github-codespaces`).
+3. Locate an overflowing table within `.blog-content table`.
+4. Record initial `html` and `body` width metrics (`clientWidth` and `scrollWidth`).
+5. Programmatically scroll the table horizontally by increasing `scrollLeft`.
+6. Assert page widths remain stable and table `scrollLeft` increased.
+
+```mermaid
+sequenceDiagram
+    Browser->>Page: navigate to /blog/ssh-signing-keys-for-github-codespaces
+    Page->>DOM: read html/body widths
+    Page->>DOM: scroll table horizontally
+    DOM->>Assertions: verify stable widths and increased scrollLeft
+```
+
 **Assertions:**
 
-- Page dimensions stay stable:
+- HTML dimensions stay stable:
   `html.scrollWidth <= html.clientWidth + 1`
-- Page dimensions stay stable:
+- BODY dimensions stay stable:
   `body.scrollWidth <= body.clientWidth + 1`
 - Table horizontal scrolling works:
   `table.scrollLeft` increases after programmatic horizontal scroll.
