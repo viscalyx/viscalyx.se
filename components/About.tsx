@@ -1,11 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { Target, Users, Lightbulb, Award } from 'lucide-react'
-import Image from 'next/image'
+import { motion, useInView } from 'framer-motion'
+import { Award, Lightbulb, Target, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import { useRef } from 'react'
 
 const About = () => {
   const ref = useRef(null)
@@ -38,7 +37,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="section-padding bg-white dark:bg-secondary-900"
+      className="section-padding bg-white dark:bg-secondary-900 relative overflow-hidden"
       ref={ref}
     >
       <div className="container-custom">
@@ -147,9 +146,9 @@ const About = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-8 -left-8 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20"
+                className="absolute -bottom-8 left-1/2 w-fit max-w-[calc(100%-2rem)] -translate-x-1/2 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20 lg:w-auto lg:max-w-none lg:translate-x-0 lg:-left-8"
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-start space-x-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary-600">
                       {t('stats.taskReduction.value')}
@@ -158,7 +157,7 @@ const About = () => {
                       {t('stats.taskReduction.label')}
                     </div>
                   </div>
-                  <div className="w-px h-12 bg-secondary-200 dark:bg-secondary-600" />
+                  <div className="w-px self-stretch bg-secondary-200 dark:bg-secondary-600" />
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary-600">
                       {t('stats.automation.value')}
@@ -171,7 +170,9 @@ const About = () => {
               </motion.div>
 
               {/* Background Element */}
-              <div className="absolute inset-0 bg-linear-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 rounded-2xl blur-3xl transform scale-110 -z-10" />
+              <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
+                <div className="absolute inset-0 bg-linear-to-br from-primary-100/30 dark:from-primary-900/20 to-secondary-100/30 dark:to-secondary-800/20 rounded-2xl blur-3xl transform scale-110" />
+              </div>
             </div>
           </motion.div>
         </div>
