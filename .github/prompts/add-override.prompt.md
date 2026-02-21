@@ -32,9 +32,10 @@ Verification rule: never assume an issue is resolved only because a safe version
    - Keep existing explanations.
    - Add one new line for the new override with concrete context (affected parent dependency, issue/CVE, and fixed version when known).
 5. Keep keys and notes tidy and consistent with existing formatting.
-6. After applying updates, run `npm run purge:install` to clean `node_modules`, `package-lock.json` and do a fresh install.
-7. Run `npm run check` to verify nothing is broken.
-8. Return a short summary of what changed.
+6. Include a post-change verification phase in the plan with:
+   - `npm run purge:install` to clean `node_modules`, `package-lock.json` and do a fresh install.
+   - `npm run check` to verify nothing is broken.
+7. Return a short summary that includes what changed and the verification outcomes.
 
 ## Missing Context Rule
 
