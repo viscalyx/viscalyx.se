@@ -166,6 +166,31 @@ content.
 | English locale | `/en/blog/slug` renders correctly |
 | Swedish locale | `/sv/blog/slug` renders correctly |
 
+### Mobile Table Behavior (1 test)
+
+#### should keep page width stable and allow table horizontal scroll
+
+**Purpose:** Validates that the page does not introduce unwanted horizontal overflow on mobile while still allowing horizontal scrolling within wide blog tables.
+
+**Viewport:**
+
+- iPhone 12/13 logical viewport (`390x844`)
+- `isMobile: true`
+- `hasTouch: true`
+
+**Assertions:**
+
+- Page dimensions stay stable:
+  `html.scrollWidth <= html.clientWidth + 1`
+- Page dimensions stay stable:
+  `body.scrollWidth <= body.clientWidth + 1`
+- Table horizontal scrolling works:
+  `table.scrollLeft` increases after programmatic horizontal scroll.
+
+**Prerequisites:**
+
+- The test post contains at least one table that overflows horizontally at a `390px` viewport.
+
 ---
 
 ## Test Data

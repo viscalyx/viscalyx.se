@@ -74,6 +74,46 @@ No `beforeEach` hook is needed — each test navigates to the homepage independe
 
 ## Test Cases
 
+### Mobile Layout
+
+#### Suite Purpose
+
+Validates the homepage mobile layout and prevents horizontal scroll overflow.
+
+**Viewport configuration (`test.describe`):**
+
+- Width: `390`
+- Height: `844`
+- `isMobile: true`
+- `hasTouch: true`
+- iPhone 12/13 logical viewport
+
+#### should not allow horizontal scrolling on the homepage
+
+**Purpose:** Ensures the homepage stays within viewport width on mobile without introducing sideways page scrolling.
+
+**Steps:**
+
+1. Navigate to `/sv`.
+2. Use `page.evaluate` to read `document.documentElement.clientWidth` and `scrollWidth`.
+3. Use `page.evaluate` to read `document.body.clientWidth` and `scrollWidth`.
+4. Assert `html.scrollWidth <= html.clientWidth + 1`.
+5. Assert `body.scrollWidth <= body.clientWidth + 1`.
+
+```mermaid
+sequenceDiagram
+    participant T as Test runner
+    participant B as Browser
+    participant P as Page
+    participant D as DOM
+    participant A as Assertions
+
+    T->>B: set mobile viewport (390x844, mobile, touch)
+    B->>P: goto /sv
+    P->>D: evaluate html/body clientWidth + scrollWidth
+    T->>A: compare scrollWidth <= clientWidth + 1
+```
+
 ### Server-Side Rendering
 
 #### should render homepage with hero content visible immediately

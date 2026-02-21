@@ -328,20 +328,21 @@
       z-index: 1;
       background: linear-gradient(
         to left,
-        rgb(248 250 252 / 0.92),
-        rgb(248 250 252 / 0)
+        color-mix(in srgb, var(--color-secondary-50) 92%, transparent),
+        transparent
       );
     }
 
+    /* Must match body background token (--color-secondary-900 / Tailwind bg-secondary-900). */
     .dark .blog-content table::after {
       background: linear-gradient(
         to left,
-        rgb(10 12 20 / 0.92),
-        rgb(10 12 20 / 0)
+        color-mix(in srgb, var(--color-secondary-900) 92%, transparent),
+        transparent
       );
     }
 
-    .blog-content td > :not(code):not(pre) {
+    .blog-content td > :not(code, pre) {
       overflow-wrap: anywhere;
     }
 
