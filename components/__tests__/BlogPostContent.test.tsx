@@ -326,7 +326,7 @@ describe('BlogPostContent', () => {
       expect(screen.getByText('Test content')).toBeInTheDocument()
     })
 
-    it('wraps unwrapped tables in a scroll region at runtime', async () => {
+    it('does not wrap bare tables at runtime', async () => {
       renderComponent({
         contentWithIds:
           '<table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td><code>gpg.format</code></td><td><code>ssh</code></td></tr></tbody></table>',
@@ -338,15 +338,11 @@ describe('BlogPostContent', () => {
       await waitFor(() => {
         expect(
           table?.parentElement?.classList.contains('table-scroll-region')
-        ).toBe(true)
+        ).toBe(false)
       })
-
-      expect(
-        table?.parentElement?.querySelector('.table-right-fade')
-      ).toBeTruthy()
     })
 
-    it('does not double-wrap tables already in a scroll region', async () => {
+    it('keeps pre-wrapped tables unchanged', async () => {
       renderComponent({
         contentWithIds:
           '<div class="table-scroll-region"><table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td><code>gpg.format</code></td><td><code>ssh</code></td></tr></tbody></table><div class="table-right-fade"></div></div>',

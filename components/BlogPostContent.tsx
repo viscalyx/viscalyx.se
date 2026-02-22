@@ -300,28 +300,10 @@ const BlogPostContent = ({
     }
   }, [t, setNotificationWithTimeout])
 
-  // Runtime fallback for legacy or stale content that still contains bare <table>.
+  // Track scroll state classes for pre-wrapped markdown tables.
   useEffect(() => {
     const contentElement = contentRef.current
     if (!contentElement) return
-
-    const tables = contentElement.querySelectorAll('.markdown-content table')
-    tables.forEach(table => {
-      if (table.closest('.table-scroll-region')) return
-
-      const parent = table.parentElement
-      if (!parent) return
-
-      const wrapper = document.createElement('div')
-      wrapper.className = 'table-scroll-region'
-
-      const fade = document.createElement('div')
-      fade.className = 'table-right-fade'
-
-      parent.insertBefore(wrapper, table)
-      wrapper.appendChild(table)
-      wrapper.appendChild(fade)
-    })
 
     const regions = Array.from(
       contentElement.querySelectorAll<HTMLDivElement>(
