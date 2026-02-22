@@ -36,13 +36,12 @@
     @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
 
     display: block;
-    width: max-content;
     min-width: 100%;
     max-width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: thin;
-    scrollbar-color: rgb(156 163 175) transparent;
+    scrollbar-color: var(--color-secondary-400) transparent;
     position: relative;
     isolation: isolate;
   }
@@ -62,11 +61,11 @@
   }
 
   .dark .blog-content table {
-    scrollbar-color: rgb(75 85 99) transparent;
+    scrollbar-color: var(--color-secondary-600) transparent;
   }
 
   .dark .blog-content table::-webkit-scrollbar-thumb {
-    background-color: rgb(75 85 99); /* gray-600 */
+    @apply bg-secondary-600;
   }
 
   .blog-content th {
@@ -319,6 +318,7 @@
   @media (max-width: 768px) {
     .blog-content table::after {
       content: '';
+      display: block;
       position: sticky;
       right: 0;
       top: 0;
