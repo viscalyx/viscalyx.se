@@ -33,6 +33,10 @@
       "username": "vscode",
       "userUid": "automatic",
       "userGid": "automatic"
+    },
+    "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+      "plugins": "zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search",
+      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git https://github.com/zsh-users/zsh-history-substring-search.git"
     }
   },
 
