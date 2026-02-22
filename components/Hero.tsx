@@ -187,7 +187,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            className="relative rounded-2xl"
           >
             <div className="relative z-10">
               <motion.div
@@ -273,7 +273,9 @@ const Hero = () => {
             </div>
 
             {/* Background Glow */}
-            <div className="absolute inset-0 bg-linear-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-3xl transform scale-110" />
+            <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
+              <div className="absolute inset-0 bg-linear-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-3xl transform scale-110" />
+            </div>
           </motion.div>
         </div>
       </div>

@@ -25,9 +25,16 @@ Examples:
 
 - `useTranslations('section')` for all UI text (client components only; server components use `getTranslations`)
 - `dark:` variants in Tailwind classes
-- Mobile-first: `sm:`, `md:`, `lg:` breakpoints
 - ARIA labels on interactive elements
 - Semantic HTML, proper heading order
+
+### Responsive (mobile + desktop)
+
+- Mobile-first: base styles for small screens, add `sm:`, `md:`, `lg:` for larger viewports
+- All layouts must work from 320px to 1440px+ (single-column mobile → multi-column desktop)
+- Touch targets: buttons and links need `min-h-[44px] min-w-[44px]`
+- No fixed widths — use responsive/fluid sizing (`w-full`, `max-w-*`, `flex`, `grid`)
+- Test layout mentally at mobile and desktop before submitting
 
 ## Animation Patterns
 

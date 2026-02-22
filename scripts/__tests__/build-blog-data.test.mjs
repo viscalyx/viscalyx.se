@@ -98,6 +98,10 @@ tags: ["dev", "news"]
 
 Safe content with **bold** text.
 
+| Name | Value |
+| --- | --- |
+| Alpha | 1 |
+
 
 a <script>alert('xss')</script> test.
 `
@@ -160,6 +164,9 @@ const a = 1
     ).content
     expect(newestContent).toContain('<h1')
     expect(newestContent).toContain('<strong>bold</strong>')
+    expect(newestContent).toContain('class="table-scroll-region"')
+    expect(newestContent).toContain('class="table-right-fade"')
+    expect(newestContent).toContain('<table>')
     expect(newestContent).not.toContain('<script>')
 
     expect(logSpy).toHaveBeenCalled()

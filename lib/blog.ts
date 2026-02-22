@@ -191,6 +191,10 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
   }
 
   try {
+    const shouldDebugSourcePath =
+      process.env.NODE_ENV !== 'production' &&
+      process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
+
     // Try to use Cloudflare ASSETS binding first (works in production)
     try {
       const { getCloudflareContext } = await import(
@@ -201,12 +205,28 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
         const assetUrl = `https://placeholder.local/blog-content/${encodeURIComponent(validatedSlug)}.json`
         const assetResponse = await env.ASSETS.fetch(assetUrl)
         if (assetResponse.ok) {
+          if (shouldDebugSourcePath) {
+            console.info('[blog-content] source=ASSETS', {
+              slug: validatedSlug,
+            })
+          }
           const data = await assetResponse.json()
           const parsed = data as { content?: unknown }
           return typeof parsed.content === 'string' ? parsed.content : null
         }
+        if (shouldDebugSourcePath) {
+          console.info('[blog-content] source=ASSETS-miss', {
+            slug: validatedSlug,
+            ok: assetResponse.ok,
+          })
+        }
       }
     } catch {
+      if (shouldDebugSourcePath) {
+        console.info('[blog-content] source=ASSETS-unavailable', {
+          slug: validatedSlug,
+        })
+      }
       // ASSETS binding not available, fall through to filesystem
     }
 
@@ -220,9 +240,21 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
       `${validatedSlug}.json`
     )
     const contentData = await fs.readFile(contentPath, 'utf-8')
+    if (shouldDebugSourcePath) {
+      console.info('[blog-content] source=filesystem', {
+        slug: validatedSlug,
+        path: contentPath,
+      })
+    }
     const parsed = JSON.parse(contentData) as { content?: string }
     return typeof parsed.content === 'string' ? parsed.content : null
   } catch {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
+    ) {
+      console.info('[blog-content] source=none', { slug: validatedSlug })
+    }
     return null
   }
 }

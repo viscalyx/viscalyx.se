@@ -19,6 +19,13 @@
 
     overflow-wrap: break-word;
     min-width: 0;
+    max-width: 100%;
+  }
+
+  .blog-content .markdown-content {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   /* Headings - Override prose defaults with scroll behavior and custom colors */
@@ -32,11 +39,67 @@
   }
 
   /* Table styling for markdown tables */
-  .blog-content table {
-    @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
-    width: auto;
-    min-width: 300px;
+  .blog-content .table-scroll-region {
+    @apply my-6;
+
+    display: block;
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary-400) transparent;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .blog-content table {
+    @apply border-collapse border border-secondary-200 dark:border-secondary-700;
+  }
+
+  .blog-content .table-scroll-region > table {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    table-layout: auto;
+  }
+
+  .blog-content .table-right-fade {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .blog-content .table-scroll-region::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .blog-content .table-scroll-region::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .blog-content .table-scroll-region::-webkit-scrollbar-thumb {
+    @apply bg-secondary-400;
+
+    border-radius: 9999px;
+  }
+
+  .dark .blog-content .table-scroll-region {
+    scrollbar-color: var(--color-secondary-600) transparent;
+  }
+
+  .dark .blog-content .table-scroll-region::-webkit-scrollbar-thumb {
+    @apply bg-secondary-600;
   }
 
   .blog-content th {
@@ -230,6 +293,7 @@
     max-width: min(600px, 100%);
     /* Center images horizontally */
     margin: 2rem auto;
+
     display: block;
     /* Cursor to indicate clickability */
     cursor: pointer;
@@ -286,6 +350,36 @@
 
   /* Responsive adjustments for mobile devices */
   @media (max-width: 768px) {
+    .blog-content .table-scroll-region.has-overflow.at-start .table-right-fade {
+      display: block;
+      background: linear-gradient(
+        to left,
+        color-mix(in srgb, var(--color-secondary-50) 92%, transparent),
+        transparent
+      );
+    }
+
+    /* Must match body background token (--color-secondary-900 / Tailwind bg-secondary-900). */
+    .dark
+      .blog-content
+      .table-scroll-region.has-overflow.at-start
+      .table-right-fade {
+      background: linear-gradient(
+        to left,
+        color-mix(in srgb, var(--color-secondary-900) 92%, transparent),
+        transparent
+      );
+    }
+
+    .blog-content td > :not(code, pre) {
+      overflow-wrap: anywhere;
+    }
+
+    .blog-content td code {
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
     .blog-content img {
       max-width: 100%;
       margin: 1.5rem auto;

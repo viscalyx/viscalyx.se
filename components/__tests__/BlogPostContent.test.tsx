@@ -325,6 +325,36 @@ describe('BlogPostContent', () => {
       renderComponent()
       expect(screen.getByText('Test content')).toBeInTheDocument()
     })
+
+    it('does not wrap bare tables at runtime', async () => {
+      renderComponent({
+        contentWithIds:
+          '<table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td><code>gpg.format</code></td><td><code>ssh</code></td></tr></tbody></table>',
+      })
+
+      const table = screen.getByText('Setting').closest('table')
+      expect(table).toBeTruthy()
+
+      await waitFor(() => {
+        expect(
+          table?.parentElement?.classList.contains('table-scroll-region')
+        ).toBe(false)
+      })
+    })
+
+    it('keeps pre-wrapped tables unchanged', async () => {
+      renderComponent({
+        contentWithIds:
+          '<div class="table-scroll-region"><table><thead><tr><th>Setting</th><th>Value</th></tr></thead><tbody><tr><td><code>gpg.format</code></td><td><code>ssh</code></td></tr></tbody></table><div class="table-right-fade"></div></div>',
+      })
+
+      await waitFor(() => {
+        expect(document.querySelectorAll('.table-scroll-region')).toHaveLength(
+          1
+        )
+      })
+      expect(document.querySelectorAll('.table-right-fade')).toHaveLength(1)
+    })
   })
 
   describe('sub-components', () => {

@@ -1,6 +1,38 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Homepage', () => {
+  test.describe('Mobile Layout', () => {
+    test.use({
+      viewport: { width: 390, height: 844 }, // iPhone 12/13 logical viewport
+      isMobile: true,
+      hasTouch: true,
+    })
+
+    test('should not allow horizontal scrolling on the homepage', async ({
+      page,
+    }) => {
+      await page.goto('/sv')
+
+      const dimensions = await page.evaluate(() => {
+        const html = document.documentElement
+        const body = document.body
+        return {
+          htmlClientWidth: html.clientWidth,
+          htmlScrollWidth: html.scrollWidth,
+          bodyClientWidth: body.clientWidth,
+          bodyScrollWidth: body.scrollWidth,
+        }
+      })
+
+      expect(dimensions.htmlScrollWidth).toBeLessThanOrEqual(
+        dimensions.htmlClientWidth + 1
+      )
+      expect(dimensions.bodyScrollWidth).toBeLessThanOrEqual(
+        dimensions.bodyClientWidth + 1
+      )
+    })
+  })
+
   test.describe('Server-Side Rendering', () => {
     test('should render homepage with hero content visible immediately', async ({
       page,

@@ -40,7 +40,9 @@ flowchart TD
     G --> G4[Read time]
     G --> G5[Tags]
     G1 & G2 & G3 & G4 & G5 --> H[Table of Contents]
-    H --> I[Author Bio Section]
+    H --> MT[Mobile Table Behavior]
+    MT --> MT1[keep page width stable + table scroll]
+    MT1 --> I[Author Bio Section]
     I --> I1[Author name + role]
     I --> I2[View Profile link]
     I1 & I2 --> J[Navigation Tests]
@@ -165,6 +167,48 @@ content.
 | -------------- | --------------------------------- |
 | English locale | `/en/blog/slug` renders correctly |
 | Swedish locale | `/sv/blog/slug` renders correctly |
+
+### Mobile Table Behavior (1 test)
+
+#### should keep page width stable and allow table horizontal scroll
+
+**Purpose:** Validates that the page does not introduce unwanted horizontal overflow on mobile while still allowing horizontal scrolling within wide blog tables.
+
+**Viewport:**
+
+- iPhone 12/13 logical viewport (`390x844`)
+- `isMobile: true`
+- `hasTouch: true`
+
+**Steps:**
+
+1. Set viewport to iPhone 12/13 logical size (`390x844`) with `isMobile: true` and `hasTouch: true`.
+2. Navigate to the test post (`/blog/ssh-signing-keys-for-github-codespaces`).
+3. Locate an overflowing table within `.blog-content table`.
+4. Record initial `html` and `body` width metrics (`clientWidth` and `scrollWidth`).
+5. Programmatically scroll the table horizontally by increasing `scrollLeft`.
+6. Assert page widths remain stable and table `scrollLeft` increased.
+
+```mermaid
+sequenceDiagram
+    Browser->>Page: navigate to /blog/ssh-signing-keys-for-github-codespaces
+    Page->>DOM: read html/body widths
+    Page->>DOM: scroll table horizontally
+    DOM->>Assertions: verify stable widths and increased scrollLeft
+```
+
+**Assertions:**
+
+- HTML dimensions stay stable:
+  `html.scrollWidth <= html.clientWidth + 1`
+- BODY dimensions stay stable:
+  `body.scrollWidth <= body.clientWidth + 1`
+- Table horizontal scrolling works:
+  `table.scrollLeft` increases after programmatic horizontal scroll.
+
+**Prerequisites:**
+
+- The test post contains at least one table that overflows horizontally at a `390px` viewport.
 
 ---
 
