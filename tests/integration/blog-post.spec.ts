@@ -160,25 +160,27 @@ test.describe('Blog Post Page', () => {
       )
 
       const tableBehavior = await page.evaluate(() => {
-        const tables = Array.from(
-          document.querySelectorAll<HTMLTableElement>('.blog-content table')
+        const regions = Array.from(
+          document.querySelectorAll<HTMLDivElement>(
+            '.blog-content .table-scroll-region'
+          )
         )
 
-        if (tables.length === 0) {
+        if (regions.length === 0) {
           return { hasTable: false, hasOverflow: false, before: 0, after: 0 }
         }
 
-        const table =
-          tables.find(node => node.scrollWidth > node.clientWidth + 1) ??
-          tables[0]
+        const region =
+          regions.find(node => node.scrollWidth > node.clientWidth + 1) ??
+          regions[0]
 
-        const before = table.scrollLeft
-        table.scrollLeft = before + 120
-        const after = table.scrollLeft
+        const before = region.scrollLeft
+        region.scrollLeft = before + 120
+        const after = region.scrollLeft
 
         return {
           hasTable: true,
-          hasOverflow: table.scrollWidth > table.clientWidth + 1,
+          hasOverflow: region.scrollWidth > region.clientWidth + 1,
           before,
           after,
         }
