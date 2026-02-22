@@ -59,6 +59,11 @@ expect(result).toEqual([{ slug: 'post-1' }, { slug: 'post-2' }])
 - Clear mocks in `beforeEach`
 - Use `@/lib/` path alias in mocks (not `../../lib/`)
 
+## Responsive Awareness
+
+- When testing components with layout-dependent behavior, consider viewport edge cases (e.g., mobile menu vs desktop nav, collapsed vs expanded layouts)
+- For Playwright/E2E tests: test at mobile (375px) and desktop (1280px) viewports
+
 ## Coverage Policy
 
 - For all newly added production code, target `>= 85%` coverage for `lines`, `statements`, `functions`, and `branches` in changed files.

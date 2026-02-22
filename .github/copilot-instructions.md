@@ -131,10 +131,19 @@ export default async function Page({ params }: Props) {
 
 ## Styling
 
-- Mobile-first: `text-sm sm:text-base lg:text-lg`
 - Dark mode: always include `dark:` variants
 - Colors: `primary-{50-950}`, `secondary-{50-950}`, `accent-{50-950}`
 - Icons: `lucide-react`, group in `*Icons.tsx` files
+
+### Responsive (mobile + desktop)
+
+- Mobile-first: base styles target small screens, layer up with `sm:`, `md:`, `lg:`, `xl:`
+- Use responsive layout utilities: `flex-col sm:flex-row`, `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+- Touch targets: interactive elements need `min-h-[44px] min-w-[44px]` (WCAG 2.5.5)
+- Responsive spacing: smaller padding/margins on mobile, scale up (`px-4 sm:px-6 lg:px-8`)
+- Responsive images: always set the `sizes` prop on `next/image` for proper srcset selection
+- No fixed widths (`w-[600px]`) — use `max-w-*`, `w-full`, or fluid sizing
+- Typography: `text-sm sm:text-base lg:text-lg` (scale up from mobile)
 - **Use Tailwind classes for all styling**; inline styles are a limited exception only for:
   - Runtime-computed dynamic values (e.g., `style={{ width: `${percentage}%` }}`)
   - SVG-specific attributes not supported by Tailwind (`strokeDasharray`, `strokeDashoffset`, `filter`)

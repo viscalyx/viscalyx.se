@@ -23,7 +23,7 @@ const ComponentName = ({}: ComponentNameProps) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="container mx-auto px-4 dark:bg-gray-900"
+      className="container mx-auto px-4 sm:px-6 lg:px-8 dark:bg-gray-900"
     >
       {t('key')}
     </motion.div>
@@ -37,3 +37,4 @@ Also create:
 
 1. Test: `/components/__tests__/ComponentName.test.tsx`
 2. Translations in `messages/en.json` AND `messages/sv.json`
+3. Ensure layout uses responsive Tailwind classes (mobile-first, no fixed widths, works on both mobile and desktop)
