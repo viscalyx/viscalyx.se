@@ -204,6 +204,44 @@ async function buildBlogData() {
               })
             }
           })
+          .use(() => {
+            // Wrap markdown tables with a scroll region and a dedicated fade element.
+            return tree => {
+              const wrappedTables = new Set()
+
+              visit(tree, 'element', (node, index, parent) => {
+                if (
+                  node.tagName !== 'table' ||
+                  wrappedTables.has(node) ||
+                  !parent ||
+                  typeof index !== 'number'
+                ) {
+                  return
+                }
+
+                wrappedTables.add(node)
+
+                parent.children[index] = {
+                  type: 'element',
+                  tagName: 'div',
+                  properties: {
+                    className: ['table-scroll-region'],
+                  },
+                  children: [
+                    node,
+                    {
+                      type: 'element',
+                      tagName: 'div',
+                      properties: {
+                        className: ['table-right-fade'],
+                      },
+                      children: [],
+                    },
+                  ],
+                }
+              })
+            }
+          })
           .use(rehypeStringify)
           .process(content)
 

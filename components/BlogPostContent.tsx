@@ -300,6 +300,71 @@ const BlogPostContent = ({
     }
   }, [t, setNotificationWithTimeout])
 
+  // Runtime fallback for legacy or stale content that still contains bare <table>.
+  useEffect(() => {
+    const contentElement = contentRef.current
+    if (!contentElement) return
+
+    const tables = contentElement.querySelectorAll('.markdown-content table')
+    tables.forEach(table => {
+      if (table.closest('.table-scroll-region')) return
+
+      const parent = table.parentElement
+      if (!parent) return
+
+      const wrapper = document.createElement('div')
+      wrapper.className = 'table-scroll-region'
+
+      const fade = document.createElement('div')
+      fade.className = 'table-right-fade'
+
+      parent.insertBefore(wrapper, table)
+      wrapper.appendChild(table)
+      wrapper.appendChild(fade)
+    })
+
+    const regions = Array.from(
+      contentElement.querySelectorAll<HTMLDivElement>(
+        '.markdown-content .table-scroll-region'
+      )
+    )
+
+    const updateRegionState = (region: HTMLDivElement) => {
+      const hasOverflow = region.scrollWidth - region.clientWidth > 1
+      const atStart = region.scrollLeft <= 1
+      region.classList.toggle('has-overflow', hasOverflow)
+      region.classList.toggle('at-start', hasOverflow && atStart)
+    }
+
+    const updateAllRegions = () => {
+      regions.forEach(updateRegionState)
+    }
+
+    const scrollHandlers: Array<{
+      region: HTMLDivElement
+      handler: () => void
+    }> = []
+
+    regions.forEach(region => {
+      const handler = () => updateRegionState(region)
+      region.addEventListener('scroll', handler, { passive: true })
+      scrollHandlers.push({ region, handler })
+    })
+
+    window.addEventListener('resize', updateAllRegions)
+
+    // Run after layout so scrollWidth/clientWidth are accurate.
+    const rafId = requestAnimationFrame(updateAllRegions)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('resize', updateAllRegions)
+      scrollHandlers.forEach(({ region, handler }) => {
+        region.removeEventListener('scroll', handler)
+      })
+    }
+  }, [contentWithIds])
+
   return (
     <>
       <ReadingProgress target=".markdown-content" endTarget=".author-bio" />

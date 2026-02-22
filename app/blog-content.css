@@ -19,6 +19,13 @@
 
     overflow-wrap: break-word;
     min-width: 0;
+    max-width: 100%;
+  }
+
+  .blog-content .markdown-content {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   /* Headings - Override prose defaults with scroll behavior and custom colors */
@@ -32,39 +39,66 @@
   }
 
   /* Table styling for markdown tables */
-  .blog-content table {
-    @apply border-collapse border border-secondary-200 dark:border-secondary-700 my-6;
+  .blog-content .table-scroll-region {
+    @apply my-6;
 
     display: block;
-    min-width: 100%;
+    width: 100%;
     max-width: 100%;
-    overflow-x: auto;
+    min-width: 0;
+    overflow-x: auto !important;
     overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--color-secondary-400) transparent;
     position: relative;
     isolation: isolate;
   }
 
-  .blog-content table::-webkit-scrollbar {
+  .blog-content table {
+    @apply border-collapse border border-secondary-200 dark:border-secondary-700;
+  }
+
+  .blog-content .table-scroll-region > table {
+    display: table;
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    table-layout: auto;
+  }
+
+  .blog-content .table-right-fade {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .blog-content .table-scroll-region::-webkit-scrollbar {
     height: 8px;
   }
 
-  .blog-content table::-webkit-scrollbar-track {
+  .blog-content .table-scroll-region::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  .blog-content table::-webkit-scrollbar-thumb {
+  .blog-content .table-scroll-region::-webkit-scrollbar-thumb {
     @apply bg-secondary-400;
 
     border-radius: 9999px;
   }
 
-  .dark .blog-content table {
+  .dark .blog-content .table-scroll-region {
     scrollbar-color: var(--color-secondary-600) transparent;
   }
 
-  .dark .blog-content table::-webkit-scrollbar-thumb {
+  .dark .blog-content .table-scroll-region::-webkit-scrollbar-thumb {
     @apply bg-secondary-600;
   }
 
@@ -316,17 +350,8 @@
 
   /* Responsive adjustments for mobile devices */
   @media (max-width: 768px) {
-    .blog-content table::after {
-      content: '';
+    .blog-content .table-scroll-region.has-overflow.at-start .table-right-fade {
       display: block;
-      position: sticky;
-      right: 0;
-      top: 0;
-      width: 2rem;
-      height: 100dvh;
-      margin-left: -2rem;
-      pointer-events: none;
-      z-index: 1;
       background: linear-gradient(
         to left,
         color-mix(in srgb, var(--color-secondary-50) 92%, transparent),
@@ -335,7 +360,10 @@
     }
 
     /* Must match body background token (--color-secondary-900 / Tailwind bg-secondary-900). */
-    .dark .blog-content table::after {
+    .dark
+      .blog-content
+      .table-scroll-region.has-overflow.at-start
+      .table-right-fade {
       background: linear-gradient(
         to left,
         color-mix(in srgb, var(--color-secondary-900) 92%, transparent),
