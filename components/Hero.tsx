@@ -89,7 +89,7 @@ const Hero = () => {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl hidden md:block"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 dark:from-secondary-800/30 dark:to-secondary-700/20 rounded-full blur-3xl hidden md:block"
         />
       </div>
 
