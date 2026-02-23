@@ -33,6 +33,14 @@ describe('Hero component', () => {
     vi.clearAllMocks()
   })
 
+  it('uses hero-section class instead of min-h-screen for portrait height cap', () => {
+    const { container } = render(<Hero />)
+
+    const section = container.querySelector('section')
+    expect(section).toHaveClass('hero-section')
+    expect(section).not.toHaveClass('min-h-screen')
+  })
+
   it('renders badge, title and navigation elements', () => {
     render(<Hero />)
 

@@ -78,6 +78,14 @@
   .text-gradient {
     @apply bg-linear-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
   }
+
+  .hero-section {
+    min-height: 100vh;
+
+    @media (orientation: portrait) and (min-width: 1024px) {
+      min-height: clamp(44rem, 100svh, 72rem);
+    }
+  }
 }
 
 @layer utilities {

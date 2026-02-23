@@ -64,7 +64,7 @@ const Hero = () => {
   }
 
   return (
-    <section className="min-h-screen gradient-bg flex items-center justify-center relative overflow-hidden">
+    <section className="hero-section gradient-bg flex items-center justify-center relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
