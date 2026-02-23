@@ -89,7 +89,7 @@ const Hero = () => {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 rounded-full blur-3xl hidden md:block"
         />
       </div>
 
@@ -273,9 +273,7 @@ const Hero = () => {
             </div>
 
             {/* Background Glow */}
-            <div className="absolute inset-0 -z-10 overflow-hidden rounded-2xl">
-              <div className="absolute inset-0 bg-linear-to-r from-primary-600/20 to-secondary-600/20 rounded-2xl blur-3xl transform scale-110" />
-            </div>
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 -z-10 w-3/4 h-16 hidden md:block bg-primary-500/50 dark:bg-primary-400/35 rounded-full blur-2xl" />
           </motion.div>
         </div>
       </div>

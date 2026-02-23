@@ -190,11 +190,11 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
     return null
   }
 
-  try {
-    const shouldDebugSourcePath =
-      process.env.NODE_ENV !== 'production' &&
-      process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
+  const shouldDebugSourcePath =
+    process.env.NODE_ENV !== 'production' &&
+    process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
 
+  try {
     // Try to use Cloudflare ASSETS binding first (works in production)
     try {
       const { getCloudflareContext } = await import(
@@ -249,10 +249,7 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
     const parsed = JSON.parse(contentData) as { content?: string }
     return typeof parsed.content === 'string' ? parsed.content : null
   } catch {
-    if (
-      process.env.NODE_ENV !== 'production' &&
-      process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
-    ) {
+    if (shouldDebugSourcePath) {
       console.info('[blog-content] source=none', { slug: validatedSlug })
     }
     return null

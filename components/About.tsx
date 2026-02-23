@@ -148,7 +148,7 @@ const About = () => {
                 transition={{ delay: 1, duration: 0.5 }}
                 className="absolute -bottom-8 left-1/2 w-fit max-w-[calc(100%-2rem)] -translate-x-1/2 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20 lg:w-auto lg:max-w-none lg:translate-x-0 lg:-left-8"
               >
-                <div className="flex items-start space-x-4">
+                <div className="flex items-start sm:items-center space-x-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary-600">
                       {t('stats.taskReduction.value')}
