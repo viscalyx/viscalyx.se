@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Homepage', () => {
+  // Swedish (/sv) is used because Swedish text tends to be longer than English,
+  // making it the worst-case locale for horizontal overflow.
   test.describe('Mobile Layout', () => {
     test.use({
       viewport: { width: 390, height: 844 }, // iPhone 12/13 logical viewport

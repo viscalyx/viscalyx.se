@@ -129,6 +129,9 @@ test.describe('Blog Post Page', () => {
     })
   })
 
+  // This suite targets a real post known to contain wide tables that overflow
+  // at 390px.  If the post content changes and tables no longer overflow, update
+  // TEST_URL to point to another post with a wide table.
   test.describe('Mobile Table Behavior', () => {
     test.use({
       viewport: { width: 390, height: 844 }, // iPhone 12/13 logical viewport
