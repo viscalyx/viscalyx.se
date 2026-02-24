@@ -98,7 +98,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         }
 
         // Store handlers for cleanup
-        imageHandlers!.set(imageElement, {
+        imageHandlers?.set(imageElement, {
           mouseEnter: handleMouseEnter,
           mouseLeave: handleMouseLeave,
           click: handleClick,
