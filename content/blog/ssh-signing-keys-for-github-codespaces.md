@@ -61,24 +61,20 @@ On your **local machine** (not inside a Codespace), generate a key pair used
 exclusively for Codespaces signing:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/id_ed25519_codespaces -N ""
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Breaking down the flags:
 
 <!-- markdownlint-disable MD013 -->
-
 | Flag                              | Purpose                                                          |
 | --------------------------------- | ---------------------------------------------------------------- |
 | `-t ed25519`                      | Use the Ed25519 algorithm (fast, secure, short keys)             |
 | `-C "your-email@example.com"`     | Comment matching your Git email                                  |
 | `-f ~/.ssh/id_ed25519_codespaces` | Dedicated filename to avoid conflicts                            |
 | `-N ""`                           | Empty passphrase (the key is stored encrypted in GitHub Secrets) |
-
 <!-- markdownlint-enable MD013 -->
 
 <!-- markdownlint-disable MD028 -->
@@ -109,9 +105,11 @@ Add the public key **twice** on [github.com/settings/keys](https://github.com/se
 3. **Key type:** Authentication Key
 4. Paste the output of:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 cat ~/.ssh/id_ed25519_codespaces.pub
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Signing key
 
@@ -131,18 +129,22 @@ cat ~/.ssh/id_ed25519_codespaces.pub
 3. **Name:** `SSH_PRIVATE_KEY`
 4. **Value:** paste the entire private key content:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 cat ~/.ssh/id_ed25519_codespaces
 ```
+<!-- markdownlint-enable MD013 -->
 
 The output looks like:
 
+<!-- markdownlint-disable MD013 -->
 ```text
 -----BEGIN OPENSSH PRIVATE KEY-----
 REDACTED_PRIVATE_KEY_CONTENT
 (several lines of base64-encoded data)
 -----END OPENSSH PRIVATE KEY-----
 ```
+<!-- markdownlint-enable MD013 -->
 
 5. Select which repositories can access this secret (or choose **All
    repositories**)
@@ -158,6 +160,7 @@ haven't already, add the files below, then commit and push.
 
 Create or update `.gitconfig` in the root of the dotfiles repository:
 
+<!-- markdownlint-disable MD013 -->
 ```ini
 [core]
     autocrlf = input
@@ -190,18 +193,17 @@ Create or update `.gitconfig` in the root of the dotfiles repository:
 [pull]
     rebase = true
 ```
+<!-- markdownlint-enable MD013 -->
 
 Key settings explained:
 
 <!-- markdownlint-disable MD013 -->
-
 | Setting                      | Value                    | Purpose                                           |
 | ---------------------------- | ------------------------ | ------------------------------------------------- |
 | `gpg.format`                 | `ssh`                    | Tell Git to use SSH instead of GPG                |
 | `user.signingkey`            | `~/.ssh/id_ed25519.pub`  | Path to the public key for signing                |
 | `gpg.ssh.allowedSignersFile` | `~/.ssh/allowed_signers` | Enables local verification                        |
 | `core.autocrlf`              | `input`                  | Convert CRLF to LF on commit, keep LF on checkout |
-
 <!-- markdownlint-enable MD013 -->
 
 > [!WARNING]
@@ -222,6 +224,7 @@ Create `install.sh` in the root of the dotfiles repository:
 > See [Personalizing Codespaces — Dotfiles](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
 > for details.
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 #!/bin/bash
 set -e
@@ -256,6 +259,7 @@ else
   echo "SSH_PRIVATE_KEY secret not found — skipping SSH key setup"
 fi
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!CAUTION]
 > Make sure `install.sh` uses **LF line endings** (Unix-style). Add a
@@ -265,9 +269,11 @@ fi
 
 Create `.gitattributes` in the root of the dotfiles repository:
 
+<!-- markdownlint-disable MD013 -->
 ```text
 *.sh text eol=lf
 ```
+<!-- markdownlint-enable MD013 -->
 
 This prevents Windows line ending conversion from breaking the shell script.
 
@@ -293,6 +299,7 @@ When a new Codespace starts, GitHub clones your dotfiles repo and runs
 
 Create a new Codespace (or rebuild the current one) and run:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Check the signing configuration
 git config --global gpg.format
@@ -310,6 +317,7 @@ git add -A && git commit -m "test: verify SSH signing"
 # Verify the signature
 git log --show-signature -1
 ```
+<!-- markdownlint-enable MD013 -->
 
 You should see output containing `Good "git" signature` with your email.
 
@@ -322,11 +330,9 @@ Codespaces secret.
 ### Step 1 – Generate a new key pair
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 ssh-keygen -t ed25519 -C "your-email@example.com" -f ~/.ssh/id_ed25519_codespaces_new -N ""
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Step 2 – Add the new public key to GitHub
@@ -335,9 +341,11 @@ Go to [github.com/settings/keys](https://github.com/settings/keys) and add
 the new public key as both **Authentication** and **Signing** key (same process
 as in Step 2 above):
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 cat ~/.ssh/id_ed25519_codespaces_new.pub
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!TIP]
 > Add the new key **before** removing the old one. This ensures there is no
@@ -349,9 +357,11 @@ cat ~/.ssh/id_ed25519_codespaces_new.pub
 2. Click the **SSH_PRIVATE_KEY** secret
 3. Click **Update** and paste the new private key:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 cat ~/.ssh/id_ed25519_codespaces_new
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Step 4 – Remove the old key from GitHub
 
@@ -371,6 +381,7 @@ new key.
 
 ### Step 6 – Clean up locally
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Remove the old key pair
 rm ~/.ssh/id_ed25519_codespaces ~/.ssh/id_ed25519_codespaces.pub
@@ -379,6 +390,7 @@ rm ~/.ssh/id_ed25519_codespaces ~/.ssh/id_ed25519_codespaces.pub
 mv ~/.ssh/id_ed25519_codespaces_new ~/.ssh/id_ed25519_codespaces
 mv ~/.ssh/id_ed25519_codespaces_new.pub ~/.ssh/id_ed25519_codespaces.pub
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Troubleshooting
 
@@ -391,18 +403,22 @@ mv ~/.ssh/id_ed25519_codespaces_new.pub ~/.ssh/id_ed25519_codespaces.pub
   account
 - Check that `gpg.format` is set to `ssh`:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 git config --global gpg.format
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### "Permission denied" when signing
 
 - Check that the private key exists and has correct permissions:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 ls -la ~/.ssh/id_ed25519
 # Should show: -rw------- (600)
 ```
+<!-- markdownlint-enable MD013 -->
 
 - Verify the `SSH_PRIVATE_KEY` secret is set and accessible to the repository
 
@@ -411,21 +427,24 @@ ls -la ~/.ssh/id_ed25519
 The script has Windows line endings. Ensure `.gitattributes` in your dotfiles
 repo contains:
 
+<!-- markdownlint-disable MD013 -->
 ```text
 *.sh text eol=lf
 ```
+<!-- markdownlint-enable MD013 -->
 
 Then re-commit the file:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 git add --renormalize install.sh
 git commit -m "fix: normalize line endings for install.sh"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Summary
 
 <!-- markdownlint-disable MD013 -->
-
 | Component        | Location                            | Purpose                                                   |
 | ---------------- | ----------------------------------- | --------------------------------------------------------- |
 | Private key      | Codespaces secret `SSH_PRIVATE_KEY` | Injected into each Codespace as an environment variable   |
@@ -433,5 +452,4 @@ git commit -m "fix: normalize line endings for install.sh"
 | `.gitconfig`     | Dotfiles repo                       | Configures Git to use SSH signing                         |
 | `install.sh`     | Dotfiles repo                       | Deploys `.gitconfig`, writes key, sets up allowed signers |
 | `.gitattributes` | Dotfiles repo                       | Ensures shell scripts keep LF line endings                |
-
 <!-- markdownlint-enable MD013 -->
