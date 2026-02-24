@@ -197,7 +197,8 @@ both methods.
 1. Login in to the [Azure Portal](https://portal.azure.com).
 1. Create the Azure Active Directory application account.
    1. Go to **Azure Active Directory**.
-      _I assume you are in the correct directory, if not, change to the correct directory_.
+      _I assume you are in the correct directory, if not, change to the_
+      _correct directory_.
    1. Click on **App registrations**.
    1. Click on **New application registration**.
    1. Enter a descriptive name in the _Name_ field. For example '**DscConfigurationExampleAppId**'.
