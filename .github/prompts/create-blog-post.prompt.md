@@ -25,4 +25,8 @@ Rules:
 
 - Sections: `##`, subsections: `###`
 - Code blocks: specify language
+- For markdownlint `MD013`: disable before markdown tables and fenced code
+  blocks, then re-enable immediately after each block
+- Wrap long non-table/non-code lines at word boundaries around 80 chars
+- Never split a Markdown URL across lines; when a line has a Markdown link that starts prior to 80 chars, only wrap after the link closing parenthesis `)`
 - Run `npm run spell` before commit
