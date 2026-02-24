@@ -75,7 +75,7 @@ Store all infrastructure code in version control and tag releases. This enables:
 Structure your IaC projects logically:
 
 <!-- markdownlint-disable MD013 -->
-```
+```text
 infrastructure/
 ├── environments/
 │   ├── dev/

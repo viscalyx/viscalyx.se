@@ -95,7 +95,7 @@ Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 > in DSC v3 we need to install it. Without the dependent module SqlServerDsc
 > outputs a warning message:
 >
-> ```
+> ```text
 >WARNING: Failed to find a dependent module. Unable to run SQL Server commands
 > or use SQL Server types. Please install one of the preferred SMO modules or
 > the SQLPS module, then try to import SqlServerDsc again.
