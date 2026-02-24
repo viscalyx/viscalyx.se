@@ -10,6 +10,7 @@ tags, and locale-specific values.
 
 ## Overview Flowchart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Page Load] --> B{Which page?}
@@ -31,6 +32,7 @@ flowchart TD
     K -- /sv --> L["Verify og:locale = sv_SE"]
     K -- /en --> M["Verify og:locale = en_US"]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
@@ -44,6 +46,7 @@ being available (started by Playwright config).
 
 ## Pages Covered
 
+<!-- markdownlint-disable MD013 -->
 | Page         | Path              | OG Type | Twitter Card        |
 | ------------ | ----------------- | ------- | ------------------- |
 | Homepage     | `/en`             | website | summary_large_image |
@@ -52,6 +55,7 @@ being available (started by Playwright config).
 | Cookies      | `/en/cookies`     | website | summary_large_image |
 | Privacy      | `/en/privacy`     | website | summary_large_image |
 | Terms        | `/en/terms`       | website | summary_large_image |
+<!-- markdownlint-enable MD013 -->
 
 ---
 
@@ -64,12 +68,14 @@ being available (started by Playwright config).
 1. Navigate to `/en`.
 2. Assert `document.title` contains "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en
     Note over P: ✓ title contains "Viscalyx"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Homepage — should have meta description
 
@@ -79,6 +85,7 @@ sequenceDiagram
 2. Read `meta[name="description"]` content.
 3. Assert it is truthy and longer than 10 characters.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -86,16 +93,19 @@ sequenceDiagram
     P->>P: Read meta description
     Note over P: ✓ description.length > 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Homepage — should have Open Graph metadata
 
-**Purpose:** Confirms OG title, description, type, and locale are set for the homepage.
+**Purpose:** Confirms OG title, description, type, and locale are set for the
+homepage.
 
 1. Navigate to `/en`.
 2. Assert `og:title` and `og:description` are truthy.
 3. Assert `og:type` is `website`.
 4. Assert `og:locale` is `en_US`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -105,6 +115,7 @@ sequenceDiagram
     Note over P: ✓ og:type = website
     Note over P: ✓ og:locale = en_US
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Homepage — should have Twitter card metadata
 
@@ -113,20 +124,24 @@ sequenceDiagram
 1. Navigate to `/en`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en
     Note over P: ✓ twitter:card = summary_large_image
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Page — should have team-specific page title
 
-**Purpose:** Ensures the team page has a unique title, not just the root fallback.
+**Purpose:** Ensures the team page has a unique title, not just the root
+fallback.
 
 1. Navigate to `/en/team`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -134,6 +149,7 @@ sequenceDiagram
     Note over P: ✓ title contains "Viscalyx"
     Note over P: ✓ title.length > "Viscalyx".length
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Page — should have meta description
 
@@ -142,6 +158,7 @@ sequenceDiagram
 1. Navigate to `/en/team`.
 2. Assert `meta[name="description"]` is truthy and longer than 10 characters.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -149,6 +166,7 @@ sequenceDiagram
     P->>P: Read meta description
     Note over P: ✓ description.length > 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Page — should have Open Graph metadata
 
@@ -157,6 +175,7 @@ sequenceDiagram
 1. Navigate to `/en/team`.
 2. Assert `og:title` is truthy and `og:type` is `website`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -164,6 +183,7 @@ sequenceDiagram
     Note over P: ✓ og:title present
     Note over P: ✓ og:type = website
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Page — should have Twitter card metadata
 
@@ -172,12 +192,14 @@ sequenceDiagram
 1. Navigate to `/en/team`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/team
     Note over P: ✓ twitter:card = summary_large_image
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Member Page — should have member-specific page title
 
@@ -186,6 +208,7 @@ sequenceDiagram
 1. Navigate to `/en/team/johlju`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -193,6 +216,7 @@ sequenceDiagram
     Note over P: ✓ title contains "Viscalyx"
     Note over P: ✓ title.length > "Viscalyx".length
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Member Page — should have Open Graph profile type
 
@@ -201,12 +225,14 @@ sequenceDiagram
 1. Navigate to `/en/team/johlju`.
 2. Assert `og:type` is `profile`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/team/johlju
     Note over P: ✓ og:type = profile
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Team Member Page — should have member image in OG metadata
 
@@ -215,12 +241,14 @@ sequenceDiagram
 1. Navigate to `/en/team/johlju`.
 2. Assert `og:image` is truthy.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/team/johlju
     Note over P: ✓ og:image present
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Cookies Page — should have cookies-specific page title
 
@@ -229,6 +257,7 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -236,6 +265,7 @@ sequenceDiagram
     Note over P: ✓ title contains "Viscalyx"
     Note over P: ✓ title.length > "Viscalyx".length
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Cookies Page — should have meta description
 
@@ -244,6 +274,7 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert `meta[name="description"]` is truthy.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -251,6 +282,7 @@ sequenceDiagram
     P->>P: Read meta description
     Note over P: ✓ description is truthy
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Cookies Page — should have Open Graph metadata
 
@@ -259,12 +291,14 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert `og:type` is `website`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/cookies
     Note over P: ✓ og:type = website
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Cookies Page — should have Twitter card metadata
 
@@ -273,12 +307,14 @@ sequenceDiagram
 1. Navigate to `/en/cookies`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/cookies
     Note over P: ✓ twitter:card = summary_large_image
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Privacy Page — should have privacy-specific page title
 
@@ -287,6 +323,7 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -294,6 +331,7 @@ sequenceDiagram
     Note over P: ✓ title contains "Viscalyx"
     Note over P: ✓ title.length > "Viscalyx".length
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Privacy Page — should have meta description
 
@@ -302,6 +340,7 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert `meta[name="description"]` is truthy.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -309,6 +348,7 @@ sequenceDiagram
     P->>P: Read meta description
     Note over P: ✓ description is truthy
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Privacy Page — should have Open Graph metadata
 
@@ -317,12 +357,14 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert `og:type` is `website`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/privacy
     Note over P: ✓ og:type = website
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Privacy Page — should have Twitter card metadata
 
@@ -331,12 +373,14 @@ sequenceDiagram
 1. Navigate to `/en/privacy`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/privacy
     Note over P: ✓ twitter:card = summary_large_image
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Terms Page — should have terms-specific page title
 
@@ -345,6 +389,7 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert title contains "Viscalyx" and is longer than just "Viscalyx".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -352,6 +397,7 @@ sequenceDiagram
     Note over P: ✓ title contains "Viscalyx"
     Note over P: ✓ title.length > "Viscalyx".length
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Terms Page — should have meta description
 
@@ -360,6 +406,7 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert `meta[name="description"]` is truthy.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
@@ -367,6 +414,7 @@ sequenceDiagram
     P->>P: Read meta description
     Note over P: ✓ description is truthy
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Terms Page — should have Open Graph metadata
 
@@ -375,12 +423,14 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert `og:type` is `website`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/terms
     Note over P: ✓ og:type = website
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Terms Page — should have Twitter card metadata
 
@@ -389,12 +439,14 @@ sequenceDiagram
 1. Navigate to `/en/terms`.
 2. Assert `twitter:card` is `summary_large_image`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /en/terms
     Note over P: ✓ twitter:card = summary_large_image
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Locale Switching — should use sv_SE locale for Swedish homepage
 
@@ -403,12 +455,14 @@ sequenceDiagram
 1. Navigate to `/sv`.
 2. Assert `og:locale` is `sv_SE`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /sv
     Note over P: ✓ og:locale = sv_SE
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Locale Switching — should use sv_SE locale for Swedish team page
 
@@ -417,15 +471,19 @@ sequenceDiagram
 1. Navigate to `/sv/team`.
 2. Assert `og:locale` is `sv_SE`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant P as Page
     P->>P: goto /sv/team
     Note over P: ✓ og:locale = sv_SE
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Running
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 npx playwright test page-metadata
 ```
+<!-- markdownlint-enable MD013 -->
