@@ -427,11 +427,11 @@ to create a module manifest.
 For this exercise we just change the values in the existing module manifest we
 just renamed.
 
-1.  Open the module manifest file 'DscConfigurationExampleModule.psd1'.
-1.  Change the value for property **ModuleVersion** to '1.0.0.0'.
-1.  Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
+1. Open the module manifest file 'DscConfigurationExampleModule.psd1'.
+1. Change the value for property **ModuleVersion** to '1.0.0.0'.
+1. Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
     got from the cmdlet.
-1.  The property **RequiredModules** must be changed to the value below
+1. The property **RequiredModules** must be changed to the value below
 
     ```powershell
     RequiredModules = @('PSDscResources','xComputerManagement')
@@ -442,7 +442,7 @@ just renamed.
     > us it is used during testing to load the correct modules into the test
     > environment.
 
-1.  The property **WindowsOSVersion** is not a property that is part of the
+1. The property **WindowsOSVersion** is not a property that is part of the
     normal module manifest elements. This property has been added to the **PrivateData**
     hash table for the purpose of determine which operating systems the tests
     should run on. Let's change this to property to limit testing on
@@ -457,7 +457,7 @@ just renamed.
     > If you want to find out which Sku are available then read
     > [How to find Windows VM images in the Azure Marketplace with Azure PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/cli-ps-findimage).
 
-1.  Change the values in the rest of the properties to something appropriate.
+1. Change the values in the rest of the properties to something appropriate.
     Properties that are commented are optional. They can be removed if not used.
 
     ```powershell
