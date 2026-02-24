@@ -2,12 +2,16 @@
 
 > Test flow documentation for [`blog-listing.spec.ts`](blog-listing.spec.ts)
 
-These tests validate the blog listing page after its conversion from a client-rendered page (with loading spinner + API fetch) to a server-rendered page with interactive client islands. They verify SSR behavior, SEO metadata, category filtering, pagination, navigation, and locale support.
+These tests validate the blog listing page after its conversion from a
+client-rendered page (with loading spinner + API fetch) to a server-rendered
+page with interactive client islands. They verify SSR behavior, SEO metadata,
+category filtering, pagination, navigation, and locale support.
 
 ---
 
 ## Key Architecture
 
+<!-- markdownlint-disable MD013 -->
 | Aspect             | Before (client)                    | After (server component)                     |
 | ------------------ | ---------------------------------- | -------------------------------------------- |
 | Data loading       | `useEffect` → `fetch('/api/blog')` | Direct `getAllPosts()` / `getFeaturedPost()` |
@@ -15,11 +19,13 @@ These tests validate the blog listing page after its conversion from a client-re
 | Page `<title>`     | Root fallback only                 | `generateMetadata` with localized blog title |
 | Interactive parts  | Entire page is `'use client'`      | `BlogPostGrid` client island only            |
 | Category filtering | Client state in page component     | Client state in `BlogPostGrid` island        |
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Overview — Test Coverage Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Navigate to /blog] --> B{Content Visible?}
@@ -45,12 +51,15 @@ flowchart TD
     J --> J1[/sv/blog shows Swedish text]
     J --> J2[Swedish metadata in title]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Test Setup
 
-No `beforeEach` hook is needed — each test navigates to the blog page independently. The page is server-rendered, so content is available immediately without clearing any client-side state.
+No `beforeEach` hook is needed — each test navigates to the blog page independently.
+The page is server-rendered, so content is available immediately without clearing
+any client-side state.
 
 ---
 
@@ -60,7 +69,8 @@ No `beforeEach` hook is needed — each test navigates to the blog page independ
 
 #### should render blog page with hero content visible immediately
 
-**Purpose:** Confirms the page is server-rendered with content in the initial HTML response, not hidden behind a loading spinner.
+**Purpose:** Confirms the page is server-rendered with content in the initial
+HTML response, not hidden behind a loading spinner.
 
 **Steps:**
 
@@ -68,6 +78,7 @@ No `beforeEach` hook is needed — each test navigates to the blog page independ
 2. Assert the hero `<h1>` contains "Insights" and "Knowledge".
 3. Assert the "Featured Article" heading is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -80,10 +91,12 @@ sequenceDiagram
     Note over B: ✓ h1 "Insights & Knowledge" visible
     Note over B: ✓ h2 "Featured Article" visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should not show a loading spinner
 
-**Purpose:** Validates the old `LoadingScreen` component is gone — content renders without a loading state.
+**Purpose:** Validates the old `LoadingScreen` component is gone — content
+renders without a loading state.
 
 **Steps:**
 
@@ -125,6 +138,7 @@ sequenceDiagram
 3. Assert an image is visible within the featured section.
 4. Assert the featured card link is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -135,10 +149,12 @@ sequenceDiagram
     Note over P: ✓ Image visible
     Note over P: ✓ Card link visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should navigate to blog post when featured card is clicked
 
-**Purpose:** Confirms the featured post card links to the correct blog post page.
+**Purpose:** Confirms the featured post card links to the correct blog post
+page.
 
 **Steps:**
 
@@ -172,6 +188,7 @@ sequenceDiagram
 4. Assert article count is ≥ 1 and ≤ initial count.
 5. Assert all visible category badges show "DevOps".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -184,6 +201,7 @@ sequenceDiagram
     Note over G: ✓ Only DevOps posts shown
     Note over G: ✓ Category badges all say "DevOps"
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should reset to all posts when "All" is clicked
 
@@ -220,6 +238,7 @@ sequenceDiagram
 2. Click "Load More".
 3. Assert article count increased.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -230,6 +249,7 @@ sequenceDiagram
     G->>G: setVisiblePosts(prev + 6)
     Note over G: ✓ 12 posts visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should hide Load More when all posts are visible
 
@@ -271,7 +291,8 @@ sequenceDiagram
 
 #### should render blog page in Swedish at /sv/blog
 
-**Purpose:** Verifies the server component uses `getTranslations` correctly for Swedish.
+**Purpose:** Verifies the server component uses `getTranslations` correctly for
+Swedish.
 
 **Steps:**
 
@@ -280,6 +301,7 @@ sequenceDiagram
 3. Assert featured post heading is "Utvald Artikel".
 4. Assert the "All" category button shows "Alla".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -292,6 +314,7 @@ sequenceDiagram
     Note over B: ✓ "Utvald Artikel"
     Note over B: ✓ "Alla" button
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should have Swedish metadata at /sv/blog
 
