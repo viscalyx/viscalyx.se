@@ -160,7 +160,8 @@ these assets.
 - **Blog posts and articles**: Free to use, share, and adapt under the MIT
   License (see [LICENSE](LICENSE)).
 - **Source code**: Open source under the MIT License (see [LICENSE](LICENSE)).
-- **Logos and Profile Photos**: All Rights Reserved. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md) for details.
+- **Logos and Profile Photos**: All Rights Reserved. See
+  [LICENSE-ASSETS.md](LICENSE-ASSETS.md) for details.
 - **Other Assets in `public/` directory**: All Rights Reserved, unless
   otherwise specified. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
 - **Personal/team information**: Please respect privacy when reusing content.
