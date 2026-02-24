@@ -103,7 +103,7 @@ You can use the following alert types in your markdown:
 
 ## Real-World Examples
 
-### Regular
+### Regular Blockquote
 
 > This is a regular blockquote without quote marks, perfect for general
 > emphasis or citations where you don't want the traditional quotation styling.

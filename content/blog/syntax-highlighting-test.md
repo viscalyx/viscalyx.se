@@ -103,7 +103,7 @@ class UserService {
 ```
 <!-- markdownlint-enable MD013 -->
 
-## C# Example
+## C# Example (Anchor Uniqueness Test)
 
 <!-- markdownlint-disable MD013 -->
 ```csharp
