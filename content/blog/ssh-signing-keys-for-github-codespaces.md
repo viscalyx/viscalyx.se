@@ -129,22 +129,22 @@ cat ~/.ssh/id_ed25519_codespaces.pub
 3. **Name:** `SSH_PRIVATE_KEY`
 4. **Value:** paste the entire private key content:
 
-<!-- markdownlint-disable MD013 -->
-```bash
-cat ~/.ssh/id_ed25519_codespaces
-```
-<!-- markdownlint-enable MD013 -->
+   <!-- markdownlint-disable MD013 -->
+   ```bash
+   cat ~/.ssh/id_ed25519_codespaces
+   ```
+   <!-- markdownlint-enable MD013 -->
 
-The output looks like:
+   The output looks like:
 
-<!-- markdownlint-disable MD013 -->
-```text
------BEGIN OPENSSH PRIVATE KEY-----
-REDACTED_PRIVATE_KEY_CONTENT
-(several lines of base64-encoded data)
------END OPENSSH PRIVATE KEY-----
-```
-<!-- markdownlint-enable MD013 -->
+   <!-- markdownlint-disable MD013 -->
+   ```text
+   -----BEGIN OPENSSH PRIVATE KEY-----
+   REDACTED_PRIVATE_KEY_CONTENT
+   (several lines of base64-encoded data)
+   -----END OPENSSH PRIVATE KEY-----
+   ```
+   <!-- markdownlint-enable MD013 -->
 
 5. Select which repositories can access this secret (or choose **All
    repositories**)
