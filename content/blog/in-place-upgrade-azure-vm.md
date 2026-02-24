@@ -186,12 +186,12 @@ slmgr.vbs /dlv
 > each data disk as well if they exist. Without it you cannot revert to a
 > previous state.
 
+### Snapshot the operating system disk
+
 > [!IMPORTANT]
 > To revert to the previous state of the VM if anything fails during the
 > upgrade, you must have made snapshots. See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure)
 > for recovery procedures.
-
-### Snapshot the operating system disk
 
 When creating the snapshot, for simplicity, create it in the same subscription,
 resource group and location (zone) as the Azure VM operating system disk.
