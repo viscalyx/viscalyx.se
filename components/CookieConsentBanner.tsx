@@ -28,7 +28,6 @@ const CookieConsentBanner = () => {
   // Sync state with localStorage/cookies after hydration to avoid SSR mismatch
   // This is intentional - we're syncing with external storage state on mount
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
     // Single storage read: getConsentSettings returns null if no choice exists
     const storedSettings = getConsentSettings()
     const hasChoice = storedSettings !== null
@@ -36,7 +35,6 @@ const CookieConsentBanner = () => {
     if (storedSettings) {
       setSettings(storedSettings)
     }
-    /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
 
   // Refs for focus management
