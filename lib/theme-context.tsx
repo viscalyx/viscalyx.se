@@ -20,7 +20,6 @@ function useEffectWhenInitialized(
   useEffect(() => {
     if (!isInitialized) return
     return effect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInitialized, effect, ...deps])
 }
 
@@ -47,7 +46,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Sync with localStorage and DOM after hydration
   // This is intentional - we're syncing with external storage state on mount
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
     // Load theme from localStorage with error handling
     let savedTheme: Theme = 'system'
     try {
@@ -70,7 +68,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(savedTheme)
     setResolvedTheme(initialResolvedTheme)
     setIsInitialized(true)
-    /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
 
   useEffectWhenInitialized(
