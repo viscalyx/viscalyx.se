@@ -26,21 +26,20 @@
 
 /* Remove top margin for pre elements inside wrapper to avoid double spacing */
 .blog-content .code-block-wrapper pre,
-.blog-content .code-block-wrapper pre[class*='language-'] {
+.blog-content .code-block-wrapper pre[class*="language-"] {
   margin-top: 0;
 }
 
 /* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
-.blog-content pre[class*='language-']:has(.code-language-label),
-.blog-content pre[class*='language-'][data-language] {
+.blog-content pre[class*="language-"]:has(.code-language-label),
+.blog-content pre[class*="language-"][data-language] {
   margin-top: 3rem; /* Extra space for the language label */
 }
 
 /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-.blog-content
-  .code-block-wrapper
-  pre[class*='language-']:has(.code-language-label),
-.blog-content .code-block-wrapper pre[class*='language-'][data-language] {
+.blog-content .code-block-wrapper
+  pre[class*="language-"]:has(.code-language-label),
+.blog-content .code-block-wrapper pre[class*="language-"][data-language] {
   margin-top: 0 !important;
 }
 
@@ -86,7 +85,7 @@
 /* ===== Copy Button Positioning ===== */
 
 /* Copy button for regular pre elements */
-.blog-content pre[class*='language-'] .copy-button-container {
+.blog-content pre[class*="language-"] .copy-button-container {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -111,20 +110,20 @@
 }
 
 /* Copy button visibility on hover over regular pre elements (fallback for non-wrapper code blocks) */
-.blog-content pre[class*='language-']:hover .copy-button-container {
+.blog-content pre[class*="language-"]:hover .copy-button-container {
   opacity: 1;
 }
 
 /* Copy button visibility when any child in wrapper receives focus */
 .blog-content .code-block-wrapper:focus-within .copy-button-container,
-.blog-content pre[class*='language-']:focus-within .copy-button-container {
+.blog-content pre[class*="language-"]:focus-within .copy-button-container {
   opacity: 1;
 }
 
 /* ===== Code Block Base Styles ===== */
 
 /* Prevent clipping of language labels and copy buttons */
-.blog-content pre[class*='language-'] {
+.blog-content pre[class*="language-"] {
   overflow-x: auto !important; /* allow horizontal scrolling */
   overflow-y: auto !important; /* prevent uncontrolled height growth */
   max-height: 500px; /* limit vertical expansion */
@@ -137,7 +136,7 @@
 
 /* Base styling for code block containers */
 .blog-content pre,
-.blog-content pre[class*='language-'] {
+.blog-content pre[class*="language-"] {
   background-color: #f9fafb; /* bg-secondary-50 */
   color: #111827; /* text-secondary-900 */
   padding: 1rem; /* p-4 */
@@ -149,19 +148,19 @@
 }
 
 .dark .blog-content pre,
-.dark .blog-content pre[class*='language-'] {
+.dark .blog-content pre[class*="language-"] {
   background-color: #0c0a09; /* dark:bg-secondary-950 */
   color: #ffffff; /* dark:text-white */
   border-color: #374151; /* dark:border-secondary-700 */
 }
 
 /* Higher specificity for Prism.js code elements */
-.blog-content pre[class*='language-'] code[class*='language-'] {
+.blog-content pre[class*="language-"] code[class*="language-"] {
   background: transparent; /* bg-transparent */
   color: #111827; /* text-secondary-900 */
   padding: 0; /* p-0 */
 }
 
-.dark .blog-content pre[class*='language-'] code[class*='language-'] {
+.dark .blog-content pre[class*="language-"] code[class*="language-"] {
   color: #ffffff; /* dark:text-white */
 }
