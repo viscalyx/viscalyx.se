@@ -16,7 +16,8 @@ category: 'DSC'
 readTime: '9 min read'
 ---
 
-> **Audience:** infrastructure engineers comfortable with PowerShell, CI pipelines and automated SQL Server deployments.
+> **Audience:** infrastructure engineers comfortable with PowerShell, CI
+> pipelines and automated SQL Server deployments.
 
 ## Scope
 
@@ -24,10 +25,12 @@ Demonstrate **SqlRSSetup** on DSC v3 when executed:
 
 1. **Imperatively** – _direct_ with DSC v3 using `dsc resource set`
 1. **Declaratively** – in a DSC v3 _configuration_ using `dsc config set`
-1. **WinGet** – hand off your DSC v3 config to the Windows Package Manager with `winget configure`
+1. **WinGet** – hand off your DSC v3 config to the Windows Package Manager with
+   `winget configure`
 
 ## Baseline environment
 
+<!-- markdownlint-disable MD013 -->
 | Component               | Minimum version | Notes                                                 |
 | ----------------------- | --------------- | ----------------------------------------------------- |
 | Windows Server          | 2025            | Edition 2025 only required to support WinGet deploy   |
@@ -37,6 +40,7 @@ Demonstrate **SqlRSSetup** on DSC v3 when executed:
 | SqlServer               | 22.3.0          | Dependent module for SqlServerDsc                     |
 | SqlServerDsc            | 17.1.x          | Contains **SqlRSSetup** resource                      |
 | Power BI Report Server  | 15.x            | Setup media need to be available by local or UNC path |
+<!-- markdownlint-enable MD013 -->
 
 ### Install Windows Server 2025
 
@@ -45,49 +49,74 @@ no differently from previous versions.
 
 ### Update WinGet
 
-We require WinGet 1.11.400, but Windows Server 2025 comes with an older version. Use the method [installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client) of your choice.
+We require WinGet 1.11.400, but Windows Server 2025 comes with an older version.
+Use the method [installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client)
+of your choice.
 
 If you download the latest release from [winget-cli releases](https://github.com/microsoft/winget-cli/releases).
-Make sure to also download the dependencies package as they might be needed to be installed to successfully install WinGet. I could not install one dependency but it turned out that wasn't needed for the WinGet install, that might not be true in your case.
+Make sure to also download the dependencies package as they might be needed to
+be installed to successfully install WinGet. I could not install one dependency
+but it turned out that wasn't needed for the WinGet install, that might not be
+true in your case.
 
 ### Install PowerShell
 
-Windows Server 2025 does not come with PowerShell (only _Windows PowerShell_) so we need to install it:
+Windows Server 2025 does not come with PowerShell (only _Windows PowerShell_) so
+we need to install it:
 
+<!-- markdownlint-disable MD013 -->
 ```sh
 winget install Microsoft.PowerShell
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!TIP]
-> Suggest making Windows Terminal default in Windows Server 2025 and then make PowerShell the default in Windows Terminal.
+> Suggest making Windows Terminal default in Windows Server 2025 and then make
+> PowerShell the default in Windows Terminal.
 
 ### Install DSC v3
 
-For instructions on installing DSC v3, see the "Install DSC executable" section in [DemoDscClass: Your First Class-based DSC v3 Resource](/blog/demodscclass-your-first-class-based-dsc-v3-resource#install-dsc-executable).
+For instructions on installing DSC v3, see the "Install DSC executable" section
+in [DemoDscClass: Your First Class-based DSC v3 Resource](/blog/demodscclass-your-first-class-based-dsc-v3-resource#install-dsc-executable).
 
 ### Install SqlServer
 
-The module _SqlServer_ is used by SqlServerDsc for SQL Server .NET types and SQL Server PowerShell commands.
+The module _SqlServer_ is used by SqlServerDsc for SQL Server .NET types and SQL
+Server PowerShell commands.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!IMPORTANT]
-> The dependent module should not be required for this guide, but due to a bug in DSC v3 we need to install it.
-> Without the dependent module SqlServerDsc outputs a warning message: `WARNING: Failed to find a dependent module. Unable to run SQL Server commands or use SQL Server types. Please install one of the preferred SMO modules or the SQLPS module, then try to import SqlServerDsc again.`
+> The dependent module should not be required for this guide, but due to a bug
+> in DSC v3 we need to install it. Without the dependent module SqlServerDsc
+> outputs a warning message:
+>
+> ```
+>WARNING: Failed to find a dependent module. Unable to run SQL Server commands
+> or use SQL Server types. Please install one of the preferred SMO modules or
+> the SQLPS module, then try to import SqlServerDsc again.
+>```
+>
 > That warning message is normally not an issue, but will fail DSC v3. To avoid
-> DSC v3 to fail and not to see the warning message, install a supported dependent
-> PowerShell module and its version that works for your environment; _SQLPS_, _SqlServer_, or _dbatools_.
+>  DSC v3 to fail and not to see the warning message, install a supported
+> dependent PowerShell module and its version that works for your environment;
+> _SQLPS_, _SqlServer_, or _dbatools_.
 
 ### Install SqlServerDsc
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Install-PSResource SqlServerDsc -Version 17.1.0 -TrustRepository
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Download PowerBI Report Server
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $url = 'https://download.microsoft.com/download/2/7/3/2739a88a-4769-4700-8748-1a01ddf60974/PowerBIReportServer.exe'
 $mediaFilePath = [System.IO.Path]::GetTempPath()
@@ -95,11 +124,14 @@ Save-SqlDscSqlServerMediaFile -SkipExecution -Url $url -FileName 'PowerBIReportS
 $mediaExecutableFile = $mediaFilePath | Join-Path -ChildPath 'PowerBIReportServer.exe'
 $mediaExecutableFile
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Pattern 1 – One‑shot imperative call
 
-When you need a **quick, idempotent task** (e.g. build server image) without maintaining configuration files.
+When you need a **quick, idempotent task** (e.g. build server image) without
+maintaining configuration files.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $desiredParameters = @{
     InstanceName = 'PBIRS'
@@ -109,23 +141,33 @@ $desiredParameters = @{
     Edition = 'Developer'
 } | ConvertTo-Json -Compress
 ```
+<!-- markdownlint-enable MD013 -->
 
-> We don't need to use `SuppressRestart` here because DSC v3 does not yet support restarting of a target machine. Neither would `ForceRestart` work either. When a restart is required either forcefully or by exit code, the command [Set-DscMachineRebootRequired](https://github.com/dsccommunity/DscResource.Common/wiki/Set%E2%80%91DscMachineRebootRequired) is called. The logic the command uses only works with PSDSC and LCM.
+> We don't need to use `SuppressRestart` here because DSC v3 does not yet
+> support restarting of a target machine. Neither would `ForceRestart` work
+> either. When a restart is required either forcefully or by exit code, the
+> command [Set-DscMachineRebootRequired](https://github.com/dsccommunity/DscResource.Common/wiki/Set%E2%80%91DscMachineRebootRequired)
+> is called. The logic the command uses only works with PSDSC and LCM.
 
 ### Imperative Get-operation
 
-Running the Get-operation we can verify that the current state currently missing the Power BI Report Server instance:
+Running the Get-operation we can verify that the current state currently missing
+the Power BI Report Server instance:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $ dsc resource get --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
 
 actualState : @{ProductKey=; Timeout=7200; SuppressRestart=; EditionUpgrade=; LogPath=; InstanceName=; AcceptLicensingTerms=False; InstallFolder=; ForceRestart=; Action=0; VersionUpgrade=; Edition=; MediaPath=}
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Imperative Test-operation
 
-Running the Test-operation we can verify that it report that our desired state is not in compliance, the Power BI Report Server instance is missing:
+Running the Test-operation we can verify that it report that our desired state
+is not in compliance, the Power BI Report Server instance is missing:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $ dsc resource test --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
 
@@ -134,14 +176,17 @@ actualState         : @{InDesiredState=False}
 inDesiredState      : False
 differingProperties : {AcceptLicensingTerms, InstanceName, Edition, MediaPath…}
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Imperative Set-operation
 
 Running the Set-operation will make sure our desired state is configured:
 
 > [!IMPORTANT]
-> Contrary to the Get- and Test-operation the Set-operation must run in an elevated PowerShell prompt.
+> Contrary to the Get- and Test-operation the Set-operation must run in an
+> elevated PowerShell prompt.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $desiredParameters = @{
     InstanceName = 'PBIRS'
@@ -151,7 +196,9 @@ $desiredParameters = @{
     Edition = 'Developer'
 } | ConvertTo-Json -Compress
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $ dsc resource set --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
 
@@ -159,12 +206,17 @@ beforeState       : @{InstallFolder=; Action=0; Timeout=7200; ForceRestart=; Ver
 afterState        : @{ProductKey=; AcceptLicensingTerms=False; MediaPath=; ForceRestart=; VersionUpgrade=; Action=0; InstanceName=PBIRS; SuppressRestart=; LogPath=; EditionUpgrade=; Timeout=7200; Edition=; InstallFolder=C:\Program Files\Microsoft Power BI Report Server}
 changedProperties : {InstallFolder, InstanceName}
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!NOTE]
-> Running the Set-operation will take several minutes and no output will be shown until it is complete.
+> Running the Set-operation will take several minutes and no output will be
+> shown until it is complete.
 
-We can re-run the Set-operation again, this time it will be quicker as the desired state is already achieved, so it does nothing until the instance is removed. We can see below that a second run did not change any properties:
+We can re-run the Set-operation again, this time it will be quicker as the
+desired state is already achieved, so it does nothing until the instance is
+removed. We can see below that a second run did not change any properties:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $ dsc resource set --resource SqlServerDsc/SqlRSSetup --output-format json --input $desiredParameters | ConvertFrom-Json | fl
 
@@ -172,20 +224,30 @@ beforeState       : @{ForceRestart=; AcceptLicensingTerms=False; Edition=; Timeo
 afterState        : @{InstallFolder=C:\Program Files\Microsoft Power BI Report Server; ProductKey=; LogPath=; Action=0;SuppressRestart=; MediaPath=; VersionUpgrade=; ForceRestart=; Edition=; EditionUpgrade=; Timeout=7200; AcceptLicensingTerms=False; InstanceName=PBIRS}
 changedProperties :
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Pattern 2 – Declarative configuration
 
-Ideal for **repeatable, documented deployments** when multiple resources must coordinate (SQL Engine + RS Setup + firewall, etc.).
+Ideal for **repeatable, documented deployments** when multiple resources must
+coordinate (SQL Engine + RS Setup + firewall, etc.).
 
 ### DSC v3 configuration document
 
-Author a YAML document (`deploy-PBIRS.dsc.config.yaml`) to define the desired state:
+Author a YAML document (`deploy-PBIRS.dsc.config.yaml`) to define the desired
+state:
 
-> Configuration documents can be in both YAML or JSON. At the time of this writing Microsoft recommends drafting configuration documents in YAML.
+> Configuration documents can be in both YAML or JSON. At the time of this
+> writing Microsoft recommends drafting configuration documents in YAML.
 
 > [!NOTE]
-> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a nested `resources` array. The new pattern uses `requireAdapter` in the resource metadata under `Microsoft.DSC`, making configurations flatter and more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for details.
+> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell
+> resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a
+> nested `resources` array. The new pattern uses `requireAdapter` in the
+> resource metadata under `Microsoft.DSC`, making configurations flatter and
+> more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368)
+> for details.
 
+<!-- markdownlint-disable MD013 -->
 ```yml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 metadata:
@@ -208,15 +270,19 @@ resources:
       MediaPath: '<path to media executable>'
       Edition: 'Developer'
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Declarative Get-operation
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 dsc config get --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 Outputs:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "metadata": {
@@ -262,15 +328,19 @@ Outputs:
   "hadErrors": false
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Declarative Test-operation
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 dsc config test --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 Outputs:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "metadata": {
@@ -313,15 +383,19 @@ Outputs:
   "hadErrors": false
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Declarative Set-operation
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 dsc config set --file deploy-PBIRS.dsc.config.yaml --output-format json | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 Outputs:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "metadata": {
@@ -383,11 +457,13 @@ Outputs:
   "hadErrors": false
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Pattern 3 – Winget Configuration
 
-Windows Package Manager v1.11.400 or higher can **delegate configuration application to DSC v3**.
-Ship a single YAML file and run `winget configure` – perfect for **endpoint provisioning at scale**.
+Windows Package Manager v1.11.400 or higher can **delegate configuration
+application to DSC v3**. Ship a single YAML file and run `winget configure` –
+perfect for **endpoint provisioning at scale**.
 
 WinGet handles:
 
@@ -402,10 +478,14 @@ WinGet does not handle:
 
 ### WinGet configuration document
 
-The WinGet configuration document must be slightly different - it must currently use the implicit syntax, a specific schema URI, plus have a property to tell WinGet how to process the configuration file. This configuration file is also compatible with DSC v3 directly.
+The WinGet configuration document must be slightly different - it must currently
+use the implicit syntax, a specific schema URI, plus have a property to tell
+WinGet how to process the configuration file. This configuration file is also
+compatible with DSC v3 directly.
 
 Create WinGet Configuration file `deploy-PBIRS.winget.config.yaml`:
 
+<!-- markdownlint-disable MD013 -->
 ```yaml
 $schema: https://raw.githubusercontent.com/PowerShell/DSC/main/schemas/2023/08/config/document.json
 metadata:
@@ -427,17 +507,21 @@ resources:
       MediaPath: '<path to media executable>'
       Edition: 'Developer'
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Configure WinGet
 
 To use DSC v3 with WinGet we have to enable an experimental setting.
 
+<!-- markdownlint-disable MD013 -->
 ```sh
 winget settings
 ```
+<!-- markdownlint-enable MD013 -->
 
 Open in any text editor and add `experimentalFeatures` as show here:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "$schema": "https://aka.ms/winget-settings.schema.json",
@@ -447,17 +531,22 @@ Open in any text editor and add `experimentalFeatures` as show here:
   }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Apply with WinGet
 
 You must run this in an elevated shell:
 
+<!-- markdownlint-disable MD013 -->
 ```sh
 winget configure --file deploy-PBIRS.winget.config.yaml --verbose-logs
 ```
+<!-- markdownlint-enable MD013 -->
 
-You will get an output similar to the one below, you need to accept this if you want to continue. When you accept it you will be prompted for the UAC question.
+You will get an output similar to the one below, you need to accept this if you
+want to continue. When you accept it you will be prompted for the UAC question.
 
+<!-- markdownlint-disable MD013 -->
 ```text
 SqlServerDsc/SqlRSSetup [Install PBIRS]
   This module contains commands and DSC resources for deployment and configuration of Microsoft SQL Server, SQL Server Reporting Services and Power BI Report Server.
@@ -474,16 +563,21 @@ SqlServerDsc/SqlRSSetup [Install PBIRS]
   Unit successfully applied.
 Configuration successfully applied.
 ```
+<!-- markdownlint-enable MD013 -->
 
 Use `configure show` to display the details of the configuration.
 
+<!-- markdownlint-disable MD013 -->
 ```sh
 winget configure show --file deploy-PBIRS.winget.config.yaml --verbose-logs
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Takeaways
 
-- **DSC v3** gives you flexible invocation patterns – pick imperative for speed, declarative for compliance.
-- **SqlRSSetup** remains unchanged – the adapter bridges classic modules into the new engine.
+- **DSC v3** gives you flexible invocation patterns – pick imperative for
+  speed, declarative for compliance.
+- **SqlRSSetup** remains unchanged – the adapter bridges classic modules into
+  the new engine.
 
 Happy automating – may your deployments always be idempotent!
