@@ -76,8 +76,8 @@ PowerShell, or msinfo.
 After determining your OS architecture, proceed to download the release asset
 from GitHub.
 
-1. Open the following [link](https://github.com/PowerShell/DSC/releases/) in
-   your favorite browser
+1. Open the [PowerShell DSC releases page](https://github.com/PowerShell/DSC/releases/)
+   in your favorite browser
 1. Select the version you want to download and scroll-down.
 1. Expand the _Assets_ and press the asset relevant to your OS architecture.
 1. Save the file to your Downloads folder.
