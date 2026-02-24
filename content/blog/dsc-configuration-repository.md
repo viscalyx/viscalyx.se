@@ -61,7 +61,8 @@ services.
 
 ### Software that are required on the client
 
-- Git (can be downloaded [here](https://git-scm.com/downloads)).
+- Git (download from
+  [git-scm.com/downloads](https://git-scm.com/downloads)).
 - Your favorite text editor (Or [Visual Studio Code](https://code.visualstudio.com/)
   which I think is awesome, and free on every platform).
 - AzureRm PowerShell Modules (see this article
@@ -190,7 +191,7 @@ both methods.
 
 1. Using the Azure Portal.
 1. Using PowerShell using the script that [@PlagueHO](https://github.com/PlagueHO)
-   created [here](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357).
+   shared in [PowerShell/DscConfigurations issue #5](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357).
 
 #### Prepare Azure using Azure Portal
 
@@ -261,9 +262,10 @@ both methods.
 #### Prepare Azure using PowerShell
 
 For this we are going to use the script that [@PlagueHO](https://github.com/PlagueHO)
-created [here](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357)
+created in [PowerShell/DscConfigurations issue #5](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357)
 with some minor modifications.
-We will use the modified script [here](https://gist.github.com/johlju/301490cc813e4b490a3cecc1f010d921).
+We will use the modified script in
+[this gist](https://gist.github.com/johlju/301490cc813e4b490a3cecc1f010d921).
 
 The script will login to Azure and create a new Azure Active Directory application
 account and give the application account Contributor permission on the subscription.
