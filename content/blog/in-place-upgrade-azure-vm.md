@@ -115,7 +115,6 @@ Windows Defender Firewall. Both Private and Public network settings have the
 option 'Turn off Windows Defender Firewall (not recommended)' selected,
 indicated by red shield icons. The options to turn on the firewall are unselected.](/public/blog-images/windows-defender-firewall-network-settings-win2019.png)
 
-
 ### Antivirus and Anti-spyware software
 
 Stop the real‑time engine but keep Defender installed.
