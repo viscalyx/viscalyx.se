@@ -156,7 +156,7 @@ of the section.](/public/blog-images/real-time-protection-setting-win2019.png)
 ## Upgrade VM to volume license (KMS server activation)
 
 > [!IMPORTANT]
->  This step is only relevant if the VM was imported into Azure. VMs deployed
+> This step is only relevant if the VM was imported into Azure. VMs deployed
 > from Azure Marketplace images are already configured for volume licensing.
 
 The upgrade media provided by Azure requires the VM to be configured for Windows

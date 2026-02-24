@@ -102,7 +102,7 @@ Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 >```
 >
 > That warning message is normally not an issue, but will fail DSC v3. To avoid
->  DSC v3 to fail and not to see the warning message, install a supported
+> DSC v3 to fail and not to see the warning message, install a supported
 > dependent PowerShell module and its version that works for your environment;
 > _SQLPS_, _SqlServer_, or _dbatools_.
 

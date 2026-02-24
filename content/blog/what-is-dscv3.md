@@ -10,7 +10,7 @@ category: 'Automation'
 readTime: '8 min read'
 ---
 
->  Microsoft DSC v3 is a simple, single executable tool that helps you declare
+> Microsoft DSC v3 is a simple, single executable tool that helps you declare
 > and enforce the desired state of your systems in a cross-platform way.
 
 ## What is Microsoft DSC v3?
