@@ -10,7 +10,7 @@ readTime: '8 min read'
 category: 'Automation'
 ---
 
-# Infrastructure as Code Best Practices
+## Infrastructure as Code Best Practices
 
 Infrastructure as Code (IaC) has revolutionized how we manage and provision
 infrastructure. By treating infrastructure like software, we can apply the same

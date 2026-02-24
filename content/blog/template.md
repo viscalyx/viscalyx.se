@@ -10,7 +10,7 @@ category: 'Template'
 readTime: '1 min read'
 ---
 
-# Blog Post Template
+## Blog Post Template
 
 <!--
 Replace the above title with a catchy, descriptive title that reflects the

@@ -10,7 +10,7 @@ readTime: '10 min read'
 category: 'PowerShell DSC'
 ---
 
-# Getting Started with PowerShell DSC
+## Getting Started with PowerShell DSC
 
 PowerShell Desired State Configuration (DSC) is a powerful configuration
 management framework that enables you to manage your Windows infrastructure
