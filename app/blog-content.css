@@ -8,8 +8,8 @@
     @apply w-5 h-5 mr-2 inline-block;
     background-color: currentcolor;
     /* Light mode icon mask */
-    mask: var(--alert-icon-light) no-repeat center/contain;
-    -webkit-mask: var(--alert-icon-light) no-repeat center/contain;
+    mask: var(--alert-icon-light) no-repeat center / contain;
+    -webkit-mask: var(--alert-icon-light) no-repeat center / contain;
   }
 
   /* Blog Content Styles - Optimized for Typography Plugin */
@@ -244,8 +244,7 @@
   }
 
   /* Add quote marks specifically for QUOTE alerts */
-  .blog-content
-    .github-alert-quote
+  .blog-content .github-alert-quote
     .github-alert-content
     p:first-of-type::before {
     content: open-quote;
@@ -360,8 +359,7 @@
     }
 
     /* Must match body background token (--color-secondary-900 / Tailwind bg-secondary-900). */
-    .dark
-      .blog-content
+    .dark .blog-content
       .table-scroll-region.has-overflow.at-start
       .table-right-fade {
       background: linear-gradient(
