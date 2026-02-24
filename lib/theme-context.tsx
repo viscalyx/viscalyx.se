@@ -1,12 +1,7 @@
 'use client'
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { hasConsent } from './cookie-consent'
 
 type Theme = 'light' | 'dark' | 'system'
