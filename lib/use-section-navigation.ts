@@ -1,8 +1,8 @@
 'use client'
 
-import { Route } from 'next'
-import { useLocale } from 'next-intl'
+import type { Route } from 'next'
 import { usePathname, useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { useCallback } from 'react'
 
 interface UseSectionNavigationOptions {
