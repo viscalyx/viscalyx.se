@@ -300,7 +300,6 @@ describe('ImageEnhancer', () => {
       return (
         <div>
           <div ref={contentRef} className="blog-content">
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/some-link">
               <img src="/linked.jpg" alt="Linked image" />
             </a>
