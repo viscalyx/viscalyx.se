@@ -1010,7 +1010,7 @@ wsl --list --verbose
 
 **SSH Agent Setup (Choose One Option):**
 
-**Option A: Windows OpenSSH Agent** (Recommended)
+**Option A: Windows OpenSSH Agent** (Recommended):
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
@@ -1028,7 +1028,7 @@ git config --global core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe"
 ```
 <!-- markdownlint-enable MD013 -->
 
-**Option B: SSH Agent in WSL**
+**Option B: SSH Agent in WSL:**
 
 <!-- markdownlint-disable MD013 -->
 ```bash
