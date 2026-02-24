@@ -1,5 +1,6 @@
 // Optimized blog icons using currentColor
-import React, { memo } from 'react'
+import type React from 'react'
+import { memo } from 'react'
 
 interface BlogIconProps {
   className?: string

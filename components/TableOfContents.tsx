@@ -1,7 +1,8 @@
 'use client'
-import { type TocItem } from '@/lib/slug-utils'
 import { useTranslations } from 'next-intl'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { TocItem } from '@/lib/slug-utils'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TableOfContentsProps {

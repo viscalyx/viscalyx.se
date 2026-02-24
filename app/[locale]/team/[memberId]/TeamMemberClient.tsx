@@ -1,16 +1,15 @@
 'use client'
 
+import { motion, type Variants } from 'framer-motion'
+import { ArrowLeft, MapPin } from 'lucide-react'
+import type { Route } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useLocale, useTranslations } from 'next-intl'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { SerializableTeamMember, socialIconMap } from '@/lib/team'
-import { motion, Variants } from 'framer-motion'
-import { ArrowLeft, MapPin } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import type { Route } from 'next'
+import { type SerializableTeamMember, socialIconMap } from '@/lib/team'
 
 interface TeamMemberClientProps {
   member: SerializableTeamMember

@@ -1,5 +1,5 @@
 // Optimized social media icons using currentColor
-import React from 'react'
+import type React from 'react'
 
 interface SocialIconProps {
   className?: string

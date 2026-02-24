@@ -1,9 +1,9 @@
 'use client'
 
 import { Calendar, Clock } from 'lucide-react'
-import { Route } from 'next'
-import Link from 'next/link'
+import type { Route } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import type { BlogPostMetadata } from '@/lib/blog'

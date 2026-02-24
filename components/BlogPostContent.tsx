@@ -1,15 +1,5 @@
 'use client'
 
-import AlertIconInjector from '@/components/AlertIconInjector'
-import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
-import ImageEnhancer from '@/components/ImageEnhancer'
-import MermaidRenderer from '@/components/MermaidRenderer'
-import ReadingProgress from '@/components/ReadingProgress'
-import ScrollToTop from '@/components/ScrollToTop'
-import TableOfContents from '@/components/TableOfContents'
-import { useBlogAnalytics } from '@/lib/analytics'
-import { socialIconMap } from '@/lib/team'
-
 import {
   ArrowLeft,
   BookOpen,
@@ -19,16 +9,22 @@ import {
   Tag,
   User,
 } from 'lucide-react'
-
-import { Route } from 'next'
-import { useFormatter, useLocale, useTranslations } from 'next-intl'
+import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import { useFormatter, useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
-
+import AlertIconInjector from '@/components/AlertIconInjector'
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
+import ImageEnhancer from '@/components/ImageEnhancer'
+import MermaidRenderer from '@/components/MermaidRenderer'
+import ReadingProgress from '@/components/ReadingProgress'
+import ScrollToTop from '@/components/ScrollToTop'
+import TableOfContents from '@/components/TableOfContents'
+import { useBlogAnalytics } from '@/lib/analytics'
 import type { TocItem } from '@/lib/slug-utils'
 import type { SerializableTeamMember, SocialIconName } from '@/lib/team'
+import { socialIconMap } from '@/lib/team'
 
 interface BlogPostData {
   title: string

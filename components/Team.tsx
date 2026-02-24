@@ -1,10 +1,10 @@
 'use client'
 
-import { motion, Variants } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { ArrowRight, Camera, MapPin } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { getTeamMembers } from '@/lib/team'
 
 const Team = () => {

@@ -2,11 +2,11 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, Settings, X } from 'lucide-react'
-import { Route } from 'next'
-import { useLocale, useTranslations } from 'next-intl'
+import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 import { locales } from '../i18n'
 import LanguageSwitcher from './LanguageSwitcher'

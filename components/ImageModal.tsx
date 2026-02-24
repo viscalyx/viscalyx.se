@@ -2,9 +2,10 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import React, { useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
+import type React from 'react'
+import { useEffect, useRef } from 'react'
 
 interface ImageModalProps {
   isOpen: boolean

@@ -1,16 +1,14 @@
+import { Calendar, Clock, User } from 'lucide-react'
+import type { Metadata, Route } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { getFormatter, getTranslations } from 'next-intl/server'
 import BlogPostGrid from '@/components/BlogPostGrid'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 import { SITE_URL } from '@/lib/constants'
 import { getCurrentDateISO } from '@/lib/date-utils'
-import { Calendar, Clock, User } from 'lucide-react'
-import { Route } from 'next'
-import { getFormatter, getTranslations } from 'next-intl/server'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import type { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ locale: string }>
