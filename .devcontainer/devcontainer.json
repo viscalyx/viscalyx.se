@@ -49,8 +49,8 @@
         "ms-azuretools.vscode-docker",
 
         // Extensions from .vscode/extensions.json
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint",
+        "biomejs.biome",
+        "davidanson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-swedish",
         "bradlc.vscode-tailwindcss",
@@ -68,10 +68,14 @@
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true,
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": "explicit",
+          "source.fixAll.biome": "explicit",
+          "source.fixAll.markdownlint": "explicit",
           "source.organizeImports": "explicit"
         },
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.defaultFormatter": "biomejs.biome",
+        "[markdown]": {
+          "editor.defaultFormatter": "davidanson.vscode-markdownlint"
+        },
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
         "editor.detectIndentation": false,
@@ -102,22 +106,6 @@
         "typescript.updateImportsOnFileMove.enabled": "always",
         "typescript.suggest.autoImports": true,
         "typescript.preferences.includePackageJsonAutoImports": "auto",
-
-        // ESLint settings
-        "eslint.validate": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact"
-        ],
-        "eslint.format.enable": true,
-
-        // Prettier settings
-        "prettier.singleQuote": true,
-        "prettier.semi": false,
-        "prettier.trailingComma": "es5",
-        "prettier.tabWidth": 2,
-        "prettier.useTabs": false,
 
         // Tailwind CSS settings
         "tailwindCSS.includeLanguages": {

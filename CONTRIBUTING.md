@@ -114,12 +114,10 @@ Before you begin, ensure you have the following installed:
 2. **Clone your fork**:
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    git clone https://github.com/YOUR_USERNAME/viscalyx.se.git
    cd viscalyx.se
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 ### Open in Dev Container
@@ -128,14 +126,7 @@ To ensure a consistent development environment, this project supports VS Code
 Dev Containers.
 
 1. **Install the Remote - Containers extension**: If you haven't already,
-   install the
-
-   <!-- markdownlint-disable MD013 -->
-
-   [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-   <!-- markdownlint-enable MD013 -->
-
+   install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
    extension from the VS Code Marketplace.
 
 2. **Reopen in Container**:
@@ -150,11 +141,9 @@ Dev Containers.
 3. **Install dependencies**:
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    npm install
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 4. **Set up environment variables** (if needed):
@@ -174,11 +163,9 @@ Dev Containers.
    If you need to add local secrets or override defaults:
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    cp .env.example .env.development.local
    ```
-
    <!-- markdownlint-enable MD013 -->
 
    Edit `.env.development.local` and add your secret values.
@@ -193,19 +180,12 @@ Dev Containers.
    > 4. `.env` (least specific - global defaults)
    >
    > This works for both Next.js and Wrangler. See
-
-   <!-- markdownlint-disable MD013 -->
-
    > [Cloudflare's documentation](https://developers.cloudflare.com/workers/configuration/environment-variables/#local-development-with-secrets)
-
-   <!-- markdownlint-enable MD013 -->
-
    > for details.
 
 ## Development
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # Install dependencies
 npm install
@@ -216,7 +196,6 @@ npm run dev
 # Build for production
 npm run build
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ## Development Workflow
@@ -230,11 +209,9 @@ We use a simple branching strategy:
    `fix/header-layout-issue`.
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    git checkout -b feature/your-feature-name
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 ### Running the App Locally
@@ -242,11 +219,9 @@ We use a simple branching strategy:
 To start the development server:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run dev
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This command will also run `build:blog` and `build:page-dates` scripts. The
@@ -257,11 +232,9 @@ application will be available at `http://localhost:3000`.
 To create a production build:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run build
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This command ensures all necessary build steps, including blog data and page
@@ -269,55 +242,38 @@ dates generation, are executed.
 
 ### Linting and Formatting
 
-This project uses ESLint for linting and Prettier for code formatting.
+This project uses Biome for code linting/formatting and markdownlint for
+Markdown files.
 
 - **Check for linting and formatting errors**:
 
   <!-- markdownlint-disable MD013 -->
-
   ```bash
   npm run lint
+  npm run lint:md
   npm run format:check
   ```
-
   <!-- markdownlint-enable MD013 -->
 
 - **Fix linting errors automatically**:
 
   <!-- markdownlint-disable MD013 -->
-
   ```bash
   npm run lint:fix
   ```
-
   <!-- markdownlint-enable MD013 -->
 
 - **Format code automatically**:
 
   <!-- markdownlint-disable MD013 -->
-
   ```bash
   npm run format
   ```
-
   <!-- markdownlint-enable MD013 -->
 
-We recommend installing the
-
-<!-- markdownlint-disable MD013 -->
-
-[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-
+We recommend installing the [Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
+and [markdownlint](https://marketplace.visualstudio.com/items?itemName=davidanson.vscode-markdownlint)
 <!-- markdownlint-enable MD013 -->
-
-and
-
-<!-- markdownlint-disable MD013 -->
-
-[Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-<!-- markdownlint-enable MD013 -->
-
 VS Code extensions for a better development experience.
 
 ### Type Checking
@@ -325,11 +281,9 @@ VS Code extensions for a better development experience.
 This project uses TypeScript. To check for type errors:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run type-check
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ## GitHub Copilot Support
@@ -349,7 +303,7 @@ The Copilot environment is configured via
 
 - Node.js 22 with npm caching
 - TypeScript strict mode checking
-- ESLint and Prettier formatting
+- Biome linting/formatting and markdownlint checks
 - Vitest testing environment
 - Blog data generation and i18n support
 - Cloudflare deployment tools
@@ -385,11 +339,9 @@ A brief overview of the main directories:
 1. After adding or modifying a blog post, regenerate the blog data:
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    npm run build:blog
    ```
-
    <!-- markdownlint-enable MD013 -->
 
    This script updates `lib/blog-data.json`, which is used to list and display
@@ -413,11 +365,9 @@ history. To add a new static page and track its last modified date:
 1. Run the script to update the dates (or rely on `npm run dev`/`build`):
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    npm run build:page-dates
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 #### Internationalization (i18n)
@@ -460,7 +410,6 @@ customization easy for contributors.
 2. **Simple Customization**: Apply modifier classes to change blog appearance:
 
    <!-- markdownlint-disable MD013 -->
-
    ```tsx
    // Default styling
    <div className="blog-content prose prose-lg max-w-none">
@@ -472,7 +421,6 @@ customization easy for contributors.
      {content}
    </div>
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 3. **Available Modifier Classes**:
@@ -484,7 +432,6 @@ customization easy for contributors.
 4. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
 
    <!-- markdownlint-disable MD013 -->
-
    ```css
    .blog-content-custom {
      /* Your custom styles here */
@@ -494,7 +441,6 @@ customization easy for contributors.
      /* Custom H1 styling */
    }
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 **Key Benefits:**
@@ -522,23 +468,22 @@ The architecture is meant to be a clean and easily customizable approach.
 To make all H2 headings larger:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content-large-text h2 {
   @apply text-4xl;
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```tsx
 <div className="blog-content blog-content-large-text prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 To make headings use the primary color:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content-accent-headings h1,
 .blog-content-accent-headings h2,
@@ -546,43 +491,44 @@ To make headings use the primary color:
   @apply text-primary-600 dark:text-primary-400;
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```tsx
 <div className="blog-content blog-content-accent-headings prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 To add more space between paragraphs:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content-spaced p {
   @apply mb-8;
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```tsx
 <div className="blog-content blog-content-spaced prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 To make blockquotes more visually appealing:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content-colorful blockquote {
   @apply bg-linear-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 border-l-8 border-primary-500;
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```tsx
 <div className="blog-content blog-content-colorful prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Changing Heading Colors
@@ -592,7 +538,6 @@ To make blockquotes more visually appealing:
 3. Modify the `@apply` directive:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content h1,
 .blog-content h2,
@@ -600,7 +545,6 @@ To make blockquotes more visually appealing:
   @apply text-red-600 dark:text-red-400 font-bold scroll-mt-24; /* Changed to red */
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Changing Code Block Styling
@@ -608,13 +552,11 @@ To make blockquotes more visually appealing:
 To change code block background:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content pre {
   @apply bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto my-6; /* Terminal style */
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Changing Link Colors
@@ -622,13 +564,11 @@ To change code block background:
 To change link styling:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content a {
   @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 no-underline hover:underline; /* Blue links with hover underline */
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Adding Custom Typography
@@ -636,7 +576,6 @@ To change link styling:
 To add different font weights or sizes:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 .blog-content h1 {
   @apply text-5xl font-black mb-8 mt-10; /* Larger, bolder H1 */
@@ -646,7 +585,6 @@ To add different font weights or sizes:
   @apply mb-6 text-lg; /* Larger paragraph text */
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Creating Blog Variations
@@ -656,31 +594,25 @@ You can now easily create different blog post styles by combining modifiers:
 ##### Modern Tech Blog Style
 
 <!-- markdownlint-disable MD013 -->
-
 ```tsx
 <div className="blog-content blog-content-accent-headings blog-content-large-text prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ##### Spacious Reading Style
 
 <!-- markdownlint-disable MD013 -->
-
 ```tsx
 <div className="blog-content blog-content-spaced prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ##### Colorful Feature Style
 
 <!-- markdownlint-disable MD013 -->
-
 ```tsx
 <div className="blog-content blog-content-colorful blog-content-accent-headings prose prose-lg max-w-none">
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Syntax Highlighting
@@ -695,18 +627,18 @@ adapts to the current theme.
    identifier:
 
    <!-- markdownlint-disable MD013 -->
-
    ````markdown
    ```javascript
    const greeting = 'Hello, World!'
    console.log(greeting)
    ```
    ````
+   <!-- markdownlint-enable MD013 -->
 
+   <!-- markdownlint-disable MD013 -->
    ```powershell
    Get-Process | Where-Object { $_.CPU -gt 100 }
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 2. **Supported Languages**: The system supports all major programming languages,
@@ -738,7 +670,6 @@ implementation:
 To modify syntax highlighting colors:
 
 <!-- markdownlint-disable MD013 -->
-
 ```css
 /* Light theme colors */
 .token.keyword {
@@ -750,7 +681,6 @@ To modify syntax highlighting colors:
   color: #60a5fa; /* blue-400 */
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Technical Implementation:**
@@ -785,7 +715,6 @@ provide visual emphasis with distinct colors and icons:
 **Using GitHub Alerts:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```markdown
 > [!NOTE]
 > Highlights information that users should take into account, even when skimming.
@@ -802,7 +731,6 @@ provide visual emphasis with distinct colors and icons:
 > [!CAUTION]
 > Negative potential consequences of an action.
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Alert Types:**
@@ -859,19 +787,21 @@ Please follow these general guidelines for commit messages:
 Example:
 
 <!-- markdownlint-disable MD013 -->
-
 ```text
 feat: add user profile page
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```text
 fix: correct typo in contact form validation
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```text
 docs: update contributing guidelines for blog posts
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Pull Request (PR) Process
@@ -881,11 +811,9 @@ docs: update contributing guidelines for blog posts
 1. Push your changes to your forked repository.
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    git push origin feature/your-feature-name
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 1. Go to the original `viscalyx.se` repository on GitHub and create a new Pull
@@ -915,7 +843,6 @@ The devcontainer is designed to work seamlessly on Linux, macOS, and Windows.
 The configuration includes a fallback mechanism for SSH agent forwarding:
 
 <!-- markdownlint-disable MD013 -->
-
 ```jsonc
 "mounts": [
   {
@@ -925,7 +852,6 @@ The configuration includes a fallback mechanism for SSH agent forwarding:
   }
 ]
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This uses `SSH_AUTH_SOCK` if available, or falls back to a platform-specific
@@ -943,13 +869,7 @@ joined with `/.ssh-agent-fallback.sock`.
      memory** inside the container. In Docker Desktop, go to
      **Settings → Resources → Memory** and allocate at least **12 GB** to avoid
      out-of-memory failures.
-   - Download:
-
-     <!-- markdownlint-disable MD013 -->
-
-     [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
-
-     <!-- markdownlint-enable MD013 -->
+   - Download: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
 
 2. **VS Code**
    - Extension: **Dev Containers** (`ms-vscode-remote.remote-containers`)
@@ -962,7 +882,6 @@ joined with `/.ssh-agent-fallback.sock`.
 **Docker Installation:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # 1. Set up Docker's apt repository
 # Add Docker's official GPG key:
@@ -993,16 +912,14 @@ newgrp docker  # or logout/login
 # 4. Verify Docker works without sudo
 docker run hello-world
 ```
-
 <!-- markdownlint-enable MD013 -->
 
-> **Note:** For other Linux distributions, operating systems or manual installation
-> methods, see the [official Docker installation docs](https://docs.docker.com/engine/install/).
+> **Note:** For other Linux distributions, operating systems or manual
+> installation methods, see the [official Docker installation docs](https://docs.docker.com/engine/install/).
 
 **SSH Agent Setup:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # 1. Start SSH agent automatically (add to ~/.bashrc or ~/.zshrc)
 if [ -z "$SSH_AUTH_SOCK" ]; then
@@ -1018,7 +935,6 @@ ssh-add ~/.ssh/id_ed25519
 echo $SSH_AUTH_SOCK
 # Should output something like: /tmp/ssh-XXXXXXX/agent.XXXXX
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### macOS-Specific Setup
@@ -1034,7 +950,6 @@ echo $SSH_AUTH_SOCK
 **SSH Agent Setup:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # 1. macOS has SSH agent built-in, configure it for persistence
 # Add to ~/.ssh/config:
@@ -1050,7 +965,6 @@ ssh-add --apple-use-keychain ~/.ssh/id_rsa
 echo $SSH_AUTH_SOCK
 # Should output: /private/tmp/com.apple.launchd.XXXXXXXXX/Listeners
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Performance Note:** macOS uses a VM for Docker. The `:cached` mount option in
@@ -1066,7 +980,6 @@ docker-compose.yml helps optimize file system performance.
 **WSL 2 Installation:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```powershell
 # In PowerShell as Administrator:
 
@@ -1083,7 +996,6 @@ wsl --install -d Ubuntu
 wsl --list --verbose
 # Should show VERSION 2
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Docker Desktop for Windows:**
@@ -1101,7 +1013,6 @@ wsl --list --verbose
 **Option A: Windows OpenSSH Agent** (Recommended)
 
 <!-- markdownlint-disable MD013 -->
-
 ```powershell
 # In PowerShell as Administrator:
 
@@ -1115,13 +1026,11 @@ ssh-add $env:USERPROFILE\.ssh\id_rsa
 # 3. Configure Git to use Windows SSH
 git config --global core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe"
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Option B: SSH Agent in WSL**
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # In WSL terminal:
 
@@ -1136,19 +1045,16 @@ fi
 # 2. Add SSH key
 ssh-add ~/.ssh/id_rsa
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Git Line Endings Configuration:**
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # In WSL, configure Git line endings
 git config --global core.autocrlf input
 git config --global core.eol lf
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Verifying Your Setup
@@ -1156,7 +1062,6 @@ git config --global core.eol lf
 After completing the platform-specific setup, verify everything works:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # 1. Test SSH agent
 ssh-add -l
@@ -1174,7 +1079,6 @@ code .
 # 5. VS Code should prompt to "Reopen in Container"
 #    Or use Command Palette: "Dev Containers: Reopen in Container"
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Troubleshooting
@@ -1186,11 +1090,9 @@ If SSH agent forwarding doesn't work after setup:
 1. **Verify environment variable:**
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    echo $SSH_AUTH_SOCK
    ```
-
    <!-- markdownlint-enable MD013 -->
 
    Should show a valid path.
@@ -1198,11 +1100,9 @@ If SSH agent forwarding doesn't work after setup:
 2. **Check SSH keys are added:**
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    ssh-add -l
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 3. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git
@@ -1268,12 +1168,10 @@ If SSH agent forwarding doesn't work after setup:
 - You may need to set your `user.name` and `user.email`:
 
   <!-- markdownlint-disable MD013 -->
-
   ```bash
   git config --global user.name "Your Name"
   git config --global user.email "your.email@example.com"
   ```
-
   <!-- markdownlint-enable MD013 -->
 
 ### What's Included in the Dev Container
@@ -1301,11 +1199,9 @@ is the browser-based OAuth flow with the `--clipboard` flag.
 #### Authenticate via browser (recommended)
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 gh auth login --web --clipboard --hostname github.com --git-protocol ssh
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This will:
@@ -1322,7 +1218,6 @@ If you prefer to use a Personal Access Token (e.g., from a password vault),
 use `read -rs` so the token never appears on screen or in shell history:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 unset GITHUB_TOKEN # Remove the repo token that Codespaces added
 printf 'Paste your GitHub PAT and press Enter: '
@@ -1330,7 +1225,6 @@ read -rs GH_TOKEN && echo
 printf '%s' "$GH_TOKEN" | gh auth login --with-token --hostname github.com --git-protocol ssh
 unset GH_TOKEN
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 > **Why this is secure:**
@@ -1339,15 +1233,17 @@ unset GH_TOKEN
 >   screen, and reads raw input (`-r`) so backslashes are not interpreted.
 > - The variable assignment via `read` is a shell built-in — it is **not**
 >   recorded in shell history (unlike `export VAR=value` on the command line).
-> - `printf` pipes the value via stdin; the token never appears as a command-line
->   argument (which would be visible in `ps` output and history).
+> - `printf` pipes the value via stdin; the token never appears as a
+>   command-line argument (which would be visible in `ps` output and history).
 > - `unset` removes the variable from the shell session immediately after use.
 
 #### Verify authentication
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 gh auth status
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### Re-authentication
 
@@ -1389,7 +1285,6 @@ The `.cspell.jsonc` file includes:
 #### NPM Scripts
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # Check all files for spelling errors
 npm run spell:check
@@ -1400,7 +1295,6 @@ npm run spell:fix
 # Check specific files
 npx cspell "app/**/*.tsx"
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### VS Code Commands
@@ -1430,7 +1324,6 @@ npx cspell "app/**/*.tsx"
 To add spell checking to pre-commit hooks, add this to your pre-commit script:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 #!/bin/sh
 npm run spell:check
@@ -1439,7 +1332,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Ignoring False Positives
@@ -1449,12 +1341,10 @@ fi
 Add `// cspell:disable-next-line` above the line with the "misspelled" word:
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 // cspell:disable-next-line
 const specialTechnicalTerm = \'someUniqueApiName\'
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Ignore Entire File
@@ -1462,21 +1352,17 @@ const specialTechnicalTerm = \'someUniqueApiName\'
 Add to the top of the file:
 
 <!-- markdownlint-disable MD013 -->
-
 ```text
 // cspell:disable
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Ignore Specific Words in File
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 // cspell:ignore specialword anothertechterm
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Configuration Details
@@ -1511,7 +1397,6 @@ The spell checker automatically ignores:
 #### Debugging
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # Verbose output to see what\'s being checked
 npx cspell "**/*.md" --verbose
@@ -1519,7 +1404,6 @@ npx cspell "**/*.md" --verbose
 # Check a specific file with full details
 npx cspell app/page.tsx --show-context --show-suggestions
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Language Extensions
@@ -1538,17 +1422,14 @@ Swedish spell checking is enabled for:
 The configuration includes:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm install --save-dev @cspell/dict-sv
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Configuration in `.cspell.jsonc`:
 
 <!-- markdownlint-disable MD013 -->
-
 ```json
 {
   "dictionaries": ["sv"],
@@ -1561,7 +1442,6 @@ Configuration in `.cspell.jsonc`:
   ]
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Additional Language Support
@@ -1569,23 +1449,19 @@ Configuration in `.cspell.jsonc`:
 For other languages, install additional dictionaries:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm install --save-dev @cspell/dict-spanish @cspell/dict-french
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Then add to `.cspell.jsonc`:
 
 <!-- markdownlint-disable MD013 -->
-
 ```json
 {
   "dictionaries": ["spanish", "french"]
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Best Practices
@@ -1607,11 +1483,9 @@ enable deployment to Cloudflare Workers using the OpenNext adapter.
 #### `preview`
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run preview
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Command**: `opennextjs-cloudflare build && opennextjs-cloudflare preview`
@@ -1642,11 +1516,9 @@ adapter in a local environment that simulates the Cloudflare Workers runtime.
 #### `deploy`
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run deploy
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Command**: `opennextjs-cloudflare build && opennextjs-cloudflare deploy`
@@ -1672,11 +1544,9 @@ npm run deploy
 #### `cf-typegen`
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run cf-typegen
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **Command**:
@@ -1705,11 +1575,9 @@ with hot reloading.
 #### Testing with Cloudflare Environment
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run preview
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Test your application in an environment that simulates Cloudflare Workers before
@@ -1718,11 +1586,9 @@ deploying.
 #### Production Deployment
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run deploy
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Deploy your application to Cloudflare Workers.
@@ -1730,11 +1596,9 @@ Deploy your application to Cloudflare Workers.
 #### Type Generation
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run cf-typegen
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Generate TypeScript types for Cloudflare bindings and environment variables.
@@ -1753,7 +1617,6 @@ These scripts work in conjunction with:
 The following packages enable these scripts:
 
 <!-- markdownlint-disable MD013 -->
-
 ```json
 {
   "dependencies": {
@@ -1764,24 +1627,13 @@ The following packages enable these scripts:
   }
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Additional Resources
 
-<!-- markdownlint-disable MD013 -->
-
 - [Cloudflare Next.js Guide](https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/)
-
-<!-- markdownlint-enable MD013 -->
-
 - [OpenNext Documentation](https://opennext.js.org/cloudflare)
-
-<!-- markdownlint-disable MD013 -->
-
 - [Wrangler CLI Documentation](https://developers.cloudflare.com/workers/wrangler/)
-
-<!-- markdownlint-enable MD013 -->
 
 ## Security Testing
 
@@ -1793,32 +1645,26 @@ lockfile only and running `npm audit`:
 1. Generate or update only the lockfile (without installing packages):
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    npm install --package-lock-only
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 2. Run `npm audit` (omit dev dependencies if desired):
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    npm audit
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 3. Once finished, restore your original lockfile and install as usual:
 
    <!-- markdownlint-disable MD013 -->
-
    ```bash
    git restore package-lock.json
    npm install
    ```
-
    <!-- markdownlint-enable MD013 -->
 
 This section explains the security testing approach for the blog data generation
@@ -1835,9 +1681,7 @@ effectively, we have implemented comprehensive security testing.
 ### Security Test Components
 
 <!-- markdownlint-disable MD013 -->
-
 #### 1. Sanitization Security Tests (`scripts/__tests__/build-blog-data-sanitization.test.js`)
-
 <!-- markdownlint-enable MD013 -->
 
 These tests verify that the sanitization configuration properly prevents XSS
@@ -1874,9 +1718,7 @@ attacks while preserving legitimate content:
 - **Large Content**: Handles very long content without performance issues
 
 <!-- markdownlint-disable MD013 -->
-
 #### 2. Integration Security Tests (`scripts/__tests__/build-blog-data-integration.test.js`)
-
 <!-- markdownlint-enable MD013 -->
 
 These tests run the actual build script with malicious content to verify
@@ -1899,11 +1741,9 @@ A convenient script that runs all security tests and provides a comprehensive
 report:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run test:security
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This script:
@@ -1918,7 +1758,6 @@ This script:
 #### Individual Test Suites
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 # Run sanitization tests only
 npx jest scripts/__tests__/build-blog-data-sanitization.test.js
@@ -1926,17 +1765,14 @@ npx jest scripts/__tests__/build-blog-data-sanitization.test.js
 # Run integration tests only
 npx jest scripts/__tests__/build-blog-data-integration.test.js
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Full Security Audit
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run test:security
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### As Part of CI/CD
@@ -1944,11 +1780,9 @@ npm run test:security
 The security tests are included in the main `check` script:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run check  # Includes type-check, formatting, linting, tests, and security audit
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Security Configuration
@@ -1958,7 +1792,6 @@ npm run check  # Includes type-check, formatting, linting, tests, and security a
 The build script uses these sanitization options:
 
 <!-- markdownlint-disable MD013 -->
-
 ```javascript
 const sanitizeOptions = {
   ...sanitizeHtml.defaults,
@@ -1985,7 +1818,6 @@ const sanitizeOptions = {
   ],
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Notable Security Decisions
@@ -2099,23 +1931,19 @@ real last modified timestamps.
 **In Sitemap (`app/sitemap.ts`):**
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use staticPageDates.privacy, staticPageDates.terms, etc.
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 **In Pages (`app/[locale]/privacy/page.tsx`, etc.):**
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 const staticPageDates = getStaticPageDates()
 // Use format.dateTime(staticPageDates.privacy, {...})
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Build Process Integration
@@ -2132,11 +1960,9 @@ The page dates are built automatically as part of:
 To manually update page dates:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run build:page-dates
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Tracked Pages
@@ -2181,7 +2007,6 @@ managing table of contents functionality in blog articles.
 #### Basic Slug Generation
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { createSlug } from '@/lib/slug-utils'
 
@@ -2193,13 +2018,11 @@ const slug = createSlug('Getting Started with React')
 const slug = createSlug('Custom Slug!', { strict: true })
 // Returns: 'custom-slug'
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Section ID Generation
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { createSlugId } from '@/lib/slug-utils'
 
@@ -2211,13 +2034,11 @@ const id = createSlugId('Introduction to TypeScript', 2)
 const id = createSlugId('', 2)
 // Returns: 'heading-2-abc123def' (random suffix)
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Table of Contents Extraction
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { extractTableOfContents } from '@/lib/slug-utils'
 
@@ -2236,13 +2057,11 @@ const toc = extractTableOfContents(htmlContent)
 //   { id: 'advanced-topics', text: 'Advanced Topics', level: 2 }
 // ]
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Adding Heading IDs and Anchor Links
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { addHeadingIds } from '@/lib/slug-utils'
 
@@ -2258,7 +2077,6 @@ const processedContent = addHeadingIds(htmlContent)
 //   <a href="#getting-started" class="heading-anchor">...</a>
 // </h2>
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### API Reference
@@ -2287,9 +2105,7 @@ Creates a slug ID with automatic fallback for empty content.
 - `options`: Optional slug configuration
 
 <!-- markdownlint-disable MD013 -->
-
 #### `extractTableOfContents(htmlContent: string, options?: SlugOptions): TocItem[]`
-
 <!-- markdownlint-enable MD013 -->
 
 Extracts table of contents from HTML content. Works both server-side and
@@ -2319,7 +2135,6 @@ Adds IDs and anchor links to headings in HTML content.
 #### Using with React Components
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 // In a blog post component
 import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
@@ -2336,13 +2151,11 @@ const BlogPost = ({ content }: { content: string }) => {
   )
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Custom Section Anchoring
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 // For any section that needs anchor functionality
 import { createSlugId } from '@/lib/slug-utils'
@@ -2355,13 +2168,11 @@ sections.forEach(sectionTitle => {
   console.log(`#${anchorId}`) // #about-us, #our-services, #contact-information
 })
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### TypeScript Types
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 interface TocItem {
   id: string // The slug ID for the heading
@@ -2376,7 +2187,6 @@ interface SlugOptions {
   trim?: boolean // Trim whitespace
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Benefits Slug Utilities
@@ -2399,21 +2209,17 @@ Use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) to see
 which dependencies have newer versions:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npx npm-check-updates --jsonUpgraded
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Or use the built-in npm command:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm outdated --json
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### 2. Upgrade Dependencies
@@ -2421,22 +2227,18 @@ npm outdated --json
 To upgrade all dependencies to their latest versions:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npx npm-check-updates --upgrade
 npm install
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 Or update a specific package:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm install <package-name>@latest
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 - **Commit the updated lock file** (`package-lock.json` or `pnpm-lock.yaml`)
@@ -2451,11 +2253,9 @@ npm install <package-name>@latest
 After updating, always run the full project check to ensure everything works:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm run check
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 This will run type checking, linting, formatting, spell checking, tests, and
@@ -2570,7 +2370,6 @@ into the main layout and will show until the user makes a choice.
 #### Checking Consent in Your Code
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { hasConsent } from '@/lib/cookie-consent'
 import { saveLanguagePreference } from '@/lib/language-preferences'
@@ -2587,7 +2386,6 @@ function handleLanguageChange(newLanguage: string) {
   saveLanguagePreference(newLanguage)
 }
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 #### Managing Cookie Registry
@@ -2595,7 +2393,6 @@ function handleLanguageChange(newLanguage: string) {
 Add your cookies to the `cookieRegistry` in `lib/cookie-consent.ts`:
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 export const cookieRegistry: CookieInfo[] = [
   // ... existing cookies
@@ -2614,7 +2411,6 @@ export const cookieRegistry: CookieInfo[] = [
   },
 ]
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Legal Compliance
@@ -2665,11 +2461,9 @@ To add new categories:
 Run tests with:
 
 <!-- markdownlint-disable MD013 -->
-
 ```bash
 npm test
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 The implementation includes:
@@ -2695,7 +2489,6 @@ The implementation includes:
 Monitor cookie consent effectiveness:
 
 <!-- markdownlint-disable MD013 -->
-
 ```typescript
 import { getConsentSettings, getConsentTimestamp } from '@/lib/cookie-consent'
 
@@ -2705,7 +2498,6 @@ const timestamp = getConsentTimestamp()
 
 // Track conversion rates, user preferences, etc.
 ```
-
 <!-- markdownlint-enable MD013 -->
 
 ### Security Consent

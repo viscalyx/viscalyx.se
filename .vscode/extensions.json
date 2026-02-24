@@ -1,8 +1,8 @@
 {
   "recommendations": [
     // Code formatting and linting
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
+    "biomejs.biome",
+    "davidanson.vscode-markdownlint",
 
     // Spell checking
     "streetsidesoftware.code-spell-checker",
@@ -10,9 +10,6 @@
 
     // React and Next.js
     "bradlc.vscode-tailwindcss",
-
-    // Markdown support (using Prettier for formatting)
-    //"davidanson.vscode-markdownlint",
 
     // Auto-complete and IntelliSense
     "christian-kohler.path-intellisense",

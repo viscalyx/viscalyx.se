@@ -13,16 +13,19 @@ readTime: '1 min read'
 # Blog Post Template
 
 <!--
-  Replace the above title with a catchy, descriptive title that reflects the content of your post.
-  Ensure it is engaging and includes relevant keywords for SEO. Should be same as title above in
-  front-matter.
+Replace the above title with a catchy, descriptive title that reflects the
+content of your post. Ensure it is engaging and includes relevant keywords
+for SEO. Should be same as title above in front-matter.
 -->
 
-[REPLACE: Write an engaging opening paragraph that hooks the reader and clearly states what they'll learn or gain from reading this post. This should expand on your excerpt and set expectations.]
+[REPLACE: Write an engaging opening paragraph that hooks the reader and clearly
+states what they'll learn or gain from reading this post. This should expand on
+your excerpt and set expectations.]
 
 ## Introduction
 
-[REPLACE: Provide background context and explain why this topic matters. You might include:
+[REPLACE: Provide background context and explain why this topic matters. You
+might include:
 
 - Why you decided to write about this topic
 - Who this post is for (target audience)
@@ -31,17 +34,21 @@ readTime: '1 min read'
 
 ## [REPLACE: Main Section 1 - Use Descriptive Headers]
 
-[REPLACE: Write your main content here. Break up large sections with subheadings for better readability.]
+[REPLACE: Write your main content here. Break up large sections with subheadings
+for better readability.]
 
 ### [REPLACE: Subsection if needed]
 
-[REPLACE: Detailed content with examples, code snippets, images, or other supporting materials.]
+[REPLACE: Detailed content with examples, code snippets, images, or other
+supporting materials.]
 
+<!-- markdownlint-disable MD013 -->
 ```javascript
 // [REPLACE: If including code, use proper syntax highlighting]
 // Example code block
 const example = 'Replace with your actual code'
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## [REPLACE: Main Section 2]
 
@@ -62,19 +69,23 @@ const example = 'Replace with your actual code'
 
 ## Common Pitfalls and Solutions
 
-[REPLACE: Share common mistakes and how to avoid them. This adds value and shows expertise.]
+[REPLACE: Share common mistakes and how to avoid them. This adds value and shows
+expertise.]
 
 ## Best Practices
 
-[REPLACE: Provide actionable advice and recommendations based on your experience.]
+[REPLACE: Provide actionable advice and recommendations based on your
+experience.]
 
 ## Real-World Example
 
-[REPLACE: Include a concrete example that demonstrates the concepts you've discussed. This could be a case study, walkthrough, or practical application.]
+[REPLACE: Include a concrete example that demonstrates the concepts you've
+discussed. This could be a case study, walkthrough, or practical application.]
 
 ## Conclusion
 
-[REPLACE: Summarize the main points and provide a clear call-to-action. You might:
+[REPLACE: Summarize the main points and provide a clear call-to-action. You
+might:
 
 - Recap the key benefits or learnings
 - Encourage readers to try what you've taught
@@ -91,4 +102,5 @@ const example = 'Replace with your actual code'
 
 ---
 
-_[REPLACE: Optional author note or call-to-action, such as encouraging comments, sharing, or connecting on social media]_
+_[REPLACE: Optional author note or call-to-action, such as encouraging comments,
+sharing, or connecting on social media]_

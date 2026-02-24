@@ -9,16 +9,19 @@ and troubleshooting, see
 
 ### Docker Build
 
-The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image which:
+The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image
+which:
 
 - **Supports multi-architecture** - Works on both AMD64 and ARM64 natively
 - **Includes common tools** - git, curl, wget, sudo, and the vscode user
-- **Devcontainer features** - Node.js, Git, GitHub CLI, and Zsh are installed via devcontainer features
+- **Devcontainer features** - Node.js, Git, GitHub CLI, and Zsh are installed
+  via devcontainer features
 
 ### Volume Strategy
 
 - **Source code** - Bind mount with `:cached` flag for performance
-- **npm cache** - The `npm-cache` named volume is commented out in docker-compose.yml (not needed for infrequent rebuilds) and therefore not used
+- **npm cache** - The `npm-cache` named volume is commented out in
+  docker-compose.yml (not needed for infrequent rebuilds) and therefore not used
 - **node_modules** - Stored in the workspace (bind mount), not a separate volume
 
 ### Platform Handling
@@ -31,6 +34,7 @@ Docker Desktop automatically detects and handles:
 
 ## Files Structure
 
+<!-- markdownlint-disable MD013 -->
 ```text
 .devcontainer/
 ├── devcontainer.json      # Main configuration file with cross-platform settings
@@ -38,6 +42,7 @@ Docker Desktop automatically detects and handles:
 ├── Dockerfile            # Container image definition
 └── README.md            # This file
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Available Ports
 
@@ -51,14 +56,17 @@ All ports are automatically forwarded and work across all platforms.
 
 ### Adding Extensions
 
-Edit the `extensions` array in `devcontainer.json` to add more VS Code extensions:
+Edit the `extensions` array in `devcontainer.json` to add more VS Code
+extensions:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 "extensions": [
   "existing.extensions",
   "new.extension.id"
 ]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Modifying Settings
 
@@ -74,15 +82,19 @@ add platform-specific customizations using VS Code's conditional settings.
 
 - **Non-root user**: Container runs as 'vscode' user via `remoteUser` setting
 - **Devcontainer base image**: Uses Microsoft's official devcontainer image
-- **No secrets in image**: All sensitive data handled via environment variables or SSH agent forwarding
+- **No secrets in image**: All sensitive data handled via environment variables
+  or SSH agent forwarding
 - **Safe directory**: Only `/workspace` is added as a git safe directory
-- **GitHub CLI authentication**: See [CONTRIBUTING.md](../CONTRIBUTING.md#github-cli-authentication) for secure PAT setup instructions
+- **GitHub CLI authentication**: See [CONTRIBUTING.md](../CONTRIBUTING.md#github-cli-authentication)
+  for secure PAT setup instructions
 
 ## Performance Optimization
 
 - **Build cache**: Docker layer caching speeds up subsequent builds
-- **Cached bind mount**: Source code mount uses `:cached` flag for macOS/Windows performance
-- **Devcontainer features**: Tools installed via features are cached in Docker layers
+- **Cached bind mount**: Source code mount uses `:cached` flag for macOS
+  and Windows performance
+- **Devcontainer features**: Tools installed via features are cached in Docker
+  layers
 
 ## Contributing
 
@@ -94,4 +106,5 @@ When modifying the devcontainer configuration:
 4. Consider the impact on build time and image size
 5. Follow the project's containerization best practices
 
-For more details about the project setup, see the main [README.md](../README.md) in the project root.
+For more details about the project setup, see the main [README.md](../README.md)
+in the project root.
