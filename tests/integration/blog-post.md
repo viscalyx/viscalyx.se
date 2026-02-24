@@ -2,12 +2,16 @@
 
 > Test flow documentation for [`blog-post.spec.ts`](blog-post.spec.ts)
 
-These tests validate the blog post page after its Phase 2 conversion from a client-rendered page (with loading state + API fetch) to a server-rendered page with a `BlogPostContent` client island. They verify SSR behavior, SEO metadata, content rendering, navigation, share functionality, and locale support.
+These tests validate the blog post page after its Phase 2 conversion from a
+client-rendered page (with loading state + API fetch) to a server-rendered page
+with a `BlogPostContent` client island. They verify SSR behavior, SEO metadata,
+content rendering, navigation, share functionality, and locale support.
 
 ---
 
 ## Key Architecture
 
+<!-- markdownlint-disable MD013 -->
 | Aspect             | Before (client)                           | After (server component)                       |
 | ------------------ | ----------------------------------------- | ---------------------------------------------- |
 | Data loading       | `useEffect` → `fetch('/api/blog/[slug]')` | Direct `loadBlogContent()` + `getPostBySlug()` |
@@ -18,11 +22,13 @@ These tests validate the blog post page after its Phase 2 conversion from a clie
 | Team member data   | Client fetched team member                | `getSerializableTeamMemberByName()` on server  |
 | Analytics          | Client-only                               | Hybrid: server page-view + client engagement   |
 | API route          | `/api/blog/[slug]` (deleted)              | N/A — direct function calls                    |
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Overview — Test Coverage Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Navigate to /blog/slug] --> B{Content Visible?}
@@ -58,6 +64,7 @@ flowchart TD
     N --> N1[/en/blog/slug works]
     N --> N2[/sv/blog/slug works]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
@@ -65,18 +72,22 @@ flowchart TD
 
 ### Server-Side Rendering (3 tests)
 
-Validates that the page renders as a server component without client-side loading states.
+Validates that the page renders as a server component without client-side
+loading states.
 
+<!-- markdownlint-disable MD013 -->
 | Test                 | What it checks                                           |
 | -------------------- | -------------------------------------------------------- |
 | Post title as h1     | `<h1>` contains post title — proves server-rendered HTML |
 | No loading spinner   | "Loading blog post" text is absent                       |
 | Blog content in page | `.prose` or article element visible with content         |
+<!-- markdownlint-enable MD013 -->
 
 ### Page Metadata (5 tests)
 
 Validates `generateMetadata` output for SEO.
 
+<!-- markdownlint-disable MD013 -->
 | Test             | What it checks                                    |
 | ---------------- | ------------------------------------------------- |
 | Page title       | `<title>` contains post title                     |
@@ -84,11 +95,13 @@ Validates `generateMetadata` output for SEO.
 | OG article type  | `og:type` is "article"                            |
 | OG image         | `og:image` is set                                 |
 | Twitter card     | `twitter:card` is "summary_large_image"           |
+<!-- markdownlint-enable MD013 -->
 
 ### Post Content (5 tests)
 
 Validates the rendered post content and metadata display.
 
+<!-- markdownlint-disable MD013 -->
 | Test           | What it checks                       |
 | -------------- | ------------------------------------ |
 | Featured image | Post hero image is visible           |
@@ -96,46 +109,59 @@ Validates the rendered post content and metadata display.
 | Category       | Category badge rendered              |
 | Read time      | "X min read" displayed               |
 | Tags           | At least one tag is visible          |
+<!-- markdownlint-enable MD013 -->
 
 ### Table of Contents (1 test)
 
+<!-- markdownlint-disable MD013 -->
 | Test                  | What it checks                                                   |
 | --------------------- | ---------------------------------------------------------------- |
 | ToC rendered for post | Desktop sidebar ToC heading (`#toc-heading`) visible in viewport |
+<!-- markdownlint-enable MD013 -->
 
 ### Author Bio (2 tests)
 
+<!-- markdownlint-disable MD013 -->
 | Test               | What it checks                         |
 | ------------------ | -------------------------------------- |
 | Author bio section | Team member name displayed in bio area |
 | View Profile link  | Link to team member profile page       |
+<!-- markdownlint-enable MD013 -->
 
 ### Navigation (3 tests)
 
+<!-- markdownlint-disable MD013 -->
 | Test                 | What it checks                |
 | -------------------- | ----------------------------- |
 | Back to Blog link    | "Back to Blog" text visible   |
 | Back link navigation | Clicking navigates to `/blog` |
 | Header + Footer      | Layout components rendered    |
+<!-- markdownlint-enable MD013 -->
 
 ### Share Functionality (1 test)
 
+<!-- markdownlint-disable MD013 -->
 | Test                 | What it checks                 |
 | -------------------- | ------------------------------ |
 | Share button present | "Share" text visible in the UI |
+<!-- markdownlint-enable MD013 -->
 
 ### Related Posts (1 test)
 
+<!-- markdownlint-disable MD013 -->
 | Test                     | What it checks                     |
 | ------------------------ | ---------------------------------- |
 | Related Articles section | "Related Articles" heading present |
+<!-- markdownlint-enable MD013 -->
 
 ### Error Handling (2 tests)
 
+<!-- markdownlint-disable MD013 -->
 | Test                   | What it checks                                                                         |
 | ---------------------- | -------------------------------------------------------------------------------------- |
 | 404 for missing slug   | Navigates to a non-existent slug and asserts the "404" heading is visible              |
 | 404 for path traversal | Navigates to a percent-encoded traversal path and asserts the "404" heading is visible |
+<!-- markdownlint-enable MD013 -->
 
 #### Path Traversal Test Details
 
@@ -144,10 +170,11 @@ and validate DOM visibility of a "404" heading rather than asserting HTTP
 response status codes.
 
 The non-existent slug test navigates to `/blog/this-post-absolutely-does-not-exist`
-via `page.goto(...)` and asserts the not-found page renders a visible `<h1>` with
-text "404" using `page.getByRole('heading', { level: 1, name: '404' })`.
+via `page.goto(...)` and asserts the not-found page renders a visible `<h1>`
+with text "404" using `page.getByRole('heading', { level: 1, name: '404' })`.
 
-The path traversal test navigates to `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd` <!-- cSpell:disable-line -->
+<!-- cSpell:disable-next-line -->
+The path traversal test navigates to `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd`
 via `page.goto(...)`. The percent-encoded path ensures the traversal payload
 reaches the server before browser normalization can strip it. The assertion is
 identical: the not-found page must render a visible `<h1>404</h1>` heading,
@@ -156,23 +183,30 @@ content.
 
 **Important selectors / preconditions:**
 
-- Uses `page` fixture — navigates with `page.goto(...)` and performs DOM assertions.
+- Uses `page` fixture — navigates with `page.goto(...)` and performs DOM
+  assertions.
 - Asserts `page.getByRole('heading', { level: 1, name: '404' })` is visible.
-- Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd` <!-- cSpell:disable-line -->
-- Depends on `validateSlug` in `lib/blog.ts` rejecting slugs with non-alphanumeric/hyphen/underscore characters.
+<!-- cSpell:disable-next-line -->
+- Encoded URL: `/blog/%2e%2e%2f%2e%2e%2fetc%2fpasswd`
+- Depends on `validateSlug` in `lib/blog.ts` rejecting slugs with
+  non-alphanumeric/hyphen/underscore characters.
 
 ### Locale Support (2 tests)
 
+<!-- markdownlint-disable MD013 -->
 | Test           | What it checks                    |
 | -------------- | --------------------------------- |
 | English locale | `/en/blog/slug` renders correctly |
 | Swedish locale | `/sv/blog/slug` renders correctly |
+<!-- markdownlint-enable MD013 -->
 
 ### Mobile Table Behavior (1 test)
 
 #### should keep page width stable and allow table horizontal scroll
 
-**Purpose:** Validates that the page does not introduce unwanted horizontal overflow on mobile while still allowing horizontal scrolling within wide blog tables.
+**Purpose:** Validates that the page does not introduce unwanted horizontal
+overflow on mobile while still allowing horizontal scrolling within wide blog
+tables.
 
 **Viewport:**
 
@@ -182,13 +216,16 @@ content.
 
 **Steps:**
 
-1. Set viewport to iPhone 12/13 logical size (`390x844`) with `isMobile: true` and `hasTouch: true`.
+1. Set viewport to iPhone 12/13 logical size (`390x844`) with `isMobile: true`
+   and `hasTouch: true`.
 2. Navigate to the test post (`/blog/ssh-signing-keys-for-github-codespaces`).
 3. Locate an overflowing table within `.blog-content table`.
-4. Record initial `html` and `body` width metrics (`clientWidth` and `scrollWidth`).
+4. Record initial `html` and `body` width metrics (`clientWidth` and
+   `scrollWidth`).
 5. Programmatically scroll the table horizontally by increasing `scrollLeft`.
 6. Assert page widths remain stable and table `scrollLeft` increased.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     Browser->>Page: navigate to /blog/ssh-signing-keys-for-github-codespaces
@@ -196,6 +233,7 @@ sequenceDiagram
     Page->>DOM: scroll table horizontally
     DOM->>Assertions: verify stable widths and increased scrollLeft
 ```
+<!-- markdownlint-enable MD013 -->
 
 **Assertions:**
 
@@ -208,7 +246,8 @@ sequenceDiagram
 
 **Prerequisites:**
 
-- The test post contains at least one table that overflows horizontally at a `390px` viewport.
+- The test post contains at least one table that overflows horizontally at a
+  `390px` viewport.
 
 ---
 
@@ -225,6 +264,7 @@ All tests use a known published post:
 
 ## Running Tests
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Run blog post integration tests only
 npx playwright test tests/integration/blog-post.spec.ts
@@ -235,17 +275,22 @@ npx playwright test
 # Run with UI mode for debugging
 npx playwright test tests/integration/blog-post.spec.ts --ui
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Fixture Requirements
 
-- **Dev server** must be running on the configured `baseURL` (see `playwright.config.ts`).
-- The test post (`ssh-signing-keys-for-github-codespaces`) must exist in `content/blog/` and have a built JSON in `public/blog-content/`.
-- Both error-handling tests use the `page` fixture to navigate and assert DOM visibility of the "404" heading.
+- **Dev server** must be running on the configured `baseURL` (see
+  `playwright.config.ts`).
+- The test post (`ssh-signing-keys-for-github-codespaces`) must exist in
+  `content/blog/` and have a built JSON in `public/blog-content/`.
+- Both error-handling tests use the `page` fixture to navigate and assert DOM
+  visibility of the "404" heading.
 
 ## Important Selectors
 
+<!-- markdownlint-disable MD013 -->
 | Selector / Locator                         | Used in                |
 | ------------------------------------------ | ---------------------- |
 | `heading level: 1`                         | SSR title test         |
@@ -257,3 +302,4 @@ npx playwright test tests/integration/blog-post.spec.ts --ui
 | `#toc-heading`                             | Table of Contents test |
 | `a` with text "Back to Blog"               | Navigation test        |
 | `header`, `footer`                         | Layout test            |
+<!-- markdownlint-enable MD013 -->
