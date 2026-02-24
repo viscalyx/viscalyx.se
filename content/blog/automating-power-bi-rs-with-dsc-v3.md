@@ -233,12 +233,13 @@ coordinate (SQL Engine + RS Setup + firewall, etc.).
 
 ### DSC v3 configuration document
 
+Configuration documents can be in both YAML or JSON. At the time of this
+writing Microsoft recommends drafting configuration documents in YAML.
+
 Author a YAML document (`deploy-PBIRS.dsc.config.yaml`) to define the desired
 state:
 
-> Configuration documents can be in both YAML or JSON. At the time of this
-> writing Microsoft recommends drafting configuration documents in YAML.
-
+>
 > [!NOTE]
 > As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell
 > resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a
