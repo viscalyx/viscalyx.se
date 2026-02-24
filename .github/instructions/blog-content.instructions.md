@@ -34,6 +34,7 @@ category: 'Any category — reuse existing ones when possible (e.g., DevOps, Pow
 - For markdownlint `MD013`: disable before markdown tables and fenced code blocks, then re-enable immediately after each block
 - Wrap long non-table/non-code lines at word boundaries around 80 chars
 - Never split a Markdown URL across lines; when a line has a Markdown link that starts prior to 80 chars, only wrap after the link closing parenthesis `)`
+- Never split inline code in backticks; when wrapping around inline code, break either before or after the full inline-code segment
 
 ## Callouts
 
