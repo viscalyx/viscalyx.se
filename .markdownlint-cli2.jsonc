@@ -1,0 +1,27 @@
+{
+  "config": {
+    "default": true,
+    "MD033": {
+      "allowed_elements": ["img"]
+    } // no-inline-html (allow <img> for floating/styled images)
+  },
+  "globs": [
+    "**/*.md",
+    "!**/AGENTS.md",
+    "!.github/copilot-instructions.md",
+    "!.github/instructions/**",
+    "!.github/prompts/**",
+    "!.github/skills/**",
+    "!.github/ISSUE_TEMPLATE/**",
+    "!.github/pull_request_template.md",
+    "!.next/**",
+    "!.open-next/**",
+    "!.wrangler/**",
+    "!node_modules/**",
+    "!coverage/**",
+    "!build/**",
+    "!dist/**",
+    "!out/**",
+    "!bundled/**"
+  ]
+}
