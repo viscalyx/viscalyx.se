@@ -14,7 +14,8 @@ Tests the cookie consent banner functionality, including:
 - **Accept All**: Tests accepting all cookie categories
 - **Reject All**: Tests rejecting non-essential cookies
 - **Individual Toggles**: Tests toggling specific cookie categories
-- **Settings Persistence**: Verifies settings are saved and persist across page reloads
+- **Settings Persistence**: Verifies settings are saved and persist across page
+  reloads
 - **UI Navigation**: Tests opening/closing detailed settings view
 - **Accessibility**: Basic keyboard navigation testing
 
@@ -22,8 +23,10 @@ Tests the cookie consent banner functionality, including:
 
 Tests the server-rendered blog listing page, including:
 
-- **Server-Side Rendering**: Verifies content is in the initial HTML (no loading spinner)
-- **SEO Metadata**: Checks page title and meta description from `generateMetadata`
+- **Server-Side Rendering**: Verifies content is in the initial HTML (no
+  loading spinner)
+- **SEO Metadata**: Checks page title and meta description from
+  `generateMetadata`
 - **Featured Post**: Validates the featured post card display and navigation
 - **Category Filter**: Tests filtering posts by category and resetting to all
 - **Load More Pagination**: Tests progressive loading of post cards
@@ -34,10 +37,14 @@ Tests the server-rendered blog listing page, including:
 
 Tests the server-rendered blog post page, including:
 
-- **Server-Side Rendering**: Verifies content is in the initial HTML (no loading spinner)
-- **SEO Metadata**: Checks page title, meta description, OG tags, and Twitter card
-- **Post Content**: Validates featured image, author, category, read time, and tags
-- **Table of Contents**: Verifies the desktop sidebar ToC renders for posts with headings
+- **Server-Side Rendering**: Verifies content is in the initial HTML (no
+  loading spinner)
+- **SEO Metadata**: Checks page title, meta description, OG tags, and Twitter
+  card
+- **Post Content**: Validates featured image, author, category, read time, and
+  tags
+- **Table of Contents**: Verifies the desktop sidebar ToC renders for posts
+  with headings
 - **Author Bio**: Validates author bio section and View Profile link
 - **Navigation**: Tests Back to Blog link, header/footer, and navigation flow
 - **Share Functionality**: Verifies the share button is present
@@ -50,25 +57,33 @@ Tests the server-rendered blog post page, including:
 Tests the server-rendered homepage, including:
 
 - **Server-Side Rendering**: Verifies hero content is in the initial HTML
-- **SEO Metadata**: Checks page title, meta description, and OG tags from `generateMetadata`
+- **SEO Metadata**: Checks page title, meta description, and OG tags from
+  `generateMetadata`
 - **Header Navigation**: Validates logo, nav links, and blog link navigation
 - **Hero Section**: Tests badge, stats, Learn More button, and image carousel
-- **About Section**: Validates heading, description, value cards, and hash anchor
-- **Open Source Section**: Tests heading, stats, project cards, CTA links, and hash anchor
-- **Footer**: Validates company/resource/support links, copyright, and social links
+- **About Section**: Validates heading, description, value cards, and hash
+  anchor
+- **Open Source Section**: Tests heading, stats, project cards, CTA links, and
+  hash anchor
+- **Footer**: Validates company/resource/support links, copyright, and social
+  links
 - **Locale Support**: Verifies Swedish translations at `/sv` for all sections
 
 ### Cross-Origin Warning Tests (`cross-origin-warning.spec.ts`)
 
-Tests that the Next.js dev server does not emit cross-origin warnings when accessed via `0.0.0.0` (common in devcontainer/Docker setups):
+Tests that the Next.js dev server does not emit cross-origin warnings when
+accessed via `0.0.0.0` (common in devcontainer/Docker setups):
 
-- **Runtime Verification**: Spawns a dev server, navigates via `0.0.0.0`, and asserts no cross-origin warnings appear in server output
-- **Config Guard-Rail**: Verifies `next.config.ts` contains `allowedDevOrigins: ['0.0.0.0']`
+- **Runtime Verification**: Spawns a dev server, navigates via `0.0.0.0`, and
+  asserts no cross-origin warnings appear in server output
+- **Config Guard-Rail**: Verifies `next.config.ts` contains `allowedDevOrigins:
+  ['0.0.0.0']`
 
 ## Running Tests
 
 ### Prerequisites
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Install dependencies (includes Playwright)
 npm install
@@ -76,9 +91,11 @@ npm install
 # Install Playwright browsers and their OS-level dependencies
 npx playwright install --with-deps
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Local Development
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Run all integration tests against dev server (default)
 npm run test:integration
@@ -98,9 +115,11 @@ npm run test:integration:ui
 # View last test report
 npm run test:integration:report
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Specific Test Execution
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Run specific test file
 npx playwright test tests/integration/cookie-consent.spec.ts
@@ -114,12 +133,16 @@ npx playwright test --project=chromium
 # Run with debugging
 npx playwright test --debug
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Test Configuration
 
-- **Development Server**: Tests run against `http://127.0.0.1:3000` (Next.js dev server)
-- **Preview Server**: Tests run against `http://127.0.0.1:8787` (OpenNext preview server)
-- **Browsers**: Chromium (default), additional browsers can be added to the config
+- **Development Server**: Tests run against `http://127.0.0.1:3000` (Next.js
+  dev server)
+- **Preview Server**: Tests run against `http://127.0.0.1:8787` (OpenNext
+  preview server)
+- **Browsers**: Chromium (default), additional browsers can be added to the
+  config
 - **Reports**: HTML reports and JUnit XML for CI integration
 
 ## Continuous Integration
@@ -137,7 +160,8 @@ preview servers with proper artifact collection for debugging.
 - Test results: `test-results/`
 - Screenshots: Captured on test failures
 - Videos: Recorded for failed tests
-- Traces: Available for debugging (view with `npx playwright show-trace <trace-file>`)
+- Traces: Available for debugging (view with `npx playwright show-trace
+  <trace-file>`)
 
 ## Development Tips
 
