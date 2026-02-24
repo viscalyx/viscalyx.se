@@ -26,7 +26,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
     "source.fixAll.markdownlint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.organizeImports.biome": "explicit",
+    "source.organizeImports": "never"
   },
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
