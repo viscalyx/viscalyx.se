@@ -4,10 +4,8 @@
 
 This test suite verifies that the Next.js dev server does not emit cross-origin
 warnings when the application is accessed via `0.0.0.0` or `127.0.0.1` (common
-in devcontainer and Docker setups). It validates the fix for [GitHub issue #128](https://github.com/viscalyx/viscalyx.se/issues/128), which requires
-`allowedDevOrigins: ['0.0.0.0', '127.0.0.1']` in `next.config.ts`.
-
----
+in devcontainer and Docker setups). It validates the fix for [GitHub issue #128](https://github.com/viscalyx/viscalyx.se/issues/128),
+which requires `allowedDevOrigins: ['0.0.0.0', '127.0.0.1']` in `next.config.ts`.
 
 ## Background
 
@@ -25,8 +23,6 @@ console — making it easy to miss. The fix is a single config line:
 allowedDevOrigins: ['0.0.0.0', '127.0.0.1']
 ```
 <!-- markdownlint-enable MD013 -->
-
----
 
 ## Overview — Test Decision Flow
 
@@ -48,8 +44,6 @@ flowchart TD
     I -- Yes --> M["❌ Resource failures — FAIL"]
 ```
 <!-- markdownlint-enable MD013 -->
-
----
 
 ## Test Setup
 
@@ -84,8 +78,6 @@ test provides an additional fast guard.
 | ---------- | ------ | ------------------------------------------------------------------------------- |
 | `DEV_PORT` | `3000` | The Playwright-managed dev server port (from `playwright.config.ts` `baseURL`). |
 <!-- markdownlint-enable MD013 -->
-
----
 
 ## Test Cases
 
@@ -156,8 +148,6 @@ flowchart LR
     C -- Yes --> G
 ```
 <!-- markdownlint-enable MD013 -->
-
----
 
 ### 3. next.config.ts should have allowedDevOrigins configured
 
