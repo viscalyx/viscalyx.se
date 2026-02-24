@@ -47,7 +47,6 @@ const LanguageSwitcher = () => {
       const activeIndex = languages.findIndex(lang => lang.code === locale)
       setFocusedIndex(activeIndex)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, locale])
 
   const handleLanguageChange = useCallback(
@@ -107,7 +106,6 @@ const LanguageSwitcher = () => {
           break
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isOpen, focusedIndex, languageCount, handleLanguageChange]
   )
 
