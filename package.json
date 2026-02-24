@@ -9,7 +9,7 @@
     "prebuild": "node ./scripts/prebuild.js",
     "build": "cross-env NODE_ENV=production next build",
     "start": "next start",
-    "lint": "biome lint .",
+    "lint": "biome lint --error-on-warnings .",
     "lint:fix": "biome lint --write .",
     "type-check": "rimraf .next/dev/types && next typegen && tsc --noEmit",
     "format": "biome format --write .",
