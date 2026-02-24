@@ -1081,7 +1081,7 @@ code .
 ```
 <!-- markdownlint-enable MD013 -->
 
-### Troubleshooting
+### Troubleshooting CSpell
 
 **SSH Agent Not Working:**
 
@@ -2432,7 +2432,7 @@ for the full compliance checklist.
 
 ### Customization
 
-#### Styling
+#### Styling (Cookie Banner)
 
 The components use Tailwind CSS classes and respect your design system:
 
@@ -2448,7 +2448,7 @@ Add new languages by:
 2. Adding the locale to your i18n configuration
 3. Copying the `cookieConsent` and `cookiePolicy` sections
 
-#### Cookie Categories
+#### Cookie Categories (Banner Configuration)
 
 To add new categories:
 
