@@ -12,13 +12,18 @@ category: 'Automation'
 
 # Infrastructure as Code Best Practices
 
-Infrastructure as Code (IaC) has revolutionized how we manage and provision infrastructure. By treating infrastructure like software, we can apply the same rigorous practices that have made software development more reliable and efficient.
+Infrastructure as Code (IaC) has revolutionized how we manage and provision
+infrastructure. By treating infrastructure like software, we can apply the same
+rigorous practices that have made software development more reliable and
+efficient.
 
 ## Why Infrastructure as Code Matters
 
-Traditional infrastructure management is often manual, error-prone, and difficult to scale. IaC addresses these challenges by:
+Traditional infrastructure management is often manual, error-prone, and
+difficult to scale. IaC addresses these challenges by:
 
-- **Consistency**: Ensuring identical environments across development, staging, and production
+- **Consistency**: Ensuring identical environments across development, staging,
+  and production
 - **Version Control**: Tracking changes and enabling rollbacks
 - **Automation**: Reducing manual effort and human error
 - **Documentation**: Code serves as living documentation of your infrastructure
@@ -27,8 +32,10 @@ Traditional infrastructure management is often manual, error-prone, and difficul
 
 ### 1. Declarative Configuration
 
-Define the desired state of your infrastructure rather than the steps to achieve it. This approach is more reliable and easier to understand.
+Define the desired state of your infrastructure rather than the steps to achieve
+it. This approach is more reliable and easier to understand.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Configuration WebServer {
     Node "WebServer01" {
@@ -45,10 +52,12 @@ Configuration WebServer {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### 2. Immutable Infrastructure
 
-Create new infrastructure rather than modifying existing resources. This practice reduces configuration drift and makes deployments more predictable.
+Create new infrastructure rather than modifying existing resources. This
+practice reduces configuration drift and makes deployments more predictable.
 
 ### 3. Version Everything
 
@@ -65,6 +74,7 @@ Store all infrastructure code in version control and tag releases. This enables:
 
 Structure your IaC projects logically:
 
+<!-- markdownlint-disable MD013 -->
 ```
 infrastructure/
 ├── environments/
@@ -79,10 +89,12 @@ infrastructure/
     ├── variables/
     └── policies/
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Use Modules and Reusability
 
-Create reusable modules for common infrastructure patterns. This reduces duplication and ensures consistency.
+Create reusable modules for common infrastructure patterns. This reduces
+duplication and ensures consistency.
 
 ### Implement Proper Testing
 
@@ -115,6 +127,7 @@ Implement comprehensive monitoring for your infrastructure:
 
 Excellent for Windows environments and hybrid scenarios:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Configuration DatabaseServer {
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -133,11 +146,13 @@ Configuration DatabaseServer {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Terraform
 
 Great for multi-cloud environments and complex infrastructure:
 
+<!-- markdownlint-disable MD013 -->
 ```hcl
 resource "azurerm_resource_group" "main" {
   name     = var.resource_group_name
@@ -151,11 +166,13 @@ resource "azurerm_virtual_network" "main" {
   resource_group_name = azurerm_resource_group.main.name
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Azure Resource Manager (ARM) Templates
 
 Native Azure solution with deep integration:
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -170,6 +187,7 @@ Native Azure solution with deep integration:
   }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Common Pitfalls to Avoid
 
@@ -177,7 +195,8 @@ Native Azure solution with deep integration:
 2. **Ignoring state management**: Understand how your tool manages state
 3. **Poor secret management**: Use proper secret management solutions
 4. **Lack of documentation**: Document your architecture and decisions
-5. **Not planning for disaster recovery**: Include backup and recovery procedures
+5. **Not planning for disaster recovery**: Include backup and recovery
+   procedures
 
 ## Getting Started
 
@@ -189,6 +208,11 @@ Native Azure solution with deep integration:
 
 ## Conclusion
 
-Infrastructure as Code is not just about tools—it's a fundamental shift in how we think about infrastructure. By following these best practices, you can build more reliable, scalable, and maintainable infrastructure that supports your business goals.
+Infrastructure as Code is not just about tools—it's a fundamental shift in how
+we think about infrastructure. By following these best practices, you can build
+more reliable, scalable, and maintainable infrastructure that supports your
+business goals.
 
-Ready to transform your infrastructure management? Contact Viscalyx to learn how we can help you implement Infrastructure as Code best practices in your organization.
+Ready to transform your infrastructure management? Contact Viscalyx to learn how
+we can help you implement Infrastructure as Code best practices in your
+organization.
