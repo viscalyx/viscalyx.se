@@ -8,10 +8,13 @@ category: 'Template'
 readTime: '1 min read'
 ---
 
-This article tests various code blocks with different languages and ensures syntax highlighting works as expected without altering the current design or background colors.
+This article tests various code blocks with different languages and ensures
+syntax highlighting works as expected without altering the current design or
+background colors.
 
 ## JavaScript Example
 
+<!-- markdownlint-disable MD013 -->
 ```javascript
 // JavaScript example
 function greet(name) {
@@ -19,9 +22,11 @@ function greet(name) {
 }
 greet('World')
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Python Example
 
+<!-- markdownlint-disable MD013 -->
 ```python
 # Python example
 def add(a, b):
@@ -29,9 +34,11 @@ def add(a, b):
 
 print(add(5, 3))
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## PowerShell Example
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # PowerShell example
 Param(
@@ -39,9 +46,11 @@ Param(
 )
 Write-Host "Hello, $name!"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Bash Example
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Bash example
 #!/bin/bash
@@ -49,9 +58,11 @@ for i in {1..5}; do
   echo "Iteration $i"
 done
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## HTML Example
 
+<!-- markdownlint-disable MD013 -->
 ```html
 <!-- HTML example -->
 <!DOCTYPE html>
@@ -65,9 +76,11 @@ done
   </body>
 </html>
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## TypeScript Example
 
+<!-- markdownlint-disable MD013 -->
 ```typescript
 // TypeScript example
 interface User {
@@ -88,9 +101,11 @@ class UserService {
   }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## C# Example
 
+<!-- markdownlint-disable MD013 -->
 ```csharp
 // C# example
 using System;
@@ -118,11 +133,14 @@ class Program
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## C# Example
 
-This second equally named section is to test unique anchoring when section has same names.
+This second equally named section is to test unique anchoring when section has
+same names.
 
+<!-- markdownlint-disable MD013 -->
 ```csharp
 // C# example
 using System;
@@ -150,9 +168,11 @@ class Program
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Java Example
 
+<!-- markdownlint-disable MD013 -->
 ```java
 // Java example
 import java.util.ArrayList;
@@ -181,9 +201,11 @@ public class Person {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Go Example
 
+<!-- markdownlint-disable MD013 -->
 ```go
 // Go example
 package main
@@ -203,9 +225,11 @@ func main() {
     http.ListenAndServe(":8080", nil)
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Rust Example
 
+<!-- markdownlint-disable MD013 -->
 ```rust
 // Rust example
 use std::collections::HashMap;
@@ -238,9 +262,11 @@ fn main() {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## C++ Example
 
+<!-- markdownlint-disable MD013 -->
 ```cpp
 // C++ example
 #include <iostream>
@@ -279,9 +305,11 @@ int main() {
     return 0;
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## PHP Example
 
+<!-- markdownlint-disable MD013 -->
 ```php
 <?php
 // PHP example
@@ -316,9 +344,11 @@ $db = new Database('localhost', 'user', 'pass', 'mydb');
 $db->connect();
 ?>
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Ruby Example
 
+<!-- markdownlint-disable MD013 -->
 ```ruby
 # Ruby example
 class Book
@@ -352,9 +382,11 @@ books.each do |book|
   puts "---"
 end
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Swift Example
 
+<!-- markdownlint-disable MD013 -->
 ```swift
 // Swift example
 import Foundation
@@ -400,9 +432,11 @@ for animal in animals {
     print("\(animal.name) says: \(animal.makeSound())")
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Kotlin Example
 
+<!-- markdownlint-disable MD013 -->
 ```kotlin
 // Kotlin example
 data class Person(val name: String, val age: Int)
@@ -438,9 +472,11 @@ fun main() {
     println("Average age: ${repository.getAverageAge()}")
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## SQL Example
 
+<!-- markdownlint-disable MD013 -->
 ```sql
 -- SQL example
 CREATE TABLE employees (
@@ -468,9 +504,11 @@ GROUP BY department
 HAVING COUNT(*) > 1
 ORDER BY avg_salary DESC;
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## CSS Example
 
+<!-- markdownlint-disable MD013 -->
 ```css
 /* CSS example */
 :root {
@@ -527,9 +565,11 @@ ORDER BY avg_salary DESC;
   }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## YAML Example
 
+<!-- markdownlint-disable MD013 -->
 ```yaml
 # YAML example
 apiVersion: apps/v1
@@ -571,9 +611,11 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## JSON Example
 
+<!-- markdownlint-disable MD013 -->
 ```json
 {
   "name": "sample-project",
@@ -608,9 +650,11 @@ spec:
   "keywords": ["javascript", "node", "web", "api"]
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Docker Example
 
+<!-- markdownlint-disable MD013 -->
 ```dockerfile
 # Dockerfile example
 FROM node:18-alpine AS base
@@ -659,9 +703,11 @@ ENV PORT 3000
 
 CMD ["node", "server.js"]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Regex Example
 
+<!-- markdownlint-disable MD013 -->
 ```regex
 # Regex examples
 
@@ -683,9 +729,11 @@ CMD ["node", "server.js"]
 # Credit card number (basic format)
 ^\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}$
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## XML Example
 
+<!-- markdownlint-disable MD013 -->
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- XML example -->
@@ -722,9 +770,11 @@ CMD ["node", "server.js"]
     </book>
 </bookstore>
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Scala Example
 
+<!-- markdownlint-disable MD013 -->
 ```scala
 // Scala example
 import scala.collection.mutable
@@ -775,9 +825,11 @@ object ShoppingApp extends App {
   println(f"Total price: $$${cart.getTotalPrice}%.2f")
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Haskell Example
 
+<!-- markdownlint-disable MD013 -->
 ```haskell
 -- Haskell example
 module Main where
@@ -833,9 +885,11 @@ main = do
     putStrLn $ "Factorial of 5: " ++ show (factorial 5)
     putStrLn $ "Pairs from [1,2,3,4]: " ++ show (generatePairs [1,2,3,4])
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Lua Example
 
+<!-- markdownlint-disable MD013 -->
 ```lua
 -- Lua example
 local json = require("json")
@@ -924,9 +978,11 @@ end
 
 main()
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## R Example
 
+<!-- markdownlint-disable MD013 -->
 ```r
 # R example
 library(ggplot2)
@@ -1019,11 +1075,13 @@ top_students <- students %>%
 print("Top 10 Students by GPA:")
 print(top_students)
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Long Line Examples
 
 Test cases for horizontal scrolling when code lines are very long:
 
+<!-- markdownlint-disable MD013 -->
 ```javascript
 // Very long JavaScript line example
 const veryLongVariableName =
@@ -1036,22 +1094,29 @@ const result = someVeryLongObjectNameWithManyProperties
   .yetAnotherMethodThatHasAnExtremelyLongNameForDemonstrationPurposes()
   .finalMethod()
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Very long bash command example
 curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer very_long_token_here_that_makes_the_line_extremely_wide_for_testing_purposes" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```python
 # Very long Python line with many parameters
 def very_long_function_name_for_demonstration_purposes(parameter_one_with_long_name, parameter_two_with_even_longer_name, parameter_three_that_is_ridiculously_long, parameter_four_for_good_measure, parameter_five_just_because):
     return f"This function has a very long signature that should cause horizontal scrolling: {parameter_one_with_long_name}, {parameter_two_with_even_longer_name}, {parameter_three_that_is_ridiculously_long}"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Vertical Scrolling Test
 
-This section contains a very long code block to test the vertical scrollbar functionality:
+This section contains a very long code block to test the vertical scrollbar
+functionality:
 
+<!-- markdownlint-disable MD013 -->
 ```python
 # Very long Python code block for testing vertical scrollbar
 import json
@@ -1446,3 +1511,4 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+<!-- markdownlint-enable MD013 -->
