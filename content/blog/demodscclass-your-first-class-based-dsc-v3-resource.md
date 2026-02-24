@@ -10,7 +10,11 @@ category: 'DSC'
 readTime: '8 min read'
 ---
 
-Microsoft Desired State Configuration (DSC) v3 represents the next generation of configuration management with cross-platform support. By creating class-based resources, you can build reusable components that work across both modern DSC v3 and legacy PSDSC engines. This tutorial walks you through creating your first DSC resource from scratch.
+Microsoft Desired State Configuration (DSC) v3 represents the next generation of
+configuration management with cross-platform support. By creating class-based
+resources, you can build reusable components that work across both modern DSC v3
+and legacy PSDSC engines. This tutorial walks you through creating your first
+DSC resource from scratch.
 
 In this tutorial, you learn how to:
 
@@ -27,56 +31,77 @@ In this tutorial, you learn how to:
 
 ## What is a DSC resource?
 
-A DSC (Desired State Configuration) resource is a building block that tells the engine how to **reach** and **maintain** a desired state. Think of it as a PowerShell class with four lifecycle methods:
+A DSC (Desired State Configuration) resource is a building block that tells the
+engine how to **reach** and **maintain** a desired state. Think of it as a
+PowerShell class with four lifecycle methods:
 
+<!-- markdownlint-disable MD013 -->
 | Method     | Purpose                 | Returns                               | Compatibility |
 | ---------- | ----------------------- | ------------------------------------- | ------------- |
 | `Get()`    | Retrieves current state | Hashtable with current values         | All           |
 | `Test()`   | Validates desired state | `$true` if compliant, `$false` if not | All           |
 | `Set()`    | Applies desired state   | Nothing (void)                        | All           |
 | `Export()` | Exports configuration   | Array of resource instances           | V3 only       |
+<!-- markdownlint-enable MD013 -->
 
 ## Why use class-based resources?
 
-Class-based DSC resources offer a modern, object-oriented approach to configuration management in PowerShell. Benefits include:
+Class-based DSC resources offer a modern, object-oriented approach to
+configuration management in PowerShell. Benefits include:
 
 - **Broad compatibility**: Works with both DSC v3 and legacy PSDSC engines
 - **Cleaner code**: Encapsulates logic in a structured, maintainable way
-- **Cross-platform support**: Runs on Windows, Linux, and macOS with proper implementation
+- **Cross-platform support**: Runs on Windows, Linux, and macOS with proper
+  implementation
 
 ### Are class-based resources the future of DSC?
 
-While class-based resources are currently the recommended pattern for PowerShell DSC resource authoring, DSC v3 supports multiple languages and resource types. You can author resources in [Go][00], C#, Python and other languages. Class-based resources remain well-supported but may not be the only model in the future.
+While class-based resources are currently the recommended pattern for PowerShell
+DSC resource authoring, DSC v3 supports multiple languages and resource types.
+You can author resources in [Go][00], C#, Python and other languages.
+Class-based resources remain well-supported but may not be the only model in the
+future.
 
-For example, if your organization migrates from Windows-only infrastructure to a mix of Windows and Linux, or adopts newer versions of PowerShell, class-based resources help ensure your automation investments remain valid and portable across both the new Microsoft DSC v3 engine and the older PSDSC engine.
+For example, if your organization migrates from Windows-only infrastructure to a
+mix of Windows and Linux, or adopts newer versions of PowerShell, class-based
+resources help ensure your automation investments remain valid and portable
+across both the new Microsoft DSC v3 engine and the older PSDSC engine.
 
-In the next section, you will learn to set up a project structure with a class-based DSC resource named `DemoDscClass`.
+In the next section, you will learn to set up a project structure with a
+class-based DSC resource named `DemoDscClass`.
 
 ## Step 1: Create the project structure
 
 Create a new folder for your DSC resource module:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Create and navigate to project folder
 mkdir DemoDscClass
 cd DemoDscClass
 ```
+<!-- markdownlint-enable MD013 -->
 
 Your project structure should look like this:
 
+<!-- markdownlint-disable MD013 -->
 ```plaintext
 DemoDscClass/
 ├── DemoDscClass.psd1    # Module manifest
 └── DemoDscClass.psm1    # Resource implementation
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!IMPORTANT]
-> Your module manifest filename must match the project folder name. For example, if your folder is named `DemoDscClass`, your manifest must be `DemoDscClass.psd1`.
+> Your module manifest filename must match the project folder name. For
+> example, if your folder is named `DemoDscClass`, your manifest must be
+> `DemoDscClass.psd1`.
 
 ## Step 2: Create the module manifest
 
 ### Use PowerShell to generate the manifest
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $manifestParams = @{
     Path                  = '.\DemoDscClass.psd1'
@@ -89,11 +114,13 @@ $manifestParams = @{
 
 New-ModuleManifest @manifestParams
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Or create manually
 
 You can also create `DemoDscClass.psd1` using any text editor:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 @{
     RootModule = 'DemoDscClass.psm1'
@@ -115,9 +142,11 @@ You can also create `DemoDscClass.psd1` using any text editor:
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!NOTE]
-> More properties are available to set. For more information, read the article [about_Module_Manifest][01]
+> More properties are available to set. For more information, read the article
+> [about_Module_Manifest][01]
 
 ## Step 3: Implement the resource class
 
@@ -125,6 +154,7 @@ You can also create `DemoDscClass.psd1` using any text editor:
 
 Create `DemoDscClass.psm1` and add the basic class definition:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 [DscResource()]                   # Marks this class as a DSC resource for discovery
 class DemoDscClass {
@@ -139,11 +169,13 @@ class DemoDscClass {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Add the Get() method
 
 The `Get()` method retrieves the current state:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
     [DemoDscClass] Get() {
         Write-Verbose -Message 'Get called'
@@ -155,11 +187,13 @@ The `Get()` method retrieves the current state:
         return $currentState
     }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Add the Test() method
 
 The `Test()` method checks if the current state matches the desired state:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
     [System.Boolean] Test() {
         Write-Verbose -Message 'Test called - always returns $false to demo Set()'
@@ -167,21 +201,26 @@ The `Test()` method checks if the current state matches the desired state:
         return $false             # Always returns false for demo
     }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Add the Set() method
 
 The `Set()` method applies the desired state:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
     [void] Set() {
         Write-Verbose -Message 'Set called - no changes are applied for demo'
     }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Add the Export() method
 
-The `Export()` method exports every instance of a set of resources in Microsoft DSC v3.
+The `Export()` method exports every instance of a set of resources in Microsoft
+DSC v3.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
     static [DemoDscClass[]] Export() {
         Write-Verbose -Message 'Export called - returning three demo instances'
@@ -199,19 +238,25 @@ The `Export()` method exports every instance of a set of resources in Microsoft 
         return $resultList.ToArray()
     }
 ```
+<!-- markdownlint-enable MD013 -->
 
-You can only call the `Export()` method by instantiating the class. Prior DSC versions can't directly invoke the capability. Also remember, not all classes should implement `Export()`. Always ask two questions:
+You can only call the `Export()` method by instantiating the class. Prior DSC
+versions can't directly invoke the capability. Also remember, not all classes
+should implement `Export()`. Always ask two questions:
 
 1. Does it make sense to implement `Export()`?
 2. Is it a cheap operation to perform?
 
 > [!INFO]
-> For example, exporting all Windows services from a machine makes sense and is relatily cheap. Exporting the whole registry _might_ make sense, but isn't a cheap operation to perform.
+> For example, exporting all Windows services from a machine makes sense and is
+> relatily cheap. Exporting the whole registry _might_ make sense, but isn't a
+> cheap operation to perform.
 
 ### Complete class implementation
 
 Here's the complete `DemoDscClass.psm1` file:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 [DscResource()] # Attribute marking class as DSC resource
 class DemoDscClass {
@@ -261,26 +306,31 @@ class DemoDscClass {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 It's time to install Microsoft DSC v3 and test out the class using `dsc`.
 
 ## Step 4: Install Microsoft DSC v3
 
-To easily install the `dsc` executable, you can use the [PSDC][02] PowerShell community module.
+To easily install the `dsc` executable, you can use the [PSDC][02] PowerShell
+community module.
 
 > [!INFO]
 > The community module only works on PowerShell 7.
 
 ### Install using PowerShell
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Install-PSResource PSDSC -TrustRepository -Quiet
 Install-DscExe -IncludePrerelease -Force
 dsc --version
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!NOTE]
-> The command also works on other platforms. You can also grab the asset on [GitHub][03] for the platform you're working on.
+> The command also works on other platforms. You can also grab the asset on
+> [GitHub][03] for the platform you're working on.
 
 ## Step 5: Test your resource
 
@@ -288,28 +338,36 @@ dsc --version
 
 Add your project folder to the module path:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Location) -Parent)
 ```
+<!-- markdownlint-enable MD013 -->
 
-This commands adds your current directory to be searchable. PowerShell can now find your DSC resource when you list or invoke capabilities against it.
+This commands adds your current directory to be searchable. PowerShell can now
+find your DSC resource when you list or invoke capabilities against it.
 
 ### List available resources
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 dsc resource list --adapter Microsoft.Adapter/PowerShell
 ```
+<!-- markdownlint-enable MD013 -->
 
 If you want to find the `DemoDscClass`, you can filter on it:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 dsc resource list --adapter Microsoft.Adapter/PowerShell DemoDscClass*
 ```
+<!-- markdownlint-enable MD013 -->
 
 You should see `DemoDscClass` in the list.
 
 ### Test lifecycle operations
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 $desiredParameters = @{ Key = 'Demo' } | ConvertTo-Json -Compress
 
@@ -325,21 +383,33 @@ dsc resource set --resource DemoDscClass/DemoDscClass --input $desiredParameters
 # Export instances
 dsc resource export --resource DemoDscClass/DemoDscClass
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!TIP]
-> To see detailed trace logs, add the `--trace-level trace` parameter to any DSC command. DSC's default output is YAML if nothing is piped. If you want the raw JSON, you can add the `--output-format json` option.
+> To see detailed trace logs, add the `--trace-level trace` parameter to any
+> DSC command. DSC's default output is YAML if nothing is piped. If you want the
+> raw JSON, you can add the `--output-format json` option.
 
 ## Step 6: Use configuration documents
 
-You can also define a configuration document, allowing you to define multiple resource instances. The next section illustrates how you can create such a configuration document.
+You can also define a configuration document, allowing you to define multiple
+resource instances. The next section illustrates how you can create such a
+configuration document.
 
 ### Create a configuration document
 
 Create `demo.dsc.config.yaml`:
 
 > [!NOTE]
-> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a nested `resources` array. The new pattern uses `requireAdapter` in the resource metadata under `Microsoft.DSC`, making configurations flatter and more readable. See [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for details.
+> As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell
+> resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a
+> nested `resources` array. The new pattern uses `requireAdapter` in the
+> resource metadata under `Microsoft.DSC`, making configurations flatter and
+> more readable. See
+> [PowerShell/DSC#1368](https://github.com/PowerShell/DSC/issues/1368) for
+> details.
 
+<!-- markdownlint-disable MD013 -->
 ```yaml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 resources:
@@ -351,9 +421,11 @@ resources:
     properties:
       Key: Demo
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Run configuration commands
 
+<!-- markdownlint-disable MD013 -->
 ```sh
 # Get current state
 dsc config get --file demo.dsc.config.yaml
@@ -367,11 +439,14 @@ dsc config set --file demo.dsc.config.yaml
 # Export configuration
 dsc config export --file demo.dsc.config.yaml
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Use implicit syntax (optional)
 
-Microsoft DSC v3 allows you to implicitly call the DSC class-based resource. Create `demo-implicit.dsc.config.yaml` for a simpler approach:
+Microsoft DSC v3 allows you to implicitly call the DSC class-based resource.
+Create `demo-implicit.dsc.config.yaml` for a simpler approach:
 
+<!-- markdownlint-disable MD013 -->
 ```yaml
 $schema: https://aka.ms/dsc/schemas/v3/bundled/config/document.json
 resources:
@@ -380,24 +455,30 @@ resources:
     properties:
       Key: Demo
 ```
+<!-- markdownlint-enable MD013 -->
 
 You can now run the configuration file with the same commands ran earlier.
 
 > [!WARNING]
-> Using implicit syntax comes at a performance cost. Each adapter runs through the DSC engine to find the relative DSC resource. If you run this command for the first time, it can take a while as no caching has taken place.
+> Using implicit syntax comes at a performance cost. Each adapter runs through
+> the DSC engine to find the relative DSC resource. If you run this command for
+> the first time, it can take a while as no caching has taken place.
 
 ## Step 7: Write tests with Pester
 
 ### Install Pester
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Install-PSResource -Name Pester
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Create test file
 
 Create `DemoDscClass.tests.ps1`:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 BeforeAll {
     $modulePath = $PSScriptRoot
@@ -422,15 +503,19 @@ Describe 'DemoDscClass' {
     }
 }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Run tests
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Invoke-Pester -Script ./DemoDscClass.tests.ps1 -Output Detailed
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!WARNING]
-> PowerShell cannot reload class definitions in the current session. After modifying a class, you must restart PowerShell for changes to take effect.
+> PowerShell cannot reload class definitions in the current session. After
+> modifying a class, you must restart PowerShell for changes to take effect.
 
 ## Troubleshooting
 
@@ -438,6 +523,7 @@ Invoke-Pester -Script ./DemoDscClass.tests.ps1 -Output Detailed
 
 If you receive an error when running `dsc`, verify the installation:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Check if dsc is in PATH
 Get-Command dsc -ErrorAction SilentlyContinue
@@ -445,25 +531,30 @@ Get-Command dsc -ErrorAction SilentlyContinue
 # If not found, add to PATH for current session (Windows only)
 $env:PATH += [System.IO.Path]::PathSeparator + (Join-Path -Path $env:LOCALAPPDATA -ChildPath 'dsc')
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### JSON parsing errors
 
 If you encounter the following error:
 
+<!-- markdownlint-disable MD013 -->
 ```plaintext
 ERROR Operation: Failed to parse JSON from 'get': executable = 'pwsh' stdout = 'VERBOSE: Get called
 {"result":[{"name":"DemoDscClass/DemoDscClass","type":"DemoDscClass/DemoDscClass","properties":{"Key":"Demo"}}]}
 ' stderr = '' -> expected value at line 1 column 1
 ```
+<!-- markdownlint-enable MD013 -->
 
 You should remove any output that clutters the STDIN:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Remove these from your methods:
 Write-Verbose "message"  # Causes JSON parsing issues
 Write-Warning "message"  # Causes JSON parsing issues
 Write-Debug "message" # Causes JSON parsing issues
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [INFO]
 > The issue is currently open on [GitHub](https://github.com/PowerShell/DSC/issues/833).
@@ -472,13 +563,16 @@ Write-Debug "message" # Causes JSON parsing issues
 
 To share your resource on PowerShell Gallery:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Publish-PSResource -Path .\ -Repository PSGallery -ApiKey <YOUR-API-KEY>
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Review and next steps
 
-Congratulations – you have built, tested, and executed your very first class-based DSC v3 resource!
+Congratulations – you have built, tested, and executed your very first
+class-based DSC v3 resource!
 
 By following this guide, you have learned how to:
 
@@ -490,9 +584,11 @@ By following this guide, you have learned how to:
 
 ### Next steps
 
-Now that you've created your first DSC class-based resource, explore these advanced topics:
+Now that you've created your first DSC class-based resource, explore these
+advanced topics:
 
-- Extend `DemoDscClass` with additional properties and real-world logic, such as file or registry management.
+- Extend `DemoDscClass` with additional properties and real-world logic, such
+  as file or registry management.
 - Implement more checks in `Test()` to detect actual configuration drift.
 - Practice packaging and publishing your module to the PowerShell Gallery.
 - Engage with the PowerShell DSC community through blogs, forums, and GitHub.
