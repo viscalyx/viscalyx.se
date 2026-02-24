@@ -2,12 +2,14 @@
 
 > Test flow documentation for [`homepage.spec.ts`](homepage.spec.ts)
 
-These tests validate the homepage. They verify SSR behavior, SEO metadata, section content, navigation, and locale support.
+These tests validate the homepage. They verify SSR behavior, SEO metadata,
+section content, navigation, and locale support.
 
 ---
 
 ## Key Architecture
 
+<!-- markdownlint-disable MD013 -->
 | Aspect            | Before (client)                         | After (server component)                        |
 | ----------------- | --------------------------------------- | ----------------------------------------------- |
 | Page directive    | `'use client'`                          | Server component (no directive)                 |
@@ -15,11 +17,13 @@ These tests validate the homepage. They verify SSR behavior, SEO metadata, secti
 | Page `<title>`    | Root fallback only (English hardcoded)  | `generateMetadata` with localized hero title    |
 | Initial render    | Empty shell until JS loads and hydrates | Full HTML with all section content              |
 | Child components  | All `'use client'` (unchanged)          | All `'use client'` (unchanged — client islands) |
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Overview — Test Coverage Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Navigate to /] --> B{Content Visible?}
@@ -65,12 +69,15 @@ flowchart TD
     K --> K4[Swedish About section]
     K --> K5[Swedish footer]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Test Setup
 
-No `beforeEach` hook is needed — each test navigates to the homepage independently. The page is server-rendered, so content is available immediately without clearing any client-side state.
+No `beforeEach` hook is needed — each test navigates to the homepage
+independently. The page is server-rendered, so content is available immediately
+without clearing any client-side state.
 
 ---
 
@@ -92,16 +99,19 @@ Validates the homepage mobile layout and prevents horizontal scroll overflow.
 
 #### should not allow horizontal scrolling on the homepage
 
-**Purpose:** Ensures the homepage stays within viewport width on mobile without introducing sideways page scrolling.
+**Purpose:** Ensures the homepage stays within viewport width on mobile without
+introducing sideways page scrolling.
 
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Use `page.evaluate` to read `document.documentElement.clientWidth` and `scrollWidth`.
+2. Use `page.evaluate` to read `document.documentElement.clientWidth` and
+   `scrollWidth`.
 3. Use `page.evaluate` to read `document.body.clientWidth` and `scrollWidth`.
 4. Assert `html.scrollWidth <= html.clientWidth + 1`.
 5. Assert `body.scrollWidth <= body.clientWidth + 1`.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant T as Test runner
@@ -115,19 +125,24 @@ sequenceDiagram
     P->>D: evaluate html/body clientWidth + scrollWidth
     T->>A: compare scrollWidth <= clientWidth + 1
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Server-Side Rendering
 
 #### should render homepage with hero content visible immediately
 
-**Purpose:** Confirms the page is server-rendered with hero content in the initial HTML, not hidden behind a JavaScript loading state.
+**Purpose:** Confirms the page is server-rendered with hero content in the
+initial HTML, not hidden behind a JavaScript loading state.
 
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert the hero `<h1>` contains "Streamline Your", "Development", and "Workflow".
-3. Assert the hero description containing "Professional consulting services" is visible.
+2. Assert the hero `<h1>` contains "Streamline Your", "Development", and
+   "Workflow".
+3. Assert the hero description containing "Professional consulting services" is
+   visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -139,20 +154,24 @@ sequenceDiagram
     Note over B: ✓ h1 "Streamline Your Development Workflow" visible
     Note over B: ✓ Hero description visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should have correct page title from generateMetadata
 
-**Purpose:** Verifies `generateMetadata` produces a homepage-specific `<title>` tag instead of the root fallback.
+**Purpose:** Verifies `generateMetadata` produces a homepage-specific `<title>`
+tag instead of the root fallback.
 
 **Steps:**
 
 1. Navigate to `/`.
 2. Read `document.title`.
-3. Assert it contains "Streamline Your", "Development", "Workflow", and "Viscalyx".
+3. Assert it contains "Streamline Your", "Development", "Workflow", and
+   "Viscalyx".
 
 #### should have meta description
 
-**Purpose:** Confirms the page has a meta description for SEO from `generateMetadata`.
+**Purpose:** Confirms the page has a meta description for SEO from
+`generateMetadata`.
 
 **Steps:**
 
@@ -162,7 +181,8 @@ sequenceDiagram
 
 #### should have Open Graph metadata
 
-**Purpose:** Verifies Open Graph tags are set for social sharing — title and locale.
+**Purpose:** Verifies Open Graph tags are set for social sharing — title and
+locale.
 
 **Steps:**
 
@@ -178,7 +198,8 @@ sequenceDiagram
 
 #### should display header with logo and navigation links
 
-**Purpose:** Validates the header renders with the company logo and all primary navigation links.
+**Purpose:** Validates the header renders with the company logo and all primary
+navigation links.
 
 **Steps:**
 
@@ -186,6 +207,7 @@ sequenceDiagram
 2. Assert the "Viscalyx" logo link is visible.
 3. Assert "About", "Open Source", and "Blog" nav links are visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -197,6 +219,7 @@ sequenceDiagram
     Note over H: ✓ "Open Source" link visible
     Note over H: ✓ "Blog" link visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should navigate to blog page when Blog link is clicked
 
@@ -220,7 +243,8 @@ sequenceDiagram
 
 1. Navigate to `/`.
 2. Assert "Automation & DevOps Excellence" badge is visible.
-3. Assert stats: "30+" / "Years Experience", "100+" / "Tasks Automated" are visible.
+3. Assert stats: "30+" / "Years Experience", "100+" / "Tasks Automated" are
+   visible.
 
 #### should display Learn More button that scrolls to About
 
@@ -247,7 +271,8 @@ sequenceDiagram
 
 #### should display About section with heading and description
 
-**Purpose:** Validates the About section renders with badge, heading, and description text.
+**Purpose:** Validates the About section renders with badge, heading, and
+description text.
 
 **Steps:**
 
@@ -256,6 +281,7 @@ sequenceDiagram
 3. Assert heading "Empowering Organizations Through" is visible.
 4. Assert description containing "specialized consulting company" is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -266,15 +292,18 @@ sequenceDiagram
     Note over A: ✓ h2 "Empowering Organizations Through Smart Automation" visible
     Note over A: ✓ Description text visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should display value cards
 
-**Purpose:** Validates all four value proposition cards render with their headings.
+**Purpose:** Validates all four value proposition cards render with their
+headings.
 
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert headings: "Precision & Excellence", "Client-Centric Approach", "Innovation First", "Open Source Commitment".
+2. Assert headings: "Precision & Excellence", "Client-Centric Approach",
+   "Innovation First", "Open Source Commitment".
 
 #### should be scrollable via hash anchor
 
@@ -291,7 +320,8 @@ sequenceDiagram
 
 #### should display Open Source section with heading and stats
 
-**Purpose:** Validates the Open Source section renders with heading and key statistics.
+**Purpose:** Validates the Open Source section renders with heading and key
+statistics.
 
 **Steps:**
 
@@ -301,14 +331,17 @@ sequenceDiagram
 
 #### should display project cards with links
 
-**Purpose:** Confirms all three open source project cards render with names and "View Project" links.
+**Purpose:** Confirms all three open source project cards render with names and
+"View Project" links.
 
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert project headings: "PowerShell DSC Community", "DSC Resource Kit", "Sampler".
+2. Assert project headings: "PowerShell DSC Community", "DSC Resource Kit",
+   "Sampler".
 3. Assert three "View Project" links exist.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -320,10 +353,12 @@ sequenceDiagram
     Note over OS: ✓ "Sampler" card visible
     Note over OS: ✓ 3 "View Project" links present
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should display CTA with GitHub and community links
 
-**Purpose:** Validates the call-to-action block with "Follow on GitHub" and "Collaborate With Community" links.
+**Purpose:** Validates the call-to-action block with "Follow on GitHub" and
+"Collaborate With Community" links.
 
 **Steps:**
 
@@ -333,7 +368,8 @@ sequenceDiagram
 
 #### should be scrollable via hash anchor
 
-**Purpose:** Confirms navigating to `/#open-source` makes the Open Source section visible.
+**Purpose:** Confirms navigating to `/#open-source` makes the Open Source
+section visible.
 
 **Steps:**
 
@@ -346,16 +382,21 @@ sequenceDiagram
 
 #### should display footer with company info and links
 
-**Purpose:** Validates the footer renders with all navigation columns (Company, Resources, Support) and asserts the correct element types for each link category.
+**Purpose:** Validates the footer renders with all navigation columns (Company,
+Resources, Support) and asserts the correct element types for each link
+category.
 
 **Steps:**
 
 1. Navigate to `/`.
 2. Assert footer is visible.
-3. Assert Company links "About Us" and "Open Source" are rendered as Next.js `<Link>` components with `onClick` handlers (client-side navigation).
-4. Assert Resource links: "Blog" is an internal `<a>` tag; "Community" is an external `<a>` tag — both standard anchor elements.
+3. Assert Company links "About Us" and "Open Source" are rendered as Next.js
+   `<Link>` components with `onClick` handlers (client-side navigation).
+4. Assert Resource links: "Blog" is an internal `<a>` tag; "Community" is an
+   external `<a>` tag — both standard anchor elements.
 5. Assert Support links: "Privacy Policy", "Terms of Service", "Cookie Policy".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -371,6 +412,7 @@ sequenceDiagram
     Note over F: Support
     Note over F: ✓ "Privacy Policy", "Terms of Service", "Cookie Policy"
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should display copyright notice
 
@@ -383,7 +425,8 @@ sequenceDiagram
 
 #### should have social media links
 
-**Purpose:** Validates GitHub and LinkedIn social links are present in the footer.
+**Purpose:** Validates GitHub and LinkedIn social links are present in the
+footer.
 
 **Steps:**
 
@@ -401,10 +444,12 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Assert hero `<h1>` contains "Effektivisera Ditt", "Utvecklings", "Arbetsflöde".
+2. Assert hero `<h1>` contains "Effektivisera Ditt", "Utvecklings",
+   "Arbetsflöde".
 3. Assert Swedish badge "Automation & DevOps Excellens" is visible.
 4. Assert Swedish button "Läs Mer" is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -417,10 +462,12 @@ sequenceDiagram
     Note over B: ✓ Badge "Automation & DevOps Excellens"
     Note over B: ✓ Button "Läs Mer"
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should have Swedish metadata at /sv
 
-**Purpose:** Verifies `generateMetadata` produces Swedish `<title>` and `og:locale` for the Swedish locale.
+**Purpose:** Verifies `generateMetadata` produces Swedish `<title>` and
+`og:locale` for the Swedish locale.
 
 **Steps:**
 
@@ -449,7 +496,8 @@ sequenceDiagram
 
 #### should display Swedish footer at /sv
 
-**Purpose:** Confirms the footer renders with Swedish support links and copyright.
+**Purpose:** Confirms the footer renders with Swedish support links and
+copyright.
 
 **Steps:**
 
