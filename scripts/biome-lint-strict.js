@@ -19,7 +19,19 @@ function parseBiomeJson(stdout) {
   if (jsonStart === -1) {
     throw new Error('Biome JSON output was not found in stdout.')
   }
-  return JSON.parse(stdout.slice(jsonStart))
+  const jsonText = stdout.slice(jsonStart)
+
+  try {
+    return JSON.parse(jsonText)
+  } catch {
+    // Some Biome versions can emit unescaped control characters in diagnostics,
+    // which makes the full JSON payload invalid. We only need "summary" here.
+    const summaryMatch = jsonText.match(/"summary"\s*:\s*(\{[^{}]*\})/)
+    if (!summaryMatch) {
+      throw new Error('Biome JSON output does not contain a parseable summary.')
+    }
+    return { summary: JSON.parse(summaryMatch[1]) }
+  }
 }
 
 function runReadableLint(args) {
