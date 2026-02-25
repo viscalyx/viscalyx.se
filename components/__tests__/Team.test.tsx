@@ -41,14 +41,14 @@ vi.mock('@/lib/team', () => ({
           name: 'Email',
           href: 'mailto:test@example.com',
           icon: ({ className }: { className?: string }) => (
-            <svg data-testid="email-icon" className={className} />
+            <svg className={className} data-testid="email-icon" />
           ),
         },
         {
           name: 'GitHub',
           href: 'https://github.com/test',
           icon: ({ className }: { className?: string }) => (
-            <svg data-testid="github-icon" className={className} />
+            <svg className={className} data-testid="github-icon" />
           ),
         },
       ],
@@ -59,13 +59,13 @@ vi.mock('@/lib/team', () => ({
 // Mock lucide-react
 vi.mock('lucide-react', () => ({
   ArrowRight: ({ className }: { className?: string }) => (
-    <svg data-testid="arrow-right-icon" className={className} />
+    <svg className={className} data-testid="arrow-right-icon" />
   ),
   Camera: ({ className }: { className?: string }) => (
-    <svg data-testid="camera-icon" className={className} />
+    <svg className={className} data-testid="camera-icon" />
   ),
   MapPin: ({ className }: { className?: string }) => (
-    <svg data-testid="map-pin-icon" className={className} />
+    <svg className={className} data-testid="map-pin-icon" />
   ),
 }))
 

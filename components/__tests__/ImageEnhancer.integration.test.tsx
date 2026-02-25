@@ -29,18 +29,18 @@ const TestComponent = ({
 
   return (
     <div>
-      <button type="button" data-testid="outside-button">
+      <button data-testid="outside-button" type="button">
         Outside
       </button>
-      <div ref={contentRef} className="blog-content">
+      <div className="blog-content" ref={contentRef}>
         {defaultImages.map(img => (
           <Image
+            alt={img.alt}
+            height={100}
             key={img.src}
             src={img.src}
-            alt={img.alt}
-            width={100}
-            height={100}
             unoptimized
+            width={100}
           />
         ))}
       </div>

@@ -4,7 +4,7 @@ import BlogPostLoading from '../loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size?: string }) => (
-    <output data-testid="loading-spinner" data-size={size} aria-live="polite">
+    <output aria-live="polite" data-size={size} data-testid="loading-spinner">
       Loading...
     </output>
   ),

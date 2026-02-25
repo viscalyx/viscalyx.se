@@ -18,7 +18,7 @@ vi.mock('react-dom/client', () => ({
 // Mock CopyButton
 vi.mock('@/components/CopyButton', () => ({
   default: ({ text }: { text: string }) => (
-    <button type="button" data-testid="copy-button">
+    <button data-testid="copy-button" type="button">
       {text}
     </button>
   ),

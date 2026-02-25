@@ -14,10 +14,10 @@ vi.mock('next-intl', () => {
 })
 
 interface MockImageModalProps {
+  imageAlt: string
+  imageSrc: string
   isOpen: boolean
   onClose: () => void
-  imageSrc: string
-  imageAlt: string
   triggerElement?: HTMLElement | null
 }
 
@@ -32,10 +32,10 @@ vi.mock('@/components/ImageModal', () => ({
   }: MockImageModalProps) =>
     isOpen ? (
       <div data-testid="image-modal" data-trigger={triggerElement?.tagName}>
-        <button type="button" onClick={onClose}>
+        <button onClick={onClose} type="button">
           Close
         </button>
-        <div role="img" aria-label={imageAlt} data-src={imageSrc} />
+        <div aria-label={imageAlt} data-src={imageSrc} role="img" />
         <span>{imageAlt}</span>
       </div>
     ) : null,
@@ -47,20 +47,20 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
 
   return (
     <div>
-      <div ref={contentRef} className="blog-content">
+      <div className="blog-content" ref={contentRef}>
         <Image
-          src="/test1.jpg"
           alt="Test 1"
-          width={100}
           height={100}
+          src="/test1.jpg"
           unoptimized
+          width={100}
         />
         <Image
-          src="/test2.jpg"
           alt="Test 2"
-          width={100}
           height={100}
+          src="/test2.jpg"
           unoptimized
+          width={100}
         />
         {children}
       </div>
@@ -230,13 +230,13 @@ describe('ImageEnhancer', () => {
       const contentRef = useRef<HTMLDivElement>(null)
       return (
         <div>
-          <div ref={contentRef} className="blog-content">
+          <div className="blog-content" ref={contentRef}>
             <Image
-              src="/no-alt.jpg"
               alt=""
-              width={100}
               height={100}
+              src="/no-alt.jpg"
               unoptimized
+              width={100}
             />
           </div>
           <ImageEnhancer contentRef={contentRef} />
@@ -318,22 +318,22 @@ describe('ImageEnhancer', () => {
       const contentRef = useRef<HTMLDivElement>(null)
       return (
         <div>
-          <div ref={contentRef} className="blog-content">
+          <div className="blog-content" ref={contentRef}>
             <a href="/some-link">
               <Image
-                src="/linked.jpg"
                 alt="Linked"
-                width={100}
                 height={100}
+                src="/linked.jpg"
                 unoptimized
+                width={100}
               />
             </a>
             <Image
-              src="/standalone.jpg"
               alt="Standalone"
-              width={100}
               height={100}
+              src="/standalone.jpg"
               unoptimized
+              width={100}
             />
           </div>
           <ImageEnhancer contentRef={contentRef} />

@@ -18,29 +18,29 @@ vi.mock('next/navigation', () => ({
 // Mock SocialIcons
 vi.mock('@/components/SocialIcons', () => ({
   GitHubIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="github-icon" className={className} />
+    <svg className={className} data-testid="github-icon" />
   ),
   LinkedInIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="linkedin-icon" className={className} />
+    <svg className={className} data-testid="linkedin-icon" />
   ),
   XIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="x-icon" className={className} />
+    <svg className={className} data-testid="x-icon" />
   ),
   BlueskyIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="bluesky-icon" className={className} />
+    <svg className={className} data-testid="bluesky-icon" />
   ),
   MastodonIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="mastodon-icon" className={className} />
+    <svg className={className} data-testid="mastodon-icon" />
   ),
 }))
 
 // Mock lucide-react
 vi.mock('lucide-react', () => ({
   ExternalLink: ({ className }: { className?: string }) => (
-    <svg data-testid="external-link-icon" className={className} />
+    <svg className={className} data-testid="external-link-icon" />
   ),
   Mail: ({ className }: { className?: string }) => (
-    <svg data-testid="mail-icon" className={className} />
+    <svg className={className} data-testid="mail-icon" />
   ),
 }))
 

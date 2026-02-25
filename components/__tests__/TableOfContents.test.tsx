@@ -12,10 +12,10 @@ vi.mock('next-intl', () => ({
 // Mock BlogIcons
 vi.mock('@/components/BlogIcons', () => ({
   ChevronUpIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="chevron-up-icon" className={className} />
+    <svg className={className} data-testid="chevron-up-icon" />
   ),
   ChevronDownIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="chevron-down-icon" className={className} />
+    <svg className={className} data-testid="chevron-down-icon" />
   ),
 }))
 
@@ -91,7 +91,7 @@ describe('TableOfContents', () => {
   })
 
   it('uses aria-labelledby when headingId is provided', () => {
-    render(<TableOfContents items={mockItems} headingId="toc-heading" />)
+    render(<TableOfContents headingId="toc-heading" items={mockItems} />)
     const nav = screen.getByRole('navigation')
     expect(nav).toHaveAttribute('aria-labelledby', 'toc-heading')
     expect(nav).not.toHaveAttribute('aria-label')

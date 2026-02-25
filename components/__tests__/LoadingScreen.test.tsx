@@ -8,7 +8,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size, color }: { size: string; color: string }) => (
-    <div data-testid="loading-spinner" data-color={color} data-size={size} />
+    <div data-color={color} data-size={size} data-testid="loading-spinner" />
   ),
 }))
 

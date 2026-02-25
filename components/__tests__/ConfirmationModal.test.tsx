@@ -137,7 +137,7 @@ describe('ConfirmationModal', () => {
 
   it('renders with custom confirm icon when provided', () => {
     const customIcon = (
-      <Trash2 data-testid="custom-confirm-icon" className="w-4 h-4" />
+      <Trash2 className="w-4 h-4" data-testid="custom-confirm-icon" />
     )
     render(<ConfirmationModal {...defaultProps} confirmIcon={customIcon} />)
 

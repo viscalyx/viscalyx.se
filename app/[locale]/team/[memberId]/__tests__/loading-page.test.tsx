@@ -4,7 +4,7 @@ import TeamMemberLoading from '@/app/[locale]/team/[memberId]/loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size: string }) => (
-    <div data-testid="loading-spinner" data-size={size} />
+    <div data-size={size} data-testid="loading-spinner" />
   ),
 }))
 

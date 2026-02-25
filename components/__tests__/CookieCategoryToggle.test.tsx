@@ -39,8 +39,8 @@ describe('CookieCategoryToggle', () => {
       <CookieCategoryToggle
         {...defaultProps}
         category="strictly-necessary"
-        checked={true}
         categoryName="Strictly Necessary"
+        checked={true}
       />
     )
     const checkbox = screen.getByRole('checkbox')
@@ -73,8 +73,8 @@ describe('CookieCategoryToggle', () => {
       <CookieCategoryToggle
         {...defaultProps}
         category="strictly-necessary"
-        checked={true}
         categoryName="Strictly Necessary"
+        checked={true}
       />
     )
     const checkbox = screen.getByRole('checkbox')

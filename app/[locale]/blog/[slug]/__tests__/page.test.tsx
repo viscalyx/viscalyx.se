@@ -294,8 +294,8 @@ describe('BlogPostPage', () => {
         date: string | null
         [key: string]: unknown
       }
-      tableOfContents?: unknown[]
       relatedPosts?: Array<{ slug: string; title: string; image: string }>
+      tableOfContents?: unknown[]
       [key: string]: unknown
     }
 

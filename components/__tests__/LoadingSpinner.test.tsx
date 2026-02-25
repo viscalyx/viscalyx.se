@@ -127,7 +127,7 @@ describe('LoadingSpinner', () => {
 
   describe('prop combinations', () => {
     it('renders correctly with both size and color props', () => {
-      render(<LoadingSpinner size="lg" color="white" />)
+      render(<LoadingSpinner color="white" size="lg" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
 
@@ -135,7 +135,7 @@ describe('LoadingSpinner', () => {
     })
 
     it('renders correctly with small size and secondary color', () => {
-      render(<LoadingSpinner size="sm" color="secondary" />)
+      render(<LoadingSpinner color="secondary" size="sm" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
 

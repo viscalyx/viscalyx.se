@@ -26,7 +26,7 @@ vi.mock('next/image', () => ({
     const imgLabel = typeof alt === 'string' ? alt : ''
     const imageSrc = typeof src === 'string' ? src : String(src)
     return (
-      <span role="img" aria-label={imgLabel} data-src={imageSrc} {...props} />
+      <span aria-label={imgLabel} data-src={imageSrc} role="img" {...props} />
     )
   },
 }))

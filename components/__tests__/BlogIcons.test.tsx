@@ -146,7 +146,7 @@ describe('BlogIcons', () => {
 
     it('applies custom className', () => {
       const { container } = render(
-        <AlertIcon type="note" className="custom-class" />
+        <AlertIcon className="custom-class" type="note" />
       )
       const svg = container.querySelector('svg')
       expect(svg).toHaveClass('custom-class')

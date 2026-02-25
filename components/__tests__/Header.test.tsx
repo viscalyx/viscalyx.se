@@ -27,13 +27,13 @@ vi.mock('@/components/ThemeToggle', () => ({
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
   Menu: ({ className }: { className?: string }) => (
-    <svg data-testid="menu-icon" className={className} />
+    <svg className={className} data-testid="menu-icon" />
   ),
   Settings: ({ className }: { className?: string }) => (
-    <svg data-testid="settings-icon" className={className} />
+    <svg className={className} data-testid="settings-icon" />
   ),
   X: ({ className }: { className?: string }) => (
-    <svg data-testid="x-icon" className={className} />
+    <svg className={className} data-testid="x-icon" />
   ),
 }))
 

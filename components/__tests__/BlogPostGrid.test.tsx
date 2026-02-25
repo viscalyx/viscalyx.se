@@ -22,7 +22,7 @@ vi.mock('next/link', () => ({
 
 vi.mock('next/image', () => ({
   default: ({ src, alt }: { src: string; alt: string }) => (
-    <span role="img" aria-label={alt} data-src={src} />
+    <span aria-label={alt} data-src={src} role="img" />
   ),
 }))
 
@@ -65,8 +65,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -85,8 +85,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -105,8 +105,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="Automation"
         categoriesAllLabel="All"
+        featuredPostCategory="Automation"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -134,8 +134,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -165,8 +165,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -186,8 +186,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -208,8 +208,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -225,8 +225,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -243,8 +243,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -262,8 +262,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -284,8 +284,8 @@ describe('BlogPostGrid', () => {
     render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
@@ -314,8 +314,8 @@ describe('BlogPostGrid', () => {
     const { container } = render(
       <BlogPostGrid
         allPosts={posts}
-        featuredPostCategory="DevOps"
         categoriesAllLabel="All"
+        featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
       />
     )
