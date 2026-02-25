@@ -1,6 +1,6 @@
-import { ThemeProvider } from '@/lib/theme-context'
-import { getLocale } from 'next-intl/server'
 import { Inter } from 'next/font/google'
+import { getLocale } from 'next-intl/server'
+import { ThemeProvider } from '@/lib/theme-context'
 import './code-block-components.css'
 import './globals.css'
 import { metadata } from './metadata'
@@ -11,6 +11,31 @@ const inter = Inter({
   weight: ['300', '400', '500', '600', '700', '800'],
   display: 'swap',
 })
+
+const themeInitScript = `
+  (function() {
+    try {
+      const savedTheme = localStorage.getItem('theme');
+      let shouldUseDark = false;
+
+      if (savedTheme === 'dark') {
+        shouldUseDark = true;
+      } else if (savedTheme === 'light') {
+        shouldUseDark = false;
+      } else {
+        shouldUseDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+
+      if (shouldUseDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {
+      document.documentElement.classList.remove('dark');
+    }
+  })();
+`
 
 export { metadata }
 
@@ -29,40 +54,7 @@ export default async function RootLayout({ children }: Props) {
       suppressHydrationWarning
     >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  // Check localStorage for saved theme
-                  const savedTheme = localStorage.getItem('theme');
-
-                  // Determine the theme to apply
-                  let shouldUseDark = false;
-
-                  if (savedTheme === 'dark') {
-                    shouldUseDark = true;
-                  } else if (savedTheme === 'light') {
-                    shouldUseDark = false;
-                  } else {
-                    // Default to 'system' - check user's OS preference
-                    shouldUseDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  }
-
-                  // Apply the theme immediately to prevent FOUC
-                  if (shouldUseDark) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {
-                  // Fallback to light theme if there's any error
-                  document.documentElement.classList.remove('dark');
-                }
-              })();
-            `,
-          }}
-        />
+        <script id="theme-init-script">{themeInitScript}</script>
       </head>
       <body className="font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>

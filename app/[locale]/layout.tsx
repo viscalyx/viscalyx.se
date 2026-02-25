@@ -1,8 +1,8 @@
-import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
 import dynamic from 'next/dynamic'
 import { notFound } from 'next/navigation'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 import { locales } from '../../i18n'
 
 // Dynamically import CookieConsentBanner to reduce initial bundle size
@@ -36,18 +36,12 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getOrganizationJsonLd()),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getWebSiteJsonLd()),
-        }}
-      />
+      <script type="application/ld+json">
+        {JSON.stringify(getOrganizationJsonLd())}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(getWebSiteJsonLd())}
+      </script>
       {children}
       <CookieConsentBanner />
     </NextIntlClientProvider>

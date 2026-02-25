@@ -92,112 +92,114 @@ const Team = () => {
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {teamMembers.map(member => (
-            <motion.div
-              key={member.id}
-              variants={itemVariants}
-              whileHover="hover"
-              className="group"
-            >
+          {teamMembers.map(member => {
+            const socialLinkRows = []
+            for (let start = 0; start < member.socialLinks.length; start += 5) {
+              socialLinkRows.push(member.socialLinks.slice(start, start + 5))
+            }
+
+            return (
               <motion.div
-                variants={cardVariants}
-                onClick={() => handleCardClick(member.id)}
-                className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
+                key={member.id}
+                variants={itemVariants}
+                whileHover="hover"
+                className="group"
               >
-                {/* Profile Image */}
-                <div className="relative mb-6">
-                  <div className="relative w-32 h-32 mx-auto">
-                    {!member.image ? (
-                      <div className="w-full h-full rounded-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center ring-4 ring-primary-100 dark:ring-primary-900/50">
-                        <Camera className="h-12 w-12 text-white" />
-                      </div>
-                    ) : (
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="rounded-full object-cover ring-4 ring-primary-100 dark:ring-primary-900/50"
-                      />
-                    )}
-                    <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary-600/20 to-transparent group-hover:from-primary-600/30 transition-all duration-300" />
+                <motion.div
+                  variants={cardVariants}
+                  onClick={() => handleCardClick(member.id)}
+                  className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
+                >
+                  {/* Profile Image */}
+                  <div className="relative mb-6">
+                    <div className="relative w-32 h-32 mx-auto">
+                      {!member.image ? (
+                        <div className="w-full h-full rounded-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center ring-4 ring-primary-100 dark:ring-primary-900/50">
+                          <Camera className="h-12 w-12 text-white" />
+                        </div>
+                      ) : (
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          className="rounded-full object-cover ring-4 ring-primary-100 dark:ring-primary-900/50"
+                        />
+                      )}
+                      <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary-600/20 to-transparent group-hover:from-primary-600/30 transition-all duration-300" />
+                    </div>
                   </div>
-                </div>
 
-                {/* Member Info */}
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">
-                    {member.name}
-                  </h3>
-                  <p className="text-primary-600 dark:text-primary-400 font-semibold mb-2">
-                    {member.role}
-                  </p>
-                  <div className="flex items-center justify-center text-secondary-500 dark:text-secondary-400 text-sm mb-4">
-                    <MapPin className="h-4 w-4 mr-1" />
-                    {member.location}
+                  {/* Member Info */}
+                  <div className="text-center mb-6">
+                    <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">
+                      {member.name}
+                    </h3>
+                    <p className="text-primary-600 dark:text-primary-400 font-semibold mb-2">
+                      {member.role}
+                    </p>
+                    <div className="flex items-center justify-center text-secondary-500 dark:text-secondary-400 text-sm mb-4">
+                      <MapPin className="h-4 w-4 mr-1" />
+                      {member.location}
+                    </div>
+                    <p className="text-secondary-600 dark:text-secondary-300 text-sm leading-relaxed">
+                      {member.bio}
+                    </p>
                   </div>
-                  <p className="text-secondary-600 dark:text-secondary-300 text-sm leading-relaxed">
-                    {member.bio}
-                  </p>
-                </div>
 
-                {/* Specialties */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-3">
-                    {t('specialties')}
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {member.specialties.map(specialty => (
-                      <span
-                        key={specialty}
-                        className="px-3 py-1 bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-full text-xs font-medium"
-                      >
-                        {specialty}
-                      </span>
-                    ))}
+                  {/* Specialties */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-3">
+                      {t('specialties')}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {member.specialties.map(specialty => (
+                        <span
+                          key={specialty}
+                          className="px-3 py-1 bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-full text-xs font-medium"
+                        >
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Social Links */}
-                <div className="flex flex-col items-center space-y-3 mb-6">
-                  {Array.from(
-                    { length: Math.ceil(member.socialLinks.length / 5) },
-                    (_, rowIndex) => (
+                  {/* Social Links */}
+                  <div className="flex flex-col items-center space-y-3 mb-6">
+                    {socialLinkRows.map(row => (
                       <div
-                        key={rowIndex}
+                        key={row.map(social => social.name).join('|')}
                         className="flex justify-center space-x-4"
                       >
-                        {member.socialLinks
-                          .slice(rowIndex * 5, (rowIndex + 1) * 5)
-                          .map(social => (
-                            <motion.a
-                              key={social.name}
-                              href={social.href}
-                              target={
-                                social.href.startsWith('mailto:')
-                                  ? '_self'
-                                  : '_blank'
-                              }
-                              rel={
-                                social.href.startsWith('mailto:')
-                                  ? undefined
-                                  : 'noopener noreferrer'
-                              }
-                              onClick={e => e.stopPropagation()}
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.95 }}
-                              className="p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                              aria-label={social.name}
-                            >
-                              <social.icon className="h-5 w-5" />
-                            </motion.a>
-                          ))}
+                        {row.map(social => (
+                          <motion.a
+                            key={social.name}
+                            href={social.href}
+                            target={
+                              social.href.startsWith('mailto:')
+                                ? '_self'
+                                : '_blank'
+                            }
+                            rel={
+                              social.href.startsWith('mailto:')
+                                ? undefined
+                                : 'noopener noreferrer'
+                            }
+                            onClick={e => e.stopPropagation()}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            aria-label={social.name}
+                          >
+                            <social.icon className="h-5 w-5" />
+                          </motion.a>
+                        ))}
                       </div>
-                    )
-                  )}
-                </div>
+                    ))}
+                  </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            )
+          })}
         </motion.div>
 
         {/* Call to Action */}

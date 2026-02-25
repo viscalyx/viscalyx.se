@@ -1,11 +1,11 @@
 'use client'
 
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { Code, Sparkles } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 const Hero = () => {
   const { handleNavigation } = useSectionNavigation()
@@ -202,7 +202,7 @@ const Hero = () => {
                 <div className="relative overflow-hidden rounded-2xl aspect-3/4 w-full max-w-md mx-auto">
                   {heroImages.map((image, index) => (
                     <motion.div
-                      key={index}
+                      key={image.src}
                       initial={{ opacity: 0 }}
                       animate={{
                         opacity: index === currentImageIndex ? 1 : 0,
@@ -254,9 +254,9 @@ const Hero = () => {
 
                 {/* Image indicators */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
-                  {heroImages.map((_, index) => (
+                  {heroImages.map((image, index) => (
                     <motion.button
-                      key={index}
+                      key={`indicator-${image.src}`}
                       onClick={() => setCurrentImageIndex(index)}
                       aria-label={`Show image ${index + 1} of ${heroImages.length}`}
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${

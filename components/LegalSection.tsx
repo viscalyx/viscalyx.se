@@ -25,8 +25,8 @@ const LegalSection = ({ title, description, items }: ComponentProps) => (
     </p>
     {items && items.length > 0 && (
       <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
+        {items.map(item => (
+          <li key={item}>{item}</li>
         ))}
       </ul>
     )}

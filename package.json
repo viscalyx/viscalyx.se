@@ -14,7 +14,7 @@
     "lint:fix": "biome lint --write .",
     "type-check": "rimraf .next/dev/types && next typegen && tsc --noEmit",
     "format": "biome format --write .",
-    "format:check": "biome format .",
+    "format:check": "biome check --linter-enabled=false --max-diagnostics=none .",
     "lint:md": "markdownlint-cli2 \"**/*.md\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\"",
     "spell": "cspell \"**/*.{ts,tsx,js,jsx,md,json}\"",

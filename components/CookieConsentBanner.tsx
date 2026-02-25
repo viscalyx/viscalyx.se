@@ -1,20 +1,20 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
+import { Cookie, Settings, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import {
-  cleanupCookies,
   type CookieCategory,
   type CookieConsentSettings,
+  cleanupCookies,
   defaultConsentSettings,
   getConsentSettings,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
 import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Cookie, Settings, X } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useCallback, useEffect, useRef, useState } from 'react'
 
 const CookieConsentBanner = () => {
   const t = useTranslations('cookieConsent')
@@ -64,12 +64,7 @@ const CookieConsentBanner = () => {
     return elements
   }, [])
 
-  // Clear cached elements when showDetails changes (structure changes)
-  useEffect(() => {
-    cachedFocusableElements.current = null
-  }, [showDetails])
-
-  // Manage focus and body scroll when banner is visible
+  // Manage focus and keyboard behavior when banner is visible
   useEffect(() => {
     // Focus trap functionality
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -110,9 +105,6 @@ const CookieConsentBanner = () => {
       // Store the previously focused element
       previousActiveElement.current = document.activeElement as HTMLElement
 
-      // Add bottom padding to body to prevent content overlap
-      document.body.style.paddingBottom = '200px' // Adjust based on banner height
-
       // Add keyboard event listener for focus trap
       document.addEventListener('keydown', handleKeyDown)
 
@@ -121,9 +113,6 @@ const CookieConsentBanner = () => {
         firstFocusableRef.current?.focus()
       }, 100)
     } else {
-      // Remove bottom padding when banner is hidden
-      document.body.style.paddingBottom = ''
-
       // Remove keyboard event listener
       document.removeEventListener('keydown', handleKeyDown)
 
@@ -136,7 +125,6 @@ const CookieConsentBanner = () => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      document.body.style.paddingBottom = ''
     }
   }, [isVisible, getFocusableElements])
 
@@ -211,7 +199,10 @@ const CookieConsentBanner = () => {
                     {t('description')}{' '}
                     <button
                       type="button"
-                      onClick={() => setShowDetails(true)}
+                      onClick={() => {
+                        cachedFocusableElements.current = null
+                        setShowDetails(true)
+                      }}
                       className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
                       aria-label={t('customizeSettings')}
                     >
@@ -233,7 +224,10 @@ const CookieConsentBanner = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowDetails(true)}
+                  onClick={() => {
+                    cachedFocusableElements.current = null
+                    setShowDetails(true)
+                  }}
                   className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
                   aria-label={t('customizeSettings')}
                 >
@@ -264,7 +258,10 @@ const CookieConsentBanner = () => {
                   </h2>
                   <button
                     type="button"
-                    onClick={() => setShowDetails(false)}
+                    onClick={() => {
+                      cachedFocusableElements.current = null
+                      setShowDetails(false)
+                    }}
                     className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     aria-label={t('close')}
                     aria-describedby="cookie-settings-title"

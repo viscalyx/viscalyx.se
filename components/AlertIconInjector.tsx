@@ -15,6 +15,8 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
   contentKey,
 }) => {
   useEffect(() => {
+    const contentIdentifier = contentKey ?? 'default'
+
     // Store references to created roots for cleanup
     const roots: Array<{
       root: ReturnType<typeof createRoot>
@@ -49,6 +51,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
           const iconContainer = document.createElement('span')
           iconContainer.className =
             'alert-icon-container inline-flex items-center mr-2'
+          iconContainer.setAttribute('data-content-key', contentIdentifier)
 
           // Insert the icon container at the beginning of the title
           titleElement.insertBefore(iconContainer, titleElement.firstChild)

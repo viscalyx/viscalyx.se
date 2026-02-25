@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { saveLanguagePreference } from '@/lib/language-preferences'
 
 const LanguageSwitcher = () => {
@@ -17,10 +17,13 @@ const LanguageSwitcher = () => {
   const pathname = usePathname()
   const t = useTranslations('language')
 
-  const languages = [
-    { code: 'en', name: t('english'), flag: '🇺🇸' },
-    { code: 'sv', name: t('swedish'), flag: '🇸🇪' },
-  ]
+  const languages = useMemo(
+    () => [
+      { code: 'en', name: t('english'), flag: '🇺🇸' },
+      { code: 'sv', name: t('swedish'), flag: '🇸🇪' },
+    ],
+    [t]
+  )
 
   const currentLanguage = languages.find(lang => lang.code === locale)
 
@@ -47,7 +50,7 @@ const LanguageSwitcher = () => {
       const activeIndex = languages.findIndex(lang => lang.code === locale)
       setFocusedIndex(activeIndex)
     }
-  }, [isOpen, locale])
+  }, [isOpen, locale, languages])
 
   const handleLanguageChange = useCallback(
     (newLocale: string) => {
@@ -106,7 +109,7 @@ const LanguageSwitcher = () => {
           break
       }
     },
-    [isOpen, focusedIndex, languageCount, handleLanguageChange]
+    [isOpen, focusedIndex, languageCount, handleLanguageChange, languages]
   )
 
   return (

@@ -341,7 +341,14 @@ const BlogPostContent = ({
         region.removeEventListener('scroll', handler)
       })
     }
-  }, [contentWithIds])
+  }, [])
+
+  const renderedMarkdown = (
+    <div
+      dangerouslySetInnerHTML={{ __html: contentWithIds }}
+      className="markdown-content"
+    />
+  )
 
   return (
     <>
@@ -459,6 +466,7 @@ const BlogPostContent = ({
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
+                        <title>{t('post.tableOfContents')}</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -483,11 +491,7 @@ const BlogPostContent = ({
                 ref={contentRef}
               >
                 <AlertIconInjector contentKey={post.slug}>
-                  {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
-                  <div
-                    dangerouslySetInnerHTML={{ __html: contentWithIds }}
-                    className="markdown-content"
-                  />
+                  {renderedMarkdown}
                   <CodeBlockEnhancer contentLoaded={true} />
                   <MermaidRenderer contentLoaded={true} />
                   <ImageEnhancer contentRef={contentRef} />
@@ -559,6 +563,7 @@ const BlogPostContent = ({
                             stroke="currentColor"
                             viewBox="0 0 24 24"
                           >
+                            <title>{t('post.authorBio.viewProfile')}</title>
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"

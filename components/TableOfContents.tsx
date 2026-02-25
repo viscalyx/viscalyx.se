@@ -129,7 +129,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         }
       }
     }
-  }, [items, checkScrollIndicators])
+  }, [checkScrollIndicators])
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
@@ -159,17 +159,15 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       )}
 
       {/* Scrollable content */}
-      <div
+      <section
         ref={scrollContainerRef}
         className={`toc-scrollable ${heightClass} overflow-y-auto`}
-        tabIndex={0}
-        role="region"
         aria-label={t('tableOfContents')}
       >
         <ul className="space-y-1">
-          {items.map((item, index) => (
+          {items.map(item => (
             <li
-              key={index}
+              key={item.id}
               className={`${
                 item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
               }`}
@@ -190,7 +188,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {/* Bottom scroll indicator */}
       {canScrollDown && (
