@@ -1,10 +1,8 @@
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
-import { getTranslations } from 'next-intl/server'
-
 import TermsPageClient from './TermsPageClient'
-
-import type { Metadata } from 'next'
 
 const staticPageDates = getStaticPageDates()
 

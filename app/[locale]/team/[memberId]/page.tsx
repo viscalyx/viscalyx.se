@@ -1,11 +1,10 @@
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
+import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
+import { locales } from '@/i18n'
 import { SITE_URL } from '@/lib/constants'
 import { getSerializableTeamMemberById, getTeamMemberIds } from '@/lib/team'
-import { locales } from '@/i18n'
-import { getTranslations } from 'next-intl/server'
-import { notFound } from 'next/navigation'
-import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
-
-import type { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ locale: string; memberId: string }>

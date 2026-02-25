@@ -78,7 +78,7 @@ test.describe('Homepage', () => {
         .getAttribute('content')
       expect(description).toBeTruthy()
       expect(description!).toContain('consulting')
-      expect(description!.length).toBeGreaterThan(20)
+      expect(description?.length).toBeGreaterThan(20)
     })
 
     test('should have Open Graph metadata', async ({ page }) => {

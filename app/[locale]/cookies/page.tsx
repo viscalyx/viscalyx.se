@@ -1,13 +1,12 @@
+import type { Metadata } from 'next'
+import { useFormatter, useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
-import { useFormatter, useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
-
-import type { Metadata } from 'next'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()

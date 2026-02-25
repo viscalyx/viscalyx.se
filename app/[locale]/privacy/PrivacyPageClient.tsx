@@ -1,8 +1,8 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import LegalPageLayout from '@/components/LegalPageLayout'
 import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
-import { useTranslations } from 'next-intl'
 
 interface PrivacyPageClientProps {
   lastUpdatedDate: Date

@@ -53,7 +53,7 @@ test.describe('Blog Post Page', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(10)
+      expect(description?.length).toBeGreaterThan(10)
     })
 
     test('should have OG article type', async ({ page }) => {

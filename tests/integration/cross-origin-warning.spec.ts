@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import fs from 'fs'
+import fs from 'node:fs'
 
 /**
  * Test to verify GitHub issue #128 is resolved:

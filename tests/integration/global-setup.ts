@@ -1,5 +1,5 @@
-import { execSync } from 'child_process'
-import { existsSync } from 'fs'
+import { execSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 
 /**
  * Playwright global setup — runs once before all tests.

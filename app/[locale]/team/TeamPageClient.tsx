@@ -1,10 +1,10 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import Team from '@/components/Team'
-import { motion } from 'framer-motion'
 
 const TeamPageClient = () => {
   return (

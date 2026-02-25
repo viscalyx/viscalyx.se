@@ -50,7 +50,7 @@ test.describe('Blog Listing Page', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(20)
+      expect(description?.length).toBeGreaterThan(20)
     })
   })
 

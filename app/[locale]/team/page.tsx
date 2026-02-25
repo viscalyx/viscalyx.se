@@ -1,9 +1,7 @@
-import { SITE_URL } from '@/lib/constants'
-import { getTranslations } from 'next-intl/server'
-
-import TeamPageClient from './TeamPageClient'
-
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import { SITE_URL } from '@/lib/constants'
+import TeamPageClient from './TeamPageClient'
 
 type Props = { params: Promise<{ locale: string }> }
 
