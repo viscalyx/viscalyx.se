@@ -3,7 +3,7 @@
  */
 
 import { hasConsent } from './cookie-consent'
-import { setCookie, deleteCookie, getCookie } from './cookie-utils'
+import { deleteCookie, getCookie, setCookie } from './cookie-utils'
 
 const LANGUAGE_COOKIE_NAME = 'language'
 
