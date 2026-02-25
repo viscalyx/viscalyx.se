@@ -25,7 +25,7 @@ test.describe('Blog Post Page', () => {
 
       // Server component renders content immediately — no loading state
       await expect(
-        page.getByText('Loading blog post', { exact: false })
+        page.getByText('Loading blog post', { exact: false }),
       ).not.toBeVisible()
     })
 
@@ -156,17 +156,17 @@ test.describe('Blog Post Page', () => {
       })
 
       expect(pageDimensions.htmlScrollWidth).toBeLessThanOrEqual(
-        pageDimensions.htmlClientWidth + 1
+        pageDimensions.htmlClientWidth + 1,
       )
       expect(pageDimensions.bodyScrollWidth).toBeLessThanOrEqual(
-        pageDimensions.bodyClientWidth + 1
+        pageDimensions.bodyClientWidth + 1,
       )
 
       const tableBehavior = await page.evaluate(() => {
         const regions = Array.from(
           document.querySelectorAll<HTMLDivElement>(
-            '.blog-content .table-scroll-region'
-          )
+            '.blog-content .table-scroll-region',
+          ),
         )
 
         if (regions.length === 0) {
@@ -270,7 +270,7 @@ test.describe('Blog Post Page', () => {
 
       // Next.js renders the not-found page with a visible "404" heading
       await expect(
-        page.getByRole('heading', { level: 1, name: '404' })
+        page.getByRole('heading', { level: 1, name: '404' }),
       ).toBeVisible()
     })
 
@@ -279,7 +279,7 @@ test.describe('Blog Post Page', () => {
 
       // Should render not-found page, not leak filesystem content
       await expect(
-        page.getByRole('heading', { level: 1, name: '404' })
+        page.getByRole('heading', { level: 1, name: '404' }),
       ).toBeVisible()
     })
   })

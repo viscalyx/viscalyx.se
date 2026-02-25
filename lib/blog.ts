@@ -60,8 +60,8 @@ function validateBlogData(data: typeof blogData): BlogData {
     tags: Array.isArray(p.tags)
       ? Array.from(
           new Set(
-            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase())
-          )
+            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase()),
+          ),
         )
       : [],
     readTime: p.readTime,
@@ -135,7 +135,7 @@ export function getFeaturedPost(): BlogPostMetadata | null {
 export function getRelatedPosts(
   currentSlug: string,
   category?: string,
-  limit: number = 3
+  limit: number = 3,
 ): BlogPostMetadata[] {
   const allPosts = getAllPosts() // This now automatically filters out template when other posts exist
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
@@ -146,7 +146,7 @@ export function getRelatedPosts(
     relatedPosts = relatedPosts.filter(
       post =>
         post.category?.toLowerCase() === normalizedCategory ||
-        post.tags.includes(normalizedCategory)
+        post.tags.includes(normalizedCategory),
     )
   }
 
@@ -237,7 +237,7 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
       process.cwd(),
       'public',
       'blog-content',
-      `${validatedSlug}.json`
+      `${validatedSlug}.json`,
     )
     const contentData = await fs.readFile(contentPath, 'utf-8')
     if (shouldDebugSourcePath) {
@@ -290,7 +290,7 @@ export function sanitizeCategory(category: string): string {
  */
 export async function trackPageView(
   slug: string,
-  category: string
+  category: string,
 ): Promise<void> {
   try {
     // Validate slug to avoid polluting analytics data with unsanitized input

@@ -66,7 +66,7 @@ const renderWithIntl = (component: ReactNode) => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       {component}
-    </NextIntlClientProvider>
+    </NextIntlClientProvider>,
   )
 }
 
@@ -208,7 +208,7 @@ describe('CookieConsentBanner', () => {
 
     await waitFor(() => {
       const necessaryToggle = screen.getByLabelText(
-        /Strictly Necessary Cookies/i
+        /Strictly Necessary Cookies/i,
       )
       expect(necessaryToggle).toBeChecked()
       expect(necessaryToggle).toBeDisabled()
@@ -225,7 +225,7 @@ describe('CookieConsentBanner', () => {
         expect(dialog).toHaveAttribute('aria-labelledby', 'cookie-banner-title')
         expect(dialog).toHaveAttribute(
           'aria-describedby',
-          'cookie-banner-description'
+          'cookie-banner-description',
         )
         expect(dialog).toHaveAttribute('aria-live', 'polite')
       })
@@ -276,7 +276,7 @@ describe('CookieConsentBanner', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByRole('button', { name: 'Save Preferences' })
+          screen.getByRole('button', { name: 'Save Preferences' }),
         ).toBeInTheDocument()
       })
 
@@ -367,7 +367,7 @@ describe('CookieConsentBanner', () => {
         const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
         expect(analyticsToggle).toHaveAttribute(
           'aria-describedby',
-          'analytics-description'
+          'analytics-description',
         )
         expect(analyticsToggle).toHaveAttribute('id', 'toggle-analytics')
       })
@@ -382,10 +382,10 @@ describe('CookieConsentBanner', () => {
         const viewCookiesButton = screen.getByText(/View Cookies \(1\)/)
         expect(viewCookiesButton).toHaveAttribute('aria-label')
         expect(viewCookiesButton.getAttribute('aria-label')).toContain(
-          'View Cookies for'
+          'View Cookies for',
         )
         expect(viewCookiesButton.getAttribute('aria-label')).toMatch(
-          /\(\d+ cookies\)/
+          /\(\d+ cookies\)/,
         )
       })
     })

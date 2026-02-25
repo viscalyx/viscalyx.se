@@ -145,8 +145,8 @@ describe('LanguageSwitcher component', () => {
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
-          'language-option-en'
-        )
+          'language-option-en',
+        ),
       )
 
       const englishOption = screen.getByRole('option', { name: /english/i })
@@ -155,14 +155,14 @@ describe('LanguageSwitcher component', () => {
       fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
       expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
-        'language-option-en'
+        'language-option-en',
       )
 
       // Additional key events still keep the current option active.
       fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
       expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
-        'language-option-en'
+        'language-option-en',
       )
     })
 
@@ -178,8 +178,8 @@ describe('LanguageSwitcher component', () => {
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
-          'language-option-en'
-        )
+          'language-option-en',
+        ),
       )
 
       const englishOption = screen.getByRole('option', { name: /english/i })
@@ -204,8 +204,8 @@ describe('LanguageSwitcher component', () => {
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
-          'language-option-en'
-        )
+          'language-option-en',
+        ),
       )
 
       const englishOption = screen.getByRole('option', { name: /english/i })
@@ -231,7 +231,7 @@ describe('LanguageSwitcher component', () => {
 
       expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
-        'language-option-en'
+        'language-option-en',
       )
     })
 
@@ -247,8 +247,8 @@ describe('LanguageSwitcher component', () => {
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
-          'language-option-en'
-        )
+          'language-option-en',
+        ),
       )
 
       const englishOption = screen.getByRole('option', { name: /english/i })
@@ -256,7 +256,7 @@ describe('LanguageSwitcher component', () => {
 
       expect(toggleButton).toHaveAttribute(
         'aria-activedescendant',
-        'language-option-en'
+        'language-option-en',
       )
     })
   })

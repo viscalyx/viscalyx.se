@@ -63,24 +63,24 @@ for (const origin of ['0.0.0.0', '127.0.0.1']) {
     const nextFailures = failedRequests.filter(r => r.includes('/_next/'))
     expect(
       nextFailures,
-      `/_next/* resources should not fail when accessing via ${origin}`
+      `/_next/* resources should not fail when accessing via ${origin}`,
     ).toHaveLength(0)
 
     // The page should have loaded at least some Next.js resources
     expect(
       nextResourceCount,
-      `Page accessed via ${origin} should contain /_next/* resources`
+      `Page accessed via ${origin} should contain /_next/* resources`,
     ).toBeGreaterThan(0)
 
     // No cross-origin related console errors
     const crossOriginErrors = consoleErrors.filter(
       e =>
         e.toLowerCase().includes('cross-origin') ||
-        e.toLowerCase().includes('blocked')
+        e.toLowerCase().includes('blocked'),
     )
     expect(
       crossOriginErrors,
-      `No cross-origin console errors expected when accessing via ${origin}`
+      `No cross-origin console errors expected when accessing via ${origin}`,
     ).toHaveLength(0)
   })
 }

@@ -83,7 +83,7 @@ function processGitHubAlert(node) {
 
   // Check for GitHub alert pattern: [!TYPE]
   const alertMatch = firstTextNode.value.match(
-    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/
+    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION|QUOTE)\]\s*/,
   )
   if (!alertMatch) {
     return false

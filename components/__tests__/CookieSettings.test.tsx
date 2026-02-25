@@ -90,7 +90,7 @@ describe('CookieSettings', () => {
 
     expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
     expect(
-      screen.getByText('Manage your cookie preferences')
+      screen.getByText('Manage your cookie preferences'),
     ).toBeInTheDocument()
     expect(screen.getByText('Accept All')).toBeInTheDocument()
     expect(screen.getByText('Reject All')).toBeInTheDocument()
@@ -114,8 +114,8 @@ describe('CookieSettings', () => {
       expect(screen.getByText('Reset Cookie Preferences')).toBeInTheDocument()
       expect(
         screen.getByText(
-          'Are you sure you want to reset all cookie preferences?'
-        )
+          'Are you sure you want to reset all cookie preferences?',
+        ),
       ).toBeInTheDocument()
     })
   })
@@ -133,7 +133,7 @@ describe('CookieSettings', () => {
 
     await waitFor(() => {
       expect(
-        screen.queryByText('Reset Cookie Preferences')
+        screen.queryByText('Reset Cookie Preferences'),
       ).not.toBeInTheDocument()
     })
   })
@@ -231,7 +231,7 @@ describe('CookieSettings', () => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to save cookie settings:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -257,7 +257,7 @@ describe('CookieSettings', () => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to reset consent:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -304,11 +304,11 @@ describe('CookieSettings', () => {
     await waitFor(() => {
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         'Failed to remove download element:',
-        expect.any(Error)
+        expect.any(Error),
       )
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         'Failed to revoke blob URL:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -328,7 +328,7 @@ describe('CookieSettings', () => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -354,7 +354,7 @@ describe('CookieSettings', () => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -375,7 +375,7 @@ describe('CookieSettings', () => {
       expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })

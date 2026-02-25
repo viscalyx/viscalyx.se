@@ -19,7 +19,7 @@ describe('ScrollToTop', () => {
       (cb: FrameRequestCallback) => {
         cb(0)
         return 0
-      }
+      },
     )
   })
 
@@ -49,7 +49,7 @@ describe('ScrollToTop', () => {
     fireEvent.scroll(window)
     expect(screen.getByRole('button')).toHaveAttribute(
       'aria-label',
-      'ariaLabel'
+      'ariaLabel',
     )
   })
 

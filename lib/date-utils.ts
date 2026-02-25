@@ -18,7 +18,7 @@
  */
 export function normalizeDate(
   dateString?: string,
-  fallbackValue?: Date | string
+  fallbackValue?: Date | string,
 ): string {
   const parsedDate = dateString ? new Date(dateString) : undefined
   if (parsedDate && isValidDate(parsedDate)) {

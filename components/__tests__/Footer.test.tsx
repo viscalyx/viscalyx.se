@@ -120,7 +120,7 @@ describe('Footer', () => {
     render(<Footer />)
     const communityLink = screen.getByText('community')
     const icon = communityLink.querySelector(
-      '[data-testid="external-link-icon"]'
+      '[data-testid="external-link-icon"]',
     )
     expect(icon).toBeInTheDocument()
   })
@@ -140,7 +140,7 @@ describe('Footer', () => {
     const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
     expect(linkedinLink).toHaveAttribute(
       'href',
-      'https://linkedin.com/company/viscalyx'
+      'https://linkedin.com/company/viscalyx',
     )
   })
 
@@ -165,7 +165,7 @@ describe('Footer', () => {
     render(<Footer />)
     const year = new Date().getFullYear()
     expect(
-      screen.getByText(new RegExp(`© ${year} Viscalyx`))
+      screen.getByText(new RegExp(`© ${year} Viscalyx`)),
     ).toBeInTheDocument()
   })
 

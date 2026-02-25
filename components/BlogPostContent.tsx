@@ -150,10 +150,10 @@ const BlogPostContent = ({
       setShareNotification({ message, type })
       shareTimeoutRef.current = setTimeout(
         () => setShareNotification(null),
-        3000
+        3000,
       )
     },
-    []
+    [],
   )
 
   // Function to handle sharing/copying URL
@@ -167,7 +167,7 @@ const BlogPostContent = ({
         await navigator.clipboard.writeText(url)
         setNotificationWithTimeout(
           t('post.notifications.linkCopied'),
-          'success'
+          'success',
         )
         return
       } catch (clipboardError) {
@@ -214,7 +214,7 @@ const BlogPostContent = ({
           if (successful) {
             setNotificationWithTimeout(
               t('post.notifications.linkCopied'),
-              'success'
+              'success',
             )
           } else {
             throw new Error('execCommand failed')
@@ -223,7 +223,7 @@ const BlogPostContent = ({
           console.error('All share methods failed:', fallbackError)
           setNotificationWithTimeout(
             t('post.notifications.shareError'),
-            'error'
+            'error',
           )
         }
       }
@@ -270,13 +270,13 @@ const BlogPostContent = ({
               .then(() => {
                 setNotificationWithTimeout(
                   t('post.notifications.linkCopied'),
-                  'success'
+                  'success',
                 )
               })
               .catch(() => {
                 setNotificationWithTimeout(
                   t('post.notifications.shareError'),
-                  'error'
+                  'error',
                 )
               })
           }
@@ -303,8 +303,8 @@ const BlogPostContent = ({
 
     const regions = Array.from(
       contentElement.querySelectorAll<HTMLDivElement>(
-        '.markdown-content .table-scroll-region'
-      )
+        '.markdown-content .table-scroll-region',
+      ),
     )
 
     const updateRegionState = (region: HTMLDivElement) => {

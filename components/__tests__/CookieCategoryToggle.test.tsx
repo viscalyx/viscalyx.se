@@ -41,7 +41,7 @@ describe('CookieCategoryToggle', () => {
         category="strictly-necessary"
         categoryName="Strictly Necessary"
         checked={true}
-      />
+      />,
     )
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toBeDisabled()
@@ -58,7 +58,7 @@ describe('CookieCategoryToggle', () => {
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toHaveAttribute(
       'aria-describedby',
-      'analytics-description'
+      'analytics-description',
     )
   })
 
@@ -75,18 +75,18 @@ describe('CookieCategoryToggle', () => {
         category="strictly-necessary"
         categoryName="Strictly Necessary"
         checked={true}
-      />
+      />,
     )
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toHaveAttribute(
       'aria-label',
-      'Strictly Necessary Required'
+      'Strictly Necessary Required',
     )
   })
 
   it('has consistent w-11 h-6 toggle track sizing', () => {
     const { container } = render(
-      <CookieCategoryToggle {...defaultProps} checked={true} />
+      <CookieCategoryToggle {...defaultProps} checked={true} />,
     )
     const track = container.querySelector('[role="presentation"]')
     expect(track).toBeInTheDocument()

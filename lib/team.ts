@@ -154,7 +154,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
 // Find team member by ID
 export function getTeamMemberById(
   id: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return teamMembers.find(member => member.id === id) || null
@@ -180,7 +180,7 @@ function toSerializable(member: TeamMember): SerializableTeamMember {
 // Find team member by ID and return serializable version (for Server Components)
 export function getSerializableTeamMemberById(
   id: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): SerializableTeamMember | null {
   const member = getTeamMemberById(id, t)
   if (!member) return null
@@ -190,12 +190,12 @@ export function getSerializableTeamMemberById(
 // Find team member by name (for blog author matching)
 export function getTeamMemberByName(
   name: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return (
     teamMembers.find(
-      member => member.name.toLowerCase() === name.toLowerCase()
+      member => member.name.toLowerCase() === name.toLowerCase(),
     ) || null
   )
 }
@@ -203,7 +203,7 @@ export function getTeamMemberByName(
 // Find team member by name and return serializable version (for Server Components)
 export function getSerializableTeamMemberByName(
   name: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): SerializableTeamMember | null {
   const member = getTeamMemberByName(name, t)
   if (!member) return null

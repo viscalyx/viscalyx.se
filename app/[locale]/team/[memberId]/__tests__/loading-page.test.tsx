@@ -13,7 +13,7 @@ describe('TeamMemberLoading page', () => {
     const { container } = render(<TeamMemberLoading />)
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
     expect(container.firstChild).toHaveClass('justify-center')
   })

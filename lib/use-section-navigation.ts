@@ -15,7 +15,7 @@ interface UseSectionNavigationOptions {
  * Handles hash links (#section), external URLs, and regular page navigation.
  */
 export const useSectionNavigation = (
-  options: UseSectionNavigationOptions = {}
+  options: UseSectionNavigationOptions = {},
 ): { handleNavigation: (href: string) => void } => {
   const { handleExternalLinks = false } = options
   const router = useRouter()
@@ -52,7 +52,7 @@ export const useSectionNavigation = (
       // Regular page navigation
       router.push(href as Route)
     },
-    [pathWithoutLocale, locale, router, handleExternalLinks]
+    [pathWithoutLocale, locale, router, handleExternalLinks],
   )
 
   return { handleNavigation }

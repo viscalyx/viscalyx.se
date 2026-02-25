@@ -36,7 +36,7 @@ try {
 } catch {
   throw new Error(
     `SITE_URL is not a valid URL: "${SITE_URL}". ` +
-      'Check the SITE_URL constant in @/lib/constants.'
+      'Check the SITE_URL constant in @/lib/constants.',
   )
 }
 
@@ -53,7 +53,7 @@ async function hashIP(ip: string): Promise<string> {
   const secret = process.env.ANALYTICS_HASH_SECRET
   if (!secret) {
     throw new Error(
-      'ANALYTICS_HASH_SECRET environment variable is required for IP hashing'
+      'ANALYTICS_HASH_SECRET environment variable is required for IP hashing',
     )
   }
 
@@ -64,7 +64,7 @@ async function hashIP(ip: string): Promise<string> {
       new TextEncoder().encode(secret),
       { name: 'HMAC', hash: 'SHA-256' },
       false,
-      ['sign']
+      ['sign'],
     )
     cachedSecret = secret
   }
@@ -117,7 +117,7 @@ export async function POST(request: Request) {
     if (!body.slug || !body.category || !body.title) {
       return NextResponse.json(
         { error: 'Missing required fields: slug, category, and title' },
-        { status: 400 }
+        { status: 400 },
       )
     }
 
@@ -173,7 +173,7 @@ export async function POST(request: Request) {
       // Don't fail the request if analytics fails
       console.warn(
         'Failed to get Cloudflare context for analytics:',
-        contextError
+        contextError,
       )
     }
 
@@ -182,7 +182,7 @@ export async function POST(request: Request) {
     console.error('Error tracking blog read:', error)
     return NextResponse.json(
       { error: 'Failed to track blog read' },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

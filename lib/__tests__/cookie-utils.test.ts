@@ -161,8 +161,8 @@ describe('Cookie Utils', () => {
         operations.some(
           op =>
             op.includes('test=;') &&
-            op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
-        )
+            op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
+        ),
       ).toBe(true)
     })
 
@@ -201,7 +201,7 @@ describe('Cookie Utils', () => {
 
       const operations = cookieMock.operations
       expect(operations.some(op => op.includes('domain=.example.com'))).toBe(
-        true
+        true,
       )
     })
   })

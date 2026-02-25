@@ -26,7 +26,7 @@ describe('AlertIconInjector', () => {
     render(
       <AlertIconInjector contentKey={contentKey}>
         <div>children</div>
-      </AlertIconInjector>
+      </AlertIconInjector>,
     )
 
   const flushInjectionDelay = async () => {
@@ -114,7 +114,7 @@ describe('AlertIconInjector', () => {
     rerender(
       <AlertIconInjector contentKey="k2">
         <div>children</div>
-      </AlertIconInjector>
+      </AlertIconInjector>,
     )
 
     await flushInjectionDelay()
@@ -172,7 +172,7 @@ describe('AlertIconInjector', () => {
 
     expect(warnSpy).toHaveBeenCalledTimes(1)
     expect(warnSpy.mock.calls[0][0]).toContain(
-      'Error unmounting AlertIcon root:'
+      'Error unmounting AlertIcon root:',
     )
   })
 

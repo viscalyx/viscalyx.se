@@ -10,7 +10,7 @@ const CookieConsentBanner = dynamic(
   () => import('../../components/CookieConsentBanner'),
   {
     loading: () => null,
-  }
+  },
 )
 
 type Props = {

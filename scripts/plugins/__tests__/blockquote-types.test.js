@@ -74,7 +74,7 @@ describe('Blockquote Types Plugin', () => {
 
     const alertNode = testTree.children[0]
     expect(alertNode.data.hProperties.className).toContain(
-      'github-alert-warning'
+      'github-alert-warning',
     )
     expect(alertNode.data.hProperties['data-alert-type']).toBe('warning')
     expect(alertNode.children[0].children[0].value).toBe('Warning')
@@ -107,7 +107,7 @@ describe('Blockquote Types Plugin', () => {
 
     // Should remain unchanged
     expect(testTree.children[0].children[0].children[0].value).toBe(
-      originalValue
+      originalValue,
     )
     expect(testTree.children[0].data).toBeUndefined()
   })

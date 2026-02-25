@@ -70,7 +70,7 @@ describe('LoadingSpinner', () => {
 
     it('can be conditionally rendered based on loading state', () => {
       const { rerender } = render(
-        <div data-testid="container">{true && <LoadingSpinner />}</div>
+        <div data-testid="container">{true && <LoadingSpinner />}</div>,
       )
 
       rerender(<div data-testid="container">{false && <LoadingSpinner />}</div>)
@@ -143,7 +143,7 @@ describe('LoadingSpinner', () => {
         'w-4',
         'h-4',
         'text-secondary-600',
-        'animate-spin'
+        'animate-spin',
       )
     })
   })

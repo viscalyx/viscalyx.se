@@ -118,7 +118,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           'aria-label',
           imageElement.alt
             ? t('accessibility.image.viewFullImage', { alt: imageElement.alt })
-            : t('accessibility.image.viewImage')
+            : t('accessibility.image.viewImage'),
         )
         imageElement.style.cursor = 'pointer'
 
@@ -141,7 +141,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           imageElement.removeEventListener('click', handlers.click)
           imageElement.removeEventListener(
             'keydown',
-            handlers.keydown as EventListener
+            handlers.keydown as EventListener,
           )
 
           // Remove accessibility attributes

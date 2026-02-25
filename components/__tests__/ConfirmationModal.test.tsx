@@ -24,7 +24,7 @@ describe('ConfirmationModal', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test Modal')).toBeInTheDocument()
     expect(
-      screen.getByText('Are you sure you want to proceed?')
+      screen.getByText('Are you sure you want to proceed?'),
     ).toBeInTheDocument()
     expect(screen.getByText('Confirm')).toBeInTheDocument()
     expect(screen.getByText('Cancel')).toBeInTheDocument()
@@ -131,7 +131,7 @@ describe('ConfirmationModal', () => {
 
     expect(screen.getByText('Test Modal')).toHaveAttribute('id', 'modal-title')
     expect(
-      screen.getByText('Are you sure you want to proceed?')
+      screen.getByText('Are you sure you want to proceed?'),
     ).toHaveAttribute('id', 'modal-description')
   })
 

@@ -27,10 +27,10 @@ test.describe('Homepage', () => {
       })
 
       expect(dimensions.htmlScrollWidth).toBeLessThanOrEqual(
-        dimensions.htmlClientWidth + 1
+        dimensions.htmlClientWidth + 1,
       )
       expect(dimensions.bodyScrollWidth).toBeLessThanOrEqual(
-        dimensions.bodyClientWidth + 1
+        dimensions.bodyClientWidth + 1,
       )
     })
   })
@@ -43,18 +43,18 @@ test.describe('Homepage', () => {
 
       // Hero heading is server-rendered — visible without waiting for JS
       await expect(
-        page.locator('h1').filter({ hasText: /Streamline Your/i })
+        page.locator('h1').filter({ hasText: /Streamline Your/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Development/i })
+        page.locator('h1').filter({ hasText: /Development/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Workflow/i })
+        page.locator('h1').filter({ hasText: /Workflow/i }),
       ).toBeVisible()
 
       // Hero description is visible
       await expect(
-        page.getByText('Professional consulting services', { exact: false })
+        page.getByText('Professional consulting services', { exact: false }),
       ).toBeVisible()
     })
 
@@ -108,13 +108,13 @@ test.describe('Homepage', () => {
       // Desktop nav links (scoped to nav to avoid footer duplicates)
       const nav = page.getByRole('navigation')
       await expect(
-        nav.getByRole('link', { name: 'About', exact: true })
+        nav.getByRole('link', { name: 'About', exact: true }),
       ).toBeVisible()
       await expect(
-        nav.getByRole('link', { name: 'Open Source', exact: true })
+        nav.getByRole('link', { name: 'Open Source', exact: true }),
       ).toBeVisible()
       await expect(
-        nav.getByRole('link', { name: 'Blog', exact: true })
+        nav.getByRole('link', { name: 'Blog', exact: true }),
       ).toBeVisible()
     })
 
@@ -136,7 +136,7 @@ test.describe('Homepage', () => {
 
       // Badge
       await expect(
-        page.getByText('Automation & DevOps Excellence')
+        page.getByText('Automation & DevOps Excellence'),
       ).toBeVisible()
 
       // Stats
@@ -178,12 +178,12 @@ test.describe('Homepage', () => {
       await expect(
         page.getByRole('heading', {
           name: /Empowering Organizations Through/i,
-        })
+        }),
       ).toBeVisible()
 
       // About description
       await expect(
-        page.getByText('specialized consulting company', { exact: false })
+        page.getByText('specialized consulting company', { exact: false }),
       ).toBeVisible()
     })
 
@@ -191,16 +191,16 @@ test.describe('Homepage', () => {
       await page.goto('/')
 
       await expect(
-        page.getByRole('heading', { name: /Precision & Excellence/i })
+        page.getByRole('heading', { name: /Precision & Excellence/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('heading', { name: /Client-Centric Approach/i })
+        page.getByRole('heading', { name: /Client-Centric Approach/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('heading', { name: /Innovation First/i })
+        page.getByRole('heading', { name: /Innovation First/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('heading', { name: /Open Source Commitment/i })
+        page.getByRole('heading', { name: /Open Source Commitment/i }),
       ).toBeVisible()
     })
 
@@ -220,7 +220,7 @@ test.describe('Homepage', () => {
 
       // Heading
       await expect(
-        page.getByRole('heading', { name: /Open Source/i }).first()
+        page.getByRole('heading', { name: /Open Source/i }).first(),
       ).toBeVisible()
 
       // Stats
@@ -233,13 +233,13 @@ test.describe('Homepage', () => {
 
       // Project names
       await expect(
-        page.getByRole('heading', { name: /PowerShell DSC Community/i })
+        page.getByRole('heading', { name: /PowerShell DSC Community/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('heading', { name: /DSC Resource Kit/i })
+        page.getByRole('heading', { name: /DSC Resource Kit/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('heading', { name: /Sampler/i })
+        page.getByRole('heading', { name: /Sampler/i }),
       ).toBeVisible()
 
       // View Project links
@@ -259,14 +259,14 @@ test.describe('Homepage', () => {
       await expect(
         page.getByRole('heading', {
           name: /Join the PowerShell Open Source Community/i,
-        })
+        }),
       ).toBeVisible()
 
       await expect(
-        page.getByRole('link', { name: /Follow on GitHub/i })
+        page.getByRole('link', { name: /Follow on GitHub/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('link', { name: /Collaborate With Community/i })
+        page.getByRole('link', { name: /Collaborate With Community/i }),
       ).toBeVisible()
     })
 
@@ -289,27 +289,27 @@ test.describe('Homepage', () => {
 
       // Company links (rendered as <Link> elements with onClick handlers)
       await expect(
-        footer.getByRole('link', { name: /About Us/i })
+        footer.getByRole('link', { name: /About Us/i }),
       ).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /Open Source/i })
+        footer.getByRole('link', { name: /Open Source/i }),
       ).toBeVisible()
 
       // Resource links (Blog is internal, Community is external — both <a> tags)
       await expect(footer.getByRole('link', { name: /Blog/i })).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /Community/i })
+        footer.getByRole('link', { name: /Community/i }),
       ).toBeVisible()
 
       // Support links
       await expect(
-        footer.getByRole('link', { name: /Privacy Policy/i })
+        footer.getByRole('link', { name: /Privacy Policy/i }),
       ).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /Terms of Service/i })
+        footer.getByRole('link', { name: /Terms of Service/i }),
       ).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /Cookie Policy/i })
+        footer.getByRole('link', { name: /Cookie Policy/i }),
       ).toBeVisible()
     })
 
@@ -317,7 +317,7 @@ test.describe('Homepage', () => {
       await page.goto('/')
 
       await expect(
-        page.getByText(/© \d{4} Viscalyx\. All rights reserved/i)
+        page.getByText(/© \d{4} Viscalyx\. All rights reserved/i),
       ).toBeVisible()
     })
 
@@ -328,7 +328,7 @@ test.describe('Homepage', () => {
 
       await expect(footer.getByRole('link', { name: /GitHub/i })).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /LinkedIn/i })
+        footer.getByRole('link', { name: /LinkedIn/i }),
       ).toBeVisible()
     })
   })
@@ -339,18 +339,18 @@ test.describe('Homepage', () => {
 
       // Swedish hero text
       await expect(
-        page.locator('h1').filter({ hasText: /Effektivisera Ditt/i })
+        page.locator('h1').filter({ hasText: /Effektivisera Ditt/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Utvecklings/i })
+        page.locator('h1').filter({ hasText: /Utvecklings/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Arbetsflöde/i })
+        page.locator('h1').filter({ hasText: /Arbetsflöde/i }),
       ).toBeVisible()
 
       // Swedish badge
       await expect(
-        page.getByText('Automation & DevOps Excellens')
+        page.getByText('Automation & DevOps Excellens'),
       ).toBeVisible()
 
       // Swedish Learn More button
@@ -374,13 +374,13 @@ test.describe('Homepage', () => {
 
       const nav = page.getByRole('navigation')
       await expect(
-        nav.getByRole('link', { name: 'Om oss', exact: true })
+        nav.getByRole('link', { name: 'Om oss', exact: true }),
       ).toBeVisible()
       await expect(
-        nav.getByRole('link', { name: 'Öppen Källkod', exact: true })
+        nav.getByRole('link', { name: 'Öppen Källkod', exact: true }),
       ).toBeVisible()
       await expect(
-        nav.getByRole('link', { name: 'Blogg', exact: true })
+        nav.getByRole('link', { name: 'Blogg', exact: true }),
       ).toBeVisible()
     })
 
@@ -391,7 +391,7 @@ test.describe('Homepage', () => {
       await expect(
         page.getByRole('heading', {
           name: /Ger Organisationer Kraft Genom/i,
-        })
+        }),
       ).toBeVisible()
     })
 
@@ -401,13 +401,13 @@ test.describe('Homepage', () => {
       const footer = page.locator('footer')
 
       await expect(
-        footer.getByRole('link', { name: /Integritetspolicy/i })
+        footer.getByRole('link', { name: /Integritetspolicy/i }),
       ).toBeVisible()
       await expect(
-        footer.getByRole('link', { name: /Användarvillkor/i })
+        footer.getByRole('link', { name: /Användarvillkor/i }),
       ).toBeVisible()
       await expect(
-        page.getByText(/Alla rättigheter förbehållna/i)
+        page.getByText(/Alla rättigheter förbehållna/i),
       ).toBeVisible()
     })
   })

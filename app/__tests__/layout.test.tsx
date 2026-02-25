@@ -27,7 +27,7 @@ describe('RootLayout', () => {
   })
 
   const findThemeScriptNode = (
-    node: unknown
+    node: unknown,
   ): { props: Record<string, unknown> } | null => {
     if (!node || typeof node !== 'object') {
       return null

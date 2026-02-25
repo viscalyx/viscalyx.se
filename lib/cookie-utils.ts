@@ -31,7 +31,7 @@ export function setCookie(
     expires?: string
     sameSite?: 'Strict' | 'Lax' | 'None'
     domain?: string
-  } = {}
+  } = {},
 ): void {
   if (typeof window === 'undefined') return
 
@@ -68,7 +68,7 @@ export function deleteCookie(
   options: {
     path?: string
     domain?: string
-  } = {}
+  } = {},
 ): void {
   if (typeof window === 'undefined') return
 
@@ -83,20 +83,20 @@ export function deleteCookie(
     // Delete for specified domain
     if (domain) {
       writeCookie(
-        `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`
+        `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`,
       )
     } else {
       // Delete for root domain
       const currentDomain = window.location.hostname
       writeCookie(
-        `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+        `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
       )
 
       // Delete for parent domain (if subdomain)
       if (currentDomain.includes('.')) {
         const parentDomain = currentDomain.substring(currentDomain.indexOf('.'))
         writeCookie(
-          `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+          `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
         )
       }
     }

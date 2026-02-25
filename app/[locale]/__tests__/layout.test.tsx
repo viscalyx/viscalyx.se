@@ -72,16 +72,16 @@ describe('LocaleLayout', () => {
     const { container } = render(ui)
 
     expect(
-      screen.getByRole('region', { name: 'provider en' })
+      screen.getByRole('region', { name: 'provider en' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('main', { name: 'layout child' })
+      screen.getByRole('main', { name: 'layout child' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('complementary', { name: 'cookie consent banner' })
+      screen.getByRole('complementary', { name: 'cookie consent banner' }),
     ).toBeInTheDocument()
     expect(
-      container.querySelectorAll('script[type="application/ld+json"]')
+      container.querySelectorAll('script[type="application/ld+json"]'),
     ).toHaveLength(2)
   })
 

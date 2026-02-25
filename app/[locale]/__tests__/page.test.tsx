@@ -6,7 +6,7 @@ vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn().mockResolvedValue(
     Object.assign((key: string) => `translated:${key}`, {
       rich: (key: string) => `translated:${key}`,
-    })
+    }),
   ),
 }))
 
@@ -38,7 +38,7 @@ vi.mock('@/components/OpenSource', () => ({
     React.createElement(
       'section',
       { 'data-testid': 'open-source' },
-      'OpenSource'
+      'OpenSource',
     ),
 }))
 
@@ -53,7 +53,7 @@ vi.mock('@/components/ScrollToTop', () => ({
     React.createElement(
       'button',
       { type: 'button', 'data-testid': 'scroll-to-top' },
-      'ScrollToTop'
+      'ScrollToTop',
     ),
 }))
 
@@ -94,7 +94,7 @@ describe('generateMetadata', () => {
     })
 
     expect(metadata.title).toBe(
-      'translated:title translated:titleHighlight translated:titleEnd'
+      'translated:title translated:titleHighlight translated:titleEnd',
     )
     expect(metadata.description).toBe('translated:description')
     expect(metadata.openGraph?.locale).toBe('en_US')

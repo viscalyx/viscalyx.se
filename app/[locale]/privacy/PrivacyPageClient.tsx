@@ -21,7 +21,7 @@ const PrivacyPageClient = ({ lastUpdatedDate }: PrivacyPageClientProps) => {
       <LegalSection
         description={t('sections.informationWeCollect.description')}
         items={safeTranslationArray(
-          t.raw('sections.informationWeCollect.items')
+          t.raw('sections.informationWeCollect.items'),
         )}
         title={t('sections.informationWeCollect.title')}
       />

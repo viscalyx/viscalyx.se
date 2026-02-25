@@ -32,8 +32,8 @@ const BlogPostGrid = ({
     .filter(Boolean) as string[]
   const uniqueCategories = Array.from(
     new Set(
-      [featuredPostCategory, ...postCategories].filter(Boolean) as string[]
-    )
+      [featuredPostCategory, ...postCategories].filter(Boolean) as string[],
+    ),
   )
   const allCategories = [categoriesAllLabel, ...uniqueCategories]
 
@@ -48,7 +48,7 @@ const BlogPostGrid = ({
 
   const loadMorePosts = () => {
     setVisiblePosts(prev =>
-      Math.min(prev + POSTS_PER_PAGE, filteredPosts.length)
+      Math.min(prev + POSTS_PER_PAGE, filteredPosts.length),
     )
   }
 

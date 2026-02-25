@@ -35,10 +35,10 @@ test.describe('Cookie Consent Functionality', () => {
 
     await expect(banner.locator('h2')).toBeVisible()
     await expect(
-      banner.getByRole('button', { name: 'Accept All' })
+      banner.getByRole('button', { name: 'Accept All' }),
     ).toBeVisible()
     await expect(
-      banner.getByRole('button', { name: 'Reject All' })
+      banner.getByRole('button', { name: 'Reject All' }),
     ).toBeVisible()
     await expect(banner.getByText('Customize Settings')).toBeVisible()
   })
@@ -107,7 +107,7 @@ test.describe('Cookie Consent Functionality', () => {
     await banner.getByText('Customize Settings').click()
 
     await expect(
-      banner.locator('h2', { hasText: 'Cookie Settings' })
+      banner.locator('h2', { hasText: 'Cookie Settings' }),
     ).toBeVisible()
 
     // Toggles are sr-only checkboxes — assert they exist in the DOM
@@ -124,7 +124,7 @@ test.describe('Cookie Consent Functionality', () => {
     await expect(banner.locator('#toggle-preferences')).toBeEnabled()
 
     await expect(
-      banner.getByRole('button', { name: 'Save Preferences' })
+      banner.getByRole('button', { name: 'Save Preferences' }),
     ).toBeVisible()
   })
 
@@ -186,7 +186,7 @@ test.describe('Cookie Consent Functionality', () => {
     await page.reload()
     await expect(page.locator('role=main')).toBeVisible()
     await expect(
-      page.locator('[role="dialog"][aria-modal="true"]')
+      page.locator('[role="dialog"][aria-modal="true"]'),
     ).not.toBeVisible()
 
     // Navigate away and back, waiting for page-ready each time
@@ -196,7 +196,7 @@ test.describe('Cookie Consent Functionality', () => {
     await expect(page.locator('role=main')).toBeVisible()
 
     await expect(
-      page.locator('[role="dialog"][aria-modal="true"]')
+      page.locator('[role="dialog"][aria-modal="true"]'),
     ).not.toBeVisible()
   })
 
@@ -210,7 +210,7 @@ test.describe('Cookie Consent Functionality', () => {
     await banner.getByText('Customize Settings').click()
 
     await expect(
-      banner.locator('h2', { hasText: 'Cookie Settings' })
+      banner.locator('h2', { hasText: 'Cookie Settings' }),
     ).toBeVisible()
 
     // The close button uses aria-label={t('close')} which resolves to "Close"
@@ -218,10 +218,10 @@ test.describe('Cookie Consent Functionality', () => {
 
     // Should return to the simple banner view
     await expect(
-      banner.locator('h2', { hasText: 'Cookie Settings' })
+      banner.locator('h2', { hasText: 'Cookie Settings' }),
     ).not.toBeVisible()
     await expect(
-      banner.getByRole('button', { name: 'Accept All' })
+      banner.getByRole('button', { name: 'Accept All' }),
     ).toBeVisible()
   })
 

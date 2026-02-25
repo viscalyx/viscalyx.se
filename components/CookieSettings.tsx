@@ -27,7 +27,7 @@ interface CookieSettingsProps {
 const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const t = useTranslations('cookieConsent')
   const [settings, setSettings] = useState<CookieConsentSettings>(
-    defaultConsentSettings
+    defaultConsentSettings,
   )
   const [consentTimestamp, setConsentTimestamp] = useState<Date | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -122,7 +122,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const cleanupDownloadResources = (
     element: HTMLAnchorElement | null,
     elementAppended: boolean,
-    url: string | null
+    url: string | null,
   ) => {
     // Clean up DOM element
     if (element && elementAppended) {

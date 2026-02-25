@@ -36,7 +36,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       {
         rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
         threshold: 0.1,
-      }
+      },
     )
 
     // Observe all headings
@@ -56,7 +56,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   useEffect(() => {
     if (activeId && scrollContainerRef.current) {
       const activeButton = scrollContainerRef.current.querySelector(
-        `button[data-id="${activeId}"]`
+        `button[data-id="${activeId}"]`,
       ) as HTMLElement
 
       if (activeButton) {
@@ -98,10 +98,10 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
       // Only update state if values have changed to prevent unnecessary re-renders
       setCanScrollUp(prev =>
-        prev !== canScrollUpValue ? canScrollUpValue : prev
+        prev !== canScrollUpValue ? canScrollUpValue : prev,
       )
       setCanScrollDown(prev =>
-        prev !== canScrollDownValue ? canScrollDownValue : prev
+        prev !== canScrollDownValue ? canScrollDownValue : prev,
       )
     }
   }, [])

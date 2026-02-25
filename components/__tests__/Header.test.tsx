@@ -239,10 +239,10 @@ describe('Header', () => {
       const titles = screen.getAllByText('settings.title')
       expect(titles.length).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByText('settings.language').length
+        screen.getAllByText('settings.language').length,
       ).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByText('settings.theme').length
+        screen.getAllByText('settings.theme').length,
       ).toBeGreaterThanOrEqual(1)
     })
 
@@ -289,7 +289,7 @@ describe('Header', () => {
       // Open settings
       fireEvent.click(settingsButtons[0])
       expect(
-        screen.getAllByText('settings.title').length
+        screen.getAllByText('settings.title').length,
       ).toBeGreaterThanOrEqual(1)
 
       // Simulate click outside — mock window.innerWidth to be desktop
@@ -314,10 +314,10 @@ describe('Header', () => {
 
       // Both desktop and mobile dropdowns contain these
       expect(
-        screen.getAllByTestId('language-switcher').length
+        screen.getAllByTestId('language-switcher').length,
       ).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByTestId('theme-toggle').length
+        screen.getAllByTestId('theme-toggle').length,
       ).toBeGreaterThanOrEqual(1)
     })
   })
@@ -327,13 +327,13 @@ describe('Header', () => {
       mockPathname = '/en'
       const mockElement = { scrollIntoView: vi.fn() }
       vi.spyOn(document, 'querySelector').mockReturnValue(
-        mockElement as unknown as Element
+        mockElement as unknown as Element,
       )
       vi.spyOn(window, 'requestAnimationFrame').mockImplementation(
         (cb: FrameRequestCallback) => {
           cb(0)
           return 0
-        }
+        },
       )
 
       render(<Header />)

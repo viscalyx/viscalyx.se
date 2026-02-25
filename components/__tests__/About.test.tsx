@@ -33,7 +33,7 @@ describe('About component', () => {
     const image = container.querySelector('img')
     expect(image).toHaveAttribute(
       'src',
-      expect.stringContaining('team-huddle-open-office-wide')
+      expect.stringContaining('team-huddle-open-office-wide'),
     )
     expect(image).toHaveAttribute('alt', 'visualAlt')
   })

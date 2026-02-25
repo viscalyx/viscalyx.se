@@ -88,7 +88,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
         // Find all mermaid code blocks
         const mermaidBlocks = document.querySelectorAll(
-          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]'
+          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]',
         )
 
         // Process each mermaid block
@@ -177,7 +177,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Replace the code block with the rendered diagram
             containerToReplace.parentNode?.replaceChild(
               wrapper,
-              containerToReplace
+              containerToReplace,
             )
           } catch (error) {
             console.error('Failed to render Mermaid diagram:', error)
@@ -206,7 +206,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Replace with error message
             containerToReplace.parentNode?.replaceChild(
               errorDiv,
-              containerToReplace
+              containerToReplace,
             )
           }
         }

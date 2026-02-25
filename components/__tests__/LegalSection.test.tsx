@@ -8,7 +8,7 @@ describe('LegalSection', () => {
     render(<LegalSection description="Test description" title="Test Title" />)
 
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Test Title' })
+      screen.getByRole('heading', { level: 2, name: 'Test Title' }),
     ).toBeInTheDocument()
     expect(screen.getByText('Test description')).toBeInTheDocument()
   })
@@ -19,7 +19,7 @@ describe('LegalSection', () => {
         description="Description"
         items={['Item A', 'Item B', 'Item C']}
         title="Title"
-      />
+      />,
     )
 
     const listItems = screen.getAllByRole('listitem')
@@ -43,7 +43,7 @@ describe('LegalSection', () => {
 
   it('applies mb-6 to description when items are present', () => {
     render(
-      <LegalSection description="Description" items={['Item']} title="Title" />
+      <LegalSection description="Description" items={['Item']} title="Title" />,
     )
 
     const description = screen.getByText('Description')

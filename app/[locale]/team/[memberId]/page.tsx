@@ -13,7 +13,7 @@ type Props = {
 export function generateStaticParams() {
   const memberIds = getTeamMemberIds()
   return locales.flatMap(locale =>
-    memberIds.map(memberId => ({ locale, memberId }))
+    memberIds.map(memberId => ({ locale, memberId })),
   )
 }
 
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `${SITE_URL}/${locale}/team/${memberId}`,
       languages: Object.fromEntries(
-        locales.map(l => [l, `${SITE_URL}/${l}/team/${memberId}`])
+        locales.map(l => [l, `${SITE_URL}/${l}/team/${memberId}`]),
       ),
     },
   }

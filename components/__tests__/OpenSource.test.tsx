@@ -55,7 +55,7 @@ describe('OpenSource component', () => {
     expect(window.open).toHaveBeenCalledWith(
       'https://github.com/dsccommunity',
       '_blank',
-      'noopener noreferrer'
+      'noopener noreferrer',
     )
   })
 

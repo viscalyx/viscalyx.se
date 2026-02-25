@@ -17,22 +17,22 @@ describe('remark-image-paths plugin', () => {
   it('removes /public prefix in build mode', () => {
     expect(run('/public/image.png', { mode: 'build' })).toBe('/image.png')
     expect(run('/public/blog-images/test.jpg', { mode: 'build' })).toBe(
-      '/blog-images/test.jpg'
+      '/blog-images/test.jpg',
     )
   })
 
   it('does not rewrite /public paths in non-build mode', () => {
     expect(run('/public/image.png', { mode: 'preview' })).toBe(
-      '/public/image.png'
+      '/public/image.png',
     )
   })
 
   it('ignores external URLs', () => {
     expect(run('https://example.com/a.png', { mode: 'build' })).toBe(
-      'https://example.com/a.png'
+      'https://example.com/a.png',
     )
     expect(run('http://example.com/a.png', { mode: 'build' })).toBe(
-      'http://example.com/a.png'
+      'http://example.com/a.png',
     )
   })
 

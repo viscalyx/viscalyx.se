@@ -20,7 +20,7 @@ describe('Blog post loading page', () => {
     render(<BlogPostLoading />)
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
   })
 

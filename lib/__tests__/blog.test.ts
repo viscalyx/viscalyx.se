@@ -267,7 +267,7 @@ vi.mock('node:path', () => ({
 describe('loadBlogContent', () => {
   it('loads content from filesystem for existing post', async () => {
     mockReadFile.mockResolvedValueOnce(
-      JSON.stringify({ content: '# Hello World\nSome blog content.' })
+      JSON.stringify({ content: '# Hello World\nSome blog content.' }),
     )
 
     const result = await loadBlogContent('my-blog-post')
@@ -275,7 +275,7 @@ describe('loadBlogContent', () => {
     expect(result).toBe('# Hello World\nSome blog content.')
     expect(mockReadFile).toHaveBeenCalledWith(
       expect.stringContaining('blog-content/my-blog-post.json'),
-      'utf-8'
+      'utf-8',
     )
   })
 
@@ -346,7 +346,7 @@ describe('trackPageView', () => {
   it('accepts valid slug and category strings', async () => {
     // Verify it doesn't throw for various valid inputs
     await expect(
-      trackPageView('long-slug-name', 'Category Name')
+      trackPageView('long-slug-name', 'Category Name'),
     ).resolves.not.toThrow()
   })
 
@@ -391,7 +391,7 @@ describe('loadBlogContent with mocked Cloudflare ASSETS', () => {
 
     expect(result).toBe('<p>From ASSETS</p>')
     expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('blog-content/my-post.json')
+      expect.stringContaining('blog-content/my-post.json'),
     )
   })
 

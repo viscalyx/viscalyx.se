@@ -16,10 +16,10 @@ describe('structured-data', () => {
     expect(data.url).toBe(SITE_URL)
     expect(data.logo).toBe(`${SITE_URL}/viscalyx_logo_128x128.png`)
     expect(data.description).toBe(
-      'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation.'
+      'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation.',
     )
     expect(data.sameAs).toEqual(
-      expect.arrayContaining(['https://github.com/viscalyx'])
+      expect.arrayContaining(['https://github.com/viscalyx']),
     )
   })
 

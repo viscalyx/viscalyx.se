@@ -10,7 +10,7 @@ function runBiomeJsonLint(args) {
   return spawnSync(
     getNpxCommand(),
     ['biome', 'lint', '--reporter=json', '--max-diagnostics=none', ...args],
-    { encoding: 'utf8' }
+    { encoding: 'utf8' },
   )
 }
 
@@ -38,7 +38,7 @@ function runReadableLint(args) {
   return spawnSync(
     getNpxCommand(),
     ['biome', 'lint', '--error-on-warnings', ...args],
-    { stdio: 'inherit' }
+    { stdio: 'inherit' },
   )
 }
 
@@ -68,7 +68,7 @@ function main() {
 
   if (!hasAnyDiagnostics) {
     process.stdout.write(
-      'Checked with strict mode: 0 errors, 0 warnings, 0 infos.\n'
+      'Checked with strict mode: 0 errors, 0 warnings, 0 infos.\n',
     )
     process.exit(0)
   }

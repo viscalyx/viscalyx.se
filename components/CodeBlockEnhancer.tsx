@@ -27,7 +27,7 @@ export default function CodeBlockEnhancer({
     const addCopyButtons = () => {
       // Use build-time wrappers: '.code-block-wrapper' contains <pre> and label
       const wrappers = Array.from(
-        document.querySelectorAll('.blog-content .code-block-wrapper')
+        document.querySelectorAll('.blog-content .code-block-wrapper'),
       ) as HTMLElement[]
 
       wrappers.forEach(wrapper => {
@@ -38,13 +38,13 @@ export default function CodeBlockEnhancer({
 
         // Find the <pre> element
         const pre = wrapper.querySelector(
-          'pre[class*="language-"]'
+          'pre[class*="language-"]',
         ) as HTMLElement | null
         if (!pre) return
 
         // Wrap <pre> in scroll wrapper if not already
         let scrollWrapper = wrapper.querySelector(
-          '.code-scroll-wrapper'
+          '.code-scroll-wrapper',
         ) as HTMLElement | null
         if (!scrollWrapper) {
           scrollWrapper = document.createElement('div')
@@ -66,7 +66,7 @@ export default function CodeBlockEnhancer({
           root.render(
             <NextIntlClientProvider locale={locale} messages={messages}>
               <CopyButton text={text} />
-            </NextIntlClientProvider>
+            </NextIntlClientProvider>,
           )
           roots.set(copyContainer, root)
         }

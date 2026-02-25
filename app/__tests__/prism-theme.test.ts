@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 describe('prism-theme.css', () => {
   const cssContent = readFileSync(
     resolve(__dirname, '../prism-theme.css'),
-    'utf-8'
+    'utf-8',
   )
 
   const coreTokenVars = [

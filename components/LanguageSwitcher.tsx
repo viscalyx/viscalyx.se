@@ -22,7 +22,7 @@ const LanguageSwitcher = () => {
       { code: 'en', name: t('english'), flag: '🇺🇸' },
       { code: 'sv', name: t('swedish'), flag: '🇸🇪' },
     ],
-    [t]
+    [t],
   )
 
   const currentLanguage = languages.find(lang => lang.code === locale)
@@ -63,7 +63,7 @@ const LanguageSwitcher = () => {
       setIsOpen(false)
       setFocusedIndex(-1)
     },
-    [pathname, router]
+    [pathname, router],
   )
 
   const languageCount = languages.length
@@ -109,7 +109,7 @@ const LanguageSwitcher = () => {
           break
       }
     },
-    [isOpen, focusedIndex, languageCount, handleLanguageChange, languages]
+    [isOpen, focusedIndex, languageCount, handleLanguageChange, languages],
   )
 
   return (

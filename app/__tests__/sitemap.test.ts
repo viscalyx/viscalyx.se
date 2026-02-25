@@ -81,10 +81,10 @@ describe('sitemap', () => {
 
     const urls = result.map(entry => entry.url)
     expect(
-      urls.some(u => u.includes('future-infrastructure-automation-2025'))
+      urls.some(u => u.includes('future-infrastructure-automation-2025')),
     ).toBe(false)
     expect(urls.some(u => u.includes('powershell-dsc-best-practices'))).toBe(
-      false
+      false,
     )
   })
 
@@ -105,7 +105,7 @@ describe('sitemap', () => {
     const result = await sitemap()
 
     const matchingUrls = result.filter(entry =>
-      entry.url.includes('future-infrastructure-automation-2025')
+      entry.url.includes('future-infrastructure-automation-2025'),
     )
     // Two entries: one per locale
     expect(matchingUrls.length).toBe(2)

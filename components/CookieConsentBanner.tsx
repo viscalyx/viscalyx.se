@@ -22,7 +22,7 @@ const CookieConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [settings, setSettings] = useState<CookieConsentSettings>(
-    defaultConsentSettings
+    defaultConsentSettings,
   )
 
   // Sync state with localStorage/cookies after hydration to avoid SSR mismatch
@@ -56,7 +56,7 @@ const CookieConsentBanner = () => {
     }
 
     const elements = bannerRef.current.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])',
     )
 
     // Cache the elements
@@ -280,7 +280,7 @@ const CookieConsentBanner = () => {
                   ).map(category => {
                     const categoryName = t(`categories.${category}.name`)
                     const categoryDescription = t(
-                      `categories.${category}.description`
+                      `categories.${category}.description`,
                     )
                     const isRequired = category === 'strictly-necessary'
                     const cookiesInCategory = getCookiesForCategory(category)

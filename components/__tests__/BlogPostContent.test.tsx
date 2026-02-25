@@ -26,7 +26,7 @@ vi.mock('@/components/AlertIconInjector', () => ({
     React.createElement(
       'div',
       { 'data-testid': 'alert-icon-injector' },
-      children
+      children,
     ),
 }))
 
@@ -89,9 +89,9 @@ vi.mock('@/components/TableOfContents', () => ({
         React.createElement(
           'a',
           { key: item.id, href: `#${item.id}` },
-          item.text
-        )
-      )
+          item.text,
+        ),
+      ),
     ),
 }))
 
@@ -110,43 +110,43 @@ vi.mock('@/lib/team', () => ({
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'Email' },
-        'Email'
+        'Email',
       ),
     LinkedIn: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'LinkedIn' },
-        'LinkedIn'
+        'LinkedIn',
       ),
     GitHub: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'GitHub' },
-        'GitHub'
+        'GitHub',
       ),
     Bluesky: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'Bluesky' },
-        'Bluesky'
+        'Bluesky',
       ),
     Mastodon: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'Mastodon' },
-        'Mastodon'
+        'Mastodon',
       ),
     X: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'X' },
-        'X'
+        'X',
       ),
     Discord: ({ className }: { className?: string }) =>
       React.createElement(
         'span',
         { className, role: 'img', 'aria-label': 'Discord' },
-        'Discord'
+        'Discord',
       ),
   },
 }))
@@ -278,7 +278,7 @@ describe('BlogPostContent', () => {
     it('renders the post title as h1', () => {
       renderComponent()
       expect(
-        screen.getByRole('heading', { level: 1, name: 'Test Blog Post' })
+        screen.getByRole('heading', { level: 1, name: 'Test Blog Post' }),
       ).toBeInTheDocument()
     })
 
@@ -336,7 +336,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(
-          table?.parentElement?.classList.contains('table-scroll-region')
+          table?.parentElement?.classList.contains('table-scroll-region'),
         ).toBe(false)
       })
     })
@@ -349,7 +349,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(document.querySelectorAll('.table-scroll-region')).toHaveLength(
-          1
+          1,
         )
       })
       expect(document.querySelectorAll('.table-right-fade')).toHaveLength(1)
@@ -360,35 +360,35 @@ describe('BlogPostContent', () => {
     it('renders ReadingProgress', () => {
       renderComponent()
       expect(
-        screen.getByRole('progressbar', { name: /reading progress/i })
+        screen.getByRole('progressbar', { name: /reading progress/i }),
       ).toBeInTheDocument()
     })
 
     it('renders CodeBlockEnhancer', () => {
       renderComponent()
       expect(
-        screen.getByRole('region', { name: /code block enhancer/i })
+        screen.getByRole('region', { name: /code block enhancer/i }),
       ).toBeInTheDocument()
     })
 
     it('renders MermaidRenderer', () => {
       renderComponent()
       expect(
-        screen.getByRole('region', { name: /mermaid renderer/i })
+        screen.getByRole('region', { name: /mermaid renderer/i }),
       ).toBeInTheDocument()
     })
 
     it('renders ImageEnhancer', () => {
       renderComponent()
       expect(
-        screen.getByRole('region', { name: /image enhancer/i })
+        screen.getByRole('region', { name: /image enhancer/i }),
       ).toBeInTheDocument()
     })
 
     it('renders ScrollToTop', () => {
       renderComponent()
       expect(
-        screen.getByRole('button', { name: /scroll to top/i })
+        screen.getByRole('button', { name: /scroll to top/i }),
       ).toBeInTheDocument()
     })
   })
@@ -406,7 +406,7 @@ describe('BlogPostContent', () => {
     it('does not render ToC when empty', () => {
       renderComponent({ tableOfContents: [] })
       expect(
-        screen.queryByRole('navigation', { name: /table of contents/i })
+        screen.queryByRole('navigation', { name: /table of contents/i }),
       ).not.toBeInTheDocument()
     })
 
@@ -458,7 +458,7 @@ describe('BlogPostContent', () => {
     it('renders View Profile link', () => {
       renderComponent()
       expect(
-        screen.getByRole('link', { name: /post\.authorBio\.viewProfile/ })
+        screen.getByRole('link', { name: /post\.authorBio\.viewProfile/ }),
       ).toBeInTheDocument()
     })
 
@@ -479,7 +479,7 @@ describe('BlogPostContent', () => {
       // Author name displayed but not as a link
       const authorTexts = screen.getAllByText('Test Author')
       const authorInBio = authorTexts.find(
-        el => !el.closest('a') && el.closest('[data-testid="author-bio"]')
+        el => !el.closest('a') && el.closest('[data-testid="author-bio"]'),
       )
       expect(authorInBio).toBeInTheDocument()
     })
@@ -500,7 +500,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(mockWriteText).toHaveBeenCalledWith(
-          'https://example.com/blog/test-post'
+          'https://example.com/blog/test-post',
         )
       })
     })
@@ -634,7 +634,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('post.notifications.shareError')
+          screen.getByText('post.notifications.shareError'),
         ).toBeInTheDocument()
       })
     })
@@ -809,7 +809,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('post.notifications.shareError')
+          screen.getByText('post.notifications.shareError'),
         ).toBeInTheDocument()
       })
     })
@@ -841,7 +841,7 @@ describe('BlogPostContent', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText('post.notifications.shareError')
+          screen.getByText('post.notifications.shareError'),
         ).toBeInTheDocument()
       })
     })
@@ -921,7 +921,7 @@ describe('BlogPostContent', () => {
         teamMember: { ...mockTeamMember, socialLinks: [] },
       })
       expect(
-        screen.queryByRole('img', { name: 'LinkedIn' })
+        screen.queryByRole('img', { name: 'LinkedIn' }),
       ).not.toBeInTheDocument()
     })
 
@@ -936,7 +936,7 @@ describe('BlogPostContent', () => {
       })
       // Should not render any social icons
       expect(
-        screen.queryByRole('img', { name: 'LinkedIn' })
+        screen.queryByRole('img', { name: 'LinkedIn' }),
       ).not.toBeInTheDocument()
     })
   })

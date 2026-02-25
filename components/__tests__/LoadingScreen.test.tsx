@@ -38,11 +38,11 @@ describe('LoadingScreen', () => {
     expect(screen.getByRole('main')).toBeInTheDocument()
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-color',
-      'primary'
+      'primary',
     )
   })
 })

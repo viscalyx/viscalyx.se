@@ -121,7 +121,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.render)).toHaveBeenCalledWith(
           expect.stringMatching(/^mermaid-diagram-\d+-0$/),
-          sampleMermaidCode
+          sampleMermaidCode,
         )
       })
 
@@ -135,7 +135,7 @@ describe('MermaidRenderer', () => {
         'border',
         'border-gray-200',
         'rounded-xl',
-        'shadow-lg'
+        'shadow-lg',
       )
 
       // Check that the diagram container was created with sanitized content
@@ -164,7 +164,7 @@ describe('MermaidRenderer', () => {
       })
 
       const diagramWrappers = document.querySelectorAll(
-        '.mermaid-diagram-wrapper'
+        '.mermaid-diagram-wrapper',
       )
       expect(diagramWrappers).toHaveLength(2)
     })
@@ -201,10 +201,10 @@ describe('MermaidRenderer', () => {
 
       // The code-block-wrapper should be replaced with the diagram wrapper
       expect(
-        document.querySelector('.code-block-wrapper')
+        document.querySelector('.code-block-wrapper'),
       ).not.toBeInTheDocument()
       expect(
-        document.querySelector('.mermaid-diagram-wrapper')
+        document.querySelector('.mermaid-diagram-wrapper'),
       ).toBeInTheDocument()
     })
   })
@@ -255,7 +255,7 @@ describe('MermaidRenderer', () => {
             ],
             ALLOW_DATA_ATTR: true,
             KEEP_CONTENT: true,
-          }
+          },
         )
       })
     })
@@ -304,7 +304,7 @@ describe('MermaidRenderer', () => {
           }
           // This is for SVG sanitization (shouldn't be called in error case)
           return mockSanitizedSvg
-        }
+        },
       )
 
       render(<MermaidRenderer contentLoaded={true} />)
@@ -318,7 +318,7 @@ describe('MermaidRenderer', () => {
       // Now check if console.error was called
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
-        renderError
+        renderError,
       )
 
       // Check that error message is displayed
@@ -330,13 +330,13 @@ describe('MermaidRenderer', () => {
         'border',
         'border-red-200',
         'rounded-lg',
-        'text-red-800'
+        'text-red-800',
       )
 
       // Check that error content is sanitized
       expect(vi.mocked(DOMPurify.sanitize)).toHaveBeenCalledWith(
         expect.stringContaining('Invalid mermaid syntax'),
-        { USE_PROFILES: { html: true } }
+        { USE_PROFILES: { html: true } },
       )
 
       consoleErrorSpy.mockRestore()
@@ -363,7 +363,7 @@ describe('MermaidRenderer', () => {
           }
           // This is for SVG sanitization (shouldn't be called in error case)
           return mockSanitizedSvg
-        }
+        },
       )
 
       render(<MermaidRenderer contentLoaded={true} />)
@@ -377,7 +377,7 @@ describe('MermaidRenderer', () => {
       // Now check if console.error was called
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
-        nonErrorValue
+        nonErrorValue,
       )
 
       // Check that generic error message is shown
@@ -385,7 +385,7 @@ describe('MermaidRenderer', () => {
       expect(errorDiv).toBeInTheDocument()
       expect(vi.mocked(DOMPurify.sanitize)).toHaveBeenCalledWith(
         expect.stringContaining('Unknown error occurred'),
-        { USE_PROFILES: { html: true } }
+        { USE_PROFILES: { html: true } },
       )
 
       consoleErrorSpy.mockRestore()
@@ -422,7 +422,7 @@ describe('MermaidRenderer', () => {
 
       await waitFor(() => {
         expect(
-          document.querySelector('.code-block-wrapper')
+          document.querySelector('.code-block-wrapper'),
         ).not.toBeInTheDocument()
         expect(document.querySelector('.mermaid-error')).toBeInTheDocument()
       })
@@ -524,7 +524,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.render)).toHaveBeenCalledWith(
           expect.stringMatching(/^mermaid-diagram-\d+-0$/),
-          sampleMermaidCode
+          sampleMermaidCode,
         )
       })
     })
@@ -553,7 +553,7 @@ describe('MermaidRenderer', () => {
 
       // Should not throw error even with missing parent
       expect(mockConsoleError).not.toHaveBeenCalledWith(
-        expect.stringContaining('Failed to render Mermaid diagram')
+        expect.stringContaining('Failed to render Mermaid diagram'),
       )
 
       // Restore original method

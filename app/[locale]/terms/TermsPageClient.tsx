@@ -32,7 +32,7 @@ const TermsPageClient = ({ lastUpdatedDate }: TermsPageClientProps) => {
       <LegalSection
         description={t('terms.sections.userResponsibilities.description')}
         items={safeTranslationArray(
-          t.raw('terms.sections.userResponsibilities.items')
+          t.raw('terms.sections.userResponsibilities.items'),
         )}
         title={t('terms.sections.userResponsibilities.title')}
       />

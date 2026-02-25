@@ -20,7 +20,7 @@ describe('blog-read analytics route', () => {
 
   const createRequest = (
     body: Record<string, unknown>,
-    headers?: HeadersInit
+    headers?: HeadersInit,
   ) =>
     new Request('https://viscalyx.org/api/analytics/blog-read', {
       method: 'POST',
@@ -35,7 +35,7 @@ describe('blog-read analytics route', () => {
   it('rejects requests from invalid origin', async () => {
     const req = createRequest(
       { slug: 'a', category: 'b', title: 'c' },
-      { origin: 'https://attacker.example' }
+      { origin: 'https://attacker.example' },
     )
     const res = await POST(req)
 
@@ -46,7 +46,7 @@ describe('blog-read analytics route', () => {
   it('rejects malformed origin header values', async () => {
     const req = createRequest(
       { slug: 'a', category: 'b', title: 'c' },
-      { origin: 'not-a-url' }
+      { origin: 'not-a-url' },
     )
     const res = await POST(req)
 
@@ -59,7 +59,7 @@ describe('blog-read analytics route', () => {
       {
         origin: '',
         referer: 'https://viscalyx.org/en/blog',
-      }
+      },
     )
 
     const res = await POST(req)
@@ -73,7 +73,7 @@ describe('blog-read analytics route', () => {
       {
         origin: '',
         referer: 'not-a-url',
-      }
+      },
     )
 
     const res = await POST(req)
@@ -83,7 +83,7 @@ describe('blog-read analytics route', () => {
   it('rejects requests without origin and referer headers', async () => {
     const req = createRequest(
       { slug: 'slug', category: 'cat', title: 'title' },
-      { origin: '' }
+      { origin: '' },
     )
     req.headers.delete('referer')
     const res = await POST(req)
@@ -121,7 +121,7 @@ describe('blog-read analytics route', () => {
   it('hashes client IP and stores hashed visitor identifier', async () => {
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
-      { 'cf-connecting-ip': '203.0.113.10' }
+      { 'cf-connecting-ip': '203.0.113.10' },
     )
 
     await POST(req)
@@ -147,7 +147,7 @@ describe('blog-read analytics route', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
-      { 'cf-connecting-ip': '203.0.113.2' }
+      { 'cf-connecting-ip': '203.0.113.2' },
     )
 
     const res = await POST(req)
@@ -155,7 +155,7 @@ describe('blog-read analytics route', () => {
     expect(res.status).toBe(200)
     expect(warnSpy).toHaveBeenCalledWith(
       'Failed to hash client IP:',
-      expect.any(Error)
+      expect.any(Error),
     )
   })
 
@@ -175,7 +175,7 @@ describe('blog-read analytics route', () => {
     expect(res.status).toBe(200)
     expect(warnSpy).toHaveBeenCalledWith(
       'Failed to get Cloudflare context for analytics:',
-      expect.any(Error)
+      expect.any(Error),
     )
   })
 
@@ -194,7 +194,7 @@ describe('blog-read analytics route', () => {
     expect(await res.json()).toEqual({ error: 'Failed to track blog read' })
     expect(errorSpy).toHaveBeenCalledWith(
       'Error tracking blog read:',
-      expect.any(Error)
+      expect.any(Error),
     )
   })
 })

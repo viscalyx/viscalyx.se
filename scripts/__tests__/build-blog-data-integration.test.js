@@ -41,7 +41,7 @@ const readBlogContent = (tempDir, slug) => {
     tempDir,
     'public',
     'blog-content',
-    `${slug}.json`
+    `${slug}.json`,
   )
   if (fs.existsSync(contentPath)) {
     const data = JSON.parse(fs.readFileSync(contentPath, 'utf8'))
@@ -174,7 +174,7 @@ Normal **bold** and *italic* text should work fine.
           throw error
         }
       },
-      INTEGRATION_TEST_TIMEOUT_MS
+      INTEGRATION_TEST_TIMEOUT_MS,
     )
 
     test(
@@ -268,7 +268,7 @@ const users: User[] = [
           throw error
         }
       },
-      INTEGRATION_TEST_TIMEOUT_MS
+      INTEGRATION_TEST_TIMEOUT_MS,
     )
 
     test(
@@ -383,12 +383,12 @@ But styling should be removed while preserving the rest.
           expect(safeContent).toContain('<ul>')
 
           const maliciousPost = blogData.posts.find(
-            p => p.title === 'Malicious Post'
+            p => p.title === 'Malicious Post',
           )
           const maliciousContent = readBlogContent(tempDir, maliciousPost.slug)
           expect(maliciousContent).toContain('<strong>bold text</strong>')
           expect(maliciousContent).toContain(
-            'This post tries to include dangerous content'
+            'This post tries to include dangerous content',
           )
 
           const mixedPost = blogData.posts.find(p => p.title === 'Mixed Post')
@@ -400,7 +400,7 @@ But styling should be removed while preserving the rest.
           throw error
         }
       },
-      INTEGRATION_TEST_TIMEOUT_MS
+      INTEGRATION_TEST_TIMEOUT_MS,
     )
   })
 
@@ -452,7 +452,7 @@ This conclusion paragraph wraps up the content and should also be included in th
 
         tempDir = createMockBlogPost(
           'reading-time-test.md',
-          postWithMaliciousContent
+          postWithMaliciousContent,
         )
 
         copyBuildScript(tempDir)
@@ -474,7 +474,7 @@ This conclusion paragraph wraps up the content and should also be included in th
           // Extract the number of minutes
           const minutes = Number.parseInt(
             post.readTime.match(/(\d+) min/)[1],
-            10
+            10,
           )
 
           // The post has substantial content, should be more than 1 minute
@@ -500,7 +500,7 @@ This conclusion paragraph wraps up the content and should also be included in th
           throw error
         }
       },
-      INTEGRATION_TEST_TIMEOUT_MS
+      INTEGRATION_TEST_TIMEOUT_MS,
     )
   })
 })

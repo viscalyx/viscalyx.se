@@ -10,7 +10,7 @@ describe('LocaleLoading', () => {
     const { container } = render(<LocaleLoading />)
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
     expect(container.firstChild).toHaveClass('flex')
     expect(container.firstChild).toHaveClass('items-center')

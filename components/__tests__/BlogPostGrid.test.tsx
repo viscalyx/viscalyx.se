@@ -27,7 +27,7 @@ vi.mock('next/image', () => ({
 }))
 
 const createPost = (
-  overrides: Partial<BlogPostMetadata> = {}
+  overrides: Partial<BlogPostMetadata> = {},
 ): BlogPostMetadata => ({
   slug: 'test-post',
   title: 'Test Post',
@@ -48,7 +48,7 @@ const generatePosts = (count: number, category?: string): BlogPostMetadata[] =>
       slug: `post-${i + 1}`,
       title: `Post ${i + 1}`,
       category: category ?? (i % 2 === 0 ? 'DevOps' : 'PowerShell'),
-    })
+    }),
   )
 
 describe('BlogPostGrid', () => {
@@ -68,7 +68,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     expect(screen.getByText('Post 1')).toBeInTheDocument()
@@ -88,7 +88,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     const buttons = screen.getAllByRole('button')
@@ -108,7 +108,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="Automation"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     const buttons = screen.getAllByRole('button')
@@ -137,7 +137,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     // All posts visible initially
@@ -168,7 +168,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     // Filter to PowerShell
@@ -189,17 +189,17 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     expect(
-      screen.getByRole('button', { name: 'Load More Articles' })
+      screen.getByRole('button', { name: 'Load More Articles' }),
     ).toBeInTheDocument()
     // Only the first POSTS_PER_PAGE posts should be visible
     expect(screen.getByText('Post 1')).toBeInTheDocument()
     expect(screen.getByText(`Post ${POSTS_PER_PAGE}`)).toBeInTheDocument()
     expect(
-      screen.queryByText(`Post ${POSTS_PER_PAGE + 1}`)
+      screen.queryByText(`Post ${POSTS_PER_PAGE + 1}`),
     ).not.toBeInTheDocument()
   })
 
@@ -211,7 +211,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Load More Articles' }))
@@ -228,13 +228,13 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Load More Articles' }))
 
     expect(
-      screen.queryByRole('button', { name: 'Load More Articles' })
+      screen.queryByRole('button', { name: 'Load More Articles' }),
     ).not.toBeInTheDocument()
   })
 
@@ -246,11 +246,11 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     expect(
-      screen.queryByRole('button', { name: 'Load More Articles' })
+      screen.queryByRole('button', { name: 'Load More Articles' }),
     ).not.toBeInTheDocument()
   })
 
@@ -265,7 +265,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     const links = screen.getAllByRole('link')
@@ -287,7 +287,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     // Load more to see 7+ posts
@@ -317,7 +317,7 @@ describe('BlogPostGrid', () => {
         categoriesAllLabel="All"
         featuredPostCategory="DevOps"
         loadMoreLabel="Load More Articles"
-      />
+      />,
     )
 
     const article = container.querySelector('article')

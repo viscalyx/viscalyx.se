@@ -100,7 +100,7 @@ const Header = () => {
   // Handle click for section links that need smooth scrolling
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     // Always close the mobile menu when any link is clicked
     setIsMenuOpen(false)

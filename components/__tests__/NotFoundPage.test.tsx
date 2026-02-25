@@ -42,10 +42,10 @@ describe('NotFoundPage', () => {
   it('uses proper heading hierarchy', () => {
     render(<NotFoundPage />)
     expect(
-      screen.getByRole('heading', { level: 1, name: '404' })
+      screen.getByRole('heading', { level: 1, name: '404' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { level: 2, name: 'heading' })
+      screen.getByRole('heading', { level: 2, name: 'heading' }),
     ).toBeInTheDocument()
   })
 })

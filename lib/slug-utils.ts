@@ -124,7 +124,7 @@ function djb2Hash(str: string): string {
  */
 export function generateFallbackId(
   level: number,
-  content: string = ''
+  content: string = '',
 ): string {
   const hash = djb2Hash(`${level}-${content}`)
   return `heading-${level}-${hash}`
@@ -155,7 +155,7 @@ export function extractCleanText(htmlContent: string): string {
 export function createSlugId(
   text: string,
   level: number,
-  options: SlugOptions = {}
+  options: SlugOptions = {},
 ): string {
   const cleanText = extractCleanText(text)
   const slug = createSlug(cleanText, options)
@@ -174,7 +174,7 @@ export function createSlugId(
  */
 export function extractTableOfContentsServer(
   htmlContent: string,
-  options: SlugOptions = {}
+  options: SlugOptions = {},
 ): TocItem[] {
   const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h[2-4]>/gi
   const headings: TocItem[] = []
@@ -203,7 +203,7 @@ export function extractTableOfContentsServer(
  */
 export function extractTableOfContentsClient(
   htmlContent: string,
-  options: SlugOptions = {}
+  options: SlugOptions = {},
 ): TocItem[] {
   const parser = new DOMParser()
   const doc = parser.parseFromString(htmlContent, 'text/html')
@@ -230,7 +230,7 @@ export function extractTableOfContentsClient(
  */
 export function extractTableOfContents(
   htmlContent: string,
-  options: SlugOptions = {}
+  options: SlugOptions = {},
 ): TocItem[] {
   if (typeof window === 'undefined') {
     // Server-side: use regex-based extraction
@@ -246,7 +246,7 @@ export function extractTableOfContents(
  */
 export type TranslationFunction = (
   key: string,
-  values?: Record<string, string>
+  values?: Record<string, string>,
 ) => string
 
 /**
@@ -260,7 +260,7 @@ export type TranslationFunction = (
 export function addHeadingIds(
   htmlContent: string,
   options: SlugOptions = {},
-  translateFn?: TranslationFunction
+  translateFn?: TranslationFunction,
 ): string {
   const usedIds = new Set<string>()
 
@@ -300,13 +300,13 @@ export function addHeadingIds(
         ? finalAttributes.replace(
             /\bclass\s*=\s*"([^"]*)"/i,
             (_: string, existing: string) =>
-              `class="${existing} heading-with-anchor"`
+              `class="${existing} heading-with-anchor"`,
           )
         : `${finalAttributes} class="heading-with-anchor"`
 
       // Return the heading with proper ID and anchor link
       return `<h${level}${outputAttributes}>${text}${anchorLink}</h${level}>`
-    }
+    },
   )
 }
 

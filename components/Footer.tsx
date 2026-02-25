@@ -49,7 +49,7 @@ const Footer = () => {
   // Handle click for section links that need smooth scrolling
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     if (href.startsWith('#')) {
       const currentPath =

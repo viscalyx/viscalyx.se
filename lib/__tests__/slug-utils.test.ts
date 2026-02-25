@@ -33,7 +33,7 @@ describe('slug-utils', () => {
 
     it('handles nested HTML', () => {
       expect(extractCleanText('<div><span>Nested</span> Content</div>')).toBe(
-        'Nested Content'
+        'Nested Content',
       )
     })
 
@@ -137,7 +137,7 @@ describe('slug-utils', () => {
 
     it('handles HTML content', () => {
       expect(createSlugId('<strong>Bold</strong> Section', 2)).toBe(
-        'bold-section'
+        'bold-section',
       )
     })
   })
@@ -229,11 +229,11 @@ describe('slug-utils', () => {
 
       expect(mockTranslate).toHaveBeenCalledWith(
         'accessibility.anchorLink.ariaLabel',
-        { heading: 'My Section' }
+        { heading: 'My Section' },
       )
       expect(mockTranslate).toHaveBeenCalledWith(
         'accessibility.anchorLink.title',
-        { heading: 'My Section' }
+        { heading: 'My Section' },
       )
       expect(result).toContain('aria-label="Länk till sektion: My Section"')
       expect(result).toContain('title="Kopiera länk till sektion: My Section"')
@@ -291,10 +291,10 @@ describe('slug-utils', () => {
       const result = addHeadingIds(html)
 
       expect(result).toContain(
-        'aria-label="Link to section: Config &quot;key=value&quot; pairs"'
+        'aria-label="Link to section: Config &quot;key=value&quot; pairs"',
       )
       expect(result).toContain(
-        'title="Copy link to section: Config &quot;key=value&quot; pairs"'
+        'title="Copy link to section: Config &quot;key=value&quot; pairs"',
       )
     })
 

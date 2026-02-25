@@ -27,7 +27,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
     const timeoutId = setTimeout(() => {
       // First, clean up any existing icon containers to avoid duplicates
       const existingContainers = document.querySelectorAll(
-        '.alert-icon-container'
+        '.alert-icon-container',
       )
       existingContainers.forEach(container => {
         container.remove()
@@ -35,12 +35,12 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
 
       // Find all alert titles that need icons
       const alertTitles = document.querySelectorAll(
-        '.github-alert-title[data-alert-icon]'
+        '.github-alert-title[data-alert-icon]',
       )
 
       alertTitles.forEach(titleElement => {
         const iconType = titleElement.getAttribute(
-          'data-alert-icon'
+          'data-alert-icon',
         ) as AlertIconProps['type']
 
         if (

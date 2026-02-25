@@ -172,7 +172,7 @@ function validateFilePrefix(filePrefix: string): string {
     trimmed.includes('\\')
   ) {
     throw new Error(
-      `File prefix contains invalid path characters: "${filePrefix}"`
+      `File prefix contains invalid path characters: "${filePrefix}"`,
     )
   }
 
@@ -182,7 +182,7 @@ function validateFilePrefix(filePrefix: string): string {
 
   if (!allowedPattern.test(trimmed)) {
     throw new Error(
-      `Invalid file prefix: "${filePrefix}". Only lowercase alphanumeric characters, underscores, and hyphens are allowed.`
+      `Invalid file prefix: "${filePrefix}". Only lowercase alphanumeric characters, underscores, and hyphens are allowed.`,
     )
   }
 
@@ -193,7 +193,7 @@ function validateFilePrefix(filePrefix: string): string {
     trimmed.startsWith('_')
   ) {
     throw new Error(
-      `File prefix cannot start with underscore or hyphen, or end with hyphen: "${filePrefix}"`
+      `File prefix cannot start with underscore or hyphen, or end with hyphen: "${filePrefix}"`,
     )
   }
 
@@ -242,7 +242,7 @@ function usePageTranslations<T>(filePrefix: string) {
       } catch (error) {
         console.error(
           `Error loading ${filePrefix} translations for ${locale}:`,
-          error
+          error,
         )
         // Fallback to English
         try {
@@ -253,12 +253,12 @@ function usePageTranslations<T>(filePrefix: string) {
         } catch (fallbackError) {
           console.error(
             `Error loading fallback ${filePrefix} translations:`,
-            fallbackError
+            fallbackError,
           )
           setError(
             fallbackError instanceof Error
               ? fallbackError
-              : new Error(`Failed to load ${filePrefix} translations`)
+              : new Error(`Failed to load ${filePrefix} translations`),
           )
         }
       } finally {

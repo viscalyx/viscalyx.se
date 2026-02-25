@@ -136,7 +136,7 @@ describe('Language Preferences', () => {
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to save language preference:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -178,7 +178,7 @@ describe('Language Preferences', () => {
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to clear language preference:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })

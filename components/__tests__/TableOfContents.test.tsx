@@ -30,7 +30,7 @@ class MockIntersectionObserver {
   unobserve = vi.fn()
   constructor(
     public callback: IntersectionObserverCallback,
-    public options?: IntersectionObserverInit
+    public options?: IntersectionObserverInit,
   ) {
     intersectionObserverInstances.push(this)
   }
@@ -171,7 +171,7 @@ describe('TableOfContents', () => {
 
   it('applies sm maxHeight class', () => {
     const { container } = render(
-      <TableOfContents items={mockItems} maxHeight="sm" />
+      <TableOfContents items={mockItems} maxHeight="sm" />,
     )
     const scrollable = container.querySelector('.toc-scrollable')
     expect(scrollable).toHaveClass('max-h-64')
@@ -211,7 +211,7 @@ describe('TableOfContents', () => {
               target: heading,
             } as unknown as IntersectionObserverEntry,
           ],
-          intersectionObserverInstances[0] as unknown as IntersectionObserver
+          intersectionObserverInstances[0] as unknown as IntersectionObserver,
         )
       })
 
@@ -230,7 +230,7 @@ describe('TableOfContents', () => {
     try {
       const { container } = render(<TableOfContents items={mockItems} />)
       const scrollContainer = container.querySelector(
-        '.toc-scrollable'
+        '.toc-scrollable',
       ) as HTMLDivElement
       const scrollToSpy = vi.fn()
       Object.defineProperty(scrollContainer, 'scrollTo', {
@@ -284,7 +284,7 @@ describe('TableOfContents', () => {
               target: heading,
             } as unknown as IntersectionObserverEntry,
           ],
-          intersectionObserverInstances[0] as unknown as IntersectionObserver
+          intersectionObserverInstances[0] as unknown as IntersectionObserver,
         )
       })
 

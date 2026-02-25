@@ -25,8 +25,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
             await import(`./messages/${page}.${locale}.json`)
               .then(m => m.default)
               .catch(() => ({})),
-          ])
-        )
+          ]),
+        ),
       ),
     },
   }

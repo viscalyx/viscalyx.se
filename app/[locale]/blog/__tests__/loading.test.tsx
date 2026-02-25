@@ -13,7 +13,7 @@ describe('BlogLoading', () => {
     const { container } = render(<BlogLoading />)
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
     expect(container.firstChild).toHaveClass('min-h-[50vh]')
   })

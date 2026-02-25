@@ -300,7 +300,7 @@ describe('BlogPostPage', () => {
     }
 
     function getBlogPostContentProps(
-      element: React.JSX.Element
+      element: React.JSX.Element,
     ): BlogPostContentTestProps {
       // Check current element
       const typeName =
@@ -346,7 +346,7 @@ describe('BlogPostPage', () => {
       const params = Promise.resolve({ locale: 'en', slug: '../etc/passwd' })
 
       await expect(async () => BlogPostPage({ params })).rejects.toThrow(
-        'NEXT_NOT_FOUND'
+        'NEXT_NOT_FOUND',
       )
       expect(mockNotFound).toHaveBeenCalled()
     })
@@ -356,7 +356,7 @@ describe('BlogPostPage', () => {
       const params = Promise.resolve({ locale: 'en', slug: 'non-existent' })
 
       await expect(async () => BlogPostPage({ params })).rejects.toThrow(
-        'NEXT_NOT_FOUND'
+        'NEXT_NOT_FOUND',
       )
       expect(mockNotFound).toHaveBeenCalled()
     })
@@ -366,7 +366,7 @@ describe('BlogPostPage', () => {
       const params = Promise.resolve({ locale: 'en', slug: 'test-post' })
 
       await expect(async () => BlogPostPage({ params })).rejects.toThrow(
-        'NEXT_NOT_FOUND'
+        'NEXT_NOT_FOUND',
       )
       expect(mockNotFound).toHaveBeenCalled()
     })
@@ -388,7 +388,7 @@ describe('BlogPostPage', () => {
 
       expect(mockTrackPageView).toHaveBeenCalledWith(
         'test-post',
-        'uncategorized'
+        'uncategorized',
       )
     })
 
@@ -399,7 +399,7 @@ describe('BlogPostPage', () => {
       expect(mockAddHeadingIds).toHaveBeenCalledWith(
         '<h2>Test</h2><p>Content</p>',
         {},
-        expect.any(Function)
+        expect.any(Function),
       )
     })
 
@@ -408,7 +408,7 @@ describe('BlogPostPage', () => {
       await BlogPostPage({ params })
 
       expect(mockExtractTableOfContentsServer).toHaveBeenCalledWith(
-        '<h2 id="test">Test</h2><p>Content</p>'
+        '<h2 id="test">Test</h2><p>Content</p>',
       )
     })
 
@@ -418,7 +418,7 @@ describe('BlogPostPage', () => {
 
       expect(mockGetSerializableTeamMemberByName).toHaveBeenCalledWith(
         'Test Author',
-        expect.any(Function)
+        expect.any(Function),
       )
     })
 

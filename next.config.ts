@@ -92,7 +92,7 @@ if (process.env.NODE_ENV !== 'production') {
     .catch(error => {
       console.warn(
         'Warning: Failed to load @opennextjs/cloudflare module:',
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : 'Unknown error',
       )
     })
 }

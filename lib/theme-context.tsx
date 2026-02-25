@@ -10,7 +10,7 @@ type Theme = 'light' | 'dark' | 'system'
 function useEffectWhenInitialized(
   effect: React.EffectCallback,
   deps: React.DependencyList,
-  isInitialized: boolean
+  isInitialized: boolean,
 ) {
   useEffect(() => {
     if (!isInitialized) return
@@ -70,7 +70,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       // Initialize media query ref if not already done
       if (!mediaQueryRef.current) {
         mediaQueryRef.current = window.matchMedia(
-          '(prefers-color-scheme: dark)'
+          '(prefers-color-scheme: dark)',
         )
       }
 
@@ -95,7 +95,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     },
     [theme],
-    isInitialized
+    isInitialized,
   )
 
   useEffectWhenInitialized(
@@ -119,7 +119,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     },
     [theme, resolvedTheme],
-    isInitialized
+    isInitialized,
   )
 
   const handleSetTheme = (newTheme: Theme) => {

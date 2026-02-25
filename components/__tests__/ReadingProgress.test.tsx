@@ -14,7 +14,7 @@ describe('ReadingProgress', () => {
     vi.clearAllMocks()
     originalScrollHeightDescriptor = Object.getOwnPropertyDescriptor(
       document.documentElement,
-      'scrollHeight'
+      'scrollHeight',
     )
     Object.defineProperty(window, 'scrollY', {
       value: 0,
@@ -35,7 +35,7 @@ describe('ReadingProgress', () => {
       (cb: FrameRequestCallback) => {
         cb(0)
         return 0
-      }
+      },
     )
 
     // Set up a .prose element
@@ -62,7 +62,7 @@ describe('ReadingProgress', () => {
       Object.defineProperty(
         document.documentElement,
         'scrollHeight',
-        originalScrollHeightDescriptor
+        originalScrollHeightDescriptor,
       )
     } else {
       // Remove test-defined override and fall back to jsdom's default behavior.

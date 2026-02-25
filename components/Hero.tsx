@@ -33,10 +33,10 @@ const Hero = () => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageLoadErrors, setImageLoadErrors] = useState<boolean[]>(
-    new Array(heroImages.length).fill(false)
+    new Array(heroImages.length).fill(false),
   )
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
-    new Array(heroImages.length).fill(false)
+    new Array(heroImages.length).fill(false),
   )
 
   useEffect(() => {

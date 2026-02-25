@@ -44,7 +44,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     const heading = screen.getByRole('heading', { level: 1 })
@@ -55,7 +55,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     expect(screen.getByText('Test Subtitle')).toBeInTheDocument()
@@ -65,7 +65,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     expect(screen.getByText(/Last updated.*Jan 1, 2025/)).toBeInTheDocument()
@@ -75,7 +75,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Child content here</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     expect(screen.getByText('Child content here')).toBeInTheDocument()
@@ -85,7 +85,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     expect(screen.getByTestId('header')).toBeInTheDocument()
@@ -96,7 +96,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     expect(screen.getByTestId('scroll-to-top')).toBeInTheDocument()
@@ -106,7 +106,7 @@ describe('LegalPageLayout', () => {
     render(
       <LegalPageLayout {...defaultProps}>
         <p>Content</p>
-      </LegalPageLayout>
+      </LegalPageLayout>,
     )
 
     const main = screen.getByRole('main')

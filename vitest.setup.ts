@@ -72,7 +72,7 @@ vi.mock('framer-motion', () => {
           }
         }
         return createElement(tag, filtered, props.children as React.ReactNode)
-      }
+      },
     )
     Component.displayName = `Motion${tag.charAt(0).toUpperCase() + tag.slice(1)}`
     return Component
@@ -90,7 +90,7 @@ vi.mock('framer-motion', () => {
         if (!cache.has(prop)) cache.set(prop, forward(prop))
         return cache.get(prop)
       },
-    }
+    },
   )
 
   return {

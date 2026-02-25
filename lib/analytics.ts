@@ -92,7 +92,7 @@ function setupConsentCacheInvalidation(): () => void {
 
 export function useBlogAnalytics(
   data: BlogAnalyticsData,
-  options: UseAnalyticsOptions = {}
+  options: UseAnalyticsOptions = {},
 ) {
   const {
     trackReadProgress = true,
@@ -144,7 +144,7 @@ export function useBlogAnalytics(
         console.warn('Failed to track blog analytics:', error)
       }
     },
-    [] // No dependencies - uses stable dataRef.current
+    [], // No dependencies - uses stable dataRef.current
   )
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export function useBlogAnalytics(
         // Track the maximum scroll progress
         maxScrollProgress.current = Math.max(
           maxScrollProgress.current,
-          scrollProgress
+          scrollProgress,
         )
 
         // Track when user reaches the progress threshold
@@ -220,8 +220,8 @@ export function useBlogAnalytics(
                 timeSpent,
               }),
             ],
-            { type: 'application/json' }
-          )
+            { type: 'application/json' },
+          ),
         )
       }
     }

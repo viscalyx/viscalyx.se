@@ -94,7 +94,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
   })
@@ -115,7 +115,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
   })
@@ -134,7 +134,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     })
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
 

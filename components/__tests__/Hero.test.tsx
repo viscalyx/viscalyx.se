@@ -68,7 +68,7 @@ describe('Hero component', () => {
     expect(images.length).toBeGreaterThanOrEqual(4)
     expect(images[0]).toHaveAttribute(
       'src',
-      expect.stringContaining('calm-productive-engineering-culture')
+      expect.stringContaining('calm-productive-engineering-culture'),
     )
   })
 
@@ -102,7 +102,7 @@ describe('Hero component', () => {
 
     expect(firstImage).toHaveClass('opacity-100')
     expect(container.querySelectorAll('.animate-spin')).toHaveLength(
-      initialSpinnerCount - 1
+      initialSpinnerCount - 1,
     )
   })
 

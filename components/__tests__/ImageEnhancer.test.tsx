@@ -221,7 +221,7 @@ describe('ImageEnhancer', () => {
     const image = screen.getByAltText('Test 1') as HTMLImageElement
     expect(image).toHaveAttribute(
       'aria-label',
-      'accessibility.image.viewFullImage: Test 1'
+      'accessibility.image.viewFullImage: Test 1',
     )
   })
 
@@ -354,7 +354,7 @@ describe('ImageEnhancer', () => {
 
     // Standalone image SHOULD be enhanced
     const standaloneImage = screen.getByAltText(
-      'Standalone'
+      'Standalone',
     ) as HTMLImageElement
     expect(standaloneImage).toHaveAttribute('role', 'button')
     expect(standaloneImage.dataset.enhanced).toBe('true')
