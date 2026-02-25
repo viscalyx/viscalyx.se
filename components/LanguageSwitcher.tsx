@@ -1,11 +1,11 @@
 'use client'
 
-import { saveLanguagePreference } from '@/lib/language-preferences'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { saveLanguagePreference } from '@/lib/language-preferences'
 
 const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -110,11 +110,12 @@ const LanguageSwitcher = () => {
   )
 
   return (
-    <div className="relative" ref={containerRef} onKeyDown={handleKeyDown}>
+    <div className="relative" ref={containerRef}>
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
         className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200"
         aria-expanded={isOpen}
         aria-haspopup="listbox"
@@ -136,19 +137,21 @@ const LanguageSwitcher = () => {
           ref={listboxRef}
           role="listbox"
           aria-label={t('selectLanguage')}
+          onKeyDown={handleKeyDown}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
         >
           {languages.map((language, index) => (
-            <div
+            <button
               key={language.code}
+              type="button"
               id={`language-option-${language.code}`}
               role="option"
               aria-selected={locale === language.code}
               onClick={() => handleLanguageChange(language.code)}
-              tabIndex={-1}
+              tabIndex={focusedIndex === index ? 0 : -1}
               className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer ${
                 locale === language.code
                   ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
@@ -157,7 +160,7 @@ const LanguageSwitcher = () => {
             >
               <span className="text-lg">{language.flag}</span>
               <span className="text-sm font-medium">{language.name}</span>
-            </div>
+            </button>
           ))}
         </motion.div>
       )}

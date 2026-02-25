@@ -66,20 +66,13 @@ function main() {
     console.error(readableRun.error.message)
     process.exit(1)
   }
+  const summaryMessage = `Strict summary: errors ${errors}, warnings ${warnings}, infos ${infos}.`
+  if ((readableRun.status ?? 1) !== 0) {
+    console.error(summaryMessage)
+    process.exit(readableRun.status ?? 1)
+  }
 
-  const summaryParts = []
-  if (errors > 0) {
-    summaryParts.push(`${errors} error${errors === 1 ? '' : 's'}`)
-  }
-  if (warnings > 0) {
-    summaryParts.push(`${warnings} warning${warnings === 1 ? '' : 's'}`)
-  }
-  if (infos > 0) {
-    summaryParts.push(`${infos} info${infos === 1 ? '' : 's'}`)
-  }
-  console.error(
-    `Strict lint failed because Biome reported ${summaryParts.join(', ')}.`
-  )
+  console.error(summaryMessage)
 
   process.exit(1)
 }

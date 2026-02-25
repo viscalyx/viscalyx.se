@@ -207,16 +207,16 @@ const Header = () => {
 
                     <div className="p-3 space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                        <p className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
                           {t('settings.language')}
-                        </label>
+                        </p>
                         <LanguageSwitcher />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                        <p className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
                           {t('settings.theme')}
-                        </label>
+                        </p>
                         <ThemeToggle />
                       </div>
                     </div>
