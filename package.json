@@ -10,6 +10,7 @@
     "build": "cross-env NODE_ENV=production next build",
     "start": "next start",
     "lint": "biome lint --error-on-warnings .",
+    "lint:strict": "node scripts/biome-lint-strict.js .",
     "lint:fix": "biome lint --write .",
     "type-check": "rimraf .next/dev/types && next typegen && tsc --noEmit",
     "format": "biome format --write .",
