@@ -297,7 +297,7 @@ async function buildBlogData() {
     const postsWithInvalidDates = []
 
     posts.forEach(post => {
-      if (post.date && !isNaN(new Date(post.date).getTime())) {
+      if (post.date && !Number.isNaN(new Date(post.date).getTime())) {
         postsWithValidDates.push(post)
       } else {
         // Posts with invalid or missing dates go to the end

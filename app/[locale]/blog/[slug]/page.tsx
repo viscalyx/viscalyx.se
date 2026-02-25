@@ -1,5 +1,8 @@
 import '@/app/blog-content.css'
 
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import BlogPostContent from '@/components/BlogPostContent'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -14,10 +17,6 @@ import {
 import { SITE_URL } from '@/lib/constants'
 import { addHeadingIds, extractTableOfContentsServer } from '@/lib/slug-utils'
 import { getAuthorInitials, getSerializableTeamMemberByName } from '@/lib/team'
-import { getTranslations } from 'next-intl/server'
-import { notFound } from 'next/navigation'
-
-import type { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -122,7 +121,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   // Normalize date for the client component
   const normalizedDate: string | null =
-    postMetadata.date && !isNaN(Date.parse(postMetadata.date))
+    postMetadata.date && !Number.isNaN(Date.parse(postMetadata.date))
       ? postMetadata.date
       : null
 
