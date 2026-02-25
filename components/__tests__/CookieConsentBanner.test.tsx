@@ -234,15 +234,15 @@ describe('CookieConsentBanner', () => {
       })
     })
 
-    it('should add body padding when banner is visible to prevent content overlap', async () => {
+    it('does not change body layout styles when banner is visible', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
-        expect(document.body.style.paddingBottom).toBe('200px')
+        expect(document.body.style.paddingBottom).toBe('')
       })
     })
 
-    it('should remove body padding when banner is closed', async () => {
+    it('keeps body layout styles unchanged when banner is closed', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
