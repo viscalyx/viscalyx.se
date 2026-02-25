@@ -1,5 +1,5 @@
-import { SITE_URL } from '@/lib/constants'
 import { describe, expect, it } from 'vitest'
+import { SITE_URL } from '@/lib/constants'
 import { metadata } from '../metadata'
 
 describe('app metadata', () => {

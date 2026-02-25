@@ -344,7 +344,7 @@ describe('remark-floating-images plugin', () => {
   describe('performance and edge cases', () => {
     it('should handle very long attribute values', () => {
       const longAlt = 'A'.repeat(1000)
-      const longStyle = 'float: left; ' + 'margin: 1px; '.repeat(100)
+      const longStyle = `float: left; ${'margin: 1px; '.repeat(100)}`
       const tree = createTestTree(
         `<img src="/test.jpg" alt="${longAlt}" style="${longStyle}">`
       )

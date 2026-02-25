@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { vi } from 'vitest'
-
 import React from 'react'
+import { vi } from 'vitest'
 
 import type { ComponentProps } from '@/components/BlogPostContent'
 
@@ -71,7 +70,7 @@ vi.mock('@/components/ScrollToTop', () => ({
   __esModule: true,
   default: () =>
     React.createElement('button', {
-      role: 'button',
+      type: 'button',
       'aria-label': 'Scroll to top',
     }),
 }))
@@ -458,7 +457,9 @@ describe('BlogPostContent', () => {
 
     it('renders View Profile link', () => {
       renderComponent()
-      expect(screen.getByText('post.authorBio.viewProfile')).toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: /post\.authorBio\.viewProfile/ })
+      ).toBeInTheDocument()
     })
 
     it('renders social icon links from serializable data', () => {

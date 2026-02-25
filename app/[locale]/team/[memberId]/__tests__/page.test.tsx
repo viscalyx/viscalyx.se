@@ -54,13 +54,11 @@ vi.mock('@/app/[locale]/team/[memberId]/TeamMemberClient', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
+import type { Metadata } from 'next'
 import TeamMemberPage, {
   generateMetadata,
   generateStaticParams,
 } from '@/app/[locale]/team/[memberId]/page'
-
-import type { Metadata } from 'next'
 
 const mockMember = {
   id: 'johlju',

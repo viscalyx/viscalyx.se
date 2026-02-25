@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getAuthorInitials,
   getSerializableTeamMemberById,
@@ -8,7 +9,6 @@ import {
   getTeamMembers,
   socialIconMap,
 } from '@/lib/team'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock translation function with correct typing
 const mockTranslation = vi.fn()

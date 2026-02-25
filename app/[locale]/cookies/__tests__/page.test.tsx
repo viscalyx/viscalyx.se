@@ -52,10 +52,8 @@ vi.mock('@/lib/file-dates', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import CookiesPage, { generateMetadata } from '@/app/[locale]/cookies/page'
-
 import type { Metadata } from 'next'
+import CookiesPage, { generateMetadata } from '@/app/[locale]/cookies/page'
 
 describe('CookiesPage', () => {
   beforeEach(() => {

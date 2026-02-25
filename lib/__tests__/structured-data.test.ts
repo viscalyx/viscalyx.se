@@ -1,7 +1,6 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { SITE_URL } from '@/lib/constants'
 import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
-
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('structured-data', () => {
   beforeEach(() => {

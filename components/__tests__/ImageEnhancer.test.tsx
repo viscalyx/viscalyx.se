@@ -1,7 +1,8 @@
-import ImageEnhancer from '@/components/ImageEnhancer'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { vi } from 'vitest'
+import ImageEnhancer from '@/components/ImageEnhancer'
 
 // Mock next-intl with a stable translator reference (matches production behavior)
 vi.mock('next-intl', () => {
@@ -34,7 +35,7 @@ vi.mock('@/components/ImageModal', () => ({
         <button type="button" onClick={onClose}>
           Close
         </button>
-        <img src={imageSrc} alt={imageAlt} />
+        <div role="img" aria-label={imageAlt} data-src={imageSrc} />
         <span>{imageAlt}</span>
       </div>
     ) : null,
@@ -47,8 +48,20 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div>
       <div ref={contentRef} className="blog-content">
-        <img src="/test1.jpg" alt="Test 1" />
-        <img src="/test2.jpg" alt="Test 2" />
+        <Image
+          src="/test1.jpg"
+          alt="Test 1"
+          width={100}
+          height={100}
+          unoptimized
+        />
+        <Image
+          src="/test2.jpg"
+          alt="Test 2"
+          width={100}
+          height={100}
+          unoptimized
+        />
         {children}
       </div>
       <ImageEnhancer contentRef={contentRef} />
@@ -218,7 +231,13 @@ describe('ImageEnhancer', () => {
       return (
         <div>
           <div ref={contentRef} className="blog-content">
-            <img src="/no-alt.jpg" alt="" />
+            <Image
+              src="/no-alt.jpg"
+              alt=""
+              width={100}
+              height={100}
+              unoptimized
+            />
           </div>
           <ImageEnhancer contentRef={contentRef} />
         </div>
@@ -301,9 +320,21 @@ describe('ImageEnhancer', () => {
         <div>
           <div ref={contentRef} className="blog-content">
             <a href="/some-link">
-              <img src="/linked.jpg" alt="Linked image" />
+              <Image
+                src="/linked.jpg"
+                alt="Linked"
+                width={100}
+                height={100}
+                unoptimized
+              />
             </a>
-            <img src="/standalone.jpg" alt="Standalone" />
+            <Image
+              src="/standalone.jpg"
+              alt="Standalone"
+              width={100}
+              height={100}
+              unoptimized
+            />
           </div>
           <ImageEnhancer contentRef={contentRef} />
         </div>
@@ -317,7 +348,7 @@ describe('ImageEnhancer', () => {
     })
 
     // Linked image should NOT be enhanced
-    const linkedImage = screen.getByAltText('Linked image') as HTMLImageElement
+    const linkedImage = screen.getByAltText('Linked') as HTMLImageElement
     expect(linkedImage).not.toHaveAttribute('role', 'button')
     expect(linkedImage.dataset.enhanced).toBeUndefined()
 

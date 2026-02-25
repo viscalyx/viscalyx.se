@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { vi } from 'vitest'
 import ImageEnhancer from '../ImageEnhancer'
@@ -33,7 +34,14 @@ const TestComponent = ({
       </button>
       <div ref={contentRef} className="blog-content">
         {defaultImages.map(img => (
-          <img key={img.src} src={img.src} alt={img.alt} />
+          <Image
+            key={img.src}
+            src={img.src}
+            alt={img.alt}
+            width={100}
+            height={100}
+            unoptimized
+          />
         ))}
       </div>
       <ImageEnhancer contentRef={contentRef} />

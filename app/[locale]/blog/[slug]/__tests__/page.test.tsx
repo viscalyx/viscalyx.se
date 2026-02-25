@@ -100,13 +100,12 @@ vi.mock('@/components/Footer', () => ({
   default: () => React.createElement('footer', { 'data-testid': 'footer' }),
 }))
 
+import type { Metadata } from 'next'
 // Import after mocking
 import {
   generateMetadata,
   generateStaticParams,
 } from '@/app/[locale]/blog/[slug]/page'
-
-import type { Metadata } from 'next'
 
 const mockPostMetadata = {
   title: 'Test Post',

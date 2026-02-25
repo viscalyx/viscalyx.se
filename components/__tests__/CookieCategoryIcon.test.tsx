@@ -1,6 +1,6 @@
-import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 
 describe('CookieCategoryIcon', () => {
   it('renders Shield icon for strictly-necessary category', () => {

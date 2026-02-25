@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { hasConsent } from '../cookie-consent'
-import { setCookie, deleteCookie, getCookie } from '../cookie-utils'
+import { deleteCookie, getCookie, setCookie } from '../cookie-utils'
 import {
   clearLanguagePreference,
   getDefaultLanguage,

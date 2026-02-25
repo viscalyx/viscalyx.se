@@ -1,5 +1,5 @@
 import { act, render } from '@testing-library/react'
-import React from 'react'
+import type React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 
@@ -18,7 +18,9 @@ vi.mock('react-dom/client', () => ({
 // Mock CopyButton
 vi.mock('@/components/CopyButton', () => ({
   default: ({ text }: { text: string }) => (
-    <button data-testid="copy-button">{text}</button>
+    <button type="button" data-testid="copy-button">
+      {text}
+    </button>
   ),
 }))
 
@@ -119,7 +121,7 @@ describe('CodeBlockEnhancer', () => {
 
     const scrollWrapper = wrapper.querySelector('.code-scroll-wrapper')
     expect(scrollWrapper).not.toBeNull()
-    expect(scrollWrapper!.contains(pre)).toBe(true)
+    expect(scrollWrapper?.contains(pre)).toBe(true)
   })
 
   it('does not run when contentLoaded is false', () => {

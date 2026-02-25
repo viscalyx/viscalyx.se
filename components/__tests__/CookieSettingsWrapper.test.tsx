@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
 import type { ReactElement } from 'react'
+import { describe, expect, it, vi } from 'vitest'
 
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
@@ -30,7 +30,7 @@ describe('CookieSettingsWrapper', () => {
     expect(options.ssr).toBe(false)
     expect(options.loading).toBeTypeOf('function')
 
-    const { container } = render(options.loading!())
+    const { container } = render(options.loading?.())
     expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
     expect(container.querySelectorAll('.h-4, .h-6')).toHaveLength(3)
   })

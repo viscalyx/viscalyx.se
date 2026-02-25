@@ -1,7 +1,6 @@
-import Hero from '@/components/Hero'
-
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Hero from '@/components/Hero'
 
 const mockHandleNavigation = vi.fn()
 const mockRouter = {

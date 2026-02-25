@@ -77,7 +77,7 @@ test.describe('Homepage', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!).toContain('consulting')
+      expect(description).toContain('consulting')
       expect(description?.length).toBeGreaterThan(20)
     })
 

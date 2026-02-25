@@ -1,6 +1,6 @@
-import LoadingScreen from '@/components/LoadingScreen'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
+import LoadingScreen from '@/components/LoadingScreen'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,

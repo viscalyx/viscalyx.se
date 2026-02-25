@@ -89,9 +89,9 @@ describe('getPostMetadata', () => {
   it('returns metadata for an existing slug', () => {
     const post = getPostMetadata('first-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('First Post')
-    expect(post!.slug).toBe('first-post')
-    expect(post!.imageAlt).toBe('First image')
+    expect(post?.title).toBe('First Post')
+    expect(post?.slug).toBe('first-post')
+    expect(post?.imageAlt).toBe('First image')
   })
 
   it('returns null for non-existent slug', () => {
@@ -100,22 +100,22 @@ describe('getPostMetadata', () => {
 
   it('normalizes invalid dates to undefined', () => {
     const post = getPostMetadata('second-post')
-    expect(post!.date).toBeUndefined()
+    expect(post?.date).toBeUndefined()
   })
 
   it('sanitizes non-string imageAlt to undefined', () => {
     const post = getPostMetadata('third-post')
-    expect(post!.imageAlt).toBeUndefined()
+    expect(post?.imageAlt).toBeUndefined()
   })
 
   it('filters non-string tags and lowercases them', () => {
     const post = getPostMetadata('third-post')
-    expect(post!.tags).toEqual(['typescript', 'devops'])
+    expect(post?.tags).toEqual(['typescript', 'devops'])
   })
 
   it('deduplicates tags', () => {
     const post = getPostMetadata('first-post')
-    expect(post!.tags).toEqual(['typescript', 'react'])
+    expect(post?.tags).toEqual(['typescript', 'react'])
   })
 })
 
@@ -123,7 +123,7 @@ describe('getPostData', () => {
   it('returns metadata (alias for getPostMetadata)', () => {
     const post = getPostData('first-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('First Post')
+    expect(post?.title).toBe('First Post')
   })
 })
 
@@ -131,7 +131,7 @@ describe('getPostBySlug', () => {
   it('returns metadata (alias for getPostMetadata)', () => {
     const post = getPostBySlug('second-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('Second Post')
+    expect(post?.title).toBe('Second Post')
   })
 })
 
@@ -145,8 +145,8 @@ describe('getAllPosts', () => {
   it('normalizes post data correctly', () => {
     const posts = getAllPosts()
     const second = posts.find(p => p.slug === 'second-post')
-    expect(second!.date).toBeUndefined()
-    expect(second!.imageAlt).toBeUndefined()
+    expect(second?.date).toBeUndefined()
+    expect(second?.imageAlt).toBeUndefined()
   })
 })
 
@@ -154,7 +154,7 @@ describe('getFeaturedPost', () => {
   it('returns the first post (most recent)', () => {
     const featured = getFeaturedPost()
     expect(featured).not.toBeNull()
-    expect(featured!.slug).toBe('first-post')
+    expect(featured?.slug).toBe('first-post')
   })
 })
 
@@ -455,12 +455,12 @@ describe('validateBlogData edge cases (via getPostMetadata)', () => {
   it('handles posts with empty tags array gracefully', () => {
     const post = getPostMetadata('template')
     expect(post).not.toBeNull()
-    expect(post!.tags).toEqual([])
+    expect(post?.tags).toEqual([])
   })
 
   it('preserves category when it is a valid string', () => {
     const post = getPostMetadata('second-post')
-    expect(post!.category).toBe('Automation')
+    expect(post?.category).toBe('Automation')
   })
 })
 

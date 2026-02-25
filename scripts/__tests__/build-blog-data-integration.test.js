@@ -472,7 +472,10 @@ This conclusion paragraph wraps up the content and should also be included in th
           expect(post.readTime).toMatch(/\d+ min read/)
 
           // Extract the number of minutes
-          const minutes = Number.parseInt(post.readTime.match(/(\d+) min/)[1])
+          const minutes = Number.parseInt(
+            post.readTime.match(/(\d+) min/)[1],
+            10
+          )
 
           // The post has substantial content, should be more than 1 minute
           // but not excessive since malicious content should be excluded

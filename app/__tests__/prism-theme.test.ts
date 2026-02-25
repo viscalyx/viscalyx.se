@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 describe('prism-theme.css', () => {
@@ -39,7 +39,7 @@ describe('prism-theme.css', () => {
     // Extract :root block content
     const rootMatch = cssContent.match(/:root\s*\{([^}]+)\}/)
     expect(rootMatch).not.toBeNull()
-    const rootBlock = rootMatch![1]
+    const rootBlock = rootMatch?.[1]
 
     for (const varName of allTokenVars) {
       expect(rootBlock).toContain(varName)
@@ -50,7 +50,7 @@ describe('prism-theme.css', () => {
     // Extract .dark block content
     const darkMatch = cssContent.match(/\.dark\s*\{([^}]+)\}/)
     expect(darkMatch).not.toBeNull()
-    const darkBlock = darkMatch![1]
+    const darkBlock = darkMatch?.[1]
 
     for (const varName of allTokenVars) {
       expect(darkBlock).toContain(varName)

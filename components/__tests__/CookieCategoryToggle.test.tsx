@@ -1,6 +1,6 @@
-import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 
 describe('CookieCategoryToggle', () => {
   const defaultProps = {

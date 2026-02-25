@@ -1,6 +1,6 @@
-import { mockLoadingSpinner } from '@/test-utils/mocks/loading-spinner'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { mockLoadingSpinner } from '@/test-utils/mocks/loading-spinner'
 import LocaleLoading from '../loading'
 
 mockLoadingSpinner()

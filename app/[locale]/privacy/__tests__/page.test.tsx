@@ -27,10 +27,8 @@ vi.mock('@/lib/file-dates', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import PrivacyPage, { generateMetadata } from '@/app/[locale]/privacy/page'
-
 import type { Metadata } from 'next'
+import PrivacyPage, { generateMetadata } from '@/app/[locale]/privacy/page'
 
 describe('PrivacyPage', () => {
   beforeEach(() => {

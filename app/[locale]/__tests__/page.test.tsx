@@ -52,16 +52,13 @@ vi.mock('@/components/ScrollToTop', () => ({
   default: () =>
     React.createElement(
       'button',
-      { 'data-testid': 'scroll-to-top' },
+      { type: 'button', 'data-testid': 'scroll-to-top' },
       'ScrollToTop'
     ),
 }))
 
 import { render, screen } from '@testing-library/react'
-
 import Home, { generateMetadata } from '@/app/[locale]/page'
-
-import type { Metadata } from 'next'
 
 describe('Home', () => {
   beforeEach(() => {

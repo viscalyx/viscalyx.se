@@ -1,7 +1,6 @@
-import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
-
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
 
 import type { BlogPostMetadata } from '@/lib/blog'
 
@@ -22,8 +21,8 @@ vi.mock('next/link', () => ({
 }))
 
 vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} {...props} />
+  default: ({ src, alt }: { src: string; alt: string }) => (
+    <span role="img" aria-label={alt} data-src={src} />
   ),
 }))
 
@@ -321,7 +320,11 @@ describe('BlogPostGrid', () => {
       />
     )
 
-    const article = container.querySelector('article')!
+    const article = container.querySelector('article')
+    expect(article).toBeTruthy()
+    if (!article) {
+      throw new Error('Expected article element to be present')
+    }
     expect(article.textContent).toContain('2026-01-15')
     expect(article.textContent).toContain('5 min read')
     // The category badge text should appear in the article

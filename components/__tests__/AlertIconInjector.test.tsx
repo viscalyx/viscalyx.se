@@ -1,7 +1,6 @@
-import { AlertIconInjector } from '@/components/AlertIconInjector'
-
 import { act, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { AlertIconInjector } from '@/components/AlertIconInjector'
 
 // Mock react-dom/client so we can observe createRoot calls without creating real React roots.
 const { renderMock, unmountMock, createRootMock } = vi.hoisted(() => {

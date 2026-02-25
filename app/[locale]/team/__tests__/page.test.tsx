@@ -17,10 +17,8 @@ vi.mock('../TeamPageClient', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import TeamPage, { generateMetadata } from '@/app/[locale]/team/page'
-
 import type { Metadata } from 'next'
+import TeamPage, { generateMetadata } from '@/app/[locale]/team/page'
 
 describe('TeamPage', () => {
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import TeamMemberNotFound from '../not-found'
 
 vi.mock('@/components/NotFoundPage', () => ({
-  default: () => <div data-testid="not-found-page" role="main" />,
+  default: () => <main data-testid="not-found-page" />,
 }))
 
 describe('TeamMemberNotFound page', () => {

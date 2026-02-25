@@ -7,7 +7,9 @@ function mockVisit(tree, type, callback) {
       callback(node, index, parent)
     }
     if (node.children) {
-      node.children.forEach((child, i) => traverse(child, i, node))
+      node.children.forEach((child, i) => {
+        traverse(child, i, node)
+      })
     }
   }
   traverse(tree)

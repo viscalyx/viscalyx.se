@@ -12,7 +12,9 @@ vi.mock('@/components/ErrorPage', () => ({
   }) => (
     <div data-testid="error-page">
       <span data-testid="error-message">{error.message}</span>
-      <button onClick={reset}>Reset</button>
+      <button type="button" onClick={reset}>
+        Reset
+      </button>
     </div>
   ),
 }))

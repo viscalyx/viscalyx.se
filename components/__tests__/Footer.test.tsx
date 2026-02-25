@@ -1,6 +1,6 @@
-import Footer from '@/components/Footer'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import Footer from '@/components/Footer'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({

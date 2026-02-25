@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
-import React from 'react'
 import About from '../About'
 
 // Mock translations

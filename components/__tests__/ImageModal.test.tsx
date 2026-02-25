@@ -1,6 +1,6 @@
-import ImageModal from '@/components/ImageModal'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
+import ImageModal from '@/components/ImageModal'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({

@@ -27,10 +27,8 @@ vi.mock('@/lib/file-dates', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import TermsPage, { generateMetadata } from '@/app/[locale]/terms/page'
-
 import type { Metadata } from 'next'
+import TermsPage, { generateMetadata } from '@/app/[locale]/terms/page'
 
 describe('TermsPage', () => {
   beforeEach(() => {

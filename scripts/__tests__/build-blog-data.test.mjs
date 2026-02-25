@@ -26,7 +26,7 @@ const clearModuleDependencyTree = entryPath => {
     }
 
     cachedModule.children.forEach(child => {
-      if (child?.id && child.id.startsWith(rootDir)) {
+      if (child?.id?.startsWith(rootDir)) {
         stack.push(child.id)
       }
     })

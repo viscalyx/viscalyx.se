@@ -1,9 +1,7 @@
-import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
-
 import { render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { ReactNode } from 'react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
 
 const mockNotFound = vi.fn()
 const mockRouter = {
@@ -14,9 +12,7 @@ const mockRouter = {
 }
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
-    const DynamicComponent = () => (
-      <aside role="complementary" aria-label="cookie consent banner" />
-    )
+    const DynamicComponent = () => <aside aria-label="cookie consent banner" />
     return DynamicComponent
   }),
 }))
@@ -47,11 +43,7 @@ vi.mock('next-intl', () => ({
   }: {
     children: ReactNode
     locale: string
-  }) => (
-    <div role="region" aria-label={`provider ${locale}`}>
-      {children}
-    </div>
-  ),
+  }) => <section aria-label={`provider ${locale}`}>{children}</section>,
 }))
 
 vi.mock('@/lib/structured-data', () => ({

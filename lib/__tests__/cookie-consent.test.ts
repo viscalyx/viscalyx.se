@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { consentEvents } from '@/lib/consent-events'
 import {
   cleanupCookies,
@@ -10,7 +11,6 @@ import {
   resetConsent,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Don't mock cookie-utils, so we test the actual integration
 
@@ -130,8 +130,11 @@ describe('Cookie Consent', () => {
 
       const stored = localStorageMock.getItem('viscalyx.org-cookie-consent')
       expect(stored).toBeTruthy()
+      if (!stored) {
+        throw new Error('Expected stored consent data')
+      }
 
-      const parsed = JSON.parse(stored!)
+      const parsed = JSON.parse(stored)
       expect(parsed.settings).toEqual(settings)
       expect(parsed.version).toBe('1.0')
       expect(parsed.timestamp).toBeTruthy()
@@ -144,8 +147,10 @@ describe('Cookie Consent', () => {
         /viscalyx\.org-cookie-consent=([^;]+)/
       )
       expect(cookieMatch).toBeTruthy()
-
-      const cookieData = JSON.parse(decodeURIComponent(cookieMatch![1]))
+      if (!cookieMatch) {
+        throw new Error('Expected consent cookie match')
+      }
+      const cookieData = JSON.parse(decodeURIComponent(cookieMatch[1]))
       expect(cookieData.settings).toEqual(settings)
       expect(cookieData.version).toBe('1.0')
       expect(cookieData.timestamp).toBeTruthy()

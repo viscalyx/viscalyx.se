@@ -1,6 +1,6 @@
-import TableOfContents from '@/components/TableOfContents'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import TableOfContents from '@/components/TableOfContents'
 
 import type { TocItem } from '@/lib/slug-utils'
 

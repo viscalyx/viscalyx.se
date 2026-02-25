@@ -1,4 +1,5 @@
 import { render, waitFor } from '@testing-library/react'
+import type { Config } from 'dompurify'
 import { vi } from 'vitest'
 import MermaidRenderer from '../MermaidRenderer'
 
@@ -19,6 +20,17 @@ vi.mock('mermaid', () => ({
 
 // Mock console methods
 const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+const hasHtmlProfile = (config?: Config) => {
+  const useProfiles = config?.USE_PROFILES
+  if (useProfiles === false) {
+    return false
+  }
+  if (!useProfiles) {
+    return false
+  }
+  return Boolean(useProfiles.html)
+}
 
 describe('MermaidRenderer', () => {
   // Sample mermaid code for testing
@@ -285,8 +297,8 @@ describe('MermaidRenderer', () => {
       // Reset and configure mocks for this specific test
       vi.mocked(mermaid.render).mockRejectedValue(renderError)
       vi.mocked(DOMPurify.sanitize).mockImplementation(
-        (input: string | Node, config?: any) => {
-          if (config?.USE_PROFILES?.html) {
+        (input: string | Node, config?: Config) => {
+          if (hasHtmlProfile(config)) {
             // This is for error content sanitization
             return String(input)
           }
@@ -344,8 +356,8 @@ describe('MermaidRenderer', () => {
       // Reset and configure mocks for this specific test
       vi.mocked(mermaid.render).mockRejectedValue(nonErrorValue)
       vi.mocked(DOMPurify.sanitize).mockImplementation(
-        (input: string | Node, config?: any) => {
-          if (config?.USE_PROFILES?.html) {
+        (input: string | Node, config?: Config) => {
+          if (hasHtmlProfile(config)) {
             // This is for error content sanitization
             return String(input)
           }
@@ -531,7 +543,7 @@ describe('MermaidRenderer', () => {
       const originalQuerySelectorAll = document.querySelectorAll
       vi.spyOn(document, 'querySelectorAll').mockReturnValue([
         detachedPre,
-      ] as any)
+      ] as unknown as NodeListOf<Element>)
 
       render(<MermaidRenderer contentLoaded={true} />)
 

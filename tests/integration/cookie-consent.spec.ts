@@ -2,16 +2,12 @@ import { expect, type Page, test } from '@playwright/test'
 
 test.describe('Cookie Consent Functionality', () => {
   test.beforeEach(async ({ page }) => {
+    await page.context().clearCookies()
+
     // Navigate first so we have a page context for localStorage/cookie clearing
     await page.goto('/')
     await page.evaluate(() => {
       localStorage.removeItem('viscalyx.org-cookie-consent')
-
-      document.cookie.split(';').forEach(cookie => {
-        const eqPos = cookie.indexOf('=')
-        const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie
-        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
-      })
     })
     // Reload to ensure the banner appears fresh
     await page.reload()

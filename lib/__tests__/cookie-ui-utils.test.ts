@@ -1,5 +1,5 @@
-import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 import { describe, expect, it } from 'vitest'
+import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 
 // The function uses the real cookieRegistry from cookie-consent
 // We test against the actual registry to ensure correct filtering

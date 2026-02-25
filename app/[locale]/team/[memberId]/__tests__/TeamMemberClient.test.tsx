@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import TeamMemberClient from '../TeamMemberClient'
-
 import type { SerializableTeamMember } from '@/lib/team'
+import TeamMemberClient from '../TeamMemberClient'
 
 // Mock child components
 vi.mock('@/components/Header', () => ({
@@ -23,9 +22,13 @@ vi.mock('next-intl', () => ({
 
 // Mock next/image
 vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: Record<string, unknown>) => (
-    <img src={src as string} alt={alt as string} {...props} />
-  ),
+  default: ({ src, alt, ...props }: Record<string, unknown>) => {
+    const imgLabel = typeof alt === 'string' ? alt : ''
+    const imageSrc = typeof src === 'string' ? src : String(src)
+    return (
+      <span role="img" aria-label={imgLabel} data-src={imageSrc} {...props} />
+    )
+  },
 }))
 
 // Mock next/link
@@ -105,7 +108,7 @@ describe('TeamMemberClient', () => {
     render(<TeamMemberClient member={mockMember} />)
 
     const img = screen.getByRole('img', { name: 'Test Member' })
-    expect(img).toHaveAttribute('src', '/test-image.jpg')
+    expect(img).toHaveAttribute('data-src', '/test-image.jpg')
   })
 
   it('renders initials when no image is provided', () => {

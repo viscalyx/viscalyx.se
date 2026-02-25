@@ -1,7 +1,7 @@
-import Header from '@/components/Header'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Header from '@/components/Header'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
