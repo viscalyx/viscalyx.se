@@ -49,8 +49,8 @@ export default async function RootLayout({ children }: Props) {
 
   return (
     <html
-      lang={locale}
       className={`scroll-smooth ${inter.className}`}
+      lang={locale}
       suppressHydrationWarning
     >
       <head>

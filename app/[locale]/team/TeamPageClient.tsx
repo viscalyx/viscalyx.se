@@ -9,10 +9,10 @@ import Team from '@/components/Team'
 const TeamPageClient = () => {
   return (
     <motion.main
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
       className="min-h-screen"
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Header />
       <div className="pt-20">

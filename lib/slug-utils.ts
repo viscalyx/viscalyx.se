@@ -5,9 +5,9 @@ import slugify from 'slugify'
  * Configuration options for slug generation
  */
 interface SlugOptions {
+  locale?: string
   lower?: boolean
   strict?: boolean
-  locale?: string
   trim?: boolean
 }
 
@@ -16,8 +16,8 @@ interface SlugOptions {
  */
 export interface TocItem {
   id: string
-  text: string
   level: number
+  text: string
 }
 
 /**

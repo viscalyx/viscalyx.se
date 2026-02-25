@@ -53,16 +53,16 @@ const Team = () => {
 
   return (
     <section
-      id="team"
       className="py-20 bg-linear-to-br from-secondary-50 to-primary-50 dark:from-secondary-900 dark:to-primary-900/20"
+      id="team"
     >
       <div className="container-custom section-padding">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
           className="text-center mb-16"
+          initial="hidden"
+          variants={containerVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
         >
           <motion.div variants={itemVariants}>
             <span className="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-full text-sm font-semibold mb-4">
@@ -71,26 +71,26 @@ const Team = () => {
           </motion.div>
 
           <motion.h2
-            variants={itemVariants}
             className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mb-6"
+            variants={itemVariants}
           >
             {t('title')}
           </motion.h2>
 
           <motion.p
-            variants={itemVariants}
             className="text-xl text-secondary-600 dark:text-secondary-300 max-w-3xl mx-auto leading-relaxed"
+            variants={itemVariants}
           >
             {t('description')}
           </motion.p>
         </motion.div>
 
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial="hidden"
+          variants={containerVariants}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
         >
           {teamMembers.map(member => {
             const socialLinkRows = []
@@ -100,15 +100,15 @@ const Team = () => {
 
             return (
               <motion.div
+                className="group"
                 key={member.id}
                 variants={itemVariants}
                 whileHover="hover"
-                className="group"
               >
                 <motion.div
-                  variants={cardVariants}
-                  onClick={() => handleCardClick(member.id)}
                   className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
+                  onClick={() => handleCardClick(member.id)}
+                  variants={cardVariants}
                 >
                   {/* Profile Image */}
                   <div className="relative mb-6">
@@ -119,10 +119,10 @@ const Team = () => {
                         </div>
                       ) : (
                         <Image
-                          src={member.image}
                           alt={member.name}
-                          fill
                           className="rounded-full object-cover ring-4 ring-primary-100 dark:ring-primary-900/50"
+                          fill
+                          src={member.image}
                         />
                       )}
                       <div className="absolute inset-0 rounded-full bg-linear-to-tr from-primary-600/20 to-transparent group-hover:from-primary-600/30 transition-all duration-300" />
@@ -154,8 +154,8 @@ const Team = () => {
                     <div className="flex flex-wrap gap-2">
                       {member.specialties.map(specialty => (
                         <span
-                          key={specialty}
                           className="px-3 py-1 bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-full text-xs font-medium"
+                          key={specialty}
                         >
                           {specialty}
                         </span>
@@ -167,28 +167,28 @@ const Team = () => {
                   <div className="flex flex-col items-center space-y-3 mb-6">
                     {socialLinkRows.map(row => (
                       <div
-                        key={row.map(social => social.name).join('|')}
                         className="flex justify-center space-x-4"
+                        key={row.map(social => social.name).join('|')}
                       >
                         {row.map(social => (
                           <motion.a
-                            key={social.name}
+                            aria-label={social.name}
+                            className="p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                             href={social.href}
-                            target={
-                              social.href.startsWith('mailto:')
-                                ? '_self'
-                                : '_blank'
-                            }
+                            key={social.name}
+                            onClick={e => e.stopPropagation()}
                             rel={
                               social.href.startsWith('mailto:')
                                 ? undefined
                                 : 'noopener noreferrer'
                             }
-                            onClick={e => e.stopPropagation()}
+                            target={
+                              social.href.startsWith('mailto:')
+                                ? '_self'
+                                : '_blank'
+                            }
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
-                            className="p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                            aria-label={social.name}
                           >
                             <social.icon className="h-5 w-5" />
                           </motion.a>
@@ -204,11 +204,11 @@ const Team = () => {
 
         {/* Call to Action */}
         <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
           className="text-center mt-16"
+          initial="hidden"
+          variants={itemVariants}
+          viewport={{ once: true }}
+          whileInView="visible"
         >
           <div className="bg-linear-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
@@ -218,18 +218,18 @@ const Team = () => {
               {t('joinTeam.description')}
             </p>
             <motion.a
+              className="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
               href="https://github.com/viscalyx"
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
             >
               {t('joinTeam.button')}
               <motion.div
                 animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
                 className="ml-2"
+                transition={{ duration: 1.5, repeat: Infinity }}
               >
                 <ArrowRight className="h-5 w-5" />
               </motion.div>

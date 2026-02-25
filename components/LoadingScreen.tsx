@@ -16,14 +16,14 @@ const LoadingScreen = ({ message, type = 'loading' }: LoadingScreenProps) => {
 
   return (
     <motion.main
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
       className="min-h-screen flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <div className="text-center">
         <div className="mb-4">
-          <LoadingSpinner size="lg" color="primary" />
+          <LoadingSpinner color="primary" size="lg" />
         </div>
         <p className="text-secondary-600 dark:text-secondary-300">
           {message || defaultMessage}

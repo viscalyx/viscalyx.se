@@ -2,8 +2,6 @@ import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 interface PrivacyTranslations {
-  title: string
-  subtitle: string
   lastUpdated: string
   sections: {
     informationWeCollect: {
@@ -41,6 +39,8 @@ interface PrivacyTranslations {
       emailAddress: string
     }
   }
+  subtitle: string
+  title: string
 }
 
 interface TermsTranslations {
@@ -94,13 +94,11 @@ interface TermsTranslations {
 }
 
 interface CookiesTranslations {
-  title: string
-  description: string
-  lastUpdated: string
-  whatAreCookies: {
+  contact: {
     title: string
     description: string
   }
+  description: string
   howWeUseCookies: {
     title: string
     description: string
@@ -110,6 +108,8 @@ interface CookiesTranslations {
       analytics: string
     }
   }
+  lastUpdated: string
+  title: string
   typesOfCookies: {
     title: string
     session: {
@@ -129,6 +129,10 @@ interface CookiesTranslations {
       description: string
     }
   }
+  whatAreCookies: {
+    title: string
+    description: string
+  }
   yourChoices: {
     title: string
     description: string
@@ -138,10 +142,6 @@ interface CookiesTranslations {
       thirdPartyOptOut: string
     }
     disclaimer: string
-  }
-  contact: {
-    title: string
-    description: string
   }
 }
 

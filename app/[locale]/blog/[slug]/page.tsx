@@ -144,8 +144,9 @@ export default async function BlogPostPage({ params }: Props) {
       <Header />
 
       <BlogPostContent
-        post={post}
+        authorInitials={authorInitials}
         contentWithIds={contentWithIds}
+        post={post}
         relatedPosts={relatedPosts.map(rp => ({
           slug: rp.slug,
           title: rp.title,
@@ -153,7 +154,6 @@ export default async function BlogPostPage({ params }: Props) {
         }))}
         tableOfContents={tableOfContents}
         teamMember={teamMember}
-        authorInitials={authorInitials}
       />
 
       <Footer />

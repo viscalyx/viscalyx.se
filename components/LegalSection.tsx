@@ -8,9 +8,9 @@ export const safeTranslationArray = (raw: unknown): string[] =>
     : []
 
 interface ComponentProps {
-  title: string
   description: string
   items?: string[]
+  title: string
 }
 
 const LegalSection = ({ title, description, items }: ComponentProps) => (

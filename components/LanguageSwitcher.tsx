@@ -115,19 +115,19 @@ const LanguageSwitcher = () => {
   return (
     <div className="relative" ref={containerRef}>
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={handleKeyDown}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200"
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-        aria-label={t('selectLanguage')}
         aria-activedescendant={
           isOpen && focusedIndex >= 0
             ? `language-option-${languages[focusedIndex].code}`
             : undefined
         }
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-label={t('selectLanguage')}
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200"
+        onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         <Globe className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
         <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300">
@@ -137,29 +137,29 @@ const LanguageSwitcher = () => {
 
       {isOpen && (
         <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          aria-label={t('selectLanguage')}
+          className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
+          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -10 }}
+          onKeyDown={handleKeyDown}
           ref={listboxRef}
           role="listbox"
-          aria-label={t('selectLanguage')}
-          onKeyDown={handleKeyDown}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
         >
           {languages.map((language, index) => (
             <button
-              key={language.code}
-              type="button"
-              id={`language-option-${language.code}`}
-              role="option"
               aria-selected={locale === language.code}
-              onClick={() => handleLanguageChange(language.code)}
-              tabIndex={focusedIndex === index ? 0 : -1}
               className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer ${
                 locale === language.code
                   ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                   : 'text-secondary-700 dark:text-secondary-300'
               } ${focusedIndex === index ? 'ring-2 ring-inset ring-primary-500' : ''}`}
+              id={`language-option-${language.code}`}
+              key={language.code}
+              onClick={() => handleLanguageChange(language.code)}
+              role="option"
+              tabIndex={focusedIndex === index ? 0 : -1}
+              type="button"
             >
               <span className="text-lg">{language.flag}</span>
               <span className="text-sm font-medium">{language.name}</span>

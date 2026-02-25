@@ -15,8 +15,8 @@ import {
 } from '@/components/SocialIcons'
 
 interface FooterLink {
-  name: string
   href: string
+  name: string
 }
 
 const ABSOLUTE_URL_REGEX = /^[a-z][a-z0-9+.-]*:/i
@@ -70,15 +70,15 @@ const Footer = () => {
     if (isExternal(link.href)) {
       return (
         <a
-          href={link.href}
-          target="_blank"
-          rel="noopener noreferrer"
           className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline flex items-center"
+          href={link.href}
+          rel="noopener noreferrer"
+          target="_blank"
         >
           {link.name}
           <ExternalLink
-            className="w-3 h-3 ml-1 opacity-60"
             aria-hidden="true"
+            className="w-3 h-3 ml-1 opacity-60"
           />
           <span className="sr-only"> (opens in new tab)</span>
         </a>
@@ -87,9 +87,9 @@ const Footer = () => {
 
     return (
       <Link
+        className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
         href={getHrefUrl(link.href) as Route}
         onClick={e => handleLinkClick(e, link.href)}
-        className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
       >
         {link.name}
       </Link>
@@ -152,11 +152,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Company Info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
             className="lg:col-span-2"
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
             <div className="mb-6">
               <h3 className="text-2xl font-bold text-gradient mb-4">
@@ -170,14 +170,14 @@ const Footer = () => {
             <div className="flex space-x-4">
               {socialLinks.map(social => (
                 <motion.a
-                  key={social.name}
+                  aria-label={social.name}
+                  className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
                   href={social.href}
-                  target="_blank"
+                  key={social.name}
                   rel="noopener noreferrer"
+                  target="_blank"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
-                  className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
-                  aria-label={social.name}
                 >
                   <social.icon className="w-5 h-5" />
                 </motion.a>
@@ -188,9 +188,9 @@ const Footer = () => {
           {/* Company Links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
             <h4 className="text-lg font-semibold mb-6">{t('company')}</h4>
             <ul className="space-y-3">
@@ -203,9 +203,9 @@ const Footer = () => {
           {/* Resources Links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
             <h4 className="text-lg font-semibold mb-6">{t('resources')}</h4>
             <ul className="space-y-3">
@@ -218,9 +218,9 @@ const Footer = () => {
           {/* Support Links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
             <h4 className="text-lg font-semibold mb-6">{t('support')}</h4>
             <ul className="space-y-3">
@@ -236,11 +236,11 @@ const Footer = () => {
       <div className="border-t border-secondary-800">
         <div className="container-custom py-6">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
             className="flex flex-col sm:flex-row justify-between items-center"
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            whileInView={{ opacity: 1 }}
           >
             <p className="text-secondary-400 text-sm">
               © {currentYear} Viscalyx. {t('allRightsReserved')}

@@ -36,33 +36,33 @@ const About = () => {
 
   return (
     <section
-      id="about"
       className="section-padding bg-white dark:bg-secondary-900 relative overflow-hidden"
+      id="about"
       ref={ref}
     >
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
             className="space-y-8"
+            initial={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.8 }}
           >
             <div>
               <motion.span
-                initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.2 }}
                 className="text-primary-600 dark:text-primary-400 font-semibold text-lg"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.2 }}
               >
                 {t('badge')}
               </motion.span>
               <motion.h2
-                initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.3 }}
                 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-secondary-100 mt-2"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.3 }}
               >
                 {t('title')}
                 <span className="text-gradient block">
@@ -72,19 +72,19 @@ const About = () => {
             </div>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.4 }}
               className="text-lg text-secondary-600 dark:text-secondary-400 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.4 }}
             >
               {t('description1')}
             </motion.p>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5 }}
               className="text-lg text-secondary-600 dark:text-secondary-400 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.5 }}
             >
               {t('description2')}
             </motion.p>
@@ -93,11 +93,11 @@ const About = () => {
             <div className="grid sm:grid-cols-2 gap-6 pt-8">
               {values.map((value, index) => (
                 <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.6 + index * 0.1 }}
                   className="flex items-start space-x-4 p-4 rounded-lg hover:bg-primary-50/50 dark:hover:bg-primary-900/20 transition-colors duration-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  key={value.title}
+                  transition={{ delay: 0.6 + index * 0.1 }}
                 >
                   <div className="shrink-0">
                     <value.icon className="h-6 w-6 text-primary-600 dark:text-primary-400 mt-1" />
@@ -117,36 +117,36 @@ const About = () => {
 
           {/* Visual */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
+            initial={{ opacity: 0, x: 50 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative">
               <motion.div
                 animate={{ rotate: [0, 5, 0] }}
+                className="relative z-10"
                 transition={{
                   duration: 8,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="relative z-10"
               >
                 <Image
-                  src="/team-huddle-open-office-wide.png"
                   alt={t('visualAlt')}
-                  width={600}
-                  height={400}
                   className="rounded-2xl shadow-xl"
+                  height={400}
+                  src="/team-huddle-open-office-wide.png"
+                  width={600}
                 />
               </motion.div>
 
               {/* Floating Stats */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 1, duration: 0.5 }}
                 className="absolute -bottom-8 left-1/2 w-fit max-w-[calc(100%-2rem)] -translate-x-1/2 bg-white dark:bg-secondary-800 p-6 rounded-2xl shadow-xl border border-secondary-100 dark:border-secondary-700 z-20 lg:w-auto lg:max-w-none lg:translate-x-0 lg:-left-8"
+                initial={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: 1, duration: 0.5 }}
               >
                 <div className="flex items-start sm:items-center space-x-4">
                   <div className="text-center">

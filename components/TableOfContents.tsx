@@ -6,9 +6,9 @@ import type { TocItem } from '@/lib/slug-utils'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TableOfContentsProps {
+  headingId?: string // ID of the heading element that labels this table of contents
   items: TocItem[]
   maxHeight?: 'sm' | 'lg' // sm for mobile (max-h-64), lg for desktop (max-h-80)
-  headingId?: string // ID of the heading element that labels this table of contents
 }
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({
@@ -160,28 +160,28 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
       {/* Scrollable content */}
       <section
-        ref={scrollContainerRef}
-        className={`toc-scrollable ${heightClass} overflow-y-auto`}
         aria-label={t('tableOfContents')}
+        className={`toc-scrollable ${heightClass} overflow-y-auto`}
+        ref={scrollContainerRef}
       >
         <ul className="space-y-1">
           {items.map(item => (
             <li
-              key={item.id}
               className={`${
                 item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
               }`}
+              key={item.id}
             >
               <button
-                type="button"
-                onClick={() => handleClick(item.id)}
-                data-id={item.id}
+                aria-current={activeId === item.id ? 'location' : undefined}
                 className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
                   activeId === item.id
                     ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'
                     : 'text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400'
                 }`}
-                aria-current={activeId === item.id ? 'location' : undefined}
+                data-id={item.id}
+                onClick={() => handleClick(item.id)}
+                type="button"
               >
                 <span className="text-sm leading-relaxed">{item.text}</span>
               </button>

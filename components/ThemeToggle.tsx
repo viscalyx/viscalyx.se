@@ -20,9 +20,7 @@ const ThemeToggle = () => {
       <div className="flex items-center gap-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
-            type="button"
-            key={value}
-            onClick={() => setTheme(value)}
+            aria-label={t('switchToTheme', { theme: t(labelKey) })}
             className={`
               relative flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200
               ${
@@ -31,18 +29,20 @@ const ThemeToggle = () => {
                   : 'text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-100'
               }
             `}
+            key={value}
+            onClick={() => setTheme(value)}
             title={t('switchToTheme', { theme: t(labelKey) })}
-            aria-label={t('switchToTheme', { theme: t(labelKey) })}
+            type="button"
           >
             {theme === value && (
               <motion.div
-                layoutId="theme-indicator"
                 className="absolute inset-0 bg-primary-600 rounded-md"
                 initial={false}
+                layoutId="theme-indicator"
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
             )}
-            <Icon size={16} className="relative z-10" />
+            <Icon className="relative z-10" size={16} />
           </button>
         ))}
       </div>

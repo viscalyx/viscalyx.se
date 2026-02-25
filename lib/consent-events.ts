@@ -6,12 +6,12 @@
 export type ConsentEventType = 'consent-changed' | 'consent-reset'
 
 export interface ConsentChangeEvent {
-  type: 'consent-changed'
   settings: {
     'strictly-necessary': boolean
     analytics: boolean
     preferences: boolean
   }
+  type: 'consent-changed'
 }
 
 export interface ConsentResetEvent {

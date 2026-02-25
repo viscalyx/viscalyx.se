@@ -27,31 +27,31 @@ import type { SerializableTeamMember, SocialIconName } from '@/lib/team'
 import { socialIconMap } from '@/lib/team'
 
 interface BlogPostData {
-  title: string
   author: string
+  category: string
   date: string | null
-  readTime: string
+  excerpt: string
   image: string
   imageAlt?: string
-  category: string
+  readTime: string
   slug: string
   tags: string[]
-  excerpt: string
+  title: string
 }
 
 interface RelatedPost {
+  image: string
   slug: string
   title: string
-  image: string
 }
 
 export interface ComponentProps {
-  post: BlogPostData
+  authorInitials: string
   contentWithIds: string
+  post: BlogPostData
   relatedPosts: RelatedPost[]
   tableOfContents: TocItem[]
   teamMember: SerializableTeamMember | null
-  authorInitials: string
 }
 
 const BlogPostContent = ({
@@ -345,22 +345,22 @@ const BlogPostContent = ({
 
   const renderedMarkdown = (
     <div
-      dangerouslySetInnerHTML={{ __html: contentWithIds }}
       className="markdown-content"
+      dangerouslySetInnerHTML={{ __html: contentWithIds }}
     />
   )
 
   return (
     <>
-      <ReadingProgress target=".markdown-content" endTarget=".author-bio" />
+      <ReadingProgress endTarget=".author-bio" target=".markdown-content" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50 dark:bg-secondary-800">
         <div className="container-custom">
           <div className="pl-3">
             <Link
-              href={`/${locale}/blog` as Route}
               className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mb-8 group"
+              href={`/${locale}/blog` as Route}
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               {t('post.backToBlog')}
@@ -403,13 +403,13 @@ const BlogPostContent = ({
                   {isSharing ? t('post.sharing') : t('post.share')}
                 </span>
                 <button
-                  type="button"
-                  onClick={handleShare}
-                  disabled={isSharing}
                   aria-busy={isSharing}
-                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
-                  title={t('post.sharePost')}
                   aria-label={t('post.sharePost')}
+                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                  disabled={isSharing}
+                  onClick={handleShare}
+                  title={t('post.sharePost')}
+                  type="button"
                 >
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
@@ -433,11 +433,11 @@ const BlogPostContent = ({
       {/* Featured Image */}
       <section className="relative h-96 md:h-125">
         <Image
-          src={post.image}
           alt={post.imageAlt || post.title}
+          className="object-cover"
           fill
           sizes="100vw"
-          className="object-cover"
+          src={post.image}
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
       </section>
@@ -454,8 +454,8 @@ const BlogPostContent = ({
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
                       <div
-                        id="toc-heading-mobile"
                         className="flex items-center"
+                        id="toc-heading-mobile"
                       >
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
@@ -468,18 +468,18 @@ const BlogPostContent = ({
                       >
                         <title>{t('post.tableOfContents')}</title>
                         <path
+                          d="M19 9l-7 7-7-7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
                         />
                       </svg>
                     </summary>
                     <div className="mt-4">
                       <TableOfContents
+                        headingId="toc-heading-mobile"
                         items={tableOfContents}
                         maxHeight="sm"
-                        headingId="toc-heading-mobile"
                       />
                     </div>
                   </details>
@@ -504,8 +504,8 @@ const BlogPostContent = ({
                   <Tag className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                   {post.tags.map((tag: string) => (
                     <span
-                      key={tag}
                       className="bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm transition-colors"
+                      key={tag}
                     >
                       {tag}
                     </span>
@@ -516,18 +516,18 @@ const BlogPostContent = ({
               {/* Author Bio */}
               <section
                 aria-label="Author biography"
-                data-testid="author-bio"
                 className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
+                data-testid="author-bio"
               >
                 <div className="flex items-start space-x-4">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden shrink-0">
                     {teamMember?.image ? (
                       <Image
-                        src={teamMember.image}
                         alt={teamMember.name}
-                        width={64}
-                        height={64}
                         className="w-16 h-16 object-cover rounded-full"
+                        height={64}
+                        src={teamMember.image}
+                        width={64}
                       />
                     ) : (
                       <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center rounded-full">
@@ -540,8 +540,8 @@ const BlogPostContent = ({
                       <h2 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
                         {teamMember ? (
                           <Link
-                            href={`/${locale}/team/${teamMember.id}` as Route}
                             className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            href={`/${locale}/team/${teamMember.id}` as Route}
                           >
                             {teamMember.name}
                           </Link>
@@ -551,8 +551,8 @@ const BlogPostContent = ({
                       </h2>
                       {teamMember && (
                         <Link
-                          href={`/${locale}/team/${teamMember.id}` as Route}
                           className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
+                          href={`/${locale}/team/${teamMember.id}` as Route}
                         >
                           <span className="font-medium text-sm underline decoration-1 underline-offset-2">
                             {t('post.authorBio.viewProfile')}
@@ -565,10 +565,10 @@ const BlogPostContent = ({
                           >
                             <title>{t('post.authorBio.viewProfile')}</title>
                             <path
+                              d="M9 5l7 7-7 7"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth={2}
-                              d="M9 5l7 7-7 7"
                             />
                           </svg>
                         </Link>
@@ -590,20 +590,20 @@ const BlogPostContent = ({
                           if (!IconComponent) return null
                           return (
                             <a
-                              key={social.name}
+                              aria-label={social.name}
+                              className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                               href={social.href}
-                              target={
-                                social.href.startsWith('mailto:')
-                                  ? '_self'
-                                  : '_blank'
-                              }
+                              key={social.name}
                               rel={
                                 social.href.startsWith('mailto:')
                                   ? undefined
                                   : 'noopener noreferrer'
                               }
-                              className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                              aria-label={social.name}
+                              target={
+                                social.href.startsWith('mailto:')
+                                  ? '_self'
+                                  : '_blank'
+                              }
                               title={social.name}
                             >
                               <IconComponent className="h-4 w-4" />
@@ -623,17 +623,17 @@ const BlogPostContent = ({
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
                     <h2
-                      id="toc-heading"
                       className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
+                      id="toc-heading"
                     >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h2>
                     <div>
                       <TableOfContents
+                        headingId="toc-heading"
                         items={tableOfContents}
                         maxHeight="lg"
-                        headingId="toc-heading"
                       />
                     </div>
                   </div>
@@ -648,17 +648,17 @@ const BlogPostContent = ({
                     <div className="space-y-4">
                       {relatedPosts.map(relatedPost => (
                         <Link
-                          key={relatedPost.slug}
-                          href={`/${locale}/blog/${relatedPost.slug}` as Route}
                           className="flex space-x-3 group"
+                          href={`/${locale}/blog/${relatedPost.slug}` as Route}
+                          key={relatedPost.slug}
                         >
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
                             <Image
-                              src={relatedPost.image}
                               alt={relatedPost.title}
+                              className="object-cover transition-transform group-hover:scale-110"
                               fill
                               sizes="64px"
-                              className="object-cover transition-transform group-hover:scale-110"
+                              src={relatedPost.image}
                             />
                           </div>
                           <div>

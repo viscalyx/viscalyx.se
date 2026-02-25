@@ -5,15 +5,15 @@ import { consentEvents } from './consent-events'
 import { hasConsent } from './cookie-consent'
 
 interface BlogAnalyticsData {
-  slug: string
   category: string
+  slug: string
   title: string
 }
 
 interface UseAnalyticsOptions {
+  progressThreshold?: number // Send analytics when user reaches this % of content
   trackReadProgress?: boolean
   trackTimeSpent?: boolean
-  progressThreshold?: number // Send analytics when user reaches this % of content
 }
 
 // Cache for consent status to avoid repeated localStorage reads

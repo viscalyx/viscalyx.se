@@ -58,7 +58,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
 
           // Render the React icon component into the container
           const root = createRoot(iconContainer)
-          root.render(<AlertIcon type={iconType} className="w-5 h-5" />)
+          root.render(<AlertIcon className="w-5 h-5" type={iconType} />)
 
           // Store the root reference for cleanup
           roots.push({ root, container: iconContainer })

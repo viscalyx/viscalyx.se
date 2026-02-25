@@ -33,33 +33,33 @@ export const socialIconMap: Record<
 }
 
 export interface TeamMember {
+  bio: string
   id: string
+  image?: string
+  location: string
   name: string
   role: string
-  image?: string
-  bio: string
-  location: string
-  specialties: string[]
   socialLinks: Array<{
     name: string
     href: string
     icon: React.ComponentType<{ className?: string }>
   }>
+  specialties: string[]
 }
 
 // Serializable version of TeamMember for Server-to-Client Component data passing
 export interface SerializableTeamMember {
+  bio: string
   id: string
+  image?: string
+  location: string
   name: string
   role: string
-  image?: string
-  bio: string
-  location: string
-  specialties: string[]
   socialLinks: Array<{
     name: SocialIconName
     href: string
   }>
+  specialties: string[]
 }
 
 // Type for the translation function (simplified approach to avoid next-intl internal types)

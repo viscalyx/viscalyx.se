@@ -3,11 +3,11 @@ import { NextResponse } from 'next/server'
 import { SITE_URL } from '@/lib/constants'
 
 interface BlogReadEvent {
-  slug: string
   category: string
-  title: string
   readProgress?: number
+  slug: string
   timeSpent?: number
+  title: string
 }
 
 /**

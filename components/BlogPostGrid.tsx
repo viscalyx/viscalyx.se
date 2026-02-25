@@ -10,8 +10,8 @@ import type { BlogPostMetadata } from '@/lib/blog'
 
 interface BlogPostGridProps {
   allPosts: BlogPostMetadata[]
-  featuredPostCategory?: string
   categoriesAllLabel: string
+  featuredPostCategory?: string
   loadMoreLabel: string
 }
 
@@ -68,15 +68,15 @@ const BlogPostGrid = ({
           >
             {allCategories.map(category => (
               <button
-                type="button"
-                key={category}
-                onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full transition-colors duration-200 ${
                   category === selectedCategory ||
                   (selectedCategory === '' && category === categoriesAllLabel)
                     ? 'bg-primary-600 dark:bg-primary-500 text-white'
                     : 'bg-white dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
                 }`}
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+                type="button"
               >
                 {category}
               </button>
@@ -88,17 +88,17 @@ const BlogPostGrid = ({
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayBlogPosts.map(post => (
             <Link
-              key={post.slug}
-              href={`/blog/${post.slug}` as Route}
               className="block"
+              href={`/blog/${post.slug}` as Route}
+              key={post.slug}
             >
               <article className="bg-white dark:bg-secondary-700 rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full hover:-translate-y-2 transform">
                 <div className="relative h-48 overflow-hidden">
                   <Image
-                    src={post.image}
                     alt={post.imageAlt || post.title}
-                    fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    fill
+                    src={post.image}
                   />
                   <div className="absolute top-3 left-3">
                     {post.category && (
@@ -135,9 +135,9 @@ const BlogPostGrid = ({
         {hasMorePosts && (
           <div className="text-center mt-12">
             <button
-              type="button"
               className="btn-primary"
               onClick={loadMorePosts}
+              type="button"
             >
               {loadMoreLabel}
             </button>

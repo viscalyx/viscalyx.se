@@ -4,10 +4,10 @@ import type { CookieCategory } from '@/lib/cookie-consent'
 
 interface CookieCategoryToggleProps {
   category: CookieCategory
-  checked: boolean
   categoryName: string
-  requiredLabel?: string
+  checked: boolean
   onChange: (category: CookieCategory) => void
+  requiredLabel?: string
 }
 
 /**
@@ -34,14 +34,14 @@ const CookieCategoryToggle = ({
       className={`relative inline-flex items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <input
-        type="checkbox"
-        checked={checked}
-        onChange={() => onChange(category)}
-        disabled={isRequired}
-        className="sr-only"
         aria-describedby={`${category}-description`}
         aria-label={`${categoryName} ${isRequired ? requiredLabel : ''}`.trim()}
+        checked={checked}
+        className="sr-only"
+        disabled={isRequired}
         id={`toggle-${category}`}
+        onChange={() => onChange(category)}
+        type="checkbox"
       />
       <div
         className={`

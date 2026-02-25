@@ -172,10 +172,10 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
 
   return (
     <ImageModal
+      imageAlt={modalState.imageAlt}
+      imageSrc={modalState.imageSrc}
       isOpen={modalState.isOpen}
       onClose={closeModal}
-      imageSrc={modalState.imageSrc}
-      imageAlt={modalState.imageAlt}
       triggerElement={modalState.triggerElement}
     />
   )

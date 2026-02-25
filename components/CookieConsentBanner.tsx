@@ -167,17 +167,17 @@ const CookieConsentBanner = () => {
   return (
     <AnimatePresence>
       <motion.div
-        ref={bannerRef}
-        initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cookie-banner-title"
         aria-describedby="cookie-banner-description"
+        aria-labelledby="cookie-banner-title"
         aria-live="polite"
+        aria-modal="true"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg"
+        exit={{ y: 100, opacity: 0 }}
+        initial={{ y: 100, opacity: 0 }}
+        ref={bannerRef}
+        role="dialog"
+        transition={{ duration: 0.3, ease: 'easeOut' }}
       >
         <div className="container mx-auto px-4 py-6 max-w-7xl">
           {!showDetails ? (
@@ -187,24 +187,24 @@ const CookieConsentBanner = () => {
                 <Cookie className="w-6 h-6 text-primary-600 dark:text-primary-400 shrink-0 mt-1" />
                 <div>
                   <h2
-                    id="cookie-banner-title"
                     className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+                    id="cookie-banner-title"
                   >
                     {t('title')}
                   </h2>
                   <p
-                    id="cookie-banner-description"
                     className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+                    id="cookie-banner-description"
                   >
                     {t('description')}{' '}
                     <button
-                      type="button"
+                      aria-label={t('customizeSettings')}
+                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
                       onClick={() => {
                         cachedFocusableElements.current = null
                         setShowDetails(true)
                       }}
-                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
-                      aria-label={t('customizeSettings')}
+                      type="button"
                     >
                       {t('learnMore')}
                     </button>
@@ -214,32 +214,32 @@ const CookieConsentBanner = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <button
+                  aria-label={t('rejectAll')}
+                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={handleRejectAll}
                   ref={rejectButtonRef}
                   type="button"
-                  onClick={handleRejectAll}
-                  className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                  aria-label={t('rejectAll')}
                 >
                   {t('rejectAll')}
                 </button>
                 <button
-                  type="button"
+                  aria-label={t('customizeSettings')}
+                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
                   onClick={() => {
                     cachedFocusableElements.current = null
                     setShowDetails(true)
                   }}
-                  className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
-                  aria-label={t('customizeSettings')}
+                  type="button"
                 >
                   <Settings className="w-4 h-4 inline mr-2" />
                   {t('customizeSettings')}
                 </button>
                 <button
+                  aria-label={t('acceptAll')}
+                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+                  onClick={handleAcceptAll}
                   ref={firstFocusableRef}
                   type="button"
-                  onClick={handleAcceptAll}
-                  className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
-                  aria-label={t('acceptAll')}
                 >
                   {t('acceptAll')}
                 </button>
@@ -251,20 +251,20 @@ const CookieConsentBanner = () => {
               <div className="flex-1 overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
                   <h2
-                    id="cookie-settings-title"
                     className="text-xl font-semibold text-gray-900 dark:text-white"
+                    id="cookie-settings-title"
                   >
                     {t('cookieSettings')}
                   </h2>
                   <button
-                    type="button"
+                    aria-describedby="cookie-settings-title"
+                    aria-label={t('close')}
+                    className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     onClick={() => {
                       cachedFocusableElements.current = null
                       setShowDetails(false)
                     }}
-                    className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    aria-label={t('close')}
-                    aria-describedby="cookie-settings-title"
+                    type="button"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -287,8 +287,8 @@ const CookieConsentBanner = () => {
 
                     return (
                       <div
-                        key={category}
                         className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                        key={category}
                       >
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-3">
@@ -306,16 +306,16 @@ const CookieConsentBanner = () => {
                           </div>
                           <CookieCategoryToggle
                             category={category}
-                            checked={settings[category]}
                             categoryName={categoryName}
-                            requiredLabel={t('required')}
+                            checked={settings[category]}
                             onChange={handleCategoryToggle}
+                            requiredLabel={t('required')}
                           />
                         </div>
 
                         <p
-                          id={`${category}-description`}
                           className="text-sm text-gray-600 dark:text-gray-300 mb-3"
+                          id={`${category}-description`}
                         >
                           {categoryDescription}
                         </p>
@@ -323,19 +323,19 @@ const CookieConsentBanner = () => {
                         {cookiesInCategory.length > 0 && (
                           <details className="text-xs text-gray-500 dark:text-gray-400">
                             <summary
-                              className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
                               aria-label={t('viewCookiesAriaLabel', {
                                 categoryName,
                                 count: cookiesInCategory.length,
                               })}
+                              className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
                             >
                               {t('viewCookies')} ({cookiesInCategory.length})
                             </summary>
                             <ul className="mt-2 space-y-2 pl-4">
                               {cookiesInCategory.map(cookie => (
                                 <li
-                                  key={cookie.name}
                                   className="border-l-2 border-gray-200 dark:border-gray-700 pl-3"
+                                  key={cookie.name}
                                 >
                                   <div className="font-mono font-medium">
                                     {cookie.name}
@@ -359,23 +359,23 @@ const CookieConsentBanner = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button
-                  type="button"
-                  onClick={handleRejectAll}
                   className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={handleRejectAll}
+                  type="button"
                 >
                   {t('rejectAll')}
                 </button>
                 <button
-                  type="button"
-                  onClick={handleAcceptAll}
                   className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
+                  onClick={handleAcceptAll}
+                  type="button"
                 >
                   {t('acceptAll')}
                 </button>
                 <button
-                  type="button"
-                  onClick={handleSavePreferences}
                   className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+                  onClick={handleSavePreferences}
+                  type="button"
                 >
                   {t('savePreferences')}
                 </button>

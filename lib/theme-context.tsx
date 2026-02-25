@@ -19,9 +19,9 @@ function useEffectWhenInitialized(
 }
 
 interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
   resolvedTheme: 'light' | 'dark'
+  setTheme: (theme: Theme) => void
+  theme: Theme
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)

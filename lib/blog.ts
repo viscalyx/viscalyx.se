@@ -3,16 +3,16 @@ import { isValidDate, normalizeDate } from './date-utils'
 
 // BlogPostMetadata without content (for listings - stored in blog-data.json)
 export interface BlogPostMetadata {
-  slug: string
-  title: string
-  date?: string
   author: string
+  category?: string
+  date?: string
   excerpt: string
   image: string
   imageAlt?: string
-  tags: string[]
   readTime: string
-  category?: string
+  slug: string
+  tags: string[]
+  title: string
 }
 
 // BlogPost with content (for single post pages)

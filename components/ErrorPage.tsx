@@ -31,16 +31,16 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
       </p>
       <div className="flex gap-4">
         <button
-          type="button"
-          onClick={reset}
-          className="rounded-lg bg-primary-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
           aria-label={t('tryAgain')}
+          className="rounded-lg bg-primary-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+          onClick={reset}
+          type="button"
         >
           {t('tryAgain')}
         </button>
         <Link
-          href={`/${locale}`}
           className="rounded-lg border border-secondary-300 px-6 py-3 font-medium text-secondary-700 transition-colors duration-200 hover:bg-secondary-100 dark:border-secondary-600 dark:text-secondary-300 dark:hover:bg-secondary-800"
+          href={`/${locale}`}
         >
           {t('goHome')}
         </Link>

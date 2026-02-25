@@ -212,10 +212,10 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
         {showSuccess && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
             className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -10 }}
           >
             <p className="text-sm text-green-800 dark:text-green-200">
               ✓ {t('settingsSaved')}
@@ -225,10 +225,10 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
         {showError && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
             className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -10 }}
           >
             <p className="text-sm text-red-800 dark:text-red-200">
               ⚠ {t('settingsError')}
@@ -244,32 +244,32 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
         </h2>
         <div className="flex flex-wrap gap-3">
           <button
-            type="button"
-            onClick={handleAcceptAll}
             className="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+            onClick={handleAcceptAll}
+            type="button"
           >
             {t('acceptAll')}
           </button>
           <button
-            type="button"
-            onClick={handleRejectAll}
             className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+            onClick={handleRejectAll}
+            type="button"
           >
             {t('rejectAll')}
           </button>
           <button
-            type="button"
-            onClick={handleExportData}
             className="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+            onClick={handleExportData}
+            type="button"
           >
             <Download aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('exportData')}
           </button>
           <button
-            type="button"
-            onClick={handleResetConsent}
-            disabled={isLoading}
             className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
+            onClick={handleResetConsent}
+            type="button"
           >
             <Trash2 aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('resetConsent')}
@@ -293,11 +293,11 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
           return (
             <motion.div
-              key={category}
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
               className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-900/50"
+              initial={{ opacity: 0, y: 20 }}
+              key={category}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -315,16 +315,16 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                 </div>
                 <CookieCategoryToggle
                   category={category}
-                  checked={settings[category]}
                   categoryName={categoryName}
-                  requiredLabel={t('required')}
+                  checked={settings[category]}
                   onChange={handleCategoryToggle}
+                  requiredLabel={t('required')}
                 />
               </div>
 
               <p
-                id={`${category}-description`}
                 className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed"
+                id={`${category}-description`}
               >
                 {categoryDescription}
               </p>
@@ -337,8 +337,8 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                   <div className="mt-4 space-y-4 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
                     {cookiesInCategory.map(cookie => (
                       <div
-                        key={cookie.name}
                         className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg"
+                        key={cookie.name}
                       >
                         <div className="font-mono font-medium text-primary-600 dark:text-primary-400 mb-2">
                           {cookie.name}
@@ -375,10 +375,10 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       {/* Save Button */}
       <div className="flex justify-end">
         <button
-          type="button"
-          onClick={handleSaveSettings}
-          disabled={isLoading}
           className="px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading}
+          onClick={handleSaveSettings}
+          type="button"
         >
           {isLoading ? t('saving') : t('savePreferences')}
         </button>
@@ -386,16 +386,16 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
       {/* Reset Confirmation Modal */}
       <ConfirmationModal
+        cancelText={t('cancel')}
+        confirmIcon={<Trash2 aria-hidden="true" className="w-4 h-4" />}
+        confirmLoading={isLoading}
+        confirmText={t('confirmReset')}
         isOpen={showResetConfirmation}
+        message={t('resetConfirmation')}
         onClose={() => setShowResetConfirmation(false)}
         onConfirm={confirmResetConsent}
         title={t('resetConfirmationTitle')}
-        message={t('resetConfirmation')}
-        confirmText={t('confirmReset')}
-        cancelText={t('cancel')}
         variant="danger"
-        confirmLoading={isLoading}
-        confirmIcon={<Trash2 className="w-4 h-4" aria-hidden="true" />}
       />
     </div>
   )

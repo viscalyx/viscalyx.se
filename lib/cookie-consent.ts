@@ -8,17 +8,17 @@ import { deleteCookie as deleteCookieUtil, setCookie } from './cookie-utils'
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
 
 export interface CookieConsentSettings {
-  'strictly-necessary': boolean
   analytics: boolean
   preferences: boolean
+  'strictly-necessary': boolean
 }
 
 export interface CookieInfo {
-  name: string
   category: CookieCategory
-  purpose: string
   duration: string
+  name: string
   provider?: string
+  purpose: string
 }
 
 // Default consent settings (only strictly necessary cookies are enabled by default)
