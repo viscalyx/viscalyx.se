@@ -20,6 +20,7 @@ const ThemeToggle = () => {
       <div className="flex items-center gap-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
+            type="button"
             key={value}
             onClick={() => setTheme(value)}
             className={`

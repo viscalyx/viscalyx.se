@@ -179,9 +179,8 @@ export function extractTableOfContentsServer(
   const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h[2-4]>/gi
   const headings: TocItem[] = []
   const usedIds = new Set<string>()
-  let match
-
-  while ((match = headingRegex.exec(htmlContent)) !== null) {
+  let match: RegExpExecArray | null = headingRegex.exec(htmlContent)
+  while (match !== null) {
     const level = Number.parseInt(match[1], 10)
     const raw = match[2]
     const text = extractCleanText(raw)
@@ -189,6 +188,7 @@ export function extractTableOfContentsServer(
     const id = ensureUniqueId(baseId, usedIds)
 
     headings.push({ id, text, level })
+    match = headingRegex.exec(htmlContent)
   }
 
   return headings

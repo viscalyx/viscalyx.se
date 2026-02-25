@@ -27,7 +27,9 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
       const existingContainers = document.querySelectorAll(
         '.alert-icon-container'
       )
-      existingContainers.forEach(container => container.remove())
+      existingContainers.forEach(container => {
+        container.remove()
+      })
 
       // Find all alert titles that need icons
       const alertTitles = document.querySelectorAll(

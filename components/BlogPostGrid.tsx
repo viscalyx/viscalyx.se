@@ -68,6 +68,7 @@ const BlogPostGrid = ({
           >
             {allCategories.map(category => (
               <button
+                type="button"
                 key={category}
                 onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-full transition-colors duration-200 ${
