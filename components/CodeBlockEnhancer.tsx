@@ -1,12 +1,9 @@
 'use client'
 
-import CopyButton from '@/components/CopyButton'
-
-import { createRoot, type Root } from 'react-dom/client'
+import { NextIntlClientProvider, useLocale, useMessages } from 'next-intl'
 import { useEffect } from 'react'
-
-import { useLocale, useMessages } from 'next-intl'
-import { NextIntlClientProvider } from 'next-intl'
+import { createRoot, type Root } from 'react-dom/client'
+import CopyButton from '@/components/CopyButton'
 
 interface CodeBlockEnhancerProps {
   contentLoaded?: boolean

@@ -1,10 +1,10 @@
 'use client'
 
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { GitHubIcon } from './SocialIcons'
 
 const OpenSource = () => {

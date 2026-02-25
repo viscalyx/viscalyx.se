@@ -1,6 +1,5 @@
-import { SITE_URL } from '@/lib/constants'
-
 import type { Organization, WebSite, WithContext } from 'schema-dts'
+import { SITE_URL } from '@/lib/constants'
 
 /**
  * Generate JSON-LD structured data for the Organization.

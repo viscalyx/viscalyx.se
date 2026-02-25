@@ -1,7 +1,7 @@
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 // Mock next-intl
 let mockLocale = 'en'

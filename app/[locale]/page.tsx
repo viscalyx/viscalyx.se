@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import About from '@/components/About'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -5,9 +7,6 @@ import Hero from '@/components/Hero'
 import OpenSource from '@/components/OpenSource'
 import ScrollToTop from '@/components/ScrollToTop'
 import { SITE_URL } from '@/lib/constants'
-import { getTranslations } from 'next-intl/server'
-
-import type { Metadata } from 'next'
 
 type Props = { params: Promise<{ locale: string }> }
 

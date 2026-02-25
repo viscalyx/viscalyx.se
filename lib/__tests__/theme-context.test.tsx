@@ -1,8 +1,7 @@
-import { isValidTheme, ThemeProvider, useTheme } from '@/lib/theme-context'
 import { act, renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { isValidTheme, ThemeProvider, useTheme } from '@/lib/theme-context'
 
 // Mock cookie-consent
 const hasConsentMock = vi.fn((_category: string) => true)

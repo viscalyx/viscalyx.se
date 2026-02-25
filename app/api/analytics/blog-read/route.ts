@@ -1,6 +1,6 @@
-import { SITE_URL } from '@/lib/constants'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { NextResponse } from 'next/server'
+import { SITE_URL } from '@/lib/constants'
 
 interface BlogReadEvent {
   slug: string

@@ -1,5 +1,11 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { ExternalLink, Mail } from 'lucide-react'
+import type { Route } from 'next'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   BlueskyIcon,
   GitHubIcon,
@@ -7,13 +13,6 @@ import {
   MastodonIcon,
   XIcon,
 } from '@/components/SocialIcons'
-import { motion } from 'framer-motion'
-import { ExternalLink, Mail } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-
-import type { Route } from 'next'
 
 interface FooterLink {
   name: string

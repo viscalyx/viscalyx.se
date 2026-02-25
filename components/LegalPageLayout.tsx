@@ -1,12 +1,11 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { useFormatter } from 'next-intl'
+import type { ReactNode } from 'react'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { motion } from 'framer-motion'
-import { useFormatter } from 'next-intl'
-
-import type { ReactNode } from 'react'
 
 interface LegalPageLayoutProps {
   title: string

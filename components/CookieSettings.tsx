@@ -1,12 +1,16 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Download, Settings, Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 import ConfirmationModal from '@/components/ConfirmationModal'
 import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import {
-  cleanupCookies,
   type CookieCategory,
   type CookieConsentSettings,
+  cleanupCookies,
   cookieRegistry,
   defaultConsentSettings,
   getConsentSettings,
@@ -15,10 +19,6 @@ import {
   saveConsentSettings,
 } from '@/lib/cookie-consent'
 import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
-import { motion } from 'framer-motion'
-import { Download, Settings, Trash2 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
 
 interface CookieSettingsProps {
   onSettingsChange?: (settings: CookieConsentSettings) => void

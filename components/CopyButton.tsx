@@ -1,10 +1,8 @@
 'use client'
 
-import { CopyIcon, CheckmarkIcon } from '@/components/BlogIcons'
-
 import { useTranslations } from 'next-intl'
-
 import { useState } from 'react'
+import { CheckmarkIcon, CopyIcon } from '@/components/BlogIcons'
 
 interface CopyButtonProps {
   text: string

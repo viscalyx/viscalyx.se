@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react'
 import {
   BlueskyIcon,
   DiscordIcon,
@@ -6,7 +7,6 @@ import {
   MastodonIcon,
   XIcon,
 } from '@/components/SocialIcons'
-import { Mail } from 'lucide-react'
 
 // Icon name type for serializable data
 export type SocialIconName =
