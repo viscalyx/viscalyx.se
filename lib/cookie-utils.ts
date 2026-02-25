@@ -11,6 +11,11 @@ export function getSecureAttribute(): string {
   return window.location.protocol === 'https:' ? '; Secure' : ''
 }
 
+function writeCookie(cookie: string): void {
+  const doc = window.document as Document & { cookie: string }
+  doc.cookie = cookie
+}
+
 /**
  * Set a cookie with proper security attributes
  * @param name - Cookie name
@@ -47,7 +52,7 @@ export function setCookie(
   }
 
   try {
-    document.cookie = cookieString
+    writeCookie(cookieString)
   } catch (error) {
     console.error('Failed to set cookie:', error)
   }
@@ -73,20 +78,26 @@ export function deleteCookie(
 
   try {
     // Delete for current path
-    document.cookie = `${name}=; path=${path}; ${expiresPast}${secureAttribute}`
+    writeCookie(`${name}=; path=${path}; ${expiresPast}${secureAttribute}`)
 
     // Delete for specified domain
     if (domain) {
-      document.cookie = `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`
+      writeCookie(
+        `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`
+      )
     } else {
       // Delete for root domain
       const currentDomain = window.location.hostname
-      document.cookie = `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+      writeCookie(
+        `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+      )
 
       // Delete for parent domain (if subdomain)
       if (currentDomain.includes('.')) {
         const parentDomain = currentDomain.substring(currentDomain.indexOf('.'))
-        document.cookie = `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+        writeCookie(
+          `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+        )
       }
     }
   } catch (error) {

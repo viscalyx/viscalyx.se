@@ -40,7 +40,7 @@
 .blog-content .code-block-wrapper
   pre[class*="language-"]:has(.code-language-label),
 .blog-content .code-block-wrapper pre[class*="language-"][data-language] {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 /* ===== Language Label Styling ===== */
@@ -124,11 +124,11 @@
 
 /* Prevent clipping of language labels and copy buttons */
 .blog-content pre[class*="language-"] {
-  overflow-x: auto !important; /* allow horizontal scrolling */
-  overflow-y: auto !important; /* prevent uncontrolled height growth */
+  overflow-x: auto; /* allow horizontal scrolling */
+  overflow-y: auto; /* prevent uncontrolled height growth */
   max-height: 500px; /* limit vertical expansion */
-  position: relative !important; /* ensure label positioning works */
-  padding-top: 1rem !important; /* extra space between code and top of container */
+  position: relative; /* ensure label positioning works */
+  padding-top: 1rem; /* extra space between code and top of container */
   overflow-clip-margin: 1rem; /* prevent label clipping */
 }
 

@@ -17,8 +17,8 @@
  *   public/og-blog-sv.png   — OG image for the Swedish blog page
  */
 
-const fs = require('fs')
-const path = require('path')
+const fs = require('node:fs')
+const path = require('node:path')
 
 // Brand colors (from globals.css --color-primary-*)
 const PRIMARY_600 = '#2563eb'

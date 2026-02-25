@@ -182,7 +182,7 @@ export function extractTableOfContentsServer(
   let match
 
   while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const level = Number.parseInt(match[1])
+    const level = Number.parseInt(match[1], 10)
     const raw = match[2]
     const text = extractCleanText(raw)
     const baseId = createSlugId(text, level, options)
@@ -212,7 +212,7 @@ export function extractTableOfContentsClient(
 
   return headings.map(heading => {
     const text = heading.textContent || ''
-    const level = Number.parseInt(heading.tagName.charAt(1))
+    const level = Number.parseInt(heading.tagName.charAt(1), 10)
     const baseId = createSlugId(text, level, options)
     const id = ensureUniqueId(baseId, usedIds)
 
@@ -266,8 +266,8 @@ export function addHeadingIds(
 
   return htmlContent.replace(
     /<h([2-4])([^>]*)>([\s\S]*?)<\/h[2-4]>/gi,
-    (match, level, attributes, text) => {
-      const levelNum = Number.parseInt(level)
+    (_match, level, attributes, text) => {
+      const levelNum = Number.parseInt(level, 10)
       const cleanedText = extractCleanText(text)
       const baseId = createSlugId(cleanedText, levelNum, options)
       const id = ensureUniqueId(baseId, usedIds)

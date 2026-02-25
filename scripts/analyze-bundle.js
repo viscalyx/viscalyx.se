@@ -17,10 +17,10 @@
  * Exports marked with @internal are intended for tests and are not a stable public API.
  */
 
-const fs = require('fs')
-const path = require('path')
-const zlib = require('zlib')
-const { execSync } = require('child_process')
+const fs = require('node:fs')
+const path = require('node:path')
+const zlib = require('node:zlib')
+const { execSync } = require('node:child_process')
 
 // Cloudflare Workers limits (gzipped)
 const LIMITS = {
@@ -452,7 +452,7 @@ function outputForCI(results) {
   // Write to GITHUB_OUTPUT if available
   const githubOutput = process.env.GITHUB_OUTPUT
   if (githubOutput) {
-    fs.appendFileSync(githubOutput, output.join('\n') + '\n')
+    fs.appendFileSync(githubOutput, `${output.join('\n')}\n`)
   }
 
   // Also print to stdout for debugging
@@ -573,7 +573,7 @@ function outputForTerminal(results) {
     )
   }
 
-  console.log('\n' + '='.repeat(60))
+  console.log(`\n${'='.repeat(60)}`)
   console.log(`\n${statusEmoji} Status: ${results.statusMessage}`)
 
   console.log('\n📋 Cloudflare Workers Limits:\n')

@@ -155,7 +155,7 @@
   }
   /* Generic dark mode title color override for all alert types */
   .dark .blog-content .github-alert .github-alert-title {
-    color: var(--alert-title-color-dark) !important;
+    color: var(--alert-title-color-dark);
   }
   /* The following per-variant dark title overrides are now redundant and can be removed:
        .dark .blog-content .github-alert-warning .github-alert-title { color: var(--alert-title-color-dark) !important; }
@@ -223,16 +223,16 @@
 
   /* Hide the title for quote alerts */
   .blog-content .github-alert-quote .github-alert-title {
-    display: none !important;
+    display: none;
   }
 
   /* Style the content like a regular blockquote */
   .blog-content .github-alert-quote .github-alert-content {
     @apply text-secondary-600 dark:text-secondary-400;
-    font-style: italic !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    font-style: italic;
+    border: none;
+    padding: 0;
+    margin: 0;
   }
 
   .blog-content .github-alert-quote .github-alert-content p {
@@ -264,7 +264,7 @@
   /* Remove graphical backticks added by prose plugin */
   .blog-content code::before,
   .blog-content code::after {
-    content: none !important;
+    content: none;
   }
 
   /* Ensure inline code in blockquotes and alerts has better contrast */
@@ -278,7 +278,7 @@
   .blog-content blockquote code::after,
   .blog-content .github-alert code::before,
   .blog-content .github-alert code::after {
-    content: none !important;
+    content: none;
   }
 
   .blog-content a {

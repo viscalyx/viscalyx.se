@@ -30,11 +30,11 @@ class ConsentEventEmitter {
    * Subscribe to consent events
    */
   on(eventType: ConsentEventType, listener: ConsentEventListener): () => void {
-    if (!this.listeners.has(eventType)) {
-      this.listeners.set(eventType, new Set())
+    let eventListeners = this.listeners.get(eventType)
+    if (!eventListeners) {
+      eventListeners = new Set()
+      this.listeners.set(eventType, eventListeners)
     }
-
-    const eventListeners = this.listeners.get(eventType)!
     eventListeners.add(listener)
 
     // Return unsubscribe function
