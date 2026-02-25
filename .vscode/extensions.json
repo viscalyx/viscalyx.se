@@ -30,6 +30,7 @@
 
     // GitHub Copilot
     "GitHub.copilot-chat",
+    "openai.chatgpt",
 
     // Testing
     "vitest.explorer"

@@ -35,8 +35,8 @@
       "userGid": "automatic"
     },
     "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
-      "plugins": "zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search",
-      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git https://github.com/zsh-users/zsh-history-substring-search.git"
+      "plugins": "zsh-autosuggestions zsh-syntax-highlighting",
+      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git"
     }
   },
 
@@ -59,6 +59,7 @@
         "gruntfuggly.todo-tree",
         "usernamehw.errorlens",
         "GitHub.copilot-chat",
+        "openai.chatgpt",
         "vitest.explorer",
         "bierner.markdown-mermaid",
         "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
