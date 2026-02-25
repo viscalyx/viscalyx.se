@@ -12,7 +12,7 @@ Validate every requested finding against the current code before editing.
 1. Inspect each comment and map it to concrete files, symbols, and lines.
 2. Read the current implementation and tests before changing anything.
 3. Classify each finding as `valid`, `invalid`, or `unclear`.
-4. Fix only `valid` findings.
+4. Fix only `valid` findings, make sure it passes all unit tests, integration tests, linting, formatting, and consistency checks.
 5. For `invalid` findings, do not patch code and record why.
 6. For `unclear` findings, gather additional evidence (tests, grep results, runtime behavior) before deciding.
 7. Run focused verification for each applied fix.
