@@ -192,10 +192,10 @@ Native Azure solution with deep integration:
 ## Common Pitfalls to Avoid
 
 1. **Not testing thoroughly**: Always test in non-production environments first
-2. **Ignoring state management**: Understand how your tool manages state
-3. **Poor secret management**: Use proper secret management solutions
-4. **Lack of documentation**: Document your architecture and decisions
-5. **Not planning for disaster recovery**: Include backup and recovery
+1. **Ignoring state management**: Understand how your tool manages state
+1. **Poor secret management**: Use proper secret management solutions
+1. **Lack of documentation**: Document your architecture and decisions
+1. **Not planning for disaster recovery**: Include backup and recovery
    procedures
 
 ## Getting Started
