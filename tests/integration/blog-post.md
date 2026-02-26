@@ -218,12 +218,12 @@ tables.
 
 1. Set viewport to iPhone 12/13 logical size (`390x844`) with `isMobile: true`
    and `hasTouch: true`.
-2. Navigate to the test post (`/blog/ssh-signing-keys-for-github-codespaces`).
-3. Locate an overflowing table within `.blog-content table`.
-4. Record initial `html` and `body` width metrics (`clientWidth` and
+1. Navigate to the test post (`/blog/ssh-signing-keys-for-github-codespaces`).
+1. Locate an overflowing table within `.blog-content table`.
+1. Record initial `html` and `body` width metrics (`clientWidth` and
    `scrollWidth`).
-5. Programmatically scroll the table horizontally by increasing `scrollLeft`.
-6. Assert page widths remain stable and table `scrollLeft` increased.
+1. Programmatically scroll the table horizontally by increasing `scrollLeft`.
+1. Assert page widths remain stable and table `scrollLeft` increased.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
