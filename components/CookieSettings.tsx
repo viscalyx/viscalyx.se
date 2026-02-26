@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Download, Settings, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -210,31 +210,35 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           </div>
         )}
 
-        {showSuccess && (
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
-            exit={{ opacity: 0, y: -10 }}
-            initial={{ opacity: 0, y: -10 }}
-          >
-            <p className="text-sm text-green-800 dark:text-green-200">
-              ✓ {t('settingsSaved')}
-            </p>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -10 }}
+              key="settings-success"
+            >
+              <p className="text-sm text-green-800 dark:text-green-200">
+                ✓ {t('settingsSaved')}
+              </p>
+            </motion.div>
+          )}
 
-        {showError && (
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-            exit={{ opacity: 0, y: -10 }}
-            initial={{ opacity: 0, y: -10 }}
-          >
-            <p className="text-sm text-red-800 dark:text-red-200">
-              ⚠ {t('settingsError')}
-            </p>
-          </motion.div>
-        )}
+          {showError && (
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -10 }}
+              key="settings-error"
+            >
+              <p className="text-sm text-red-800 dark:text-red-200">
+                ⚠ {t('settingsError')}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Quick Actions */}

@@ -37,7 +37,7 @@ const CookieCategoryToggle = ({
         aria-describedby={`${category}-description`}
         aria-label={`${categoryName} ${isRequired ? requiredLabel : ''}`.trim()}
         checked={checked}
-        className="sr-only"
+        className="peer sr-only"
         disabled={isRequired}
         id={`toggle-${category}`}
         onChange={() => onChange(category)}
@@ -45,7 +45,10 @@ const CookieCategoryToggle = ({
       />
       <div
         className={`
-          w-11 h-6 rounded-full transition-colors duration-200 ease-in-out
+          h-6 w-11 rounded-full transition-colors duration-200 ease-in-out
+          peer-focus-visible:ring-2 peer-focus-visible:ring-primary-500
+          peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white
+          dark:peer-focus-visible:ring-offset-secondary-900
           ${
             checked
               ? 'bg-primary-600 dark:bg-primary-500'
