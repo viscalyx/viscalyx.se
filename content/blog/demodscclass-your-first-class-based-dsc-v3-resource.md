@@ -249,7 +249,7 @@ should implement `Export()`. Always ask two questions:
 
 > [!INFO]
 > For example, exporting all Windows services from a machine makes sense and is
-> relatily cheap. Exporting the whole registry _might_ make sense, but isn't a
+> relatively cheap. Exporting the whole registry _might_ make sense, but isn't a
 > cheap operation to perform.
 
 ### Complete class implementation
@@ -344,7 +344,7 @@ $env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Lo
 ```
 <!-- markdownlint-enable MD013 -->
 
-This commands adds your current directory to be searchable. PowerShell can now
+This command adds your current directory to be searchable. PowerShell can now
 find your DSC resource when you list or invoke capabilities against it.
 
 ### List available resources
