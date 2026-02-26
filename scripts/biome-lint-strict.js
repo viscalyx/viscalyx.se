@@ -42,23 +42,36 @@ function runReadableLint(args) {
   )
 }
 
-function main() {
-  const args = process.argv.slice(2)
-  const jsonRun = runBiomeJsonLint(args)
+function main(
+  args = process.argv.slice(2),
+  impl = {
+    runBiomeJsonLint,
+    parseBiomeJson,
+    runReadableLint,
+    processObj: process,
+    consoleObj: console,
+  },
+) {
+  const { runBiomeJsonLint: runJson, parseBiomeJson: parseJson } = impl
+  const runReadable = impl.runReadableLint
+  const processObj = impl.processObj
+  const consoleObj = impl.consoleObj
+
+  const jsonRun = runJson(args)
 
   if (jsonRun.error) {
-    console.error(jsonRun.error.message)
-    process.exit(1)
+    consoleObj.error(jsonRun.error.message)
+    processObj.exit(1)
   }
 
   let result
   try {
-    result = parseBiomeJson(jsonRun.stdout)
+    result = parseJson(jsonRun.stdout)
   } catch (error) {
-    if (jsonRun.stdout) process.stdout.write(jsonRun.stdout)
-    if (jsonRun.stderr) process.stderr.write(jsonRun.stderr)
-    console.error(`Failed to parse Biome JSON output: ${error.message}`)
-    process.exit(jsonRun.status ?? 1)
+    if (jsonRun.stdout) processObj.stdout.write(jsonRun.stdout)
+    if (jsonRun.stderr) processObj.stderr.write(jsonRun.stderr)
+    consoleObj.error(`Failed to parse Biome JSON output: ${error.message}`)
+    processObj.exit(jsonRun.status ?? 1)
   }
 
   const errors = result?.summary?.errors ?? 0
@@ -67,26 +80,37 @@ function main() {
   const hasAnyDiagnostics = errors > 0 || warnings > 0 || infos > 0
 
   if (!hasAnyDiagnostics) {
-    process.stdout.write(
+    processObj.stdout.write(
       'Checked with strict mode: 0 errors, 0 warnings, 0 infos.\n',
     )
-    process.exit(0)
+    processObj.exit(0)
   }
 
-  const readableRun = runReadableLint(args)
+  const readableRun = runReadable(args)
   if (readableRun.error) {
-    console.error(readableRun.error.message)
-    process.exit(1)
+    consoleObj.error(readableRun.error.message)
+    processObj.exit(1)
   }
   const summaryMessage = `Strict summary: errors ${errors}, warnings ${warnings}, infos ${infos}.`
   if ((readableRun.status ?? 1) !== 0) {
-    console.error(summaryMessage)
-    process.exit(readableRun.status ?? 1)
+    consoleObj.error(summaryMessage)
+    processObj.exit(readableRun.status ?? 1)
   }
 
-  console.error(summaryMessage)
+  consoleObj.error(summaryMessage)
 
-  process.exit(1)
+  processObj.exit(1)
 }
 
-main()
+/* c8 ignore next 3 */
+if (require.main === module) {
+  main()
+}
+
+module.exports = {
+  getNpxCommand,
+  runBiomeJsonLint,
+  parseBiomeJson,
+  runReadableLint,
+  main,
+}

@@ -350,7 +350,10 @@
     "inotifywait",
     "sparsebundle",
     "signingkey",
-    "lightbox"
+    "lightbox",
+
+    // Biome rule names
+    "noNoninteractiveTabindex"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "flagWords": [
