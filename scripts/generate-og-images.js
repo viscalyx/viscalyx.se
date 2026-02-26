@@ -152,7 +152,7 @@ async function generateBlogOG(
 ) {
   if (!sharpImpl) {
     throw new Error(
-      'sharp is not installed. Install with "npm install sharp" to generate OG images.',
+      'sharp is not installed. Run "npm install" and re-run to generate OG images. sharp is listed in devDependencies for this project.',
     )
   }
 
