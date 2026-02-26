@@ -240,9 +240,10 @@ DSC v3.
 ```
 <!-- markdownlint-enable MD013 -->
 
-You can only call the `Export()` method by instantiating the class. Prior DSC
-versions can't directly invoke the capability. Also remember, not all classes
-should implement `Export()`. Always ask two questions:
+Call `Export()` as a static class method, for example `[DemoDscClass]::Export()`.
+PSDSC (the versions prior to DSCv3) can't directly invoke the capability this
+way. Also remember, not all classes should implement `Export()`, so evaluate
+that decision on a per-class basis. Always ask two questions:
 
 1. Does it make sense to implement `Export()`?
 2. Is it a cheap operation to perform?
