@@ -99,6 +99,14 @@ export function useBlogAnalytics(
     trackTimeSpent = true,
     progressThreshold = 50, // Track when user reads 50% of content
   } = options
+  const coercedProgressThreshold = Number(progressThreshold)
+  const normalizedProgressThreshold = Math.max(
+    0,
+    Math.min(
+      100,
+      Number.isFinite(coercedProgressThreshold) ? coercedProgressThreshold : 0,
+    ),
+  )
 
   const startTime = useRef<number | null>(null)
   const hasTrackedProgress = useRef<boolean>(false)
@@ -179,7 +187,7 @@ export function useBlogAnalytics(
         // Track when user reaches the progress threshold
         if (
           !hasTrackedProgress.current &&
-          scrollProgress >= progressThreshold
+          scrollProgress >= normalizedProgressThreshold
         ) {
           hasTrackedProgress.current = true
           const timeSpent =
@@ -256,7 +264,7 @@ export function useBlogAnalytics(
   }, [
     trackReadProgress,
     trackTimeSpent,
-    progressThreshold,
+    normalizedProgressThreshold,
     trackEvent, // Include trackEvent but it's now stable (no deps) so won't cause re-renders
   ])
 

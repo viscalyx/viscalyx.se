@@ -86,7 +86,7 @@ try {
     console.log(
       '    • Missing test files - ensure test directory structure is correct',
     )
-    console.log('    • Check if build-blog-data-sanitization.test.js exists')
+    console.log('    • Check if build-blog-data-sanitization.test.mjs exists')
     console.log('    • Check if build-blog-data-integration.test.js exists')
     console.log('    • Verify content/blog directory exists with test files')
   } else if (

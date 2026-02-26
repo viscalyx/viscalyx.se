@@ -42,6 +42,7 @@ const ScrollToTop = () => {
           exit={{ opacity: 0, scale: 0 }}
           initial={{ opacity: 0, scale: 0 }}
           onClick={scrollToTop}
+          type="button"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
