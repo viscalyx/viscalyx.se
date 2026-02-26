@@ -38,8 +38,8 @@ Lint/format/spelling/type checking planning checklist:
 
 Verification checklist:
 
-1. Run focused lint, format, spelling, and type checks on changed files.
-2. Run focused tests for affected behavior.
+1. Run lint, format, spelling, tests and type checks on changed files, use `npm run check` until clean`
+2. Run focused integration tests for affected behavior.
 3. Report command results per finding.
 
 ## Decision Rules
