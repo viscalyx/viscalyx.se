@@ -2,7 +2,7 @@
 title: 'Time Machine Network Backup Server on Hyper-V'
 date: '2025-08-15'
 author: 'Johan Ljunggren'
-excerpt: 'A step-by-step recipe for hosting a macOS-compatible Time Machine target inside an Ubuntu Server VM on Hyper-V (Windows 11), plus a troubleshooting checklist for the common "read-only share" error.'
+excerpt: 'Step-by-step guide to host a macOS Time Machine backup target in an Ubuntu Server VM on Hyper-V (Windows 11)'
 image: '/enterprise-server-rear-fans-leds-monochrome.png'
 imageAlt: 'Rear view of a rack-mounted enterprise server with rows of cooling fans, honeycomb vents, bundled cables, and small green status LEDs in low light.'
 tags: ['Hyper-V', 'macOS', 'Time Machine', 'Ubuntu', 'Samba', 'Backup']

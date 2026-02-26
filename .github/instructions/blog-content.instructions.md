@@ -15,7 +15,7 @@ applyTo: 'content/blog/**/*.md'
 title: 'Post Title'
 date: 'YYYY-MM-DD'
 author: 'Author Name'
-excerpt: 'Max 160 chars for SEO'
+excerpt: 'SEO summary (target 140-155 chars, hard max 160)'
 image: '/temporary-image.png'
 imageAlt: 'Alt text describing the subject the final image should depict'
 tags: ['tag1', 'tag2']
@@ -24,6 +24,12 @@ category: 'Any category — reuse existing ones when possible (e.g., DevOps, Pow
 ```
 
 **Image**: Use `/temporary-image.png` as a placeholder until you add a final image to the `/public` folder. Write descriptive `imageAlt` text that guides what the final image should depict.
+
+**Excerpt SEO rule**:
+
+- Treat `excerpt` as the post meta description
+- Aim for 140-155 characters; never exceed 160 characters
+- Keep it specific and include key context (topic + platform/tool + outcome)
 
 ## Content Rules
 

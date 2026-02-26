@@ -12,7 +12,7 @@ Create `/content/blog/post-slug.md`:
 title: 'Post Title'
 date: 'YYYY-MM-DD'
 author: 'Author Name'
-excerpt: 'Max 160 chars'
+excerpt: 'SEO summary (target 140-155 chars, hard max 160)'
 image: '/temporary-image.png'
 imageAlt: 'Alt text describing the subject the final image should depict'
 tags: ['tag1', 'tag2']
@@ -23,6 +23,10 @@ readTime: '5 min'
 
 Rules:
 
+- `excerpt` is the SEO meta description: write 140-155 characters when possible,
+  never exceed 160 characters
+- `excerpt` must be a concise summary that preserves key post context (topic,
+  platform/tool, and main outcome)
 - Sections: `##`, subsections: `###`
 - Code blocks: specify language
 - For markdownlint `MD013`: disable before markdown tables, fenced code blocks and `<img>` tags, then re-enable immediately after each block
