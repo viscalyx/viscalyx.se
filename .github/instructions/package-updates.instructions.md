@@ -6,7 +6,8 @@ applyTo: 'package.json'
 
 ## Version Specifiers
 
-- Pinned versions (no `^` or `~`) are intentional — do not add range prefixes without confirming
+- If a dependency is already pinned (no `^` or `~`), treat that as intentional — do not change it to a range or another version without confirming
+- Do not normalize existing valid ranges (`^`/`~`) to pinned versions unless explicitly requested
 - The `overrides` section may pin transitive dependencies — check for needed updates when direct dependencies change
 
 ## Compatibility
