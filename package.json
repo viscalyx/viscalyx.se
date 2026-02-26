@@ -67,8 +67,8 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@cspell/dict-sv": "^2.3.2",
     "@biomejs/biome": "^2.2.6",
+    "@cspell/dict-sv": "^2.3.2",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.2.0",
     "@testing-library/jest-dom": "^6.9.1",
@@ -97,7 +97,8 @@
     "tailwindcss": "^4.2.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18",
-    "wrangler": "^4.67.0"
+    "wrangler": "^4.67.0",
+    "sharp": "^0.34.5"
   },
   "overrides": {
     "@swc/helpers": "0.5.18",
