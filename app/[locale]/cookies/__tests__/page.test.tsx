@@ -6,12 +6,7 @@ vi.mock('next-intl/server', () => ({
   getTranslations: vi
     .fn()
     .mockResolvedValue((key: string) => `translated:${key}`),
-}))
-
-// Mock next-intl (used by page body)
-vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
-  useFormatter: () => ({
+  getFormatter: vi.fn().mockResolvedValue({
     dateTime: () => 'Jan 1, 2025',
   }),
 }))
@@ -119,14 +114,14 @@ describe('CookiesPage', () => {
   })
 
   describe('CookiesPage component', () => {
-    it('renders page heading', () => {
-      render(<CookiesPage params={Promise.resolve({ locale: 'en' })} />)
+    it('renders page heading', async () => {
+      render(await CookiesPage({ params: Promise.resolve({ locale: 'en' }) }))
 
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
     })
 
-    it('renders header and footer', () => {
-      render(<CookiesPage params={Promise.resolve({ locale: 'en' })} />)
+    it('renders header and footer', async () => {
+      render(await CookiesPage({ params: Promise.resolve({ locale: 'en' }) }))
 
       expect(screen.getByRole('banner')).toBeInTheDocument()
       expect(screen.getByRole('contentinfo')).toBeInTheDocument()
