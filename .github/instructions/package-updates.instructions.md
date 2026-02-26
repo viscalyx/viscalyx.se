@@ -12,7 +12,7 @@ applyTo: 'package.json'
 ## Compatibility
 
 - Next.js and React share tight peer dependency requirements — always verify compatibility before updating either
-- `eslint-config-next` should match the installed Next.js version
+- Keep `@biomejs/biome` and the `biome.json` `$schema` version aligned when upgrading Biome
 - `@types/react` and `@types/react-dom` should match the installed React major version
 
 ## After Any Dependency Change
