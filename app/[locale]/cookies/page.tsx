@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { useFormatter, useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
+import { getFormatter, getTranslations } from 'next-intl/server'
 import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
@@ -47,9 +46,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function CookiesPage() {
-  const translations = useTranslations('cookies')
-  const format = useFormatter()
+export default async function CookiesPage({ params }: Props) {
+  const { locale } = await params
+  const translations = await getTranslations({ locale, namespace: 'cookies' })
+  const format = await getFormatter({ locale })
 
   return (
     <>

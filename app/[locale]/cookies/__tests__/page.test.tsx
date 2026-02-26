@@ -120,13 +120,13 @@ describe('CookiesPage', () => {
 
   describe('CookiesPage component', () => {
     it('renders page heading', () => {
-      render(<CookiesPage />)
+      render(<CookiesPage params={Promise.resolve({ locale: 'en' })} />)
 
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
     })
 
     it('renders header and footer', () => {
-      render(<CookiesPage />)
+      render(<CookiesPage params={Promise.resolve({ locale: 'en' })} />)
 
       expect(screen.getByRole('banner')).toBeInTheDocument()
       expect(screen.getByRole('contentinfo')).toBeInTheDocument()
