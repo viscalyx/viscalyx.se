@@ -23,19 +23,18 @@ messages/{en,sv}.json            → Translations
 - Path alias: `@/*` maps to project root (use instead of relative `../`)
 - Interface for props: `interface ComponentProps { }`
 
-### Imports (ordered, alphabetically within each group)
+### Imports (Biome-ordered, alphabetically within groups)
 
-1. `@/lib/*`, `@/components/*` (path alias imports)
-2. Third-party (`framer-motion`, `lucide-react`)
-3. `next`, `next/*`, `next-intl`
-4. `react`, `react-dom`
-5. Relative imports (`./`, `../`)
-6. Type-only imports (`import type { }`)
+Follow Biome import organization in this repo. Do not enforce alias-first ordering in prose.
+
+1. Third-party/framework packages (`next`, `next/*`, `next-intl`, `react`, `framer-motion`, etc.)
+2. Path alias imports (`@/lib/*`, `@/components/*`)
+3. Relative imports (`./`, `../`)
+4. Type-only imports should follow Biome output (do not maintain a separate manual group)
 
 **Example:**
 
 ```tsx
-import { getConsentSettings } from '@/lib/cookie-consent'
 import { motion } from 'framer-motion'
 import { Cookie, Settings } from 'lucide-react'
 import { Route } from 'next'
@@ -43,6 +42,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import { getConsentSettings } from '@/lib/cookie-consent'
 import LanguageSwitcher from './LanguageSwitcher'
 ```
 
@@ -77,9 +77,9 @@ import LanguageSwitcher from './LanguageSwitcher'
 ```tsx
 'use client'
 
-import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { useTheme } from '@/lib/theme-context'
 
 interface ComponentProps {
   title: string
@@ -104,11 +104,10 @@ export default Component
 ### Server Page Component (data-driven pages in `app/`)
 
 ```tsx
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import ClientIsland from '@/components/ClientIsland'
 import { getData } from '@/lib/data'
-import { getTranslations } from 'next-intl/server'
-
-import type { Metadata } from 'next'
 
 type Props = { params: Promise<{ locale: string }> }
 
