@@ -17,7 +17,7 @@ readTime: '9 min read'
 ---
 
 > [!WARNING]
-> This guide is an AI generated draft, it is still WIP! Goal would be to have
+> This guide is an AI-generated draft, it is still WIP! Goal would be to have
 > it as a part of a guide to set up a lab environment.
 
 **TL;DR** — You can run the latest IPFire (currently **2.29 – Core 195**) on

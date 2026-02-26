@@ -496,7 +496,7 @@ Get-NetFirewallProfile | Select-Object Name, Enabled
 ```
 <!-- markdownlint-enable MD013 -->
 
-## Post upgrade steps
+## Post-upgrade steps
 
 Once the upgrade process has completed successfully, the following steps should
 be taken to clean up any artifacts which were created during the upgrade
