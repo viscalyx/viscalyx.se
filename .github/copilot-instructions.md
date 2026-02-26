@@ -46,9 +46,11 @@ import { useCallback, useEffect, useState } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 ```
 
-### Formatting (Prettier)
+### Biome Formatting and Linting
 
-`semi: false` | `singleQuote: true` | `trailingComma: 'es5'` | `useTabs: false` | `tabWidth: 2` | `arrowParens: 'avoid'`
+- Source of truth for linting/formatting rules: [`/workspace/biome.json`](/workspace/biome.json)
+- When uncertain, follow `biome.json` over prose docs.
+- Keep code aligned with Biome defaults in this repo.
 
 - Use arrow functions for components: `const Component = () => { }`
 - Destructure props inline: `const Component = ({ title }: Props) => { }`
@@ -177,9 +179,10 @@ npm run check              # Run all checks (lint, test, type, format, spell)
 npm run test               # Run tests
 npm run test:watch         # Watch mode testing
 npm run test:coverage      # Coverage report
-npm run lint               # ESLint
+npm run format:check       # Biome format check (no writes)
+npm run lint               # Biome lint check (no formatter writes)
 npm run type-check         # TypeScript checking
-npm run format             # Prettier formatting
+npm run format             # Biome formatting (writes)
 npm run spell              # Spell checking
 
 # Deployment
