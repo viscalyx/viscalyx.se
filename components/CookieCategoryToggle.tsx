@@ -31,7 +31,7 @@ const CookieCategoryToggle = ({
 
   return (
     <label
-      className={`relative inline-flex items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`relative inline-flex min-h-[44px] min-w-[44px] items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <input
         aria-describedby={`${category}-description`}
