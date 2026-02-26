@@ -20,7 +20,8 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLSectionElement | null>(null)
+  const itemCount = items.length
 
   const heightClass = maxHeight === 'sm' ? 'max-h-64' : 'max-h-80'
 
@@ -131,6 +132,53 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
     }
   }, [checkScrollIndicators])
 
+  useEffect(() => {
+    // Force indicator refresh when ToC content changes even without a resize event.
+    if (itemCount >= 0) {
+      checkScrollIndicators()
+    }
+  }, [checkScrollIndicators, itemCount])
+
+  const handleTocKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const lineHeight = 40
+    const pageHeight = scrollContainer.clientHeight - lineHeight
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: lineHeight, behavior: 'smooth' })
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: -lineHeight, behavior: 'smooth' })
+        break
+      case 'PageDown':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: pageHeight, behavior: 'smooth' })
+        break
+      case 'PageUp':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: -pageHeight, behavior: 'smooth' })
+        break
+      case 'Home':
+        event.preventDefault()
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
+        break
+      case 'End':
+        event.preventDefault()
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: 'smooth',
+        })
+        break
+      default:
+        break
+    }
+  }
+
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -161,8 +209,11 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       {/* Scrollable content */}
       <section
         aria-label={t('tableOfContents')}
-        className={`toc-scrollable ${heightClass} overflow-y-auto`}
+        className={`toc-scrollable ${heightClass} overflow-y-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800`}
+        onKeyDown={handleTocKeyDown}
         ref={scrollContainerRef}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: Required so keyboard users can focus and scroll this overflow region.
+        tabIndex={0}
       >
         <ul className="space-y-1">
           {items.map(item => (
