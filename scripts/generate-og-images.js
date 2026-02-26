@@ -215,10 +215,8 @@ async function main(sharpImpl = loadSharp(), locales = LOCALES) {
       '\n\x1b[31mError: "sharp" is not installed.\x1b[0m\n\n' +
         'This script requires the sharp package to generate OG images.\n' +
         'Install it manually and re-run:\n\n' +
-        '  npm install sharp\n\n' +
-        'sharp is intentionally not a project devDependency because this\n' +
-        'script is run rarely. You can remove it afterwards with:\n\n' +
-        '  npm uninstall sharp\n',
+        '  npm install\n\n' +
+        'sharp is listed in devDependencies for this project.\n',
     )
     /* c8 ignore next */
     process.exit(1)
