@@ -145,8 +145,14 @@ describe('getAllPosts', () => {
   it('normalizes post data correctly', () => {
     const posts = getAllPosts()
     const second = posts.find(p => p.slug === 'second-post')
-    expect(second?.date).toBeUndefined()
-    expect(second?.imageAlt).toBeUndefined()
+    expect(second).toBeDefined()
+
+    if (!second) {
+      throw new Error('Expected second-post to exist in test fixtures')
+    }
+
+    expect(second.date).toBeUndefined()
+    expect(second.imageAlt).toBeUndefined()
   })
 })
 

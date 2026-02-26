@@ -4,8 +4,9 @@
 
 This test suite verifies that the Next.js dev server does not emit cross-origin
 warnings when the application is accessed via `0.0.0.0` or `127.0.0.1` (common
-in devcontainer and Docker setups). It validates the fix for [GitHub issue #128](https://github.com/viscalyx/viscalyx.se/issues/128),
-which requires `allowedDevOrigins: ['0.0.0.0', '127.0.0.1']` in `next.config.ts`.
+in devcontainer and Docker setups). It validates the fix for
+[GitHub issue #128](https://github.com/viscalyx/viscalyx.se/issues/128), which
+requires `allowedDevOrigins: ['0.0.0.0', '127.0.0.1']` in `next.config.ts`.
 
 ## Background
 

@@ -17,8 +17,7 @@ permission from Viscalyx:
    - `public/viscalyx_logo.svg`
    - `public/viscalyx_logo_128x128.png`
    - Other variations of the Viscalyx logo found within the project.
-
-2. **Photographs of Identifiable Individuals**: Any photographs depicting
+1. **Photographs of Identifiable Individuals**: Any photographs depicting
    identifiable persons, including but not limited to:
    - `public/johlju-profile.jpg`
    - Other photographs of team members or individuals associated with Viscalyx.

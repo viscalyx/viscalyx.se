@@ -1078,7 +1078,8 @@ code .
 ```
 <!-- markdownlint-enable MD013 -->
 
-### Troubleshooting CSpell
+<!-- markdownlint-disable-next-line MD024 -->
+### Troubleshooting
 
 **SSH Agent Not Working:**
 
@@ -1383,6 +1384,7 @@ The spell checker automatically ignores:
 - Lock files (`package-lock.json`, `yarn.lock`)
 - Binary and generated files
 
+<!-- markdownlint-disable-next-line MD024 -->
 ### Troubleshooting
 
 #### Common Issues
