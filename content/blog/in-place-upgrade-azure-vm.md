@@ -10,7 +10,7 @@ readTime: '38 min read'
 category: 'Infrastructure'
 ---
 
-More information than what's in this guide can be found in the article
+For more information, see the Microsoft article
 [In-place upgrade for VMs running Windows Server in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade).
 
 ## Supported Upgrade Paths
