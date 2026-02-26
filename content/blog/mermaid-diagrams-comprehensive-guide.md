@@ -1096,9 +1096,8 @@ Converting circular structure to JSON --> starting at object with constructor 'H
 ```
 <!-- markdownlint-enable MD013 -->
 
-To resolve that there was a lot of code needed to monkey-patch the JSON, a
-better solution is needed to be
-able to support those.
+Because supporting those required extensive monkey-patching of the JSON, we
+need a better solution.
 
 Example mermaid code for this type of diagram:
 
@@ -1186,9 +1185,9 @@ architecture-beta
 ```
 <!-- markdownlint-enable MD013 -->
 
-Icons are very [limitied](https://mermaid.js.org/syntax/architecture.html#icons)
+Icons are very [limited](https://mermaid.js.org/syntax/architecture.html#icons)
 unless using [Iconify Icons](https://icon-sets.iconify.design/) (and accepting
-the licenses), example psuedo-code:
+the licenses), example pseudo-code:
 
 <!-- markdownlint-disable MD013 -->
 ```typescript
@@ -1201,7 +1200,7 @@ mermaid.registerIconPacks([
 ```
 <!-- markdownlint-enable MD013 -->
 
-This is currently not suppported in the blog system.
+This is currently not supported in the blog system.
 
 ## 20. Kanban Boards
 
