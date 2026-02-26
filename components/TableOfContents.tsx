@@ -20,7 +20,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
-  const scrollContainerRef = useRef<HTMLSectionElement | null>(null)
+  const scrollContainerRef = useRef<HTMLElement | null>(null)
   const itemCount = items.length
 
   const heightClass = maxHeight === 'sm' ? 'max-h-64' : 'max-h-80'
