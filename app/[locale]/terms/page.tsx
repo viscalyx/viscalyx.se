@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'terms' })
 
-  const title = t('terms.title')
-  const description = t('terms.subtitle')
+  const title = t('title')
+  const description = t('subtitle')
   const ogLocale = locale === 'sv' ? 'sv_SE' : 'en_US'
 
   return {

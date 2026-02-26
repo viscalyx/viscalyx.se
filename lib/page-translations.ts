@@ -44,51 +44,49 @@ interface PrivacyTranslations {
 }
 
 interface TermsTranslations {
-  terms: {
-    title: string
-    subtitle: string
-    lastUpdated: string
-    sections: {
-      agreement: {
-        title: string
-        description: string
-      }
-      services: {
-        title: string
-        description: string
-        items: string[]
-      }
-      userResponsibilities: {
-        title: string
-        description: string
-        items: string[]
-      }
-      intellectualProperty: {
-        title: string
-        description: string
-      }
-      limitationOfLiability: {
-        title: string
-        description: string
-      }
-      termination: {
-        title: string
-        description: string
-      }
-      governingLaw: {
-        title: string
-        description: string
-      }
-      changes: {
-        title: string
-        description: string
-      }
-      contact: {
-        title: string
-        description: string
-        email: string
-        emailAddress: string
-      }
+  title: string
+  subtitle: string
+  lastUpdated: string
+  sections: {
+    agreement: {
+      title: string
+      description: string
+    }
+    services: {
+      title: string
+      description: string
+      items: string[]
+    }
+    userResponsibilities: {
+      title: string
+      description: string
+      items: string[]
+    }
+    intellectualProperty: {
+      title: string
+      description: string
+    }
+    limitationOfLiability: {
+      title: string
+      description: string
+    }
+    termination: {
+      title: string
+      description: string
+    }
+    governingLaw: {
+      title: string
+      description: string
+    }
+    changes: {
+      title: string
+      description: string
+    }
+    contact: {
+      title: string
+      description: string
+      email: string
+      emailAddress: string
     }
   }
 }

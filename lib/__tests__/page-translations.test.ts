@@ -161,10 +161,9 @@ describe('useTermsTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.terms).toBeTruthy()
-      expect(result.current.translations.terms.title).toBeTruthy()
-      expect(result.current.translations.terms.sections).toBeTruthy()
-      expect(result.current.translations.terms.sections.agreement).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
+      expect(result.current.translations.sections.agreement).toBeTruthy()
     }
   })
 
@@ -181,9 +180,8 @@ describe('useTermsTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.terms).toBeTruthy()
-      expect(result.current.translations.terms.title).toBeTruthy()
-      expect(result.current.translations.terms.sections).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
     }
   })
 
@@ -244,8 +242,8 @@ describe('useTermsTranslations', () => {
 
     // Both should have the same structure
     if (enResult.current.translations && svResult.current.translations) {
-      const enKeys = Object.keys(enResult.current.translations.terms.sections)
-      const svKeys = Object.keys(svResult.current.translations.terms.sections)
+      const enKeys = Object.keys(enResult.current.translations.sections)
+      const svKeys = Object.keys(svResult.current.translations.sections)
       expect(enKeys).toEqual(svKeys)
     }
   })
