@@ -1,4 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
+import { getTranslations } from 'next-intl/server'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   addHeadingIds,
   createSlug,
@@ -11,7 +12,28 @@ import {
   generateFallbackId,
 } from '../slug-utils'
 
+vi.mock('next-intl/server', () => ({
+  getTranslations: vi.fn(
+    async () => (key: string, values?: { heading?: string }) => {
+      const heading = values?.heading ?? ''
+      if (key === 'accessibility.anchorLink.ariaLabel') {
+        return `Link to section: ${heading}`
+      }
+      if (key === 'accessibility.anchorLink.title') {
+        return `Copy link to section: ${heading}`
+      }
+      return key
+    },
+  ),
+}))
+
+const mockedGetTranslations = vi.mocked(getTranslations)
+
 describe('slug-utils', () => {
+  beforeEach(() => {
+    mockedGetTranslations.mockClear()
+  })
+
   describe('createSlug', () => {
     it('creates a basic slug from text', () => {
       expect(createSlug('Hello World')).toBe('hello-world')
@@ -207,25 +229,29 @@ describe('slug-utils', () => {
   })
 
   describe('addHeadingIds', () => {
-    it('adds IDs to headings with default accessibility labels', () => {
+    it('adds IDs to headings with default accessibility labels', async () => {
       const html = '<h2>My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="my-section"')
       expect(result).toContain('class="heading-with-anchor"')
       expect(result).toContain('href="#my-section"')
       expect(result).toContain('aria-label="Link to section: My Section"')
       expect(result).toContain('title="Copy link to section: My Section"')
+      expect(mockedGetTranslations).toHaveBeenCalledWith({
+        locale: 'en',
+        namespace: 'blog',
+      })
     })
 
-    it('uses localized accessibility labels when translation function provided', () => {
+    it('uses localized accessibility labels when translation function provided', async () => {
       const html = '<h2>My Section</h2>'
       const mockTranslate = vi
         .fn()
         .mockReturnValueOnce('Länk till sektion: My Section')
         .mockReturnValueOnce('Kopiera länk till sektion: My Section')
 
-      const result = addHeadingIds(html, {}, mockTranslate)
+      const result = await addHeadingIds(html, {}, mockTranslate)
 
       expect(mockTranslate).toHaveBeenCalledWith(
         'accessibility.anchorLink.ariaLabel',
@@ -237,16 +263,17 @@ describe('slug-utils', () => {
       )
       expect(result).toContain('aria-label="Länk till sektion: My Section"')
       expect(result).toContain('title="Kopiera länk till sektion: My Section"')
+      expect(mockedGetTranslations).not.toHaveBeenCalled()
     })
 
-    it('handles duplicate headings with unique IDs', () => {
+    it('handles duplicate headings with unique IDs', async () => {
       const html = `
         <h2>Installation</h2>
         <h3>Prerequisites</h3>
         <h2>Installation</h2>
         <h3>Prerequisites</h3>
       `
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="installation"')
       expect(result).toContain('id="prerequisites"')
@@ -258,9 +285,9 @@ describe('slug-utils', () => {
       expect(result).toContain('href="#prerequisites-1"')
     })
 
-    it('preserves existing attributes and merges class', () => {
+    it('preserves existing attributes and merges class', async () => {
       const html = '<h2 class="custom-class">My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       // Should merge heading-with-anchor into the existing class, not create a duplicate class attr
       expect(result).toContain('class="custom-class heading-with-anchor"')
@@ -270,25 +297,25 @@ describe('slug-utils', () => {
       expect(classCount).toBe(3) // heading, anchor link, SVG icon
     })
 
-    it('does not override existing ID attributes', () => {
+    it('does not override existing ID attributes', async () => {
       const html = '<h2 id="existing-id">My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="existing-id"')
       expect(result).not.toContain('id="my-section"')
     })
 
-    it('handles complex HTML content in headings', () => {
+    it('handles complex HTML content in headings', async () => {
       const html = '<h2><code>API</code> <strong>Reference</strong></h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="api-reference"')
       expect(result).toContain('href="#api-reference"')
     })
 
-    it('escapes double quotes in heading text for aria-label and title', () => {
+    it('escapes double quotes in heading text for aria-label and title', async () => {
       const html = '<h2>Config "key=value" pairs</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain(
         'aria-label="Link to section: Config &quot;key=value&quot; pairs"',
@@ -298,11 +325,11 @@ describe('slug-utils', () => {
       )
     })
 
-    it('escapes angle brackets and ampersands in heading text', () => {
+    it('escapes angle brackets and ampersands in heading text', async () => {
       // extractCleanText decodes HTML entities first, so "&amp;" becomes "&",
       // then escapeHtmlAttr re-encodes it once → "&amp;" (no double-encoding)
       const html = '<h2>A &amp; B</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('aria-label="Link to section: A &amp; B"')
       expect(result).toContain('title="Copy link to section: A &amp; B"')
@@ -310,14 +337,14 @@ describe('slug-utils', () => {
       expect(result).not.toMatch(/aria-label="[^"]*</)
     })
 
-    it('escapes quotes in translated strings from translateFn', () => {
+    it('escapes quotes in translated strings from translateFn', async () => {
       const html = '<h2>Section</h2>'
       const mockTranslate = vi
         .fn()
         .mockReturnValueOnce('Länk till "Section"')
         .mockReturnValueOnce('Kopiera länk till "Section"')
 
-      const result = addHeadingIds(html, {}, mockTranslate)
+      const result = await addHeadingIds(html, {}, mockTranslate)
 
       expect(result).toContain('aria-label="Länk till &quot;Section&quot;"')
       expect(result).toContain('title="Kopiera länk till &quot;Section&quot;"')

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import sanitizeHtml from 'sanitize-html'
 import slugify from 'slugify'
 
@@ -257,12 +258,19 @@ export type TranslationFunction = (
  * @param translateFn - Optional translation function for accessibility labels
  * @returns HTML content with IDs and anchor links added to headings
  */
-export function addHeadingIds(
+export async function addHeadingIds(
   htmlContent: string,
   options: SlugOptions = {},
   translateFn?: TranslationFunction,
-): string {
+): Promise<string> {
   const usedIds = new Set<string>()
+  const locale = options.locale ?? 'en'
+  const resolvedTranslateFn =
+    translateFn ??
+    (await getTranslations({
+      locale,
+      namespace: 'blog',
+    }))
 
   return htmlContent.replace(
     /<h([2-4])([^>]*)>([\s\S]*?)<\/h[2-4]>/gi,
@@ -276,18 +284,15 @@ export function addHeadingIds(
       const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
       const finalAttributes = hasId ? attributes : `${attributes} id="${id}"`
 
-      // Generate localized or fallback accessibility labels
-      const ariaLabel = translateFn
-        ? translateFn('accessibility.anchorLink.ariaLabel', {
-            heading: cleanedText,
-          })
-        : `Link to section: ${cleanedText}`
-
-      const title = translateFn
-        ? translateFn('accessibility.anchorLink.title', {
-            heading: cleanedText,
-          })
-        : `Copy link to section: ${cleanedText}`
+      const ariaLabel = resolvedTranslateFn(
+        'accessibility.anchorLink.ariaLabel',
+        {
+          heading: cleanedText,
+        },
+      )
+      const title = resolvedTranslateFn('accessibility.anchorLink.title', {
+        heading: cleanedText,
+      })
 
       // Add anchor link functionality with proper class for styling
       const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${escapeHtmlAttr(ariaLabel)}" title="${escapeHtmlAttr(title)}">
