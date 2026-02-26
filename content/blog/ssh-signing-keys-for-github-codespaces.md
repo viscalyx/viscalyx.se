@@ -138,6 +138,7 @@ cat ~/.ssh/id_ed25519_codespaces.pub
    The output looks like:
 
    <!-- markdownlint-disable MD013 -->
+   <!-- gitleaks:allow -->
    ```text
    -----BEGIN OPENSSH PRIVATE KEY-----
    REDACTED_PRIVATE_KEY_CONTENT
