@@ -44,8 +44,6 @@ interface PrivacyTranslations {
 }
 
 interface TermsTranslations {
-  title: string
-  subtitle: string
   lastUpdated: string
   sections: {
     agreement: {
@@ -89,6 +87,8 @@ interface TermsTranslations {
       emailAddress: string
     }
   }
+  subtitle: string
+  title: string
 }
 
 interface CookiesTranslations {
