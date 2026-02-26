@@ -182,7 +182,7 @@ const Header = () => {
                 aria-controls="desktop-settings-menu"
                 aria-expanded={isSettingsOpen}
                 aria-label={t('settings.title')}
-                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/70 transition-colors"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 transition-colors hover:bg-primary-100 dark:bg-primary-900/50 dark:text-primary-400 dark:hover:bg-primary-900/70"
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -199,7 +199,6 @@ const Header = () => {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     id="desktop-settings-menu"
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    role="dialog"
                   >
                     <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
                       {t('settings.title')}
@@ -233,7 +232,7 @@ const Header = () => {
                 aria-controls="mobile-settings-menu"
                 aria-expanded={isSettingsOpen}
                 aria-label={t('settings.title')}
-                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 whileTap={{ scale: 0.95 }}
               >
@@ -249,7 +248,6 @@ const Header = () => {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     id="mobile-settings-menu"
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    role="dialog"
                   >
                     <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
                       {t('settings.title')}
@@ -273,7 +271,7 @@ const Header = () => {
               aria-controls="mobile-menu"
               aria-expanded={isMenuOpen}
               aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
-              className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileTap={{ scale: 0.95 }}
             >

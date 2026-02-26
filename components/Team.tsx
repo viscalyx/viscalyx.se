@@ -106,8 +106,17 @@ const Team = () => {
                 whileHover="hover"
               >
                 <motion.div
-                  className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
+                  aria-label={`View profile for ${member.name}`}
+                  className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-secondary-900"
                   onClick={() => handleCardClick(member.id)}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      handleCardClick(member.id)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                   variants={cardVariants}
                 >
                   {/* Profile Image */}
@@ -122,6 +131,7 @@ const Team = () => {
                           alt={member.name}
                           className="rounded-full object-cover ring-4 ring-primary-100 dark:ring-primary-900/50"
                           fill
+                          sizes="128px"
                           src={member.image}
                         />
                       )}

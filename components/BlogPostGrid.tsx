@@ -98,6 +98,7 @@ const BlogPostGrid = ({
                     alt={post.imageAlt || post.title}
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     fill
+                    sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                     src={post.image}
                   />
                   <div className="absolute top-3 left-3">

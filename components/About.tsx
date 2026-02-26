@@ -136,6 +136,7 @@ const About = () => {
                   alt={t('visualAlt')}
                   className="rounded-2xl shadow-xl"
                   height={400}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
                   src="/team-huddle-open-office-wide.png"
                   width={600}
                 />

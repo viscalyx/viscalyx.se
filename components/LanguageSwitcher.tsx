@@ -123,7 +123,7 @@ const LanguageSwitcher = () => {
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={t('selectLanguage')}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200"
+        className="flex min-h-[44px] min-w-[44px] items-center space-x-2 rounded-lg border border-secondary-200 bg-white px-3 py-2 transition-colors duration-200 hover:bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-800 dark:hover:bg-secondary-700"
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
         whileHover={{ scale: 1.05 }}
@@ -149,7 +149,7 @@ const LanguageSwitcher = () => {
           {languages.map((language, index) => (
             <button
               aria-selected={locale === language.code}
-              className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer ${
+              className={`flex min-h-[44px] min-w-[44px] w-full cursor-pointer items-center space-x-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-secondary-50 dark:hover:bg-secondary-700 ${
                 locale === language.code
                   ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                   : 'text-secondary-700 dark:text-secondary-300'

@@ -257,16 +257,20 @@ const Hero = () => {
                   {heroImages.map((image, index) => (
                     <motion.button
                       aria-label={`Show image ${index + 1} of ${heroImages.length}`}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        index === currentImageIndex
-                          ? 'bg-white shadow-lg'
-                          : 'bg-white/50 hover:bg-white/70'
-                      }`}
+                      className="flex min-h-[44px] min-w-[44px] items-center justify-center transition-all duration-300"
                       key={`indicator-${image.src}`}
                       onClick={() => setCurrentImageIndex(index)}
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                    />
+                    >
+                      <span
+                        className={`h-2 w-2 rounded-full ${
+                          index === currentImageIndex
+                            ? 'bg-white shadow-lg'
+                            : 'bg-white/50 hover:bg-white/70'
+                        }`}
+                      />
+                    </motion.button>
                   ))}
                 </div>
               </motion.div>

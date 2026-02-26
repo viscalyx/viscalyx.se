@@ -181,6 +181,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                         className="object-cover"
                         fill
                         priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         src={member.image}
                       />
                     ) : (
