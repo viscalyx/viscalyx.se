@@ -265,7 +265,7 @@ describe('Header', () => {
       })
     })
 
-    it('settings dropdown has dialog role and aria-label', () => {
+    it('settings dropdown uses popover semantics with aria-label', () => {
       render(<Header />)
 
       const settingsButtons = screen.getAllByRole('button', {
@@ -273,10 +273,15 @@ describe('Header', () => {
       })
       fireEvent.click(settingsButtons[0])
 
-      const dialogs = screen.getAllByRole('dialog', {
-        name: 'settings.title',
-      })
-      expect(dialogs.length).toBeGreaterThanOrEqual(1)
+      expect(screen.queryAllByRole('dialog')).toHaveLength(0)
+
+      const desktopMenu = document.getElementById('desktop-settings-menu')
+      const mobileMenu = document.getElementById('mobile-settings-menu')
+
+      expect(desktopMenu).toHaveAttribute('aria-label', 'settings.title')
+      expect(desktopMenu).not.toHaveAttribute('role')
+      expect(mobileMenu).toHaveAttribute('aria-label', 'settings.title')
+      expect(mobileMenu).not.toHaveAttribute('role')
     })
 
     it('closes settings dropdown when clicking outside', () => {

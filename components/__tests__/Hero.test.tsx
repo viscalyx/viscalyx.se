@@ -78,7 +78,9 @@ describe('Hero component', () => {
     const indicator = screen.getByRole('button', { name: 'Show image 3 of 4' })
     fireEvent.click(indicator)
 
-    expect(indicator).toHaveClass('bg-white', 'shadow-lg')
+    const activeDot = indicator.querySelector('span')
+    expect(activeDot).not.toBeNull()
+    expect(activeDot).toHaveClass('bg-white', 'shadow-lg')
   })
 
   it('shows image fallback UI when image loading fails', () => {
@@ -114,13 +116,15 @@ describe('Hero component', () => {
       const secondIndicator = screen.getByRole('button', {
         name: 'Show image 2 of 4',
       })
-      expect(secondIndicator).toHaveClass('bg-white/50')
+      const secondDot = secondIndicator.querySelector('span')
+      expect(secondDot).not.toBeNull()
+      expect(secondDot).toHaveClass('bg-white/50')
 
       act(() => {
         vi.advanceTimersByTime(4000)
       })
 
-      expect(secondIndicator).toHaveClass('bg-white', 'shadow-lg')
+      expect(secondDot).toHaveClass('bg-white', 'shadow-lg')
     } finally {
       vi.useRealTimers()
     }
