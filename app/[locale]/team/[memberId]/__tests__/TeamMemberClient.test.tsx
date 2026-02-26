@@ -20,17 +20,6 @@ vi.mock('next-intl', () => ({
   useLocale: () => 'en',
 }))
 
-// Mock next/image
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: Record<string, unknown>) => {
-    const imgLabel = typeof alt === 'string' ? alt : ''
-    const imageSrc = typeof src === 'string' ? src : String(src)
-    return (
-      <span aria-label={imgLabel} data-src={imageSrc} role="img" {...props} />
-    )
-  },
-}))
-
 // Mock next/link
 vi.mock('next/link', () => ({
   default: ({
@@ -108,7 +97,7 @@ describe('TeamMemberClient', () => {
     render(<TeamMemberClient member={mockMember} />)
 
     const img = screen.getByRole('img', { name: 'Test Member' })
-    expect(img).toHaveAttribute('data-src', '/test-image.jpg')
+    expect(img).toHaveAttribute('src', '/test-image.jpg')
   })
 
   it('renders initials when no image is provided', () => {

@@ -20,12 +20,6 @@ vi.mock('next/link', () => ({
   ),
 }))
 
-vi.mock('next/image', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => (
-    <span aria-label={alt} data-src={src} role="img" />
-  ),
-}))
-
 const createPost = (
   overrides: Partial<BlogPostMetadata> = {},
 ): BlogPostMetadata => ({
