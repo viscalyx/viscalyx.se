@@ -305,7 +305,7 @@ headings.
 2. Assert headings: "Precision & Excellence", "Client-Centric Approach",
    "Innovation First", "Open Source Commitment".
 
-#### should be scrollable via hash anchor (#open-source)
+#### should be scrollable via hash anchor (#about)
 
 **Purpose:** Confirms navigating to `/#about` makes the About section visible.
 
