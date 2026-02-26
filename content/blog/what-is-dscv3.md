@@ -18,9 +18,9 @@ readTime: '8 min read'
 Microsoft Desired State Configuration (DSC) v3 is a cross-platform tool that
 lets you describe how you want your system to look and behave. You write a
 configuration document in JSON, Bicep, or YAML describing the desired state and
-Microsoft DSC v3 ensures your machines matches the state.
+Microsoft DSC v3 ensures your machines match the state.
 
-For example, what file and folders should always exist or which services should
+For example, what files and folders should always exist or which services should
 be running _always_.
 
 > [!TIP]
@@ -57,7 +57,8 @@ Install-DscExe
 > You can also install pre-release version by adding the `PreRelease` switch
 > parameter.
 
-The command automatically adds the `dsc.exe` executable to the `PATH`
+The command automatically adds the `dsc` executable (`dsc.exe` on Windows) to
+the `PATH`
 environment variable.
 
 ### Installing from GitHub
@@ -131,7 +132,7 @@ that gets the operating system information on your system.
 Microsoft DSC v3 redefines the DSC experience by providing a single executable
 into a lightweight and cross-platform tool. It seamlessly fits into modern
 DevOps pipelines. With a new concept called _adapters_, existing DSC resource
-are still able to be executed. Start small to learn the new resource syntax and
+can still be executed. Start small to learn the new resource syntax and
 build up to automate your entire infrastructure.
 
 Happy configuring!
