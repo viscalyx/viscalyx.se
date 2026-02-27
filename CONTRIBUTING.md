@@ -727,6 +727,9 @@ provide visual emphasis with distinct colors and icons:
 
 > [!CAUTION]
 > Negative potential consequences of an action.
+
+> [!QUOTE]
+> Quoted text, citations, or highlighted statements.
 ```
 <!-- markdownlint-enable MD013 -->
 
@@ -738,6 +741,7 @@ provide visual emphasis with distinct colors and icons:
   success
 - **WARNING** (Orange with triangle icon): Potential risks and cautions
 - **CAUTION** (Red with octagon icon): Dangerous operations or breaking changes
+- **QUOTE** (Neutral quote style): Quotes, citations, and highlighted statements
 
 **When to Use:**
 
