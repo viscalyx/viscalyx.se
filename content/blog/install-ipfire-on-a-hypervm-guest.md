@@ -70,15 +70,15 @@ Learn][4]).
 ### 2.2 New VM wizard
 
 1. **New → Virtual Machine** → _Next_([Microsoft Learn][4])
-2. Name: `IPFire`
-3. **Generation 2** (UEFI) — offers synthetic devices for better
+1. Name: `IPFire`
+1. **Generation 2** (UEFI) — offers synthetic devices for better
    throughput ([Microsoft Learn][5])
-4. Startup memory ≥ 1024 MB (enable Dynamic Memory if desired)([Microsoft
+1. Startup memory ≥ 1024 MB (enable Dynamic Memory if desired)([Microsoft
    Learn][4])
-5. Connect first NIC to `vSwitch_WAN`.
-6. Create a 20 GB‐plus VHDX (thin) on SCSI.
-7. Boot media → ISO you downloaded.
-8. Finish.
+1. Connect first NIC to `vSwitch_WAN`.
+1. Create a 20 GB‐plus VHDX (thin) on SCSI.
+1. Boot media → ISO you downloaded.
+1. Finish.
 
 > **Disable Secure Boot** (required by IPFire’s current kernel):
 > `Set-VMFirmware -VMName "IPFire" -EnableSecureBoot Off`([Microsoft Learn][6])
@@ -101,18 +101,18 @@ works reliably as a fall-back ([IPFire Community][9]).
 ## 3 – Boot & run the IPFire installer
 
 1. **Start** the VM and open the console.
-2. Choose _Install IPFire x86_64_ at GRUB.
-3. Select language → **Start installation** → accept license ([IPFire.org][11]).
-4. Confirm disk erase, choose filesystem (Ext4/XFS).
-5. Set timezone, hostname, root + admin passwords.
-6. Reboot into the _setup_ utility.
+1. Choose _Install IPFire x86_64_ at GRUB.
+1. Select language → **Start installation** → accept license ([IPFire.org][11]).
+1. Confirm disk erase, choose filesystem (Ext4/XFS).
+1. Set timezone, hostname, root + admin passwords.
+1. Reboot into the _setup_ utility.
 
 ## 4 – Assign NICs & zones
 
 In the text setup:
 
 1. Select _Network Configuration Type_ (e.g. **GREEN + RED**).
-2. Under _Drivers & Card Assignments_ link each MAC to a color. Note that
+1. Under _Drivers & Card Assignments_ link each MAC to a color. Note that
    IPFire shows NIC MACs; map them to the correct VM NIC using Hyper-V:
    - In PowerShell, list each adapter and its MAC address:
 
@@ -133,10 +133,10 @@ In the text setup:
    - Compare the MAC addresses shown in the installer with the output above to
      assign each adapter to a zone.
 
-3. Give GREEN a static LAN (e.g. 192.168.1.220/24); leave RED to DHCP or set
-   static from your ISP. See also [Configure NAT for nested Hyper-V VM on Azure
-   VM host](/blog/configure-nat-azure-vm-hyperv-host)
-4. Finish and reboot.
+1. Give GREEN a static LAN (e.g. 192.168.1.220/24); leave RED to DHCP or set
+   static from your ISP. See also
+   [Configure NAT for nested Hyper-V VM on Azure VM host](/blog/configure-nat-azure-vm-hyperv-host)
+1. Finish and reboot.
 
 ## 5 – First login & updates
 

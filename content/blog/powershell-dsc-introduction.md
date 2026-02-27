@@ -23,8 +23,8 @@ systems, and it handles the implementation details.
 DSC is built on three core components:
 
 1. **Configurations**: PowerShell scripts that define the desired state
-2. **Resources**: The building blocks that perform the actual work
-3. **Local Configuration Manager (LCM)**: The engine that applies configurations
+1. **Resources**: The building blocks that perform the actual work
+1. **Local Configuration Manager (LCM)**: The engine that applies configurations
 
 ## Key Benefits
 

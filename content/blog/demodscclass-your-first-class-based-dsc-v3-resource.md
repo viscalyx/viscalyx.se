@@ -246,7 +246,7 @@ way. Also remember, not all classes should implement `Export()`, so evaluate
 that decision on a per-class basis. Always ask two questions:
 
 1. Does it make sense to implement `Export()`?
-2. Is it a cheap operation to perform?
+1. Is it a cheap operation to perform?
 
 > [!NOTE]
 > For example, exporting all Windows services from a machine makes sense and is
@@ -282,7 +282,8 @@ class DemoDscClass {
     }
 
     [System.Boolean] Test() {
-      # Checks if the current state matches the desired state        Write-Verbose -Message 'Test called - always returns $false to demo Set()'
+      # Checks if the current state matches the desired state
+      Write-Verbose -Message 'Test called - always returns $false to demo Set()'
       return $false # Always returns false to force Set() for demo
     }
 
@@ -578,10 +579,10 @@ class-based DSC v3 resource!
 By following this guide, you have learned how to:
 
 1. Create a project folder and module manifest.
-2. Author a PowerShell class with Get(), Test(), Set(), and Export() methods.
-3. Perform smoke tests using the DSC executable.
-4. Define configuration files in YAML and run them.
-5. Write Pester tests to verify resource behavior.
+1. Author a PowerShell class with Get(), Test(), Set(), and Export() methods.
+1. Perform smoke tests using the DSC executable.
+1. Define configuration files in YAML and run them.
+1. Write Pester tests to verify resource behavior.
 
 ### Next steps
 

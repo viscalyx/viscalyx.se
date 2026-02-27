@@ -201,10 +201,10 @@ Native Azure solution with deep integration:
 ## Getting Started
 
 1. **Start small**: Begin with a simple project to learn the tools
-2. **Establish standards**: Define coding standards and conventions
-3. **Build gradually**: Add complexity as your team gains experience
-4. **Invest in training**: Ensure your team understands IaC principles
-5. **Measure success**: Track metrics like deployment frequency and lead time
+1. **Establish standards**: Define coding standards and conventions
+1. **Build gradually**: Add complexity as your team gains experience
+1. **Invest in training**: Ensure your team understands IaC principles
+1. **Measure success**: Track metrics like deployment frequency and lead time
 
 ## Conclusion
 

@@ -101,9 +101,9 @@ Add the public key **twice** on [github.com/settings/keys](https://github.com/se
 ### Authentication key
 
 1. Click **New SSH key**
-2. **Title:** `Codespaces (authentication)`
-3. **Key type:** Authentication Key
-4. Paste the output of:
+1. **Title:** `Codespaces (authentication)`
+1. **Key type:** Authentication Key
+1. Paste the output of:
 
 <!-- markdownlint-disable MD013 -->
 ```bash
@@ -114,9 +114,9 @@ cat ~/.ssh/id_ed25519_codespaces.pub
 ### Signing key
 
 1. Click **New SSH key** again
-2. **Title:** `Codespaces (signing)`
-3. **Key type:** Signing Key
-4. Paste the same public key content
+1. **Title:** `Codespaces (signing)`
+1. **Key type:** Signing Key
+1. Paste the same public key content
 
 > [!NOTE]
 > GitHub requires the signing key to be added separately from the
@@ -125,9 +125,9 @@ cat ~/.ssh/id_ed25519_codespaces.pub
 ## Step 3 – Store the private key as a Codespaces secret
 
 1. Go to [github.com/settings/codespaces](https://github.com/settings/codespaces)
-2. Under **Secrets**, click **New secret**
-3. **Name:** `SSH_PRIVATE_KEY`
-4. **Value:** paste the entire private key content:
+1. Under **Secrets**, click **New secret**
+1. **Name:** `SSH_PRIVATE_KEY`
+1. **Value:** paste the entire private key content:
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -147,9 +147,9 @@ cat ~/.ssh/id_ed25519_codespaces.pub
    ```
    <!-- markdownlint-enable MD013 -->
 
-5. Select which repositories can access this secret (or choose **All
+1. Select which repositories can access this secret (or choose **All
    repositories**)
-6. Click **Add secret**
+1. Click **Add secret**
 
 ## Step 4 – Configure your dotfiles
 
@@ -281,8 +281,8 @@ This prevents Windows line ending conversion from breaking the shell script.
 ## Step 5 – Enable dotfiles in Codespaces settings
 
 1. Go to [github.com/settings/codespaces](https://github.com/settings/codespaces)
-2. Under **Dotfiles**, check **Automatically install dotfiles**
-3. Select your dotfiles repository (for example `your-username/dotfiles`)
+1. Under **Dotfiles**, check **Automatically install dotfiles**
+1. Select your dotfiles repository (for example `your-username/dotfiles`)
 
 When a new Codespace starts, GitHub clones your dotfiles repo and runs
 `install.sh` automatically.
@@ -355,8 +355,8 @@ cat ~/.ssh/id_ed25519_codespaces_new.pub
 ### Step 3 – Update the Codespaces secret
 
 1. Go to [github.com/settings/codespaces](https://github.com/settings/codespaces)
-2. Click the **SSH_PRIVATE_KEY** secret
-3. Click **Update** and paste the new private key:
+1. Click the **SSH_PRIVATE_KEY** secret
+1. Click **Update** and paste the new private key:
 
 <!-- markdownlint-disable MD013 -->
 ```bash

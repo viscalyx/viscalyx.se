@@ -97,13 +97,13 @@ would encounter blocked resources.
 **Step-by-Step Flow:**
 
 1. Create a new browser context.
-2. Register listeners for failed network requests and console errors.
-3. Navigate to `http://{origin}:3000` with `waitUntil: 'load'`.
-4. Count `/_next/*` resources in the DOM (`<script>` and `<link>` elements).
-5. Close the browser context.
-6. Assert no `/_next/*` requests failed.
-7. Assert at least one `/_next/*` resource was loaded.
-8. Assert no cross-origin related console errors.
+1. Register listeners for failed network requests and console errors.
+1. Navigate to `http://{origin}:3000` with `waitUntil: 'load'`.
+1. Count `/_next/*` resources in the DOM (`<script>` and `<link>` elements).
+1. Close the browser context.
+1. Assert no `/_next/*` requests failed.
+1. Assert at least one `/_next/*` resource was loaded.
+1. Assert no cross-origin related console errors.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -161,9 +161,9 @@ instantly without needing to boot a dev server.
 
 1. Read the contents of `next.config.ts` using
    `fs.readFileSync('next.config.ts', 'utf-8')`.
-2. Assert the file content contains the string `"allowedDevOrigins"`.
-3. Assert the file content matches the regex `/0\.0\.0\.0/`.
-4. Assert the file content matches the regex `/127\.0\.0\.1/`.
+1. Assert the file content contains the string `"allowedDevOrigins"`.
+1. Assert the file content matches the regex `/0\.0\.0\.0/`.
+1. Assert the file content matches the regex `/127\.0\.0\.1/`.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid

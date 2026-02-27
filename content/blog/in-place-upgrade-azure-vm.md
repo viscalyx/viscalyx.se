@@ -4,7 +4,7 @@ date: '2025-07-26'
 author: 'Johan Ljunggren'
 excerpt: 'Complete guide for performing in-place upgrades of Windows Server on Azure VMs, including prerequisites, security considerations, and step-by-step instructions.'
 image: '/team-deep-in-thought.png'
-imageAlt: 'In a bright open‑plan office, three IT professionals—two men and one woman—study their monitors showing Azure logos, diagrams, and code, while a dream‑like, cloud‑shrouded datacenter complex hovers on the horizon.s'
+imageAlt: 'In a bright open‑plan office, three IT professionals—two men and one woman—study their monitors showing Azure logos, diagrams, and code, while a dream‑like, cloud‑shrouded datacenter complex hovers on the horizon.'
 tags: ['Azure', 'Windows Server', 'Upgrade', 'Virtual Machines', 'PowerShell']
 readTime: '38 min read'
 category: 'Infrastructure'
@@ -506,11 +506,11 @@ process:
 
 1. **Delete the snapshots** of the OS disk and data disk(s) if they were
    created (after confirming upgrade success)
-2. **Detach the upgrade media Managed Disk** from the VM that was upgraded
-3. **Delete the upgrade media Managed Disk** (unless you plan to reuse it for
+1. **Detach the upgrade media Managed Disk** from the VM that was upgraded
+1. **Delete the upgrade media Managed Disk** (unless you plan to reuse it for
    other VMs)
-4. **Re-enable auto-shutdown** if it was disabled
-5. **Re-enable antivirus, anti-spyware, and firewall software** that was
+1. **Re-enable auto-shutdown** if it was disabled
+1. **Re-enable antivirus, anti-spyware, and firewall software** that was
    disabled at the start of the upgrade process
 
 ### Verification Steps

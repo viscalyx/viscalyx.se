@@ -166,10 +166,10 @@ preview servers with proper artifact collection for debugging.
 ## Development Tips
 
 1. **Use `--headed` for visual debugging** (only works with display server)
-2. **Check screenshots/videos** when tests fail to understand what happened
-3. **Use `page.pause()`** in tests for interactive debugging
-4. **Run specific browsers** to isolate issues: `--project=chromium`
-5. **Use `--ui` mode** for the best debugging experience
+1. **Check screenshots/videos** when tests fail to understand what happened
+1. **Use `page.pause()`** in tests for interactive debugging
+1. **Run specific browsers** to isolate issues: `--project=chromium`
+1. **Use `--ui` mode** for the best debugging experience
 
 ## Test Coverage
 

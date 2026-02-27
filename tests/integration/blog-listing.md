@@ -75,8 +75,8 @@ HTML response, not hidden behind a loading spinner.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert the hero `<h1>` contains "Insights" and "Knowledge".
-3. Assert the "Featured Article" heading is visible.
+1. Assert the hero `<h1>` contains "Insights" and "Knowledge".
+1. Assert the "Featured Article" heading is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -101,7 +101,7 @@ renders without a loading state.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "Loading blog posts" text is NOT visible.
+1. Assert "Loading blog posts" text is NOT visible.
 
 #### should have correct page title (not root fallback)
 
@@ -110,8 +110,8 @@ renders without a loading state.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Read `document.title`.
-3. Assert it contains "Insights", "Knowledge", and "Viscalyx".
+1. Read `document.title`.
+1. Assert it contains "Insights", "Knowledge", and "Viscalyx".
 
 #### should have meta description
 
@@ -120,8 +120,8 @@ renders without a loading state.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Read `<meta name="description">` content attribute.
-3. Assert it is a non-empty string (>20 chars).
+1. Read `<meta name="description">` content attribute.
+1. Assert it is a non-empty string (>20 chars).
 
 ---
 
@@ -134,9 +134,9 @@ renders without a loading state.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Locate the section containing the "Featured Article" heading.
-3. Assert an image is visible within the featured section.
-4. Assert the featured card link is visible.
+1. Locate the section containing the "Featured Article" heading.
+1. Assert an image is visible within the featured section.
+1. Assert the featured card link is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -159,8 +159,8 @@ page.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click the featured post card link.
-3. Assert the URL matches `/blog/{slug}`.
+1. Click the featured post card link.
+1. Assert the URL matches `/blog/{slug}`.
 
 ---
 
@@ -173,8 +173,8 @@ page.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "All" button is visible.
-3. Assert more than one category button exists.
+1. Assert "All" button is visible.
+1. Assert more than one category button exists.
 
 #### should filter posts when a category is clicked
 
@@ -183,10 +183,10 @@ page.
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Count all visible `<article>` elements.
-3. Click the "DevOps" category button.
-4. Assert article count is ≥ 1 and ≤ initial count.
-5. Assert all visible category badges show "DevOps".
+1. Count all visible `<article>` elements.
+1. Click the "DevOps" category button.
+1. Assert article count is ≥ 1 and ≤ initial count.
+1. Assert all visible category badges show "DevOps".
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -210,9 +210,9 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`, note initial article count.
-2. Click "DevOps" to filter.
-3. Click "All" to reset.
-4. Assert article count equals initial count.
+1. Click "DevOps" to filter.
+1. Click "All" to reset.
+1. Assert article count equals initial count.
 
 ---
 
@@ -225,8 +225,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "Load More" button is visible.
-3. Assert exactly 6 articles are in the grid.
+1. Assert "Load More" button is visible.
+1. Assert exactly 6 articles are in the grid.
 
 #### should reveal more posts when Load More is clicked
 
@@ -235,8 +235,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`, count articles.
-2. Click "Load More".
-3. Assert article count increased.
+1. Click "Load More".
+1. Assert article count increased.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -258,8 +258,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click "Load More" repeatedly until it disappears.
-3. Assert the button is no longer visible.
+1. Click "Load More" repeatedly until it disappears.
+1. Assert the button is no longer visible.
 
 ---
 
@@ -272,8 +272,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Locate the first `<article>`.
-3. Assert it has an image and a title (`<h3>`).
+1. Locate the first `<article>`.
+1. Assert it has an image and a title (`<h3>`).
 
 #### should navigate to blog post when card is clicked
 
@@ -282,8 +282,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click the first post card's parent `<a>`.
-3. Assert URL matches `/blog/{slug}`.
+1. Click the first post card's parent `<a>`.
+1. Assert URL matches `/blog/{slug}`.
 
 ---
 
@@ -297,9 +297,9 @@ Swedish.
 **Steps:**
 
 1. Navigate to `/sv/blog`.
-2. Assert hero heading contains "Insikter" and "Kunskap".
-3. Assert featured post heading is "Utvald Artikel".
-4. Assert the "All" category button shows "Alla".
+1. Assert hero heading contains "Insikter" and "Kunskap".
+1. Assert featured post heading is "Utvald Artikel".
+1. Assert the "All" category button shows "Alla".
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -323,5 +323,5 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv/blog`.
-2. Read `document.title`.
-3. Assert it contains "Insikter" and "Kunskap".
+1. Read `document.title`.
+1. Assert it contains "Insikter" and "Kunskap".

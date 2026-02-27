@@ -108,7 +108,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Fork the repository**: Click the "Fork" button on the GitHub repository
    page.
-2. **Clone your fork**:
+1. **Clone your fork**:
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -126,7 +126,7 @@ Dev Containers.
    install the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
    extension from the VS Code Marketplace.
 
-2. **Reopen in Container**:
+1. **Reopen in Container**:
    - Open the Command Palette (`Cmd+Shift+P` or `Ctrl+Shift+P`).
    - Type `Remote-Containers: Reopen in Container` and select it.
    - VS Code will build the development container. This may take a few minutes
@@ -135,7 +135,7 @@ Dev Containers.
      container, and it will have all the necessary tools and dependencies
      pre-installed.
 
-3. **Install dependencies**:
+1. **Install dependencies**:
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -143,7 +143,7 @@ Dev Containers.
    ```
    <!-- markdownlint-enable MD013 -->
 
-4. **Set up environment variables** (if needed):
+1. **Set up environment variables** (if needed):
 
    This project uses `.env` files for both `npm run dev` (Next.js) and
    `npm run preview` (Wrangler).
@@ -404,7 +404,7 @@ customization easy for contributors.
 
 1. **Base Blog Content**: All blog posts use the `.blog-content` class, which
    provides consistent styling for all content elements.
-2. **Simple Customization**: Apply modifier classes to change blog appearance:
+1. **Simple Customization**: Apply modifier classes to change blog appearance:
 
    <!-- markdownlint-disable MD013 -->
    ```tsx
@@ -420,13 +420,13 @@ customization easy for contributors.
    ```
    <!-- markdownlint-enable MD013 -->
 
-3. **Available Modifier Classes**:
+1. **Available Modifier Classes**:
    - `.blog-content-accent-headings` - Primary color headings
    - `.blog-content-large-text` - Larger H2 headings
    - `.blog-content-spaced` - More paragraph spacing
    - `.blog-content-colorful` - Gradient blockquotes
 
-4. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
+1. **Creating Custom Modifiers**: Add new modifier classes in `app/globals.css`:
 
    <!-- markdownlint-disable MD013 -->
    ```css
@@ -531,8 +531,8 @@ To make blockquotes more visually appealing:
 #### Changing Heading Colors
 
 1. Open `app/globals.css`
-2. Find the `.blog-content h1, .blog-content h2, ...` section
-3. Modify the `@apply` directive:
+1. Find the `.blog-content h1, .blog-content h2, ...` section
+1. Modify the `@apply` directive:
 
 <!-- markdownlint-disable MD013 -->
 ```css
@@ -638,7 +638,7 @@ adapts to the current theme.
    ```
    <!-- markdownlint-enable MD013 -->
 
-2. **Supported Languages**: The system supports all major programming languages,
+1. **Supported Languages**: The system supports all major programming languages,
    including:
    - **PowerShell** (`powershell`, `ps1`)
    - **JavaScript/TypeScript** (`javascript`, `typescript`, `js`, `ts`)
@@ -648,10 +648,10 @@ adapts to the current theme.
    - **JSON/YAML** (`json`, `yaml`)
    - And many more...
 
-3. **Theme Integration**: Syntax highlighting automatically adapts to light/dark
+1. **Theme Integration**: Syntax highlighting automatically adapts to light/dark
    themes using the same color palette as the rest of the site.
 
-4. **Language Labels**: Code blocks automatically display language labels in the
+1. **Language Labels**: Code blocks automatically display language labels in the
    top-right corner for better readability.
 
 **Customizing Syntax Highlighting:**
@@ -868,10 +868,10 @@ joined with `/.ssh-agent-fallback.sock`.
      out-of-memory failures.
    - Download: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
 
-2. **VS Code**
+1. **VS Code**
    - Extension: **Dev Containers** (`ms-vscode-remote.remote-containers`)
 
-3. **Git**
+1. **Git**
    - Configured with username and email
 
 #### Ubuntu-Specific Setup
@@ -939,7 +939,7 @@ echo $SSH_AUTH_SOCK
 **Docker Desktop Configuration:**
 
 1. Install Docker Desktop for Mac
-2. In Docker Desktop Preferences:
+1. In Docker Desktop Preferences:
    - **Resources > File Sharing**: Ensure your project directory is shared
    - **Resources > Advanced**: Allocate at least 4GB RAM, 2 CPUs
    - **General**: Enable appropriate settings for your Mac architecture
@@ -998,10 +998,10 @@ wsl --list --verbose
 **Docker Desktop for Windows:**
 
 1. Install Docker Desktop for Windows
-2. During installation:
+1. During installation:
    - Enable "Use WSL 2 instead of Hyper-V"
    - Enable "Install required Windows components for WSL 2"
-3. In Docker Desktop Settings:
+1. In Docker Desktop Settings:
    - **General**: "Use the WSL 2-based engine" (checked)
    - **Resources > WSL Integration**: Enable for your WSL distro
 
@@ -1095,7 +1095,7 @@ If SSH agent forwarding doesn't work after setup:
 
    Should show a valid path.
 
-2. **Check SSH keys are added:**
+1. **Check SSH keys are added:**
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -1103,7 +1103,7 @@ If SSH agent forwarding doesn't work after setup:
    ```
    <!-- markdownlint-enable MD013 -->
 
-3. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git
+1. **Fallback option** (if still not working): Use HTTPS instead of SSH for Git
    operations, or configure personal access tokens.
 
 **Container Build Fails:**
@@ -1205,8 +1205,8 @@ gh auth login --web --clipboard --hostname github.com --git-protocol ssh
 This will:
 
 1. Copy a one-time OAuth device code to your clipboard automatically.
-2. Open a browser on your host (or print a URL to open manually).
-3. Paste the code in the browser and authorize the GitHub CLI.
+1. Open a browser on your host (or print a URL to open manually).
+1. Paste the code in the browser and authorize the GitHub CLI.
 
 No token ever appears in your terminal, shell history, or environment variables.
 
@@ -1305,8 +1305,8 @@ npx cspell "app/**/*.tsx"
 
 1. **VS Code**: Right-click on the word → "Add to User Dictionary" or "Add to
    Workspace Dictionary"
-2. **Manual**: Add words to the `words` array in `.cspell.jsonc`
-3. **Project-specific**: Words added via VS Code are automatically saved to
+1. **Manual**: Add words to the `words` array in `.cspell.jsonc`
+1. **Project-specific**: Words added via VS Code are automatically saved to
    `.cspell.jsonc`
 
 ### Automation
@@ -1390,8 +1390,8 @@ The spell checker automatically ignores:
 #### Common Issues
 
 1. **False Positives**: Add legitimate technical terms to `.cspell.jsonc`
-2. **Performance**: Adjust `checkLimit` in `.cspell.jsonc` for large files
-3. **Languages**: Add language-specific dictionaries if needed
+1. **Performance**: Adjust `checkLimit` in `.cspell.jsonc` for large files
+1. **Languages**: Add language-specific dictionaries if needed
 
 #### Debugging
 
@@ -1467,10 +1467,10 @@ Then add to `.cspell.jsonc`:
 
 1. **Review before adding**: Don\'t blindly add misspelled words to the
    dictionary
-2. **Keep dictionary clean**: Periodically review custom words
-3. **Use consistent naming**: Follow project conventions for technical terms
-4. **Document decisions**: Add comments in `.cspell.jsonc` for unusual words
-5. **Team alignment**: Ensure all team members use the same VS Code settings
+1. **Keep dictionary clean**: Periodically review custom words
+1. **Use consistent naming**: Follow project conventions for technical terms
+1. **Document decisions**: Add comments in `.cspell.jsonc` for unusual words
+1. **Team alignment**: Ensure all team members use the same VS Code settings
 
 ## Cloudflare Scripts Documentation
 
@@ -1496,7 +1496,7 @@ adapter in a local environment that simulates the Cloudflare Workers runtime.
 
 1. **Build**: Compiles your Next.js application for Cloudflare Workers using the
    OpenNext adapter
-2. **Preview**: Starts a local server that mimics the Cloudflare Workers
+1. **Preview**: Starts a local server that mimics the Cloudflare Workers
    environment
 
 **When to use**:
@@ -1527,7 +1527,7 @@ npm run deploy
 **What it does**:
 
 1. **Build**: Compiles your Next.js application for Cloudflare Workers
-2. **Deploy**: Uploads and deploys the application to your Cloudflare Workers
+1. **Deploy**: Uploads and deploys the application to your Cloudflare Workers
    environment
 
 **Deployment targets**:
@@ -1649,7 +1649,7 @@ lockfile only and running `npm audit`:
    ```
    <!-- markdownlint-enable MD013 -->
 
-2. Run `npm audit` (omit dev dependencies if desired):
+1. Run `npm audit` (omit dev dependencies if desired):
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -1657,7 +1657,7 @@ lockfile only and running `npm audit`:
    ```
    <!-- markdownlint-enable MD013 -->
 
-3. Once finished, restore your original lockfile and install as usual:
+1. Once finished, restore your original lockfile and install as usual:
 
    <!-- markdownlint-disable MD013 -->
    ```bash
@@ -1823,9 +1823,9 @@ const sanitizeOptions = {
 
 1. **No Image Tags**: The current configuration does NOT allow `<img>` tags, as
    images are likely handled through other mechanisms
-2. **Data Attributes Allowed**: While `data-*` attributes are allowed, they
+1. **Data Attributes Allowed**: While `data-*` attributes are allowed, they
    cannot execute JavaScript directly
-3. **Restricted Tag Set**: Only a curated set of HTML tags are allowed, blocking
+1. **Restricted Tag Set**: Only a curated set of HTML tags are allowed, blocking
    dangerous ones like `<script>`, `<iframe>`, `<object>`, etc.
 
 ### Security Recommendations
@@ -1833,11 +1833,11 @@ const sanitizeOptions = {
 #### Regular Maintenance
 
 1. **Update Dependencies**: Keep `sanitize-html` updated to latest version
-2. **Review New Attack Vectors**: Periodically review OWASP XSS prevention
+1. **Review New Attack Vectors**: Periodically review OWASP XSS prevention
    guidelines
-3. **Monitor Test Results**: Any test failures should be investigated
+1. **Monitor Test Results**: Any test failures should be investigated
    immediately
-4. **Audit Configuration**: Review the sanitization configuration when adding
+1. **Audit Configuration**: Review the sanitization configuration when adding
    new features
 
 #### Adding New Content Types
@@ -1845,10 +1845,10 @@ const sanitizeOptions = {
 When adding new content types or HTML features:
 
 1. Add corresponding security tests first
-2. Update the sanitization configuration carefully
-3. Verify that legitimate content is preserved
-4. Ensure malicious variants are properly blocked
-5. Run the full security audit
+1. Update the sanitization configuration carefully
+1. Verify that legitimate content is preserved
+1. Ensure malicious variants are properly blocked
+1. Run the full security audit
 
 #### CI/CD Integration
 
@@ -1867,11 +1867,11 @@ If security tests fail:
 
 1. **Check Recent Changes**: Review recent modifications to the build script or
    sanitization config
-2. **Verify Dependencies**: Ensure `sanitize-html` and related packages are
+1. **Verify Dependencies**: Ensure `sanitize-html` and related packages are
    up-to-date
-3. **Review Error Messages**: Test failures indicate specific security
+1. **Review Error Messages**: Test failures indicate specific security
    vulnerabilities
-4. **Test Manually**: Create test blog posts with suspicious content to verify
+1. **Test Manually**: Create test blog posts with suspicious content to verify
    behavior
 
 #### Performance Issues
@@ -1880,8 +1880,8 @@ If tests are slow:
 
 1. **Check Content Size**: Exceptionally large test content can slow down
    processing
-2. **Review Complexity**: Deeply nested HTML can cause performance issues
-3. **Monitor Resources**: Integration tests create temporary files and
+1. **Review Complexity**: Deeply nested HTML can cause performance issues
+1. **Monitor Resources**: Integration tests create temporary files and
    directories
 
 #### False Positives
@@ -1890,8 +1890,8 @@ If legitimate content is being over-sanitized:
 
 1. **Review Sanitization Config**: May need to allow additional tags or
    attributes
-2. **Update Test Expectations**: Ensure tests match the actual desired behavior
-3. **Consider Alternatives**: Some content might need different handling
+1. **Update Test Expectations**: Ensure tests match the actual desired behavior
+1. **Consider Alternatives**: Some content might need different handling
    mechanisms
 
 ## Page Dates Management
@@ -1974,10 +1974,10 @@ npm run build:page-dates
 ### Benefits
 
 1. **SEO Accuracy**: Real last modified dates instead of current date
-2. **Environment Compatibility**: Works in Cloudflare Workers and other
+1. **Environment Compatibility**: Works in Cloudflare Workers and other
    serverless environments
-3. **Automatic Updates**: Dates update when files are actually modified
-4. **Build-time Generation**: No runtime Git commands or file system access
+1. **Automatic Updates**: Dates update when files are actually modified
+1. **Build-time Generation**: No runtime Git commands or file system access
    needed
 
 ### Adding New Pages
@@ -1985,8 +1985,8 @@ npm run build:page-dates
 To track a new static page:
 
 1. Add it to the `pageDates` object in `scripts/build-page-dates.js`
-2. Add the corresponding property to the return object in `lib/file-dates.ts`
-3. Update the TypeScript declaration in `lib/page-dates.json.d.ts`
+1. Add the corresponding property to the return object in `lib/file-dates.ts`
+1. Update the TypeScript declaration in `lib/page-dates.json.d.ts`
 
 ## Slug Utilities Documentation
 
@@ -2191,11 +2191,11 @@ interface SlugOptions {
 ### Benefits Slug Utilities
 
 1. **Consistency**: All slug generation uses the same configuration and rules
-2. **Reusability**: Functions can be used throughout the application
-3. **Maintainability**: Single source of truth for slug logic
-4. **Testing**: Centralized functions are easier to test
-5. **Performance**: Optimized implementations for both server and client
-6. **Accessibility**: Includes proper ARIA labels and semantic markup
+1. **Reusability**: Functions can be used throughout the application
+1. **Maintainability**: Single source of truth for slug logic
+1. **Testing**: Centralized functions are easier to test
+1. **Performance**: Optimized implementations for both server and client
+1. **Accessibility**: Includes proper ARIA labels and semantic markup
 
 ## Updating Packages
 
@@ -2444,16 +2444,16 @@ The components use Tailwind CSS classes and respect your design system:
 Add new languages by:
 
 1. Creating new message files (e.g., `messages/de.json`)
-2. Adding the locale to your i18n configuration
-3. Copying the `cookieConsent` and `cookiePolicy` sections
+1. Adding the locale to your i18n configuration
+1. Copying the `cookieConsent` and `cookiePolicy` sections
 
 #### Cookie Categories (Banner Configuration)
 
 To add new categories:
 
 1. Update the `CookieCategory` type
-2. Add translations for the new category
-3. Update the UI components to include the new category
+1. Add translations for the new category
+1. Update the UI components to include the new category
 
 ### Testing Consent
 
@@ -2511,9 +2511,9 @@ const timestamp = getConsentTimestamp()
 #### Regular Tasks
 
 1. **Audit cookies**: Review `cookieRegistry` quarterly
-2. **Update consent version**: When adding new cookie purposes
-3. **Monitor compliance**: Ensure third-party scripts respect consent
-4. **Review translations**: Keep legal language up to date
+1. **Update consent version**: When adding new cookie purposes
+1. **Monitor compliance**: Ensure third-party scripts respect consent
+1. **Review translations**: Keep legal language up to date
 
 #### Future Enhancements
 
@@ -2529,9 +2529,9 @@ Consider adding:
 For questions or issues:
 
 1. Check the test files for usage examples
-2. Review the cookie registry for cookie definitions
-3. Test with browser developer tools to verify consent flow
-4. Ensure third-party scripts respect consent decisions
+1. Review the cookie registry for cookie definitions
+1. Test with browser developer tools to verify consent flow
+1. Ensure third-party scripts respect consent decisions
 
 ### License
 

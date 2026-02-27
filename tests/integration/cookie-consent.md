@@ -70,19 +70,19 @@ flowchart TD
 Every test starts with a clean slate:
 
 1. Navigate to `/` to establish a page context.
-2. Clear `localStorage` key `viscalyx.org-cookie-consent`.
-3. Clear all browser cookies.
-4. Reload the page so the banner appears fresh.
+1. Clear `localStorage` key `viscalyx.org-cookie-consent`.
+1. Clear all browser cookies.
+1. Reload the page so the banner appears fresh.
 
 ### `waitForBanner` Helper
 
 Waits for the banner to be ready for interaction:
 
 1. Locate the element matching `[role="dialog"][aria-modal="true"]`.
-2. Assert it is visible.
-3. Wait **400 ms** for the Framer Motion entrance animation (`y: 100 → 0`, 300
+1. Assert it is visible.
+1. Wait **400 ms** for the Framer Motion entrance animation (`y: 100 → 0`, 300
    ms, easeOut) to settle.
-4. Return the banner locator for chaining.
+1. Return the banner locator for chaining.
 
 ---
 
@@ -96,11 +96,11 @@ elements.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner to appear and animate in.
-3. Assert the banner contains an `<h2>` heading ("We Use Cookies").
-4. Assert "Accept All" button is visible.
-5. Assert "Reject All" button is visible.
-6. Assert "Customize Settings" text is visible.
+1. Wait for the banner to appear and animate in.
+1. Assert the banner contains an `<h2>` heading ("We Use Cookies").
+1. Assert "Accept All" button is visible.
+1. Assert "Reject All" button is visible.
+1. Assert "Customize Settings" text is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -131,14 +131,14 @@ correct consent data with all categories enabled.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Accept All".
-4. Assert the banner is no longer visible.
-5. Read `localStorage` key `viscalyx.org-cookie-consent`.
-6. Assert `settings` has `strictly-necessary: true`, `analytics: true`,
+1. Wait for the banner.
+1. Click "Accept All".
+1. Assert the banner is no longer visible.
+1. Read `localStorage` key `viscalyx.org-cookie-consent`.
+1. Assert `settings` has `strictly-necessary: true`, `analytics: true`,
    `preferences: true`.
-7. Assert `timestamp` is present.
-8. Assert `version` is `"1.0"`.
+1. Assert `timestamp` is present.
+1. Assert `version` is `"1.0"`.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -167,14 +167,14 @@ consent with only strictly-necessary enabled.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Reject All".
-4. Assert the banner is no longer visible.
-5. Read `localStorage` key `viscalyx.org-cookie-consent`.
-6. Assert `settings` has `strictly-necessary: true`, `analytics: false`,
+1. Wait for the banner.
+1. Click "Reject All".
+1. Assert the banner is no longer visible.
+1. Read `localStorage` key `viscalyx.org-cookie-consent`.
+1. Assert `settings` has `strictly-necessary: true`, `analytics: false`,
    `preferences: false`.
-7. Assert `timestamp` is present.
-8. Assert `version` is `"1.0"`.
+1. Assert `timestamp` is present.
+1. Assert `version` is `"1.0"`.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -203,16 +203,16 @@ states and UI elements.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Customize Settings" text (not the link, to avoid aria-label
+1. Wait for the banner.
+1. Click "Customize Settings" text (not the link, to avoid aria-label
    collision).
-4. Assert "Cookie Settings" heading (`<h2>`) is visible.
-5. Assert three toggle checkboxes exist in the DOM:
+1. Assert "Cookie Settings" heading (`<h2>`) is visible.
+1. Assert three toggle checkboxes exist in the DOM:
    - `#toggle-strictly-necessary` — checked and **disabled** (cannot be
      changed).
    - `#toggle-analytics` — unchecked and **enabled**.
    - `#toggle-preferences` — unchecked and **enabled**.
-6. Assert "Save Preferences" button is visible.
+1. Assert "Save Preferences" button is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -242,17 +242,17 @@ saved data reflects the final toggle states.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Customize Settings" to open detailed view.
-4. Verify initial state: only `strictly-necessary` is checked.
-5. Click the label wrapping `#toggle-analytics` → analytics becomes **checked**.
-6. Click the label wrapping `#toggle-preferences` → preferences becomes
+1. Wait for the banner.
+1. Click "Customize Settings" to open detailed view.
+1. Verify initial state: only `strictly-necessary` is checked.
+1. Click the label wrapping `#toggle-analytics` → analytics becomes **checked**.
+1. Click the label wrapping `#toggle-preferences` → preferences becomes
    **checked**.
-7. Click the label wrapping `#toggle-analytics` again → analytics becomes
+1. Click the label wrapping `#toggle-analytics` again → analytics becomes
    **unchecked**.
-8. Click "Save Preferences".
-9. Assert the banner is hidden.
-10. Read `localStorage` and verify:
+1. Click "Save Preferences".
+1. Assert the banner is hidden.
+1. Read `localStorage` and verify:
     - `strictly-necessary: true`
     - `analytics: false` (toggled back off)
     - `preferences: true` (left on)
@@ -312,13 +312,13 @@ hidden across page reloads and navigation.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Accept All" → banner hides.
-4. Reload the page.
-5. Assert the banner dialog is **not** visible (consent persisted).
-6. Navigate to `/privacy`.
-7. Navigate back to `/`.
-8. Assert the banner dialog is still **not** visible.
+1. Wait for the banner.
+1. Click "Accept All" → banner hides.
+1. Reload the page.
+1. Assert the banner dialog is **not** visible (consent persisted).
+1. Navigate to `/privacy`.
+1. Navigate back to `/`.
+1. Assert the banner dialog is still **not** visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -369,12 +369,12 @@ the user to the simple banner without dismissing it entirely.
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Click "Customize Settings" to open detailed view.
-4. Assert "Cookie Settings" heading is visible.
-5. Click the "Close" button (`aria-label="Close"`).
-6. Assert "Cookie Settings" heading is **no longer** visible.
-7. Assert "Accept All" button is visible (back to simple view).
+1. Wait for the banner.
+1. Click "Customize Settings" to open detailed view.
+1. Assert "Cookie Settings" heading is visible.
+1. Click the "Close" button (`aria-label="Close"`).
+1. Assert "Cookie Settings" heading is **no longer** visible.
+1. Assert "Accept All" button is visible (back to simple view).
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -406,12 +406,12 @@ and that Escape focuses the Reject All button (cancel action).
 **Flow:**
 
 1. Navigate to `/`.
-2. Wait for the banner.
-3. Press `Tab` to move focus to the first interactive element.
-4. Press `Escape`.
-5. Assert the "Reject All" button is still visible (Escape focuses it, does not
+1. Wait for the banner.
+1. Press `Tab` to move focus to the first interactive element.
+1. Press `Escape`.
+1. Assert the "Reject All" button is still visible (Escape focuses it, does not
    dismiss the banner).
-6. Assert the "Accept All" button is still visible.
+1. Assert the "Accept All" button is still visible.
 
 **Accessibility features under test:**
 

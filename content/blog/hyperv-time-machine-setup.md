@@ -174,7 +174,7 @@ _Check UID in_ `smbstatus --shares`. Should be the tmbackup UID, **not 65534**
 ### 8.4 - Reconnect from macOS
 
 1. Remove old entry in Time Machine.
-2. Reconnect via Finder with the **FQDN** (avoids Bonjour alias).
+1. Reconnect via Finder with the **FQDN** (avoids Bonjour alias).
 
 ### 8.5 - Quick checklist
 

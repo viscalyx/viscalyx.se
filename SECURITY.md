@@ -28,8 +28,8 @@ reporting feature:
 
 1. Navigate to the [Security tab](https://github.com/viscalyx/viscalyx.se/security)
    of this repository
-2. Click on "Report a vulnerability"
-3. Fill out the vulnerability report form with as much detail as possible
+1. Click on "Report a vulnerability"
+1. Fill out the vulnerability report form with as much detail as possible
 
 This method ensures that vulnerability details remain private until we've had a
 chance to assess and address them.
@@ -104,10 +104,10 @@ We aim to respond to security reports according to the following timeline:
 We follow a coordinated disclosure approach:
 
 1. **Report received**: We acknowledge receipt of your vulnerability report
-2. **Assessment**: We verify and assess the vulnerability
-3. **Fix development**: We develop and test a fix
-4. **Fix deployment**: We deploy the fix to production
-5. **Public disclosure**: We work with you to publicly disclose the
+1. **Assessment**: We verify and assess the vulnerability
+1. **Fix development**: We develop and test a fix
+1. **Fix deployment**: We deploy the fix to production
+1. **Public disclosure**: We work with you to publicly disclose the
    vulnerability details
 
 ### Recognition

@@ -105,11 +105,11 @@ introducing sideways page scrolling.
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Use `page.evaluate` to read `document.documentElement.clientWidth` and
+1. Use `page.evaluate` to read `document.documentElement.clientWidth` and
    `scrollWidth`.
-3. Use `page.evaluate` to read `document.body.clientWidth` and `scrollWidth`.
-4. Assert `html.scrollWidth <= html.clientWidth + 1`.
-5. Assert `body.scrollWidth <= body.clientWidth + 1`.
+1. Use `page.evaluate` to read `document.body.clientWidth` and `scrollWidth`.
+1. Assert `html.scrollWidth <= html.clientWidth + 1`.
+1. Assert `body.scrollWidth <= body.clientWidth + 1`.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -137,9 +137,9 @@ initial HTML, not hidden behind a JavaScript loading state.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert the hero `<h1>` contains "Streamline Your", "Development", and
+1. Assert the hero `<h1>` contains "Streamline Your", "Development", and
    "Workflow".
-3. Assert the hero description containing "Professional consulting services" is
+1. Assert the hero description containing "Professional consulting services" is
    visible.
 
 <!-- markdownlint-disable MD013 -->
@@ -164,8 +164,8 @@ tag instead of the root fallback.
 **Steps:**
 
 1. Navigate to `/`.
-2. Read `document.title`.
-3. Assert it contains "Streamline Your", "Development", "Workflow", and
+1. Read `document.title`.
+1. Assert it contains "Streamline Your", "Development", "Workflow", and
    "Viscalyx".
 
 #### should have meta description
@@ -176,8 +176,8 @@ tag instead of the root fallback.
 **Steps:**
 
 1. Navigate to `/`.
-2. Read `<meta name="description">` content attribute.
-3. Assert it contains "consulting" and is a non-empty string (>20 chars).
+1. Read `<meta name="description">` content attribute.
+1. Assert it contains "consulting" and is a non-empty string (>20 chars).
 
 #### should have Open Graph metadata
 
@@ -187,10 +187,10 @@ locale.
 **Steps:**
 
 1. Navigate to `/`.
-2. Read `<meta property="og:title">` content attribute.
-3. Assert it contains "Development".
-4. Read `<meta property="og:locale">` content attribute.
-5. Assert it equals `en_US`.
+1. Read `<meta property="og:title">` content attribute.
+1. Assert it contains "Development".
+1. Read `<meta property="og:locale">` content attribute.
+1. Assert it equals `en_US`.
 
 ---
 
@@ -204,8 +204,8 @@ navigation links.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert the "Viscalyx" logo link is visible.
-3. Assert "About", "Open Source", and "Blog" nav links are visible.
+1. Assert the "Viscalyx" logo link is visible.
+1. Assert "About", "Open Source", and "Blog" nav links are visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -228,8 +228,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Click the "Blog" link.
-3. Assert URL matches `/blog`.
+1. Click the "Blog" link.
+1. Assert URL matches `/blog`.
 
 ---
 
@@ -242,8 +242,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert "Automation & DevOps Excellence" badge is visible.
-3. Assert stats: "30+" / "Years Experience", "100+" / "Tasks Automated" are
+1. Assert "Automation & DevOps Excellence" badge is visible.
+1. Assert stats: "30+" / "Years Experience", "100+" / "Tasks Automated" are
    visible.
 
 #### should display Learn More button that scrolls to About
@@ -253,7 +253,7 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert the "Learn More" button is visible.
+1. Assert the "Learn More" button is visible.
 
 #### should display hero image carousel
 
@@ -262,8 +262,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Locate images in the first `<section>`.
-3. Assert at least one image is present.
+1. Locate images in the first `<section>`.
+1. Assert at least one image is present.
 
 ---
 
@@ -277,9 +277,9 @@ description text.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert "About Viscalyx" badge is visible.
-3. Assert heading "Empowering Organizations Through" is visible.
-4. Assert description containing "specialized consulting company" is visible.
+1. Assert "About Viscalyx" badge is visible.
+1. Assert heading "Empowering Organizations Through" is visible.
+1. Assert description containing "specialized consulting company" is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -302,7 +302,7 @@ headings.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert headings: "Precision & Excellence", "Client-Centric Approach",
+1. Assert headings: "Precision & Excellence", "Client-Centric Approach",
    "Innovation First", "Open Source Commitment".
 
 #### should be scrollable via hash anchor (#about)
@@ -312,7 +312,7 @@ headings.
 **Steps:**
 
 1. Navigate to `/#about`.
-2. Assert the `#about` element is visible.
+1. Assert the `#about` element is visible.
 
 ---
 
@@ -326,8 +326,8 @@ statistics.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert an "Open Source" heading is visible.
-3. Assert stats "80+" and "9k+" are visible.
+1. Assert an "Open Source" heading is visible.
+1. Assert stats "80+" and "9k+" are visible.
 
 #### should display project cards with links
 
@@ -337,9 +337,9 @@ statistics.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert project headings: "PowerShell DSC Community", "DSC Resource Kit",
+1. Assert project headings: "PowerShell DSC Community", "DSC Resource Kit",
    "Sampler".
-3. Assert three "View Project" links exist.
+1. Assert three "View Project" links exist.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -363,8 +363,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert heading "Join the PowerShell Open Source Community" is visible.
-3. Assert "Follow on GitHub" and "Collaborate With Community" links are visible.
+1. Assert heading "Join the PowerShell Open Source Community" is visible.
+1. Assert "Follow on GitHub" and "Collaborate With Community" links are visible.
 
 #### should be scrollable via hash anchor
 
@@ -374,7 +374,7 @@ section visible.
 **Steps:**
 
 1. Navigate to `/#open-source`.
-2. Assert the `#open-source` element is visible.
+1. Assert the `#open-source` element is visible.
 
 ---
 
@@ -389,12 +389,12 @@ category.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert footer is visible.
-3. Assert Company links "About Us" and "Open Source" are rendered as Next.js
+1. Assert footer is visible.
+1. Assert Company links "About Us" and "Open Source" are rendered as Next.js
    `<Link>` components with `onClick` handlers (client-side navigation).
-4. Assert Resource links: "Blog" is an internal `<a>` tag; "Community" is an
+1. Assert Resource links: "Blog" is an internal `<a>` tag; "Community" is an
    external `<a>` tag — both standard anchor elements.
-5. Assert Support links: "Privacy Policy", "Terms of Service", "Cookie Policy".
+1. Assert Support links: "Privacy Policy", "Terms of Service", "Cookie Policy".
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -421,7 +421,7 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert text matching `© {year} Viscalyx. All rights reserved` is visible.
+1. Assert text matching `© {year} Viscalyx. All rights reserved` is visible.
 
 #### should have social media links
 
@@ -431,7 +431,7 @@ footer.
 **Steps:**
 
 1. Navigate to `/`.
-2. Assert GitHub and LinkedIn links are visible within the footer.
+1. Assert GitHub and LinkedIn links are visible within the footer.
 
 ---
 
@@ -444,10 +444,10 @@ footer.
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Assert hero `<h1>` contains "Effektivisera Ditt", "Utvecklings",
+1. Assert hero `<h1>` contains "Effektivisera Ditt", "Utvecklings",
    "Arbetsflöde".
-3. Assert Swedish badge "Automation & DevOps Excellens" is visible.
-4. Assert Swedish button "Läs Mer" is visible.
+1. Assert Swedish badge "Automation & DevOps Excellens" is visible.
+1. Assert Swedish button "Läs Mer" is visible.
 
 <!-- markdownlint-disable MD013 -->
 ```mermaid
@@ -472,8 +472,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Read `document.title` — assert it contains "Effektivisera".
-3. Read `<meta property="og:locale">` — assert it equals `sv_SE`.
+1. Read `document.title` — assert it contains "Effektivisera".
+1. Read `<meta property="og:locale">` — assert it equals `sv_SE`.
 
 #### should display Swedish navigation at /sv
 
@@ -482,7 +482,7 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Assert nav links: "Om oss", "Öppen Källkod", "Blogg".
+1. Assert nav links: "Om oss", "Öppen Källkod", "Blogg".
 
 #### should display Swedish About section at /sv
 
@@ -491,8 +491,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Assert "Om Viscalyx" badge is visible.
-3. Assert heading "Ger Organisationer Kraft Genom" is visible.
+1. Assert "Om Viscalyx" badge is visible.
+1. Assert heading "Ger Organisationer Kraft Genom" is visible.
 
 #### should display Swedish footer at /sv
 
@@ -502,5 +502,5 @@ copyright.
 **Steps:**
 
 1. Navigate to `/sv`.
-2. Assert footer links: "Integritetspolicy", "Användarvillkor".
-3. Assert "Alla rättigheter förbehållna" text is visible.
+1. Assert footer links: "Integritetspolicy", "Användarvillkor".
+1. Assert "Alla rättigheter förbehållna" text is visible.
