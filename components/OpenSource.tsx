@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import { GitHubIcon } from '@/components/SocialIcons'
 import { useSectionNavigation } from '@/lib/use-section-navigation'
-import { GitHubIcon } from './SocialIcons'
 
 const OpenSource = () => {
   const { handleNavigation } = useSectionNavigation({
@@ -186,6 +186,7 @@ const OpenSource = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
+                aria-label="Follow on GitHub (opens in new tab)"
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
                 href="https://github.com/viscalyx"
                 rel="noopener noreferrer"
@@ -197,6 +198,7 @@ const OpenSource = () => {
                 {t('cta.followGithub')}
               </motion.a>
               <motion.a
+                aria-label="Collaborate with DSC (opens in new tab)"
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
                 href="https://dsccommunity.org/"
                 rel="noopener noreferrer"

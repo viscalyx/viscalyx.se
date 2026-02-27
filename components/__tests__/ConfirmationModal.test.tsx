@@ -90,33 +90,21 @@ describe('ConfirmationModal', () => {
     it('applies danger variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="danger" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')
-      expect(confirmButton).toBeTruthy()
-      if (!confirmButton) {
-        throw new Error('Expected confirm button')
-      }
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-red-600')
     })
 
     it('applies warning variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="warning" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')
-      expect(confirmButton).toBeTruthy()
-      if (!confirmButton) {
-        throw new Error('Expected confirm button')
-      }
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-orange-600')
     })
 
     it('applies info variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="info" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')
-      expect(confirmButton).toBeTruthy()
-      if (!confirmButton) {
-        throw new Error('Expected confirm button')
-      }
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-blue-600')
     })
   })

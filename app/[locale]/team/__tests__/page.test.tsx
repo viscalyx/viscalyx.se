@@ -10,7 +10,7 @@ vi.mock('next-intl/server', () => ({
 }))
 
 // Mock child component
-vi.mock('../TeamPageClient', () => ({
+vi.mock('@/app/[locale]/team/TeamPageClient', () => ({
   __esModule: true,
   default: () =>
     React.createElement('div', { 'data-testid': 'team-page-client' }),

@@ -94,4 +94,63 @@ describe('biome-lint-strict.js', () => {
       'Failed to parse Biome JSON output: parse failed',
     )
   })
+
+  it('exits 1 when JSON lint spawn fails', () => {
+    const processObj = createFakeProcess()
+    const consoleObj = { error: vi.fn() }
+
+    expect(() =>
+      biomeLintStrict.main(['.'], {
+        runBiomeJsonLint: () => ({ error: new Error('spawn failed') }),
+        parseBiomeJson: biomeLintStrict.parseBiomeJson,
+        runReadableLint: vi.fn(),
+        processObj,
+        consoleObj,
+      }),
+    ).toThrow('exit:1')
+
+    expect(consoleObj.error).toHaveBeenCalledWith('spawn failed')
+  })
+
+  it('exits 1 when readable lint spawn fails', () => {
+    const processObj = createFakeProcess()
+    const consoleObj = { error: vi.fn() }
+
+    expect(() =>
+      biomeLintStrict.main(['.'], {
+        runBiomeJsonLint: () => ({
+          stdout: '{"summary":{"errors":0,"warnings":1,"infos":0}}',
+        }),
+        parseBiomeJson: biomeLintStrict.parseBiomeJson,
+        runReadableLint: () => ({
+          error: new Error('readable spawn failed'),
+        }),
+        processObj,
+        consoleObj,
+      }),
+    ).toThrow('exit:1')
+
+    expect(consoleObj.error).toHaveBeenCalledWith('readable spawn failed')
+  })
+
+  it('exits 1 when diagnostics exist and readable lint returns status 0', () => {
+    const processObj = createFakeProcess()
+    const consoleObj = { error: vi.fn() }
+
+    expect(() =>
+      biomeLintStrict.main(['.'], {
+        runBiomeJsonLint: () => ({
+          stdout: '{"summary":{"errors":1,"warnings":2,"infos":3}}',
+        }),
+        parseBiomeJson: biomeLintStrict.parseBiomeJson,
+        runReadableLint: () => ({ status: 0 }),
+        processObj,
+        consoleObj,
+      }),
+    ).toThrow('exit:1')
+
+    expect(consoleObj.error).toHaveBeenCalledWith(
+      'Strict summary: errors 1, warnings 2, infos 3.',
+    )
+  })
 })

@@ -12,8 +12,8 @@ export function getSecureAttribute(): string {
 }
 
 function writeCookie(cookie: string): void {
-  const doc = window.document as Document & { cookie: string }
-  doc.cookie = cookie
+  // biome-ignore lint/suspicious/noDocumentCookie: helper intentionally writes document.cookie for broad browser support.
+  window.document.cookie = cookie
 }
 
 /**

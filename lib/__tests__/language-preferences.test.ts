@@ -1,20 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { hasConsent } from '../cookie-consent'
-import { deleteCookie, getCookie, setCookie } from '../cookie-utils'
+import { hasConsent } from '@/lib/cookie-consent'
+import { deleteCookie, getCookie, setCookie } from '@/lib/cookie-utils'
 import {
   clearLanguagePreference,
   getDefaultLanguage,
   getLanguagePreference,
   saveLanguagePreference,
-} from '../language-preferences'
+} from '@/lib/language-preferences'
 
 // Mock the cookie consent check
-vi.mock('../cookie-consent', () => ({
+vi.mock('@/lib/cookie-consent', () => ({
   hasConsent: vi.fn(() => true), // Default to having consent
 }))
 
 // Mock cookie utilities
-vi.mock('../cookie-utils', () => ({
+vi.mock('@/lib/cookie-utils', () => ({
   setCookie: vi.fn(),
   deleteCookie: vi.fn(),
   getCookie: vi.fn(() => null),

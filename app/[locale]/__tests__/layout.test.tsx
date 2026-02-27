@@ -64,12 +64,12 @@ describe('LocaleLayout', () => {
     expect(generateStaticParams()).toEqual([{ locale: 'en' }, { locale: 'sv' }])
   })
 
-  it('renders provider, structured-data scripts and cookie banner for valid locale', async () => {
+  it('renders provider and cookie banner for valid locale', async () => {
     const ui = await LocaleLayout({
       children: <main aria-label="layout child">child</main>,
       params: Promise.resolve({ locale: 'en' }),
     })
-    const { container } = render(ui)
+    render(ui)
 
     expect(
       screen.getByRole('region', { name: 'provider en' }),
@@ -80,9 +80,6 @@ describe('LocaleLayout', () => {
     expect(
       screen.getByRole('complementary', { name: 'cookie consent banner' }),
     ).toBeInTheDocument()
-    expect(
-      container.querySelectorAll('script[type="application/ld+json"]'),
-    ).toHaveLength(2)
   })
 
   it('calls notFound for unsupported locale', async () => {

@@ -12,10 +12,11 @@ function useEffectWhenInitialized(
   deps: React.DependencyList,
   isInitialized: boolean,
 ) {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally excludes `effect` to avoid reruns from inline callbacks.
   useEffect(() => {
     if (!isInitialized) return
     return effect()
-  }, [isInitialized, effect, ...deps])
+  }, [isInitialized, ...deps])
 }
 
 interface ThemeContextType {

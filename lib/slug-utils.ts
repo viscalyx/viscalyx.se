@@ -8,6 +8,7 @@ import slugify from 'slugify'
 interface SlugOptions {
   locale?: string
   lower?: boolean
+  namespace?: string
   strict?: boolean
   trim?: boolean
 }
@@ -265,11 +266,12 @@ export async function addHeadingIds(
 ): Promise<string> {
   const usedIds = new Set<string>()
   const locale = options.locale ?? 'en'
+  const namespace = options.namespace ?? 'blog'
   const resolvedTranslateFn =
     translateFn ??
     (await getTranslations({
       locale,
-      namespace: 'blog',
+      namespace,
     }))
 
   return htmlContent.replace(

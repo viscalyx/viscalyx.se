@@ -4,15 +4,12 @@ import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-interface ReadingProgressProps {
+interface ComponentProps {
   endTarget?: string // CSS selector for the element where reading should be considered complete (e.g., author bio)
   target?: string // CSS selector for the content area to track
 }
 
-const ReadingProgress = ({
-  target = '.prose',
-  endTarget,
-}: ReadingProgressProps) => {
+const ReadingProgress = ({ target = '.prose', endTarget }: ComponentProps) => {
   const t = useTranslations('readingProgress')
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)

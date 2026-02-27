@@ -8,7 +8,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size, color }: { size: string; color: string }) => (
-    <div data-color={color} data-size={size} data-testid="loading-spinner" />
+    <output aria-label="Loading spinner" data-color={color} data-size={size} />
   ),
 }))
 
@@ -36,13 +36,8 @@ describe('LoadingScreen', () => {
     render(<LoadingScreen />)
 
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-size',
-      'lg',
-    )
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-color',
-      'primary',
-    )
+    const spinner = screen.getByRole('status', { name: 'Loading spinner' })
+    expect(spinner).toHaveAttribute('data-size', 'lg')
+    expect(spinner).toHaveAttribute('data-color', 'primary')
   })
 })

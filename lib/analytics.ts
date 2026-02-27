@@ -1,8 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef } from 'react'
-import { consentEvents } from './consent-events'
-import { hasConsent } from './cookie-consent'
+import { consentEvents } from '@/lib/consent-events'
+import { hasConsent } from '@/lib/cookie-consent'
 
 interface BlogAnalyticsData {
   category: string
@@ -14,6 +14,10 @@ interface UseAnalyticsOptions {
   progressThreshold?: number // Send analytics when user reaches this % of content
   trackReadProgress?: boolean
   trackTimeSpent?: boolean
+}
+
+interface UseBlogAnalyticsReturn {
+  trackEvent: (readProgress?: number, timeSpent?: number) => Promise<void>
 }
 
 // Cache for consent status to avoid repeated localStorage reads
@@ -93,7 +97,7 @@ function setupConsentCacheInvalidation(): () => void {
 export function useBlogAnalytics(
   data: BlogAnalyticsData,
   options: UseAnalyticsOptions = {},
-) {
+): UseBlogAnalyticsReturn {
   const {
     trackReadProgress = true,
     trackTimeSpent = true,
