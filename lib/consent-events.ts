@@ -35,12 +35,16 @@ class ConsentEventEmitter {
       eventListeners = new Set()
       this.listeners.set(eventType, eventListeners)
     }
+    const currentListeners = eventListeners
     eventListeners.add(listener)
 
     // Return unsubscribe function
     return () => {
-      eventListeners.delete(listener)
-      if (eventListeners.size === 0) {
+      currentListeners.delete(listener)
+      if (
+        currentListeners.size === 0 &&
+        this.listeners.get(eventType) === currentListeners
+      ) {
         this.listeners.delete(eventType)
       }
     }

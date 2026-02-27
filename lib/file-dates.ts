@@ -1,4 +1,55 @@
-import pageDatesData from './page-dates.json'
+import fs from 'node:fs'
+import path from 'node:path'
+
+type StaticPageDateKey = 'home' | 'blog' | 'privacy' | 'terms' | 'cookies'
+
+type StaticPageDateMap = Record<StaticPageDateKey, string>
+
+const FALLBACK_PAGE_DATES: StaticPageDateMap = {
+  home: '2024-01-01T00:00:00.000Z',
+  blog: '2024-01-01T00:00:00.000Z',
+  privacy: '2024-01-01T00:00:00.000Z',
+  terms: '2024-01-01T00:00:00.000Z',
+  cookies: '2024-01-01T00:00:00.000Z',
+}
+
+function isValidISODate(value: unknown): value is string {
+  if (typeof value !== 'string') return false
+  return !Number.isNaN(Date.parse(value))
+}
+
+function loadPageDatesData(): StaticPageDateMap {
+  const pageDatesPath = path.join(process.cwd(), 'lib', 'page-dates.json')
+
+  try {
+    if (!fs.existsSync(pageDatesPath)) {
+      return FALLBACK_PAGE_DATES
+    }
+
+    const raw = fs.readFileSync(pageDatesPath, 'utf8')
+    const parsed = JSON.parse(raw) as Partial<StaticPageDateMap>
+
+    return {
+      home: isValidISODate(parsed.home)
+        ? parsed.home
+        : FALLBACK_PAGE_DATES.home,
+      blog: isValidISODate(parsed.blog)
+        ? parsed.blog
+        : FALLBACK_PAGE_DATES.blog,
+      privacy: isValidISODate(parsed.privacy)
+        ? parsed.privacy
+        : FALLBACK_PAGE_DATES.privacy,
+      terms: isValidISODate(parsed.terms)
+        ? parsed.terms
+        : FALLBACK_PAGE_DATES.terms,
+      cookies: isValidISODate(parsed.cookies)
+        ? parsed.cookies
+        : FALLBACK_PAGE_DATES.cookies,
+    }
+  } catch {
+    return FALLBACK_PAGE_DATES
+  }
+}
 
 /**
  * Get last modified dates for specific static pages
@@ -11,6 +62,8 @@ import pageDatesData from './page-dates.json'
  * 3. The updated dates will be used in the sitemap and pages
  */
 export function getStaticPageDates() {
+  const pageDatesData = loadPageDatesData()
+
   return {
     home: new Date(pageDatesData.home),
     blog: new Date(pageDatesData.blog),

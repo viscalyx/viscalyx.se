@@ -282,8 +282,12 @@ export async function addHeadingIds(
       const baseId = createSlugId(cleanedText, levelNum, options)
       const id = ensureUniqueId(baseId, usedIds)
 
-      // Check if id attribute already exists in attributes
-      const hasId = /\bid\s*=\s*(["']?)[^\s>]+\1/i.test(attributes)
+      // Check if id attribute already exists in attributes and preserve it for href.
+      const quotedIdMatch = attributes.match(/\bid\s*=\s*(["'])([^"']+)\1/i)
+      const unquotedIdMatch = attributes.match(/\bid\s*=\s*([^\s>]+)/i)
+      const existingId = quotedIdMatch?.[2] ?? unquotedIdMatch?.[1]
+      const hasId = Boolean(existingId)
+      const anchorHrefId = existingId ?? id
       const finalAttributes = hasId ? attributes : `${attributes} id="${id}"`
 
       const ariaLabel = resolvedTranslateFn(
@@ -297,7 +301,7 @@ export async function addHeadingIds(
       })
 
       // Add anchor link functionality with proper class for styling
-      const anchorLink = `<a href="#${id}" class="heading-anchor" aria-label="${escapeHtmlAttr(ariaLabel)}" title="${escapeHtmlAttr(title)}">
+      const anchorLink = `<a href="#${anchorHrefId}" class="heading-anchor" aria-label="${escapeHtmlAttr(ariaLabel)}" title="${escapeHtmlAttr(title)}">
         ${ANCHOR_LINK_ICON}
       </a>`
 

@@ -11,9 +11,14 @@ export function getSecureAttribute(): string {
   return window.location.protocol === 'https:' ? '; Secure' : ''
 }
 
-function writeCookie(cookie: string): void {
+// Access document.cookie through helpers to keep lint suppressions local.
+function setDocumentCookie(cookie: string): void {
   // biome-ignore lint/suspicious/noDocumentCookie: helper intentionally writes document.cookie for broad browser support.
   window.document.cookie = cookie
+}
+
+function getDocumentCookie(): string {
+  return document.cookie
 }
 
 /**
@@ -52,7 +57,7 @@ export function setCookie(
   }
 
   try {
-    writeCookie(cookieString)
+    setDocumentCookie(cookieString)
   } catch (error) {
     console.error('Failed to set cookie:', error)
   }
@@ -78,24 +83,26 @@ export function deleteCookie(
 
   try {
     // Delete for current path
-    writeCookie(`${name}=; path=${path}; ${expiresPast}${secureAttribute}`)
+    setDocumentCookie(
+      `${name}=; path=${path}; ${expiresPast}${secureAttribute}`,
+    )
 
     // Delete for specified domain
     if (domain) {
-      writeCookie(
+      setDocumentCookie(
         `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`,
       )
     } else {
       // Delete for root domain
       const currentDomain = window.location.hostname
-      writeCookie(
+      setDocumentCookie(
         `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
       )
 
       // Delete for parent domain (if subdomain)
       if (currentDomain.includes('.')) {
         const parentDomain = currentDomain.substring(currentDomain.indexOf('.'))
-        writeCookie(
+        setDocumentCookie(
           `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
         )
       }
@@ -114,7 +121,7 @@ export function getCookie(name: string): string | null {
   if (typeof window === 'undefined') return null
 
   try {
-    const cookies = document.cookie.split(';')
+    const cookies = getDocumentCookie().split(';')
     const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`))
 
     if (cookie) {
