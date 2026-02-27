@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
@@ -135,38 +135,40 @@ const LanguageSwitcher = () => {
         </span>
       </motion.button>
 
-      {isOpen && (
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          aria-label={t('selectLanguage')}
-          className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
-          exit={{ opacity: 0, y: -10 }}
-          initial={{ opacity: 0, y: -10 }}
-          onKeyDown={handleKeyDown}
-          ref={listboxRef}
-          role="listbox"
-        >
-          {languages.map((language, index) => (
-            <button
-              aria-selected={locale === language.code}
-              className={`flex min-h-[44px] min-w-[44px] w-full cursor-pointer items-center space-x-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-secondary-50 dark:hover:bg-secondary-700 ${
-                locale === language.code
-                  ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                  : 'text-secondary-700 dark:text-secondary-300'
-              } ${focusedIndex === index ? 'ring-2 ring-inset ring-primary-500' : ''}`}
-              id={`language-option-${language.code}`}
-              key={language.code}
-              onClick={() => handleLanguageChange(language.code)}
-              role="option"
-              tabIndex={focusedIndex === index ? 0 : -1}
-              type="button"
-            >
-              <span className="text-lg">{language.flag}</span>
-              <span className="text-sm font-medium">{language.name}</span>
-            </button>
-          ))}
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            aria-label={t('selectLanguage')}
+            className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
+            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -10 }}
+            onKeyDown={handleKeyDown}
+            ref={listboxRef}
+            role="listbox"
+          >
+            {languages.map((language, index) => (
+              <button
+                aria-selected={locale === language.code}
+                className={`flex min-h-[44px] min-w-[44px] w-full cursor-pointer items-center space-x-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-secondary-50 dark:hover:bg-secondary-700 ${
+                  locale === language.code
+                    ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                    : 'text-secondary-700 dark:text-secondary-300'
+                } ${focusedIndex === index ? 'ring-2 ring-inset ring-primary-500' : ''}`}
+                id={`language-option-${language.code}`}
+                key={language.code}
+                onClick={() => handleLanguageChange(language.code)}
+                role="option"
+                tabIndex={focusedIndex === index ? 0 : -1}
+                type="button"
+              >
+                <span className="text-lg">{language.flag}</span>
+                <span className="text-sm font-medium">{language.name}</span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
