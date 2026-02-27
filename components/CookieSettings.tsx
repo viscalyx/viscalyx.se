@@ -248,21 +248,21 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
         </h2>
         <div className="flex flex-wrap gap-3">
           <button
-            className="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
             onClick={handleAcceptAll}
             type="button"
           >
             {t('acceptAll')}
           </button>
           <button
-            className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
             onClick={handleRejectAll}
             type="button"
           >
             {t('rejectAll')}
           </button>
           <button
-            className="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
             onClick={handleExportData}
             type="button"
           >
@@ -270,7 +270,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
             {t('exportData')}
           </button>
           <button
-            className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
             onClick={handleResetConsent}
             type="button"

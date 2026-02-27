@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, Info, X } from 'lucide-react'
-import { type ReactNode, useEffect, useRef } from 'react'
+import { type ReactNode, useEffect, useId, useRef } from 'react'
 
 interface ConfirmationModalProps {
   cancelText: string
@@ -33,6 +33,8 @@ const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
+  const titleId = useId()
+  const descriptionId = useId()
 
   // Focus management for accessibility
   useEffect(() => {
@@ -114,8 +116,8 @@ const ConfirmationModal = ({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              aria-describedby="modal-description"
-              aria-labelledby="modal-title"
+              aria-describedby={descriptionId}
+              aria-labelledby={titleId}
               aria-modal="true"
               className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full mx-auto"
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -133,14 +135,14 @@ const ConfirmationModal = ({
                   </div>
                   <h2
                     className="text-lg font-semibold text-gray-900 dark:text-white"
-                    id="modal-title"
+                    id={titleId}
                   >
                     {title}
                   </h2>
                 </div>
                 <button
                   aria-label={closeAriaLabel}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="min-h-[44px] min-w-[44px] p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                   onClick={onClose}
                   type="button"
                 >
@@ -152,7 +154,7 @@ const ConfirmationModal = ({
               <div className="px-6 pb-6">
                 <p
                   className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6"
-                  id="modal-description"
+                  id={descriptionId}
                 >
                   {message}
                 </p>
@@ -160,7 +162,7 @@ const ConfirmationModal = ({
                 {/* Actions */}
                 <div className="flex gap-3 justify-end">
                   <button
-                    className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                     disabled={confirmLoading}
                     onClick={onClose}
                     type="button"
@@ -168,7 +170,7 @@ const ConfirmationModal = ({
                     {cancelText}
                   </button>
                   <button
-                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${styles.confirmButton}`}
+                    className={`min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed ${styles.confirmButton}`}
                     disabled={confirmLoading}
                     onClick={onConfirm}
                     type="button"

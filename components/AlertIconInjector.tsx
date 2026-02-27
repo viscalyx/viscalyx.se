@@ -25,12 +25,14 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
 
     // Use a timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {
-      // First, clean up any existing icon containers to avoid duplicates
+      // First, clean up only this instance's icon containers to avoid duplicates
       const existingContainers = document.querySelectorAll(
-        '.alert-icon-container',
+        '.alert-icon-container[data-content-key]',
       )
       existingContainers.forEach(container => {
-        container.remove()
+        if (container.getAttribute('data-content-key') === contentIdentifier) {
+          container.remove()
+        }
       })
 
       // Find all alert titles that need icons

@@ -89,13 +89,26 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
         })
 
         // Find all mermaid code blocks
-        const mermaidBlocks = document.querySelectorAll(
-          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]',
+        const mermaidSelector =
+          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]'
+        const mermaidBlocks = Array.from(
+          document.querySelectorAll(mermaidSelector),
         )
+        const processedRoots = new Set<Element>()
+        const uniqueMermaidBlocks = mermaidBlocks
+          .map(block => {
+            const preBlock = block.closest('pre[class*="language-mermaid"]')
+            return preBlock ?? block
+          })
+          .filter(block => {
+            if (processedRoots.has(block)) return false
+            processedRoots.add(block)
+            return true
+          })
 
         // Process each mermaid block
-        for (let i = 0; i < mermaidBlocks.length; i++) {
-          const block = mermaidBlocks[i]
+        for (let i = 0; i < uniqueMermaidBlocks.length; i++) {
+          const block = uniqueMermaidBlocks[i]
 
           // Skip if already processed
           if (processedDiagrams.current.has(block)) continue

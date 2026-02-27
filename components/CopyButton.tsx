@@ -48,7 +48,7 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
   return (
     <button
       aria-label={copied ? t('copiedToClipboard') : t('copyCodeToClipboard')}
-      className={`group relative p-2 rounded-md bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200 dark:border-gray-600 backdrop-blur-sm shadow-sm hover:shadow-md ${className}`}
+      className={`group relative min-h-[44px] min-w-[44px] p-2 rounded-md bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200 dark:border-gray-600 backdrop-blur-sm shadow-sm hover:shadow-md ${className}`}
       onClick={handleCopy}
       title={copied ? t('copied') : t('copyToClipboard')}
       type="button"

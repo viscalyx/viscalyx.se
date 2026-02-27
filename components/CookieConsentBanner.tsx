@@ -162,13 +162,20 @@ const CookieConsentBanner = () => {
     }))
   }
 
+  const dialogLabelledBy = showDetails
+    ? 'detailed-panel-title'
+    : 'cookie-banner-title'
+  const dialogDescribedBy = showDetails
+    ? 'detailed-panel-description'
+    : 'cookie-banner-description'
+
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
           animate={{ y: 0, opacity: 1 }}
-          aria-describedby="cookie-banner-description"
-          aria-labelledby="cookie-banner-title"
+          aria-describedby={dialogDescribedBy}
+          aria-labelledby={dialogLabelledBy}
           aria-live="polite"
           aria-modal="true"
           className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-lg"
@@ -199,7 +206,7 @@ const CookieConsentBanner = () => {
                       {t('description')}{' '}
                       <button
                         aria-label={t('customizeSettings')}
-                        className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                        className="min-h-[44px] min-w-[44px] rounded-md px-1 text-primary-600 dark:text-primary-400 hover:underline font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                         onClick={() => {
                           cachedFocusableElements.current = null
                           setShowDetails(true)
@@ -215,7 +222,7 @@ const CookieConsentBanner = () => {
                 <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                   <button
                     aria-label={t('rejectAll')}
-                    className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleRejectAll}
                     ref={rejectButtonRef}
                     type="button"
@@ -224,7 +231,7 @@ const CookieConsentBanner = () => {
                   </button>
                   <button
                     aria-label={t('customizeSettings')}
-                    className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={() => {
                       cachedFocusableElements.current = null
                       setShowDetails(true)
@@ -236,7 +243,7 @@ const CookieConsentBanner = () => {
                   </button>
                   <button
                     aria-label={t('acceptAll')}
-                    className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleAcceptAll}
                     ref={firstFocusableRef}
                     type="button"
@@ -252,14 +259,17 @@ const CookieConsentBanner = () => {
                   <div className="flex items-center justify-between mb-6">
                     <h2
                       className="text-xl font-semibold text-gray-900 dark:text-white"
-                      id="cookie-settings-title"
+                      id="detailed-panel-title"
                     >
                       {t('cookieSettings')}
                     </h2>
+                    <p className="sr-only" id="detailed-panel-description">
+                      {t('description')}
+                    </p>
                     <button
-                      aria-describedby="cookie-settings-title"
+                      aria-describedby="detailed-panel-title"
                       aria-label={t('close')}
-                      className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="min-h-[44px] min-w-[44px] p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                       onClick={() => {
                         cachedFocusableElements.current = null
                         setShowDetails(false)
@@ -359,21 +369,21 @@ const CookieConsentBanner = () => {
 
                 <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
                   <button
-                    className="px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleRejectAll}
                     type="button"
                   >
                     {t('rejectAll')}
                   </button>
                   <button
-                    className="px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleAcceptAll}
                     type="button"
                   >
                     {t('acceptAll')}
                   </button>
                   <button
-                    className="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+                    className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleSavePreferences}
                     type="button"
                   >

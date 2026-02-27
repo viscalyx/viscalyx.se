@@ -68,6 +68,10 @@ const BlogPostGrid = ({
           >
             {allCategories.map(category => (
               <button
+                aria-pressed={
+                  category === selectedCategory ||
+                  (selectedCategory === '' && category === categoriesAllLabel)
+                }
                 className={`px-4 py-2 rounded-full transition-colors duration-200 ${
                   category === selectedCategory ||
                   (selectedCategory === '' && category === categoriesAllLabel)

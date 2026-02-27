@@ -22,7 +22,7 @@ import ReadingProgress from '@/components/ReadingProgress'
 import ScrollToTop from '@/components/ScrollToTop'
 import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
-import type { TocItem } from '@/lib/slug-utils'
+import type { TocItem } from '@/lib/slug-utils-client'
 import type { SerializableTeamMember, SocialIconName } from '@/lib/team'
 import { socialIconMap } from '@/lib/team'
 
@@ -405,7 +405,7 @@ const BlogPostContent = ({
                 <button
                   aria-busy={isSharing}
                   aria-label={t('post.sharePost')}
-                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="min-h-[44px] min-w-[44px] bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
                   disabled={isSharing}
                   onClick={handleShare}
                   title={t('post.sharePost')}
