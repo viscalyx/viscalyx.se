@@ -36,14 +36,12 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <script
-        id="organization-jsonld"
-        type="application/ld+json"
-      >{JSON.stringify(getOrganizationJsonLd())}</script>
-      <script
-        id="website-jsonld"
-        type="application/ld+json"
-      >{JSON.stringify(getWebSiteJsonLd())}</script>
+      <script id="organization-jsonld" type="application/ld+json">
+        {JSON.stringify(getOrganizationJsonLd())}
+      </script>
+      <script id="website-jsonld" type="application/ld+json">
+        {JSON.stringify(getWebSiteJsonLd())}
+      </script>
       {children}
       <CookieConsentBanner />
     </NextIntlClientProvider>
