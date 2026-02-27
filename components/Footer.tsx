@@ -115,31 +115,37 @@ const Footer = () => {
   const socialLinks = [
     {
       name: 'GitHub',
+      translationKey: 'github',
       href: 'https://github.com/viscalyx',
       icon: GitHubIcon,
     },
     {
       name: 'LinkedIn',
+      translationKey: 'linkedin',
       href: 'https://linkedin.com/company/viscalyx',
       icon: LinkedInIcon,
     },
     {
       name: 'X',
+      translationKey: 'x',
       href: 'https://x.com/viscalyx',
       icon: XIcon,
     },
     {
       name: 'Bluesky',
+      translationKey: 'bluesky',
       href: 'https://bsky.app/profile/viscalyx.com',
       icon: BlueskyIcon,
     },
     {
       name: 'Mastodon',
+      translationKey: 'mastodon',
       href: 'https://mastodon.social/@viscalyx',
       icon: MastodonIcon,
     },
     {
       name: 'Email',
+      translationKey: 'email',
       href: 'mailto:info@viscalyx.se',
       icon: Mail,
     },
@@ -179,7 +185,10 @@ const Footer = () => {
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon
+                    className="w-5 h-5"
+                    title={t(`socialLinks.${social.translationKey}`)}
+                  />
                 </motion.a>
               ))}
             </div>

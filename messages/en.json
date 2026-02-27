@@ -25,7 +25,15 @@
     "cookiePolicy": "Cookie Policy",
     "allRightsReserved": "All rights reserved.",
     "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide.",
-    "opensInNewTab": " (opens in new tab)"
+    "opensInNewTab": " (opens in new tab)",
+    "socialLinks": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "github": "GitHub"
+    }
   },
   "language": {
     "english": "English",
@@ -103,6 +111,15 @@
     "description": "Meet the dedicated professionals who drive innovation and deliver exceptional automation solutions for our clients worldwide.",
     "specialties": "Specialties",
     "learnMore": "Learn More",
+    "socialLinks": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "discord": "Discord",
+      "github": "GitHub"
+    },
     "members": {
       "johlju": {
         "role": "Founder & Lead Consultant",

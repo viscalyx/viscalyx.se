@@ -18,11 +18,23 @@ export type SocialIconName =
   | 'Discord'
   | 'GitHub'
 
+export const socialIconTranslationKeyMap: Record<SocialIconName, string> = {
+  Email: 'email',
+  LinkedIn: 'linkedin',
+  Bluesky: 'bluesky',
+  Mastodon: 'mastodon',
+  X: 'x',
+  Discord: 'discord',
+  GitHub: 'github',
+}
+
+type SocialIconComponent = React.ComponentType<{
+  className?: string
+  title?: string
+}>
+
 // Map of icon names to components (for client-side resolution)
-export const socialIconMap: Record<
-  SocialIconName,
-  React.ComponentType<{ className?: string }>
-> = {
+export const socialIconMap: Record<SocialIconName, SocialIconComponent> = {
   Email: Mail,
   LinkedIn: LinkedInIcon,
   Bluesky: BlueskyIcon,
@@ -40,9 +52,9 @@ export interface TeamMember {
   name: string
   role: string
   socialLinks: Array<{
-    name: string
+    name: SocialIconName
     href: string
-    icon: React.ComponentType<{ className?: string }>
+    icon: SocialIconComponent
   }>
   specialties: string[]
 }

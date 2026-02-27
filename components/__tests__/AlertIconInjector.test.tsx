@@ -187,11 +187,11 @@ describe('AlertIconInjector', () => {
     expect(renderMock).not.toHaveBeenCalled()
   })
 
-  it('should remove stale pre-existing icon containers before new injection', async () => {
+  it('should remove stale pre-existing icon containers for the same content key before new injection', async () => {
     document.body.innerHTML = `
       <div>
         <div class="github-alert-title" data-alert-icon="note">
-          <span class="alert-icon-container">stale</span>
+          <span class="alert-icon-container" data-content-key="k1">stale</span>
           Note title
         </div>
       </div>

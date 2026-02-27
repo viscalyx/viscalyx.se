@@ -25,7 +25,15 @@
     "cookiePolicy": "Kakpolicy",
     "allRightsReserved": "Alla rättigheter förbehållna.",
     "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över.",
-    "opensInNewTab": " (öppnas i ny flik)"
+    "opensInNewTab": " (öppnas i ny flik)",
+    "socialLinks": {
+      "email": "E-post",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "github": "GitHub"
+    }
   },
   "language": {
     "english": "Engelska",
@@ -103,6 +111,15 @@
     "description": "Träffa de engagerade experterna som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
     "specialties": "Specialiteter",
     "learnMore": "Läs mer",
+    "socialLinks": {
+      "email": "E-post",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "discord": "Discord",
+      "github": "GitHub"
+    },
     "members": {
       "johlju": {
         "role": "Grundare & Huvudkonsult",

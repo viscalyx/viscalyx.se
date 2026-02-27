@@ -105,6 +105,15 @@ vi.mock('@/lib/analytics', () => ({
 
 // Mock team icons
 vi.mock('@/lib/team', () => ({
+  socialIconTranslationKeyMap: {
+    Email: 'email',
+    LinkedIn: 'linkedin',
+    Bluesky: 'bluesky',
+    Mastodon: 'mastodon',
+    X: 'x',
+    Discord: 'discord',
+    GitHub: 'github',
+  },
   socialIconMap: {
     Email: ({ className }: { className?: string }) =>
       React.createElement(

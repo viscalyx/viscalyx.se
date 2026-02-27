@@ -5,7 +5,7 @@ import { ArrowRight, Camera, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { getTeamMembers } from '@/lib/team'
+import { getTeamMembers, socialIconTranslationKeyMap } from '@/lib/team'
 
 const Team = () => {
   const t = useTranslations('team')
@@ -200,7 +200,12 @@ const Team = () => {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            <social.icon className="h-5 w-5" />
+                            <social.icon
+                              className="h-5 w-5"
+                              title={t(
+                                `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
+                              )}
+                            />
                           </motion.a>
                         ))}
                       </div>

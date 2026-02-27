@@ -24,7 +24,7 @@ import TableOfContents from '@/components/TableOfContents'
 import { useBlogAnalytics } from '@/lib/analytics'
 import type { TocItem } from '@/lib/slug-utils-client'
 import type { SerializableTeamMember, SocialIconName } from '@/lib/team'
-import { socialIconMap } from '@/lib/team'
+import { socialIconMap, socialIconTranslationKeyMap } from '@/lib/team'
 
 interface BlogPostData {
   author: string
@@ -63,6 +63,7 @@ const BlogPostContent = ({
   authorInitials,
 }: ComponentProps) => {
   const t = useTranslations('blog')
+  const tTeam = useTranslations('team')
   const format = useFormatter()
   const locale = useLocale()
 
@@ -606,7 +607,12 @@ const BlogPostContent = ({
                               }
                               title={social.name}
                             >
-                              <IconComponent className="h-4 w-4" />
+                              <IconComponent
+                                className="h-4 w-4"
+                                title={tTeam(
+                                  `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
+                                )}
+                              />
                             </a>
                           )
                         })}

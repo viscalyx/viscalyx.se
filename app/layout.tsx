@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import { getLocale } from 'next-intl/server'
+import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 import { ThemeProvider } from '@/lib/theme-context'
 import './code-block-components.css'
 import './globals.css'
@@ -55,6 +56,12 @@ export default async function RootLayout({ children }: Props) {
     >
       <head>
         <script id="theme-init-script">{themeInitScript}</script>
+        <script id="organization-jsonld" type="application/ld+json">
+          {JSON.stringify(getOrganizationJsonLd())}
+        </script>
+        <script id="website-jsonld" type="application/ld+json">
+          {JSON.stringify(getWebSiteJsonLd())}
+        </script>
       </head>
       <body className="font-sans antialiased">
         <ThemeProvider>{children}</ThemeProvider>

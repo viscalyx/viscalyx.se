@@ -29,6 +29,15 @@ vi.mock('next/navigation', () => ({
 // Mock @/lib/team
 vi.mock('@/lib/team', () => ({
   getTeamMembers: (...args: unknown[]) => mockGetTeamMembers(...args),
+  socialIconTranslationKeyMap: {
+    Email: 'email',
+    LinkedIn: 'linkedin',
+    Bluesky: 'bluesky',
+    Mastodon: 'mastodon',
+    X: 'x',
+    Discord: 'discord',
+    GitHub: 'github',
+  },
 }))
 
 // Mock lucide-react
