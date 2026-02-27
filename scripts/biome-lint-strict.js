@@ -71,7 +71,7 @@ function main(
     if (jsonRun.stdout) processObj.stdout.write(jsonRun.stdout)
     if (jsonRun.stderr) processObj.stderr.write(jsonRun.stderr)
     consoleObj.error(`Failed to parse Biome JSON output: ${error.message}`)
-    processObj.exit(jsonRun.status ?? 1)
+    processObj.exit((jsonRun.status ?? 0) === 0 ? 1 : jsonRun.status)
   }
 
   const errors = result?.summary?.errors ?? 0
