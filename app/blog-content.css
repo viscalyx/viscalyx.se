@@ -389,10 +389,10 @@
   .toc-scrollable {
     /* Show scrollbar always when content overflows */
     overflow-y: auto;
-    scrollbar-color: rgb(156 163 175) transparent; /* gray-400 for scrollbar thumb */
+    scrollbar-color: rgb(156 163 175) transparent; /* gray-400 thumb, transparent track */
 
     /* Firefox */
-    scrollbar-width: thin; /* gray-400 for scrollbar thumb */
+    scrollbar-width: thin;
   }
 
   /* Webkit scrollbar styling (Chrome, Safari, Edge) */
