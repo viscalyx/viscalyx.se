@@ -1,7 +1,7 @@
 'use client'
 
 import type React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AlertIcon, type AlertIconProps } from './BlogIcons'
 
@@ -14,8 +14,15 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
   children,
   contentKey,
 }) => {
+  const rootRef = useRef<HTMLSpanElement>(null)
+
   useEffect(() => {
     const contentIdentifier = contentKey ?? 'default'
+    const rootElement = rootRef.current
+
+    if (!rootElement) {
+      return
+    }
 
     // Store references to created roots for cleanup
     const roots: Array<{
@@ -26,7 +33,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
     // Use a timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {
       // First, remove any existing icon containers to prevent stale or duplicate icons.
-      const existingContainers = document.querySelectorAll(
+      const existingContainers = rootElement.querySelectorAll(
         '.github-alert-title .alert-icon-container',
       )
       existingContainers.forEach(container => {
@@ -36,7 +43,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
       })
 
       // Find all alert titles that need icons
-      const alertTitles = document.querySelectorAll(
+      const alertTitles = rootElement.querySelectorAll(
         '.github-alert-title[data-alert-icon]',
       )
 
@@ -90,7 +97,11 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
     }
   }, [contentKey]) // Depend on contentKey to re-run when content changes
 
-  return <>{children}</>
+  return (
+    <span ref={rootRef} style={{ display: 'contents' }}>
+      {children}
+    </span>
+  )
 }
 
 export default AlertIconInjector
