@@ -266,7 +266,9 @@ test.describe('Homepage', () => {
         page.getByRole('link', { name: /Follow on GitHub/i }),
       ).toBeVisible()
       await expect(
-        page.getByRole('link', { name: /Collaborate With Community/i }),
+        page.getByRole('link', {
+          name: /Collaborate (With Community|with DSC)/i,
+        }),
       ).toBeVisible()
     })
 
