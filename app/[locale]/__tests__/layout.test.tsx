@@ -16,6 +16,10 @@ const { dynamicMock } = vi.hoisted(() => ({
     return DynamicComponent
   }),
 }))
+const { getOrganizationJsonLdMock, getWebSiteJsonLdMock } = vi.hoisted(() => ({
+  getOrganizationJsonLdMock: vi.fn(() => ({ '@type': 'Organization' })),
+  getWebSiteJsonLdMock: vi.fn(() => ({ '@type': 'WebSite' })),
+}))
 
 vi.mock('@/i18n', () => ({
   locales: ['en', 'sv'],
@@ -47,8 +51,8 @@ vi.mock('next-intl', () => ({
 }))
 
 vi.mock('@/lib/structured-data', () => ({
-  getOrganizationJsonLd: () => ({ '@type': 'Organization' }),
-  getWebSiteJsonLd: () => ({ '@type': 'WebSite' }),
+  getOrganizationJsonLd: () => getOrganizationJsonLdMock(),
+  getWebSiteJsonLd: () => getWebSiteJsonLdMock(),
 }))
 
 vi.mock('next/dynamic', () => ({
@@ -80,6 +84,14 @@ describe('LocaleLayout', () => {
     expect(
       screen.getByRole('complementary', { name: 'cookie consent banner' }),
     ).toBeInTheDocument()
+    expect(getOrganizationJsonLdMock).toHaveBeenCalledTimes(1)
+    expect(getWebSiteJsonLdMock).toHaveBeenCalledTimes(1)
+    expect(document.getElementById('organization-jsonld')?.textContent).toBe(
+      JSON.stringify(getOrganizationJsonLdMock.mock.results[0].value),
+    )
+    expect(document.getElementById('website-jsonld')?.textContent).toBe(
+      JSON.stringify(getWebSiteJsonLdMock.mock.results[0].value),
+    )
   })
 
   it('calls notFound for unsupported locale', async () => {
