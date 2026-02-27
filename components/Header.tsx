@@ -14,6 +14,46 @@ import ThemeToggle from './ThemeToggle'
 
 const MotionLink = motion.create(Link)
 
+export function getHrefUrl(
+  href: string,
+  locale: string,
+  allowedLocales: readonly string[] = locales,
+) {
+  // Enhanced absolute URL detection using regex to cover all protocols
+  const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
+
+  // Check if it's an absolute URL (external link) or special protocols
+  if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
+    return href
+  }
+
+  if (href.startsWith('#')) {
+    // For section links, link to home page with hash
+    return `/${locale}${href}`
+  }
+
+  // Regular page navigation - preserve locale
+  const cleanHref = href.startsWith('/') ? href : `/${href}`
+
+  // Check if the path already starts with a locale prefix to avoid duplication
+  const pathSegments = cleanHref.split('/').filter(Boolean)
+  const firstSegment = pathSegments[0]
+
+  // Normalize the first segment by converting to lowercase and trimming slashes
+  const normalizedFirstSegment = firstSegment?.toLowerCase().replace(/\/$/, '')
+
+  if (
+    normalizedFirstSegment &&
+    allowedLocales.includes(normalizedFirstSegment)
+  ) {
+    // Path already has a locale, return as-is
+    return cleanHref
+  }
+
+  // Add locale prefix, ensuring no double slashes
+  return `/${locale}${cleanHref}`
+}
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -57,45 +97,6 @@ const Header = () => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isSettingsOpen])
-
-  // Helper function to generate proper URLs for links
-  const getHrefUrl = (href: string) => {
-    // Enhanced absolute URL detection using regex to cover all protocols
-    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
-
-    // Check if it's an absolute URL (external link) or special protocols
-    if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
-      return href
-    }
-
-    if (href.startsWith('#')) {
-      // For section links, link to home page with hash
-      return `/${locale}${href}`
-    } else {
-      // Regular page navigation - preserve locale
-      const cleanHref = href.startsWith('/') ? href : `/${href}`
-
-      // Check if the path already starts with a locale prefix to avoid duplication
-      const pathSegments = cleanHref.split('/').filter(Boolean)
-      const firstSegment = pathSegments[0]
-
-      // Normalize the first segment by converting to lowercase and trimming slashes
-      const normalizedFirstSegment = firstSegment
-        ?.toLowerCase()
-        .replace(/\/$/, '')
-
-      if (
-        normalizedFirstSegment &&
-        locales.includes(normalizedFirstSegment as (typeof locales)[number])
-      ) {
-        // Path already has a locale, return as-is
-        return cleanHref
-      } else {
-        // Add locale prefix, ensuring no double slashes
-        return `/${locale}${cleanHref}`
-      }
-    }
-  }
 
   // Handle click for section links that need smooth scrolling
   const handleLinkClick = (
@@ -165,7 +166,7 @@ const Header = () => {
               <MotionLink
                 animate={{ opacity: 1, y: 0 }}
                 className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
-                href={getHrefUrl(item.href) as Route}
+                href={getHrefUrl(item.href, locale) as Route}
                 initial={{ opacity: 0, y: -20 }}
                 key={item.name}
                 onClick={e => handleLinkClick(e, item.href)}
@@ -305,7 +306,7 @@ const Header = () => {
                   >
                     <Link
                       className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer"
-                      href={getHrefUrl(item.href) as Route}
+                      href={getHrefUrl(item.href, locale) as Route}
                       onClick={e => handleLinkClick(e, item.href)}
                     >
                       {item.name}
