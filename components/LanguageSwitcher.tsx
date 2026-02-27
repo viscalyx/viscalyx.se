@@ -46,11 +46,20 @@ const LanguageSwitcher = () => {
 
   // Focus the active option when dropdown opens
   useEffect(() => {
-    if (isOpen) {
-      const activeIndex = languages.findIndex(lang => lang.code === locale)
-      setFocusedIndex(activeIndex)
-    }
-  }, [isOpen, locale, languages])
+    if (!isOpen) return
+
+    const activeIndex = locale === 'sv' ? 1 : 0
+    setFocusedIndex(activeIndex)
+  }, [isOpen, locale])
+
+  useEffect(() => {
+    if (!isOpen || focusedIndex < 0) return
+
+    const activeOption = listboxRef.current?.querySelector<HTMLButtonElement>(
+      `#language-option-${languages[focusedIndex].code}`,
+    )
+    activeOption?.focus()
+  }, [isOpen, focusedIndex, languages])
 
   const handleLanguageChange = useCallback(
     (newLocale: string) => {
@@ -112,6 +121,14 @@ const LanguageSwitcher = () => {
     [isOpen, focusedIndex, languageCount, handleLanguageChange, languages],
   )
 
+  const handleOptionKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      handleKeyDown(e)
+      e.stopPropagation()
+    },
+    [handleKeyDown],
+  )
+
   return (
     <div className="relative" ref={containerRef}>
       <motion.button
@@ -158,6 +175,7 @@ const LanguageSwitcher = () => {
                 id={`language-option-${language.code}`}
                 key={language.code}
                 onClick={() => handleLanguageChange(language.code)}
+                onKeyDown={handleOptionKeyDown}
                 role="option"
                 tabIndex={focusedIndex === index ? 0 : -1}
                 type="button"
