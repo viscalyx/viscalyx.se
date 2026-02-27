@@ -52,6 +52,7 @@ Verification checklist:
 - Reject fix approaches that knowingly introduce lint or format errors when a compliant alternative exists.
 - If a lint suppression is required, keep scope minimal and provide explicit rationale.
 - Invalidate review comments that suggest changes to code formatting (e.g. reordering imports) if it goes against the project's Biome configuration.
+- If changes require component changes, do not invalidate the change but make sure the change is properly planned and tested and improves the component's functionality.
 
 ## Response Contract
 
