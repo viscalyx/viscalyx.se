@@ -62,6 +62,9 @@ Use GitHub-style blockquote alerts:
 
 > [!CAUTION]
 > Critical warning
+
+> [!QUOTE]
+> Styled quote callout
 ```
 
 ## Quality Check
