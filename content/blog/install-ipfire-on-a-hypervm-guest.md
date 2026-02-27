@@ -207,4 +207,4 @@ pakfire update && pakfire upgrade -y
 [8]: https://askubuntu.com/questions/384110/can-i-use-hyper-v-gen-2-with-ubuntu 'windows 8 - Can I use Hyper-V gen 2 with Ubuntu? - Ask Ubuntu'
 [9]: https://community.ipfire.org/t/hyper-v-gen-2-vm-installation/1046 'Hyper-v gen 2 vm installation - Getting Started with IPFire - IPFire Community'
 [10]: https://www.altaro.com/hyper-v/hyper-v-virtual-hardware-emulated-synthetic-and-sr-iov/ 'Hyper-V Virtual Hardware: Emulated, Synthetic and SR-IOV - DOJO'
-[11]: https://www.ipfire.org/docs/installation/step3?utm_source=chatgpt.com 'Step 3: Run the installer - IPFire'
+[11]: https://www.ipfire.org/docs/installation/step3 'Step 3: Run the installer - IPFire'
