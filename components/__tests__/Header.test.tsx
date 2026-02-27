@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import Header from '@/components/Header'
+import Header, { getHrefUrl } from '@/components/Header'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -116,6 +116,22 @@ describe('Header', () => {
       const href = teamLink.getAttribute('href')
       expect(href).toBe('/en/team')
       expect(href).not.toContain('/en/en/')
+    })
+
+    it('returns absolute and protocol-relative URLs unchanged', () => {
+      expect(getHrefUrl('https://example.com/docs', 'en')).toBe(
+        'https://example.com/docs',
+      )
+      expect(getHrefUrl('mailto:test@example.com', 'en')).toBe(
+        'mailto:test@example.com',
+      )
+      expect(getHrefUrl('//cdn.example.com/asset.js', 'en')).toBe(
+        '//cdn.example.com/asset.js',
+      )
+    })
+
+    it('keeps existing locale-prefixed paths unchanged after normalization', () => {
+      expect(getHrefUrl('/EN/team', 'en')).toBe('/EN/team')
     })
   })
 
@@ -306,6 +322,35 @@ describe('Header', () => {
 
       // Settings should close
       expect(screen.queryByText('settings.title')).not.toBeInTheDocument()
+    })
+
+    it('closes settings dropdown on mobile when clicking outside mobile settings container', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      fireEvent.click(settingsButtons[1])
+
+      Object.defineProperty(window, 'innerWidth', {
+        value: 375,
+        writable: true,
+      })
+      fireEvent.mouseDown(document.body)
+
+      expect(screen.queryByText('settings.title')).not.toBeInTheDocument()
+    })
+
+    it('toggles settings from the mobile settings button', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      const mobileSettingsButton = settingsButtons[1]
+      fireEvent.click(mobileSettingsButton)
+
+      expect(mobileSettingsButton).toHaveAttribute('aria-expanded', 'true')
     })
 
     it('contains language switcher and theme toggle', () => {

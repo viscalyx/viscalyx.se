@@ -187,6 +187,25 @@ describe('AlertIconInjector', () => {
     expect(renderMock).not.toHaveBeenCalled()
   })
 
+  it('should remove stale pre-existing icon containers before new injection', async () => {
+    document.body.innerHTML = `
+      <div>
+        <div class="github-alert-title" data-alert-icon="note">
+          <span class="alert-icon-container">stale</span>
+          Note title
+        </div>
+      </div>
+    `
+
+    renderInjector()
+    await flushInjectionDelay()
+
+    const containers = document.querySelectorAll('.alert-icon-container')
+    expect(containers).toHaveLength(1)
+    expect(containers[0]).toHaveAttribute('data-content-key', 'k1')
+    expect(containers[0].textContent).not.toContain('stale')
+  })
+
   it('should cancel pending injection when unmounted before timeout fires', async () => {
     document.body.innerHTML = `
       <div>

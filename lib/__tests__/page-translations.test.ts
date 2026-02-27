@@ -1,9 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  useCookiesTranslations,
   usePrivacyTranslations,
   useTermsTranslations,
   validateFilePrefix,
+  validateLocale,
 } from '../page-translations'
 
 // Mock next-intl
@@ -249,6 +251,24 @@ describe('useTermsTranslations', () => {
   })
 })
 
+describe('useCookiesTranslations', () => {
+  it('should load English cookies translations successfully', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+    if (result.current.translations) {
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.howWeUseCookies).toBeTruthy()
+    }
+  })
+})
+
 describe('validateFilePrefix', () => {
   describe('valid inputs', () => {
     it('accepts valid alphanumeric strings', () => {
@@ -397,6 +417,17 @@ describe('validateFilePrefix', () => {
       expect(validateFilePrefix('contact')).toBe('contact')
       expect(validateFilePrefix('mainpage')).toBe('mainpage') // cSpell: disable-line
     })
+  })
+})
+
+describe('validateLocale', () => {
+  it('accepts supported locales', () => {
+    expect(validateLocale('en')).toBe('en')
+    expect(validateLocale('sv')).toBe('sv')
+  })
+
+  it('throws for unsupported locales', () => {
+    expect(() => validateLocale('fr')).toThrow('Invalid locale: "fr"')
   })
 })
 

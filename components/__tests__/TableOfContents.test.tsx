@@ -304,4 +304,67 @@ describe('TableOfContents', () => {
 
     expect(pushStateSpy).not.toHaveBeenCalled()
   })
+
+  it('supports keyboard scrolling shortcuts inside the toc region', () => {
+    const { container } = render(<TableOfContents items={mockItems} />)
+    const region = screen.getByRole('region')
+    const scrollContainer = container.querySelector(
+      '.toc-scrollable',
+    ) as HTMLElement
+    const scrollBySpy = vi.fn()
+    const scrollToSpy = vi.fn()
+    Object.defineProperty(scrollContainer, 'scrollBy', {
+      value: scrollBySpy,
+      writable: true,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'scrollTo', {
+      value: scrollToSpy,
+      writable: true,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'clientHeight', {
+      value: 200,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'scrollHeight', {
+      value: 700,
+      configurable: true,
+    })
+
+    fireEvent.keyDown(region, { key: 'ArrowDown' })
+    fireEvent.keyDown(region, { key: 'ArrowUp' })
+    fireEvent.keyDown(region, { key: 'PageDown' })
+    fireEvent.keyDown(region, { key: 'PageUp' })
+    fireEvent.keyDown(region, { key: 'Home' })
+    fireEvent.keyDown(region, { key: 'End' })
+    fireEvent.keyDown(region, { key: 'Tab' })
+
+    expect(scrollBySpy).toHaveBeenNthCalledWith(1, {
+      top: 40,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(2, {
+      top: -40,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(3, {
+      top: 160,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(4, {
+      top: -160,
+      behavior: 'smooth',
+    })
+    expect(scrollToSpy).toHaveBeenNthCalledWith(1, {
+      top: 0,
+      behavior: 'smooth',
+    })
+    expect(scrollToSpy).toHaveBeenNthCalledWith(2, {
+      top: 700,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenCalledTimes(4)
+    expect(scrollToSpy).toHaveBeenCalledTimes(2)
+  })
 })

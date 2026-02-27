@@ -13,6 +13,26 @@ const createFakeProcess = () => ({
 })
 
 describe('biome-lint-strict.js', () => {
+  it('returns npx.cmd on Windows and npx on non-Windows', () => {
+    const originalPlatform = process.platform
+    Object.defineProperty(process, 'platform', {
+      value: 'win32',
+      configurable: true,
+    })
+    expect(biomeLintStrict.getNpxCommand()).toBe('npx.cmd')
+
+    Object.defineProperty(process, 'platform', {
+      value: 'linux',
+      configurable: true,
+    })
+    expect(biomeLintStrict.getNpxCommand()).toBe('npx')
+
+    Object.defineProperty(process, 'platform', {
+      value: originalPlatform,
+      configurable: true,
+    })
+  })
+
   it('parses valid Biome JSON output', () => {
     const result = biomeLintStrict.parseBiomeJson(
       'prefix\n{"summary":{"errors":1,"warnings":2,"infos":3}}',
@@ -28,6 +48,21 @@ describe('biome-lint-strict.js', () => {
     )
 
     expect(result).toEqual({ summary: { errors: 0, warnings: 4, infos: 0 } })
+  })
+
+  it('throws when stdout does not contain JSON', () => {
+    expect(() => biomeLintStrict.parseBiomeJson('plain text')).toThrow(
+      'Biome JSON output was not found in stdout.',
+    )
+  })
+
+  it('throws when fallback summary is not parseable', () => {
+    const invalidControlChar = String.fromCharCode(1)
+    expect(() =>
+      biomeLintStrict.parseBiomeJson(
+        `{"diagnostics":[{"message":"bad ${invalidControlChar} char"}]}`,
+      ),
+    ).toThrow('Biome JSON output does not contain a parseable summary.')
   })
 
   it('exits 0 when strict summary has no diagnostics', () => {
@@ -151,6 +186,27 @@ describe('biome-lint-strict.js', () => {
 
     expect(consoleObj.error).toHaveBeenCalledWith(
       'Strict summary: errors 1, warnings 2, infos 3.',
+    )
+  })
+
+  it('treats missing readable lint status as failure with exit code 1', () => {
+    const processObj = createFakeProcess()
+    const consoleObj = { error: vi.fn() }
+
+    expect(() =>
+      biomeLintStrict.main(['.'], {
+        runBiomeJsonLint: () => ({
+          stdout: '{"summary":{"errors":0,"warnings":1,"infos":0}}',
+        }),
+        parseBiomeJson: biomeLintStrict.parseBiomeJson,
+        runReadableLint: () => ({}),
+        processObj,
+        consoleObj,
+      }),
+    ).toThrow('exit:1')
+
+    expect(consoleObj.error).toHaveBeenCalledWith(
+      'Strict summary: errors 0, warnings 1, infos 0.',
     )
   })
 })

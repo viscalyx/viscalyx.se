@@ -51,4 +51,20 @@ describe('remark-image-paths plugin', () => {
     expect(() => plugin(tree)).not.toThrow()
     expect(tree.children[0].url).toBeUndefined()
   })
+
+  it('adds a leading slash when transformed url does not start with slash', () => {
+    const plugin = remarkImagePaths({ mode: 'build' })
+    const customUrl = {
+      startsWith: prefix => prefix === '/public/',
+      substring: () => 'image.png',
+    }
+    const tree = {
+      type: 'root',
+      children: [{ type: 'image', url: customUrl }],
+    }
+
+    plugin(tree)
+
+    expect(tree.children[0].url).toBe('/image.png')
+  })
 })

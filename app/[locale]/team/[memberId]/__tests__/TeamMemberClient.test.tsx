@@ -46,6 +46,7 @@ const mockMember: SerializableTeamMember = {
   location: 'Sweden',
   specialties: ['TypeScript', 'React'],
   socialLinks: [
+    { name: 'Email', href: 'mailto:test@example.com' },
     { name: 'GitHub', href: 'https://github.com/test' },
     { name: 'LinkedIn', href: 'https://linkedin.com/in/test' },
   ],
@@ -79,8 +80,15 @@ describe('TeamMemberClient', () => {
   it('renders social links with correct hrefs', () => {
     render(<TeamMemberClient member={mockMember} />)
 
+    const emailLink = screen.getByRole('link', { name: 'Email' })
+    expect(emailLink).toHaveAttribute('href', 'mailto:test@example.com')
+    expect(emailLink).toHaveAttribute('target', '_self')
+    expect(emailLink).not.toHaveAttribute('rel')
+
     const githubLink = screen.getByRole('link', { name: 'GitHub' })
     expect(githubLink).toHaveAttribute('href', 'https://github.com/test')
+    expect(githubLink).toHaveAttribute('target', '_blank')
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
 
     const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
     expect(linkedinLink).toHaveAttribute('href', 'https://linkedin.com/in/test')

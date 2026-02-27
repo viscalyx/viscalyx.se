@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Team from '@/components/Team'
 
 const mockPush = vi.fn()
+const mockGetTeamMembers = vi.fn()
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -27,33 +28,7 @@ vi.mock('next/navigation', () => ({
 
 // Mock @/lib/team
 vi.mock('@/lib/team', () => ({
-  getTeamMembers: () => [
-    {
-      id: 'johlju',
-      name: 'Johan Ljunggren',
-      role: 'members.johlju.role',
-      image: '/johlju-profile.jpg',
-      bio: 'members.johlju.bio',
-      location: 'Sweden',
-      specialties: ['PowerShell', 'DevOps', 'DSC'],
-      socialLinks: [
-        {
-          name: 'Email',
-          href: 'mailto:test@example.com',
-          icon: ({ className }: { className?: string }) => (
-            <svg className={className} data-testid="email-icon" />
-          ),
-        },
-        {
-          name: 'GitHub',
-          href: 'https://github.com/test',
-          icon: ({ className }: { className?: string }) => (
-            <svg className={className} data-testid="github-icon" />
-          ),
-        },
-      ],
-    },
-  ],
+  getTeamMembers: (...args: unknown[]) => mockGetTeamMembers(...args),
 }))
 
 // Mock lucide-react
@@ -72,6 +47,33 @@ vi.mock('lucide-react', () => ({
 describe('Team', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetTeamMembers.mockReturnValue([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '/johlju-profile.jpg',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [
+          {
+            name: 'Email',
+            href: 'mailto:test@example.com',
+            icon: ({ className }: { className?: string }) => (
+              <svg className={className} data-testid="email-icon" />
+            ),
+          },
+          {
+            name: 'GitHub',
+            href: 'https://github.com/test',
+            icon: ({ className }: { className?: string }) => (
+              <svg className={className} data-testid="github-icon" />
+            ),
+          },
+        ],
+      },
+    ])
   })
 
   it('renders the team section', () => {
@@ -121,6 +123,8 @@ describe('Team', () => {
     render(<Team />)
     const emailLink = screen.getByLabelText('Email')
     expect(emailLink).toHaveAttribute('href', 'mailto:test@example.com')
+    expect(emailLink).toHaveAttribute('target', '_self')
+    expect(emailLink).not.toHaveAttribute('rel')
 
     const githubLink = screen.getByLabelText('GitHub')
     expect(githubLink).toHaveAttribute('href', 'https://github.com/test')
@@ -133,6 +137,41 @@ describe('Team', () => {
     // Click on the member card (the clickable wrapper)
     fireEvent.click(screen.getByText('Johan Ljunggren'))
     expect(mockPush).toHaveBeenCalledWith('/en/team/johlju')
+  })
+
+  it('navigates to member detail on Enter and Space key press', () => {
+    render(<Team />)
+    const memberCard = screen.getByRole('button', {
+      name: 'View profile for Johan Ljunggren',
+    })
+
+    fireEvent.keyDown(memberCard, { key: 'Enter' })
+    fireEvent.keyDown(memberCard, { key: ' ' })
+    fireEvent.keyDown(memberCard, { key: 'Escape' })
+
+    expect(mockPush).toHaveBeenCalledTimes(2)
+    expect(mockPush).toHaveBeenNthCalledWith(1, '/en/team/johlju')
+    expect(mockPush).toHaveBeenNthCalledWith(2, '/en/team/johlju')
+  })
+
+  it('renders camera fallback when a member has no profile image', () => {
+    mockGetTeamMembers.mockReturnValueOnce([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [],
+      },
+    ])
+
+    render(<Team />)
+
+    expect(screen.queryByAltText('Johan Ljunggren')).not.toBeInTheDocument()
+    expect(screen.getByTestId('camera-icon')).toBeInTheDocument()
   })
 
   it('stops propagation on social link clicks', () => {
