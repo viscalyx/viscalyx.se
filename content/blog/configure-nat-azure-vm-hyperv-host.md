@@ -215,7 +215,7 @@ subnet.
 Remove-VMSwitch -Name VmNAT -Force -Confirm:$false
 Get-NetNat -Name VmNAT -ErrorAction SilentlyContinue | Remove-NetNat
 
-New-VMSwitch -SwitchName VmNAT -SwitchType Internal
+New-VMSwitch -Name VmNAT -SwitchType Internal
 New-NetIPAddress -InterfaceAlias 'vEthernet (VmNAT)' `
                  -IPAddress 192.168.100.1 -PrefixLength 24
 New-NetNat -Name VmNAT -InternalIPInterfaceAddressPrefix 192.168.100.0/24
