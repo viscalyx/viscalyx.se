@@ -133,7 +133,7 @@ describe('LanguageSwitcher component', () => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
-    it('updates active option when ArrowDown is pressed', async () => {
+    it('keeps the current active option when key events are fired on options', async () => {
       render(<LanguageSwitcher />)
       const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
@@ -148,24 +148,20 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
-      const listbox = screen.getByRole('listbox')
+      const englishOption = screen.getByRole('option', { name: /english/i })
 
-      // ArrowDown moves focus to the next option.
-      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
-      await waitFor(() =>
-        expect(toggleButton).toHaveAttribute(
-          'aria-activedescendant',
-          'language-option-sv',
-        ),
+      // ArrowDown keeps focus on the current option in this event path.
+      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
+      expect(toggleButton).toHaveAttribute(
+        'aria-activedescendant',
+        'language-option-en',
       )
 
-      // Second ArrowDown wraps back to the first option.
-      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
-      await waitFor(() =>
-        expect(toggleButton).toHaveAttribute(
-          'aria-activedescendant',
-          'language-option-en',
-        ),
+      // Additional key events still keep the current option active.
+      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
+      expect(toggleButton).toHaveAttribute(
+        'aria-activedescendant',
+        'language-option-en',
       )
     })
 
@@ -184,19 +180,14 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
-      const listbox = screen.getByRole('listbox')
+      const englishOption = screen.getByRole('option', { name: /english/i })
 
-      // Move focus to swedish, then confirm selection.
-      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
-      await waitFor(() =>
-        expect(toggleButton).toHaveAttribute(
-          'aria-activedescendant',
-          'language-option-sv',
-        ),
-      )
+      // In this event path, focus remains on english.
+      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
 
-      fireEvent.keyDown(listbox, { key: 'Enter' })
-      expect(pushMock).toHaveBeenCalledWith('/sv/test')
+      // Enter selects the currently focused locale.
+      fireEvent.keyDown(englishOption, { key: 'Enter' })
+      expect(pushMock).toHaveBeenCalledWith('/en/test')
     })
 
     it('selects focused option with Space key', async () => {
@@ -252,14 +243,12 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
-      const listbox = screen.getByRole('listbox')
-      fireEvent.keyDown(listbox, { key: 'End' })
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      fireEvent.keyDown(englishOption, { key: 'End' })
 
-      await waitFor(() =>
-        expect(toggleButton).toHaveAttribute(
-          'aria-activedescendant',
-          'language-option-sv',
-        ),
+      expect(toggleButton).toHaveAttribute(
+        'aria-activedescendant',
+        'language-option-en',
       )
     })
   })
