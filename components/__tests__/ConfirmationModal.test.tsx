@@ -60,11 +60,7 @@ describe('ConfirmationModal', () => {
   it('calls onClose when clicking outside the modal content', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
-    const modal = screen.getByRole('dialog')
-    const wrapper = modal.parentElement
-
-    expect(wrapper).not.toBeNull()
-    fireEvent.click(wrapper as HTMLElement)
+    fireEvent.click(screen.getByTestId('modal-backdrop'))
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 

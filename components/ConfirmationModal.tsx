@@ -109,13 +109,11 @@ const ConfirmationModal = ({
             data-testid="modal-backdrop"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
+            onClick={onClose}
           />
 
           {/* Modal */}
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            onClick={onClose}
-          >
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               animate={{ opacity: 1, scale: 1, y: 0 }}
               aria-describedby={descriptionId}
