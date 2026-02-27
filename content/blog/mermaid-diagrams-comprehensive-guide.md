@@ -20,7 +20,7 @@ own projects.
 
 Mermaid diagrams are perfect for technical documentation, project planning,
 system architecture, and process visualization. They render directly in
-markdown, making them ideal for documentation that lives alongside your code.
+Markdown, making them ideal for documentation that lives alongside your code.
 
 This guide demonstrates Mermaid diagram types with real-world examples, syntax
 explanations, and best practices.
