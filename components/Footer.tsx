@@ -174,23 +174,29 @@ const Footer = () => {
             </div>
 
             <div className="flex space-x-4">
-              {socialLinks.map(social => (
-                <motion.a
-                  aria-label={social.name}
-                  className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
-                  href={social.href}
-                  key={social.name}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <social.icon
-                    className="w-5 h-5"
-                    title={t(`socialLinks.${social.translationKey}`)}
-                  />
-                </motion.a>
-              ))}
+              {socialLinks.map(social => {
+                const isMailtoLink = social.href.startsWith('mailto:')
+                const rel = isMailtoLink ? undefined : 'noopener noreferrer'
+                const target = isMailtoLink ? undefined : '_blank'
+
+                return (
+                  <motion.a
+                    aria-label={social.name}
+                    className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
+                    href={social.href}
+                    key={social.name}
+                    rel={rel}
+                    target={target}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <social.icon
+                      className="w-5 h-5"
+                      title={t(`socialLinks.${social.translationKey}`)}
+                    />
+                  </motion.a>
+                )
+              })}
             </div>
           </motion.div>
 

@@ -144,11 +144,15 @@ describe('Footer', () => {
     )
   })
 
-  it('renders social links with target="_blank"', () => {
+  it('renders social links with conditional target and rel attributes', () => {
     render(<Footer />)
     const githubLink = screen.getByRole('link', { name: 'GitHub' })
     expect(githubLink).toHaveAttribute('target', '_blank')
     expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+    const emailLink = screen.getByRole('link', { name: 'Email' })
+    expect(emailLink).not.toHaveAttribute('target')
+    expect(emailLink).not.toHaveAttribute('rel')
   })
 
   it('renders social links with aria-labels', () => {

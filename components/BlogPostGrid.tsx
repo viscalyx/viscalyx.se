@@ -72,7 +72,7 @@ const BlogPostGrid = ({
                   category === selectedCategory ||
                   (selectedCategory === '' && category === categoriesAllLabel)
                 }
-                className={`px-4 py-2 rounded-full transition-colors duration-200 ${
+                className={`min-h-[44px] min-w-[44px] px-4 py-2 rounded-full transition-colors duration-200 ${
                   category === selectedCategory ||
                   (selectedCategory === '' && category === categoriesAllLabel)
                     ? 'bg-primary-600 dark:bg-primary-500 text-white'
