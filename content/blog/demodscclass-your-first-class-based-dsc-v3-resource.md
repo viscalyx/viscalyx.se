@@ -248,7 +248,7 @@ that decision on a per-class basis. Always ask two questions:
 1. Does it make sense to implement `Export()`?
 2. Is it a cheap operation to perform?
 
-> [!INFO]
+> [!NOTE]
 > For example, exporting all Windows services from a machine makes sense and is
 > relatively cheap. Exporting the whole registry _might_ make sense, but isn't a
 > cheap operation to perform.
@@ -316,7 +316,7 @@ It's time to install Microsoft DSC v3 and test out the class using `dsc`.
 To easily install the `dsc` executable, you can use the [PSDC][02] PowerShell
 community module.
 
-> [!INFO]
+> [!NOTE]
 > The community module only works on PowerShell 7.
 
 ### Install using PowerShell
@@ -557,7 +557,7 @@ Write-Debug "message" # Causes JSON parsing issues
 ```
 <!-- markdownlint-enable MD013 -->
 
-> [INFO]
+> [!NOTE]
 > The issue is currently open on [GitHub](https://github.com/PowerShell/DSC/issues/833).
 
 ## Publish your resource (optional)
