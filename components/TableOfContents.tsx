@@ -2,7 +2,7 @@
 import { useTranslations } from 'next-intl'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { TocItem } from '@/lib/slug-utils'
+import type { TocItem } from '@/lib/slug-utils-client'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TableOfContentsProps {

@@ -61,9 +61,9 @@ flowchart LR
     E --> G
     F --> G
 
-    classDef startEnd fill:#e1f5fe
-    classDef process fill:#f3e5f5
-    classDef decision fill:#fff3e0
+    classDef startEnd fill:#e1f5fe,stroke:#0288d1,color:#01579b
+    classDef process fill:#f3e5f5,stroke:#8e24aa,color:#4a148c
+    classDef decision fill:#fff3e0,stroke:#fb8c00,color:#e65100
 
     class A,G startEnd
     class B,D,E,F process

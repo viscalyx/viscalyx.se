@@ -1,16 +1,18 @@
 import { getTranslations } from 'next-intl/server'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  addHeadingIds,
   createSlug,
   createSlugId,
   ensureUniqueId,
   extractCleanText,
-  extractTableOfContents,
   extractTableOfContentsClient,
-  extractTableOfContentsServer,
   generateFallbackId,
-} from '../slug-utils'
+  type SlugOptions,
+} from '../slug-utils-client'
+import {
+  addHeadingIds,
+  extractTableOfContentsServer,
+} from '../slug-utils-server'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(
@@ -28,6 +30,15 @@ vi.mock('next-intl/server', () => ({
 }))
 
 const mockedGetTranslations = vi.mocked(getTranslations)
+
+function extractTableOfContents(
+  htmlContent: string,
+  options: SlugOptions = {},
+) {
+  return typeof window === 'undefined'
+    ? extractTableOfContentsServer(htmlContent, options)
+    : extractTableOfContentsClient(htmlContent, options)
+}
 
 describe('slug-utils', () => {
   beforeEach(() => {
@@ -303,6 +314,8 @@ describe('slug-utils', () => {
 
       expect(result).toContain('id="existing-id"')
       expect(result).not.toContain('id="my-section"')
+      expect(result).toContain('href="#existing-id"')
+      expect(result).not.toContain('href="#my-section"')
     })
 
     it('handles complex HTML content in headings', async () => {

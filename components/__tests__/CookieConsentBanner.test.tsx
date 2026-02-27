@@ -229,6 +229,25 @@ describe('CookieConsentBanner', () => {
         )
         expect(dialog).toHaveAttribute('aria-live', 'polite')
       })
+
+      const customizeButtons = screen.getAllByRole('button', {
+        name: 'Customize Settings',
+      })
+      await user.click(customizeButtons[0])
+
+      await waitFor(() => {
+        const detailedDialog = screen.getByRole('dialog')
+        expect(detailedDialog).toHaveAttribute('aria-modal', 'true')
+        expect(detailedDialog).toHaveAttribute(
+          'aria-labelledby',
+          'detailed-panel-title',
+        )
+        expect(detailedDialog).toHaveAttribute(
+          'aria-describedby',
+          'detailed-panel-description',
+        )
+        expect(detailedDialog).toHaveAttribute('aria-live', 'polite')
+      })
     })
 
     it('does not change body layout styles when banner is visible', async () => {

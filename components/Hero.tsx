@@ -72,7 +72,7 @@ const Hero = () => {
             rotate: 360,
             scale: [1, 1.2, 1],
           }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-primary-200/30 to-primary-400/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-primary-200/30 to-primary-400/20 dark:from-primary-900/30 dark:to-primary-700/20 rounded-full blur-3xl"
           transition={{
             duration: 20,
             repeat: Infinity,
@@ -257,7 +257,8 @@ const Hero = () => {
                   {heroImages.map((image, index) => (
                     <motion.button
                       aria-label={`Show image ${index + 1} of ${heroImages.length}`}
-                      className="flex min-h-[44px] min-w-[44px] items-center justify-center transition-all duration-300"
+                      aria-pressed={index === currentImageIndex}
+                      className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
                       key={`indicator-${image.src}`}
                       onClick={() => setCurrentImageIndex(index)}
                       whileHover={{ scale: 1.2 }}

@@ -113,14 +113,16 @@ describe('ConfirmationModal', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
     const modal = screen.getByRole('dialog')
+    const title = screen.getByText('Test Modal')
+    const description = screen.getByText('Are you sure you want to proceed?')
     expect(modal).toHaveAttribute('aria-modal', 'true')
-    expect(modal).toHaveAttribute('aria-labelledby', 'modal-title')
-    expect(modal).toHaveAttribute('aria-describedby', 'modal-description')
-
-    expect(screen.getByText('Test Modal')).toHaveAttribute('id', 'modal-title')
-    expect(
-      screen.getByText('Are you sure you want to proceed?'),
-    ).toHaveAttribute('id', 'modal-description')
+    expect(modal).toHaveAttribute('aria-labelledby')
+    expect(modal).toHaveAttribute('aria-describedby')
+    expect(title).toHaveAttribute('id', modal.getAttribute('aria-labelledby'))
+    expect(description).toHaveAttribute(
+      'id',
+      modal.getAttribute('aria-describedby'),
+    )
   })
 
   it('renders with custom confirm icon when provided', () => {

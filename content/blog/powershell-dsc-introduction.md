@@ -67,7 +67,7 @@ drift, ensuring your systems stay in the desired state.
 
 ### Step 1: Install PowerShell DSC
 
-DSC comes built-in with Windows PowerShell 5.0 and later. For newer versions,
+PSDSC comes built-in with Windows PowerShell 5.x. For newer versions,
 you can install the PSDesiredStateConfiguration module:
 
 <!-- markdownlint-disable MD013 -->

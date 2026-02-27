@@ -54,7 +54,7 @@ Install-DscExe
 <!-- markdownlint-enable MD013 -->
 
 > [!TIP]
-> You can also install pre-release version by adding the `PreRelease` switch
+> You can also install a pre-release version by adding the `PreRelease` switch
 > parameter.
 
 The command automatically adds the `dsc` executable (`dsc.exe` on Windows) to

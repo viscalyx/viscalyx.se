@@ -145,7 +145,7 @@ threats found. Below, a warning under 'Virus & threat protection settings'
 states that real-time protection is off, leaving the device vulnerable, with a
 greyed-out 'Turn on' button and a 'Manage settings' link.](/public/blog-images/virus-and-threat-protection-settings-win2019.png)
 
-When click on the Manage settings link:
+When you click the **Manage settings** link:
 
 ![Windows Security window showing the 'Virus & threat protection settings'
 section. Under 'Real-time protection', it indicates that the setting is turned

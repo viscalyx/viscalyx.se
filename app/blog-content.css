@@ -494,4 +494,33 @@
       opacity: 1;
     }
   }
+
+  /* Mermaid sequence text contrast: direct class targeting (light and dark) */
+  .blog-content .mermaid-diagram .messageText,
+  .blog-content .mermaid-diagram .labelText,
+  .blog-content .mermaid-diagram .loopText,
+  .blog-content .mermaid-diagram .noteText,
+  .blog-content .mermaid-diagram .sequenceNumber,
+  .blog-content .mermaid-diagram .messageText tspan,
+  .blog-content .mermaid-diagram .labelText tspan,
+  .blog-content .mermaid-diagram .loopText tspan,
+  .blog-content .mermaid-diagram .noteText tspan {
+    fill: var(--color-secondary-800) !important;
+    color: var(--color-secondary-800) !important;
+    opacity: 1 !important;
+  }
+
+  .dark .blog-content .mermaid-diagram .messageText,
+  .dark .blog-content .mermaid-diagram .labelText,
+  .dark .blog-content .mermaid-diagram .loopText,
+  .dark .blog-content .mermaid-diagram .noteText,
+  .dark .blog-content .mermaid-diagram .sequenceNumber,
+  .dark .blog-content .mermaid-diagram .messageText tspan,
+  .dark .blog-content .mermaid-diagram .labelText tspan,
+  .dark .blog-content .mermaid-diagram .loopText tspan,
+  .dark .blog-content .mermaid-diagram .noteText tspan {
+    fill: var(--color-secondary-100) !important;
+    color: var(--color-secondary-100) !important;
+    opacity: 1 !important;
+  }
 }
