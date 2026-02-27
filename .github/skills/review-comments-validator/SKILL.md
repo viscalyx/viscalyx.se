@@ -50,6 +50,7 @@ Verification checklist:
 - Treat "consistency" claims as invalid unless confirmed by nearby project patterns.
 - Reject fix approaches that knowingly introduce lint or format errors when a compliant alternative exists.
 - If a lint suppression is required, keep scope minimal and provide explicit rationale.
+- Invalidate review comments that suggest changes to code formatting (e.g. reordering imports) if it goes against the project's Biome configuration.
 
 ## Response Contract
 
