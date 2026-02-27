@@ -1,5 +1,7 @@
 # Blog Listing Spec Documentation
 
+<!-- cspell:ignore Insikter Kunskap Utvald Artikel Alla -->
+
 Companion documentation for
 [`tests/integration/blog-listing.spec.ts`](./blog-listing.spec.ts).
 

@@ -1,8 +1,8 @@
 ---
-title: 'Complete Guide to Mermaid Diagrams: Every Type Explained with Examples'
+title: 'Complete Guide to Mermaid Diagrams: Supported Types Explained with Examples'
 date: '2025-04-29'
 author: 'Viscalyx Team'
-excerpt: 'A comprehensive guide showcasing all Mermaid diagram types with practical examples, from flowcharts to Kanban boards'
+excerpt: 'A comprehensive guide showcasing Mermaid diagram types with practical examples, from flowcharts to Kanban boards'
 image: '/dark-analytics-dashboard-monitor.png'
 imageAlt: 'Angled view of a monitor displaying a dark-themed analytics dashboard with colorful charts for page load time, bounce rate, sessions, and traffic sources, with a blurred plant in the background.'
 tags:
@@ -22,8 +22,8 @@ Mermaid diagrams are perfect for technical documentation, project planning,
 system architecture, and process visualization. They render directly in
 markdown, making them ideal for documentation that lives alongside your code.
 
-This guide demonstrates all available Mermaid diagram types with real-world
-examples, syntax explanations, and best practices.
+This guide demonstrates Mermaid diagram types with real-world examples, syntax
+explanations, and best practices.
 
 There are more examples in the [Documentation](https://mermaid.js.org/syntax/examples.html).
 
@@ -966,44 +966,6 @@ timeline
 ```
 <!-- markdownlint-enable MD013 -->
 
-## zenUML
-
-[Documentation](https://mermaid.js.org/syntax/zenuml.html)
-
-A Sequence diagram is an interaction diagram that shows how processes operate
-with one another and in what order.
-
-These types of diagrams are not supported by the blog system yet, they throw an
-error:
-
-<!-- markdownlint-disable MD013 -->
-```plaintext
-No diagram type detected matching given configuration for text: zenuml
-```
-<!-- markdownlint-enable MD013 -->
-
-Example mermaid code for this type of diagram:
-
-<!-- markdownlint-disable MD013 -->
-```text
-zenuml
-    // 1. assign a variable from a sync message.
-    a = A.SyncMessage()
-
-    // 1.1. optionally give the variable a type
-    SomeType a = A.SyncMessage()
-
-    // 2. use return keyword
-    A.SyncMessage() {
-    return result
-    }
-
-    // 3. use @return or @reply annotator on an async message
-    @return
-    A->B: result
-```
-<!-- markdownlint-enable MD013 -->
-
 ## 15. Sankey Diagrams
 
 [Documentation](https://mermaid.js.org/syntax/sankey.html)
@@ -1103,7 +1065,7 @@ Example mermaid code for this type of diagram:
 
 <!-- markdownlint-disable MD013 -->
 ```text
-block-beta
+block
 columns 1
   db(("DB"))
   blockArrowId6<["&nbsp;&nbsp;&nbsp;"]>(down)

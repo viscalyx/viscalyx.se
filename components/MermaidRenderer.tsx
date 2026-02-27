@@ -58,11 +58,13 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
+        const isDarkMode = document.documentElement.classList.contains('dark')
 
         // Configure mermaid with default settings
         // https://mermaid.js.org/config/schema-docs/config.html
         mermaid.default.initialize({
           startOnLoad: false,
+          theme: isDarkMode ? 'dark' : 'default',
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -120,12 +122,13 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create wrapper div for the diagram
             const wrapper = document.createElement('div')
             wrapper.className =
-              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg my-8 p-6 overflow-x-auto text-center'
+              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg my-8 p-6 overflow-x-auto text-center text-gray-900 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100'
 
             // Create the diagram container
             const diagramContainer = document.createElement('div')
             diagramContainer.id = diagramId
-            diagramContainer.className = 'mermaid-diagram'
+            diagramContainer.className =
+              'mermaid-diagram text-gray-900 dark:text-gray-100'
             wrapper.appendChild(diagramContainer)
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
@@ -185,7 +188,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create error message
             const errorDiv = document.createElement('div')
             errorDiv.className =
-              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800 my-8 p-4 font-mono text-sm'
+              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800 my-8 p-4 font-mono text-sm dark:bg-red-950 dark:border-red-900 dark:text-red-200'
             // Render error message with DOMPurify to avoid XSS
             const rawErrorHtml = `
               <strong>Mermaid Diagram Error:</strong><br>

@@ -94,6 +94,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith({
           startOnLoad: false,
+          theme: 'default',
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -427,6 +428,7 @@ describe('MermaidRenderer', () => {
         expect(document.querySelector('.mermaid-error')).toBeInTheDocument()
       })
     })
+
   })
 
   describe('content loading states', () => {
