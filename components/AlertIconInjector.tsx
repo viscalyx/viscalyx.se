@@ -30,9 +30,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
         '.alert-icon-container',
       )
       existingContainers.forEach(container => {
-        if (container.getAttribute('data-content-key') === contentIdentifier) {
-          container.remove()
-        }
+        container.remove()
       })
 
       // Find all alert titles that need icons
