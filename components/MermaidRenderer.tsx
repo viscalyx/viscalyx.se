@@ -54,17 +54,23 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     // Only run if content is loaded
     if (!contentLoaded) return
 
+    const getTheme = () => {
+      return document.documentElement.classList.contains('dark')
+        ? 'dark'
+        : 'default'
+    }
+
     const initializeMermaid = async () => {
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
-        const isDarkMode = document.documentElement.classList.contains('dark')
+        const currentTheme = getTheme()
 
         // Configure mermaid with default settings
         // https://mermaid.js.org/config/schema-docs/config.html
         mermaid.default.initialize({
           startOnLoad: false,
-          theme: isDarkMode ? 'dark' : 'default',
+          theme: currentTheme,
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -87,6 +93,56 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             useMaxWidth: true,
           },
         })
+
+        // Re-render existing diagram wrappers when theme changes.
+        const existingWrappers = Array.from(
+          document.querySelectorAll('.blog-content .mermaid-diagram-wrapper'),
+        )
+        for (let i = 0; i < existingWrappers.length; i++) {
+          const wrapper = existingWrappers[i]
+          const mermaidCode = wrapper.getAttribute('data-mermaid-source')
+          const diagramContainer = wrapper.querySelector('.mermaid-diagram')
+
+          if (!mermaidCode || !diagramContainer) continue
+
+          try {
+            const diagramId = `mermaid-diagram-theme-${Date.now()}-${i}`
+            const { svg } = await mermaid.default.render(diagramId, mermaidCode)
+
+            const cleanSvg = DOMPurify.sanitize(svg, {
+              FORBID_TAGS: ['script'],
+              FORBID_ATTR: [
+                'onclick',
+                'onload',
+                'onerror',
+                'onmouseover',
+                'onmouseout',
+                'onfocus',
+                'onblur',
+              ],
+              ADD_TAGS: ['foreignObject'],
+              ADD_ATTR: [
+                'xmlns',
+                'xmlns:xlink',
+                'xml:space',
+                'dominant-baseline',
+                'text-anchor',
+              ],
+              ALLOW_DATA_ATTR: true,
+              KEEP_CONTENT: true,
+            })
+
+            diagramContainer.textContent = ''
+            const tempDiv = document.createElement('div')
+            tempDiv.innerHTML = cleanSvg
+            const svgElement = tempDiv.querySelector('svg')
+            if (svgElement) {
+              diagramContainer.appendChild(svgElement)
+            }
+          } catch (error) {
+            console.error('Failed to re-render Mermaid diagram:', error)
+          }
+        }
 
         // Find all mermaid code blocks
         const mermaidSelector =
@@ -143,6 +199,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             diagramContainer.className =
               'mermaid-diagram text-gray-900 dark:text-gray-100'
             wrapper.appendChild(diagramContainer)
+            wrapper.setAttribute('data-mermaid-source', mermaidCode)
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
@@ -233,9 +290,21 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(initializeMermaid, 100)
+    let activeTheme = getTheme()
+    const rootObserver = new MutationObserver(() => {
+      const nextTheme = getTheme()
+      if (nextTheme === activeTheme) return
+      activeTheme = nextTheme
+      void initializeMermaid()
+    })
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
 
     return () => {
       clearTimeout(timer)
+      rootObserver.disconnect()
     }
   }, [contentLoaded])
 

@@ -170,6 +170,30 @@ describe('MermaidRenderer', () => {
       expect(diagramWrappers).toHaveLength(2)
     })
 
+    it('should re-initialize mermaid when theme class changes', async () => {
+      const { default: mermaid } = await import('mermaid')
+
+      render(<MermaidRenderer contentLoaded={true} />)
+
+      await waitFor(() => {
+        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith(
+          expect.objectContaining({
+            theme: 'default',
+          }),
+        )
+      })
+
+      document.documentElement.classList.add('dark')
+
+      await waitFor(() => {
+        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith(
+          expect.objectContaining({
+            theme: 'dark',
+          }),
+        )
+      })
+    })
+
     it('should handle code blocks inside code-block-wrapper', async () => {
       const { default: mermaid } = await import('mermaid')
 
