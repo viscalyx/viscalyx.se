@@ -12,7 +12,7 @@ The following types of assets are **All Rights Reserved**. You may not use,
 reproduce, distribute, or modify these assets without explicit prior written
 permission from Viscalyx:
 
-1. **Logos**: Any and all versions of the Viscalyx logo, including but not
+1. **Logos**: All versions of the Viscalyx logo, including but not
    limited to:
    - `public/viscalyx_logo.svg`
    - `public/viscalyx_logo_128x128.png`
