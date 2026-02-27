@@ -190,14 +190,14 @@ subnet.
 ## Troubleshooting Checklist
 
 <!-- markdownlint-disable MD013 -->
-| Step                | Command (host)                                         | Expect                      | Fix if wrong                             |                                        |
-| ------------------- | ------------------------------------------------------ | --------------------------- | ---------------------------------------- | -------------------------------------- |
-| **Host IP**         | `Get-NetIPAddress -InterfaceAlias "vEthernet (VmNAT)"` | 192.168.100.1/24            | Re‑create with correct address           |                                        |
-| **NAT exists**      | `Get-NetNat`                                           | Prefix **192.168.100.0/24** | `Remove-NetNat -Name VmNAT`, then re‑add |                                        |
-| **Gateway ping**    | _(inside guest)_ `ping 192.168.100.1`                  | Replies                     | Re‑attach NIC to VmNAT                   |                                        |
-| **Active sessions** | `Get-NetNat | fl Active*`                              | > 0 after guest traffic     | Firewall/DNS blocking, or NatSvc stuck   |                                        |
-| **DNS**             | `nslookup microsoft.com` in guest                      | Resolves                    | Use public DNS or host DNS               |                                        |
-| **NAT service**     | `Restart-Service ipnat`                                | Restarts cleanly            | Service disabled/crashed—set to Auto     |                                        |
+| Step                | Command (host)                                         | Expect                      | Fix if wrong                             |
+| ------------------- | ------------------------------------------------------ | --------------------------- | ---------------------------------------- |
+| **Host IP**         | `Get-NetIPAddress -InterfaceAlias "vEthernet (VmNAT)"` | 192.168.100.1/24            | Re‑create with correct address           |
+| **NAT exists**      | `Get-NetNat`                                           | Prefix **192.168.100.0/24** | `Remove-NetNat -Name VmNAT`, then re‑add |
+| **Gateway ping**    | _(inside guest)_ `ping 192.168.100.1`                  | Replies                     | Re‑attach NIC to VmNAT                   |
+| **Active sessions** | `Get-NetNat \| fl Active*`                             | > 0 after guest traffic     | Firewall/DNS blocking, or NatSvc stuck   |
+| **DNS**             | `nslookup microsoft.com` in guest                      | Resolves                    | Use public DNS or host DNS               |
+| **NAT service**     | `Restart-Service ipnat`                                | Restarts cleanly            | Service disabled/crashed—set to Auto     |
 <!-- markdownlint-enable MD013 -->
 
 > **Still stuck?**
