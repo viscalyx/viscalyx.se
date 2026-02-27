@@ -62,7 +62,7 @@ vi.mock('@/lib/blog', () => ({
 }))
 
 // Mock slug-utils
-vi.mock('@/lib/slug-utils', () => ({
+vi.mock('@/lib/slug-utils-server', () => ({
   addHeadingIds: mockAddHeadingIds,
   extractTableOfContentsServer: mockExtractTableOfContentsServer,
 }))

@@ -15,7 +15,10 @@ import {
   validateSlug,
 } from '@/lib/blog'
 import { SITE_URL } from '@/lib/constants'
-import { addHeadingIds, extractTableOfContentsServer } from '@/lib/slug-utils'
+import {
+  addHeadingIds,
+  extractTableOfContentsServer,
+} from '@/lib/slug-utils-server'
 import { getAuthorInitials, getSerializableTeamMemberByName } from '@/lib/team'
 
 type Props = {
