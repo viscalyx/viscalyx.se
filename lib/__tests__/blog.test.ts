@@ -100,12 +100,24 @@ describe('getPostMetadata', () => {
 
   it('normalizes invalid dates to undefined', () => {
     const post = getPostMetadata('second-post')
-    expect(post?.date).toBeUndefined()
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected second-post to exist in test fixtures')
+    }
+
+    expect(post.date).toBeUndefined()
   })
 
   it('sanitizes non-string imageAlt to undefined', () => {
     const post = getPostMetadata('third-post')
-    expect(post?.imageAlt).toBeUndefined()
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected third-post to exist in test fixtures')
+    }
+
+    expect(post.imageAlt).toBeUndefined()
   })
 
   it('filters non-string tags and lowercases them', () => {
