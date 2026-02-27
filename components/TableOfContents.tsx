@@ -21,7 +21,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
   const scrollContainerRef = useRef<HTMLElement | null>(null)
-  const itemCount = items.length
+  const itemsSignature = items
+    .map(item => `${item.id}:${item.level}:${item.text}`)
+    .join('|')
 
   const heightClass = maxHeight === 'sm' ? 'max-h-64' : 'max-h-80'
 
@@ -134,10 +136,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
   useEffect(() => {
     // Force indicator refresh when ToC content changes even without a resize event.
-    if (itemCount >= 0) {
-      checkScrollIndicators()
-    }
-  }, [checkScrollIndicators, itemCount])
+    void itemsSignature
+    checkScrollIndicators()
+  }, [checkScrollIndicators, itemsSignature])
 
   const handleTocKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
     const scrollContainer = scrollContainerRef.current
