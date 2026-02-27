@@ -428,7 +428,6 @@ describe('MermaidRenderer', () => {
         expect(document.querySelector('.mermaid-error')).toBeInTheDocument()
       })
     })
-
   })
 
   describe('content loading states', () => {
