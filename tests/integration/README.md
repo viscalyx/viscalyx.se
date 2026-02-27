@@ -61,10 +61,10 @@ Tests the server-rendered homepage, including:
   `generateMetadata`
 - **Header Navigation**: Validates logo, nav links, and blog link navigation
 - **Hero Section**: Tests badge, stats, Learn More button, and image carousel
-- **About Section**: Validates heading, description, value cards, and hash
-  anchor
+- **About Section**: Validates heading, description, value cards, and
+  hash-anchor links
 - **Open Source Section**: Tests heading, stats, project cards, CTA links, and
-  hash anchor
+  hash-anchor links
 - **Footer**: Validates company/resource/support links, copyright, and social
   links
 - **Locale Support**: Verifies Swedish translations at `/sv` for all sections
