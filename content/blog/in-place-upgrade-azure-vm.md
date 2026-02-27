@@ -525,7 +525,7 @@ process:
    # Alternative method
    [System.Environment]::OSVersion.Version
    ```
-  <!-- markdownlint-enable MD013 -->
+   <!-- markdownlint-enable MD013 -->
 
 1. **Check system health:**
 
