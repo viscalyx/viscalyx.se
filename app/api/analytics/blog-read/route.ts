@@ -113,10 +113,17 @@ export async function POST(request: Request) {
 
     const body: BlogReadEvent = await request.json()
 
-    // Validate required fields
-    if (!body.slug || !body.category || !body.title) {
+    // Validate required fields with runtime type checks
+    if (
+      typeof body.slug !== 'string' ||
+      body.slug.trim() === '' ||
+      typeof body.category !== 'string' ||
+      body.category.trim() === '' ||
+      typeof body.title !== 'string' ||
+      body.title.trim() === ''
+    ) {
       return NextResponse.json(
-        { error: 'Missing required fields: slug, category, and title' },
+        { error: 'Missing or invalid fields: slug, category, title' },
         { status: 400 },
       )
     }

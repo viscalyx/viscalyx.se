@@ -97,7 +97,21 @@ describe('blog-read analytics route', () => {
 
     expect(res.status).toBe(400)
     expect(await res.json()).toEqual({
-      error: 'Missing required fields: slug, category, and title',
+      error: 'Missing or invalid fields: slug, category, title',
+    })
+  })
+
+  it('returns 400 when required fields are not non-empty strings', async () => {
+    const req = createRequest({
+      slug: ' ',
+      category: 123,
+      title: ['bad'],
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Missing or invalid fields: slug, category, title',
     })
   })
 
