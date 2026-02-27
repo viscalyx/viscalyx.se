@@ -505,9 +505,9 @@
   .blog-content .mermaid-diagram .labelText tspan,
   .blog-content .mermaid-diagram .loopText tspan,
   .blog-content .mermaid-diagram .noteText tspan {
-    fill: var(--color-secondary-800) !important;
-    color: var(--color-secondary-800) !important;
-    opacity: 1 !important;
+    color: var(--color-secondary-800);
+    opacity: 1;
+    fill: var(--color-secondary-800);
   }
 
   .dark .blog-content .mermaid-diagram .messageText,
@@ -519,8 +519,8 @@
   .dark .blog-content .mermaid-diagram .labelText tspan,
   .dark .blog-content .mermaid-diagram .loopText tspan,
   .dark .blog-content .mermaid-diagram .noteText tspan {
-    fill: var(--color-secondary-100) !important;
-    color: var(--color-secondary-100) !important;
-    opacity: 1 !important;
+    color: var(--color-secondary-100);
+    opacity: 1;
+    fill: var(--color-secondary-100);
   }
 }
