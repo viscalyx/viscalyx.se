@@ -591,7 +591,7 @@ const BlogPostContent = ({
                           return (
                             <a
                               aria-label={social.name}
-                              className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                              className="flex items-center justify-center min-w-[44px] min-h-[44px] bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                               href={social.href}
                               key={social.name}
                               rel={

@@ -80,7 +80,7 @@ const Footer = () => {
             aria-hidden="true"
             className="w-3 h-3 ml-1 opacity-60"
           />
-          <span className="sr-only"> (opens in new tab)</span>
+          <span className="sr-only">{t('opensInNewTab')}</span>
         </a>
       )
     }
