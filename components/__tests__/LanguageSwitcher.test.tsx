@@ -148,9 +148,10 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
+      const listbox = screen.getByRole('listbox')
 
       // ArrowDown moves focus to the next option.
-      fireEvent.keyDown(toggleButton, { key: 'ArrowDown' })
+      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
@@ -159,7 +160,7 @@ describe('LanguageSwitcher component', () => {
       )
 
       // Second ArrowDown wraps back to the first option.
-      fireEvent.keyDown(toggleButton, { key: 'ArrowDown' })
+      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
@@ -183,9 +184,10 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
+      const listbox = screen.getByRole('listbox')
 
       // Move focus to swedish, then confirm selection.
-      fireEvent.keyDown(toggleButton, { key: 'ArrowDown' })
+      fireEvent.keyDown(listbox, { key: 'ArrowDown' })
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
@@ -193,7 +195,7 @@ describe('LanguageSwitcher component', () => {
         ),
       )
 
-      fireEvent.keyDown(toggleButton, { key: 'Enter' })
+      fireEvent.keyDown(listbox, { key: 'Enter' })
       expect(pushMock).toHaveBeenCalledWith('/sv/test')
     })
 
@@ -250,8 +252,8 @@ describe('LanguageSwitcher component', () => {
           'language-option-en',
         ),
       )
-
-      fireEvent.keyDown(toggleButton, { key: 'End' })
+      const listbox = screen.getByRole('listbox')
+      fireEvent.keyDown(listbox, { key: 'End' })
 
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
