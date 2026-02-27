@@ -19,9 +19,13 @@
     "!.wrangler/**",
     "!node_modules/**",
     "!coverage/**",
+    "!test-results/**",
     "!build/**",
     "!dist/**",
     "!out/**",
-    "!bundled/**"
+    "!bundled/**",
+    "!playwright-report/**",
+    "!playwright-report-dev/**",
+    "!playwright-report-preview/**"
   ]
 }
