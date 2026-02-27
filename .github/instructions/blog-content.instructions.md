@@ -54,6 +54,9 @@ Use GitHub-style blockquote alerts:
 > [!TIP]
 > Helpful advice
 
+> [!IMPORTANT]
+> Critical information needed for success
+
 > [!WARNING]
 > Important caution
 
