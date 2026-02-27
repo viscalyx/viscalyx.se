@@ -269,6 +269,45 @@ describe('useCookiesTranslations', () => {
   })
 })
 
+describe('usePageTranslations fallback error handling', () => {
+  it('sets error when locale validation fails and fallback import also fails', async () => {
+    vi.resetModules()
+    const isolatedUseLocale = vi.fn(() => 'fr')
+    const isolatedConsoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
+    try {
+      vi.doMock('next-intl', () => ({
+        useLocale: () => isolatedUseLocale(),
+      }))
+      vi.doMock('@/messages/privacy.en.json', () => {
+        throw new Error('fallback import failed')
+      })
+
+      const pageTranslationsModule = await import('../page-translations')
+      const { result } = renderHook(() =>
+        pageTranslationsModule.usePrivacyTranslations(),
+      )
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false)
+      })
+
+      expect(result.current.translations).toBeNull()
+      expect(result.current.error).toBeInstanceOf(Error)
+      expect(isolatedConsoleErrorSpy).toHaveBeenCalledWith(
+        'Error loading fallback privacy translations:',
+        expect.any(Error),
+      )
+    } finally {
+      vi.doUnmock('@/messages/privacy.en.json')
+      vi.doUnmock('next-intl')
+      isolatedConsoleErrorSpy.mockRestore()
+    }
+  })
+})
+
 describe('validateFilePrefix', () => {
   describe('valid inputs', () => {
     it('accepts valid alphanumeric strings', () => {

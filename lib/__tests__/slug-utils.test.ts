@@ -89,6 +89,10 @@ describe('slug-utils', () => {
       expect(extractCleanText('&#xD800;')).toBe('\uFFFD')
       expect(extractCleanText('&#55296;')).toBe('\uFFFD')
     })
+
+    it('decodes common named entities', () => {
+      expect(extractCleanText('&quot;a&amp;b&lt;c&gt;&quot;')).toBe('"a&b<c>"')
+    })
   })
 
   describe('generateFallbackId', () => {
@@ -236,6 +240,24 @@ describe('slug-utils', () => {
         text: 'Normal Section',
         level: 3,
       })
+    })
+  })
+
+  describe('extractTableOfContentsClient', () => {
+    it('extracts headings and creates unique IDs for duplicates', () => {
+      const html = `
+        <h2>Intro</h2>
+        <h3>Details</h3>
+        <h2>Intro</h2>
+      `
+
+      const toc = extractTableOfContentsClient(html)
+
+      expect(toc).toEqual([
+        { id: 'intro', level: 2, text: 'Intro' },
+        { id: 'details', level: 3, text: 'Details' },
+        { id: 'intro-1', level: 2, text: 'Intro' },
+      ])
     })
   })
 

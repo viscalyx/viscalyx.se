@@ -506,6 +506,77 @@ describe('loadBlogContent edge cases', () => {
     const result = await loadBlogContent('---')
     expect(result).toBeNull()
   })
+
+  it('logs filesystem source in debug mode when development read succeeds', async () => {
+    const consoleInfoSpy = vi
+      .spyOn(console, 'info')
+      .mockImplementation(() => {})
+
+    try {
+      vi.stubEnv('NODE_ENV', 'development')
+      vi.stubEnv('DEBUG_BLOG_CONTENT_SOURCE', '1')
+      mockReadFile.mockResolvedValueOnce(
+        JSON.stringify({ content: 'From disk' }),
+      )
+
+      const result = await loadBlogContent('dev-post')
+
+      expect(result).toBe('From disk')
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=filesystem',
+        expect.objectContaining({
+          slug: 'dev-post',
+          path: expect.stringContaining('public/blog-content/dev-post.json'),
+        }),
+      )
+    } finally {
+      vi.unstubAllEnvs()
+      consoleInfoSpy.mockRestore()
+    }
+  })
+
+  it('logs filesystem miss then ASSETS source in debug mode', async () => {
+    const consoleInfoSpy = vi
+      .spyOn(console, 'info')
+      .mockImplementation(() => {})
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ content: '<p>From ASSETS debug</p>' }),
+    })
+
+    try {
+      vi.stubEnv('NODE_ENV', 'development')
+      vi.stubEnv('DEBUG_BLOG_CONTENT_SOURCE', '1')
+      mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
+
+      vi.doMock('@opennextjs/cloudflare', () => ({
+        getCloudflareContext: () => ({
+          env: {
+            ASSETS: {
+              fetch: mockFetch,
+            },
+          },
+        }),
+      }))
+
+      const { loadBlogContent: loadWithAssets } = await import('@/lib/blog')
+      const result = await loadWithAssets('assets-post')
+
+      expect(result).toBe('<p>From ASSETS debug</p>')
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=filesystem-miss',
+        { slug: 'assets-post' },
+      )
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=ASSETS',
+        { slug: 'assets-post' },
+      )
+    } finally {
+      vi.doUnmock('@opennextjs/cloudflare')
+      vi.unstubAllEnvs()
+      consoleInfoSpy.mockRestore()
+    }
+  })
 })
 
 describe('sanitizeCategory edge cases', () => {

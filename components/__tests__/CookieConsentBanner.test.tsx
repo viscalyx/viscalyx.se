@@ -23,6 +23,7 @@ vi.mock('@/lib/cookie-consent', () => ({
       category: 'preferences',
       purpose: 'Stores user theme preference',
       duration: '1 year',
+      provider: 'Site Provider',
     },
   ],
 }))
@@ -406,6 +407,15 @@ describe('CookieConsentBanner', () => {
         expect(viewCookiesButton.getAttribute('aria-label')).toMatch(
           /\(\d+ cookies\)/,
         )
+      })
+    })
+
+    it('renders cookie provider metadata in details', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+      await user.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(screen.getByText(/Provider: Site Provider/i)).toBeInTheDocument()
       })
     })
   })
