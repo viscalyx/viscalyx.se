@@ -340,6 +340,24 @@ describe('slug-utils', () => {
       expect(result).not.toContain('href="#my-section"')
     })
 
+    it('reserves existing heading IDs to avoid generated collisions', async () => {
+      const html = '<h2 id="setup">Setup</h2><h2>Setup</h2>'
+      const result = await addHeadingIds(html)
+
+      expect(result).toContain('<h2 id="setup" class="heading-with-anchor">')
+      expect(result).toContain('href="#setup"')
+      expect(result).toContain('<h2 id="setup-1" class="heading-with-anchor">')
+      expect(result).toContain('href="#setup-1"')
+    })
+
+    it('escapes existing IDs before interpolating anchor href attributes', async () => {
+      const html = `<h2 id="existing'id">My Section</h2>`
+      const result = await addHeadingIds(html)
+
+      expect(result).toContain('href="#&quot;existing&#x27;id&quot;"')
+      expect(result).not.toContain(`href="#existing'id"`)
+    })
+
     it('handles complex HTML content in headings', async () => {
       const html = '<h2><code>API</code> <strong>Reference</strong></h2>'
       const result = await addHeadingIds(html)

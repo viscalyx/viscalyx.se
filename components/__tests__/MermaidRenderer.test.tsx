@@ -83,6 +83,7 @@ describe('MermaidRenderer', () => {
   afterEach(() => {
     vi.restoreAllMocks()
     document.body.innerHTML = ''
+    document.documentElement.classList.remove('dark')
   })
 
   describe('successful rendering', () => {

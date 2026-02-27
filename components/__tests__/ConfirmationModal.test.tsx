@@ -57,11 +57,22 @@ describe('ConfirmationModal', () => {
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('calls onClose when backdrop is clicked', () => {
+  it('calls onClose when clicking outside the modal content', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
-    fireEvent.click(screen.getByTestId('modal-backdrop'))
+    const modal = screen.getByRole('dialog')
+    const wrapper = modal.parentElement
+
+    expect(wrapper).not.toBeNull()
+    fireEvent.click(wrapper as HTMLElement)
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not call onClose when modal content is clicked', () => {
+    render(<ConfirmationModal {...defaultProps} />)
+
+    fireEvent.click(screen.getByRole('dialog'))
+    expect(defaultProps.onClose).not.toHaveBeenCalled()
   })
 
   it('handles escape key press', () => {

@@ -10,7 +10,19 @@ vi.mock('next/navigation', () => ({
 
 // Mock translations
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations:
+    () => (key: string, values?: Record<string, string | number>) => {
+      if (key === 'accessibility.viewProject') {
+        return `View project ${values?.name ?? ''}`.trim()
+      }
+      if (key === 'accessibility.followGithub') {
+        return 'Follow on GitHub (opens in new tab)'
+      }
+      if (key === 'accessibility.collaborate') {
+        return 'Collaborate with DSC (opens in new tab)'
+      }
+      return key
+    },
   useLocale: () => 'en',
 }))
 

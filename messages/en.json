@@ -196,6 +196,11 @@
       }
     },
     "viewProject": "View Project",
+    "accessibility": {
+      "viewProject": "View project {name}",
+      "followGithub": "Follow on GitHub (opens in new tab)",
+      "collaborate": "Collaborate with DSC (opens in new tab)"
+    },
     "cta": {
       "title": "Join the PowerShell Open Source Community",
       "description": "Collaborate with us on cutting-edge automation tools and contribute to projects that impact thousands of developers worldwide.",

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Header, { getHrefUrl } from '@/components/Header'
 
 // Mock next-intl
@@ -38,6 +38,10 @@ vi.mock('lucide-react', () => ({
 }))
 
 describe('Header', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'

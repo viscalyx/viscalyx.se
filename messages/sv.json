@@ -196,6 +196,11 @@
       }
     },
     "viewProject": "Visa projekt",
+    "accessibility": {
+      "viewProject": "Visa projekt {name}",
+      "followGithub": "Följ på GitHub (öppnas i ny flik)",
+      "collaborate": "Samarbeta med DSC (öppnas i ny flik)"
+    },
     "cta": {
       "title": "Gå med i PowerShell Open Source gemenskapen",
       "description": "Samarbeta med oss på banbrytande automationsverktyg och bidra till projekt som påverkar tusentals utvecklare världen över.",

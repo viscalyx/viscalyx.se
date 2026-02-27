@@ -144,7 +144,9 @@ const OpenSource = () => {
                     </div>
 
                     <motion.a
-                      aria-label={`View project ${project.name}`}
+                      aria-label={t('accessibility.viewProject', {
+                        name: project.name,
+                      })}
                       className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                       href={project.link}
                       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -186,7 +188,7 @@ const OpenSource = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                aria-label="Follow on GitHub (opens in new tab)"
+                aria-label={t('accessibility.followGithub')}
                 className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
                 href="https://github.com/viscalyx"
                 rel="noopener noreferrer"
@@ -198,7 +200,7 @@ const OpenSource = () => {
                 {t('cta.followGithub')}
               </motion.a>
               <motion.a
-                aria-label="Collaborate with DSC (opens in new tab)"
+                aria-label={t('accessibility.collaborate')}
                 className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
                 href="https://dsccommunity.org/"
                 rel="noopener noreferrer"

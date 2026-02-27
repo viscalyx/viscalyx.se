@@ -53,13 +53,17 @@ export async function addHeadingIds(
       const levelNum = Number.parseInt(level, 10)
       const cleanedText = extractCleanText(text)
       const baseId = createSlugId(cleanedText, levelNum, options)
-      const id = ensureUniqueId(baseId, usedIds)
 
       const quotedIdMatch = attributes.match(/\bid\s*=\s*(["'])([^"']+)\1/i)
       const unquotedIdMatch = attributes.match(/\bid\s*=\s*([^\s>]+)/i)
       const existingId = quotedIdMatch?.[2] ?? unquotedIdMatch?.[1]
       const hasId = Boolean(existingId)
-      const anchorHrefId = existingId ?? id
+      if (existingId) {
+        usedIds.add(existingId)
+      }
+
+      const id = hasId ? existingId : ensureUniqueId(baseId, usedIds)
+      const anchorHrefId = escapeHtmlAttr(existingId ?? id)
       const finalAttributes = hasId ? attributes : `${attributes} id="${id}"`
 
       const ariaLabel = resolvedTranslateFn(

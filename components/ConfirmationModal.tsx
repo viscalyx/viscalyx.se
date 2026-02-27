@@ -109,11 +109,13 @@ const ConfirmationModal = ({
             data-testid="modal-backdrop"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
-            onClick={onClose}
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            onClick={onClose}
+          >
             <motion.div
               animate={{ opacity: 1, scale: 1, y: 0 }}
               aria-describedby={descriptionId}
@@ -122,6 +124,7 @@ const ConfirmationModal = ({
               className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full mx-auto"
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              onClick={event => event.stopPropagation()}
               ref={modalRef}
               role="dialog"
               tabIndex={-1}
