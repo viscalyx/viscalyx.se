@@ -8,7 +8,7 @@ applyTo: 'content/blog/**/*.md'
 
 `kebab-case-title.md` (matches URL slug)
 
-## Frontmatter
+## Front Matter
 
 ```yaml
 ---
@@ -46,6 +46,19 @@ category: 'Any category — reuse existing ones when possible (e.g., DevOps, Pow
 
 ## Callouts
 
+Regular blockquotes:
+
+```markdown
+> [!QUOTE]
+> Quote text phrases from references
+
+> Regular blockquote without any special alert type. It maintains the original styling and behavior.
+```
+
+```markdown
+> Regular blockquote without any special alert type. It maintains the original styling and behavior.
+```
+
 Use GitHub-style blockquote alerts:
 
 ```markdown
@@ -63,9 +76,6 @@ Use GitHub-style blockquote alerts:
 
 > [!CAUTION]
 > Critical warning
-
-> [!QUOTE]
-> Styled quote callout
 ```
 
 ## Quality Check
