@@ -48,7 +48,7 @@ import LanguageSwitcher from './LanguageSwitcher'
 
 ### Biome Formatting and Linting
 
-- Source of truth for linting/formatting rules: [`/workspace/biome.json`](/workspace/biome.json)
+- Source of truth for linting/formatting rules: [`./biome.json`](./biome.json)
 - When uncertain, follow `biome.json` over prose docs.
 - Keep code aligned with Biome defaults in this repo.
 
