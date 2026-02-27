@@ -31,7 +31,11 @@ vi.mock('@/components/ImageModal', () => ({
     triggerElement,
   }: MockImageModalProps) =>
     isOpen ? (
-      <div data-testid="image-modal" data-trigger={triggerElement?.tagName}>
+      <div
+        data-testid="image-modal"
+        data-trigger={triggerElement?.tagName}
+        role="dialog"
+      >
         <button onClick={onClose} type="button">
           Close
         </button>
@@ -99,7 +103,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 1')).toBeInTheDocument()
   })
 
@@ -117,7 +121,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     // Close modal
     const closeButton = screen.getByText('Close')
@@ -125,7 +129,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(closeButton)
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('shows correct image in modal when different images are clicked', async () => {
@@ -142,7 +146,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image1)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 1')).toBeInTheDocument()
 
     // Close modal
@@ -150,7 +154,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(screen.getByText('Close'))
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 
     // Click second image
     const image2 = screen.getByAltText('Test 2')
@@ -158,7 +162,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image2)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 2')).toBeInTheDocument()
   })
 
@@ -278,7 +282,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: 'Enter' })
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
   it('opens modal on Space key', async () => {
@@ -294,7 +298,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: ' ' })
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
   it('does not open modal on other keys', async () => {
@@ -310,7 +314,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: 'a' })
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('skips images wrapped in anchor tags', async () => {
@@ -373,7 +377,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    const modal = screen.getByTestId('image-modal')
+    const modal = screen.getByRole('dialog')
     expect(modal).toHaveAttribute('data-trigger', 'IMG')
   })
 
