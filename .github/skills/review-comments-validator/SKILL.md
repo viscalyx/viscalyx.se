@@ -29,6 +29,7 @@ For each `valid` finding, the mini-plan must include:
 2. Expected side effects and behavioral impact.
 3. Lint/format/spelling/type checking risk and how to avoid violations.
 4. Exact verification commands to run after edits.
+5. If introducing new code paths or files, make sure they are also unit tested and do not break existing tests
 
 Lint/format/spelling/type checking planning checklist:
 
@@ -51,7 +52,6 @@ Verification checklist:
 - Reject fix approaches that knowingly introduce lint or format errors when a compliant alternative exists.
 - If a lint suppression is required, keep scope minimal and provide explicit rationale.
 - Invalidate review comments that suggest changes to code formatting (e.g. reordering imports) if it goes against the project's Biome configuration.
-- If introducing new code paths, make sure they are also unit tested and do not break existing tests even if the reviewer did not request it.
 
 ## Response Contract
 
