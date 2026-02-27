@@ -1099,7 +1099,7 @@ const result = someVeryLongObjectNameWithManyProperties
 <!-- markdownlint-disable MD013 -->
 ```bash
 # Very long bash command example
-curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer very_long_token_here_that_makes_the_line_extremely_wide_for_testing_purposes" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
+curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer <REDACTED_TOKEN>" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
 ```
 <!-- markdownlint-enable MD013 -->
 
