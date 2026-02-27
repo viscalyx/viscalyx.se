@@ -76,7 +76,7 @@ Learn][4]).
 1. Startup memory ≥ 1024 MB (enable Dynamic Memory if desired)([Microsoft
    Learn][4])
 1. Connect first NIC to `vSwitch_WAN`.
-1. Create a 20 GB‐plus VHDX (thin) on SCSI.
+1. Create a 20 GB-plus VHDX (thin) on SCSI.
 1. Boot media → ISO you downloaded.
 1. Finish.
 
