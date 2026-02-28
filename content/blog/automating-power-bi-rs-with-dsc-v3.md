@@ -239,7 +239,6 @@ writing Microsoft recommends drafting configuration documents in YAML.
 Author a YAML document (`deploy-PBIRS.dsc.config.yaml`) to define the desired
 state:
 
->
 > [!NOTE]
 > As of DSC v3.2.0, the adapter syntax has changed. Previously, PowerShell
 > resources were wrapped inside a `Microsoft.DSC/PowerShell` adapter with a

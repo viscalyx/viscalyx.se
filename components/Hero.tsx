@@ -256,7 +256,10 @@ const Hero = () => {
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
                   {heroImages.map((image, index) => (
                     <motion.button
-                      aria-label={`Show image ${index + 1} of ${heroImages.length}`}
+                      aria-label={t('indicator', {
+                        current: index + 1,
+                        total: heroImages.length,
+                      })}
                       aria-pressed={index === currentImageIndex}
                       className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
                       key={`indicator-${image.src}`}

@@ -50,6 +50,7 @@
       "learnMore": "Learn More"
     },
     "errorFallback": "Image unavailable",
+    "indicator": "Show image {current} of {total}",
     "stats": {
       "experience": {
         "value": "30+",

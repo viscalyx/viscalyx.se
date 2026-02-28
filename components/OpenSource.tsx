@@ -147,7 +147,7 @@ const OpenSource = () => {
                       aria-label={t('accessibility.viewProject', {
                         name: project.name,
                       })}
-                      className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
+                      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                       href={project.link}
                       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         // Only handle left-click mouse events
@@ -162,7 +162,7 @@ const OpenSource = () => {
                       whileTap={{ scale: 0.95 }}
                     >
                       {t('viewProject')}
-                      <ExternalLink className="w-4 h-4 ml-1" />
+                      <ExternalLink className="w-4 h-4" />
                     </motion.a>
                   </div>
                 </div>

@@ -23,7 +23,18 @@ vi.mock('@/lib/use-section-navigation', () => ({
 
 // Mock next-intl translations
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations:
+    () => (key: string, values?: { current?: number; total?: number }) => {
+      if (
+        key === 'indicator' &&
+        typeof values?.current === 'number' &&
+        typeof values?.total === 'number'
+      ) {
+        return `Show image ${values.current} of ${values.total}`
+      }
+
+      return key
+    },
   useLocale: () => 'en',
 }))
 

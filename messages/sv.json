@@ -50,6 +50,7 @@
       "learnMore": "Läs Mer"
     },
     "errorFallback": "Bild ej tillgänglig",
+    "indicator": "Visa bild {current} av {total}",
     "stats": {
       "experience": {
         "value": "30+",
