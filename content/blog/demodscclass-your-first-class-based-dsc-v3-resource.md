@@ -6,7 +6,7 @@ excerpt: 'A step-by-step beginner’s guide to designing, coding, testing, and r
 image: '/collaborative-workspace-overhead-laptops-facing-away..png'
 imageAlt: "Bird's-eye view of a team working around a light wooden table with laptops, phones, headphones, and coffee, with screens at the top facing away."
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
-category: 'PowerShell DSC'
+category: 'DSC'
 readTime: '8 min read'
 ---
 
