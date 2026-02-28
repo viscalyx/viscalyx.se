@@ -36,6 +36,7 @@ describe('About component', () => {
       expect.stringContaining('team-huddle-open-office-wide'),
     )
     expect(image).toHaveAttribute('alt', 'visualAlt')
+    expect(image).toHaveAttribute('sizes', '(min-width: 1024px) 50vw, 100vw')
   })
 
   it('renders stats values', () => {
