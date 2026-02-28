@@ -458,14 +458,19 @@ describe('MermaidRenderer', () => {
   describe('content loading states', () => {
     it('should not process diagrams when contentLoaded is false', async () => {
       const { default: mermaid } = await import('mermaid')
+      vi.useFakeTimers()
 
-      render(<MermaidRenderer contentLoaded={false} />)
+      try {
+        render(<MermaidRenderer contentLoaded={false} />)
 
-      // Wait a bit to ensure no processing happens
-      await new Promise(resolve => setTimeout(resolve, 200))
+        // Flush any scheduled timers deterministically
+        vi.advanceTimersByTime(200)
 
-      expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
-      expect(vi.mocked(mermaid.render)).not.toHaveBeenCalled()
+        expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
+        expect(vi.mocked(mermaid.render)).not.toHaveBeenCalled()
+      } finally {
+        vi.useRealTimers()
+      }
     })
 
     it('should process diagrams when contentLoaded defaults to true', async () => {
@@ -481,20 +486,25 @@ describe('MermaidRenderer', () => {
 
     it('should process diagrams when contentLoaded changes from false to true', async () => {
       const { default: mermaid } = await import('mermaid')
+      vi.useFakeTimers()
+      try {
+        const { rerender } = render(<MermaidRenderer contentLoaded={false} />)
 
-      const { rerender } = render(<MermaidRenderer contentLoaded={false} />)
+        // Verify no processing initially
+        vi.advanceTimersByTime(200)
+        expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
+        vi.useRealTimers()
 
-      // Verify no processing initially
-      await new Promise(resolve => setTimeout(resolve, 200))
-      expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
+        // Change contentLoaded to true
+        rerender(<MermaidRenderer contentLoaded={true} />)
 
-      // Change contentLoaded to true
-      rerender(<MermaidRenderer contentLoaded={true} />)
-
-      await waitFor(() => {
-        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()
-        expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
-      })
+        await waitFor(() => {
+          expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()
+          expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
+        })
+      } finally {
+        vi.useRealTimers()
+      }
     })
   })
 

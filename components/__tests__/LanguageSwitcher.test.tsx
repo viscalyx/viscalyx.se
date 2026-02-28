@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import LanguageSwitcher from '../LanguageSwitcher'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 // Mock next-intl translations and locale
 vi.mock('next-intl', () => ({
@@ -25,8 +25,7 @@ vi.mock('@/lib/language-preferences', () => ({
 
 describe('LanguageSwitcher component', () => {
   beforeEach(() => {
-    pushMock.mockClear()
-    saveLanguagePreferenceMock.mockClear()
+    vi.clearAllMocks()
   })
 
   describe('rendering', () => {
@@ -161,7 +160,9 @@ describe('LanguageSwitcher component', () => {
       )
 
       // Second ArrowDown wraps back to the first option.
-      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
+      fireEvent.keyDown(document.activeElement ?? englishOption, {
+        key: 'ArrowDown',
+      })
       await waitFor(() =>
         expect(toggleButton).toHaveAttribute(
           'aria-activedescendant',
@@ -198,7 +199,9 @@ describe('LanguageSwitcher component', () => {
       )
 
       // Enter selects the currently focused locale.
-      fireEvent.keyDown(englishOption, { key: 'Enter' })
+      fireEvent.keyDown(document.activeElement ?? englishOption, {
+        key: 'Enter',
+      })
       expect(pushMock).toHaveBeenCalledWith('/sv/test')
     })
 
