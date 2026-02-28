@@ -26,11 +26,10 @@ Rules:
 - `excerpt` must be a concise SEO summary that preserves topic, platform/tool, and main outcome; target 140-155 characters and never exceed 160
 - Sections: `##`, subsections: `###`
 - Code blocks: specify language
-- For markdownlint `MD013`: disable only when a Markdown table, fenced code block, or `<img>` tag contains a line longer than 80 characters; add `markdownlint-disable MD013` immediately before that block and `markdownlint-enable MD013` immediately after
-- Wrap long non-table/non-code lines at word boundaries around 80 chars
-- Never split a Markdown URL across lines; when a line has a Markdown link that starts before 80 chars, only wrap after the link closing parenthesis `)`
-- Never split inline code in backticks; when wrapping around inline code, break
-  either before or after the full inline-code segment
+- For markdownlint `MD013`: disable only when a Markdown table, fenced code block, or `<img>` tag contains a line longer than 80 characters; add `markdownlint-disable MD013` immediately before that block and `markdownlint-enable MD013` immediately after. Exception: if a prose line is a single long Markdown link (`[text](url)`), keep that line unwrapped instead of adding `markdownlint-disable MD013`.
+- Wrap long non-table/non-code prose at word boundaries around 80 chars, but never break inline code in backticks.
+- Never split a Markdown URL across lines; if a line contains a Markdown link, wrap only after the closing `)` and leave single-link lines intact when needed.
+- When wrapping around inline code, break either before or after the full inline-code segment
 - Never wrap Markdown comments like `<!-- ... -->`; for cSpell line suppressions,
   put `<!-- cSpell:disable-next-line -->` on the line before the target text
 - Run `npm run spell` before commit
