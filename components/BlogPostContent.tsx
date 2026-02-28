@@ -589,9 +589,12 @@ const BlogPostContent = ({
                           const IconComponent =
                             socialIconMap[social.name as SocialIconName]
                           if (!IconComponent) return null
+                          const localizedSocialLabel = tTeam(
+                            `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
+                          )
                           return (
                             <a
-                              aria-label={social.name}
+                              aria-label={localizedSocialLabel}
                               className="flex items-center justify-center min-w-[44px] min-h-[44px] bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                               href={social.href}
                               key={social.name}
@@ -605,13 +608,11 @@ const BlogPostContent = ({
                                   ? '_self'
                                   : '_blank'
                               }
-                              title={social.name}
+                              title={localizedSocialLabel}
                             >
                               <IconComponent
                                 className="h-4 w-4"
-                                title={tTeam(
-                                  `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
-                                )}
+                                title={localizedSocialLabel}
                               />
                             </a>
                           )
