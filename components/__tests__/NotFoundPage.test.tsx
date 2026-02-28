@@ -29,7 +29,9 @@ describe('NotFoundPage', () => {
 
   it('renders a link to the homepage', () => {
     render(<NotFoundPage />)
-    const link = screen.getByRole('link', { name: 'goHome' })
+    const link = screen.getByRole('link', {
+      name: 'Go to homepage in current locale',
+    })
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '/en')
   })

@@ -30,7 +30,7 @@ describe('About component', () => {
   })
 
   it('renders image with correct src and alt attributes', () => {
-    const image = screen.getByRole('img')
+    const image = screen.getByRole('img', { name: 'visualAlt' })
     expect(image).toHaveAttribute(
       'src',
       expect.stringContaining('team-huddle-open-office-wide'),

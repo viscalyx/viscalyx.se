@@ -17,11 +17,19 @@ vi.mock('next/navigation', () => ({
 
 // Mock child components to isolate Header
 vi.mock('@/components/LanguageSwitcher', () => ({
-  default: () => <div data-testid="language-switcher">LanguageSwitcher</div>,
+  default: () => (
+    <button aria-label="language" type="button">
+      LanguageSwitcher
+    </button>
+  ),
 }))
 
 vi.mock('@/components/ThemeToggle', () => ({
-  default: () => <div data-testid="theme-toggle">ThemeToggle</div>,
+  default: () => (
+    <button aria-label="theme" type="button">
+      ThemeToggle
+    </button>
+  ),
 }))
 
 // Mock lucide-react icons
@@ -368,10 +376,10 @@ describe('Header', () => {
 
       // Both desktop and mobile dropdowns contain these
       expect(
-        screen.getAllByTestId('language-switcher').length,
+        screen.getAllByRole('button', { name: /language/i }).length,
       ).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByTestId('theme-toggle').length,
+        screen.getAllByRole('button', { name: /theme/i }).length,
       ).toBeGreaterThanOrEqual(1)
     })
   })

@@ -3,6 +3,10 @@ import { Trash2 } from 'lucide-react'
 import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}))
+
 describe('ConfirmationModal', () => {
   const defaultProps = {
     isOpen: true,

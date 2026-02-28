@@ -84,6 +84,20 @@ describe('CookieCategoryToggle', () => {
     )
   })
 
+  it('omits required suffix in aria-label when requiredLabel is not provided', () => {
+    render(
+      <CookieCategoryToggle
+        {...defaultProps}
+        category="strictly-necessary"
+        categoryName="Strictly Necessary"
+        checked={true}
+        requiredLabel={undefined}
+      />,
+    )
+    const checkbox = screen.getByRole('checkbox')
+    expect(checkbox).toHaveAttribute('aria-label', 'Strictly Necessary')
+  })
+
   it('has consistent w-11 h-6 toggle track sizing', () => {
     const { container } = render(
       <CookieCategoryToggle {...defaultProps} checked={true} />,
