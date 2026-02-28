@@ -2,8 +2,12 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import NotFoundPage from '@/components/NotFoundPage'
 
+const { t } = vi.hoisted(() => ({
+  t: (key: string) => key,
+}))
+
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => t,
   useLocale: () => 'en',
 }))
 
@@ -30,7 +34,7 @@ describe('NotFoundPage', () => {
   it('renders a link to the homepage', () => {
     render(<NotFoundPage />)
     const link = screen.getByRole('link', {
-      name: 'Go to homepage in current locale',
+      name: t('goHomeAriaLabel'),
     })
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '/en')
