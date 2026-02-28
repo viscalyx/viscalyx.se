@@ -153,7 +153,7 @@ will be the VmNAT's IP address:
 <!-- markdownlint-disable MD013 -->
 | Setting     | Value (example)                                                                |
 | ----------- | ------------------------------------------------------------------------------ |
-| **IP**      | 192.168.100.1                                                                  |
+| **IP**      | 192.168.100.2                                                                  |
 | **Mask**    | 255.255.255.0                                                                  |
 | **Gateway** | 192.168.100.1                                                                  |
 | **DNS**     | 1.1.1.1 (or set to another guest's IP, if that guest VM forward DNS requests.) |
