@@ -101,9 +101,9 @@ Install-PSResource SqlServer -Version 22.3.0 -TrustRepository
 > the SQLPS module, then try to import SqlServerDsc again.
 >```
 >
-> That warning message is normally not an issue, but will fail DSC v3. To avoid
-> DSC v3 to fail and not to see the warning message, install a supported
-> dependent PowerShell module and its version that works for your environment;
+> That warning message is normally not an issue, but it will fail DSC v3. To
+> avoid DSC v3 failures and suppress this warning, install a supported
+> PowerShell module with a compatible version for your environment, such as
 > _SQLPS_, _SqlServer_, or _dbatools_.
 
 ### Install SqlServerDsc
