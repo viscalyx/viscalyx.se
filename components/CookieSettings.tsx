@@ -379,7 +379,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       {/* Save Button */}
       <div className="flex justify-end">
         <button
-          className="px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]"
           disabled={isLoading}
           onClick={handleSaveSettings}
           type="button"
