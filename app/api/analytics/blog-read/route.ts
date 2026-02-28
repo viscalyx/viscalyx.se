@@ -133,13 +133,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const body: BlogReadEvent = await request.json()
+    const body = await request.json()
+
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+      return NextResponse.json(
+        { error: 'Request body must be a JSON object' },
+        { status: 400 },
+      )
+    }
+
+    const event = body as BlogReadEvent
+    const {
+      slug,
+      category,
+      title,
+      readProgress: rawReadProgress,
+      timeSpent: rawTimeSpent,
+    } = event
 
     // Validate required fields with runtime type checks
     if (
-      !isNonEmptyString(body.slug) ||
-      !isNonEmptyString(body.category) ||
-      !isNonEmptyString(body.title)
+      !isNonEmptyString(slug) ||
+      !isNonEmptyString(category) ||
+      !isNonEmptyString(title)
     ) {
       return NextResponse.json(
         { error: 'Missing or invalid fields: slug, category, title' },
@@ -147,8 +163,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const parsedReadProgress = parseFiniteMetric(body.readProgress)
-    const parsedTimeSpent = parseFiniteMetric(body.timeSpent)
+    const parsedReadProgress = parseFiniteMetric(rawReadProgress)
+    const parsedTimeSpent = parseFiniteMetric(rawTimeSpent)
     const readProgress =
       parsedReadProgress === null
         ? null
@@ -187,12 +203,12 @@ export async function POST(request: Request) {
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [
-            body.slug, // blob1: Article slug
-            body.category, // blob2: Article category
+            slug, // blob1: Article slug
+            category, // blob2: Article category
             country, // blob3: Country from Cloudflare
             referer, // blob4: Referrer
             userAgent.substring(0, 100), // blob5: User agent (truncated)
-            body.title.substring(0, 100), // blob6: Article title (truncated)
+            title.substring(0, 100), // blob6: Article title (truncated)
             hashedIP ?? 'anonymous', // blob7: Hashed IP (GDPR-safe, for unique visitors)
           ],
           doubles: [
