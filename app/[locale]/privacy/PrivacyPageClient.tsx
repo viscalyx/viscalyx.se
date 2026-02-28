@@ -64,6 +64,7 @@ const PrivacyPageClient = ({ lastUpdatedDate }: PrivacyPageClientProps) => {
       <p className="text-secondary-600 dark:text-secondary-400">
         <strong>{t('sections.contact.email')}:</strong>{' '}
         <a
+          aria-label={`Email ${t('sections.contact.emailAddress')}`}
           className="text-primary-600 dark:text-primary-400 hover:underline"
           href={`mailto:${t('sections.contact.emailAddress')}`}
         >
