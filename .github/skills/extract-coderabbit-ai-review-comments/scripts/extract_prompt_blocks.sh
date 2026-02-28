@@ -38,7 +38,8 @@ BEGIN {
   waiting = 0
   in_code = 0
   count = 0
-  in_block = 0
+  seen_nonblank_in_block = 0
+  pending_blank_lines = 0
   drop_next_blank = 0
   leadin = "Verify each finding against the current code and only fix it if needed."
 }
@@ -55,7 +56,8 @@ BEGIN {
 
     if (waiting && norm ~ /^```/) {
       in_code = 1
-      in_block = 1
+      seen_nonblank_in_block = 0
+      pending_blank_lines = 0
       drop_next_blank = 0
       if (count > 0) {
         print ""
@@ -70,27 +72,36 @@ BEGIN {
   if (norm ~ /^```/) {
     in_code = 0
     waiting = 0
-    in_block = 0
+    seen_nonblank_in_block = 0
+    pending_blank_lines = 0
     drop_next_blank = 0
     next
   }
 
-  if (in_block && norm == leadin) {
+  if (!seen_nonblank_in_block && norm == leadin) {
     drop_next_blank = 1
     next
   }
 
-  if (in_block && drop_next_blank && norm == "") {
+  if (drop_next_blank && norm == "") {
     drop_next_blank = 0
     next
   }
 
-  if (in_block && norm == "") {
+  if (norm == "") {
+    if (!seen_nonblank_in_block) {
+      next
+    }
+    pending_blank_lines++
     next
   }
 
-  in_block = 0
+  seen_nonblank_in_block = 1
   drop_next_blank = 0
+  while (pending_blank_lines > 0) {
+    print ""
+    pending_blank_lines--
+  }
   print norm
 }
 ' "$input_file" > "$output_file"
