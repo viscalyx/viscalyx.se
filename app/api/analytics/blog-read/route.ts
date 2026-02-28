@@ -3,11 +3,11 @@ import { NextResponse } from 'next/server'
 import { SITE_URL } from '@/lib/constants'
 
 interface BlogReadEvent {
-  category: string
-  readProgress?: number
-  slug: string
-  timeSpent?: number
-  title: string
+  category: unknown
+  readProgress?: unknown
+  slug: unknown
+  timeSpent?: unknown
+  title: unknown
 }
 
 /**
@@ -104,6 +104,28 @@ function isValidOrigin(request: Request): boolean {
   return false
 }
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim() !== ''
+}
+
+function parseFiniteMetric(value: unknown): number | null {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : null
+  }
+
+  if (typeof value === 'string') {
+    const trimmedValue = value.trim()
+    if (trimmedValue === '') {
+      return null
+    }
+
+    const parsedValue = Number.parseFloat(trimmedValue)
+    return Number.isFinite(parsedValue) ? parsedValue : null
+  }
+
+  return null
+}
+
 export async function POST(request: Request) {
   try {
     // Validate request origin to prevent cross-site abuse
@@ -115,18 +137,18 @@ export async function POST(request: Request) {
 
     // Validate required fields with runtime type checks
     if (
-      typeof body.slug !== 'string' ||
-      body.slug.trim() === '' ||
-      typeof body.category !== 'string' ||
-      body.category.trim() === '' ||
-      typeof body.title !== 'string' ||
-      body.title.trim() === ''
+      !isNonEmptyString(body.slug) ||
+      !isNonEmptyString(body.category) ||
+      !isNonEmptyString(body.title)
     ) {
       return NextResponse.json(
         { error: 'Missing or invalid fields: slug, category, title' },
         { status: 400 },
       )
     }
+
+    const readProgress = parseFiniteMetric(body.readProgress)
+    const timeSpent = parseFiniteMetric(body.timeSpent)
 
     // Get request metadata for analytics
     const userAgent = request.headers.get('user-agent') || 'unknown'
@@ -169,8 +191,8 @@ export async function POST(request: Request) {
           ],
           doubles: [
             1, // double1: Read count (always 1)
-            body.readProgress ?? 0, // double2: Read progress percentage
-            body.timeSpent ?? 0, // double3: Time spent on page (seconds)
+            readProgress ?? 0, // double2: Read progress percentage
+            timeSpent ?? 0, // double3: Time spent on page (seconds)
             Date.now(), // double4: Timestamp in milliseconds
           ],
           indexes: [requestId], // index1: Unique request ID for sampling

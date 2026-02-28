@@ -132,6 +132,42 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].blobs[0]).toBe('my-post')
   })
 
+  it('sanitizes invalid readProgress/timeSpent values before analytics write', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: { invalid: true },
+      timeSpent: 'not-a-number',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(0)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
+  it('coerces numeric string readProgress/timeSpent values before analytics write', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: '50.5',
+      timeSpent: '22',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(50.5)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(22)
+  })
+
   it('hashes client IP and stores hashed visitor identifier', async () => {
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
