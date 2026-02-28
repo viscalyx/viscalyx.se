@@ -36,33 +36,6 @@ describe('RootLayout', () => {
     vi.clearAllMocks()
   })
 
-  const findThemeScriptNode = (
-    node: unknown,
-  ): { props: Record<string, unknown> } | null => {
-    if (!node || typeof node !== 'object') {
-      return null
-    }
-    const candidate = node as {
-      type?: unknown
-      props?: Record<string, unknown>
-    }
-
-    if (
-      candidate.type === 'script' &&
-      candidate.props?.id === 'theme-init-script'
-    ) {
-      return candidate as { props: Record<string, unknown> }
-    }
-
-    const children = candidate.props?.children
-    const childList = Array.isArray(children) ? children : [children]
-    for (const child of childList) {
-      const found = findThemeScriptNode(child)
-      if (found) return found
-    }
-    return null
-  }
-
   const findScriptNodeById = (
     node: unknown,
     id: string,
@@ -106,7 +79,7 @@ describe('RootLayout', () => {
 
   it('injects anti-FOUC theme bootstrap script', async () => {
     const ui = await RootLayout({ children: <div /> })
-    const scriptNode = findThemeScriptNode(ui)
+    const scriptNode = findScriptNodeById(ui, 'theme-init-script')
 
     expect(scriptNode).not.toBeNull()
     const scriptContent = String(scriptNode?.props.children ?? '')
