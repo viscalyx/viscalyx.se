@@ -3,11 +3,14 @@
 import { motion } from 'framer-motion'
 import { Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useId } from 'react'
 import { useTheme } from '@/lib/theme-context'
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
   const t = useTranslations('themeToggle')
+  const instanceId = useId()
+  const indicatorLayoutId = `theme-indicator-${instanceId}`
 
   const themes = [
     { value: 'light', icon: Sun, labelKey: 'light' },
@@ -16,13 +19,13 @@ const ThemeToggle = () => {
   ] as const
 
   return (
-    <div className="relative">
-      <div className="flex items-center gap-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
+    <div className="relative inline-block w-fit max-w-max">
+      <div className="inline-flex w-fit max-w-max items-center gap-1 rounded-lg border border-secondary-200 bg-secondary-100 p-1 dark:border-secondary-700 dark:bg-secondary-700">
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
             aria-label={t('switchToTheme', { theme: t(labelKey) })}
             className={`
-              relative flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md transition-all duration-200
+              relative flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-secondary-900
               ${
                 theme === value
                   ? 'text-white'
@@ -38,7 +41,7 @@ const ThemeToggle = () => {
               <motion.div
                 className="absolute inset-0 bg-primary-600 rounded-md"
                 initial={false}
-                layoutId="theme-indicator"
+                layoutId={indicatorLayoutId}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
             )}
