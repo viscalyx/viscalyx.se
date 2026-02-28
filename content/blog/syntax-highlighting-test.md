@@ -3,6 +3,8 @@ title: 'Syntax Highlighting Test'
 date: '2025-04-08'
 author: 'Blog Author'
 excerpt: 'Testing different code block language syntax highlighting, including PowerShell.'
+image: '/temporary-image.png'
+imageAlt: 'Temporary placeholder image for blog post'
 tags: ['syntax', 'highlighting', 'test']
 category: 'Template'
 readTime: '1 min read'
