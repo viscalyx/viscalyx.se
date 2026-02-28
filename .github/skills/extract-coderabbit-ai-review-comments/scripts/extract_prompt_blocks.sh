@@ -8,7 +8,14 @@ fi
 
 input_file="$1"
 output_file="$2"
-temp_input_file=""
+
+cleanup_temp_input_file() {
+  local temp_file="${temp_input_file:-}"
+  if [[ -n "$temp_file" && -f "$temp_file" ]]; then
+    rm -f "$temp_file"
+  fi
+}
+trap cleanup_temp_input_file EXIT ERR
 
 if [[ "$input_file" == "-" ]]; then
   temp_input_file="$(mktemp)"
@@ -87,7 +94,3 @@ BEGIN {
   print norm
 }
 ' "$input_file" > "$output_file"
-
-if [[ -n "$temp_input_file" && -f "$temp_input_file" ]]; then
-  rm -f "$temp_input_file"
-fi
