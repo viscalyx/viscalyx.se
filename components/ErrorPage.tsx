@@ -40,7 +40,7 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
         </button>
         <Link
           aria-label={t('goHome')}
-          className="min-h-[44px] min-w-[44px] rounded-lg border border-secondary-300 px-6 py-3 font-medium text-secondary-700 transition-colors duration-200 hover:bg-secondary-100 dark:border-secondary-600 dark:text-secondary-300 dark:hover:bg-secondary-800"
+          className="inline-flex min-h-[44px] min-w-[44px] rounded-lg border border-secondary-300 px-6 py-3 font-medium text-secondary-700 transition-colors duration-200 hover:bg-secondary-100 dark:border-secondary-600 dark:text-secondary-300 dark:hover:bg-secondary-800"
           href={`/${locale}`}
         >
           {t('goHome')}
