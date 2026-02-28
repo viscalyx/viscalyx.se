@@ -37,12 +37,7 @@ const ConfirmationModal = ({
   const previousActiveElement = useRef<HTMLElement | null>(null)
   const titleId = useId()
   const descriptionId = useId()
-  const translatedCloseAriaLabel = t('closeAriaLabel')
-  const defaultCloseAriaLabel =
-    translatedCloseAriaLabel === 'closeAriaLabel'
-      ? 'Close modal'
-      : translatedCloseAriaLabel
-  const resolvedCloseAriaLabel = closeAriaLabel ?? defaultCloseAriaLabel
+  const resolvedCloseAriaLabel = closeAriaLabel ?? t('closeAriaLabel')
 
   // Focus management for accessibility
   useEffect(() => {
