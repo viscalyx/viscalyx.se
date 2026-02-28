@@ -111,6 +111,7 @@
     "description": "Träffa de engagerade experterna som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
     "specialties": "Specialiteter",
     "learnMore": "Läs mer",
+    "viewProfile": "Visa profil för {name}",
     "socialLinks": {
       "email": "E-post",
       "linkedin": "LinkedIn",
@@ -319,7 +320,8 @@
     "ariaLabel": "Laddar"
   },
   "confirmationModal": {
-    "close": "Stäng modal"
+    "close": "Stäng modal",
+    "closeAriaLabel": "Stäng modal"
   },
   "cookieConsent": {
     "title": "Vi Använder Kakor",

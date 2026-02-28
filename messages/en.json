@@ -111,6 +111,7 @@
     "description": "Meet the dedicated professionals who drive innovation and deliver exceptional automation solutions for our clients worldwide.",
     "specialties": "Specialties",
     "learnMore": "Learn More",
+    "viewProfile": "View profile for {name}",
     "socialLinks": {
       "email": "Email",
       "linkedin": "LinkedIn",
@@ -319,7 +320,8 @@
     "ariaLabel": "Loading"
   },
   "confirmationModal": {
-    "close": "Close modal"
+    "close": "Close modal",
+    "closeAriaLabel": "Close modal"
   },
   "cookieConsent": {
     "title": "We Use Cookies",
