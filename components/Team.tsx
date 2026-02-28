@@ -210,7 +210,7 @@ const Team = () => {
                         {row.map(social => (
                           <motion.a
                             aria-label={getSocialLinkAriaLabel(social.name)}
-                            className="min-h-[44px] min-w-[44px] p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            className="min-h-[44px] min-w-[44px] p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center justify-center"
                             href={social.href}
                             key={social.name}
                             onClick={e => e.stopPropagation()}
