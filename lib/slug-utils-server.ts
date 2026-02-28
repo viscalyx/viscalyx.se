@@ -10,14 +10,21 @@ import {
   type TranslationFunction,
 } from './slug-utils-client'
 
+// Quoted-aware attribute matcher to avoid breaking on '>' inside quoted values.
+const HEADING_ATTRIBUTES_PATTERN = `(?:(?:"[^"]*"|'[^']*'|[^'">])*)`
+const HEADING_REGEX = new RegExp(
+  `<h([2-4])${HEADING_ATTRIBUTES_PATTERN}>([\\s\\S]*?)<\\/h\\1>`,
+  'gi',
+)
+
 export function extractTableOfContentsServer(
   htmlContent: string,
   options: SlugOptions = {},
 ): TocItem[] {
-  const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h\1>/gi
   const headings: TocItem[] = []
   const usedIds = new Set<string>()
-  let match: RegExpExecArray | null = headingRegex.exec(htmlContent)
+  HEADING_REGEX.lastIndex = 0
+  let match: RegExpExecArray | null = HEADING_REGEX.exec(htmlContent)
   while (match !== null) {
     const level = Number.parseInt(match[1], 10)
     const raw = match[2]
@@ -26,7 +33,7 @@ export function extractTableOfContentsServer(
     const id = ensureUniqueId(baseId, usedIds)
 
     headings.push({ id, text, level })
-    match = headingRegex.exec(htmlContent)
+    match = HEADING_REGEX.exec(htmlContent)
   }
 
   return headings
@@ -48,7 +55,10 @@ export async function addHeadingIds(
     }))
 
   return htmlContent.replace(
-    /<h([2-4])([^>]*)>([\s\S]*?)<\/h[2-4]>/gi,
+    new RegExp(
+      `<h([2-4])(${HEADING_ATTRIBUTES_PATTERN})>([\\s\\S]*?)<\\/h\\1>`,
+      'gi',
+    ),
     (_match, level, attributes, text) => {
       const levelNum = Number.parseInt(level, 10)
       const cleanedText = extractCleanText(text)
