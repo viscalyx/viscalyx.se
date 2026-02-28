@@ -183,6 +183,7 @@ vi.mock('next/link', () => ({
 
 // Import the component after mocks
 import BlogPostContent from '@/components/BlogPostContent'
+import BlogPostMarkdownContent from '@/components/BlogPostMarkdownContent'
 
 const mockPost = {
   title: 'Test Blog Post',
@@ -223,18 +224,37 @@ const mockTeamMember = {
   ],
 }
 
-const defaultProps: ComponentProps = {
+const defaultContentWithIds =
+  '<h2 id="getting-started">Getting Started</h2><p>Test content</p>'
+
+type BaseProps = Omit<ComponentProps, 'children'>
+
+const defaultProps: BaseProps = {
   post: mockPost,
-  contentWithIds:
-    '<h2 id="getting-started">Getting Started</h2><p>Test content</p>',
   relatedPosts: mockRelatedPosts,
   tableOfContents: mockTableOfContents,
   teamMember: mockTeamMember,
   authorInitials: 'TA',
 }
 
-const renderComponent = (overrides: Partial<ComponentProps> = {}) =>
-  render(<BlogPostContent {...defaultProps} {...overrides} />)
+type RenderOverrides = Partial<BaseProps> & {
+  children?: React.ReactNode
+  contentWithIds?: string
+}
+
+const renderComponent = (overrides: RenderOverrides = {}) => {
+  const {
+    children,
+    contentWithIds = defaultContentWithIds,
+    ...propOverrides
+  } = overrides
+
+  return render(
+    <BlogPostContent {...defaultProps} {...propOverrides}>
+      {children ?? <BlogPostMarkdownContent contentWithIds={contentWithIds} />}
+    </BlogPostContent>,
+  )
+}
 
 describe('BlogPostContent', () => {
   let originalClipboard: Clipboard | undefined
@@ -329,9 +349,21 @@ describe('BlogPostContent', () => {
       expect(screen.getByText('post.backToBlog')).toBeInTheDocument()
     })
 
-    it('renders post content via dangerouslySetInnerHTML', () => {
+    it('renders post content with the safe markdown renderer', () => {
       renderComponent()
       expect(screen.getByText('Test content')).toBeInTheDocument()
+    })
+
+    it('preserves syntax-highlight token classes in code blocks', () => {
+      renderComponent({
+        contentWithIds:
+          '<div class="code-block-wrapper" data-language="bash"><div class="code-language-label">BASH</div><pre class="language-bash" data-processed data-language="bash"><code class="language-bash code-highlight"><span class="code-line"><span class="token keyword">echo</span> hi</span></code></pre></div>',
+      })
+
+      expect(document.querySelector('.code-block-wrapper')).toBeTruthy()
+      expect(document.querySelector('pre.language-bash')).toBeTruthy()
+      expect(document.querySelector('code.code-highlight')).toBeTruthy()
+      expect(document.querySelector('.token.keyword')).toBeTruthy()
     })
 
     it('does not wrap bare tables at runtime', async () => {
@@ -348,6 +380,13 @@ describe('BlogPostContent', () => {
           table?.parentElement?.classList.contains('table-scroll-region'),
         ).toBe(false)
       })
+
+      const tableTextNodes = Array.from(table?.childNodes ?? []).filter(
+        node =>
+          node.nodeType === Node.TEXT_NODE &&
+          (node.textContent ?? '').trim().length === 0,
+      )
+      expect(tableTextNodes).toHaveLength(0)
     })
 
     it('keeps pre-wrapped tables unchanged', async () => {
@@ -362,6 +401,19 @@ describe('BlogPostContent', () => {
         )
       })
       expect(document.querySelectorAll('.table-right-fade')).toHaveLength(1)
+    })
+
+    it('renders valueless attributes without crashing', () => {
+      expect(() =>
+        renderComponent({
+          contentWithIds:
+            '<pre data-processed data-language="bash"><code>echo hi</code></pre>',
+        }),
+      ).not.toThrow()
+
+      expect(
+        screen.getByRole('heading', { level: 1, name: 'Test Blog Post' }),
+      ).toBeInTheDocument()
     })
   })
 

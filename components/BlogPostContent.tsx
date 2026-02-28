@@ -13,7 +13,7 @@ import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useFormatter, useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import AlertIconInjector from '@/components/AlertIconInjector'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 import ImageEnhancer from '@/components/ImageEnhancer'
@@ -47,7 +47,7 @@ interface RelatedPost {
 
 export interface ComponentProps {
   authorInitials: string
-  contentWithIds: string
+  children: ReactNode
   post: BlogPostData
   relatedPosts: RelatedPost[]
   tableOfContents: TocItem[]
@@ -56,7 +56,7 @@ export interface ComponentProps {
 
 const BlogPostContent = ({
   post,
-  contentWithIds,
+  children,
   relatedPosts,
   tableOfContents,
   teamMember,
@@ -344,13 +344,6 @@ const BlogPostContent = ({
     }
   }, [])
 
-  const renderedMarkdown = (
-    <div
-      className="markdown-content"
-      dangerouslySetInnerHTML={{ __html: contentWithIds }}
-    />
-  )
-
   return (
     <>
       <ReadingProgress endTarget=".author-bio" target=".markdown-content" />
@@ -492,7 +485,7 @@ const BlogPostContent = ({
                 ref={contentRef}
               >
                 <AlertIconInjector contentKey={post.slug}>
-                  {renderedMarkdown}
+                  {children}
                   <CodeBlockEnhancer contentLoaded={true} />
                   <MermaidRenderer contentLoaded={true} />
                   <ImageEnhancer contentRef={contentRef} />

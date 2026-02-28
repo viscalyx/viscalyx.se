@@ -228,4 +228,22 @@ describe('CodeBlockEnhancer', () => {
     const copyContainer = scrollWrapper?.querySelector('.copy-button-container')
     expect(copyContainer).not.toBeNull()
   })
+
+  it('enhances code blocks added after initial scan', async () => {
+    render(<CodeBlockEnhancer />)
+
+    act(() => {
+      vi.advanceTimersByTime(50)
+    })
+    expect(mockCreateRoot).not.toHaveBeenCalled()
+
+    createCodeBlock('javascript', 'console.log("late block")')
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(mockCreateRoot).toHaveBeenCalledTimes(1)
+    expect(mockRender).toHaveBeenCalledTimes(1)
+  })
 })

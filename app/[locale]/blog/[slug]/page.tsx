@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import BlogPostContent from '@/components/BlogPostContent'
+import BlogPostMarkdownContent from '@/components/BlogPostMarkdownContent'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import {
@@ -148,7 +149,6 @@ export default async function BlogPostPage({ params }: Props) {
 
       <BlogPostContent
         authorInitials={authorInitials}
-        contentWithIds={contentWithIds}
         post={post}
         relatedPosts={relatedPosts.map(rp => ({
           slug: rp.slug,
@@ -157,7 +157,9 @@ export default async function BlogPostPage({ params }: Props) {
         }))}
         tableOfContents={tableOfContents}
         teamMember={teamMember}
-      />
+      >
+        <BlogPostMarkdownContent contentWithIds={contentWithIds} />
+      </BlogPostContent>
 
       <Footer />
     </div>

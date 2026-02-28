@@ -73,12 +73,24 @@ export default function CodeBlockEnhancer({
       })
     }
 
+    let observer: MutationObserver | null = null
+
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(addCopyButtons, 50)
+    if (typeof MutationObserver !== 'undefined') {
+      observer = new MutationObserver(() => {
+        addCopyButtons()
+      })
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      })
+    }
 
     // Cleanup function
     return () => {
       clearTimeout(timer)
+      observer?.disconnect()
 
       // Remove DOM elements synchronously so the UI updates immediately
       createdContainers.forEach(container => {

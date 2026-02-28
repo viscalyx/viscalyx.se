@@ -41,18 +41,6 @@
     }
   },
   "linter": {},
-  "overrides": [
-    {
-      "includes": ["components/BlogPostContent.tsx"],
-      "linter": {
-        "rules": {
-          "security": {
-            "noDangerouslySetInnerHtml": "off"
-          }
-        }
-      }
-    }
-  ],
   "vcs": {
     "clientKind": "git",
     "enabled": true,

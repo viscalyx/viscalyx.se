@@ -2139,18 +2139,19 @@ Adds IDs and anchor links to headings in HTML content.
 
 <!-- markdownlint-disable MD013 -->
 ```typescript
-// In a blog post component
+// In a blog post page
 import { addHeadingIds, extractTableOfContents } from '@/lib/slug-utils'
+import BlogPostMarkdownContent from '@/components/BlogPostMarkdownContent'
 
 const BlogPost = ({ content }: { content: string }) => {
   const contentWithIds = addHeadingIds(content)
   const tableOfContents = extractTableOfContents(contentWithIds)
 
   return (
-    <div>
+    <article>
       <TableOfContents items={tableOfContents} />
-      <div dangerouslySetInnerHTML={{ __html: contentWithIds }} />
-    </div>
+      <BlogPostMarkdownContent contentWithIds={contentWithIds} />
+    </article>
   )
 }
 ```
