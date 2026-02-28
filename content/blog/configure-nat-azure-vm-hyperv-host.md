@@ -181,9 +181,10 @@ subnet.
 ## 7 . Persistence & automation
 
 - NAT objects survive reboot, but load **after** networking comes up.
-  If a guest starts too quickly it may time out—add a boot delay (e.g.,
-  `Start‑VM VMName MyNestedVM -Delay 30`) or schedule a NAT‑creation script
-  at logon.
+  If a guest starts too quickly it may time out; set an automatic start delay
+  first (e.g., `Set-VM -Name MyNestedVM -AutomaticStartDelay 30`), then start
+  the VM normally (`Start-VM -Name MyNestedVM`); alternatively, schedule a
+  NAT-creation script at logon.
 - To bake it into a golden image, place steps 1‑3 in `SetupComplete.cmd` or a
   first‑boot script.
 
