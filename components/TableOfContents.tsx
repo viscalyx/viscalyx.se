@@ -28,30 +28,118 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const heightClass = maxHeight === 'sm' ? 'max-h-64' : 'max-h-80'
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
-        threshold: 0.1,
-      },
-    )
+    const observedHeadings = new Set<Element>()
+    const headingMap = new Map<string, HTMLElement>()
+    let observer: IntersectionObserver | null = null
+    let mutationObserver: MutationObserver | null = null
+    let rafId: number | null = null
 
-    // Observe all headings
-    items.forEach(item => {
-      const element = document.getElementById(item.id)
-      if (element) {
-        observer.observe(element)
+    const setActiveFromScrollPosition = () => {
+      const headingsByPosition = items
+        .map(item => document.getElementById(item.id))
+        .filter(
+          (heading): heading is HTMLElement => heading instanceof HTMLElement,
+        )
+        .map(heading => ({
+          id: heading.id,
+          top: heading.getBoundingClientRect().top,
+        }))
+        .sort((headingA, headingB) => headingA.top - headingB.top)
+
+      if (headingsByPosition.length === 0) {
+        return
       }
+
+      // Compensate for sticky header height so "current section" feels accurate.
+      const topOffset = 140
+      const firstHeadingBelowOffsetIndex = headingsByPosition.findIndex(
+        heading => heading.top > topOffset,
+      )
+
+      const currentHeadingId =
+        firstHeadingBelowOffsetIndex === -1
+          ? headingsByPosition.at(-1)?.id
+          : firstHeadingBelowOffsetIndex === 0
+            ? headingsByPosition[0]?.id
+            : headingsByPosition[firstHeadingBelowOffsetIndex - 1]?.id
+
+      if (!currentHeadingId) {
+        return
+      }
+
+      setActiveId(previousId =>
+        previousId !== currentHeadingId ? currentHeadingId : previousId,
+      )
+    }
+
+    const queueScrollPositionUpdate = () => {
+      if (rafId !== null) return
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null
+        setActiveFromScrollPosition()
+      })
+    }
+
+    const observeAvailableHeadings = () => {
+      items.forEach(item => {
+        const element = document.getElementById(item.id)
+        if (!element) return
+
+        const previousElement = headingMap.get(item.id)
+        if (previousElement && previousElement !== element) {
+          observer?.unobserve(previousElement)
+          observedHeadings.delete(previousElement)
+        }
+        headingMap.set(item.id, element)
+
+        if (observer && !observedHeadings.has(element)) {
+          observer.observe(element)
+          observedHeadings.add(element)
+        }
+      })
+    }
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            setActiveFromScrollPosition()
+          }
+        },
+        {
+          rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
+          threshold: 0.1,
+        },
+      )
+    }
+
+    observeAvailableHeadings()
+    queueScrollPositionUpdate()
+
+    if (typeof MutationObserver !== 'undefined' && document.body) {
+      mutationObserver = new MutationObserver(() => {
+        observeAvailableHeadings()
+        queueScrollPositionUpdate()
+      })
+      mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      })
+    }
+
+    window.addEventListener('scroll', queueScrollPositionUpdate, {
+      passive: true,
     })
+    window.addEventListener('resize', queueScrollPositionUpdate)
 
     return () => {
-      observer.disconnect()
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+      window.removeEventListener('scroll', queueScrollPositionUpdate)
+      window.removeEventListener('resize', queueScrollPositionUpdate)
+      mutationObserver?.disconnect()
+      observer?.disconnect()
     }
   }, [items])
 

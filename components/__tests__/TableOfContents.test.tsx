@@ -225,6 +225,57 @@ describe('TableOfContents', () => {
     }
   })
 
+  it('updates active heading from scroll position when observer callbacks do not fire', async () => {
+    const makeRect = (top: number) => ({
+      top,
+      left: 0,
+      right: 600,
+      bottom: top + 40,
+      width: 600,
+      height: 40,
+      x: 0,
+      y: top,
+      toJSON: vi.fn(),
+    })
+
+    const introHeading = document.createElement('h2')
+    introHeading.id = 'introduction'
+    introHeading.getBoundingClientRect = vi.fn(() => makeRect(90))
+
+    const gettingStartedHeading = document.createElement('h2')
+    gettingStartedHeading.id = 'getting-started'
+    gettingStartedHeading.getBoundingClientRect = vi.fn(() => makeRect(380))
+
+    document.body.appendChild(introHeading)
+    document.body.appendChild(gettingStartedHeading)
+
+    try {
+      render(<TableOfContents items={mockItems} />)
+
+      await waitFor(() => {
+        const introductionButton = screen.getByRole('button', {
+          name: 'Introduction',
+        })
+        expect(introductionButton).toHaveAttribute('aria-current', 'location')
+      })
+
+      introHeading.getBoundingClientRect = vi.fn(() => makeRect(-250))
+      gettingStartedHeading.getBoundingClientRect = vi.fn(() => makeRect(110))
+
+      fireEvent.scroll(window)
+
+      await waitFor(() => {
+        const gettingStartedButton = screen.getByRole('button', {
+          name: 'Getting Started',
+        })
+        expect(gettingStartedButton).toHaveAttribute('aria-current', 'location')
+      })
+    } finally {
+      introHeading.remove()
+      gettingStartedHeading.remove()
+    }
+  })
+
   it('auto-scrolls toc when active item is outside visible area', async () => {
     const heading = document.createElement('h2')
     heading.id = 'conclusion'
