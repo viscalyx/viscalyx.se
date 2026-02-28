@@ -131,7 +131,7 @@ that gets the operating system information on your system.
 
 Microsoft DSC v3 redefines the DSC experience by providing a single executable
 into a lightweight and cross-platform tool. It seamlessly fits into modern
-DevOps pipelines. With a new concept called _adapters_, existing DSC resource
+DevOps pipelines. With a new concept called _adapters_, an existing DSC resource
 can still be executed. Start small to learn the new resource syntax and
 build up to automate your entire infrastructure.
 
