@@ -61,6 +61,7 @@ export const ChevronUpIcon: React.FC<BlogIconProps> = memo(
     </svg>
   ),
 )
+ChevronUpIcon.displayName = 'ChevronUpIcon'
 
 // ChevronDown Icon - Stroke style for scroll indicators
 export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
@@ -80,6 +81,7 @@ export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
     </svg>
   ),
 )
+ChevronDownIcon.displayName = 'ChevronDownIcon'
 
 // Note icon component for informational content
 export const NoteIcon: React.FC<BlogIconProps> = memo(
@@ -181,10 +183,6 @@ export const CautionIcon: React.FC<BlogIconProps> = memo(
   ),
 )
 CautionIcon.displayName = 'CautionIcon'
-
-// Add display names for memoized icons to satisfy react/display-name rule
-ChevronUpIcon.displayName = 'ChevronUpIcon'
-ChevronDownIcon.displayName = 'ChevronDownIcon'
 
 // Alert Icon component for blog alerts/block quotes
 export interface AlertIconProps extends BlogIconProps {
