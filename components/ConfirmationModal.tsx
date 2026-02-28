@@ -166,6 +166,7 @@ const ConfirmationModal = ({
                 {/* Actions */}
                 <div className="flex gap-3 justify-end">
                   <button
+                    aria-label={cancelText || 'Cancel'}
                     className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                     disabled={confirmLoading}
                     onClick={onClose}
@@ -174,6 +175,7 @@ const ConfirmationModal = ({
                     {cancelText}
                   </button>
                   <button
+                    aria-label={confirmText || 'Confirm'}
                     className={`min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed ${styles.confirmButton}`}
                     disabled={confirmLoading}
                     onClick={onConfirm}
