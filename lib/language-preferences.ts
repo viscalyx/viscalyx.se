@@ -2,8 +2,8 @@
  * Language preference management utilities that respect cookie consent
  */
 
-import { hasConsent } from './cookie-consent'
-import { deleteCookie, getCookie, setCookie } from './cookie-utils'
+import { hasConsent } from '@/lib/cookie-consent'
+import { deleteCookie, getCookie, setCookie } from '@/lib/cookie-utils'
 
 const LANGUAGE_COOKIE_NAME = 'language'
 
