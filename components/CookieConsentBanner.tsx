@@ -369,6 +369,7 @@ const CookieConsentBanner = () => {
 
                 <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
                   <button
+                    aria-label={`${t('rejectAll')} (${t('cookieSettings')})`}
                     className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleRejectAll}
                     type="button"
@@ -376,6 +377,7 @@ const CookieConsentBanner = () => {
                     {t('rejectAll')}
                   </button>
                   <button
+                    aria-label={`${t('acceptAll')} (${t('cookieSettings')})`}
                     className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleAcceptAll}
                     type="button"
@@ -383,6 +385,7 @@ const CookieConsentBanner = () => {
                     {t('acceptAll')}
                   </button>
                   <button
+                    aria-label={t('savePreferences')}
                     className="min-h-[44px] min-w-[44px] px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900"
                     onClick={handleSavePreferences}
                     type="button"

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, Info, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { type ReactNode, useEffect, useId, useRef } from 'react'
 
 interface ConfirmationModalProps {
@@ -29,12 +30,19 @@ const ConfirmationModal = ({
   variant = 'warning',
   confirmLoading = false,
   confirmIcon,
-  closeAriaLabel = 'Close modal',
+  closeAriaLabel,
 }: ConfirmationModalProps) => {
+  const t = useTranslations('confirmationModal')
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
   const titleId = useId()
   const descriptionId = useId()
+  const translatedCloseAriaLabel = t('closeAriaLabel')
+  const defaultCloseAriaLabel =
+    translatedCloseAriaLabel === 'closeAriaLabel'
+      ? 'Close modal'
+      : translatedCloseAriaLabel
+  const resolvedCloseAriaLabel = closeAriaLabel ?? defaultCloseAriaLabel
 
   // Focus management for accessibility
   useEffect(() => {
@@ -142,7 +150,7 @@ const ConfirmationModal = ({
                   </h2>
                 </div>
                 <button
-                  aria-label={closeAriaLabel}
+                  aria-label={resolvedCloseAriaLabel}
                   className="min-h-[44px] min-w-[44px] p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                   onClick={onClose}
                   type="button"
