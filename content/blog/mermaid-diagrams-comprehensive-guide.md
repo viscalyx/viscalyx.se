@@ -13,8 +13,8 @@ readTime: '15 min read'
 
 Mermaid is a powerful diagramming and charting tool that uses simple text
 definitions to create complex visual diagrams. This comprehensive guide covers
-every type of Mermaid diagram with practical examples that you can use in your
-own projects.
+supported types of Mermaid diagrams with practical examples that you can use in
+your own projects.
 
 ## Introduction
 
