@@ -583,7 +583,7 @@ const BlogPostContent = ({
                             socialIconMap[social.name as SocialIconName]
                           if (!IconComponent) return null
                           const localizedSocialLabel = tTeam(
-                            `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
+                            `socialLinks.${socialIconTranslationKeyMap[social.name as SocialIconName]}`,
                           )
                           return (
                             <a
