@@ -147,8 +147,14 @@ export async function POST(request: Request) {
       )
     }
 
-    const readProgress = parseFiniteMetric(body.readProgress)
-    const timeSpent = parseFiniteMetric(body.timeSpent)
+    const parsedReadProgress = parseFiniteMetric(body.readProgress)
+    const parsedTimeSpent = parseFiniteMetric(body.timeSpent)
+    const readProgress =
+      parsedReadProgress === null
+        ? null
+        : Math.min(Math.max(parsedReadProgress, 0), 100)
+    const timeSpent =
+      parsedTimeSpent === null ? null : Math.max(parsedTimeSpent, 0)
 
     // Get request metadata for analytics
     const userAgent = request.headers.get('user-agent') || 'unknown'
