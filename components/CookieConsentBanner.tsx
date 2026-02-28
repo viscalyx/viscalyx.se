@@ -112,8 +112,13 @@ const CookieConsentBanner = () => {
       }
 
       if (event.key === 'Escape') {
-        // Escape should focus the Reject All button (cancel action)
-        rejectButtonRef.current?.focus()
+        if (showDetails) {
+          cachedFocusableElements.current = null
+          setShowDetails(false)
+        } else {
+          // Escape should focus the Reject All button (cancel action)
+          rejectButtonRef.current?.focus()
+        }
       }
     }
 
@@ -142,7 +147,7 @@ const CookieConsentBanner = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [isVisible, getFocusableElements])
+  }, [isVisible, showDetails, getFocusableElements])
 
   const handleAcceptAll = () => {
     const allAccepted: CookieConsentSettings = {
