@@ -20,7 +20,7 @@ readTime: '9 min read'
 > This guide is an AI-generated draft, it is still WIP! Goal would be to have
 > it as a part of a guide to set up a lab environment.
 
-**TL;DR** — You can run the latest IPFire (currently **2.29 – Core 195**) on
+**TL;DR** — You can run IPFire (version **2.29 – Core 195** as of 2025-06) on
 Microsoft Hyper-V in about 30 minutes. Create a Generation 2 VM, turn **Secure
 Boot** off, attach **two or more NICs** for the IPFire color-coded zones, boot
 from the ISO and finish the console wizard; afterwards reach the WebUI at
@@ -39,7 +39,7 @@ from the ISO and finish the console wizard; afterwards reach the WebUI at
 
 IPFire’s official hardware page lists those figures and stresses that **at least
 two Ethernet adapters** are mandatory ([IPFire.org][1]).
-Download the current ISO (`x86_64`, \~550 MB) from the release
+Download the current ISO (`x86_64`, ~550 MB) from the release
 page ([IPFire.org][2]) and verify its SHA256 checksum.
 
 ## 1 – Plan your network setup
