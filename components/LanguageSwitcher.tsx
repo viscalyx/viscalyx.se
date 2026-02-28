@@ -160,6 +160,7 @@ const LanguageSwitcher = () => {
             className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
             exit={{ opacity: 0, y: -10 }}
             initial={{ opacity: 0, y: -10 }}
+            key={locale}
             onKeyDown={handleKeyDown}
             ref={listboxRef}
             role="listbox"
