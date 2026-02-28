@@ -260,7 +260,7 @@ const Team = () => {
               {t('joinTeam.description')}
             </p>
             <motion.a
-              className="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary-600 transition-colors hover:bg-primary-50"
               href="https://github.com/viscalyx"
               rel="noopener noreferrer"
               target="_blank"
