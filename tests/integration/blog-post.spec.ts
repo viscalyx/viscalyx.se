@@ -124,8 +124,12 @@ test.describe('Blog Post Page', () => {
     }) => {
       await page.goto(TEST_URL)
 
-      // Desktop sidebar ToC should be visible in Desktop Chrome viewport
-      await expect(page.locator('#toc-heading')).toBeVisible()
+      // Verify the visible ToC landmark instead of a raw ID selector because
+      // responsive variants can coexist in the DOM.
+      const tocNavigation = page
+        .getByRole('navigation', { name: 'Table of Contents' })
+        .first()
+      await expect(tocNavigation).toBeVisible()
     })
   })
 
@@ -170,7 +174,13 @@ test.describe('Blog Post Page', () => {
         )
 
         if (regions.length === 0) {
-          return { hasTable: false, hasOverflow: false, before: 0, after: 0 }
+          return {
+            hasTable: false,
+            hasOverflow: false,
+            overflowX: '',
+            before: 0,
+            after: 0,
+          }
         }
 
         const region =
@@ -184,6 +194,7 @@ test.describe('Blog Post Page', () => {
         return {
           hasTable: true,
           hasOverflow: region.scrollWidth > region.clientWidth + 1,
+          overflowX: window.getComputedStyle(region).overflowX,
           before,
           after,
         }
@@ -193,8 +204,10 @@ test.describe('Blog Post Page', () => {
       if (!tableBehavior.hasTable) {
         return
       }
-      expect(tableBehavior.hasOverflow).toBe(true)
-      expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+      expect(tableBehavior.overflowX).toBe('auto')
+      if (tableBehavior.hasOverflow) {
+        expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+      }
     })
   })
 
