@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 
-interface LegalPageLayoutProps {
+interface ComponentProps {
   children: ReactNode
   lastUpdatedDate: Date
   lastUpdatedLabel: string
@@ -21,7 +21,7 @@ const LegalPageLayout = ({
   lastUpdatedLabel,
   lastUpdatedDate,
   children,
-}: LegalPageLayoutProps) => {
+}: ComponentProps) => {
   const format = useFormatter()
 
   return (
