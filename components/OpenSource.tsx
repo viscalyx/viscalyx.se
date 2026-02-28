@@ -189,7 +189,7 @@ const OpenSource = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
                 aria-label={t('accessibility.followGithub')}
-                className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
+                className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center min-h-[44px] min-w-[44px]"
                 href="https://github.com/viscalyx"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -201,7 +201,7 @@ const OpenSource = () => {
               </motion.a>
               <motion.a
                 aria-label={t('accessibility.collaborate')}
-                className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
+                className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center min-h-[44px] min-w-[44px]"
                 href="https://dsccommunity.org/"
                 rel="noopener noreferrer"
                 target="_blank"
