@@ -18,7 +18,9 @@ describe('slug-utils-client coverage branches', () => {
   })
 
   it('throws when DOMParser is unavailable in client extractor', async () => {
-    const { extractTableOfContentsClient } = await import('../slug-utils-client')
+    const { extractTableOfContentsClient } = await import(
+      '../slug-utils-client'
+    )
     const originalDOMParser = globalThis.DOMParser
 
     Object.defineProperty(globalThis, 'DOMParser', {
