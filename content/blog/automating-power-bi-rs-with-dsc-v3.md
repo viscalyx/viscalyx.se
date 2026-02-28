@@ -49,15 +49,15 @@ no differently from previous versions.
 
 ### Update WinGet
 
-We require WinGet 1.11.400, but Windows Server 2025 comes with an older version.
-Use the method [installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client)
-of your choice.
+We require WinGet 1.11.400 or newer, but Windows Server 2025 comes with an
+older version. Install or upgrade WinGet by following
+[installing WinGet](https://github.com/microsoft/winget-cli?tab=readme-ov-file#installing-the-client).
 
-If you download the latest release from [winget-cli releases](https://github.com/microsoft/winget-cli/releases).
-Make sure to also download the dependencies package as they might be needed to
-be installed to successfully install WinGet. I could not install one dependency
-but it turned out that wasn't needed for the WinGet install, that might not be
-true in your case.
+If you download WinGet from [winget-cli releases](https://github.com/microsoft/winget-cli/releases),
+download the matching dependencies package for that release as well. Installing
+those dependencies is recommended, but might not be required in every
+environment; if setup fails without them, install dependencies and retry, or
+verify WinGet installs and runs successfully when dependencies are skipped.
 
 ### Install PowerShell
 
@@ -151,8 +151,8 @@ $desiredParameters = @{
 
 ### Imperative Get-operation
 
-Running the Get-operation we can verify that the current state currently missing
-the Power BI Report Server instance:
+Running the Get-operation we can verify that the current state is missing the
+Power BI Report Server instance:
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
@@ -164,8 +164,8 @@ actualState : @{ProductKey=; Timeout=7200; SuppressRestart=; EditionUpgrade=; Lo
 
 ### Imperative Test-operation
 
-Running the Test-operation we can verify that it report that our desired state
-is not in compliance, the Power BI Report Server instance is missing:
+Running the Test-operation we can verify that it reports our desired state is
+not in compliance; the Power BI Report Server instance is missing:
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
