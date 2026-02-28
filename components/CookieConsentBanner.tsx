@@ -79,16 +79,32 @@ const CookieConsentBanner = () => {
         const lastElement = focusableElements[
           focusableElements.length - 1
         ] as HTMLElement
+        const activeElement = document.activeElement as HTMLElement | null
+        const isFocusInsideBanner = Boolean(
+          bannerRef.current && activeElement
+            ? bannerRef.current.contains(activeElement)
+            : false,
+        )
+
+        if (!isFocusInsideBanner) {
+          event.preventDefault()
+          if (event.shiftKey) {
+            lastElement.focus()
+          } else {
+            firstElement.focus()
+          }
+          return
+        }
 
         if (event.shiftKey) {
           // Shift + Tab (backward)
-          if (document.activeElement === firstElement) {
+          if (activeElement === firstElement) {
             event.preventDefault()
             lastElement.focus()
           }
         } else {
           // Tab (forward)
-          if (document.activeElement === lastElement) {
+          if (activeElement === lastElement) {
             event.preventDefault()
             firstElement.focus()
           }
