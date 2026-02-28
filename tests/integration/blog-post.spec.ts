@@ -172,14 +172,19 @@ test.describe('Blog Post Page', () => {
             '.blog-content .table-scroll-region',
           ),
         )
+        const tables = Array.from(
+          document.querySelectorAll<HTMLTableElement>('.blog-content table'),
+        )
 
         if (regions.length === 0) {
+          const hasBareTable = tables.length > 0
           return {
-            hasTable: false,
+            hasTable: hasBareTable,
             hasOverflow: false,
             overflowX: '',
             before: 0,
             after: 0,
+            usesScrollRegion: false,
           }
         }
 
@@ -197,6 +202,7 @@ test.describe('Blog Post Page', () => {
           overflowX: window.getComputedStyle(region).overflowX,
           before,
           after,
+          usesScrollRegion: true,
         }
       })
 
@@ -204,9 +210,11 @@ test.describe('Blog Post Page', () => {
       if (!tableBehavior.hasTable) {
         return
       }
-      expect(tableBehavior.overflowX).toBe('auto')
-      if (tableBehavior.hasOverflow) {
-        expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+      if (tableBehavior.usesScrollRegion) {
+        expect(tableBehavior.overflowX).toBe('auto')
+        if (tableBehavior.hasOverflow) {
+          expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+        }
       }
     })
   })
