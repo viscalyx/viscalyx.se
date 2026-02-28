@@ -51,9 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function Home({ params }: Props) {
-  await params
-
+export default async function Home() {
   return (
     <main className="min-h-screen animate-fade-in">
       <Header />

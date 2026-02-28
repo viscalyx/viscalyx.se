@@ -66,7 +66,7 @@ describe('Home', () => {
   })
 
   it('renders all child components', async () => {
-    const page = await Home({ params: Promise.resolve({ locale: 'en' }) })
+    const page = await Home()
     render(page)
 
     expect(screen.getByTestId('header')).toBeInTheDocument()
@@ -78,7 +78,7 @@ describe('Home', () => {
   })
 
   it('renders main element with fade-in animation class', async () => {
-    const page = await Home({ params: Promise.resolve({ locale: 'en' }) })
+    const page = await Home()
     const { container } = render(page)
 
     const main = container.querySelector('main')
