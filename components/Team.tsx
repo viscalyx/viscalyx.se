@@ -21,17 +21,27 @@ const Team = () => {
   const getViewProfileAriaLabel = (name: string) => {
     const translated = t('viewProfile', { name })
     return translated === 'viewProfile'
-      ? `View profile for ${name}`
+      ? t('viewProfileFallback', { name })
       : translated
   }
 
-  const getSocialLinkAriaLabel = (socialName: string) => {
-    const socialKey =
-      socialIconTranslationKeyMap[
-        socialName as keyof typeof socialIconTranslationKeyMap
-      ]
+  const hasSocialTranslationKey = (
+    socialName: string,
+  ): socialName is keyof typeof socialIconTranslationKeyMap =>
+    socialName in socialIconTranslationKeyMap
+
+  const getSocialLinkText = (socialName: string) => {
+    if (!hasSocialTranslationKey(socialName)) {
+      return socialName
+    }
+
+    const socialKey = socialIconTranslationKeyMap[socialName]
     const translated = t(`socialLinks.${socialKey}`)
     return translated === `socialLinks.${socialKey}` ? socialName : translated
+  }
+
+  const getSocialLinkAriaLabel = (socialName: string) => {
+    return getSocialLinkText(socialName)
   }
 
   const containerVariants: Variants = {
@@ -229,9 +239,7 @@ const Team = () => {
                           >
                             <social.icon
                               className="h-5 w-5"
-                              title={t(
-                                `socialLinks.${socialIconTranslationKeyMap[social.name]}`,
-                              )}
+                              title={getSocialLinkText(social.name)}
                             />
                           </motion.a>
                         ))}

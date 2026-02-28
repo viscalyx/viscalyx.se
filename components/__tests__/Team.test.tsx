@@ -8,7 +8,12 @@ const mockGetTeamMembers = vi.fn()
 // Mock next-intl
 vi.mock('next-intl', () => ({
   useTranslations: () => {
-    const t = (key: string) => key
+    const t = (key: string, values?: { name?: string }) => {
+      if (key === 'viewProfileFallback' && values?.name) {
+        return `View profile for ${values.name}`
+      }
+      return key
+    }
     t.raw = (key: string) => {
       if (key === 'members.johlju.specialties') {
         return ['PowerShell', 'DevOps', 'DSC']
@@ -139,6 +144,48 @@ describe('Team', () => {
     expect(githubLink).toHaveAttribute('href', 'https://github.com/test')
     expect(githubLink).toHaveAttribute('target', '_blank')
     expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('falls back to raw social name when translation key mapping is missing', () => {
+    mockGetTeamMembers.mockReturnValueOnce([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '/johlju-profile.jpg',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [
+          {
+            name: 'UnknownNetwork',
+            href: 'https://example.com/profile',
+            icon: ({
+              className,
+              title,
+            }: {
+              className?: string
+              title?: string
+            }) => (
+              <span
+                className={className}
+                data-testid="unknown-network-icon"
+                title={title}
+              />
+            ),
+          },
+        ],
+      },
+    ])
+
+    render(<Team />)
+
+    const unknownLink = screen.getByLabelText('UnknownNetwork')
+    expect(unknownLink).toHaveAttribute('href', 'https://example.com/profile')
+    expect(screen.getByTestId('unknown-network-icon')).toHaveAttribute(
+      'title',
+      'UnknownNetwork',
+    )
   })
 
   it('navigates to member detail on card click', () => {
