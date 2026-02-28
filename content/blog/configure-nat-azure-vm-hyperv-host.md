@@ -2,7 +2,7 @@
 title: 'Configure NAT for nested guests on a Hyper-V host running on Azure VM'
 date: '2025-07-25'
 author: 'Johan Ljunggren'
-excerpt: 'Complete guide to setting up NAT networking for nested Hyper-V VM guests running inside Azure VM Hyper-V host. Learn how to create internal switches, configure NAT, and enable internet access for your nested virtual machines with PowerShell commands and troubleshooting tips.'
+excerpt: 'Configure NAT networking for nested Hyper-V VMs on an Azure VM host with PowerShell to create an internal switch, set NAT, and give guests internet access.'
 image: '/professional-showing-azure-nat.png'
 imageAlt: 'Photograph of a modern office: a bearded engineer in a blue shirt points at a wall‑mounted screen diagram titled “Azure VM Host” that shows two nested Hyper‑V VMs connected through a NAT switch to an external NAT icon. On the desk below, a laptop displays the Azure portal next to a coiled Ethernet cable, coffee mug, and small plant.'
 tags:
