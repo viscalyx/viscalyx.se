@@ -19,7 +19,8 @@ const NotFoundPage = () => {
         {t('description')}
       </p>
       <Link
-        className="rounded-lg bg-primary-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+        aria-label="Go to homepage in current locale"
+        className="min-h-[44px] min-w-[44px] rounded-lg bg-primary-600 px-6 py-3 font-medium text-white transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:bg-primary-500 dark:hover:bg-primary-600"
         href={`/${locale}`}
       >
         {t('goHome')}
