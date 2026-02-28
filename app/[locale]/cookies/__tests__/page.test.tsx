@@ -3,6 +3,7 @@ import { vi } from 'vitest'
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
+  getRequestConfig: vi.fn(configFactory => configFactory),
   getTranslations: vi
     .fn()
     .mockResolvedValue((key: string) => `translated:${key}`),

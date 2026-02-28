@@ -4,6 +4,7 @@ import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
+import { locales } from '@/i18n'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
 
@@ -38,10 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/cookies`,
-      languages: {
-        en: `${SITE_URL}/en/cookies`,
-        sv: `${SITE_URL}/sv/cookies`,
-      },
+      languages: Object.fromEntries(
+        locales.map(l => [l, `${SITE_URL}/${l}/cookies`]),
+      ),
     },
   }
 }
