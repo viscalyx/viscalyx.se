@@ -4,7 +4,8 @@ import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => (key: string) =>
+    key === 'closeAriaLabel' ? 'Close modal' : key,
 }))
 
 describe('ConfirmationModal', () => {
