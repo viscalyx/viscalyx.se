@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-interface ComponentProps {
+interface ReadingProgressProps {
   endTarget?: string // CSS selector for the element where reading should be considered complete (e.g., author bio)
   target?: string // CSS selector for the content area to track
 }
@@ -15,7 +15,10 @@ function clampProgress(progress: number): number {
   return Math.min(Math.max(progress, 0), 100)
 }
 
-const ReadingProgress = ({ target = '.prose', endTarget }: ComponentProps) => {
+const ReadingProgress = ({
+  target = '.prose',
+  endTarget,
+}: ReadingProgressProps) => {
   const t = useTranslations('readingProgress')
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
