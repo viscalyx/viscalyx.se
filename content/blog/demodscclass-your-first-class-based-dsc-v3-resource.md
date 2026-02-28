@@ -6,7 +6,7 @@ excerpt: 'A step-by-step beginner’s guide to designing, coding, testing, and r
 image: '/collaborative-workspace-overhead-laptops-facing-away..png'
 imageAlt: "Bird's-eye view of a team working around a light wooden table with laptops, phones, headphones, and coffee, with screens at the top facing away."
 tags: ['PowerShell', 'DSC', 'Infrastructure as Code', 'Automation', 'DevOps']
-category: 'DSC'
+category: 'PowerShell DSC'
 readTime: '8 min read'
 ---
 
@@ -314,7 +314,7 @@ It's time to install Microsoft DSC v3 and test out the class using `dsc`.
 
 ## Step 4: Install Microsoft DSC v3
 
-To easily install the `dsc` executable, you can use the [PSDC][02] PowerShell
+To easily install the `dsc` executable, you can use the [PSDSC][02] PowerShell
 community module.
 
 > [!NOTE]
@@ -346,8 +346,10 @@ $env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Lo
 ```
 <!-- markdownlint-enable MD013 -->
 
-This command adds your current directory to be searchable. PowerShell can now
-find your DSC resource when you list or invoke capabilities against it.
+This command appends the parent directory of your current location to
+PSModulePath so PowerShell can find your DSC resource. PowerShell can now
+find your DSC resource from that parent directory when you list or invoke
+capabilities against it.
 
 ### List available resources
 
