@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
 import type { SerializableTeamMember } from '@/lib/team'
-import TeamMemberClient from '../TeamMemberClient'
 
 // Mock child components
 vi.mock('@/components/Header', () => ({
