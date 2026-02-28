@@ -33,14 +33,19 @@ const CodeBlockEnhancer = ({
       wrappers.forEach(wrapper => {
         // Only process once per wrapper
         if (wrapper.dataset.enhanced === 'true') return
-        wrapper.dataset.enhanced = 'true'
-        enhancedWrappers.push(wrapper)
 
         // Find the <pre> element
         const pre = wrapper.querySelector(
           'pre[class*="language-"]',
         ) as HTMLElement | null
         if (!pre) return
+
+        // Only process wrappers with a code element
+        const codeElement = pre.querySelector('code')
+        if (!codeElement) return
+
+        wrapper.dataset.enhanced = 'true'
+        enhancedWrappers.push(wrapper)
 
         // Wrap <pre> in scroll wrapper if not already
         let scrollWrapper = wrapper.querySelector(
@@ -54,32 +59,36 @@ const CodeBlockEnhancer = ({
         }
 
         // Insert copy button into wrapper
-        const codeElement = pre.querySelector('code')
-        if (codeElement) {
-          const text = codeElement.textContent || ''
-          const copyContainer = document.createElement('div')
-          copyContainer.className = 'copy-button-container'
-          // append to scrollWrapper so the button overlays inside the code block
-          scrollWrapper.appendChild(copyContainer)
-          createdContainers.push(copyContainer)
-          const root = createRoot(copyContainer)
-          root.render(
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              <CopyButton text={text} />
-            </NextIntlClientProvider>,
-          )
-          roots.set(copyContainer, root)
-        }
+        const text = codeElement.textContent || ''
+        const copyContainer = document.createElement('div')
+        copyContainer.className = 'copy-button-container'
+        // append to scrollWrapper so the button overlays inside the code block
+        scrollWrapper.appendChild(copyContainer)
+        createdContainers.push(copyContainer)
+        const root = createRoot(copyContainer)
+        root.render(
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <CopyButton text={text} />
+          </NextIntlClientProvider>,
+        )
+        roots.set(copyContainer, root)
       })
     }
 
     let observer: MutationObserver | null = null
+    let rescanRafId = 0
 
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(addCopyButtons, 50)
     if (typeof MutationObserver !== 'undefined') {
       observer = new MutationObserver(() => {
-        addCopyButtons()
+        if (rescanRafId !== 0) {
+          cancelAnimationFrame(rescanRafId)
+        }
+        rescanRafId = requestAnimationFrame(() => {
+          rescanRafId = 0
+          addCopyButtons()
+        })
       })
       observer.observe(document.body, {
         childList: true,
@@ -91,6 +100,9 @@ const CodeBlockEnhancer = ({
     return () => {
       clearTimeout(timer)
       observer?.disconnect()
+      if (rescanRafId !== 0) {
+        cancelAnimationFrame(rescanRafId)
+      }
 
       // Remove DOM elements synchronously so the UI updates immediately
       createdContainers.forEach(container => {
