@@ -111,10 +111,20 @@ export function createSlugId(
   return slug || generateFallbackId(level, text)
 }
 
+/**
+ * Client-only: uses DOMParser and must not be called in a Node/server runtime.
+ * Use extractTableOfContentsServer for server-safe parsing.
+ */
 export function extractTableOfContentsClient(
   htmlContent: string,
   options: SlugOptions = {},
 ): TocItem[] {
+  if (typeof DOMParser === 'undefined') {
+    throw new Error(
+      'extractTableOfContentsClient requires DOMParser. Use extractTableOfContentsServer in Node/server environments.',
+    )
+  }
+
   const parser = new DOMParser()
   const doc = parser.parseFromString(htmlContent, 'text/html')
   const headings = Array.from(doc.querySelectorAll('h2, h3, h4'))

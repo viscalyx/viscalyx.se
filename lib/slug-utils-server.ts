@@ -14,7 +14,7 @@ export function extractTableOfContentsServer(
   htmlContent: string,
   options: SlugOptions = {},
 ): TocItem[] {
-  const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h[2-4]>/gi
+  const headingRegex = /<h([2-4])[^>]*>([\s\S]*?)<\/h\1>/gi
   const headings: TocItem[] = []
   const usedIds = new Set<string>()
   let match: RegExpExecArray | null = headingRegex.exec(htmlContent)
