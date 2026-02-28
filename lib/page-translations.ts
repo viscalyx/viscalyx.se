@@ -1,5 +1,6 @@
 import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
+import { locales } from '@/i18n'
 
 interface PrivacyTranslations {
   lastUpdated: string
@@ -210,8 +211,7 @@ function validateFilePrefix(filePrefix: string): string {
  * @returns Object containing translations, loading state, and error state
  */
 function validateLocale(locale: string): string {
-  const allowedLocales = ['en', 'sv']
-  if (!allowedLocales.includes(locale)) {
+  if (!locales.includes(locale as (typeof locales)[number])) {
     throw new Error(`Invalid locale: "${locale}"`)
   }
   return locale
