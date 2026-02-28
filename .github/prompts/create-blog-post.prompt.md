@@ -23,10 +23,7 @@ readTime: '5 min'
 
 Rules:
 
-- `excerpt` is the SEO meta description: write 140-155 characters when possible,
-  never exceed 160 characters
-- `excerpt` must be a concise summary that preserves key post context (topic,
-  platform/tool, and main outcome)
+- `excerpt` must be a concise SEO summary that preserves topic, platform/tool, and main outcome; target 140-155 characters and never exceed 160
 - Sections: `##`, subsections: `###`
 - Code blocks: specify language
 - For markdownlint `MD013`: disable only when a Markdown table, fenced code block, or `<img>` tag contains a line longer than 80 characters; add `markdownlint-disable MD013` immediately before that block and `markdownlint-enable MD013` immediately after
