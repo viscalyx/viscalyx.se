@@ -157,7 +157,7 @@ const LanguageSwitcher = () => {
           <motion.div
             animate={{ opacity: 1, y: 0 }}
             aria-label={t('selectLanguage')}
-            className="absolute top-full mt-2 right-0 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg shadow-lg overflow-hidden z-50 min-w-37.5"
+            className="absolute top-full mt-2 right-0 z-50 w-full max-w-xs overflow-hidden rounded-lg border border-secondary-200 bg-white shadow-lg dark:border-secondary-700 dark:bg-secondary-800"
             exit={{ opacity: 0, y: -10 }}
             initial={{ opacity: 0, y: -10 }}
             key={locale}
