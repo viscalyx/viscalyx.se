@@ -18,6 +18,22 @@ const Team = () => {
 
   const teamMembers = getTeamMembers(t)
 
+  const getViewProfileAriaLabel = (name: string) => {
+    const translated = t('viewProfile', { name })
+    return translated === 'viewProfile'
+      ? `View profile for ${name}`
+      : translated
+  }
+
+  const getSocialLinkAriaLabel = (socialName: string) => {
+    const socialKey =
+      socialIconTranslationKeyMap[
+        socialName as keyof typeof socialIconTranslationKeyMap
+      ]
+    const translated = t(`socialLinks.${socialKey}`)
+    return translated === `socialLinks.${socialKey}` ? socialName : translated
+  }
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -106,7 +122,7 @@ const Team = () => {
                 whileHover="hover"
               >
                 <motion.div
-                  aria-label={`View profile for ${member.name}`}
+                  aria-label={getViewProfileAriaLabel(member.name)}
                   className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-secondary-900"
                   onClick={() => handleCardClick(member.id)}
                   onKeyDown={event => {
@@ -193,7 +209,7 @@ const Team = () => {
                       >
                         {row.map(social => (
                           <motion.a
-                            aria-label={social.name}
+                            aria-label={getSocialLinkAriaLabel(social.name)}
                             className="min-h-[44px] min-w-[44px] p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                             href={social.href}
                             key={social.name}
