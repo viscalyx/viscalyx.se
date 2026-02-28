@@ -64,7 +64,9 @@ export async function addHeadingIds(
       const cleanedText = extractCleanText(text)
       const baseId = createSlugId(cleanedText, levelNum, options)
 
-      const quotedIdMatch = attributes.match(/\bid\s*=\s*(?:"([^"]*)"|'([^']*)')/i)
+      const quotedIdMatch = attributes.match(
+        /\bid\s*=\s*(?:"([^"]*)"|'([^']*)')/i,
+      )
       const unquotedIdMatch = attributes.match(/\bid\s*=\s*([^\s>]+)/i)
       const existingId =
         quotedIdMatch?.[1] ?? quotedIdMatch?.[2] ?? unquotedIdMatch?.[1]
