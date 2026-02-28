@@ -89,9 +89,14 @@ describe('getPostMetadata', () => {
   it('returns metadata for an existing slug', () => {
     const post = getPostMetadata('first-post')
     expect(post).not.toBeNull()
-    expect(post?.title).toBe('First Post')
-    expect(post?.slug).toBe('first-post')
-    expect(post?.imageAlt).toBe('First image')
+
+    if (!post) {
+      throw new Error('Expected first-post to exist in test fixtures')
+    }
+
+    expect(post.title).toBe('First Post')
+    expect(post.slug).toBe('first-post')
+    expect(post.imageAlt).toBe('First image')
   })
 
   it('returns null for non-existent slug', () => {
@@ -122,12 +127,24 @@ describe('getPostMetadata', () => {
 
   it('filters non-string tags and lowercases them', () => {
     const post = getPostMetadata('third-post')
-    expect(post?.tags).toEqual(['typescript', 'devops'])
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected third-post to exist in test fixtures')
+    }
+
+    expect(post.tags).toEqual(['typescript', 'devops'])
   })
 
   it('deduplicates tags', () => {
     const post = getPostMetadata('first-post')
-    expect(post?.tags).toEqual(['typescript', 'react'])
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected first-post to exist in test fixtures')
+    }
+
+    expect(post.tags).toEqual(['typescript', 'react'])
   })
 })
 

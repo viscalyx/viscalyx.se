@@ -6,7 +6,7 @@ import {
   useTermsTranslations,
   validateFilePrefix,
   validateLocale,
-} from '../page-translations'
+} from '@/lib/page-translations'
 
 // Mock next-intl
 const mockUseLocale = vi.fn()
@@ -252,6 +252,14 @@ describe('useTermsTranslations', () => {
 })
 
 describe('useCookiesTranslations', () => {
+  it('should start with loading state and no translations', () => {
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    expect(result.current.loading).toBe(true)
+    expect(result.current.translations).toBe(null)
+    expect(result.current.error).toBe(null)
+  })
+
   it('should load English cookies translations successfully', async () => {
     mockUseLocale.mockReturnValue('en')
     const { result } = renderHook(() => useCookiesTranslations())
@@ -265,6 +273,81 @@ describe('useCookiesTranslations', () => {
     if (result.current.translations) {
       expect(result.current.translations.title).toBeTruthy()
       expect(result.current.translations.howWeUseCookies).toBeTruthy()
+    }
+  })
+
+  it('should load Swedish cookies translations successfully', async () => {
+    mockUseLocale.mockReturnValue('sv')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+
+    if (result.current.translations) {
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.howWeUseCookies).toBeTruthy()
+    }
+  })
+
+  it('should fallback to English when using unsupported locale', async () => {
+    mockUseLocale.mockReturnValue('fr')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+  })
+
+  it('should reload translations when locale changes from English to Swedish', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result, rerender } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    const initialTranslations = result.current.translations
+
+    mockUseLocale.mockReturnValue('sv')
+    rerender()
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.translations).not.toEqual(initialTranslations)
+  })
+
+  it('should have consistent interface across locales', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result: enResult } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(enResult.current.loading).toBe(false)
+    })
+
+    mockUseLocale.mockReturnValue('sv')
+    const { result: svResult } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(svResult.current.loading).toBe(false)
+    })
+
+    if (enResult.current.translations && svResult.current.translations) {
+      expect(Object.keys(enResult.current.translations)).toEqual(
+        Object.keys(svResult.current.translations),
+      )
+      expect(
+        Object.keys(enResult.current.translations.howWeUseCookies),
+      ).toEqual(Object.keys(svResult.current.translations.howWeUseCookies))
     }
   })
 })

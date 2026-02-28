@@ -248,6 +248,7 @@
         "shareTextFallback": "Check out this blog post: {title}"
       },
       "authorBio": {
+        "ariaLabel": "Author biography",
         "name": "Johan Ljunggren",
         "title": "Founder and Lead Consultant at Viscalyx",
         "description": "Johan is a passionate automation expert with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. He's an active contributor to the PowerShell DSC Community and helps organizations worldwide streamline their infrastructure management.",
