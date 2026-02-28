@@ -2,7 +2,7 @@
 
 import type { CookieCategory } from '@/lib/cookie-consent'
 
-interface CookieCategoryToggleProps {
+interface ComponentProps {
   category: CookieCategory
   categoryName: string
   checked: boolean
@@ -26,7 +26,7 @@ const CookieCategoryToggle = ({
   categoryName,
   requiredLabel = '',
   onChange,
-}: CookieCategoryToggleProps) => {
+}: ComponentProps) => {
   const isRequired = category === 'strictly-necessary'
 
   return (
