@@ -190,7 +190,7 @@ There are two ways to create the requirements for running the tests. I will show
 both methods.
 
 1. Using the Azure Portal.
-1. Using PowerShell using the script that [@PlagueHO][plagueho-profile]
+1. Using PowerShell and the script that [@PlagueHO][plagueho-profile]
    shared in
    [PowerShell/DscConfigurations issue #5][dsc-configurations-issue-5].
 
