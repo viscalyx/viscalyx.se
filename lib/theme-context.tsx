@@ -32,7 +32,11 @@ export const isValidTheme = (value: string | null): value is Theme => {
   return value !== null && ['light', 'dark', 'system'].includes(value)
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+interface ThemeProviderProps {
+  children: React.ReactNode
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
   // Start with defaults to match server rendering
   const [theme, setTheme] = useState<Theme>('system')
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
