@@ -13,7 +13,7 @@ insert_final_newline = true
 [*.{json,jsonc}]
 indent_size = 2
 
-[*.{ps1,psm1}]
+[*.{ps1,psm1,psd1}]
 indent_size = 4
 
 [Makefile]
