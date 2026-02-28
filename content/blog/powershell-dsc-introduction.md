@@ -240,7 +240,7 @@ automation as your confidence and expertise grow.
   documentation](https://learn.microsoft.com/en-us/powershell/dsc/overview/decisionmaker?view=dsc-1.1)
 - Join the [PowerShell DSC
   Community](https://github.com/PowerShell/DscCommunity)
-- Practice with the [Authoring a class-based DSC Resource](https://learn.microsoft.com/sv-se/powershell/dsc/how-tos/resources/authoring/class-based?view=dsc-2.0)
+- Practice with the [Authoring a class-based DSC Resource](https://learn.microsoft.com/en-us/powershell/dsc/how-tos/resources/authoring/class-based?view=dsc-2.0)
 
 Ready to take your infrastructure automation to the next level? [Contact
 Viscalyx](/contact) for expert PowerShell DSC consulting and training.
