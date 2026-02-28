@@ -8,11 +8,11 @@ import {
   extractTableOfContentsClient,
   generateFallbackId,
   type SlugOptions,
-} from '../slug-utils-client'
+} from '@/lib/slug-utils-client'
 import {
   addHeadingIds,
   extractTableOfContentsServer,
-} from '../slug-utils-server'
+} from '@/lib/slug-utils-server'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(
