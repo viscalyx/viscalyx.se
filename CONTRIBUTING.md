@@ -36,7 +36,7 @@ overview of the project.
   - [Cross-Platform Compatibility](#cross-platform-compatibility)
   - [Prerequisites by Platform](#prerequisites-by-platform)
   - [Verifying Your Setup](#verifying-your-setup)
-  - [Troubleshooting](#troubleshooting)
+  - [Troubleshooting: Dev Container Setup](#troubleshooting-dev-container-setup)
   - [What's Included in the Dev Container](#whats-included-in-the-dev-container)
   - [GitHub CLI Authentication](#github-cli-authentication)
 - [Spell Checking Setup](#spell-checking-setup)
@@ -45,7 +45,7 @@ overview of the project.
   - [Automation](#automation)
   - [Ignoring False Positives](#ignoring-false-positives)
   - [Configuration Details](#configuration-details)
-  - [Troubleshooting](#troubleshooting)
+  - [Troubleshooting: Spell Checking](#troubleshooting-spell-checking)
   - [Language Extensions](#language-extensions)
   - [Best Practices](#best-practices)
 - [Cloudflare Scripts Documentation](#cloudflare-scripts-documentation)
@@ -1082,8 +1082,7 @@ code .
 ```
 <!-- markdownlint-enable MD013 -->
 
-<!-- markdownlint-disable-next-line MD024 -->
-### Troubleshooting
+### Troubleshooting: Dev Container Setup
 
 **SSH Agent Not Working:**
 
@@ -1388,8 +1387,7 @@ The spell checker automatically ignores:
 - Lock files (`package-lock.json`, `yarn.lock`)
 - Binary and generated files
 
-<!-- markdownlint-disable-next-line MD024 -->
-### Troubleshooting
+### Troubleshooting: Spell Checking
 
 #### Common Issues
 
