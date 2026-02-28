@@ -1,10 +1,10 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { invalidateConsentCache, useBlogAnalytics } from '../analytics'
-import { hasConsent } from '../cookie-consent'
+import { invalidateConsentCache, useBlogAnalytics } from '@/lib/analytics'
+import { hasConsent } from '@/lib/cookie-consent'
 
 // Mock the cookie consent module
-vi.mock('../cookie-consent', () => ({
+vi.mock('@/lib/cookie-consent', () => ({
   hasConsent: vi.fn(),
 }))
 

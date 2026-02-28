@@ -561,6 +561,7 @@ describe('loadBlogContent edge cases', () => {
       vi.stubEnv('DEBUG_BLOG_CONTENT_SOURCE', '1')
       mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
 
+      vi.resetModules()
       vi.doMock('@opennextjs/cloudflare', () => ({
         getCloudflareContext: () => ({
           env: {
