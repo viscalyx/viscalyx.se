@@ -76,17 +76,17 @@ const CodeBlockEnhancer = ({
     }
 
     let observer: MutationObserver | null = null
-    let rescanRafId = 0
+    let scanRafId = 0
 
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(addCopyButtons, 50)
     if (typeof MutationObserver !== 'undefined') {
       observer = new MutationObserver(() => {
-        if (rescanRafId !== 0) {
-          cancelAnimationFrame(rescanRafId)
+        if (scanRafId !== 0) {
+          cancelAnimationFrame(scanRafId)
         }
-        rescanRafId = requestAnimationFrame(() => {
-          rescanRafId = 0
+        scanRafId = requestAnimationFrame(() => {
+          scanRafId = 0
           addCopyButtons()
         })
       })
@@ -100,8 +100,8 @@ const CodeBlockEnhancer = ({
     return () => {
       clearTimeout(timer)
       observer?.disconnect()
-      if (rescanRafId !== 0) {
-        cancelAnimationFrame(rescanRafId)
+      if (scanRafId !== 0) {
+        cancelAnimationFrame(scanRafId)
       }
 
       // Remove DOM elements synchronously so the UI updates immediately
