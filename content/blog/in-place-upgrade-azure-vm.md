@@ -4,7 +4,10 @@ date: '2025-07-26'
 author: 'Johan Ljunggren'
 excerpt: 'Complete guide for performing in-place upgrades of Windows Server on Azure VMs, including prerequisites, security considerations, and step-by-step instructions.'
 image: '/team-deep-in-thought.png'
-imageAlt: 'In a bright open‑plan office, three IT professionals—two men and one woman—study their monitors showing Azure logos, diagrams, and code, while a dream‑like, cloud‑shrouded datacenter complex hovers on the horizon.'
+imageAlt: >
+  In a bright open‑plan office, three IT professionals—two men and one woman—study
+  their monitors showing Azure logos, diagrams, and code, while a dream‑like,
+  cloud‑shrouded datacenter complex hovers on the horizon.
 tags: ['Azure', 'Windows Server', 'Upgrade', 'Virtual Machines', 'PowerShell']
 readTime: '38 min read'
 category: 'Infrastructure'
