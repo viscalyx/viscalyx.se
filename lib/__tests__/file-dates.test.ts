@@ -56,7 +56,7 @@ describe('file-dates', () => {
     expect(dates.cookies.toISOString()).toBe('2024-01-01T00:00:00.000Z')
   })
 
-  it('falls back only invalid fields when page-dates.json has partial invalid data', () => {
+  it('falls back only for invalid fields when page-dates.json has partial invalid data', () => {
     vi.spyOn(fs, 'existsSync').mockReturnValue(true)
     vi.spyOn(fs, 'readFileSync').mockImplementation(() =>
       JSON.stringify({
