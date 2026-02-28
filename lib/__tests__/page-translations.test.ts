@@ -306,6 +306,50 @@ describe('usePageTranslations fallback error handling', () => {
       isolatedConsoleErrorSpy.mockRestore()
     }
   })
+
+  it('sets a generic error when fallback import throws a non-Error value', async () => {
+    vi.resetModules()
+    const isolatedUseLocale = vi.fn(() => 'fr')
+    const isolatedConsoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
+    try {
+      vi.doMock('next-intl', () => ({
+        useLocale: () => isolatedUseLocale(),
+      }))
+      vi.doMock('@/messages/privacy.en.json', () => {
+        return {
+          get default() {
+            throw 'fallback import failed'
+          },
+        }
+      })
+
+      const pageTranslationsModule = await import('../page-translations')
+      const { result } = renderHook(() =>
+        pageTranslationsModule.usePrivacyTranslations(),
+      )
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false)
+      })
+
+      expect(result.current.translations).toBeNull()
+      expect(result.current.error).toBeInstanceOf(Error)
+      expect(result.current.error?.message).toBe(
+        'Failed to load privacy translations',
+      )
+      expect(isolatedConsoleErrorSpy).toHaveBeenCalledWith(
+        'Error loading fallback privacy translations:',
+        'fallback import failed',
+      )
+    } finally {
+      vi.doUnmock('@/messages/privacy.en.json')
+      vi.doUnmock('next-intl')
+      isolatedConsoleErrorSpy.mockRestore()
+    }
+  })
 })
 
 describe('validateFilePrefix', () => {

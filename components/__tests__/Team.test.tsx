@@ -190,6 +190,14 @@ describe('Team', () => {
     expect(mockPush).not.toHaveBeenCalled()
   })
 
+  it('does not navigate when Enter is pressed on a nested social link', () => {
+    render(<Team />)
+
+    fireEvent.keyDown(screen.getByLabelText('GitHub'), { key: 'Enter' })
+
+    expect(mockPush).not.toHaveBeenCalled()
+  })
+
   it('renders the call to action section', () => {
     render(<Team />)
     expect(screen.getByText('joinTeam.title')).toBeInTheDocument()

@@ -378,6 +378,36 @@ describe('CookieConsentBanner', () => {
       })
     })
 
+    it('moves focus into the banner when Tab starts outside the dialog', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+      })
+
+      const learnMoreButton = screen.getByText('Learn more')
+      const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
+      const outsideButton = document.createElement('button')
+      outsideButton.textContent = 'outside'
+      document.body.appendChild(outsideButton)
+
+      try {
+        outsideButton.focus()
+        fireEvent.keyDown(document, { key: 'Tab' })
+        await waitFor(() => {
+          expect(learnMoreButton).toHaveFocus()
+        })
+
+        outsideButton.focus()
+        fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+        await waitFor(() => {
+          expect(acceptAllButton).toHaveFocus()
+        })
+      } finally {
+        outsideButton.remove()
+      }
+    })
+
     it('should have proper aria labels for toggle switches in detailed view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 

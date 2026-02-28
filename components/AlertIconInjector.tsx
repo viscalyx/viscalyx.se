@@ -20,9 +20,11 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
     const contentIdentifier = contentKey ?? 'default'
     const rootElement = rootRef.current
 
+    /* c8 ignore start -- defensive guard for non-DOM/teardown edge cases */
     if (!rootElement) {
       return
     }
+    /* c8 ignore stop */
 
     // Store references to created roots for cleanup
     const roots: Array<{
