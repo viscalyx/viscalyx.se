@@ -77,22 +77,27 @@ const ImageModal: React.FC<ImageModalProps> = ({
           transition={{ duration: 0.2 }}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            data-testid="image-modal-backdrop"
+          />
 
           {/* Modal Content */}
           <motion.div
             animate={{ scale: 1, opacity: 1 }}
-            className="relative max-w-[95vw] max-h-[95vh] w-full h-full"
+            className="relative inline-flex max-w-[95vw] max-h-[95vh]"
             exit={{ scale: 0.8, opacity: 0 }}
             initial={{ scale: 0.8, opacity: 0 }}
-            onClick={e => e.stopPropagation()}
             transition={{ duration: 0.2 }}
           >
             {/* Close Button */}
             <button
               aria-label={t('accessibility.image.closeImagePreview')}
               className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white min-h-[44px] min-w-[44px] p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-black"
-              onClick={onClose}
+              onClick={event => {
+                event.stopPropagation()
+                onClose()
+              }}
               ref={closeButtonRef}
               type="button"
             >
@@ -100,7 +105,10 @@ const ImageModal: React.FC<ImageModalProps> = ({
             </button>
 
             {/* Image Container */}
-            <div className="w-full h-full flex items-center justify-center p-4">
+            <motion.div
+              className="flex items-center justify-center p-4"
+              onClick={event => event.stopPropagation()}
+            >
               <Image
                 alt={imageAlt}
                 className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
@@ -115,7 +123,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
                 unoptimized
                 width={1400}
               />
-            </div>
+            </motion.div>
 
             {/* Image Caption */}
             {imageAlt && (
@@ -123,6 +131,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 bg-black/70 text-white p-3 sm:p-4 rounded-lg backdrop-blur-sm"
                 initial={{ opacity: 0, y: 20 }}
+                onClick={event => event.stopPropagation()}
                 transition={{ delay: 0.1 }}
               >
                 <p className="text-sm leading-relaxed">{imageAlt}</p>

@@ -51,8 +51,8 @@ describe('ImageModal', () => {
   it('calls onClose when backdrop is clicked', () => {
     render(<ImageModal {...defaultProps} />)
 
-    const dialog = screen.getByRole('dialog')
-    fireEvent.click(dialog)
+    const backdrop = screen.getByTestId('image-modal-backdrop')
+    fireEvent.click(backdrop)
 
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
@@ -62,6 +62,15 @@ describe('ImageModal', () => {
 
     const image = screen.getByRole('img')
     fireEvent.click(image)
+
+    expect(defaultProps.onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not call onClose when image caption is clicked', () => {
+    render(<ImageModal {...defaultProps} />)
+
+    const caption = screen.getByText('Test image alt text')
+    fireEvent.click(caption)
 
     expect(defaultProps.onClose).not.toHaveBeenCalled()
   })
