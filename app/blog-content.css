@@ -298,7 +298,7 @@
     /* Enhanced 3D effect with transform perspective */
     transform: perspective(1000px) rotateX(2deg);
     transition: all 0.3s ease;
-    @apply max-w-full h-auto rounded-lg border border-secondary-200 dark:border-secondary-700;
+    @apply h-auto rounded-lg border border-secondary-200 dark:border-secondary-700;
   }
 
   /* Hover effect for blog images */

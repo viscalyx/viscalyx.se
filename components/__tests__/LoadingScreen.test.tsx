@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import LoadingScreen from '@/components/LoadingScreen'
 
 vi.mock('next-intl', () => ({
@@ -13,6 +13,10 @@ vi.mock('@/components/LoadingSpinner', () => ({
 }))
 
 describe('LoadingScreen', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the default loading message', () => {
     render(<LoadingScreen />)
 

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as nextNavigation from 'next/navigation'
 import { vi } from 'vitest'
-import OpenSource from '../OpenSource'
+import OpenSource from '@/components/OpenSource'
 
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),

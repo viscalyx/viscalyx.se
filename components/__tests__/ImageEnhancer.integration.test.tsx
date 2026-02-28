@@ -38,6 +38,7 @@ const TestComponent = ({
             alt={img.alt}
             height={100}
             key={img.src}
+            sizes="(max-width: 1555px) 90vw, 1400px"
             src={img.src}
             unoptimized
             width={100}

@@ -134,26 +134,29 @@
 
 /* ===== Code Block Base Styles ===== */
 
-/* Keep scroll behavior on <pre>; language label space is handled by wrapper/container rules above */
-.blog-content pre[class*="language-"] {
-  max-height: 500px; /* limit vertical expansion */
-  padding-top: 1rem; /* extra space between code and top of container */
-  overflow-y: auto; /* prevent uncontrolled height growth */
-}
-
 /* ===== Code Block Container Styles ===== */
 
 /* Base styling for code block containers */
 .blog-content pre,
 .blog-content pre[class*="language-"] {
   position: relative;
-  padding: 1rem; /* p-4 */
+  padding-top: 1rem; /* p-4 */
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
   margin: 1.5rem 0; /* my-6 */
   overflow-x: auto; /* overflow-x-auto */
   color: #111827; /* text-secondary-900 */
   background-color: #f9fafb; /* bg-secondary-50 */
   border: 1px solid #f3f4f6; /* border-secondary-100 */
   border-radius: 0.5rem;
+}
+
+/* Keep scroll behavior on <pre>; give language blocks extra top breathing room */
+.blog-content pre[class*="language-"] {
+  max-height: 500px; /* limit vertical expansion */
+  padding-top: 1.25rem; /* extra space between code and top of container */
+  overflow-y: auto; /* prevent uncontrolled height growth */
 }
 
 .dark .blog-content pre,

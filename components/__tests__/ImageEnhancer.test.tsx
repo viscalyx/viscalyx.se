@@ -55,6 +55,7 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
         <Image
           alt="Test 1"
           height={100}
+          sizes="100vw"
           src="/test1.jpg"
           unoptimized
           width={100}
@@ -62,6 +63,7 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
         <Image
           alt="Test 2"
           height={100}
+          sizes="100vw"
           src="/test2.jpg"
           unoptimized
           width={100}
@@ -238,6 +240,7 @@ describe('ImageEnhancer', () => {
             <Image
               alt=""
               height={100}
+              sizes="100vw"
               src="/no-alt.jpg"
               unoptimized
               width={100}
@@ -327,6 +330,7 @@ describe('ImageEnhancer', () => {
               <Image
                 alt="Linked"
                 height={100}
+                sizes="100vw"
                 src="/linked.jpg"
                 unoptimized
                 width={100}
@@ -335,6 +339,7 @@ describe('ImageEnhancer', () => {
             <Image
               alt="Standalone"
               height={100}
+              sizes="100vw"
               src="/standalone.jpg"
               unoptimized
               width={100}

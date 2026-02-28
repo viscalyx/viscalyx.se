@@ -509,7 +509,7 @@ const BlogPostContent = ({
 
               {/* Author Bio */}
               <section
-                aria-label="Author biography"
+                aria-label={t('post.authorBio.ariaLabel')}
                 className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
                 data-testid="author-bio"
               >
