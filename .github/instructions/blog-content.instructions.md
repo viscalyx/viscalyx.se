@@ -37,7 +37,7 @@ category: 'Any category — reuse existing ones when possible (e.g., DevOps, Pow
 - Never skip heading levels
 - Code blocks: always specify language
 - Images: include alt text
-- For markdownlint `MD013`: disable before markdown tables, fenced code blocks and `<img>` tags, then re-enable immediately after each block
+- For markdownlint `MD013`: disable MD013 only for tables, fenced code blocks, and `<img>` tags that exceed 80 characters by adding a local disable/enable comment immediately around that specific block
 - Wrap long non-table/non-code lines at word boundaries around 80 chars
 - Never wrap frontmatter values (`---` YAML block at the top of a markdown file)
 - Never split a Markdown URL across lines; when a line has a Markdown link that starts prior to 80 chars, only wrap after the link closing parenthesis `)`
@@ -51,8 +51,6 @@ Regular blockquotes:
 ```markdown
 > [!QUOTE]
 > Quote text phrases from references
-
-> Regular blockquote without any special alert type. It maintains the original styling and behavior.
 ```
 
 ```markdown
