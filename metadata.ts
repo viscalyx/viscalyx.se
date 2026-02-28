@@ -1,1 +1,1 @@
-export { metadata } from './app/metadata'
+export { metadata } from '@/app/metadata'
