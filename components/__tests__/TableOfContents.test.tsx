@@ -107,6 +107,9 @@ describe('TableOfContents', () => {
     render(<TableOfContents items={mockItems} />)
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(mockItems.length)
+    buttons.forEach(button => {
+      expect(button).toHaveClass('min-h-[44px]')
+    })
   })
 
   it('applies indentation for level 3 items', () => {
