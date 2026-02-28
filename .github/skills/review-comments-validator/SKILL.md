@@ -39,7 +39,7 @@ Lint/format/spelling/type checking planning checklist:
 
 Verification checklist:
 
-1. Run lint, format, spelling, tests and type checks on changed files, use `npm run check` until clean
+1. Run `npm run check` to execute lint, format, spelling, tests, type-checking, and security audit across the full project until clean. Re-run `npm run check` after dependency changes.
 2. Run focused integration tests for affected behavior.
 3. Report command results per finding.
 
