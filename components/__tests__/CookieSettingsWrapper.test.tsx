@@ -30,7 +30,11 @@ describe('CookieSettingsWrapper', () => {
     expect(options.ssr).toBe(false)
     expect(options.loading).toBeTypeOf('function')
 
-    const { container } = render(options.loading?.())
+    if (typeof options.loading !== 'function') {
+      throw new Error('Expected dynamic loading fallback to be a function')
+    }
+
+    const { container } = render(options.loading())
     expect(container.querySelector('.animate-pulse')).toBeInTheDocument()
     expect(container.querySelectorAll('.h-4, .h-6')).toHaveLength(3)
   })

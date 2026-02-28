@@ -242,6 +242,9 @@ describe('CodeBlockEnhancer', () => {
     await act(async () => {
       await Promise.resolve()
     })
+    act(() => {
+      vi.advanceTimersByTime(16)
+    })
 
     expect(mockCreateRoot).toHaveBeenCalledTimes(1)
     expect(mockRender).toHaveBeenCalledTimes(1)

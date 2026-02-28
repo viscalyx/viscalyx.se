@@ -7,6 +7,7 @@ describe('file-dates', () => {
     vi.restoreAllMocks()
   })
 
+  // Intentional smoke checks against the real page-dates.json in this repository.
   it('returns Date objects for all static pages', () => {
     const dates = getStaticPageDates()
 
