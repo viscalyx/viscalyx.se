@@ -113,6 +113,7 @@
     "specialties": "Specialiteter",
     "learnMore": "Läs mer",
     "viewProfile": "Visa profil för {name}",
+    "viewProfileFallback": "Visa profil för {name}",
     "socialLinks": {
       "email": "E-post",
       "linkedin": "LinkedIn",
@@ -285,7 +286,8 @@
     "title": "Sidan Hittades Inte",
     "heading": "Sidan Hittades Inte",
     "description": "Tyvärr, sidan du letar efter finns inte eller har flyttats.",
-    "goHome": "Gå till Startsidan"
+    "goHome": "Gå till Startsidan",
+    "goHomeAriaLabel": "Gå till startsidan på aktuellt språk"
   },
   "error": {
     "title": "Något Gick Fel",
