@@ -98,7 +98,7 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
   }, [contentKey]) // Depend on contentKey to re-run when content changes
 
   return (
-    <span ref={rootRef} style={{ display: 'contents' }}>
+    <span className="contents" ref={rootRef}>
       {children}
     </span>
   )
