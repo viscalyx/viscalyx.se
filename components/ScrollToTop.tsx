@@ -38,7 +38,7 @@ const ScrollToTop = () => {
         <motion.button
           animate={{ opacity: 1, scale: 1 }}
           aria-label={t('ariaLabel')}
-          className="fixed bottom-24 right-8 z-50 bg-primary-600 dark:bg-primary-500 hover:bg-primary-700 dark:hover:bg-primary-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-900"
+          className="fixed bottom-24 right-8 z-50 min-h-[44px] min-w-[44px] bg-primary-600 dark:bg-primary-500 hover:bg-primary-700 dark:hover:bg-primary-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-900"
           exit={{ opacity: 0, scale: 0 }}
           initial={{ opacity: 0, scale: 0 }}
           onClick={scrollToTop}

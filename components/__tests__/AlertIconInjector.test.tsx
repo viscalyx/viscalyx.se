@@ -226,6 +226,26 @@ describe('AlertIconInjector', () => {
     expect(containers[0].textContent).not.toContain('stale')
   })
 
+  it('should replace stale pre-existing icon containers with a mismatched content key', async () => {
+    renderInjector(
+      'k1',
+      <div>
+        <div className="github-alert-title" data-alert-icon="note">
+          <span className="alert-icon-container" data-content-key="old">
+            stale
+          </span>
+          Note title
+        </div>
+      </div>,
+    )
+    await flushInjectionDelay()
+
+    const containers = document.querySelectorAll('.alert-icon-container')
+    expect(containers).toHaveLength(1)
+    expect(containers[0]).toHaveAttribute('data-content-key', 'k1')
+    expect(containers[0].textContent).not.toContain('stale')
+  })
+
   it('should cancel pending injection when unmounted before timeout fires', async () => {
     const { unmount } = renderInjector(
       'k1',

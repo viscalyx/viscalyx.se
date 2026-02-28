@@ -9,9 +9,9 @@ interface CodeBlockEnhancerProps {
   contentLoaded?: boolean
 }
 
-export default function CodeBlockEnhancer({
+const CodeBlockEnhancer = ({
   contentLoaded = true,
-}: CodeBlockEnhancerProps) {
+}: CodeBlockEnhancerProps) => {
   const locale = useLocale()
   const messages = useMessages()
 
@@ -125,3 +125,5 @@ export default function CodeBlockEnhancer({
   // This component doesn't render anything visible itself
   return null
 }
+
+export default CodeBlockEnhancer

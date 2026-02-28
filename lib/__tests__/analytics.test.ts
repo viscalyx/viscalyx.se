@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { invalidateConsentCache, useBlogAnalytics } from '@/lib/analytics'
+import { consentEvents } from '@/lib/consent-events'
 import { hasConsent } from '@/lib/cookie-consent'
 
 // Mock the cookie consent module
@@ -108,6 +109,40 @@ describe('useBlogAnalytics', () => {
     })
 
     expect(global.fetch).not.toHaveBeenCalled()
+  })
+
+  it('should refresh cached consent state even when passive tracking options are disabled', async () => {
+    vi.mocked(hasConsent).mockReturnValue(false)
+
+    const { result } = renderHook(() =>
+      useBlogAnalytics(mockBlogData, {
+        trackReadProgress: false,
+        trackTimeSpent: false,
+      }),
+    )
+
+    await act(async () => {
+      await result.current.trackEvent(50, 30)
+    })
+    expect(global.fetch).not.toHaveBeenCalled()
+
+    vi.mocked(hasConsent).mockReturnValue(true)
+    act(() => {
+      consentEvents.emit({
+        type: 'consent-changed',
+        settings: {
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: true,
+        },
+      })
+    })
+
+    await act(async () => {
+      await result.current.trackEvent(75, 45)
+    })
+
+    expect(global.fetch).toHaveBeenCalledTimes(1)
   })
 
   it('should not track scroll events when analytics consent is denied', async () => {

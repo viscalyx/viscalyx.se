@@ -160,10 +160,12 @@ export function useBlogAnalytics(
   )
 
   useEffect(() => {
-    if (!trackReadProgress && !trackTimeSpent) return
-
     // Setup consent cache invalidation listener
     const cleanupConsentListener = setupConsentCacheInvalidation()
+
+    if (!trackReadProgress && !trackTimeSpent) {
+      return cleanupConsentListener
+    }
 
     let throttleTimer: NodeJS.Timeout | null = null
 

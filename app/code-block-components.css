@@ -138,7 +138,6 @@
 .blog-content pre[class*="language-"] {
   max-height: 500px; /* limit vertical expansion */
   padding-top: 1rem; /* extra space between code and top of container */
-  overflow-clip-margin: content-box;
   overflow-y: auto; /* prevent uncontrolled height growth */
 }
 

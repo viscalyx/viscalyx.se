@@ -226,7 +226,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
             >
               <button
                 aria-current={activeId === item.id ? 'location' : undefined}
-                className={`text-left w-full min-h-[44px] transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
+                className={`text-left w-full min-h-[44px] min-w-[44px] transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
                   activeId === item.id
                     ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'
                     : 'text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400'

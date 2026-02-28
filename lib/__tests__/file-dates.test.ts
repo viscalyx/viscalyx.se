@@ -75,4 +75,25 @@ describe('file-dates', () => {
     expect(dates.terms.toISOString()).toBe('2024-01-01T00:00:00.000Z')
     expect(dates.cookies.toISOString()).toBe('2024-01-01T00:00:00.000Z')
   })
+
+  it('rejects non-ISO and impossible calendar dates while keeping valid ISO values', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true)
+    vi.spyOn(fs, 'readFileSync').mockImplementation(() =>
+      JSON.stringify({
+        home: 'March 1, 2025',
+        blog: '2025-02-30T00:00:00.000Z',
+        privacy: '2025-01-03T00:00:00.000Z',
+        terms: '2025-01-03',
+        cookies: '2025-01-03T00:00:00+02:00',
+      }),
+    )
+
+    const dates = getStaticPageDates()
+
+    expect(dates.home.toISOString()).toBe('2024-01-01T00:00:00.000Z')
+    expect(dates.blog.toISOString()).toBe('2024-01-01T00:00:00.000Z')
+    expect(dates.privacy.toISOString()).toBe('2025-01-03T00:00:00.000Z')
+    expect(dates.terms.toISOString()).toBe('2025-01-03T00:00:00.000Z')
+    expect(dates.cookies.toISOString()).toBe('2025-01-02T22:00:00.000Z')
+  })
 })

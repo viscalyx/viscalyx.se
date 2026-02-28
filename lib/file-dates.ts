@@ -17,8 +17,32 @@ const FALLBACK_PAGE_DATES: StaticPageDateMap = {
   cookies: '2024-01-01T00:00:00.000Z',
 }
 
+const ISO_8601_REGEX =
+  /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])(?:T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{1,3})?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)?)?$/
+
+function hasValidCalendarDate(
+  year: number,
+  month: number,
+  day: number,
+): boolean {
+  const maxDay = new Date(Date.UTC(year, month, 0)).getUTCDate()
+  return day <= maxDay
+}
+
 function isValidISODate(value: unknown): value is string {
   if (typeof value !== 'string') return false
+
+  const match = value.match(ISO_8601_REGEX)
+  if (!match) return false
+
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+
+  if (!hasValidCalendarDate(year, month, day)) {
+    return false
+  }
+
   return !Number.isNaN(Date.parse(value))
 }
 
