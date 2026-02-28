@@ -354,7 +354,7 @@ describe('slug-utils', () => {
       const html = `<h2 id="existing'id">My Section</h2>`
       const result = await addHeadingIds(html)
 
-      expect(result).toContain('href="#&quot;existing&#x27;id&quot;"')
+      expect(result).toContain('href="#existing&#x27;id"')
       expect(result).not.toContain(`href="#existing'id"`)
     })
 
