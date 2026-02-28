@@ -1,9 +1,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-type StaticPageDateKey = 'home' | 'blog' | 'privacy' | 'terms' | 'cookies'
-
-type StaticPageDateMap = Record<StaticPageDateKey, string>
+interface StaticPageDateMap {
+  blog: string
+  cookies: string
+  home: string
+  privacy: string
+  terms: string
+}
 
 const FALLBACK_PAGE_DATES: StaticPageDateMap = {
   home: '2024-01-01T00:00:00.000Z',
@@ -29,26 +33,29 @@ function loadPageDatesData(): StaticPageDateMap {
     const raw = fs.readFileSync(pageDatesPath, 'utf8')
     const parsed = JSON.parse(raw) as Partial<StaticPageDateMap>
 
-    return {
-      home: isValidISODate(parsed.home)
-        ? parsed.home
-        : FALLBACK_PAGE_DATES.home,
-      blog: isValidISODate(parsed.blog)
-        ? parsed.blog
-        : FALLBACK_PAGE_DATES.blog,
-      privacy: isValidISODate(parsed.privacy)
-        ? parsed.privacy
-        : FALLBACK_PAGE_DATES.privacy,
-      terms: isValidISODate(parsed.terms)
-        ? parsed.terms
-        : FALLBACK_PAGE_DATES.terms,
-      cookies: isValidISODate(parsed.cookies)
-        ? parsed.cookies
-        : FALLBACK_PAGE_DATES.cookies,
+    const sanitized = {} as StaticPageDateMap
+    const keys = Object.keys(FALLBACK_PAGE_DATES) as Array<
+      keyof StaticPageDateMap
+    >
+
+    for (const key of keys) {
+      sanitized[key] = isValidISODate(parsed[key])
+        ? parsed[key]
+        : FALLBACK_PAGE_DATES[key]
     }
+
+    return sanitized
   } catch {
     return FALLBACK_PAGE_DATES
   }
+}
+
+export interface StaticPageDates {
+  blog: Date
+  cookies: Date
+  home: Date
+  privacy: Date
+  terms: Date
 }
 
 /**
@@ -61,7 +68,7 @@ function loadPageDatesData(): StaticPageDateMap {
  * 2. This will read Git commit history and update lib/page-dates.json
  * 3. The updated dates will be used in the sitemap and pages
  */
-export function getStaticPageDates() {
+export function getStaticPageDates(): StaticPageDates {
   const pageDatesData = loadPageDatesData()
 
   return {
