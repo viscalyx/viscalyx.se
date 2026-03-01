@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import Footer from '@/components/Footer'
 
@@ -119,17 +119,19 @@ describe('Footer', () => {
   it('renders external link icons for external links', () => {
     render(<Footer />)
     const communityLink = screen.getByText('community')
-    const icon = communityLink.querySelector(
-      '[data-testid="external-link-icon"]',
-    )
-    expect(icon).toBeInTheDocument()
+    const parentLink = communityLink.closest('a')!
+    expect(
+      within(parentLink).getByText('opensInNewTab'),
+    ).toBeInTheDocument()
   })
 
   it('does not render external link icons for internal links', () => {
     render(<Footer />)
     const privacyLink = screen.getByText('privacyPolicy')
-    const icon = privacyLink.querySelector('[data-testid="external-link-icon"]')
-    expect(icon).not.toBeInTheDocument()
+    const parentLink = privacyLink.closest('a')!
+    expect(
+      within(parentLink).queryByText('opensInNewTab'),
+    ).not.toBeInTheDocument()
   })
 
   it('renders social links with correct hrefs', () => {

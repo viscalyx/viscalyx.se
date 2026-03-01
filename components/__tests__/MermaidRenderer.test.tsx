@@ -539,10 +539,11 @@ describe('MermaidRenderer', () => {
         // Verify no processing initially
         vi.advanceTimersByTime(200)
         expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
-        vi.useRealTimers()
 
         // Change contentLoaded to true
         rerender(<MermaidRenderer contentLoaded={true} />)
+
+        await vi.runAllTimersAsync()
 
         await waitFor(() => {
           expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()

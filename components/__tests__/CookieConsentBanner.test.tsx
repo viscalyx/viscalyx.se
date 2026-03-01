@@ -240,6 +240,7 @@ describe('CookieConsentBanner', () => {
       const customizeButtons = screen.getAllByRole('button', {
         name: 'Customize Settings',
       })
+      expect(customizeButtons).toHaveLength(1)
       await user.click(customizeButtons[0])
 
       await waitFor(() => {
@@ -258,14 +259,16 @@ describe('CookieConsentBanner', () => {
     })
 
     it('does not change body layout styles when banner is visible', async () => {
+      const baselinePadding = document.body.style.paddingBottom
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
-        expect(document.body.style.paddingBottom).toBe('')
+        expect(document.body.style.paddingBottom).toBe(baselinePadding)
       })
     })
 
     it('keeps body layout styles unchanged when banner is closed', async () => {
+      const baselinePadding = document.body.style.paddingBottom
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
@@ -275,7 +278,7 @@ describe('CookieConsentBanner', () => {
       await user.click(screen.getByText('Accept All'))
 
       await waitFor(() => {
-        expect(document.body.style.paddingBottom).toBe('')
+        expect(document.body.style.paddingBottom).toBe(baselinePadding)
       })
     })
 

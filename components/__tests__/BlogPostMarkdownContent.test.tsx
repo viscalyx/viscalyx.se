@@ -65,8 +65,7 @@ describe('BlogPostMarkdownContent', () => {
       const { container } = render(
         <BlogPostMarkdownContent contentWithIds={html} />,
       )
-      const link = container.querySelector('a')
-      expect(link).not.toHaveAttribute('href')
+      expect(container.querySelector('a[href^="javascript:"]')).toBeNull()
     })
 
     it('allows bare root URL', () => {

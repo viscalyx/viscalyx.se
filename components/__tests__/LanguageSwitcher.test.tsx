@@ -227,7 +227,7 @@ describe('LanguageSwitcher component', () => {
       expect(pushMock).toHaveBeenCalledWith('/en/test')
     })
 
-    it('Home key moves focus to first option', () => {
+    it('Home key moves focus to first option', async () => {
       render(<LanguageSwitcher />)
       const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
@@ -238,10 +238,12 @@ describe('LanguageSwitcher component', () => {
       fireEvent.keyDown(toggleButton, { key: 'End' })
       fireEvent.keyDown(toggleButton, { key: 'Home' })
 
-      expect(toggleButton).toHaveAttribute(
-        'aria-activedescendant',
-        'language-option-en',
-      )
+      await waitFor(() => {
+        expect(toggleButton).toHaveAttribute(
+          'aria-activedescendant',
+          'language-option-en',
+        )
+      })
     })
 
     it('End key moves focus to last option', async () => {

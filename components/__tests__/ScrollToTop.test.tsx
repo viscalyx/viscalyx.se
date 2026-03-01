@@ -8,7 +8,7 @@ vi.mock('next-intl', () => ({
 
 describe('ScrollToTop', () => {
   beforeEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,

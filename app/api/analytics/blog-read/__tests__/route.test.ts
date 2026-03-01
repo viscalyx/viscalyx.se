@@ -19,7 +19,7 @@ describe('blog-read analytics route', () => {
   })
 
   const createRequest = (
-    body: Record<string, unknown>,
+    body: unknown,
     headers?: HeadersInit,
   ) =>
     new Request('https://viscalyx.org/api/analytics/blog-read', {
