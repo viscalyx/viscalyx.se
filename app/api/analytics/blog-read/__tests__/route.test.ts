@@ -115,6 +115,23 @@ describe('blog-read analytics route', () => {
     })
   })
 
+  it('returns 400 for invalid JSON body', async () => {
+    const req = new Request('https://viscalyx.org/api/analytics/blog-read', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://viscalyx.org',
+      },
+      body: 'not valid json{{{',
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Invalid JSON',
+    })
+  })
+
   it('returns 400 when required fields are not non-empty strings', async () => {
     const req = createRequest({
       slug: ' ',
@@ -262,8 +279,7 @@ describe('blog-read analytics route', () => {
     )
   })
 
-  it('returns 500 when request parsing throws', async () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  it('returns 400 when request parsing throws', async () => {
     const req = {
       headers: new Headers({ origin: 'https://viscalyx.org' }),
       json: async () => {
@@ -273,11 +289,7 @@ describe('blog-read analytics route', () => {
 
     const res = await POST(req)
 
-    expect(res.status).toBe(500)
-    expect(await res.json()).toEqual({ error: 'Failed to track blog read' })
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Error tracking blog read:',
-      expect.any(Error),
-    )
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ error: 'Invalid JSON' })
   })
 })

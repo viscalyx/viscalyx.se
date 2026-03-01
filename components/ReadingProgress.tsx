@@ -27,13 +27,21 @@ const ReadingProgress = ({
   const targetRef = useRef<Element | null>(null)
   const endTargetRef = useRef<Element | null>(null)
   const rafId = useRef<number>(0)
+  // Track invalid selectors to avoid re-querying on every scroll tick
+  const targetSelectorInvalidRef = useRef(false)
+  const endTargetSelectorInvalidRef = useRef(false)
 
   useEffect(() => {
+    // Reset invalid-selector flags when selectors change
+    targetSelectorInvalidRef.current = false
+    endTargetSelectorInvalidRef.current = false
+
     // Query DOM elements once on mount / when selectors change
     try {
       targetRef.current = document.querySelector(target)
     } catch {
       targetRef.current = null
+      targetSelectorInvalidRef.current = true
     }
     try {
       endTargetRef.current = endTarget
@@ -41,25 +49,32 @@ const ReadingProgress = ({
         : null
     } catch {
       endTargetRef.current = null
+      endTargetSelectorInvalidRef.current = true
     }
 
     const updateScrollProgress = () => {
       // Lazily re-query refs that haven't been found yet (handles lazy rendering)
-      if (!targetRef.current || !targetRef.current.isConnected) {
+      if (
+        !targetSelectorInvalidRef.current &&
+        (!targetRef.current || !targetRef.current.isConnected)
+      ) {
         try {
           targetRef.current = document.querySelector(target)
         } catch {
           targetRef.current = null
+          targetSelectorInvalidRef.current = true
         }
       }
       if (
         endTarget &&
+        !endTargetSelectorInvalidRef.current &&
         (!endTargetRef.current || !endTargetRef.current.isConnected)
       ) {
         try {
           endTargetRef.current = document.querySelector(endTarget)
         } catch {
           endTargetRef.current = null
+          endTargetSelectorInvalidRef.current = true
         }
       }
 
