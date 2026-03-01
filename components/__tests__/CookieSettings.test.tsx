@@ -20,8 +20,8 @@ vi.mock('@/lib/cookie-consent', () => ({
     {
       name: 'test-cookie',
       category: 'strictly-necessary' as const,
-      purpose: 'Test purpose',
-      duration: '1 year',
+      purposeKey: 'cookies.testCookie.purpose',
+      durationKey: 'cookies.testCookie.duration',
       provider: 'Test Provider',
     },
   ],
@@ -66,6 +66,8 @@ vi.mock('next-intl', () => ({
       duration: 'Duration',
       provider: 'Provider',
       lastUpdated: 'Last updated',
+      'cookies.testCookie.purpose': 'Test purpose',
+      'cookies.testCookie.duration': '1 year',
     }
     return translations[key] || key
   },

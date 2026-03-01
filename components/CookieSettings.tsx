@@ -155,7 +155,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     const data = {
       consentSettings: settings,
       consentTimestamp: consentTimestamp?.toISOString(),
-      cookieRegistry: cookieRegistry,
+      cookieRegistry: cookieRegistry.map(cookie => ({
+        name: cookie.name,
+        category: cookie.category,
+        purpose: t(cookie.purposeKey),
+        duration: t(cookie.durationKey),
+        ...(cookie.provider && { provider: cookie.provider }),
+      })),
       exportTimestamp: new Date().toISOString(),
     }
 
@@ -348,13 +354,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                           {cookie.name}
                         </div>
                         <div className="text-gray-700 dark:text-gray-300 mb-2">
-                          {cookie.purpose}
+                          {t(cookie.purposeKey)}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
                           <div>
                             {t('duration')}:{' '}
                             <span className="font-medium">
-                              {cookie.duration}
+                              {t(cookie.durationKey)}
                             </span>
                           </div>
                           {cookie.provider && (

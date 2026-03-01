@@ -354,6 +354,33 @@
     "viewCookiesAriaLabel": "Visa kakor för {categoryName} ({count} kakor)",
     "duration": "Varaktighet",
     "provider": "Leverantör",
+    "cookies": {
+      "theme": {
+        "purpose": "Lagrar användarens temainställning (ljust/mörkt/system)",
+        "duration": "1 år"
+      },
+      "language": {
+        "purpose": "Lagrar användarens språkpreferens (en/sv)",
+        "duration": "1 år"
+      },
+      "consent": {
+        "purpose": "Lagrar användarens samtyckesinställningar för kakor",
+        "duration": "1 år"
+      },
+      "cfAnalytics": {
+        "purpose": "Cloudflare Analytics Engine datainsamling (land, webbläsare)",
+        "purposeWithVisitorId": "Cloudflare Analytics Engine datainsamling (land, webbläsare, pseudonymiserat besökar-ID)",
+        "duration": "Endast session - data bearbetas på serversidan"
+      },
+      "blogReading": {
+        "purpose": "Spårar bloggläsningsbeteende (framsteg, spenderad tid) för innehållsoptimering",
+        "duration": "Endast session - data bearbetas på serversidan"
+      },
+      "session": {
+        "purpose": "Upprätthåller användarens sessionstillstånd",
+        "duration": "Session"
+      }
+    },
     "categories": {
       "title": "Kakkategorier",
       "strictly-necessary": {

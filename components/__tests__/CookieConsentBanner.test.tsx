@@ -21,8 +21,8 @@ vi.mock('@/lib/cookie-consent', () => ({
     {
       name: 'theme',
       category: 'preferences',
-      purpose: 'Stores user theme preference',
-      duration: '1 year',
+      purposeKey: 'cookies.theme.purpose',
+      durationKey: 'cookies.theme.duration',
       provider: 'Site Provider',
     },
   ],
@@ -58,6 +58,12 @@ const messages = {
         name: 'Analytics Cookies',
         description:
           'These cookies help us understand how visitors interact with our website.',
+      },
+    },
+    cookies: {
+      theme: {
+        purpose: 'Stores user theme preference',
+        duration: '1 year',
       },
     },
   },

@@ -373,9 +373,9 @@ const CookieConsentBanner = () => {
                                     <div className="font-mono font-medium">
                                       {cookie.name}
                                     </div>
-                                    <div>{cookie.purpose}</div>
+                                    <div>{t(cookie.purposeKey)}</div>
                                     <div className="text-gray-400 dark:text-gray-500">
-                                      {t('duration')}: {cookie.duration}
+                                      {t('duration')}: {t(cookie.durationKey)}
                                       {cookie.provider &&
                                         ` • ${t('provider')}: ${cookie.provider}`}
                                     </div>

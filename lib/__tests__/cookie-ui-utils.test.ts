@@ -34,8 +34,8 @@ describe('getCookiesForCategory', () => {
     result.forEach(cookie => {
       expect(cookie).toHaveProperty('name')
       expect(cookie).toHaveProperty('category')
-      expect(cookie).toHaveProperty('purpose')
-      expect(cookie).toHaveProperty('duration')
+      expect(cookie).toHaveProperty('purposeKey')
+      expect(cookie).toHaveProperty('durationKey')
     })
   })
 })
