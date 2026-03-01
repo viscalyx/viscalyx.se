@@ -160,7 +160,9 @@ describe('LanguageSwitcher component', () => {
       )
 
       // Second ArrowDown wraps back to the first option.
-      fireEvent.keyDown(document.activeElement ?? englishOption, {
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      expect(document.activeElement).toBe(swedishOption)
+      fireEvent.keyDown(swedishOption, {
         key: 'ArrowDown',
       })
       await waitFor(() =>
@@ -199,7 +201,9 @@ describe('LanguageSwitcher component', () => {
       )
 
       // Enter selects the currently focused locale.
-      fireEvent.keyDown(document.activeElement ?? englishOption, {
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      expect(document.activeElement).toBe(swedishOption)
+      fireEvent.keyDown(swedishOption, {
         key: 'Enter',
       })
       expect(pushMock).toHaveBeenCalledWith('/sv/test')

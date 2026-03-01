@@ -270,13 +270,10 @@ describe('BlogPostGrid', () => {
     const { container } = renderGrid({ allPosts: posts })
 
     const article = container.querySelector('article')
-    expect(article).toBeTruthy()
-    if (!article) {
-      throw new Error('Expected article element to be present')
-    }
-    expect(article.textContent).toContain('2026-01-15')
-    expect(article.textContent).toContain('5 min read')
+    expect(article).not.toBeNull()
+    expect(article?.textContent).toContain('2026-01-15')
+    expect(article?.textContent).toContain('5 min read')
     // The category badge text should appear in the article
-    expect(article.textContent).toContain('DevOps')
+    expect(article?.textContent).toContain('DevOps')
   })
 })

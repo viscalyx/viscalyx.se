@@ -184,6 +184,7 @@ describe('MermaidRenderer', () => {
         )
       })
 
+      vi.mocked(mermaid.initialize).mockClear()
       document.documentElement.classList.add('dark')
 
       await waitFor(() => {
