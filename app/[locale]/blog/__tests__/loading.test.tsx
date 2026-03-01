@@ -4,9 +4,7 @@ import BlogLoading from '../loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size: string }) => (
-    <output data-size={size}>
-      Loading...
-    </output>
+    <output data-size={size}>Loading...</output>
   ),
 }))
 

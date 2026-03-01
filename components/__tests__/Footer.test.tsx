@@ -119,18 +119,20 @@ describe('Footer', () => {
   it('renders external link icons for external links', () => {
     render(<Footer />)
     const communityLink = screen.getByText('community')
-    const parentLink = communityLink.closest('a')!
+    const parentLink = communityLink.closest('a')
+    expect(parentLink).not.toBeNull()
     expect(
-      within(parentLink).getByText('opensInNewTab'),
+      within(parentLink as HTMLElement).getByText('opensInNewTab'),
     ).toBeInTheDocument()
   })
 
   it('does not render external link icons for internal links', () => {
     render(<Footer />)
     const privacyLink = screen.getByText('privacyPolicy')
-    const parentLink = privacyLink.closest('a')!
+    const parentLink = privacyLink.closest('a')
+    expect(parentLink).not.toBeNull()
     expect(
-      within(parentLink).queryByText('opensInNewTab'),
+      within(parentLink as HTMLElement).queryByText('opensInNewTab'),
     ).not.toBeInTheDocument()
   })
 
