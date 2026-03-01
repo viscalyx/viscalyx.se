@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-interface ReadingProgressProps {
+interface ComponentProps {
   endTarget?: string // CSS selector for the element where reading should be considered complete (e.g., author bio)
   target?: string // CSS selector for the content area to track
 }
@@ -15,10 +15,7 @@ function clampProgress(progress: number): number {
   return Math.min(Math.max(progress, 0), 100)
 }
 
-const ReadingProgress = ({
-  target = '.prose',
-  endTarget,
-}: ReadingProgressProps) => {
+const ReadingProgress = ({ target = '.prose', endTarget }: ComponentProps) => {
   const t = useTranslations('readingProgress')
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
@@ -176,12 +173,10 @@ const ReadingProgress = ({
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={Math.round(clampProgress(scrollProgress))}
-      className="fixed top-0 left-0 right-0 h-1 bg-linear-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400 z-50 origin-left will-change-transform"
+      className="fixed top-0 left-0 right-0 h-1 bg-linear-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400 z-50 origin-left will-change-transform transition-transform duration-100 ease-linear"
       role="progressbar"
       style={{
         transform: `scaleX(${isVisible ? scrollProgress / 100 : 0})`,
-        transformOrigin: 'left center',
-        transition: 'transform 100ms linear',
       }}
     />
   )

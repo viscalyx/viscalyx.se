@@ -20,9 +20,14 @@ const Team = () => {
 
   const getViewProfileAriaLabel = (name: string) => {
     const translated = t('viewProfile', { name })
-    return translated === 'viewProfile'
-      ? t('viewProfileFallback', { name })
-      : translated
+    if (translated !== 'viewProfile') {
+      return translated
+    }
+    const fallback = t('viewProfileFallback', { name })
+    if (fallback !== 'viewProfileFallback') {
+      return fallback
+    }
+    return `View profile of ${name}`
   }
 
   const hasSocialTranslationKey = (
