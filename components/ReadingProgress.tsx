@@ -30,19 +30,37 @@ const ReadingProgress = ({
 
   useEffect(() => {
     // Query DOM elements once on mount / when selectors change
-    targetRef.current = document.querySelector(target)
-    endTargetRef.current = endTarget ? document.querySelector(endTarget) : null
+    try {
+      targetRef.current = document.querySelector(target)
+    } catch {
+      targetRef.current = null
+    }
+    try {
+      endTargetRef.current = endTarget
+        ? document.querySelector(endTarget)
+        : null
+    } catch {
+      endTargetRef.current = null
+    }
 
     const updateScrollProgress = () => {
       // Lazily re-query refs that haven't been found yet (handles lazy rendering)
       if (!targetRef.current || !targetRef.current.isConnected) {
-        targetRef.current = document.querySelector(target)
+        try {
+          targetRef.current = document.querySelector(target)
+        } catch {
+          targetRef.current = null
+        }
       }
       if (
         endTarget &&
         (!endTargetRef.current || !endTargetRef.current.isConnected)
       ) {
-        endTargetRef.current = document.querySelector(endTarget)
+        try {
+          endTargetRef.current = document.querySelector(endTarget)
+        } catch {
+          endTargetRef.current = null
+        }
       }
 
       const targetElement = targetRef.current

@@ -109,7 +109,7 @@ export default async function BlogPostPage({ params }: Props) {
   const tTeam = await getTranslations({ locale, namespace: 'team' })
 
   // Process content server-side: add heading IDs and extract ToC
-  const contentWithIds = await addHeadingIds(content, {}, t)
+  const contentWithIds = await addHeadingIds(content, { locale }, t)
   const tableOfContents = extractTableOfContentsServer(contentWithIds)
 
   // Get team member data in serializable format (no React components)

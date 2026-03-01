@@ -5,7 +5,7 @@ import { AlertTriangle, Info, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type ReactNode, useEffect, useId, useRef } from 'react'
 
-interface ConfirmationModalProps {
+interface ComponentProps {
   cancelText: string
   closeAriaLabel?: string
   confirmIcon?: ReactNode
@@ -31,7 +31,7 @@ const ConfirmationModal = ({
   confirmLoading = false,
   confirmIcon,
   closeAriaLabel,
-}: ConfirmationModalProps) => {
+}: ComponentProps) => {
   const t = useTranslations('confirmationModal')
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)

@@ -11,6 +11,7 @@ describe('About component', () => {
   let container: HTMLElement
 
   beforeEach(() => {
+    vi.clearAllMocks()
     container = render(<About />).container
   })
 

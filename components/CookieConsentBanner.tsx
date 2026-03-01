@@ -123,8 +123,10 @@ const CookieConsentBanner = () => {
     }
 
     if (isVisible) {
-      // Store the previously focused element
-      previousActiveElement.current = document.activeElement as HTMLElement
+      // Store the previously focused element only once when the banner first becomes visible
+      if (!previousActiveElement.current) {
+        previousActiveElement.current = document.activeElement as HTMLElement
+      }
 
       // Add keyboard event listener for focus trap
       document.addEventListener('keydown', handleKeyDown)

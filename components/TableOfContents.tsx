@@ -121,7 +121,8 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         observeAvailableHeadings()
         queueScrollPositionUpdate()
       })
-      mutationObserver.observe(document.body, {
+      const observeTarget = document.querySelector('main') ?? document.body
+      mutationObserver.observe(observeTarget, {
         childList: true,
         subtree: true,
       })

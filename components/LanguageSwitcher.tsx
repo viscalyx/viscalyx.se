@@ -63,7 +63,7 @@ const LanguageSwitcher = () => {
 
   const handleLanguageChange = useCallback(
     (newLocale: string) => {
-      const currentPath = pathname.replace(/^\/[a-z]{2}/, '') || '/'
+      const currentPath = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/'
 
       // Save language preference if user has consented to preferences cookies
       saveLanguagePreference(newLocale)

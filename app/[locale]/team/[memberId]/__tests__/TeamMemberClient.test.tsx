@@ -54,7 +54,7 @@ const mockMember: SerializableTeamMember = {
 
 describe('TeamMemberClient', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.restoreAllMocks()
   })
 
   it('renders member name and role', () => {

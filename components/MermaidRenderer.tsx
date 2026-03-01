@@ -47,12 +47,49 @@ interface MermaidRendererProps {
   contentLoaded?: boolean
 }
 
+/**
+ * Shared DOMPurify options for sanitizing rendered Mermaid SVG output.
+ * Removes XSS vectors while preserving SVG-specific attributes that
+ * flowcharts and other diagram types rely on.
+ */
+export const SVG_SANITIZE_OPTIONS: {
+  ADD_ATTR: string[]
+  ADD_TAGS: string[]
+  ALLOW_DATA_ATTR: boolean
+  FORBID_ATTR: string[]
+  FORBID_TAGS: string[]
+  KEEP_CONTENT: boolean
+} = {
+  FORBID_TAGS: ['script'],
+  FORBID_ATTR: [
+    'onclick',
+    'onload',
+    'onerror',
+    'onmouseover',
+    'onmouseout',
+    'onfocus',
+    'onblur',
+  ],
+  ADD_TAGS: ['foreignObject'],
+  ADD_ATTR: [
+    'xmlns',
+    'xmlns:xlink',
+    'xml:space',
+    'dominant-baseline',
+    'text-anchor',
+  ],
+  ALLOW_DATA_ATTR: true,
+  KEEP_CONTENT: true,
+}
+
 const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
   const processedDiagrams = useRef(new Set<Element>())
 
   useEffect(() => {
     // Only run if content is loaded
     if (!contentLoaded) return
+
+    let cancelled = false
 
     const getTheme = () => {
       return document.documentElement.classList.contains('dark')
@@ -64,6 +101,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
+        if (cancelled) return
         const currentTheme = getTheme()
 
         // Configure mermaid with default settings
@@ -108,29 +146,9 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
           try {
             const diagramId = `mermaid-diagram-theme-${Date.now()}-${i}`
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
+            if (cancelled) continue
 
-            const cleanSvg = DOMPurify.sanitize(svg, {
-              FORBID_TAGS: ['script'],
-              FORBID_ATTR: [
-                'onclick',
-                'onload',
-                'onerror',
-                'onmouseover',
-                'onmouseout',
-                'onfocus',
-                'onblur',
-              ],
-              ADD_TAGS: ['foreignObject'],
-              ADD_ATTR: [
-                'xmlns',
-                'xmlns:xlink',
-                'xml:space',
-                'dominant-baseline',
-                'text-anchor',
-              ],
-              ALLOW_DATA_ATTR: true,
-              KEEP_CONTENT: true,
-            })
+            const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
 
             diagramContainer.textContent = ''
             const tempDiv = document.createElement('div')
@@ -203,30 +221,10 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
+            if (cancelled) continue
 
             // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
-            const cleanSvg = DOMPurify.sanitize(svg, {
-              FORBID_TAGS: ['script'],
-              FORBID_ATTR: [
-                'onclick',
-                'onload',
-                'onerror',
-                'onmouseover',
-                'onmouseout',
-                'onfocus',
-                'onblur',
-              ],
-              ADD_TAGS: ['foreignObject'], // Explicitly allow foreignObject which flowcharts use for text
-              ADD_ATTR: [
-                'xmlns',
-                'xmlns:xlink',
-                'xml:space',
-                'dominant-baseline',
-                'text-anchor',
-              ], // Allow SVG text attributes
-              ALLOW_DATA_ATTR: true,
-              KEEP_CONTENT: true,
-            })
+            const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
 
             // Clear container and safely append SVG
             diagramContainer.textContent = ''
@@ -303,6 +301,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     })
 
     return () => {
+      cancelled = true
       clearTimeout(timer)
       rootObserver.disconnect()
     }
