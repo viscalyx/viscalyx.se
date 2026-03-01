@@ -398,7 +398,7 @@ describe('BlogPostPage', () => {
 
       expect(mockAddHeadingIds).toHaveBeenCalledWith(
         '<h2>Test</h2><p>Content</p>',
-        {},
+        { locale: 'en' },
         expect.any(Function),
       )
     })

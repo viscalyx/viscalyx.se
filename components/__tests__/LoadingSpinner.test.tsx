@@ -8,6 +8,10 @@ vi.mock('next-intl', () => ({
 }))
 
 describe('LoadingSpinner', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders an accessible spinner', () => {
     render(<LoadingSpinner />)
     // cspell:disable-next-line -- translation key returned by mock

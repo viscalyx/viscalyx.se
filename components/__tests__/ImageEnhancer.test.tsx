@@ -31,11 +31,7 @@ vi.mock('@/components/ImageModal', () => ({
     triggerElement,
   }: MockImageModalProps) =>
     isOpen ? (
-      <div
-        data-testid="image-modal"
-        data-trigger={triggerElement?.tagName}
-        role="dialog"
-      >
+      <div data-trigger={triggerElement?.tagName} role="dialog">
         <button onClick={onClose} type="button">
           Close
         </button>

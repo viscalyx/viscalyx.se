@@ -81,7 +81,7 @@ describe('MermaidRenderer', () => {
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
     document.body.innerHTML = ''
     document.documentElement.classList.remove('dark')
   })
