@@ -163,6 +163,7 @@
     "title": "Bidrag till Öppen",
     "titleHighlight": "Källkod",
     "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med open source hjälper till att främja automation och DevOps-praxis världen över.",
+    "projectsListLabel": "Projekt med öppen källkod",
     "stats": {
       "projects": {
         "value": "80+",

@@ -163,6 +163,7 @@
     "title": "Open Source",
     "titleHighlight": "Contributions",
     "description": "We believe in giving back to the community. Our active contributions to open-source projects help advance automation and DevOps practices worldwide.",
+    "projectsListLabel": "Open source projects",
     "stats": {
       "projects": {
         "value": "80+",
