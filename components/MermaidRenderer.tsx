@@ -90,6 +90,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     if (!contentLoaded) return
 
     let cancelled = false
+    let currentRunId = 0
 
     const getTheme = () => {
       return document.documentElement.classList.contains('dark')
@@ -98,10 +99,13 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     }
 
     const initializeMermaid = async () => {
+      const runId = ++currentRunId
+      const isStale = () => cancelled || runId !== currentRunId
+
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
-        if (cancelled) return
+        if (isStale()) return
         const currentTheme = getTheme()
 
         // Configure mermaid with default settings
@@ -146,7 +150,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
           try {
             const diagramId = `mermaid-diagram-theme-${Date.now()}-${i}`
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
-            if (cancelled) continue
+            if (isStale()) continue
 
             const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
 
@@ -221,7 +225,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
-            if (cancelled) continue
+            if (isStale()) continue
 
             // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
             const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
