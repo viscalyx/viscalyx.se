@@ -58,7 +58,7 @@ You can use the following alert types in your markdown:
 <!-- markdownlint-enable MD013 -->
 
 > [!NOTE]
-> Highlights information that users should take into account, even when
+> Highlights information that users should consider, even when
 > skimming.
 
 <!-- markdownlint-disable MD013 -->
