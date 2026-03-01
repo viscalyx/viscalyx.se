@@ -29,8 +29,10 @@ Follow Biome import organization in this repo. Do not enforce alias-first orderi
 
 1. Third-party/framework packages (`next`, `next/*`, `next-intl`, `react`, `framer-motion`, etc.)
 2. Path alias imports (`@/lib/*`, `@/components/*`)
-3. Relative imports (`./`, `../`)
+3. Relative imports (`./`, `../`) only for local files within the same package/module boundary
 4. Type-only imports should follow Biome output (do not maintain a separate manual group)
+
+Contributors must use `@/...` for cross-package or shared imports instead of `../`.
 
 **Example:**
 
