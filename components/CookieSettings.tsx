@@ -220,10 +220,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           {showSuccess && (
             <motion.div
               animate={{ opacity: 1, y: 0 }}
+              aria-atomic="true"
+              aria-live="polite"
               className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
               exit={{ opacity: 0, y: -10 }}
               initial={{ opacity: 0, y: -10 }}
               key="settings-success"
+              role="status"
             >
               <p className="text-sm text-green-800 dark:text-green-200">
                 ✓ {t('settingsSaved')}
@@ -234,10 +237,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           {showError && (
             <motion.div
               animate={{ opacity: 1, y: 0 }}
+              aria-atomic="true"
+              aria-live="assertive"
               className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
               exit={{ opacity: 0, y: -10 }}
               initial={{ opacity: 0, y: -10 }}
               key="settings-error"
+              role="alert"
             >
               <p className="text-sm text-red-800 dark:text-red-200">
                 ⚠ {t('settingsError')}

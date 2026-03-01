@@ -168,7 +168,7 @@ const Footer = () => {
 
                 return (
                   <motion.a
-                    aria-label={social.name}
+                    aria-label={t(`socialLinks.${social.translationKey}`)}
                     className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
                     href={social.href}
                     key={social.name}

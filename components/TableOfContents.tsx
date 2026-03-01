@@ -147,8 +147,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   // Auto-scroll ToC to show active item
   useEffect(() => {
     if (activeId && scrollContainerRef.current) {
+      const escapedId = CSS.escape(activeId)
       const activeButton = scrollContainerRef.current.querySelector(
-        `button[data-id="${activeId}"]`,
+        `button[data-id="${escapedId}"]`,
       ) as HTMLElement
 
       if (activeButton) {

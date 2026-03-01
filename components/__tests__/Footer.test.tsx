@@ -134,10 +134,14 @@ describe('Footer', () => {
 
   it('renders social links with correct hrefs', () => {
     render(<Footer />)
-    const githubLink = screen.getByRole('link', { name: 'GitHub' })
+    const githubLink = screen.getByRole('link', {
+      name: 'socialLinks.github',
+    })
     expect(githubLink).toHaveAttribute('href', 'https://github.com/viscalyx')
 
-    const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
+    const linkedinLink = screen.getByRole('link', {
+      name: 'socialLinks.linkedin',
+    })
     expect(linkedinLink).toHaveAttribute(
       'href',
       'https://linkedin.com/company/viscalyx',
@@ -146,23 +150,39 @@ describe('Footer', () => {
 
   it('renders social links with conditional target and rel attributes', () => {
     render(<Footer />)
-    const githubLink = screen.getByRole('link', { name: 'GitHub' })
+    const githubLink = screen.getByRole('link', {
+      name: 'socialLinks.github',
+    })
     expect(githubLink).toHaveAttribute('target', '_blank')
     expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
 
-    const emailLink = screen.getByRole('link', { name: 'Email' })
+    const emailLink = screen.getByRole('link', {
+      name: 'socialLinks.email',
+    })
     expect(emailLink).not.toHaveAttribute('target')
     expect(emailLink).not.toHaveAttribute('rel')
   })
 
   it('renders social links with aria-labels', () => {
     render(<Footer />)
-    expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'LinkedIn' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'X' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Bluesky' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Mastodon' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Email' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.github' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.linkedin' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.x' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.bluesky' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.mastodon' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.email' }),
+    ).toBeInTheDocument()
   })
 
   it('renders copyright with current year', () => {

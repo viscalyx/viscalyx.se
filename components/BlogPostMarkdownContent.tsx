@@ -53,7 +53,7 @@ const BLOG_MARKDOWN_SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
 }
 
 const DISALLOWED_URL_PATTERN = /^(?:\s*javascript:|\s*vbscript:|\s*data:)/i
-const RELATIVE_URL_PATTERN = /^(?:\/|#|\.{1,2}\/)/u
+const RELATIVE_URL_PATTERN = /^(?:\/(?!\/)|#|\.{1,2}\/)/u
 const ALLOWED_URL_PROTOCOLS = new Set(['http:', 'https:', 'mailto:', 'tel:'])
 const ALLOWED_SRC_PROTOCOLS = new Set(['http:', 'https:'])
 
