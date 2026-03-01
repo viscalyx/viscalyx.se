@@ -90,7 +90,8 @@ const CodeBlockEnhancer = ({
           addCopyButtons()
         })
       })
-      observer.observe(document.body, {
+      const blogContainer = document.querySelector('.blog-content')
+      observer.observe(blogContainer ?? document.body, {
         childList: true,
         subtree: true,
       })

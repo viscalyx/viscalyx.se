@@ -9,7 +9,7 @@ interface ComponentProps {
   text: string
 }
 
-export default function CopyButton({ text, className = '' }: ComponentProps) {
+const CopyButton = ({ text, className = '' }: ComponentProps) => {
   const t = useTranslations('copyButton')
   const [copied, setCopied] = useState(false)
 
@@ -66,3 +66,5 @@ export default function CopyButton({ text, className = '' }: ComponentProps) {
     </button>
   )
 }
+
+export default CopyButton
