@@ -4,8 +4,7 @@ import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) =>
-    key === 'closeAriaLabel' ? 'Close modal' : key,
+  useTranslations: () => (key: string) => key,
 }))
 
 describe('ConfirmationModal', () => {
@@ -58,7 +57,7 @@ describe('ConfirmationModal', () => {
   it('calls onClose when close button (X) is clicked', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
-    fireEvent.click(screen.getByLabelText('Close modal'))
+    fireEvent.click(screen.getByLabelText('closeAriaLabel'))
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 
