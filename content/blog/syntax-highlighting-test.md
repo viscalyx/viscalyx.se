@@ -125,8 +125,8 @@ class Program
 
 ## C# Example
 
-This second equally named section is to test unique anchoring when section has
-same names.
+This second C# section uses a different heading from the one above to test that
+similar but distinct headings produce unique anchors.
 
 ```csharp
 // C# example
