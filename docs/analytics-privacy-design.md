@@ -11,6 +11,16 @@
 > The hashing infrastructure is retained so it can be re-enabled
 > if unique-visitor counting is needed in the future. See the
 > "IP Hashing Mechanism" section below for technical details.
+>
+> **To re-enable**, make the following changes:
+>
+> 1. Set `const storeHashedIP = true` in
+>    `app/api/analytics/blog-read/route.ts`
+> 2. Change `purposeKey` for the `cf-analytics` entry in
+>    `lib/cookie-consent.ts` from `'cookies.cfAnalytics.purpose'`
+>    to `'cookies.cfAnalytics.purposeWithVisitorId'`
+> 3. Both translation keys already exist in `messages/en.json`
+>    and `messages/sv.json` under `cookieConsent.cookies.cfAnalytics`
 
 ## Overview
 
