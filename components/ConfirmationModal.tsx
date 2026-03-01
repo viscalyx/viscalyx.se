@@ -108,11 +108,13 @@ const ConfirmationModal = ({
           {/* Backdrop */}
           <motion.div
             animate={{ opacity: 1 }}
+            aria-hidden="true"
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             data-testid="modal-backdrop"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             onClick={onClose}
+            role="presentation"
           />
 
           {/* Modal */}
