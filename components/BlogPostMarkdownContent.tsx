@@ -55,8 +55,12 @@ const BLOG_MARKDOWN_SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
 const DISALLOWED_URL_PATTERN = /^(?:\s*javascript:|\s*vbscript:|\s*data:)/i
 const RELATIVE_URL_PATTERN = /^(?:\/|#|\.{1,2}\/)/u
 const ALLOWED_URL_PROTOCOLS = new Set(['http:', 'https:', 'mailto:', 'tel:'])
+const ALLOWED_SRC_PROTOCOLS = new Set(['http:', 'https:'])
 
-function sanitizeUrl(rawValue: string): string | null {
+function sanitizeUrl(
+  rawValue: string,
+  allowedProtocols: ReadonlySet<string>,
+): string | null {
   const value = rawValue.trim()
   if (value.length === 0 || DISALLOWED_URL_PATTERN.test(value)) {
     return null
@@ -68,7 +72,7 @@ function sanitizeUrl(rawValue: string): string | null {
 
   try {
     const parsed = new URL(value)
-    return ALLOWED_URL_PROTOCOLS.has(parsed.protocol) ? value : null
+    return allowedProtocols.has(parsed.protocol) ? value : null
   } catch {
     return null
   }
@@ -151,8 +155,16 @@ function mapElementAttributes(element: HTMLElement): Record<string, unknown> {
       continue
     }
 
-    if (attributeName === 'href' || attributeName === 'src') {
-      const safeUrl = sanitizeUrl(trimmedValue)
+    if (attributeName === 'href') {
+      const safeUrl = sanitizeUrl(trimmedValue, ALLOWED_URL_PROTOCOLS)
+      if (safeUrl) {
+        props[attributeName] = safeUrl
+      }
+      continue
+    }
+
+    if (attributeName === 'src') {
+      const safeUrl = sanitizeUrl(trimmedValue, ALLOWED_SRC_PROTOCOLS)
       if (safeUrl) {
         props[attributeName] = safeUrl
       }

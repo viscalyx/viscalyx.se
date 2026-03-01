@@ -8,21 +8,9 @@ vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }))
 
-// Mock translations
+// Mock translations — key-echo so tests assert on keys, not English text
 vi.mock('next-intl', () => ({
-  useTranslations:
-    () => (key: string, values?: Record<string, string | number>) => {
-      if (key === 'accessibility.viewProject') {
-        return `View project ${values?.name ?? ''}`.trim()
-      }
-      if (key === 'accessibility.followGithub') {
-        return 'Follow on GitHub (opens in new tab)'
-      }
-      if (key === 'accessibility.collaborate') {
-        return 'Collaborate with DSC (opens in new tab)'
-      }
-      return key
-    },
+  useTranslations: () => (key: string) => key,
   useLocale: () => 'en',
 }))
 
@@ -61,7 +49,9 @@ describe('OpenSource component', () => {
     window.open = vi.fn()
     render(<OpenSource />)
     // Select link by accessible label containing space
-    const links = screen.getAllByRole('link', { name: /view project/i })
+    const links = screen.getAllByRole('link', {
+      name: /accessibility\.viewProject/,
+    })
     expect(links.length).toBeGreaterThan(0)
     fireEvent.click(links[0])
     expect(window.open).toHaveBeenCalledWith(

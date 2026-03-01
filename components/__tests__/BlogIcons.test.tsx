@@ -11,7 +11,7 @@ import {
 describe('BlogIcons', () => {
   describe('CopyIcon', () => {
     it('renders with correct attributes and default className', () => {
-      render(<CopyIcon />)
+      render(<CopyIcon label="Copy to clipboard" />)
       const icon = screen.getByRole('img', { name: /copy to clipboard/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
@@ -21,15 +21,22 @@ describe('BlogIcons', () => {
     })
 
     it('accepts a custom className', () => {
-      render(<CopyIcon className="custom-class" />)
+      render(<CopyIcon className="custom-class" label="Copy to clipboard" />)
       const icon = screen.getByRole('img', { name: /copy to clipboard/i })
       expect(icon).toHaveClass('custom-class')
+    })
+
+    it('is decorative when no label is provided', () => {
+      const { container } = render(<CopyIcon />)
+      const icon = container.querySelector('svg')
+      expect(icon).toHaveAttribute('aria-hidden', 'true')
+      expect(icon).not.toHaveAttribute('aria-label')
     })
   })
 
   describe('CheckmarkIcon', () => {
     it('renders with correct attributes and default className', () => {
-      render(<CheckmarkIcon />)
+      render(<CheckmarkIcon label="Copied to clipboard" />)
       const icon = screen.getByRole('img', { name: /copied to clipboard/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
@@ -39,7 +46,9 @@ describe('BlogIcons', () => {
     })
 
     it('accepts a custom className', () => {
-      render(<CheckmarkIcon className="another-class" />)
+      render(
+        <CheckmarkIcon className="another-class" label="Copied to clipboard" />,
+      )
       const icon = screen.getByRole('img', { name: /copied to clipboard/i })
       expect(icon).toHaveClass('another-class')
     })
@@ -47,7 +56,7 @@ describe('BlogIcons', () => {
 
   describe('ChevronUpIcon', () => {
     it('renders with correct attributes and default className', () => {
-      render(<ChevronUpIcon />)
+      render(<ChevronUpIcon label="Scroll up" />)
       const icon = screen.getByRole('img', { name: /scroll up/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
@@ -57,7 +66,7 @@ describe('BlogIcons', () => {
     })
 
     it('accepts a custom className', () => {
-      render(<ChevronUpIcon className="up-class" />)
+      render(<ChevronUpIcon className="up-class" label="Scroll up" />)
       const icon = screen.getByRole('img', { name: /scroll up/i })
       expect(icon).toHaveClass('up-class')
     })
@@ -65,7 +74,7 @@ describe('BlogIcons', () => {
 
   describe('ChevronDownIcon', () => {
     it('renders with correct attributes and default className', () => {
-      render(<ChevronDownIcon />)
+      render(<ChevronDownIcon label="Scroll down" />)
       const icon = screen.getByRole('img', { name: /scroll down/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveAttribute('viewBox', '0 0 24 24')
@@ -75,7 +84,7 @@ describe('BlogIcons', () => {
     })
 
     it('accepts a custom className', () => {
-      render(<ChevronDownIcon className="down-class" />)
+      render(<ChevronDownIcon className="down-class" label="Scroll down" />)
       const icon = screen.getByRole('img', { name: /scroll down/i })
       expect(icon).toHaveClass('down-class')
     })
@@ -83,7 +92,7 @@ describe('BlogIcons', () => {
 
   describe('AlertIcon', () => {
     it('renders note icon by default', () => {
-      render(<AlertIcon type="note" />)
+      render(<AlertIcon label="Note information" type="note" />)
       const icon = screen.getByRole('img', { name: /note information/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -95,7 +104,7 @@ describe('BlogIcons', () => {
     })
 
     it('renders tip icon correctly', () => {
-      render(<AlertIcon type="tip" />)
+      render(<AlertIcon label="Tip information" type="tip" />)
       const icon = screen.getByRole('img', { name: /tip information/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -107,7 +116,7 @@ describe('BlogIcons', () => {
     })
 
     it('renders important icon correctly', () => {
-      render(<AlertIcon type="important" />)
+      render(<AlertIcon label="Important information" type="important" />)
       const icon = screen.getByRole('img', { name: /important information/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -119,7 +128,7 @@ describe('BlogIcons', () => {
     })
 
     it('renders warning icon correctly', () => {
-      render(<AlertIcon type="warning" />)
+      render(<AlertIcon label="Warning information" type="warning" />)
       const icon = screen.getByRole('img', { name: /warning information/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -131,7 +140,7 @@ describe('BlogIcons', () => {
     })
 
     it('renders caution icon correctly', () => {
-      render(<AlertIcon type="caution" />)
+      render(<AlertIcon label="Caution icon" type="caution" />)
       const icon = screen.getByRole('img', { name: /caution icon/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -146,7 +155,11 @@ describe('BlogIcons', () => {
 
     it('applies custom className', () => {
       const { container } = render(
-        <AlertIcon className="custom-class" type="note" />,
+        <AlertIcon
+          className="custom-class"
+          label="Note information"
+          type="note"
+        />,
       )
       const svg = container.querySelector('svg')
       expect(svg).toHaveClass('custom-class')
@@ -154,7 +167,7 @@ describe('BlogIcons', () => {
 
     it('falls back to note icon for invalid type', () => {
       // @ts-expect-error - Testing invalid type
-      render(<AlertIcon type="invalid" />)
+      render(<AlertIcon label="Note information" type="invalid" />)
       const icon = screen.getByRole('img', { name: /note information/i })
       expect(icon).toBeInTheDocument()
       expect(icon).toHaveClass('w-5 h-5')
@@ -170,7 +183,7 @@ describe('BlogIcons', () => {
     it('returns note icon component', () => {
       const NoteComponent = getAlertIcon('note')
       expect(NoteComponent).toBeDefined()
-      render(<NoteComponent />)
+      render(<NoteComponent label="Note information" />)
       expect(
         screen.getByRole('img', { name: /note information/i }),
       ).toBeInTheDocument()
@@ -179,7 +192,7 @@ describe('BlogIcons', () => {
     it('returns tip icon component', () => {
       const TipComponent = getAlertIcon('tip')
       expect(TipComponent).toBeDefined()
-      render(<TipComponent />)
+      render(<TipComponent label="Tip information" />)
       expect(
         screen.getByRole('img', { name: /tip information/i }),
       ).toBeInTheDocument()
@@ -188,7 +201,7 @@ describe('BlogIcons', () => {
     it('returns important icon component', () => {
       const ImportantComponent = getAlertIcon('important')
       expect(ImportantComponent).toBeDefined()
-      render(<ImportantComponent />)
+      render(<ImportantComponent label="Important information" />)
       expect(
         screen.getByRole('img', { name: /important information/i }),
       ).toBeInTheDocument()
@@ -197,7 +210,7 @@ describe('BlogIcons', () => {
     it('returns warning icon component', () => {
       const WarningComponent = getAlertIcon('warning')
       expect(WarningComponent).toBeDefined()
-      render(<WarningComponent />)
+      render(<WarningComponent label="Warning information" />)
       expect(
         screen.getByRole('img', { name: /warning information/i }),
       ).toBeInTheDocument()
@@ -206,7 +219,7 @@ describe('BlogIcons', () => {
     it('returns caution icon component', () => {
       const CautionComponent = getAlertIcon('caution')
       expect(CautionComponent).toBeDefined()
-      render(<CautionComponent />)
+      render(<CautionComponent label="Caution icon" />)
       expect(
         screen.getByRole('img', { name: /caution icon/i }),
       ).toBeInTheDocument()
@@ -217,7 +230,7 @@ describe('BlogIcons', () => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent />)
+        render(<IconComponent label="Note information" />)
         expect(
           screen.getByRole('img', { name: /note information/i }),
         ).toBeInTheDocument()
@@ -230,7 +243,7 @@ describe('BlogIcons', () => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent />)
+        render(<IconComponent label="Tip information" />)
         expect(
           screen.getByRole('img', { name: /tip information/i }),
         ).toBeInTheDocument()
@@ -243,7 +256,7 @@ describe('BlogIcons', () => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent />)
+        render(<IconComponent label="Important information" />)
         expect(
           screen.getByRole('img', { name: /important information/i }),
         ).toBeInTheDocument()
@@ -256,7 +269,7 @@ describe('BlogIcons', () => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent />)
+        render(<IconComponent label="Warning information" />)
         expect(
           screen.getByRole('img', { name: /warning information/i }),
         ).toBeInTheDocument()
@@ -269,7 +282,7 @@ describe('BlogIcons', () => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent />)
+        render(<IconComponent label="Caution icon" />)
         expect(
           screen.getByRole('img', { name: /caution icon/i }),
         ).toBeInTheDocument()
@@ -281,7 +294,7 @@ describe('BlogIcons', () => {
       const IconComponent = getAlertIcon('invalid')
       expect(IconComponent).toBeDefined()
 
-      render(<IconComponent />)
+      render(<IconComponent label="Note information" />)
       const icon = screen.getByRole('img', { name: /note information/i })
       expect(icon).toBeInTheDocument()
       // Verify it's actually the note icon by checking its unique path

@@ -101,6 +101,23 @@ describe('blog-read analytics route', () => {
     })
   })
 
+  it('returns 400 for non-object JSON body', async () => {
+    const req = new Request('https://viscalyx.org/api/analytics/blog-read', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://viscalyx.org',
+      },
+      body: JSON.stringify([]),
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Request body must be a JSON object',
+    })
+  })
+
   it('returns 400 when required fields are not non-empty strings', async () => {
     const req = createRequest({
       slug: ' ',

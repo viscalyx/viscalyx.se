@@ -181,6 +181,10 @@ describe('ReadingProgress', () => {
     }))
     document.body.appendChild(endElement)
 
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      configurable: true,
+    })
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,

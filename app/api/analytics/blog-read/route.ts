@@ -119,6 +119,13 @@ function parseFiniteMetric(value: unknown): number | null {
       return null
     }
 
+    // Strict numeric validation to reject partial parses like "50abc".
+    if (
+      !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/u.test(trimmedValue)
+    ) {
+      return null
+    }
+
     const parsedValue = Number.parseFloat(trimmedValue)
     return Number.isFinite(parsedValue) ? parsedValue : null
   }

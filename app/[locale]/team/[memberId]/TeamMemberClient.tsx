@@ -9,7 +9,12 @@ import { useLocale, useTranslations } from 'next-intl'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { type SerializableTeamMember, socialIconMap } from '@/lib/team'
+import {
+  type SerializableTeamMember,
+  type SocialIconName,
+  socialIconMap,
+  socialIconTranslationKeyMap,
+} from '@/lib/team'
 
 interface TeamMemberClientProps {
   member: SerializableTeamMember
@@ -17,7 +22,23 @@ interface TeamMemberClientProps {
 
 const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
   const t = useTranslations('teamMember')
+  const teamT = useTranslations('team')
   const locale = useLocale()
+
+  const hasSocialTranslationKey = (
+    socialName: string,
+  ): socialName is keyof typeof socialIconTranslationKeyMap =>
+    socialName in socialIconTranslationKeyMap
+
+  const getSocialLinkText = (socialName: SocialIconName) => {
+    if (!hasSocialTranslationKey(socialName)) {
+      return socialName
+    }
+
+    const socialKey = socialIconTranslationKeyMap[socialName]
+    const translated = teamT(`socialLinks.${socialKey}`)
+    return translated === `socialLinks.${socialKey}` ? socialName : translated
+  }
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -140,9 +161,10 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                   <div className="flex flex-wrap gap-4">
                     {member.socialLinks.map(social => {
                       const IconComponent = socialIconMap[social.name]
+                      const socialLinkText = getSocialLinkText(social.name)
                       return (
                         <motion.a
-                          aria-label={social.name}
+                          aria-label={socialLinkText}
                           className="flex items-center space-x-2 px-4 py-3 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                           href={social.href}
                           key={social.name}
@@ -160,7 +182,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                           whileTap={{ scale: 0.95 }}
                         >
                           <IconComponent className="h-5 w-5" />
-                          <span className="font-medium">{social.name}</span>
+                          <span className="font-medium">{socialLinkText}</span>
                         </motion.a>
                       )
                     })}

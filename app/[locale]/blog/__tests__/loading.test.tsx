@@ -4,17 +4,16 @@ import BlogLoading from '../loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size: string }) => (
-    <div data-size={size} data-testid="loading-spinner" />
+    <output data-size={size} data-testid="loading-spinner">
+      Loading...
+    </output>
   ),
 }))
 
 describe('BlogLoading', () => {
   it('renders centered large LoadingSpinner', () => {
     const { container } = render(<BlogLoading />)
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-size',
-      'lg',
-    )
+    expect(screen.getByRole('status')).toHaveAttribute('data-size', 'lg')
     expect(container.firstChild).toHaveClass('min-h-[50vh]')
   })
 })

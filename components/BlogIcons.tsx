@@ -4,16 +4,28 @@ import { memo } from 'react'
 
 interface BlogIconProps {
   className?: string
+  label?: string
+}
+
+function getIconAccessibilityProps(label?: string) {
+  if (!label) {
+    return { 'aria-hidden': true as const }
+  }
+
+  return {
+    'aria-label': label,
+    role: 'img' as const,
+  }
 }
 
 // Copy Icon - Stroke style (preferred from test)
 export const CopyIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-4 h-4' }) => (
+  ({ className = 'w-4 h-4', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Copy to clipboard"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -29,12 +41,12 @@ CopyIcon.displayName = 'CopyIcon'
 
 // Checkmark Icon - Fill style (preferred from test)
 export const CheckmarkIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-4 h-4' }) => (
+  ({ className = 'w-4 h-4', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Copied to clipboard"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="currentColor"
-      role="img"
       viewBox="0 0 24 24"
     >
       <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
@@ -45,12 +57,12 @@ CheckmarkIcon.displayName = 'CheckmarkIcon'
 
 // ChevronUp Icon - Stroke style for scroll indicators
 export const ChevronUpIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-4 h-4' }) => (
+  ({ className = 'w-4 h-4', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Scroll up"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -65,12 +77,12 @@ ChevronUpIcon.displayName = 'ChevronUpIcon'
 
 // ChevronDown Icon - Stroke style for scroll indicators
 export const ChevronDownIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-4 h-4' }) => (
+  ({ className = 'w-4 h-4', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Scroll down"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -85,12 +97,12 @@ ChevronDownIcon.displayName = 'ChevronDownIcon'
 
 // Note icon component for informational content
 export const NoteIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-5 h-5' }) => (
+  ({ className = 'w-5 h-5', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Note information"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -105,12 +117,12 @@ NoteIcon.displayName = 'NoteIcon'
 
 // Tip icon component for helpful suggestions
 export const TipIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-5 h-5' }) => (
+  ({ className = 'w-5 h-5', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Tip information"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -125,12 +137,12 @@ TipIcon.displayName = 'TipIcon'
 
 // Important icon component for critical information
 export const ImportantIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-5 h-5' }) => (
+  ({ className = 'w-5 h-5', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Important information"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -145,12 +157,12 @@ ImportantIcon.displayName = 'ImportantIcon'
 
 // Warning icon component for warning alerts
 export const WarningIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-5 h-5' }) => (
+  ({ className = 'w-5 h-5', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Warning information"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -165,12 +177,12 @@ WarningIcon.displayName = 'WarningIcon'
 
 // Caution icon component for caution alerts
 export const CautionIcon: React.FC<BlogIconProps> = memo(
-  ({ className = 'w-5 h-5' }) => (
+  ({ className = 'w-5 h-5', label }) => (
+    // biome-ignore lint/a11y/noSvgWithoutTitle: accessibility handled via getIconAccessibilityProps (aria-hidden or aria-label+role)
     <svg
-      aria-label="Caution icon"
+      {...getIconAccessibilityProps(label)}
       className={className}
       fill="none"
-      role="img"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -190,20 +202,20 @@ export interface AlertIconProps extends BlogIconProps {
 }
 
 export const AlertIcon: React.FC<AlertIconProps> = memo(
-  ({ type, className = 'w-5 h-5' }) => {
+  ({ type, className = 'w-5 h-5', label }) => {
     switch (type) {
       case 'note':
-        return <NoteIcon className={className} />
+        return <NoteIcon className={className} label={label} />
       case 'tip':
-        return <TipIcon className={className} />
+        return <TipIcon className={className} label={label} />
       case 'important':
-        return <ImportantIcon className={className} />
+        return <ImportantIcon className={className} label={label} />
       case 'warning':
-        return <WarningIcon className={className} />
+        return <WarningIcon className={className} label={label} />
       case 'caution':
-        return <CautionIcon className={className} />
+        return <CautionIcon className={className} label={label} />
       default:
-        return <NoteIcon className={className} />
+        return <NoteIcon className={className} label={label} />
     }
   },
 )

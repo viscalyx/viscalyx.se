@@ -6,7 +6,7 @@ import { locales } from '@/i18n'
 
 // Dynamically import CookieConsentBanner to reduce initial bundle size
 const CookieConsentBanner = dynamic(
-  () => import('../../components/CookieConsentBanner'),
+  () => import('@/components/CookieConsentBanner'),
   {
     loading: () => null,
   },
