@@ -91,7 +91,10 @@
 /* Language labels inside wrapper - only override top position */
 .blog-content .code-block-wrapper .code-language-label {
   top: 0;
-  transform: translateY(-1%); /* negative values move label up */
+  /* Sub-pixel alignment: -1% (~0.25px) nudges the label up just enough to
+     visually center its bottom border against the code block's top edge.
+     The wrapper's padding-top: 2rem already reserves space for the label. */
+  transform: translateY(-1%);
 }
 
 /* ===== Copy Button Positioning ===== */
