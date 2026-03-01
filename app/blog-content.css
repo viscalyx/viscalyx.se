@@ -153,11 +153,6 @@
   .dark .blog-content .github-alert .github-alert-title {
     color: var(--alert-title-color-dark);
   }
-  /* The following per-variant dark title overrides are now redundant and can be removed:
-       .dark .blog-content .github-alert-warning .github-alert-title { color: var(--alert-title-color-dark) !important; }
-       .dark .blog-content .github-alert-caution .github-alert-title { color: var(--alert-title-color-dark) !important; }
-     */
-
   /* Alert content */
   .blog-content .github-alert-content {
     padding: 0;
@@ -389,7 +384,7 @@
   .toc-scrollable {
     /* Show scrollbar always when content overflows */
     overflow-y: auto;
-    scrollbar-color: rgb(156 163 175) transparent; /* gray-400 thumb, transparent track */
+    scrollbar-color: var(--color-gray-400) transparent;
 
     /* Firefox */
     scrollbar-width: thin;
@@ -496,6 +491,14 @@
   }
 
   /* Mermaid sequence text contrast: direct class targeting (light and dark) */
+  .blog-content .mermaid-diagram {
+    --mermaid-text-color: var(--color-secondary-800);
+  }
+
+  .dark .blog-content .mermaid-diagram {
+    --mermaid-text-color: var(--color-secondary-100);
+  }
+
   .blog-content .mermaid-diagram .messageText,
   .blog-content .mermaid-diagram .labelText,
   .blog-content .mermaid-diagram .loopText,
@@ -505,22 +508,8 @@
   .blog-content .mermaid-diagram .labelText tspan,
   .blog-content .mermaid-diagram .loopText tspan,
   .blog-content .mermaid-diagram .noteText tspan {
-    color: var(--color-secondary-800);
+    color: var(--mermaid-text-color);
     opacity: 1;
-    fill: var(--color-secondary-800);
-  }
-
-  .dark .blog-content .mermaid-diagram .messageText,
-  .dark .blog-content .mermaid-diagram .labelText,
-  .dark .blog-content .mermaid-diagram .loopText,
-  .dark .blog-content .mermaid-diagram .noteText,
-  .dark .blog-content .mermaid-diagram .sequenceNumber,
-  .dark .blog-content .mermaid-diagram .messageText tspan,
-  .dark .blog-content .mermaid-diagram .labelText tspan,
-  .dark .blog-content .mermaid-diagram .loopText tspan,
-  .dark .blog-content .mermaid-diagram .noteText tspan {
-    color: var(--color-secondary-100);
-    opacity: 1;
-    fill: var(--color-secondary-100);
+    fill: var(--mermaid-text-color);
   }
 }
