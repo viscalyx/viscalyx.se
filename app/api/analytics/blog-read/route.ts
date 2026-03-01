@@ -140,7 +140,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const body: unknown = await request.json()
 
     if (typeof body !== 'object' || body === null || Array.isArray(body)) {
       return NextResponse.json(
