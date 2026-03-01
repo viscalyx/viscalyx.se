@@ -268,9 +268,10 @@ Markdown files.
   ```
   <!-- markdownlint-enable MD013 -->
 
-We recommend installing the [Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
-and [markdownlint](https://marketplace.visualstudio.com/items?itemName=davidanson.vscode-markdownlint)
-<!-- markdownlint-enable MD013 -->
+We recommend installing the
+[Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome)
+and
+[markdownlint](https://marketplace.visualstudio.com/items?itemName=davidanson.vscode-markdownlint)
 VS Code extensions for a better development experience.
 
 ### Type Checking
