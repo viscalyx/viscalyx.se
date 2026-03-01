@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extract CodeRabbit AI Review Comments"
+  short_description: "Extract CodeRabbit AI review comment blocks into markdown"
+  default_prompt: "Use $extract-coderabbit-ai-review-comments to extract CodeRabbit AI review comment code-block text after `Prompt for AI Agents` summaries from a file or provided content, remove `Verify each finding against the current code and only fix it if needed.`, and write findings with one blank line between entries."

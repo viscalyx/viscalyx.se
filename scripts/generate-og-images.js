@@ -17,8 +17,8 @@
  *   public/og-blog-sv.png   — OG image for the Swedish blog page
  */
 
-const fs = require('fs')
-const path = require('path')
+const fs = require('node:fs')
+const path = require('node:path')
 
 // Brand colors (from globals.css --color-primary-*)
 const PRIMARY_600 = '#2563eb'
@@ -60,7 +60,7 @@ function escapeXml(str) {
  */
 function getLocaleStrings(
   locale,
-  basePath = path.join(__dirname, '..', 'messages')
+  basePath = path.join(__dirname, '..', 'messages'),
 ) {
   const filePath = path.join(basePath, `${locale}.json`)
   const messages = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
@@ -148,11 +148,11 @@ function buildBackgroundSVG(title, tagline) {
 async function generateBlogOG(
   locale,
   sharpImpl = loadSharp(),
-  basePath = __dirname
+  basePath = __dirname,
 ) {
   if (!sharpImpl) {
     throw new Error(
-      'sharp is not installed. Install with "npm install sharp" to generate OG images.'
+      'sharp is not installed. Run "npm install" and re-run to generate OG images. sharp is listed in devDependencies for this project.',
     )
   }
 
@@ -164,12 +164,12 @@ async function generateBlogOG(
     basePath,
     '..',
     'public',
-    `og-blog-${locale}.png`
+    `og-blog-${locale}.png`,
   )
 
   const { title, tagline } = getLocaleStrings(
     locale,
-    path.join(basePath, '..', 'messages')
+    path.join(basePath, '..', 'messages'),
   )
 
   // Render the SVG logo at the target size with a transparent background
@@ -205,7 +205,7 @@ async function generateBlogOG(
 
   const stats = fs.statSync(outputPath)
   console.log(
-    `✓ Generated ${path.relative(process.cwd(), outputPath)} (${Math.round(stats.size / 1024)}KB)`
+    `✓ Generated ${path.relative(process.cwd(), outputPath)} (${Math.round(stats.size / 1024)}KB)`,
   )
 }
 
@@ -215,17 +215,15 @@ async function main(sharpImpl = loadSharp(), locales = LOCALES) {
       '\n\x1b[31mError: "sharp" is not installed.\x1b[0m\n\n' +
         'This script requires the sharp package to generate OG images.\n' +
         'Install it manually and re-run:\n\n' +
-        '  npm install sharp\n\n' +
-        'sharp is intentionally not a project devDependency because this\n' +
-        'script is run rarely. You can remove it afterwards with:\n\n' +
-        '  npm uninstall sharp\n'
+        '  npm install\n\n' +
+        'sharp is listed in devDependencies for this project.\n',
     )
     /* c8 ignore next */
     process.exit(1)
   }
 
   const results = await Promise.allSettled(
-    locales.map(locale => generateBlogOG(locale, sharpImpl))
+    locales.map(locale => generateBlogOG(locale, sharpImpl)),
   )
   const failures = results.filter(r => r.status === 'rejected')
   if (failures.length > 0) {

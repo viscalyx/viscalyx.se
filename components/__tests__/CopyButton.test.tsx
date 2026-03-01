@@ -63,7 +63,7 @@ describe('CopyButton', () => {
       () => {
         expect(button).toHaveAttribute('title', 'copyToClipboard')
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     )
   })
 
@@ -122,11 +122,11 @@ describe('CopyButton', () => {
     await waitFor(() => {
       expect(outerErrorSpy).toHaveBeenCalledWith(
         'Failed to copy text: ',
-        expect.any(Error)
+        expect.any(Error),
       )
       expect(outerErrorSpy).toHaveBeenCalledWith(
         'Fallback copy failed: ',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
 

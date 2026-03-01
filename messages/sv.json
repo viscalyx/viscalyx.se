@@ -24,7 +24,16 @@
     "termsOfService": "Användarvillkor",
     "cookiePolicy": "Kakpolicy",
     "allRightsReserved": "Alla rättigheter förbehållna.",
-    "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över."
+    "companyDescription": "Vi ger organisationer kraft genom intelligent automation. Vi levererar banbrytande lösningar som transformerar arbetsflöden och ökar produktiviteten för utvecklare och IT-proffs världen över.",
+    "opensInNewTab": " (öppnas i ny flik)",
+    "socialLinks": {
+      "email": "E-post",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "github": "GitHub"
+    }
   },
   "language": {
     "english": "Engelska",
@@ -41,6 +50,7 @@
       "learnMore": "Läs Mer"
     },
     "errorFallback": "Bild ej tillgänglig",
+    "indicator": "Visa bild {current} av {total}",
     "stats": {
       "experience": {
         "value": "30+",
@@ -102,6 +112,17 @@
     "description": "Träffa de engagerade experterna som driver innovation och levererar exceptionella automationslösningar för våra kunder världen över.",
     "specialties": "Specialiteter",
     "learnMore": "Läs mer",
+    "viewProfile": "Visa profil för {name}",
+    "viewProfileFallback": "Visa profil för {name}",
+    "socialLinks": {
+      "email": "E-post",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "discord": "Discord",
+      "github": "GitHub"
+    },
     "members": {
       "johlju": {
         "role": "Grundare & Huvudkonsult",
@@ -142,6 +163,7 @@
     "title": "Bidrag till Öppen",
     "titleHighlight": "Källkod",
     "description": "Vi tror på att ge tillbaka till gemenskapen. Våra aktiva bidrag till projekt med open source hjälper till att främja automation och DevOps-praxis världen över.",
+    "projectsListLabel": "Projekt med öppen källkod",
     "stats": {
       "projects": {
         "value": "80+",
@@ -178,6 +200,11 @@
       }
     },
     "viewProject": "Visa projekt",
+    "accessibility": {
+      "viewProject": "Visa projekt {name}",
+      "followGithub": "Följ på GitHub (öppnas i ny flik)",
+      "collaborate": "Samarbeta med DSC (öppnas i ny flik)"
+    },
     "cta": {
       "title": "Gå med i PowerShell Open Source gemenskapen",
       "description": "Samarbeta med oss på banbrytande automationsverktyg och bidra till projekt som påverkar tusentals utvecklare världen över.",
@@ -222,6 +249,7 @@
         "shareTextFallback": "Kolla in detta blogginlägg: {title}"
       },
       "authorBio": {
+        "ariaLabel": "Författarbiografi",
         "name": "Johan Ljunggren",
         "title": "Grundare och Ledande Konsult på Viscalyx",
         "description": "Johan är en passionerad automationsexpert med över 8 års erfarenhet inom DevOps, PowerShell DSC och utveckling av open source. Han är en aktiv bidragsgivare till PowerShell DSC-communityn och hjälper organisationer världen över att effektivisera sin infrastrukturhantering.",
@@ -260,7 +288,8 @@
     "title": "Sidan Hittades Inte",
     "heading": "Sidan Hittades Inte",
     "description": "Tyvärr, sidan du letar efter finns inte eller har flyttats.",
-    "goHome": "Gå till Startsidan"
+    "goHome": "Gå till Startsidan",
+    "goHomeAriaLabel": "Gå till startsidan på aktuellt språk"
   },
   "error": {
     "title": "Något Gick Fel",
@@ -296,7 +325,8 @@
     "ariaLabel": "Laddar"
   },
   "confirmationModal": {
-    "close": "Stäng modal"
+    "close": "Stäng modal",
+    "closeAriaLabel": "Stäng modal"
   },
   "cookieConsent": {
     "title": "Vi Använder Kakor",
@@ -325,6 +355,33 @@
     "viewCookiesAriaLabel": "Visa kakor för {categoryName} ({count} kakor)",
     "duration": "Varaktighet",
     "provider": "Leverantör",
+    "cookies": {
+      "theme": {
+        "purpose": "Lagrar användarens temainställning (ljust/mörkt/system)",
+        "duration": "1 år"
+      },
+      "language": {
+        "purpose": "Lagrar användarens språkpreferens (en/sv)",
+        "duration": "1 år"
+      },
+      "consent": {
+        "purpose": "Lagrar användarens samtyckesinställningar för kakor",
+        "duration": "1 år"
+      },
+      "cfAnalytics": {
+        "purpose": "Cloudflare Analytics Engine datainsamling (land, webbläsare)",
+        "purposeWithVisitorId": "Cloudflare Analytics Engine datainsamling (land, webbläsare, pseudonymiserat besökar-ID)",
+        "duration": "Endast session - data bearbetas på serversidan"
+      },
+      "blogReading": {
+        "purpose": "Spårar bloggläsningsbeteende (framsteg, spenderad tid) för innehållsoptimering",
+        "duration": "Endast session - data bearbetas på serversidan"
+      },
+      "session": {
+        "purpose": "Upprätthåller användarens sessionstillstånd",
+        "duration": "Session"
+      }
+    },
     "categories": {
       "title": "Kakkategorier",
       "strictly-necessary": {

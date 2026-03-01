@@ -2,12 +2,12 @@
 
 import type { CookieCategory } from '@/lib/cookie-consent'
 
-interface CookieCategoryToggleProps {
+interface ComponentProps {
   category: CookieCategory
-  checked: boolean
   categoryName: string
-  requiredLabel?: string
+  checked: boolean
   onChange: (category: CookieCategory) => void
+  requiredLabel?: string
 }
 
 /**
@@ -26,26 +26,29 @@ const CookieCategoryToggle = ({
   categoryName,
   requiredLabel = '',
   onChange,
-}: CookieCategoryToggleProps) => {
+}: ComponentProps) => {
   const isRequired = category === 'strictly-necessary'
 
   return (
     <label
-      className={`relative inline-flex items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`relative inline-flex min-h-[44px] min-w-[44px] items-center ${isRequired ? 'cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <input
-        type="checkbox"
-        checked={checked}
-        onChange={() => onChange(category)}
-        disabled={isRequired}
-        className="sr-only"
         aria-describedby={`${category}-description`}
         aria-label={`${categoryName} ${isRequired ? requiredLabel : ''}`.trim()}
+        checked={checked}
+        className="peer sr-only"
+        disabled={isRequired}
         id={`toggle-${category}`}
+        onChange={() => onChange(category)}
+        type="checkbox"
       />
       <div
         className={`
-          w-11 h-6 rounded-full transition-colors duration-200 ease-in-out
+          h-6 w-11 rounded-full transition-colors duration-200 ease-in-out
+          peer-focus-visible:ring-2 peer-focus-visible:ring-primary-500
+          peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-white
+          dark:peer-focus-visible:ring-offset-secondary-900
           ${
             checked
               ? 'bg-primary-600 dark:bg-primary-500'

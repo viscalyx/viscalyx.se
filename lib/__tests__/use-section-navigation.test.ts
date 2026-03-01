@@ -1,7 +1,7 @@
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 // Mock next-intl
 let mockLocale = 'en'
@@ -30,7 +30,7 @@ describe('useSectionNavigation', () => {
       mockPathname = '/en'
       const mockElement = { scrollIntoView: vi.fn() }
       vi.spyOn(document, 'querySelector').mockReturnValue(
-        mockElement as unknown as Element
+        mockElement as unknown as Element,
       )
 
       const { result } = renderHook(() => useSectionNavigation())
@@ -103,7 +103,7 @@ describe('useSectionNavigation', () => {
       const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       const { result } = renderHook(() =>
-        useSectionNavigation({ handleExternalLinks: true })
+        useSectionNavigation({ handleExternalLinks: true }),
       )
 
       act(() => {
@@ -113,14 +113,14 @@ describe('useSectionNavigation', () => {
       expect(openSpy).toHaveBeenCalledWith(
         'https://github.com',
         '_blank',
-        'noopener noreferrer' // cSpell:disable-line
+        'noopener noreferrer', // cSpell:disable-line
       )
       expect(pushMock).not.toHaveBeenCalled()
     })
 
     it('navigates regular paths even with handleExternalLinks enabled', () => {
       const { result } = renderHook(() =>
-        useSectionNavigation({ handleExternalLinks: true })
+        useSectionNavigation({ handleExternalLinks: true }),
       )
 
       act(() => {

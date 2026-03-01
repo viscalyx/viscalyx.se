@@ -1,13 +1,14 @@
 'use client'
-import { type TocItem } from '@/lib/slug-utils'
 import { useTranslations } from 'next-intl'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { TocItem } from '@/lib/slug-utils-client'
 import { ChevronDownIcon, ChevronUpIcon } from './BlogIcons'
 
 interface TableOfContentsProps {
+  headingId?: string // ID of the heading element that labels this table of contents
   items: TocItem[]
   maxHeight?: 'sm' | 'lg' // sm for mobile (max-h-64), lg for desktop (max-h-80)
-  headingId?: string // ID of the heading element that labels this table of contents
 }
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({
@@ -19,43 +20,138 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [activeId, setActiveId] = useState<string>('')
   const [canScrollUp, setCanScrollUp] = useState<boolean>(false)
   const [canScrollDown, setCanScrollDown] = useState<boolean>(false)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollContainerRef = useRef<HTMLElement | null>(null)
+  const itemsSignature = items
+    .map(item => `${item.id}:${item.level}:${item.text}`)
+    .join('|')
 
   const heightClass = maxHeight === 'sm' ? 'max-h-64' : 'max-h-80'
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
-        threshold: 0.1,
-      }
-    )
+    const observedHeadings = new Set<Element>()
+    const headingMap = new Map<string, HTMLElement>()
+    let observer: IntersectionObserver | null = null
+    let mutationObserver: MutationObserver | null = null
+    let rafId: number | null = null
 
-    // Observe all headings
-    items.forEach(item => {
-      const element = document.getElementById(item.id)
-      if (element) {
-        observer.observe(element)
+    const setActiveFromScrollPosition = () => {
+      const headingsByPosition = items
+        .map(item => document.getElementById(item.id))
+        .filter(
+          (heading): heading is HTMLElement => heading instanceof HTMLElement,
+        )
+        .map(heading => ({
+          id: heading.id,
+          top: heading.getBoundingClientRect().top,
+        }))
+        .sort((headingA, headingB) => headingA.top - headingB.top)
+
+      if (headingsByPosition.length === 0) {
+        return
       }
+
+      // Compensate for sticky header height so "current section" feels accurate.
+      const headerHeight =
+        document.querySelector('header')?.getBoundingClientRect().height ?? 100
+      const topOffset = headerHeight + 40
+      const firstHeadingBelowOffsetIndex = headingsByPosition.findIndex(
+        heading => heading.top > topOffset,
+      )
+
+      const currentHeadingId =
+        firstHeadingBelowOffsetIndex === -1
+          ? headingsByPosition.at(-1)?.id
+          : firstHeadingBelowOffsetIndex === 0
+            ? headingsByPosition[0]?.id
+            : headingsByPosition[firstHeadingBelowOffsetIndex - 1]?.id
+
+      if (!currentHeadingId) {
+        return
+      }
+
+      setActiveId(previousId =>
+        previousId !== currentHeadingId ? currentHeadingId : previousId,
+      )
+    }
+
+    const queueScrollPositionUpdate = () => {
+      if (rafId !== null) return
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null
+        setActiveFromScrollPosition()
+      })
+    }
+
+    const observeAvailableHeadings = () => {
+      items.forEach(item => {
+        const element = document.getElementById(item.id)
+        if (!element) return
+
+        const previousElement = headingMap.get(item.id)
+        if (previousElement && previousElement !== element) {
+          observer?.unobserve(previousElement)
+          observedHeadings.delete(previousElement)
+        }
+        headingMap.set(item.id, element)
+
+        if (observer && !observedHeadings.has(element)) {
+          observer.observe(element)
+          observedHeadings.add(element)
+        }
+      })
+    }
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            setActiveFromScrollPosition()
+          }
+        },
+        {
+          rootMargin: '-100px 0px -60% 0px', // Adjust based on header height and content visibility
+          threshold: 0.1,
+        },
+      )
+    }
+
+    observeAvailableHeadings()
+    queueScrollPositionUpdate()
+
+    if (typeof MutationObserver !== 'undefined' && document.body) {
+      mutationObserver = new MutationObserver(() => {
+        observeAvailableHeadings()
+        queueScrollPositionUpdate()
+      })
+      const observeTarget = document.querySelector('main') ?? document.body
+      mutationObserver.observe(observeTarget, {
+        childList: true,
+        subtree: true,
+      })
+    }
+
+    window.addEventListener('scroll', queueScrollPositionUpdate, {
+      passive: true,
     })
+    window.addEventListener('resize', queueScrollPositionUpdate)
 
     return () => {
-      observer.disconnect()
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+      window.removeEventListener('scroll', queueScrollPositionUpdate)
+      window.removeEventListener('resize', queueScrollPositionUpdate)
+      mutationObserver?.disconnect()
+      observer?.disconnect()
     }
   }, [items])
 
   // Auto-scroll ToC to show active item
   useEffect(() => {
     if (activeId && scrollContainerRef.current) {
+      const escapedId = CSS.escape(activeId)
       const activeButton = scrollContainerRef.current.querySelector(
-        `button[data-id="${activeId}"]`
+        `button[data-id="${escapedId}"]`,
       ) as HTMLElement
 
       if (activeButton) {
@@ -97,10 +193,10 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
 
       // Only update state if values have changed to prevent unnecessary re-renders
       setCanScrollUp(prev =>
-        prev !== canScrollUpValue ? canScrollUpValue : prev
+        prev !== canScrollUpValue ? canScrollUpValue : prev,
       )
       setCanScrollDown(prev =>
-        prev !== canScrollDownValue ? canScrollDownValue : prev
+        prev !== canScrollDownValue ? canScrollDownValue : prev,
       )
     }
   }, [])
@@ -128,7 +224,53 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
         }
       }
     }
-  }, [items, checkScrollIndicators])
+  }, [checkScrollIndicators])
+
+  useEffect(() => {
+    // Force indicator refresh when ToC content changes even without a resize event.
+    void itemsSignature
+    checkScrollIndicators()
+  }, [checkScrollIndicators, itemsSignature])
+
+  const handleTocKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
+    const lineHeight = 40
+    const pageHeight = scrollContainer.clientHeight - lineHeight
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: lineHeight, behavior: 'smooth' })
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: -lineHeight, behavior: 'smooth' })
+        break
+      case 'PageDown':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: pageHeight, behavior: 'smooth' })
+        break
+      case 'PageUp':
+        event.preventDefault()
+        scrollContainer.scrollBy({ top: -pageHeight, behavior: 'smooth' })
+        break
+      case 'Home':
+        event.preventDefault()
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
+        break
+      case 'End':
+        event.preventDefault()
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: 'smooth',
+        })
+        break
+      default:
+        break
+    }
+  }
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id)
@@ -158,38 +300,39 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       )}
 
       {/* Scrollable content */}
-      <div
-        ref={scrollContainerRef}
-        className={`toc-scrollable ${heightClass} overflow-y-auto`}
-        tabIndex={0}
-        role="region"
+      <section
         aria-label={t('tableOfContents')}
+        className={`toc-scrollable ${heightClass} overflow-y-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800`}
+        onKeyDown={handleTocKeyDown}
+        ref={scrollContainerRef}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: Required so keyboard users can focus and scroll this overflow region.
+        tabIndex={0}
       >
         <ul className="space-y-1">
-          {items.map((item, index) => (
+          {items.map(item => (
             <li
-              key={index}
               className={`${
                 item.level === 3 ? 'ml-4' : item.level === 4 ? 'ml-8' : ''
               }`}
+              key={item.id}
             >
               <button
-                type="button"
-                onClick={() => handleClick(item.id)}
-                data-id={item.id}
-                className={`text-left w-full transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
+                aria-current={activeId === item.id ? 'location' : undefined}
+                className={`text-left w-full min-h-[44px] min-w-[44px] transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
                   activeId === item.id
                     ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'
                     : 'text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400'
                 }`}
-                aria-current={activeId === item.id ? 'location' : undefined}
+                data-id={item.id}
+                onClick={() => handleClick(item.id)}
+                type="button"
               >
                 <span className="text-sm leading-relaxed">{item.text}</span>
               </button>
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {/* Bottom scroll indicator */}
       {canScrollDown && (

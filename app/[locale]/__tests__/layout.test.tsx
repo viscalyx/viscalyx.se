@@ -1,9 +1,7 @@
-import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
-
 import { render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { ReactNode } from 'react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import LocaleLayout, { generateStaticParams } from '@/app/[locale]/layout'
 
 const mockNotFound = vi.fn()
 const mockRouter = {
@@ -14,9 +12,7 @@ const mockRouter = {
 }
 const { dynamicMock } = vi.hoisted(() => ({
   dynamicMock: vi.fn((_loader, _options) => {
-    const DynamicComponent = () => (
-      <aside role="complementary" aria-label="cookie consent banner" />
-    )
+    const DynamicComponent = () => <aside aria-label="cookie consent banner" />
     return DynamicComponent
   }),
 }))
@@ -47,16 +43,7 @@ vi.mock('next-intl', () => ({
   }: {
     children: ReactNode
     locale: string
-  }) => (
-    <div role="region" aria-label={`provider ${locale}`}>
-      {children}
-    </div>
-  ),
-}))
-
-vi.mock('@/lib/structured-data', () => ({
-  getOrganizationJsonLd: () => ({ '@type': 'Organization' }),
-  getWebSiteJsonLd: () => ({ '@type': 'WebSite' }),
+  }) => <section aria-label={`provider ${locale}`}>{children}</section>,
 }))
 
 vi.mock('next/dynamic', () => ({
@@ -72,25 +59,22 @@ describe('LocaleLayout', () => {
     expect(generateStaticParams()).toEqual([{ locale: 'en' }, { locale: 'sv' }])
   })
 
-  it('renders provider, structured-data scripts and cookie banner for valid locale', async () => {
+  it('renders provider and cookie banner for valid locale', async () => {
     const ui = await LocaleLayout({
       children: <main aria-label="layout child">child</main>,
       params: Promise.resolve({ locale: 'en' }),
     })
-    const { container } = render(ui)
+    render(ui)
 
     expect(
-      screen.getByRole('region', { name: 'provider en' })
+      screen.getByRole('region', { name: 'provider en' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('main', { name: 'layout child' })
+      screen.getByRole('main', { name: 'layout child' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('complementary', { name: 'cookie consent banner' })
+      screen.getByRole('complementary', { name: 'cookie consent banner' }),
     ).toBeInTheDocument()
-    expect(
-      container.querySelectorAll('script[type="application/ld+json"]')
-    ).toHaveLength(2)
   })
 
   it('calls notFound for unsupported locale', async () => {

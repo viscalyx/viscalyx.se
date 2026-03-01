@@ -1,13 +1,10 @@
-import CookieConsentBanner from '@/components/CookieConsentBanner'
-import * as cookieConsent from '@/lib/cookie-consent'
-
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import { NextIntlClientProvider } from 'next-intl'
-
 import type { ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import CookieConsentBanner from '@/components/CookieConsentBanner'
+import * as cookieConsent from '@/lib/cookie-consent'
 
 // Mock the cookie consent utilities
 vi.mock('@/lib/cookie-consent', () => ({
@@ -24,8 +21,9 @@ vi.mock('@/lib/cookie-consent', () => ({
     {
       name: 'theme',
       category: 'preferences',
-      purpose: 'Stores user theme preference',
-      duration: '1 year',
+      purposeKey: 'cookies.theme.purpose',
+      durationKey: 'cookies.theme.duration',
+      provider: 'Site Provider',
     },
   ],
 }))
@@ -62,6 +60,12 @@ const messages = {
           'These cookies help us understand how visitors interact with our website.',
       },
     },
+    cookies: {
+      theme: {
+        purpose: 'Stores user theme preference',
+        duration: '1 year',
+      },
+    },
   },
 }
 
@@ -69,7 +73,7 @@ const renderWithIntl = (component: ReactNode) => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       {component}
-    </NextIntlClientProvider>
+    </NextIntlClientProvider>,
   )
 }
 
@@ -211,7 +215,7 @@ describe('CookieConsentBanner', () => {
 
     await waitFor(() => {
       const necessaryToggle = screen.getByLabelText(
-        /Strictly Necessary Cookies/i
+        /Strictly Necessary Cookies/i,
       )
       expect(necessaryToggle).toBeChecked()
       expect(necessaryToggle).toBeDisabled()
@@ -228,21 +232,43 @@ describe('CookieConsentBanner', () => {
         expect(dialog).toHaveAttribute('aria-labelledby', 'cookie-banner-title')
         expect(dialog).toHaveAttribute(
           'aria-describedby',
-          'cookie-banner-description'
+          'cookie-banner-description',
         )
         expect(dialog).toHaveAttribute('aria-live', 'polite')
       })
-    })
 
-    it('should add body padding when banner is visible to prevent content overlap', async () => {
-      renderWithIntl(<CookieConsentBanner />)
+      const customizeButtons = screen.getAllByRole('button', {
+        name: 'Customize Settings',
+      })
+      expect(customizeButtons.length).toBeGreaterThanOrEqual(1)
+      await user.click(customizeButtons[0])
 
       await waitFor(() => {
-        expect(document.body.style.paddingBottom).toBe('200px')
+        const detailedDialog = screen.getByRole('dialog')
+        expect(detailedDialog).toHaveAttribute('aria-modal', 'true')
+        expect(detailedDialog).toHaveAttribute(
+          'aria-labelledby',
+          'detailed-panel-title',
+        )
+        expect(detailedDialog).toHaveAttribute(
+          'aria-describedby',
+          'detailed-panel-description',
+        )
+        expect(detailedDialog).toHaveAttribute('aria-live', 'polite')
       })
     })
 
-    it('should remove body padding when banner is closed', async () => {
+    it('does not change body layout styles when banner is visible', async () => {
+      const baselinePadding = document.body.style.paddingBottom
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(document.body.style.paddingBottom).toBe(baselinePadding)
+      })
+    })
+
+    it('keeps body layout styles unchanged when banner is closed', async () => {
+      const baselinePadding = document.body.style.paddingBottom
       renderWithIntl(<CookieConsentBanner />)
 
       await waitFor(() => {
@@ -252,7 +278,7 @@ describe('CookieConsentBanner', () => {
       await user.click(screen.getByText('Accept All'))
 
       await waitFor(() => {
-        expect(document.body.style.paddingBottom).toBe('')
+        expect(document.body.style.paddingBottom).toBe(baselinePadding)
       })
     })
 
@@ -279,7 +305,7 @@ describe('CookieConsentBanner', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByRole('button', { name: 'Save Preferences' })
+          screen.getByRole('button', { name: 'Save Preferences' }),
         ).toBeInTheDocument()
       })
 
@@ -361,6 +387,36 @@ describe('CookieConsentBanner', () => {
       })
     })
 
+    it('moves focus into the banner when Tab starts outside the dialog', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+
+      await waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+      })
+
+      const learnMoreButton = screen.getByText('Learn more')
+      const acceptAllButton = screen.getByRole('button', { name: 'Accept All' })
+      const outsideButton = document.createElement('button')
+      outsideButton.textContent = 'outside'
+      document.body.appendChild(outsideButton)
+
+      try {
+        outsideButton.focus()
+        fireEvent.keyDown(document, { key: 'Tab' })
+        await waitFor(() => {
+          expect(learnMoreButton).toHaveFocus()
+        })
+
+        outsideButton.focus()
+        fireEvent.keyDown(document, { key: 'Tab', shiftKey: true })
+        await waitFor(() => {
+          expect(acceptAllButton).toHaveFocus()
+        })
+      } finally {
+        outsideButton.remove()
+      }
+    })
+
     it('should have proper aria labels for toggle switches in detailed view', async () => {
       renderWithIntl(<CookieConsentBanner />)
 
@@ -370,7 +426,7 @@ describe('CookieConsentBanner', () => {
         const analyticsToggle = screen.getByLabelText(/Analytics Cookies/i)
         expect(analyticsToggle).toHaveAttribute(
           'aria-describedby',
-          'analytics-description'
+          'analytics-description',
         )
         expect(analyticsToggle).toHaveAttribute('id', 'toggle-analytics')
       })
@@ -385,11 +441,20 @@ describe('CookieConsentBanner', () => {
         const viewCookiesButton = screen.getByText(/View Cookies \(1\)/)
         expect(viewCookiesButton).toHaveAttribute('aria-label')
         expect(viewCookiesButton.getAttribute('aria-label')).toContain(
-          'View Cookies for'
+          'View Cookies for',
         )
         expect(viewCookiesButton.getAttribute('aria-label')).toMatch(
-          /\(\d+ cookies\)/
+          /\(\d+ cookies\)/,
         )
+      })
+    })
+
+    it('renders cookie provider metadata in details', async () => {
+      renderWithIntl(<CookieConsentBanner />)
+      await user.click(screen.getByText('Customize Settings'))
+
+      await waitFor(() => {
+        expect(screen.getByText(/Provider: Site Provider/i)).toBeInTheDocument()
       })
     })
   })

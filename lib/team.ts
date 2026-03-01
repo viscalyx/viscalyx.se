@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react'
 import {
   BlueskyIcon,
   DiscordIcon,
@@ -6,7 +7,6 @@ import {
   MastodonIcon,
   XIcon,
 } from '@/components/SocialIcons'
-import { Mail } from 'lucide-react'
 
 // Icon name type for serializable data
 export type SocialIconName =
@@ -18,11 +18,23 @@ export type SocialIconName =
   | 'Discord'
   | 'GitHub'
 
+export const socialIconTranslationKeyMap: Record<SocialIconName, string> = {
+  Email: 'email',
+  LinkedIn: 'linkedin',
+  Bluesky: 'bluesky',
+  Mastodon: 'mastodon',
+  X: 'x',
+  Discord: 'discord',
+  GitHub: 'github',
+}
+
+type SocialIconComponent = React.ComponentType<{
+  className?: string
+  title?: string
+}>
+
 // Map of icon names to components (for client-side resolution)
-export const socialIconMap: Record<
-  SocialIconName,
-  React.ComponentType<{ className?: string }>
-> = {
+export const socialIconMap: Record<SocialIconName, SocialIconComponent> = {
   Email: Mail,
   LinkedIn: LinkedInIcon,
   Bluesky: BlueskyIcon,
@@ -33,33 +45,33 @@ export const socialIconMap: Record<
 }
 
 export interface TeamMember {
+  bio: string
   id: string
+  image?: string
+  location: string
   name: string
   role: string
-  image?: string
-  bio: string
-  location: string
-  specialties: string[]
   socialLinks: Array<{
-    name: string
+    name: SocialIconName
     href: string
-    icon: React.ComponentType<{ className?: string }>
+    icon: SocialIconComponent
   }>
+  specialties: string[]
 }
 
 // Serializable version of TeamMember for Server-to-Client Component data passing
 export interface SerializableTeamMember {
+  bio: string
   id: string
+  image?: string
+  location: string
   name: string
   role: string
-  image?: string
-  bio: string
-  location: string
-  specialties: string[]
   socialLinks: Array<{
     name: SocialIconName
     href: string
   }>
+  specialties: string[]
 }
 
 // Type for the translation function (simplified approach to avoid next-intl internal types)
@@ -154,7 +166,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
 // Find team member by ID
 export function getTeamMemberById(
   id: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return teamMembers.find(member => member.id === id) || null
@@ -180,7 +192,7 @@ function toSerializable(member: TeamMember): SerializableTeamMember {
 // Find team member by ID and return serializable version (for Server Components)
 export function getSerializableTeamMemberById(
   id: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): SerializableTeamMember | null {
   const member = getTeamMemberById(id, t)
   if (!member) return null
@@ -190,12 +202,12 @@ export function getSerializableTeamMemberById(
 // Find team member by name (for blog author matching)
 export function getTeamMemberByName(
   name: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): TeamMember | null {
   const teamMembers = getTeamMembers(t)
   return (
     teamMembers.find(
-      member => member.name.toLowerCase() === name.toLowerCase()
+      member => member.name.toLowerCase() === name.toLowerCase(),
     ) || null
   )
 }
@@ -203,7 +215,7 @@ export function getTeamMemberByName(
 // Find team member by name and return serializable version (for Server Components)
 export function getSerializableTeamMemberByName(
   name: string,
-  t: TranslationFunction
+  t: TranslationFunction,
 ): SerializableTeamMember | null {
   const member = getTeamMemberByName(name, t)
   if (!member) return null

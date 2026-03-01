@@ -1,6 +1,6 @@
-import Footer from '@/components/Footer'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import Footer from '@/components/Footer'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -18,29 +18,29 @@ vi.mock('next/navigation', () => ({
 // Mock SocialIcons
 vi.mock('@/components/SocialIcons', () => ({
   GitHubIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="github-icon" className={className} />
+    <svg className={className} data-testid="github-icon" />
   ),
   LinkedInIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="linkedin-icon" className={className} />
+    <svg className={className} data-testid="linkedin-icon" />
   ),
   XIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="x-icon" className={className} />
+    <svg className={className} data-testid="x-icon" />
   ),
   BlueskyIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="bluesky-icon" className={className} />
+    <svg className={className} data-testid="bluesky-icon" />
   ),
   MastodonIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="mastodon-icon" className={className} />
+    <svg className={className} data-testid="mastodon-icon" />
   ),
 }))
 
 // Mock lucide-react
 vi.mock('lucide-react', () => ({
   ExternalLink: ({ className }: { className?: string }) => (
-    <svg data-testid="external-link-icon" className={className} />
+    <svg className={className} data-testid="external-link-icon" />
   ),
   Mail: ({ className }: { className?: string }) => (
-    <svg data-testid="mail-icon" className={className} />
+    <svg className={className} data-testid="mail-icon" />
   ),
 }))
 
@@ -119,53 +119,81 @@ describe('Footer', () => {
   it('renders external link icons for external links', () => {
     render(<Footer />)
     const communityLink = screen.getByText('community')
-    const icon = communityLink.querySelector(
-      '[data-testid="external-link-icon"]'
-    )
-    expect(icon).toBeInTheDocument()
+    const parentLink = communityLink.closest('a')
+    expect(parentLink).not.toBeNull()
+    expect(
+      within(parentLink as HTMLElement).getByText('opensInNewTab'),
+    ).toBeInTheDocument()
   })
 
   it('does not render external link icons for internal links', () => {
     render(<Footer />)
     const privacyLink = screen.getByText('privacyPolicy')
-    const icon = privacyLink.querySelector('[data-testid="external-link-icon"]')
-    expect(icon).not.toBeInTheDocument()
+    const parentLink = privacyLink.closest('a')
+    expect(parentLink).not.toBeNull()
+    expect(
+      within(parentLink as HTMLElement).queryByText('opensInNewTab'),
+    ).not.toBeInTheDocument()
   })
 
   it('renders social links with correct hrefs', () => {
     render(<Footer />)
-    const githubLink = screen.getByRole('link', { name: 'GitHub' })
+    const githubLink = screen.getByRole('link', {
+      name: 'socialLinks.github',
+    })
     expect(githubLink).toHaveAttribute('href', 'https://github.com/viscalyx')
 
-    const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
+    const linkedinLink = screen.getByRole('link', {
+      name: 'socialLinks.linkedin',
+    })
     expect(linkedinLink).toHaveAttribute(
       'href',
-      'https://linkedin.com/company/viscalyx'
+      'https://linkedin.com/company/viscalyx',
     )
   })
 
-  it('renders social links with target="_blank"', () => {
+  it('renders social links with conditional target and rel attributes', () => {
     render(<Footer />)
-    const githubLink = screen.getByRole('link', { name: 'GitHub' })
+    const githubLink = screen.getByRole('link', {
+      name: 'socialLinks.github',
+    })
     expect(githubLink).toHaveAttribute('target', '_blank')
     expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+    const emailLink = screen.getByRole('link', {
+      name: 'socialLinks.email',
+    })
+    expect(emailLink).not.toHaveAttribute('target')
+    expect(emailLink).not.toHaveAttribute('rel')
   })
 
   it('renders social links with aria-labels', () => {
     render(<Footer />)
-    expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'LinkedIn' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'X' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Bluesky' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Mastodon' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Email' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.github' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.linkedin' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.x' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.bluesky' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.mastodon' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'socialLinks.email' }),
+    ).toBeInTheDocument()
   })
 
   it('renders copyright with current year', () => {
     render(<Footer />)
     const year = new Date().getFullYear()
     expect(
-      screen.getByText(new RegExp(`© ${year} Viscalyx`))
+      screen.getByText(new RegExp(`© ${year} Viscalyx`)),
     ).toBeInTheDocument()
   })
 

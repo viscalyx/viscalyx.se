@@ -1,8 +1,7 @@
-import { isValidTheme, ThemeProvider, useTheme } from '@/lib/theme-context'
 import { act, renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
 import type { ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { isValidTheme, ThemeProvider, useTheme } from '@/lib/theme-context'
 
 // Mock cookie-consent
 const hasConsentMock = vi.fn((_category: string) => true)
@@ -41,7 +40,7 @@ const mediaQueryObject = {
   addEventListener: vi.fn(
     (_event: string, handler: (e: { matches: boolean }) => void) => {
       mediaChangeHandler = handler
-    }
+    },
   ),
   removeEventListener: vi.fn(() => {
     mediaChangeHandler = null
@@ -94,7 +93,7 @@ describe('ThemeProvider', () => {
     mediaQueryObject.addEventListener = vi.fn(
       (_event: string, handler: (e: { matches: boolean }) => void) => {
         mediaChangeHandler = handler
-      }
+      },
     )
     mediaQueryObject.removeEventListener = vi.fn(() => {
       mediaChangeHandler = null
@@ -229,7 +228,7 @@ describe('ThemeProvider', () => {
       })
       // setItem should not be called for theme when no consent
       const themeCalls = localStorageMock.setItem.mock.calls.filter(
-        (call: string[]) => call[0] === 'theme'
+        (call: string[]) => call[0] === 'theme',
       )
       expect(themeCalls).toHaveLength(0)
     })

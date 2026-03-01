@@ -1,7 +1,6 @@
-import ReadingProgress from '@/components/ReadingProgress'
-
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import ReadingProgress from '@/components/ReadingProgress'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -15,7 +14,7 @@ describe('ReadingProgress', () => {
     vi.clearAllMocks()
     originalScrollHeightDescriptor = Object.getOwnPropertyDescriptor(
       document.documentElement,
-      'scrollHeight'
+      'scrollHeight',
     )
     Object.defineProperty(window, 'scrollY', {
       value: 0,
@@ -36,7 +35,7 @@ describe('ReadingProgress', () => {
       (cb: FrameRequestCallback) => {
         cb(0)
         return 0
-      }
+      },
     )
 
     // Set up a .prose element
@@ -63,7 +62,7 @@ describe('ReadingProgress', () => {
       Object.defineProperty(
         document.documentElement,
         'scrollHeight',
-        originalScrollHeightDescriptor
+        originalScrollHeightDescriptor,
       )
     } else {
       // Remove test-defined override and fall back to jsdom's default behavior.
@@ -163,6 +162,70 @@ describe('ReadingProgress', () => {
 
     render(<ReadingProgress endTarget="#author-bio" />)
     const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toHaveAttribute('aria-valuenow', '100')
+  })
+
+  it('does not jump to 100% when endTarget is already in the viewport', () => {
+    const endElement = document.createElement('div')
+    endElement.id = 'author-bio'
+    endElement.getBoundingClientRect = vi.fn(() => ({
+      top: 200,
+      left: 0,
+      right: 0,
+      bottom: 400,
+      width: 0,
+      height: 200,
+      x: 0,
+      y: 200,
+      toJSON: vi.fn(),
+    }))
+    document.body.appendChild(endElement)
+
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      configurable: true,
+    })
+    Object.defineProperty(window, 'scrollY', {
+      value: 0,
+      writable: true,
+      configurable: true,
+    })
+
+    render(<ReadingProgress endTarget="#author-bio" />)
+    const progressBar = screen.getByRole('progressbar')
+
+    expect(progressBar).toHaveAttribute('aria-valuenow', '83')
+  })
+
+  it('reaches 100% at page bottom even when endTarget is below max scroll', () => {
+    const endElement = document.createElement('div')
+    endElement.id = 'author-bio'
+    endElement.getBoundingClientRect = vi.fn(() => ({
+      top: 2800,
+      left: 0,
+      right: 0,
+      bottom: 3000,
+      width: 0,
+      height: 200,
+      x: 0,
+      y: 2800,
+      toJSON: vi.fn(),
+    }))
+    document.body.appendChild(endElement)
+
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      configurable: true,
+    })
+    Object.defineProperty(window, 'scrollY', {
+      value: 2199,
+      writable: true,
+      configurable: true,
+    })
+
+    render(<ReadingProgress endTarget="#author-bio" />)
+    const progressBar = screen.getByRole('progressbar')
+
     expect(progressBar).toHaveAttribute('aria-valuenow', '100')
   })
 })

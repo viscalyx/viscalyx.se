@@ -1,7 +1,8 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import React, { useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ImageModal from './ImageModal'
 
 interface ImageEnhancerProps {
@@ -44,7 +45,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
     const timeoutId = setTimeout(() => {
       const images = content.querySelectorAll('img')
 
-      imageHandlers = new Map<
+      const handlers = new Map<
         HTMLImageElement,
         {
           mouseEnter: () => void
@@ -53,6 +54,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           keydown: (event: KeyboardEvent) => void
         }
       >()
+      imageHandlers = handlers
 
       // Add click handlers and hover effects to all images
       images.forEach(img => {
@@ -97,7 +99,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         }
 
         // Store handlers for cleanup
-        imageHandlers!.set(imageElement, {
+        handlers.set(imageElement, {
           mouseEnter: handleMouseEnter,
           mouseLeave: handleMouseLeave,
           click: handleClick,
@@ -117,7 +119,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           'aria-label',
           imageElement.alt
             ? t('accessibility.image.viewFullImage', { alt: imageElement.alt })
-            : t('accessibility.image.viewImage')
+            : t('accessibility.image.viewImage'),
         )
         imageElement.style.cursor = 'pointer'
 
@@ -140,7 +142,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           imageElement.removeEventListener('click', handlers.click)
           imageElement.removeEventListener(
             'keydown',
-            handlers.keydown as EventListener
+            handlers.keydown as EventListener,
           )
 
           // Remove accessibility attributes
@@ -171,10 +173,10 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
 
   return (
     <ImageModal
+      imageAlt={modalState.imageAlt}
+      imageSrc={modalState.imageSrc}
       isOpen={modalState.isOpen}
       onClose={closeModal}
-      imageSrc={modalState.imageSrc}
-      imageAlt={modalState.imageAlt}
       triggerElement={modalState.triggerElement}
     />
   )

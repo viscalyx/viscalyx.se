@@ -1,16 +1,20 @@
 'use client'
 
+import { motion, type Variants } from 'framer-motion'
+import { ArrowLeft, MapPin } from 'lucide-react'
+import type { Route } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useLocale, useTranslations } from 'next-intl'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { SerializableTeamMember, socialIconMap } from '@/lib/team'
-import { motion, Variants } from 'framer-motion'
-import { ArrowLeft, MapPin } from 'lucide-react'
-import { useLocale, useTranslations } from 'next-intl'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import type { Route } from 'next'
+import {
+  type SerializableTeamMember,
+  type SocialIconName,
+  socialIconMap,
+  socialIconTranslationKeyMap,
+} from '@/lib/team'
 
 interface TeamMemberClientProps {
   member: SerializableTeamMember
@@ -18,7 +22,23 @@ interface TeamMemberClientProps {
 
 const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
   const t = useTranslations('teamMember')
+  const teamT = useTranslations('team')
   const locale = useLocale()
+
+  const hasSocialTranslationKey = (
+    socialName: string,
+  ): socialName is keyof typeof socialIconTranslationKeyMap =>
+    socialName in socialIconTranslationKeyMap
+
+  const getSocialLinkText = (socialName: SocialIconName) => {
+    if (!hasSocialTranslationKey(socialName)) {
+      return socialName
+    }
+
+    const socialKey = socialIconTranslationKeyMap[socialName]
+    const translated = teamT(`socialLinks.${socialKey}`)
+    return translated === `socialLinks.${socialKey}` ? socialName : translated
+  }
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -57,10 +77,10 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
 
   return (
     <motion.main
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
       className="min-h-screen"
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Header />
 
@@ -69,14 +89,14 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
           <div className="container-custom section-padding">
             {/* Back Button */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
               className="mb-8"
+              initial={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.6 }}
             >
               <Link
-                href={`/${locale}/team` as Route}
                 className="inline-flex items-center text-secondary-600 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                href={`/${locale}/team` as Route}
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 {t('backToTeam')}
@@ -84,23 +104,23 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
             </motion.div>
 
             <motion.div
-              variants={containerVariants}
-              initial="hidden"
               animate="visible"
               className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start"
+              initial="hidden"
+              variants={containerVariants}
             >
               {/* Left Content */}
-              <motion.div variants={itemVariants} className="space-y-8">
+              <motion.div className="space-y-8" variants={itemVariants}>
                 {/* Header */}
                 <div>
                   <motion.h1
-                    variants={itemVariants}
                     className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-white mb-4"
+                    variants={itemVariants}
                   >
                     {t('aboutTitle')} {member.name}
                   </motion.h1>
 
-                  <motion.div variants={itemVariants} className="space-y-3">
+                  <motion.div className="space-y-3" variants={itemVariants}>
                     <p className="text-xl text-primary-600 dark:text-primary-400 font-semibold">
                       {member.role}
                     </p>
@@ -113,8 +133,8 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
 
                 {/* Biography */}
                 <motion.div
-                  variants={itemVariants}
                   className="prose prose-lg dark:prose-invert max-w-none"
+                  variants={itemVariants}
                 >
                   <div className="text-secondary-600 dark:text-secondary-300 leading-relaxed mb-6 whitespace-pre-line">
                     {t(`members.${member.id}.biography`)}
@@ -124,8 +144,8 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                   <div className="flex flex-wrap gap-3">
                     {member.specialties.map(specialty => (
                       <span
-                        key={specialty}
                         className="px-4 py-2 bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 rounded-full text-sm font-medium"
+                        key={specialty}
                       >
                         {specialty}
                       </span>
@@ -141,27 +161,28 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                   <div className="flex flex-wrap gap-4">
                     {member.socialLinks.map(social => {
                       const IconComponent = socialIconMap[social.name]
+                      const socialLinkText = getSocialLinkText(social.name)
                       return (
                         <motion.a
-                          key={social.name}
+                          aria-label={socialLinkText}
+                          className="flex items-center space-x-2 px-4 py-3 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                           href={social.href}
-                          target={
-                            social.href.startsWith('mailto:')
-                              ? '_self'
-                              : '_blank'
-                          }
+                          key={`${social.name}-${social.href}`}
                           rel={
                             social.href.startsWith('mailto:')
                               ? undefined
                               : 'noopener noreferrer'
                           }
+                          target={
+                            social.href.startsWith('mailto:')
+                              ? '_self'
+                              : '_blank'
+                          }
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
-                          className="flex items-center space-x-2 px-4 py-3 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                          aria-label={social.name}
                         >
                           <IconComponent className="h-5 w-5" />
-                          <span className="font-medium">{social.name}</span>
+                          <span className="font-medium">{socialLinkText}</span>
                         </motion.a>
                       )
                     })}
@@ -171,18 +192,19 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
 
               {/* Right Content - Large Profile Image */}
               <motion.div
-                variants={imageVariants}
                 className="lg:sticky lg:top-24"
+                variants={imageVariants}
               >
                 <div className="relative">
                   <div className="relative aspect-4/5 w-full max-w-lg mx-auto rounded-2xl overflow-hidden shadow-2xl">
                     {member.image ? (
                       <Image
-                        src={member.image}
                         alt={member.name}
-                        fill
                         className="object-cover"
+                        fill
                         priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        src={member.image}
                       />
                     ) : (
                       <div className="w-full h-full bg-linear-to-br from-primary-500 to-primary-600 flex items-center justify-center">

@@ -1,8 +1,8 @@
-import TableOfContents from '@/components/TableOfContents'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import TableOfContents from '@/components/TableOfContents'
 
-import type { TocItem } from '@/lib/slug-utils'
+import type { TocItem } from '@/lib/slug-utils-client'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -12,10 +12,10 @@ vi.mock('next-intl', () => ({
 // Mock BlogIcons
 vi.mock('@/components/BlogIcons', () => ({
   ChevronUpIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="chevron-up-icon" className={className} />
+    <svg className={className} data-testid="chevron-up-icon" />
   ),
   ChevronDownIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="chevron-down-icon" className={className} />
+    <svg className={className} data-testid="chevron-down-icon" />
   ),
 }))
 
@@ -30,7 +30,7 @@ class MockIntersectionObserver {
   unobserve = vi.fn()
   constructor(
     public callback: IntersectionObserverCallback,
-    public options?: IntersectionObserverInit
+    public options?: IntersectionObserverInit,
   ) {
     intersectionObserverInstances.push(this)
   }
@@ -91,7 +91,7 @@ describe('TableOfContents', () => {
   })
 
   it('uses aria-labelledby when headingId is provided', () => {
-    render(<TableOfContents items={mockItems} headingId="toc-heading" />)
+    render(<TableOfContents headingId="toc-heading" items={mockItems} />)
     const nav = screen.getByRole('navigation')
     expect(nav).toHaveAttribute('aria-labelledby', 'toc-heading')
     expect(nav).not.toHaveAttribute('aria-label')
@@ -107,6 +107,9 @@ describe('TableOfContents', () => {
     render(<TableOfContents items={mockItems} />)
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(mockItems.length)
+    buttons.forEach(button => {
+      expect(button).toHaveClass('min-h-[44px]')
+    })
   })
 
   it('applies indentation for level 3 items', () => {
@@ -171,7 +174,7 @@ describe('TableOfContents', () => {
 
   it('applies sm maxHeight class', () => {
     const { container } = render(
-      <TableOfContents items={mockItems} maxHeight="sm" />
+      <TableOfContents items={mockItems} maxHeight="sm" />,
     )
     const scrollable = container.querySelector('.toc-scrollable')
     expect(scrollable).toHaveClass('max-h-64')
@@ -211,7 +214,7 @@ describe('TableOfContents', () => {
               target: heading,
             } as unknown as IntersectionObserverEntry,
           ],
-          intersectionObserverInstances[0] as unknown as IntersectionObserver
+          intersectionObserverInstances[0] as unknown as IntersectionObserver,
         )
       })
 
@@ -219,6 +222,57 @@ describe('TableOfContents', () => {
       expect(activeButton).toHaveAttribute('aria-current', 'location')
     } finally {
       heading.remove()
+    }
+  })
+
+  it('updates active heading from scroll position when observer callbacks do not fire', async () => {
+    const makeRect = (top: number) => ({
+      top,
+      left: 0,
+      right: 600,
+      bottom: top + 40,
+      width: 600,
+      height: 40,
+      x: 0,
+      y: top,
+      toJSON: vi.fn(),
+    })
+
+    const introHeading = document.createElement('h2')
+    introHeading.id = 'introduction'
+    introHeading.getBoundingClientRect = vi.fn(() => makeRect(90))
+
+    const gettingStartedHeading = document.createElement('h2')
+    gettingStartedHeading.id = 'getting-started'
+    gettingStartedHeading.getBoundingClientRect = vi.fn(() => makeRect(380))
+
+    document.body.appendChild(introHeading)
+    document.body.appendChild(gettingStartedHeading)
+
+    try {
+      render(<TableOfContents items={mockItems} />)
+
+      await waitFor(() => {
+        const introductionButton = screen.getByRole('button', {
+          name: 'Introduction',
+        })
+        expect(introductionButton).toHaveAttribute('aria-current', 'location')
+      })
+
+      introHeading.getBoundingClientRect = vi.fn(() => makeRect(-250))
+      gettingStartedHeading.getBoundingClientRect = vi.fn(() => makeRect(110))
+
+      fireEvent.scroll(window)
+
+      await waitFor(() => {
+        const gettingStartedButton = screen.getByRole('button', {
+          name: 'Getting Started',
+        })
+        expect(gettingStartedButton).toHaveAttribute('aria-current', 'location')
+      })
+    } finally {
+      introHeading.remove()
+      gettingStartedHeading.remove()
     }
   })
 
@@ -230,7 +284,7 @@ describe('TableOfContents', () => {
     try {
       const { container } = render(<TableOfContents items={mockItems} />)
       const scrollContainer = container.querySelector(
-        '.toc-scrollable'
+        '.toc-scrollable',
       ) as HTMLDivElement
       const scrollToSpy = vi.fn()
       Object.defineProperty(scrollContainer, 'scrollTo', {
@@ -284,7 +338,7 @@ describe('TableOfContents', () => {
               target: heading,
             } as unknown as IntersectionObserverEntry,
           ],
-          intersectionObserverInstances[0] as unknown as IntersectionObserver
+          intersectionObserverInstances[0] as unknown as IntersectionObserver,
         )
       })
 
@@ -303,5 +357,68 @@ describe('TableOfContents', () => {
     fireEvent.click(screen.getByText('Introduction'))
 
     expect(pushStateSpy).not.toHaveBeenCalled()
+  })
+
+  it('supports keyboard scrolling shortcuts inside the toc region', () => {
+    const { container } = render(<TableOfContents items={mockItems} />)
+    const region = screen.getByRole('region')
+    const scrollContainer = container.querySelector(
+      '.toc-scrollable',
+    ) as HTMLElement
+    const scrollBySpy = vi.fn()
+    const scrollToSpy = vi.fn()
+    Object.defineProperty(scrollContainer, 'scrollBy', {
+      value: scrollBySpy,
+      writable: true,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'scrollTo', {
+      value: scrollToSpy,
+      writable: true,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'clientHeight', {
+      value: 200,
+      configurable: true,
+    })
+    Object.defineProperty(scrollContainer, 'scrollHeight', {
+      value: 700,
+      configurable: true,
+    })
+
+    fireEvent.keyDown(region, { key: 'ArrowDown' })
+    fireEvent.keyDown(region, { key: 'ArrowUp' })
+    fireEvent.keyDown(region, { key: 'PageDown' })
+    fireEvent.keyDown(region, { key: 'PageUp' })
+    fireEvent.keyDown(region, { key: 'Home' })
+    fireEvent.keyDown(region, { key: 'End' })
+    fireEvent.keyDown(region, { key: 'Tab' })
+
+    expect(scrollBySpy).toHaveBeenNthCalledWith(1, {
+      top: 40,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(2, {
+      top: -40,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(3, {
+      top: 160,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenNthCalledWith(4, {
+      top: -160,
+      behavior: 'smooth',
+    })
+    expect(scrollToSpy).toHaveBeenNthCalledWith(1, {
+      top: 0,
+      behavior: 'smooth',
+    })
+    expect(scrollToSpy).toHaveBeenNthCalledWith(2, {
+      top: 700,
+      behavior: 'smooth',
+    })
+    expect(scrollBySpy).toHaveBeenCalledTimes(4)
+    expect(scrollToSpy).toHaveBeenCalledTimes(2)
   })
 })

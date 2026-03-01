@@ -9,15 +9,15 @@ test.describe('Blog Listing Page', () => {
 
       // Hero section is server-rendered — visible without waiting for JS
       await expect(
-        page.locator('h1').filter({ hasText: /Insights/i })
+        page.locator('h1').filter({ hasText: /Insights/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Knowledge/i })
+        page.locator('h1').filter({ hasText: /Knowledge/i }),
       ).toBeVisible()
 
       // Featured post section heading
       await expect(
-        page.getByRole('heading', { name: /Featured Article/i })
+        page.getByRole('heading', { name: /Featured Article/i }),
       ).toBeVisible()
     })
 
@@ -27,7 +27,7 @@ test.describe('Blog Listing Page', () => {
       // The old client-rendered page showed "Loading blog posts..."
       // The server component renders content immediately
       await expect(
-        page.getByText('Loading blog posts', { exact: false })
+        page.getByText('Loading blog posts', { exact: false }),
       ).not.toBeVisible()
     })
 
@@ -50,7 +50,7 @@ test.describe('Blog Listing Page', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(20)
+      expect(description?.length).toBeGreaterThan(20)
     })
   })
 
@@ -99,7 +99,7 @@ test.describe('Blog Listing Page', () => {
 
       // "All" button should be present
       await expect(
-        page.getByRole('button', { name: 'All', exact: true })
+        page.getByRole('button', { name: 'All', exact: true }),
       ).toBeVisible()
 
       // At least one real category should exist beyond "All"
@@ -129,7 +129,7 @@ test.describe('Blog Listing Page', () => {
       // All visible articles should have the DevOps category badge
       for (let i = 0; i < filteredCount; i++) {
         await expect(
-          filteredArticles.nth(i).getByText('DevOps', { exact: true })
+          filteredArticles.nth(i).getByText('DevOps', { exact: true }),
         ).toBeVisible()
       }
     })
@@ -165,7 +165,7 @@ test.describe('Blog Listing Page', () => {
 
       // Load More should be visible when there are more posts than one page
       await expect(
-        page.getByRole('button', { name: /Load More/i })
+        page.getByRole('button', { name: /Load More/i }),
       ).toBeVisible()
 
       // Initially only the first page of articles is shown
@@ -204,7 +204,7 @@ test.describe('Blog Listing Page', () => {
       }
 
       await expect(
-        page.getByRole('button', { name: /Load More/i })
+        page.getByRole('button', { name: /Load More/i }),
       ).not.toBeVisible()
     })
   })
@@ -245,20 +245,20 @@ test.describe('Blog Listing Page', () => {
 
       // Swedish hero text
       await expect(
-        page.locator('h1').filter({ hasText: /Insikter/i })
+        page.locator('h1').filter({ hasText: /Insikter/i }),
       ).toBeVisible()
       await expect(
-        page.locator('h1').filter({ hasText: /Kunskap/i })
+        page.locator('h1').filter({ hasText: /Kunskap/i }),
       ).toBeVisible()
 
       // Swedish featured post heading
       await expect(
-        page.getByRole('heading', { name: /Utvald Artikel/i })
+        page.getByRole('heading', { name: /Utvald Artikel/i }),
       ).toBeVisible()
 
       // Swedish category "All" → "Alla"
       await expect(
-        page.getByRole('button', { name: 'Alla', exact: true })
+        page.getByRole('button', { name: 'Alla', exact: true }),
       ).toBeVisible()
     })
 

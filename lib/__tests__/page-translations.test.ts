@@ -1,10 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  useCookiesTranslations,
   usePrivacyTranslations,
   useTermsTranslations,
   validateFilePrefix,
-} from '../page-translations'
+  validateLocale,
+} from '@/lib/page-translations'
 
 // Mock next-intl
 const mockUseLocale = vi.fn()
@@ -50,7 +52,7 @@ describe('usePrivacyTranslations', () => {
       expect(result.current.translations.title).toBeTruthy()
       expect(result.current.translations.sections).toBeTruthy()
       expect(
-        result.current.translations.sections.informationWeCollect
+        result.current.translations.sections.informationWeCollect,
       ).toBeTruthy()
     }
   })
@@ -161,10 +163,9 @@ describe('useTermsTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.terms).toBeTruthy()
-      expect(result.current.translations.terms.title).toBeTruthy()
-      expect(result.current.translations.terms.sections).toBeTruthy()
-      expect(result.current.translations.terms.sections.agreement).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
+      expect(result.current.translations.sections.agreement).toBeTruthy()
     }
   })
 
@@ -181,9 +182,8 @@ describe('useTermsTranslations', () => {
     expect(result.current.error).toBe(null)
 
     if (result.current.translations) {
-      expect(result.current.translations.terms).toBeTruthy()
-      expect(result.current.translations.terms.title).toBeTruthy()
-      expect(result.current.translations.terms.sections).toBeTruthy()
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.sections).toBeTruthy()
     }
   })
 
@@ -244,9 +244,193 @@ describe('useTermsTranslations', () => {
 
     // Both should have the same structure
     if (enResult.current.translations && svResult.current.translations) {
-      const enKeys = Object.keys(enResult.current.translations.terms.sections)
-      const svKeys = Object.keys(svResult.current.translations.terms.sections)
+      const enKeys = Object.keys(enResult.current.translations.sections)
+      const svKeys = Object.keys(svResult.current.translations.sections)
       expect(enKeys).toEqual(svKeys)
+    }
+  })
+})
+
+describe('useCookiesTranslations', () => {
+  it('should start with loading state and no translations', () => {
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    expect(result.current.loading).toBe(true)
+    expect(result.current.translations).toBe(null)
+    expect(result.current.error).toBe(null)
+  })
+
+  it('should load English cookies translations successfully', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+    if (result.current.translations) {
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.howWeUseCookies).toBeTruthy()
+    }
+  })
+
+  it('should load Swedish cookies translations successfully', async () => {
+    mockUseLocale.mockReturnValue('sv')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+
+    if (result.current.translations) {
+      expect(result.current.translations.title).toBeTruthy()
+      expect(result.current.translations.howWeUseCookies).toBeTruthy()
+    }
+  })
+
+  it('should fallback to English when using unsupported locale', async () => {
+    mockUseLocale.mockReturnValue('fr')
+    const { result } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.error).toBe(null)
+  })
+
+  it('should reload translations when locale changes from English to Swedish', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result, rerender } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    const initialTranslations = result.current.translations
+
+    mockUseLocale.mockReturnValue('sv')
+    rerender()
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    expect(result.current.translations).toBeTruthy()
+    expect(result.current.translations).not.toEqual(initialTranslations)
+  })
+
+  it('should have consistent interface across locales', async () => {
+    mockUseLocale.mockReturnValue('en')
+    const { result: enResult } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(enResult.current.loading).toBe(false)
+    })
+
+    mockUseLocale.mockReturnValue('sv')
+    const { result: svResult } = renderHook(() => useCookiesTranslations())
+
+    await waitFor(() => {
+      expect(svResult.current.loading).toBe(false)
+    })
+
+    if (enResult.current.translations && svResult.current.translations) {
+      expect(Object.keys(enResult.current.translations)).toEqual(
+        Object.keys(svResult.current.translations),
+      )
+      expect(
+        Object.keys(enResult.current.translations.howWeUseCookies),
+      ).toEqual(Object.keys(svResult.current.translations.howWeUseCookies))
+    }
+  })
+})
+
+describe('usePageTranslations fallback error handling', () => {
+  it('sets error when locale validation fails and fallback import also fails', async () => {
+    vi.resetModules()
+    const isolatedUseLocale = vi.fn(() => 'fr')
+    const isolatedConsoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
+    try {
+      vi.doMock('next-intl', () => ({
+        useLocale: () => isolatedUseLocale(),
+      }))
+      vi.doMock('@/messages/privacy.en.json', () => {
+        throw new Error('fallback import failed')
+      })
+
+      const pageTranslationsModule = await import('../page-translations')
+      const { result } = renderHook(() =>
+        pageTranslationsModule.usePrivacyTranslations(),
+      )
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false)
+      })
+
+      expect(result.current.translations).toBeNull()
+      expect(result.current.error).toBeInstanceOf(Error)
+      expect(isolatedConsoleErrorSpy).toHaveBeenCalledWith(
+        'Error loading fallback privacy translations:',
+        expect.any(Error),
+      )
+    } finally {
+      vi.doUnmock('@/messages/privacy.en.json')
+      vi.doUnmock('next-intl')
+      isolatedConsoleErrorSpy.mockRestore()
+    }
+  })
+
+  it('sets a generic error when fallback import throws a non-Error value', async () => {
+    vi.resetModules()
+    const isolatedUseLocale = vi.fn(() => 'fr')
+    const isolatedConsoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+
+    try {
+      vi.doMock('next-intl', () => ({
+        useLocale: () => isolatedUseLocale(),
+      }))
+      vi.doMock('@/messages/privacy.en.json', () => {
+        return {
+          get default() {
+            throw 'fallback import failed'
+          },
+        }
+      })
+
+      const pageTranslationsModule = await import('../page-translations')
+      const { result } = renderHook(() =>
+        pageTranslationsModule.usePrivacyTranslations(),
+      )
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false)
+      })
+
+      expect(result.current.translations).toBeNull()
+      expect(result.current.error).toBeInstanceOf(Error)
+      expect(result.current.error?.message).toBe(
+        'Failed to load privacy translations',
+      )
+      expect(isolatedConsoleErrorSpy).toHaveBeenCalledWith(
+        'Error loading fallback privacy translations:',
+        'fallback import failed',
+      )
+    } finally {
+      vi.doUnmock('@/messages/privacy.en.json')
+      vi.doUnmock('next-intl')
+      isolatedConsoleErrorSpy.mockRestore()
     }
   })
 })
@@ -281,105 +465,105 @@ describe('validateFilePrefix', () => {
   describe('invalid inputs', () => {
     it('throws error for empty or null inputs', () => {
       expect(() => validateFilePrefix('')).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
       expect(() => validateFilePrefix('   ')).toThrow(
-        'File prefix cannot be empty or whitespace only'
+        'File prefix cannot be empty or whitespace only',
       )
       // @ts-expect-error - Testing null input
       expect(() => validateFilePrefix(null)).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
       // @ts-expect-error - Testing undefined input
       expect(() => validateFilePrefix(undefined)).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
     })
 
     it('throws error for non-string inputs', () => {
       // @ts-expect-error - Testing number input
       expect(() => validateFilePrefix(123)).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
       // @ts-expect-error - Testing object input
       expect(() => validateFilePrefix({})).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
       // @ts-expect-error - Testing array input
       expect(() => validateFilePrefix([])).toThrow(
-        'File prefix must be a non-empty string'
+        'File prefix must be a non-empty string',
       )
     })
 
     it('throws error for path traversal attempts', () => {
       expect(() => validateFilePrefix('../etc/passwd')).toThrow(
-        'File prefix contains invalid path characters'
+        'File prefix contains invalid path characters',
       )
       expect(() => validateFilePrefix('../../secret')).toThrow(
-        'File prefix contains invalid path characters'
+        'File prefix contains invalid path characters',
       )
       expect(() => validateFilePrefix('path/to/file')).toThrow(
-        'File prefix contains invalid path characters'
+        'File prefix contains invalid path characters',
       )
       expect(() => validateFilePrefix('path\\to\\file')).toThrow(
-        'File prefix contains invalid path characters'
+        'File prefix contains invalid path characters',
       )
     })
 
     it('throws error for invalid characters', () => {
       expect(() => validateFilePrefix('privacy!')).toThrow(
-        'Only lowercase alphanumeric characters'
+        'Only lowercase alphanumeric characters',
       )
       expect(() => validateFilePrefix('terms@domain.com')).toThrow(
-        'Only lowercase alphanumeric characters'
+        'Only lowercase alphanumeric characters',
       )
       expect(() => validateFilePrefix('file.txt')).toThrow(
-        'Only lowercase alphanumeric characters'
+        'Only lowercase alphanumeric characters',
       )
       expect(() => validateFilePrefix('file space')).toThrow(
-        'Only lowercase alphanumeric characters'
+        'Only lowercase alphanumeric characters',
       )
       expect(() => validateFilePrefix('file#hash')).toThrow(
-        'Only lowercase alphanumeric characters'
+        'Only lowercase alphanumeric characters',
       )
     })
 
     it('throws error for strings starting with underscore or hyphen', () => {
       expect(() => validateFilePrefix('_private')).toThrow(
-        'File prefix cannot start with underscore or hyphen'
+        'File prefix cannot start with underscore or hyphen',
       )
       expect(() => validateFilePrefix('-hidden')).toThrow(
-        'File prefix cannot start with underscore or hyphen'
+        'File prefix cannot start with underscore or hyphen',
       )
     })
 
     it('throws error for strings ending with hyphen', () => {
       expect(() => validateFilePrefix('file-')).toThrow(
-        'File prefix cannot start with underscore or hyphen, or end with hyphen'
+        'File prefix cannot start with underscore or hyphen, or end with hyphen',
       )
     })
 
     it('throws error for reserved names', () => {
       expect(() => validateFilePrefix('con')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('prn')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('aux')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('nul')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('index')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('main')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('config')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
     })
   })
@@ -387,10 +571,10 @@ describe('validateFilePrefix', () => {
   describe('edge cases', () => {
     it('handles mixed case reserved names', () => {
       expect(() => validateFilePrefix('CON')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
       expect(() => validateFilePrefix('Index')).toThrow(
-        'File prefix cannot use reserved name'
+        'File prefix cannot use reserved name',
       )
     })
 
@@ -399,6 +583,17 @@ describe('validateFilePrefix', () => {
       expect(validateFilePrefix('contact')).toBe('contact')
       expect(validateFilePrefix('mainpage')).toBe('mainpage') // cSpell: disable-line
     })
+  })
+})
+
+describe('validateLocale', () => {
+  it('accepts supported locales', () => {
+    expect(validateLocale('en')).toBe('en')
+    expect(validateLocale('sv')).toBe('sv')
+  })
+
+  it('throws for unsupported locales', () => {
+    expect(() => validateLocale('fr')).toThrow('Invalid locale: "fr"')
   })
 })
 

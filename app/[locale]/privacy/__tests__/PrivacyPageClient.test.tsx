@@ -94,7 +94,7 @@ describe('PrivacyPageClient', () => {
     const emailLink = screen.getByRole('link')
     expect(emailLink).toHaveAttribute(
       'href',
-      expect.stringContaining('mailto:')
+      expect.stringContaining('mailto:'),
     )
   })
 })

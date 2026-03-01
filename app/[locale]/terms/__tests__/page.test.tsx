@@ -1,5 +1,8 @@
+import { render, screen } from '@testing-library/react'
+import type { Metadata } from 'next'
 import React from 'react'
 import { vi } from 'vitest'
+import TermsPage, { generateMetadata } from '@/app/[locale]/terms/page'
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
@@ -25,12 +28,6 @@ vi.mock('@/lib/file-dates', () => ({
     terms: new Date('2025-01-01'),
   }),
 }))
-
-import { render, screen } from '@testing-library/react'
-
-import TermsPage, { generateMetadata } from '@/app/[locale]/terms/page'
-
-import type { Metadata } from 'next'
 
 describe('TermsPage', () => {
   beforeEach(() => {

@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import TeamMemberClient from '../TeamMemberClient'
-
+import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
 import type { SerializableTeamMember } from '@/lib/team'
 
 // Mock child components
@@ -19,13 +18,6 @@ vi.mock('@/components/ScrollToTop', () => ({
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => 'en',
-}))
-
-// Mock next/image
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: Record<string, unknown>) => (
-    <img src={src as string} alt={alt as string} {...props} />
-  ),
 }))
 
 // Mock next/link
@@ -54,6 +46,7 @@ const mockMember: SerializableTeamMember = {
   location: 'Sweden',
   specialties: ['TypeScript', 'React'],
   socialLinks: [
+    { name: 'Email', href: 'mailto:test@example.com' },
     { name: 'GitHub', href: 'https://github.com/test' },
     { name: 'LinkedIn', href: 'https://linkedin.com/in/test' },
   ],
@@ -87,11 +80,20 @@ describe('TeamMemberClient', () => {
   it('renders social links with correct hrefs', () => {
     render(<TeamMemberClient member={mockMember} />)
 
+    const emailLink = screen.getByRole('link', { name: 'Email' })
+    expect(emailLink).toHaveAttribute('href', 'mailto:test@example.com')
+    expect(emailLink).toHaveAttribute('target', '_self')
+    expect(emailLink).not.toHaveAttribute('rel')
+
     const githubLink = screen.getByRole('link', { name: 'GitHub' })
     expect(githubLink).toHaveAttribute('href', 'https://github.com/test')
+    expect(githubLink).toHaveAttribute('target', '_blank')
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
 
     const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
     expect(linkedinLink).toHaveAttribute('href', 'https://linkedin.com/in/test')
+    expect(linkedinLink).toHaveAttribute('target', '_blank')
+    expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('renders back link with locale-prefixed href', () => {

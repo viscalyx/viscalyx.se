@@ -1,13 +1,13 @@
-import { SITE_URL } from '@/lib/constants'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { NextResponse } from 'next/server'
+import { SITE_URL } from '@/lib/constants'
 
 interface BlogReadEvent {
-  slug: string
-  category: string
-  title: string
-  readProgress?: number
-  timeSpent?: number
+  category: unknown
+  readProgress?: unknown
+  slug: unknown
+  timeSpent?: unknown
+  title: unknown
 }
 
 /**
@@ -36,7 +36,7 @@ try {
 } catch {
   throw new Error(
     `SITE_URL is not a valid URL: "${SITE_URL}". ` +
-      'Check the SITE_URL constant in @/lib/constants.'
+      'Check the SITE_URL constant in @/lib/constants.',
   )
 }
 
@@ -53,7 +53,7 @@ async function hashIP(ip: string): Promise<string> {
   const secret = process.env.ANALYTICS_HASH_SECRET
   if (!secret) {
     throw new Error(
-      'ANALYTICS_HASH_SECRET environment variable is required for IP hashing'
+      'ANALYTICS_HASH_SECRET environment variable is required for IP hashing',
     )
   }
 
@@ -64,7 +64,7 @@ async function hashIP(ip: string): Promise<string> {
       new TextEncoder().encode(secret),
       { name: 'HMAC', hash: 'SHA-256' },
       false,
-      ['sign']
+      ['sign'],
     )
     cachedSecret = secret
   }
@@ -104,6 +104,35 @@ function isValidOrigin(request: Request): boolean {
   return false
 }
 
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim() !== ''
+}
+
+function parseFiniteMetric(value: unknown): number | null {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : null
+  }
+
+  if (typeof value === 'string') {
+    const trimmedValue = value.trim()
+    if (trimmedValue === '') {
+      return null
+    }
+
+    // Strict numeric validation to reject partial parses like "50abc".
+    if (
+      !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/u.test(trimmedValue)
+    ) {
+      return null
+    }
+
+    const parsedValue = Number.parseFloat(trimmedValue)
+    return Number.isFinite(parsedValue) ? parsedValue : null
+  }
+
+  return null
+}
+
 export async function POST(request: Request) {
   try {
     // Validate request origin to prevent cross-site abuse
@@ -111,15 +140,49 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const body: BlogReadEvent = await request.json()
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+    }
 
-    // Validate required fields
-    if (!body.slug || !body.category || !body.title) {
+    if (typeof body !== 'object' || body === null || Array.isArray(body)) {
       return NextResponse.json(
-        { error: 'Missing required fields: slug, category, and title' },
-        { status: 400 }
+        { error: 'Request body must be a JSON object' },
+        { status: 400 },
       )
     }
+
+    const event = body as BlogReadEvent
+    const {
+      slug,
+      category,
+      title,
+      readProgress: rawReadProgress,
+      timeSpent: rawTimeSpent,
+    } = event
+
+    // Validate required fields with runtime type checks
+    if (
+      !isNonEmptyString(slug) ||
+      !isNonEmptyString(category) ||
+      !isNonEmptyString(title)
+    ) {
+      return NextResponse.json(
+        { error: 'Missing or invalid fields: slug, category, title' },
+        { status: 400 },
+      )
+    }
+
+    const parsedReadProgress = parseFiniteMetric(rawReadProgress)
+    const parsedTimeSpent = parseFiniteMetric(rawTimeSpent)
+    const readProgress =
+      parsedReadProgress === null
+        ? null
+        : Math.min(Math.max(parsedReadProgress, 0), 100)
+    const timeSpent =
+      parsedTimeSpent === null ? null : Math.max(parsedTimeSpent, 0)
 
     // Get request metadata for analytics
     const userAgent = request.headers.get('user-agent') || 'unknown'
@@ -131,11 +194,20 @@ export async function POST(request: Request) {
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       null
 
-    // Hash the IP for GDPR compliance — never store raw IPs
+    // Hard-coded gate: set to true to re-enable pseudonymized visitor
+    // ID storage (HMAC-SHA-256 hashed IP). Disabled to move analytics
+    // data from pseudonymized to fully anonymous under GDPR.
+    // See docs/analytics-privacy-design.md for rationale.
+    const storeHashedIP = false
+
+    // Conditionally hash the client IP for pseudonymized visitor tracking.
+    // When storeHashedIP is false (current default), hashedIP stays null
+    // and no IP data — raw or hashed — is stored, keeping analytics
+    // fully anonymous under GDPR.
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
     let hashedIP: string | null = null
-    if (clientIP) {
+    if (storeHashedIP && clientIP) {
       try {
         hashedIP = await hashIP(clientIP)
       } catch (hashError) {
@@ -152,18 +224,18 @@ export async function POST(request: Request) {
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [
-            body.slug, // blob1: Article slug
-            body.category, // blob2: Article category
+            slug.substring(0, 100), // blob1: Article slug (truncated)
+            category.substring(0, 100), // blob2: Article category (truncated)
             country, // blob3: Country from Cloudflare
             referer, // blob4: Referrer
             userAgent.substring(0, 100), // blob5: User agent (truncated)
-            body.title.substring(0, 100), // blob6: Article title (truncated)
+            title.substring(0, 100), // blob6: Article title (truncated)
             hashedIP ?? 'anonymous', // blob7: Hashed IP (GDPR-safe, for unique visitors)
           ],
           doubles: [
             1, // double1: Read count (always 1)
-            body.readProgress ?? 0, // double2: Read progress percentage
-            body.timeSpent ?? 0, // double3: Time spent on page (seconds)
+            readProgress ?? 0, // double2: Read progress percentage
+            timeSpent ?? 0, // double3: Time spent on page (seconds)
             Date.now(), // double4: Timestamp in milliseconds
           ],
           indexes: [requestId], // index1: Unique request ID for sampling
@@ -173,7 +245,7 @@ export async function POST(request: Request) {
       // Don't fail the request if analytics fails
       console.warn(
         'Failed to get Cloudflare context for analytics:',
-        contextError
+        contextError,
       )
     }
 
@@ -182,7 +254,7 @@ export async function POST(request: Request) {
     console.error('Error tracking blog read:', error)
     return NextResponse.json(
       { error: 'Failed to track blog read' },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

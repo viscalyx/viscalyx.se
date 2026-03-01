@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -42,6 +42,9 @@ jobs:
 
       - name: Run lint check
         run: npm run lint
+
+      - name: Run markdown lint check
+        run: npm run lint:md
 
       - name: Run type check
         run: npm run type-check
@@ -92,6 +95,7 @@ jobs:
               { name: 'Formatting', command: 'npm run format:check' },
               { name: 'Spell Check', command: 'npm run spell:check' },
               { name: 'Lint', command: 'npm run lint' },
+              { name: 'Markdown Lint', command: 'npm run lint:md' },
               { name: 'Type Check', command: 'npm run type-check' }
             ];
 

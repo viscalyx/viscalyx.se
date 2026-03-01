@@ -3,12 +3,16 @@ title: 'Syntax Highlighting Test'
 date: '2025-04-08'
 author: 'Blog Author'
 excerpt: 'Testing different code block language syntax highlighting, including PowerShell.'
+image: '/syntax-highlighting-test-multi-language-code-cover.png'
+imageAlt: 'Syntax Highlighting Test cover with code snippets in multiple languages on a dark background.'
 tags: ['syntax', 'highlighting', 'test']
 category: 'Template'
 readTime: '1 min read'
 ---
 
-This article tests various code blocks with different languages and ensures syntax highlighting works as expected without altering the current design or background colors.
+This article tests various code blocks with different languages and ensures
+syntax highlighting works as expected without altering the current design or
+background colors.
 
 ## JavaScript Example
 
@@ -89,7 +93,7 @@ class UserService {
 }
 ```
 
-## C# Example
+## C# Example (Anchor Uniqueness Test)
 
 ```csharp
 // C# example
@@ -121,7 +125,8 @@ class Program
 
 ## C# Example
 
-This second equally named section is to test unique anchoring when section has same names.
+This second C# section uses a different heading from the one above to test that
+similar but distinct headings produce unique anchors.
 
 ```csharp
 // C# example
@@ -282,6 +287,7 @@ int main() {
 
 ## PHP Example
 
+<!-- markdownlint-disable MD013 -->
 ```php
 <?php
 // PHP example
@@ -316,6 +322,7 @@ $db = new Database('localhost', 'user', 'pass', 'mydb');
 $db->connect();
 ?>
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Ruby Example
 
@@ -611,6 +618,7 @@ spec:
 
 ## Docker Example
 
+<!-- markdownlint-disable MD013 -->
 ```dockerfile
 # Dockerfile example
 FROM node:18-alpine AS base
@@ -659,9 +667,11 @@ ENV PORT 3000
 
 CMD ["node", "server.js"]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Regex Example
 
+<!-- markdownlint-disable MD013 -->
 ```regex
 # Regex examples
 
@@ -683,6 +693,7 @@ CMD ["node", "server.js"]
 # Credit card number (basic format)
 ^\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}$
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## XML Example
 
@@ -836,6 +847,7 @@ main = do
 
 ## Lua Example
 
+<!-- markdownlint-disable MD013 -->
 ```lua
 -- Lua example
 local json = require("json")
@@ -924,9 +936,11 @@ end
 
 main()
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## R Example
 
+<!-- markdownlint-disable MD013 -->
 ```r
 # R example
 library(ggplot2)
@@ -1019,11 +1033,13 @@ top_students <- students %>%
 print("Top 10 Students by GPA:")
 print(top_students)
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Long Line Examples
 
 Test cases for horizontal scrolling when code lines are very long:
 
+<!-- markdownlint-disable MD013 -->
 ```javascript
 // Very long JavaScript line example
 const veryLongVariableName =
@@ -1036,22 +1052,29 @@ const result = someVeryLongObjectNameWithManyProperties
   .yetAnotherMethodThatHasAnExtremelyLongNameForDemonstrationPurposes()
   .finalMethod()
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Very long bash command example
-curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer very_long_token_here_that_makes_the_line_extremely_wide_for_testing_purposes" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
+curl -X POST "https://api.example.com/v1/very/long/endpoint/path/that/goes/on/forever/and/should/cause/horizontal/scrolling" -H "Authorization: Bearer <REDACTED_TOKEN>" -H "Content-Type: application/json" -d '{"key": "value", "anotherKey": "anotherValue", "yetAnotherKey": "yetAnotherValue"}'
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```python
 # Very long Python line with many parameters
 def very_long_function_name_for_demonstration_purposes(parameter_one_with_long_name, parameter_two_with_even_longer_name, parameter_three_that_is_ridiculously_long, parameter_four_for_good_measure, parameter_five_just_because):
     return f"This function has a very long signature that should cause horizontal scrolling: {parameter_one_with_long_name}, {parameter_two_with_even_longer_name}, {parameter_three_that_is_ridiculously_long}"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Vertical Scrolling Test
 
-This section contains a very long code block to test the vertical scrollbar functionality:
+This section contains a very long code block to test the vertical scrollbar
+functionality:
 
+<!-- markdownlint-disable MD013 -->
 ```python
 # Very long Python code block for testing vertical scrollbar
 import json
@@ -1446,3 +1469,4 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+<!-- markdownlint-enable MD013 -->

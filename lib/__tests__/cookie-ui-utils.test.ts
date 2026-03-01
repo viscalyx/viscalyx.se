@@ -1,5 +1,5 @@
-import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 import { describe, expect, it } from 'vitest'
+import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 
 // The function uses the real cookieRegistry from cookie-consent
 // We test against the actual registry to ensure correct filtering
@@ -34,8 +34,8 @@ describe('getCookiesForCategory', () => {
     result.forEach(cookie => {
       expect(cookie).toHaveProperty('name')
       expect(cookie).toHaveProperty('category')
-      expect(cookie).toHaveProperty('purpose')
-      expect(cookie).toHaveProperty('duration')
+      expect(cookie).toHaveProperty('purposeKey')
+      expect(cookie).toHaveProperty('durationKey')
     })
   })
 })

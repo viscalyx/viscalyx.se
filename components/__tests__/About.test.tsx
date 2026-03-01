@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
-import React from 'react'
 import About from '../About'
 
 // Mock translations
@@ -12,6 +11,7 @@ describe('About component', () => {
   let container: HTMLElement
 
   beforeEach(() => {
+    vi.clearAllMocks()
     container = render(<About />).container
   })
 
@@ -31,12 +31,13 @@ describe('About component', () => {
   })
 
   it('renders image with correct src and alt attributes', () => {
-    const image = container.querySelector('img')
+    const image = screen.getByRole('img', { name: 'visualAlt' })
     expect(image).toHaveAttribute(
       'src',
-      expect.stringContaining('team-huddle-open-office-wide')
+      expect.stringContaining('team-huddle-open-office-wide'),
     )
     expect(image).toHaveAttribute('alt', 'visualAlt')
+    expect(image).toHaveAttribute('sizes', '(min-width: 1024px) 50vw, 100vw')
   })
 
   it('renders stats values', () => {

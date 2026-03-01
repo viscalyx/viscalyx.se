@@ -3,6 +3,10 @@ import { Trash2 } from 'lucide-react'
 import { vi } from 'vitest'
 import ConfirmationModal from '../ConfirmationModal'
 
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}))
+
 describe('ConfirmationModal', () => {
   const defaultProps = {
     isOpen: true,
@@ -24,7 +28,7 @@ describe('ConfirmationModal', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test Modal')).toBeInTheDocument()
     expect(
-      screen.getByText('Are you sure you want to proceed?')
+      screen.getByText('Are you sure you want to proceed?'),
     ).toBeInTheDocument()
     expect(screen.getByText('Confirm')).toBeInTheDocument()
     expect(screen.getByText('Cancel')).toBeInTheDocument()
@@ -53,15 +57,22 @@ describe('ConfirmationModal', () => {
   it('calls onClose when close button (X) is clicked', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
-    fireEvent.click(screen.getByLabelText('Close modal'))
+    fireEvent.click(screen.getByLabelText('closeAriaLabel'))
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 
-  it('calls onClose when backdrop is clicked', () => {
+  it('calls onClose when clicking outside the modal content', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
     fireEvent.click(screen.getByTestId('modal-backdrop'))
     expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not call onClose when modal content is clicked', () => {
+    render(<ConfirmationModal {...defaultProps} />)
+
+    fireEvent.click(screen.getByRole('dialog'))
+    expect(defaultProps.onClose).not.toHaveBeenCalled()
   })
 
   it('handles escape key press', () => {
@@ -90,21 +101,21 @@ describe('ConfirmationModal', () => {
     it('applies danger variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="danger" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')!
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-red-600')
     })
 
     it('applies warning variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="warning" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')!
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-orange-600')
     })
 
     it('applies info variant styles', () => {
       render(<ConfirmationModal {...defaultProps} variant="info" />)
 
-      const confirmButton = screen.getByText('Confirm').closest('button')!
+      const confirmButton = screen.getByRole('button', { name: /confirm/i })
       expect(confirmButton).toHaveClass('bg-blue-600')
     })
   })
@@ -113,19 +124,21 @@ describe('ConfirmationModal', () => {
     render(<ConfirmationModal {...defaultProps} />)
 
     const modal = screen.getByRole('dialog')
+    const title = screen.getByText('Test Modal')
+    const description = screen.getByText('Are you sure you want to proceed?')
     expect(modal).toHaveAttribute('aria-modal', 'true')
-    expect(modal).toHaveAttribute('aria-labelledby', 'modal-title')
-    expect(modal).toHaveAttribute('aria-describedby', 'modal-description')
-
-    expect(screen.getByText('Test Modal')).toHaveAttribute('id', 'modal-title')
-    expect(
-      screen.getByText('Are you sure you want to proceed?')
-    ).toHaveAttribute('id', 'modal-description')
+    expect(modal).toHaveAttribute('aria-labelledby')
+    expect(modal).toHaveAttribute('aria-describedby')
+    expect(title).toHaveAttribute('id', modal.getAttribute('aria-labelledby'))
+    expect(description).toHaveAttribute(
+      'id',
+      modal.getAttribute('aria-describedby'),
+    )
   })
 
   it('renders with custom confirm icon when provided', () => {
     const customIcon = (
-      <Trash2 data-testid="custom-confirm-icon" className="w-4 h-4" />
+      <Trash2 className="w-4 h-4" data-testid="custom-confirm-icon" />
     )
     render(<ConfirmationModal {...defaultProps} confirmIcon={customIcon} />)
 

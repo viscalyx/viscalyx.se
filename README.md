@@ -23,9 +23,11 @@ and deployed to Cloudflare Workers via OpenNext.
 
 ### Privacy & Analytics
 
-Our website respects user privacy and complies with GDPR cookie consent requirements:
+Our website respects user privacy and complies with GDPR cookie consent
+requirements:
 
-- **Cookie Consent Banner**: Appears on first visit to allow users to choose their cookie preferences
+- **Cookie Consent Banner**: Appears on first visit to allow users to choose
+  their cookie preferences
 - **Granular Control**: Users can accept/reject different categories of cookies:
   - **Strictly Necessary**: Required for website functionality (always enabled)
   - **Preferences**: Remember user settings like theme and language preferences
@@ -35,18 +37,19 @@ Our website respects user privacy and complies with GDPR cookie consent requirem
   - Geographic location (country-level) via Cloudflare
   - Referrer information and basic browser data
   - **No client-side tracking cookies** — all processing happens server-side
-- **User Rights**: Users can change preferences, export data, or reset consent at any time
+- **User Rights**: Users can change preferences, export data, or reset consent
+  at any time
 
 ## Legal Compliance
 
 ### GDPR Requirements Met
 
 1. ✅ **Explicit Consent**: Clear opt-in required for non-essential cookies
-2. ✅ **Granular Choice**: Users can select specific cookie categories
-3. ✅ **Easy Withdrawal**: Users can change preferences anytime
-4. ✅ **Clear Information**: Detailed cookie descriptions provided
-5. ✅ **Record Keeping**: Consent timestamp and settings stored
-6. ✅ **No Pre-checked Boxes**: All non-essential cookies disabled by default
+1. ✅ **Granular Choice**: Users can select specific cookie categories
+1. ✅ **Easy Withdrawal**: Users can change preferences anytime
+1. ✅ **Clear Information**: Detailed cookie descriptions provided
+1. ✅ **Record Keeping**: Consent timestamp and settings stored
+1. ✅ **No Pre-checked Boxes**: All non-essential cookies disabled by default
 
 ## Tech Stack
 
@@ -80,6 +83,7 @@ Our website respects user privacy and complies with GDPR cookie consent requirem
 
 ## Project Structure
 
+<!-- markdownlint-disable MD013 -->
 ```text
 app/[locale]/             → Pages (blog, team, cookies, privacy, terms)
 app/api/analytics/        → Blog read tracking API endpoint
@@ -91,6 +95,7 @@ public/                   → Static assets, blog images, generated content
 scripts/                  → Build scripts (blog data, page dates, OG images, bundle analysis)
 tests/integration/        → Playwright integration tests
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Development
 
@@ -99,13 +104,16 @@ workflow, and environment configuration.
 
 Quick start:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 npm install
 npm run dev
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Scripts
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 # Development
 npm run dev                          # Start development server
@@ -121,9 +129,10 @@ npm run test:ui                      # Vitest UI
 npm run test:security                # Security audit (sanitization tests)
 npm run test:integration             # Playwright integration tests (dev server)
 npm run test:integration:preview     # Playwright integration tests (preview server)
-npm run lint                         # ESLint
+npm run lint                         # Biome linter (code)
+npm run lint:md                      # markdownlint (Markdown)
 npm run type-check                   # TypeScript checking
-npm run format                       # Prettier formatting
+npm run format                       # Biome formatting
 npm run spell                        # Spell checking (cspell)
 
 # Build & Analysis
@@ -134,25 +143,36 @@ npm run clean:all                    # Remove .next, out, .open-next, .wrangler
 # Deployment
 npm run deploy                       # Build and deploy to Cloudflare Workers
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## License
 
-This project's source code is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project's source code is licensed under the MIT License — see the
+[LICENSE](LICENSE) file for details.
 
-Specific assets such as logos and photographs of identifiable individuals are subject to different licensing terms. Please refer to the [LICENSE-ASSETS.md](LICENSE-ASSETS.md) file for details on the licensing of these assets.
+Specific assets such as logos and photographs of identifiable individuals are
+subject to different licensing terms. Please refer to the
+[LICENSE-ASSETS.md](LICENSE-ASSETS.md) file for details on the licensing of
+these assets.
 
 ### Content Usage
 
-- **Blog posts and articles**: Free to use, share, and adapt under the MIT License (see [LICENSE](LICENSE)).
+- **Blog posts and articles**: Free to use, share, and adapt under the MIT
+  License (see [LICENSE](LICENSE)).
 - **Source code**: Open source under the MIT License (see [LICENSE](LICENSE)).
-- **Logos and Profile Photos**: All Rights Reserved. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md) for details.
-- **Other Assets in `public/` directory**: All Rights Reserved, unless otherwise specified. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
+- **Logos and Profile Photos**: All Rights Reserved. See
+  [LICENSE-ASSETS.md](LICENSE-ASSETS.md) for details.
+- **Other Assets in `public/` directory**: All Rights Reserved, unless
+  otherwise specified. See [LICENSE-ASSETS.md](LICENSE-ASSETS.md).
 - **Personal/team information**: Please respect privacy when reusing content.
 
-The MIT License allows you to freely use the blog content and website source code while ensuring proper attribution to Viscalyx. Other assets are subject to the terms outlined in `LICENSE-ASSETS.md`.
+The MIT License allows you to freely use the blog content and website source
+code while ensuring proper attribution to Viscalyx. Other assets are subject to
+the terms outlined in `LICENSE-ASSETS.md`.
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues and pull requests.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to set up your environment and contribute to the project.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to set up your
+environment and contribute to the project.

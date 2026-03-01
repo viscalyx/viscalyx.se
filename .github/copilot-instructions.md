@@ -23,19 +23,20 @@ messages/{en,sv}.json            → Translations
 - Path alias: `@/*` maps to project root (use instead of relative `../`)
 - Interface for props: `interface ComponentProps { }`
 
-### Imports (ordered, alphabetically within each group)
+### Imports (Biome-ordered, alphabetically within groups)
 
-1. `@/lib/*`, `@/components/*` (path alias imports)
-2. Third-party (`framer-motion`, `lucide-react`)
-3. `next`, `next/*`, `next-intl`
-4. `react`, `react-dom`
-5. Relative imports (`./`, `../`)
-6. Type-only imports (`import type { }`)
+Follow Biome import organization in this repo. Do not enforce alias-first ordering in prose.
+
+1. Third-party/framework packages (`next`, `next/*`, `next-intl`, `react`, `framer-motion`, etc.)
+2. Path alias imports (`@/lib/*`, `@/components/*`)
+3. Relative imports (`./`, `../`) only for local files within the same package/module boundary
+4. Type-only imports should follow Biome output (do not maintain a separate manual group)
+
+Contributors must use `@/...` for cross-package or shared imports instead of `../`.
 
 **Example:**
 
 ```tsx
-import { getConsentSettings } from '@/lib/cookie-consent'
 import { motion } from 'framer-motion'
 import { Cookie, Settings } from 'lucide-react'
 import { Route } from 'next'
@@ -43,12 +44,15 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
+import { getConsentSettings } from '@/lib/cookie-consent'
 import LanguageSwitcher from './LanguageSwitcher'
 ```
 
-### Formatting (Prettier)
+### Biome Formatting and Linting
 
-`semi: false` | `singleQuote: true` | `trailingComma: 'es5'` | `useTabs: false` | `tabWidth: 2` | `arrowParens: 'avoid'`
+- Source of truth for linting/formatting rules: [`./biome.json`](./biome.json)
+- When uncertain, follow `biome.json` over prose docs.
+- Keep code aligned with Biome defaults in this repo.
 
 - Use arrow functions for components: `const Component = () => { }`
 - Destructure props inline: `const Component = ({ title }: Props) => { }`
@@ -75,9 +79,9 @@ import LanguageSwitcher from './LanguageSwitcher'
 ```tsx
 'use client'
 
-import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { useTheme } from '@/lib/theme-context'
 
 interface ComponentProps {
   title: string
@@ -102,11 +106,10 @@ export default Component
 ### Server Page Component (data-driven pages in `app/`)
 
 ```tsx
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import ClientIsland from '@/components/ClientIsland'
 import { getData } from '@/lib/data'
-import { getTranslations } from 'next-intl/server'
-
-import type { Metadata } from 'next'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -177,9 +180,10 @@ npm run check              # Run all checks (lint, test, type, format, spell)
 npm run test               # Run tests
 npm run test:watch         # Watch mode testing
 npm run test:coverage      # Coverage report
-npm run lint               # ESLint
+npm run format:check       # Biome format check (no writes)
+npm run lint               # Biome lint check (no formatter writes)
 npm run type-check         # TypeScript checking
-npm run format             # Prettier formatting
+npm run format             # Biome formatting (writes)
 npm run spell              # Spell checking
 
 # Deployment

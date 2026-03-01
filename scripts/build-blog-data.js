@@ -152,7 +152,7 @@ async function buildBlogData() {
                     ? node.properties.className
                     : [node.properties.className]
                   const languageClass = classNames.find(
-                    c => typeof c === 'string' && c.startsWith('language-')
+                    c => typeof c === 'string' && c.startsWith('language-'),
                   )
                   if (!languageClass) return
                   const language = languageClass.replace('language-', '')
@@ -266,7 +266,7 @@ async function buildBlogData() {
         const contentFilePath = path.join(contentOutputDir, `${slug}.json`)
         fs.writeFileSync(
           contentFilePath,
-          JSON.stringify({ content: contentHtml })
+          JSON.stringify({ content: contentHtml }),
         )
 
         // Post metadata (without content) for the main blog-data.json
@@ -297,18 +297,18 @@ async function buildBlogData() {
     const postsWithInvalidDates = []
 
     posts.forEach(post => {
-      if (post.date && !isNaN(new Date(post.date).getTime())) {
+      if (post.date && !Number.isNaN(new Date(post.date).getTime())) {
         postsWithValidDates.push(post)
       } else {
         // Posts with invalid or missing dates go to the end
         postsWithInvalidDates.push(post)
         if (!post.date) {
           console.warn(
-            `Post "${post.slug}" has no date and will be placed at the end`
+            `Post "${post.slug}" has no date and will be placed at the end`,
           )
         } else {
           console.warn(
-            `Post "${post.slug}" has invalid date "${post.date}" and will be placed at the end`
+            `Post "${post.slug}" has invalid date "${post.date}" and will be placed at the end`,
           )
         }
       }
@@ -316,7 +316,7 @@ async function buildBlogData() {
 
     // Sort posts with valid dates by date (newest first)
     postsWithValidDates.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     )
 
     // Combine sorted valid posts with invalid date posts at the end
@@ -336,10 +336,10 @@ async function buildBlogData() {
     console.log(`✓ Blog metadata written to ${outputPath}`)
     console.log(`✓ Blog content files written to ${contentOutputDir}`)
     console.log(
-      `✓ Built ${sortedPosts.length} blog posts with HTML sanitization`
+      `✓ Built ${sortedPosts.length} blog posts with HTML sanitization`,
     )
     console.log(
-      `✓ Posts with valid dates: ${postsWithValidDates.length}, posts with invalid dates: ${postsWithInvalidDates.length}`
+      `✓ Posts with valid dates: ${postsWithValidDates.length}, posts with invalid dates: ${postsWithInvalidDates.length}`,
     )
   } catch (error) {
     console.error('Error building blog data:', error)

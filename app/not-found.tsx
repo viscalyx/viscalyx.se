@@ -16,8 +16,8 @@ export default function RootNotFound() {
             moved.
           </p>
           <Link
-            href="/en"
             className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            href="/en"
           >
             Go to Homepage
           </Link>

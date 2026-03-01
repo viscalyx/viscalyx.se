@@ -1,13 +1,12 @@
+import type { Metadata } from 'next'
+import { getFormatter, getTranslations } from 'next-intl/server'
 import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
-import { useFormatter, useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
-
-import type { Metadata } from 'next'
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()
@@ -40,17 +39,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/cookies`,
-      languages: {
-        en: `${SITE_URL}/en/cookies`,
-        sv: `${SITE_URL}/sv/cookies`,
-      },
+      languages: buildLocalizedAlternates('cookies'),
     },
   }
 }
 
-export default function CookiesPage() {
-  const translations = useTranslations('cookies')
-  const format = useFormatter()
+export default async function CookiesPage({ params }: Props) {
+  const { locale } = await params
+  const translations = await getTranslations({ locale, namespace: 'cookies' })
+  const format = await getFormatter({ locale })
 
   return (
     <>

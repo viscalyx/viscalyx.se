@@ -1,8 +1,8 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import LegalPageLayout from '@/components/LegalPageLayout'
 import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
-import { useTranslations } from 'next-intl'
 
 interface TermsPageClientProps {
   lastUpdatedDate: Date
@@ -13,69 +13,69 @@ const TermsPageClient = ({ lastUpdatedDate }: TermsPageClientProps) => {
 
   return (
     <LegalPageLayout
-      title={t('terms.title')}
-      subtitle={t('terms.subtitle')}
-      lastUpdatedLabel={t('terms.lastUpdated')}
       lastUpdatedDate={lastUpdatedDate}
+      lastUpdatedLabel={t('lastUpdated')}
+      subtitle={t('subtitle')}
+      title={t('title')}
     >
       <LegalSection
-        title={t('terms.sections.agreement.title')}
-        description={t('terms.sections.agreement.description')}
+        description={t('sections.agreement.description')}
+        title={t('sections.agreement.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.services.title')}
-        description={t('terms.sections.services.description')}
-        items={safeTranslationArray(t.raw('terms.sections.services.items'))}
+        description={t('sections.services.description')}
+        items={safeTranslationArray(t.raw('sections.services.items'))}
+        title={t('sections.services.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.userResponsibilities.title')}
-        description={t('terms.sections.userResponsibilities.description')}
+        description={t('sections.userResponsibilities.description')}
         items={safeTranslationArray(
-          t.raw('terms.sections.userResponsibilities.items')
+          t.raw('sections.userResponsibilities.items'),
         )}
+        title={t('sections.userResponsibilities.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.intellectualProperty.title')}
-        description={t('terms.sections.intellectualProperty.description')}
+        description={t('sections.intellectualProperty.description')}
+        title={t('sections.intellectualProperty.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.limitationOfLiability.title')}
-        description={t('terms.sections.limitationOfLiability.description')}
+        description={t('sections.limitationOfLiability.description')}
+        title={t('sections.limitationOfLiability.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.termination.title')}
-        description={t('terms.sections.termination.description')}
+        description={t('sections.termination.description')}
+        title={t('sections.termination.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.governingLaw.title')}
-        description={t('terms.sections.governingLaw.description')}
+        description={t('sections.governingLaw.description')}
+        title={t('sections.governingLaw.title')}
       />
 
       <LegalSection
-        title={t('terms.sections.changes.title')}
-        description={t('terms.sections.changes.description')}
+        description={t('sections.changes.description')}
+        title={t('sections.changes.title')}
       />
 
       {/* Contact */}
       <h2 className="text-3xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
-        {t('terms.sections.contact.title')}
+        {t('sections.contact.title')}
       </h2>
       <p className="text-secondary-600 dark:text-secondary-400 mb-4">
-        {t('terms.sections.contact.description')}
+        {t('sections.contact.description')}
       </p>
       <p className="text-secondary-600 dark:text-secondary-400">
-        <strong>{t('terms.sections.contact.email')}:</strong>{' '}
+        <strong>{t('sections.contact.email')}:</strong>{' '}
         <a
-          href={`mailto:${t('terms.sections.contact.emailAddress')}`}
           className="text-primary-600 dark:text-primary-400 hover:underline"
+          href={`mailto:${t('sections.contact.emailAddress')}`}
         >
-          {t('terms.sections.contact.emailAddress')}
+          {t('sections.contact.emailAddress')}
         </a>
       </p>
     </LegalPageLayout>

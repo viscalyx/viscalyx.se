@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as nextNavigation from 'next/navigation'
 import { vi } from 'vitest'
-import OpenSource from '../OpenSource'
+import OpenSource from '@/components/OpenSource'
 
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
   usePathname: vi.fn(),
 }))
 
-// Mock translations
+// Mock translations — key-echo so tests assert on keys, not English text
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => 'en',
@@ -49,13 +49,15 @@ describe('OpenSource component', () => {
     window.open = vi.fn()
     render(<OpenSource />)
     // Select link by accessible label containing space
-    const links = screen.getAllByRole('link', { name: /view project/i })
+    const links = screen.getAllByRole('link', {
+      name: /accessibility\.viewProject/,
+    })
     expect(links.length).toBeGreaterThan(0)
     fireEvent.click(links[0])
     expect(window.open).toHaveBeenCalledWith(
       'https://github.com/dsccommunity',
       '_blank',
-      'noopener noreferrer'
+      'noopener noreferrer',
     )
   })
 

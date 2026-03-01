@@ -1,11 +1,9 @@
-import { locales } from '@/i18n'
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
-import { getTranslations } from 'next-intl/server'
-
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
 import PrivacyPageClient from './PrivacyPageClient'
-
-import type { Metadata } from 'next'
 
 const staticPageDates = getStaticPageDates()
 
@@ -36,9 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/privacy`,
-      languages: Object.fromEntries(
-        locales.map(l => [l, `${SITE_URL}/${l}/privacy`])
-      ),
+      languages: buildLocalizedAlternates('privacy'),
     },
   }
 }

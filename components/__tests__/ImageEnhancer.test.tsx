@@ -1,7 +1,8 @@
-import ImageEnhancer from '@/components/ImageEnhancer'
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { vi } from 'vitest'
+import ImageEnhancer from '@/components/ImageEnhancer'
 
 // Mock next-intl with a stable translator reference (matches production behavior)
 vi.mock('next-intl', () => {
@@ -13,10 +14,10 @@ vi.mock('next-intl', () => {
 })
 
 interface MockImageModalProps {
+  imageAlt: string
+  imageSrc: string
   isOpen: boolean
   onClose: () => void
-  imageSrc: string
-  imageAlt: string
   triggerElement?: HTMLElement | null
 }
 
@@ -30,11 +31,11 @@ vi.mock('@/components/ImageModal', () => ({
     triggerElement,
   }: MockImageModalProps) =>
     isOpen ? (
-      <div data-testid="image-modal" data-trigger={triggerElement?.tagName}>
-        <button type="button" onClick={onClose}>
+      <div data-trigger={triggerElement?.tagName} role="dialog">
+        <button onClick={onClose} type="button">
           Close
         </button>
-        <img src={imageSrc} alt={imageAlt} />
+        <div aria-label={imageAlt} data-src={imageSrc} role="img" />
         <span>{imageAlt}</span>
       </div>
     ) : null,
@@ -46,9 +47,23 @@ const TestComponent = ({ children }: { children?: React.ReactNode }) => {
 
   return (
     <div>
-      <div ref={contentRef} className="blog-content">
-        <img src="/test1.jpg" alt="Test 1" />
-        <img src="/test2.jpg" alt="Test 2" />
+      <div className="blog-content" ref={contentRef}>
+        <Image
+          alt="Test 1"
+          height={100}
+          sizes="100vw"
+          src="/test1.jpg"
+          unoptimized
+          width={100}
+        />
+        <Image
+          alt="Test 2"
+          height={100}
+          sizes="100vw"
+          src="/test2.jpg"
+          unoptimized
+          width={100}
+        />
         {children}
       </div>
       <ImageEnhancer contentRef={contentRef} />
@@ -86,7 +101,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 1')).toBeInTheDocument()
   })
 
@@ -104,7 +119,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     // Close modal
     const closeButton = screen.getByText('Close')
@@ -112,7 +127,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(closeButton)
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('shows correct image in modal when different images are clicked', async () => {
@@ -129,7 +144,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image1)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 1')).toBeInTheDocument()
 
     // Close modal
@@ -137,7 +152,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(screen.getByText('Close'))
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 
     // Click second image
     const image2 = screen.getByAltText('Test 2')
@@ -145,7 +160,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image2)
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByText('Test 2')).toBeInTheDocument()
   })
 
@@ -208,7 +223,7 @@ describe('ImageEnhancer', () => {
     const image = screen.getByAltText('Test 1') as HTMLImageElement
     expect(image).toHaveAttribute(
       'aria-label',
-      'accessibility.image.viewFullImage: Test 1'
+      'accessibility.image.viewFullImage: Test 1',
     )
   })
 
@@ -217,8 +232,15 @@ describe('ImageEnhancer', () => {
       const contentRef = useRef<HTMLDivElement>(null)
       return (
         <div>
-          <div ref={contentRef} className="blog-content">
-            <img src="/no-alt.jpg" alt="" />
+          <div className="blog-content" ref={contentRef}>
+            <Image
+              alt=""
+              height={100}
+              sizes="100vw"
+              src="/no-alt.jpg"
+              unoptimized
+              width={100}
+            />
           </div>
           <ImageEnhancer contentRef={contentRef} />
         </div>
@@ -259,7 +281,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: 'Enter' })
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
   it('opens modal on Space key', async () => {
@@ -275,7 +297,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: ' ' })
     })
 
-    expect(screen.getByTestId('image-modal')).toBeInTheDocument()
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
   it('does not open modal on other keys', async () => {
@@ -291,7 +313,7 @@ describe('ImageEnhancer', () => {
       fireEvent.keyDown(image, { key: 'a' })
     })
 
-    expect(screen.queryByTestId('image-modal')).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('skips images wrapped in anchor tags', async () => {
@@ -299,12 +321,25 @@ describe('ImageEnhancer', () => {
       const contentRef = useRef<HTMLDivElement>(null)
       return (
         <div>
-          <div ref={contentRef} className="blog-content">
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <div className="blog-content" ref={contentRef}>
             <a href="/some-link">
-              <img src="/linked.jpg" alt="Linked image" />
+              <Image
+                alt="Linked"
+                height={100}
+                sizes="100vw"
+                src="/linked.jpg"
+                unoptimized
+                width={100}
+              />
             </a>
-            <img src="/standalone.jpg" alt="Standalone" />
+            <Image
+              alt="Standalone"
+              height={100}
+              sizes="100vw"
+              src="/standalone.jpg"
+              unoptimized
+              width={100}
+            />
           </div>
           <ImageEnhancer contentRef={contentRef} />
         </div>
@@ -318,13 +353,13 @@ describe('ImageEnhancer', () => {
     })
 
     // Linked image should NOT be enhanced
-    const linkedImage = screen.getByAltText('Linked image') as HTMLImageElement
+    const linkedImage = screen.getByAltText('Linked') as HTMLImageElement
     expect(linkedImage).not.toHaveAttribute('role', 'button')
     expect(linkedImage.dataset.enhanced).toBeUndefined()
 
     // Standalone image SHOULD be enhanced
     const standaloneImage = screen.getByAltText(
-      'Standalone'
+      'Standalone',
     ) as HTMLImageElement
     expect(standaloneImage).toHaveAttribute('role', 'button')
     expect(standaloneImage.dataset.enhanced).toBe('true')
@@ -343,7 +378,7 @@ describe('ImageEnhancer', () => {
       fireEvent.click(image)
     })
 
-    const modal = screen.getByTestId('image-modal')
+    const modal = screen.getByRole('dialog')
     expect(modal).toHaveAttribute('data-trigger', 'IMG')
   })
 

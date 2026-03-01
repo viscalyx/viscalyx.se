@@ -89,9 +89,14 @@ describe('getPostMetadata', () => {
   it('returns metadata for an existing slug', () => {
     const post = getPostMetadata('first-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('First Post')
-    expect(post!.slug).toBe('first-post')
-    expect(post!.imageAlt).toBe('First image')
+
+    if (!post) {
+      throw new Error('Expected first-post to exist in test fixtures')
+    }
+
+    expect(post.title).toBe('First Post')
+    expect(post.slug).toBe('first-post')
+    expect(post.imageAlt).toBe('First image')
   })
 
   it('returns null for non-existent slug', () => {
@@ -100,22 +105,46 @@ describe('getPostMetadata', () => {
 
   it('normalizes invalid dates to undefined', () => {
     const post = getPostMetadata('second-post')
-    expect(post!.date).toBeUndefined()
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected second-post to exist in test fixtures')
+    }
+
+    expect(post.date).toBeUndefined()
   })
 
   it('sanitizes non-string imageAlt to undefined', () => {
     const post = getPostMetadata('third-post')
-    expect(post!.imageAlt).toBeUndefined()
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected third-post to exist in test fixtures')
+    }
+
+    expect(post.imageAlt).toBeUndefined()
   })
 
   it('filters non-string tags and lowercases them', () => {
     const post = getPostMetadata('third-post')
-    expect(post!.tags).toEqual(['typescript', 'devops'])
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected third-post to exist in test fixtures')
+    }
+
+    expect(post.tags).toEqual(['typescript', 'devops'])
   })
 
   it('deduplicates tags', () => {
     const post = getPostMetadata('first-post')
-    expect(post!.tags).toEqual(['typescript', 'react'])
+    expect(post).not.toBeNull()
+
+    if (!post) {
+      throw new Error('Expected first-post to exist in test fixtures')
+    }
+
+    expect(post.tags).toEqual(['typescript', 'react'])
   })
 })
 
@@ -123,7 +152,7 @@ describe('getPostData', () => {
   it('returns metadata (alias for getPostMetadata)', () => {
     const post = getPostData('first-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('First Post')
+    expect(post?.title).toBe('First Post')
   })
 })
 
@@ -131,7 +160,7 @@ describe('getPostBySlug', () => {
   it('returns metadata (alias for getPostMetadata)', () => {
     const post = getPostBySlug('second-post')
     expect(post).not.toBeNull()
-    expect(post!.title).toBe('Second Post')
+    expect(post?.title).toBe('Second Post')
   })
 })
 
@@ -145,8 +174,14 @@ describe('getAllPosts', () => {
   it('normalizes post data correctly', () => {
     const posts = getAllPosts()
     const second = posts.find(p => p.slug === 'second-post')
-    expect(second!.date).toBeUndefined()
-    expect(second!.imageAlt).toBeUndefined()
+    expect(second).toBeDefined()
+
+    if (!second) {
+      throw new Error('Expected second-post to exist in test fixtures')
+    }
+
+    expect(second.date).toBeUndefined()
+    expect(second.imageAlt).toBeUndefined()
   })
 })
 
@@ -154,7 +189,7 @@ describe('getFeaturedPost', () => {
   it('returns the first post (most recent)', () => {
     const featured = getFeaturedPost()
     expect(featured).not.toBeNull()
-    expect(featured!.slug).toBe('first-post')
+    expect(featured?.slug).toBe('first-post')
   })
 })
 
@@ -267,7 +302,7 @@ vi.mock('node:path', () => ({
 describe('loadBlogContent', () => {
   it('loads content from filesystem for existing post', async () => {
     mockReadFile.mockResolvedValueOnce(
-      JSON.stringify({ content: '# Hello World\nSome blog content.' })
+      JSON.stringify({ content: '# Hello World\nSome blog content.' }),
     )
 
     const result = await loadBlogContent('my-blog-post')
@@ -275,7 +310,7 @@ describe('loadBlogContent', () => {
     expect(result).toBe('# Hello World\nSome blog content.')
     expect(mockReadFile).toHaveBeenCalledWith(
       expect.stringContaining('blog-content/my-blog-post.json'),
-      'utf-8'
+      'utf-8',
     )
   })
 
@@ -346,7 +381,7 @@ describe('trackPageView', () => {
   it('accepts valid slug and category strings', async () => {
     // Verify it doesn't throw for various valid inputs
     await expect(
-      trackPageView('long-slug-name', 'Category Name')
+      trackPageView('long-slug-name', 'Category Name'),
     ).resolves.not.toThrow()
   })
 
@@ -391,7 +426,7 @@ describe('loadBlogContent with mocked Cloudflare ASSETS', () => {
 
     expect(result).toBe('<p>From ASSETS</p>')
     expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('blog-content/my-post.json')
+      expect.stringContaining('blog-content/my-post.json'),
     )
   })
 
@@ -455,12 +490,13 @@ describe('validateBlogData edge cases (via getPostMetadata)', () => {
   it('handles posts with empty tags array gracefully', () => {
     const post = getPostMetadata('template')
     expect(post).not.toBeNull()
-    expect(post!.tags).toEqual([])
+    expect(post?.tags).toEqual([])
   })
 
   it('preserves category when it is a valid string', () => {
     const post = getPostMetadata('second-post')
-    expect(post!.category).toBe('Automation')
+    expect(post).not.toBeNull()
+    expect(post?.category).toBe('Automation')
   })
 })
 
@@ -499,6 +535,78 @@ describe('loadBlogContent edge cases', () => {
     mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
     const result = await loadBlogContent('---')
     expect(result).toBeNull()
+  })
+
+  it('logs filesystem source in debug mode when development read succeeds', async () => {
+    const consoleInfoSpy = vi
+      .spyOn(console, 'info')
+      .mockImplementation(() => {})
+
+    try {
+      vi.stubEnv('NODE_ENV', 'development')
+      vi.stubEnv('DEBUG_BLOG_CONTENT_SOURCE', '1')
+      mockReadFile.mockResolvedValueOnce(
+        JSON.stringify({ content: 'From disk' }),
+      )
+
+      const result = await loadBlogContent('dev-post')
+
+      expect(result).toBe('From disk')
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=filesystem',
+        expect.objectContaining({
+          slug: 'dev-post',
+          path: expect.stringContaining('public/blog-content/dev-post.json'),
+        }),
+      )
+    } finally {
+      vi.unstubAllEnvs()
+      consoleInfoSpy.mockRestore()
+    }
+  })
+
+  it('logs filesystem miss then ASSETS source in debug mode', async () => {
+    const consoleInfoSpy = vi
+      .spyOn(console, 'info')
+      .mockImplementation(() => {})
+    const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ content: '<p>From ASSETS debug</p>' }),
+    })
+
+    try {
+      vi.stubEnv('NODE_ENV', 'development')
+      vi.stubEnv('DEBUG_BLOG_CONTENT_SOURCE', '1')
+      mockReadFile.mockRejectedValueOnce(new Error('ENOENT'))
+
+      vi.resetModules()
+      vi.doMock('@opennextjs/cloudflare', () => ({
+        getCloudflareContext: () => ({
+          env: {
+            ASSETS: {
+              fetch: mockFetch,
+            },
+          },
+        }),
+      }))
+
+      const { loadBlogContent: loadWithAssets } = await import('@/lib/blog')
+      const result = await loadWithAssets('assets-post')
+
+      expect(result).toBe('<p>From ASSETS debug</p>')
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=filesystem-miss',
+        { slug: 'assets-post' },
+      )
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        '[blog-content] source=ASSETS',
+        { slug: 'assets-post' },
+      )
+    } finally {
+      vi.doUnmock('@opennextjs/cloudflare')
+      vi.unstubAllEnvs()
+      consoleInfoSpy.mockRestore()
+    }
   })
 })
 

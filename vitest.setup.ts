@@ -72,7 +72,7 @@ vi.mock('framer-motion', () => {
           }
         }
         return createElement(tag, filtered, props.children as React.ReactNode)
-      }
+      },
     )
     Component.displayName = `Motion${tag.charAt(0).toUpperCase() + tag.slice(1)}`
     return Component
@@ -90,7 +90,7 @@ vi.mock('framer-motion', () => {
         if (!cache.has(prop)) cache.set(prop, forward(prop))
         return cache.get(prop)
       },
-    }
+    },
   )
 
   return {
@@ -111,17 +111,17 @@ vi.mock('next/image', () => {
   const React = require('react')
 
   interface ImageProps {
-    src: string
     alt: string
+    blurDataURL?: string
     fill?: boolean
-    width?: number
     height?: number
+    loading?: 'lazy' | 'eager'
+    placeholder?: string
     priority?: boolean
     quality?: number
-    placeholder?: string
-    blurDataURL?: string
+    src: string
     unoptimized?: boolean
-    loading?: 'lazy' | 'eager'
+    width?: number
     [key: string]: unknown
   }
 

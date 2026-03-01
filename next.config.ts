@@ -82,8 +82,14 @@ const nextConfig: NextConfig = {
   },
 }
 
-// Initialize OpenNext Cloudflare for development (non-production)
-// This needs to be done conditionally and without top-level await
+// Initialize OpenNext Cloudflare for development (non-production).
+// This can provide Cloudflare-style runtime bindings (e.g. `env.ASSETS`) during
+// `npm run dev`, but it is best-effort emulation and not guaranteed parity with
+// Cloudflare preview/deploy runtime behavior.
+// Practical finding: after running `npm run preview`, a subsequent `npm run dev`
+// can observe stale ASSETS content; app code should keep a local filesystem path
+// for fresh development content.
+// This needs to be done conditionally and without top-level await.
 if (process.env.NODE_ENV !== 'production') {
   import('@opennextjs/cloudflare')
     .then(({ initOpenNextCloudflareForDev }) => {
@@ -92,7 +98,7 @@ if (process.env.NODE_ENV !== 'production') {
     .catch(error => {
       console.warn(
         'Warning: Failed to load @opennextjs/cloudflare module:',
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : 'Unknown error',
       )
     })
 }

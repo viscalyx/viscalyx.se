@@ -1,11 +1,11 @@
 'use client'
 
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { Code, Sparkles } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 const Hero = () => {
   const { handleNavigation } = useSectionNavigation()
@@ -33,10 +33,10 @@ const Hero = () => {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageLoadErrors, setImageLoadErrors] = useState<boolean[]>(
-    new Array(heroImages.length).fill(false)
+    new Array(heroImages.length).fill(false),
   )
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>(
-    new Array(heroImages.length).fill(false)
+    new Array(heroImages.length).fill(false),
   )
 
   useEffect(() => {
@@ -72,24 +72,24 @@ const Hero = () => {
             rotate: 360,
             scale: [1, 1.2, 1],
           }}
+          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-primary-200/30 to-primary-400/20 dark:from-primary-900/30 dark:to-primary-700/20 rounded-full blur-3xl"
           transition={{
             duration: 20,
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-linear-to-br from-primary-200/30 to-primary-400/20 rounded-full blur-3xl"
         />
         <motion.div
           animate={{
             rotate: -360,
             scale: [1.2, 1, 1.2],
           }}
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 dark:from-secondary-800/30 dark:to-secondary-700/20 rounded-full blur-3xl hidden md:block"
           transition={{
             duration: 25,
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-linear-to-tr from-secondary-200/30 to-secondary-400/20 dark:from-secondary-800/30 dark:to-secondary-700/20 rounded-full blur-3xl hidden md:block"
         />
       </div>
 
@@ -97,26 +97,26 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
             className="space-y-8"
+            initial={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.8 }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
               className="flex items-center space-x-2 text-primary-600 dark:text-primary-400"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.2 }}
             >
               <Sparkles className="h-5 w-5" />
               <span className="font-medium">{t('badge')}</span>
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
               className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.3 }}
             >
               {t('title')}
               <span className="text-gradient block">{t('titleHighlight')}</span>
@@ -124,25 +124,25 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
               className="text-xl text-secondary-600 dark:text-secondary-400 leading-relaxed max-w-2xl"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.4 }}
             >
               {t('description')}
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.5 }}
             >
               <motion.button
+                className="btn-secondary inline-flex items-center justify-center"
                 onClick={() => handleNavigation('#about')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-secondary inline-flex items-center justify-center"
               >
                 {t('buttons.learnMore')}
               </motion.button>
@@ -150,10 +150,10 @@ const Hero = () => {
 
             {/* Stats */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
               className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-8 border-t border-secondary-200 dark:border-secondary-700"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.6 }}
             >
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary-600">
@@ -184,47 +184,47 @@ const Hero = () => {
 
           {/* Visual */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
             className="relative rounded-2xl"
+            initial={{ opacity: 0, x: 50 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative z-10">
               <motion.div
                 animate={{ y: [0, -20, 0] }}
+                className="relative"
                 transition={{
                   duration: 6,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="relative"
               >
                 <div className="relative overflow-hidden rounded-2xl aspect-3/4 w-full max-w-md mx-auto">
                   {heroImages.map((image, index) => (
                     <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
                       animate={{
                         opacity: index === currentImageIndex ? 1 : 0,
                         scale: index === currentImageIndex ? 1 : 1.05,
                       }}
+                      className={`absolute inset-0 ${index === currentImageIndex ? 'z-10' : 'z-0'}`}
+                      initial={{ opacity: 0 }}
+                      key={image.src}
                       transition={{
                         duration: 1,
                         ease: 'easeInOut',
                       }}
-                      className={`absolute inset-0 ${index === currentImageIndex ? 'z-10' : 'z-0'}`}
                     >
                       <Image
-                        src={image.src}
                         alt={image.alt}
-                        fill
                         className={`rounded-2xl shadow-2xl object-cover transition-opacity duration-300 ${
                           imagesLoaded[index] ? 'opacity-100' : 'opacity-0'
                         }`}
-                        priority={index === 0}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                        fill
                         onError={() => handleImageError(index)}
                         onLoad={() => handleImageLoad(index)}
+                        priority={index === 0}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                        src={image.src}
                       />
 
                       {/* Loading placeholder */}
@@ -254,19 +254,27 @@ const Hero = () => {
 
                 {/* Image indicators */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
-                  {heroImages.map((_, index) => (
+                  {heroImages.map((image, index) => (
                     <motion.button
-                      key={index}
+                      aria-label={t('indicator', {
+                        current: index + 1,
+                        total: heroImages.length,
+                      })}
+                      aria-pressed={index === currentImageIndex}
+                      className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+                      key={`indicator-${image.src}`}
                       onClick={() => setCurrentImageIndex(index)}
-                      aria-label={`Show image ${index + 1} of ${heroImages.length}`}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        index === currentImageIndex
-                          ? 'bg-white shadow-lg'
-                          : 'bg-white/50 hover:bg-white/70'
-                      }`}
                       whileHover={{ scale: 1.2 }}
                       whileTap={{ scale: 0.9 }}
-                    />
+                    >
+                      <span
+                        className={`h-2 w-2 rounded-full ${
+                          index === currentImageIndex
+                            ? 'bg-white shadow-lg'
+                            : 'bg-white/50 hover:bg-white/70'
+                        }`}
+                      />
+                    </motion.button>
                   ))}
                 </div>
               </motion.div>

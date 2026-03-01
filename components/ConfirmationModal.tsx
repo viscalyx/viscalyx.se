@@ -2,20 +2,21 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { AlertTriangle, Info, X } from 'lucide-react'
-import { ReactNode, useEffect, useRef } from 'react'
+import { useTranslations } from 'next-intl'
+import { type ReactNode, useEffect, useId, useRef } from 'react'
 
-interface ConfirmationModalProps {
+interface ComponentProps {
+  cancelText: string
+  closeAriaLabel?: string
+  confirmIcon?: ReactNode
+  confirmLoading?: boolean
+  confirmText: string
   isOpen: boolean
+  message: string
   onClose: () => void
   onConfirm: () => void
   title: string
-  message: string
-  confirmText: string
-  cancelText: string
   variant?: 'danger' | 'warning' | 'info'
-  confirmLoading?: boolean
-  confirmIcon?: ReactNode
-  closeAriaLabel?: string
 }
 
 const ConfirmationModal = ({
@@ -29,10 +30,14 @@ const ConfirmationModal = ({
   variant = 'warning',
   confirmLoading = false,
   confirmIcon,
-  closeAriaLabel = 'Close modal',
-}: ConfirmationModalProps) => {
+  closeAriaLabel,
+}: ComponentProps) => {
+  const t = useTranslations('confirmationModal')
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
+  const titleId = useId()
+  const descriptionId = useId()
+  const resolvedCloseAriaLabel = closeAriaLabel ?? t('closeAriaLabel')
 
   // Focus management for accessibility
   useEffect(() => {
@@ -102,28 +107,31 @@ const ConfirmationModal = ({
         <>
           {/* Backdrop */}
           <motion.div
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            aria-hidden="true"
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-            onClick={onClose}
             data-testid="modal-backdrop"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            onClick={onClose}
+            role="presentation"
           />
 
           {/* Modal */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              ref={modalRef}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.2 }}
-              className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full mx-auto"
-              role="dialog"
+              aria-describedby={descriptionId}
+              aria-labelledby={titleId}
               aria-modal="true"
-              aria-labelledby="modal-title"
-              aria-describedby="modal-description"
+              className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-md w-full mx-auto pointer-events-auto"
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              onClick={event => event.stopPropagation()}
+              ref={modalRef}
+              role="dialog"
               tabIndex={-1}
+              transition={{ duration: 0.2 }}
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 pb-4">
@@ -132,17 +140,17 @@ const ConfirmationModal = ({
                     {styles.icon}
                   </div>
                   <h2
-                    id="modal-title"
                     className="text-lg font-semibold text-gray-900 dark:text-white"
+                    id={titleId}
                   >
                     {title}
                   </h2>
                 </div>
                 <button
-                  type="button"
+                  aria-label={resolvedCloseAriaLabel}
+                  className="min-h-[44px] min-w-[44px] p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                   onClick={onClose}
-                  className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  aria-label={closeAriaLabel}
+                  type="button"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -151,8 +159,8 @@ const ConfirmationModal = ({
               {/* Content */}
               <div className="px-6 pb-6">
                 <p
-                  id="modal-description"
                   className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6"
+                  id={descriptionId}
                 >
                   {message}
                 </p>
@@ -160,18 +168,20 @@ const ConfirmationModal = ({
                 {/* Actions */}
                 <div className="flex gap-3 justify-end">
                   <button
-                    type="button"
-                    onClick={onClose}
-                    className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    aria-label={cancelText}
+                    className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900"
                     disabled={confirmLoading}
+                    onClick={onClose}
+                    type="button"
                   >
                     {cancelText}
                   </button>
                   <button
-                    type="button"
-                    onClick={onConfirm}
+                    aria-label={confirmText}
+                    className={`min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed ${styles.confirmButton}`}
                     disabled={confirmLoading}
-                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${styles.confirmButton}`}
+                    onClick={onConfirm}
+                    type="button"
                   >
                     {confirmLoading ? (
                       <div className="flex items-center gap-2">

@@ -1,8 +1,8 @@
 ---
-title: 'Complete Guide to Mermaid Diagrams: Every Type Explained with Examples'
+title: 'Complete Guide to Mermaid Diagrams: Supported Types Explained with Examples'
 date: '2025-04-29'
 author: 'Viscalyx Team'
-excerpt: 'A comprehensive guide showcasing all Mermaid diagram types with practical examples, from flowcharts to Kanban boards'
+excerpt: 'A comprehensive guide showcasing Mermaid diagram types with practical examples, from flowcharts to Kanban boards'
 image: '/dark-analytics-dashboard-monitor.png'
 imageAlt: 'Angled view of a monitor displaying a dark-themed analytics dashboard with colorful charts for page load time, bounce rate, sessions, and traffic sources, with a blurred plant in the background.'
 tags:
@@ -11,13 +11,19 @@ category: 'Template'
 readTime: '15 min read'
 ---
 
-Mermaid is a powerful diagramming and charting tool that uses simple text definitions to create complex visual diagrams. This comprehensive guide covers every type of Mermaid diagram with practical examples that you can use in your own projects.
+Mermaid is a powerful diagramming and charting tool that uses simple text
+definitions to create complex visual diagrams. This comprehensive guide covers
+supported types of Mermaid diagrams with practical examples that you can use in
+your own projects.
 
 ## Introduction
 
-Mermaid diagrams are perfect for technical documentation, project planning, system architecture, and process visualization. They render directly in markdown, making them ideal for documentation that lives alongside your code.
+Mermaid diagrams are perfect for technical documentation, project planning,
+system architecture, and process visualization. They render directly in
+Markdown, making them ideal for documentation that lives alongside your code.
 
-This guide demonstrates all available Mermaid diagram types with real-world examples, syntax explanations, and best practices.
+This guide demonstrates Mermaid diagram types with real-world examples, syntax
+explanations, and best practices.
 
 There are more examples in the [Documentation](https://mermaid.js.org/syntax/examples.html).
 
@@ -25,10 +31,12 @@ There are more examples in the [Documentation](https://mermaid.js.org/syntax/exa
 
 [Documentation](https://mermaid.js.org/syntax/flowchart.html)
 
-Flowcharts are the most common type of diagram, perfect for showing processes, decision trees, and workflows.
+Flowcharts are the most common type of diagram, perfect for showing processes,
+decision trees, and workflows.
 
 ### Basic Flowchart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Start] --> B{Is it?}
@@ -37,9 +45,11 @@ flowchart TD
     D --> B
     B ---->|No| E[End]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Flowchart with Styling
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart LR
     A[Christmas] -->|Get money| B(Go shopping)
@@ -51,17 +61,19 @@ flowchart LR
     E --> G
     F --> G
 
-    classDef startEnd fill:#e1f5fe
-    classDef process fill:#f3e5f5
-    classDef decision fill:#fff3e0
+    classDef startEnd fill:#e1f5fe,stroke:#0288d1,color:#01579b
+    classDef process fill:#f3e5f5,stroke:#8e24aa,color:#4a148c
+    classDef decision fill:#fff3e0,stroke:#fb8c00,color:#e65100
 
     class A,G startEnd
     class B,D,E,F process
     class C decision
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Subgraphs in Flowcharts
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TB
     c1-->a2
@@ -78,15 +90,18 @@ flowchart TB
     three --> two
     two --> c2
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 2. Sequence Diagrams
 
 [Documentation](https://mermaid.js.org/syntax/sequenceDiagram.html)
 
-Sequence diagrams show interactions between different actors over time, perfect for API documentation and system interactions.
+Sequence diagrams show interactions between different actors over time, perfect
+for API documentation and system interactions.
 
 ### Basic Sequence Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant Alice
@@ -100,9 +115,11 @@ sequenceDiagram
     John->>Bob: How about you?
     Bob-->>John: Jolly good!
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Sequence with Authentication Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     autonumber
@@ -129,9 +146,11 @@ sequenceDiagram
         U->>C: Retry or Cancel
     end
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Sequence with Activation Boxes
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant A as Alice
@@ -142,15 +161,18 @@ sequenceDiagram
     J-->>-A: Hi Alice, I can hear you!
     J-->>-A: I feel great!
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 3. Class Diagrams
 
 [Documentation](https://mermaid.js.org/syntax/classDiagram.html)
 
-Class diagrams show the structure of systems by displaying classes, their attributes, methods, and relationships.
+Class diagrams show the structure of systems by displaying classes, their
+attributes, methods, and relationships.
 
 ### Basic Class Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 classDiagram
     class Animal {
@@ -175,9 +197,11 @@ classDiagram
     Animal <|-- Dog
     Animal <|-- Cat
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Class Diagram with Relationships
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 classDiagram
     class BankAccount {
@@ -217,9 +241,11 @@ classDiagram
     Customer "1" --o "*" BankAccount : owns
     Customer "1" --o "*" CreditCard : has
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Class Diagram with Annotations
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 classDiagram
     class Shape {
@@ -254,15 +280,18 @@ classDiagram
     note for Circle "Area = π × r²"
     note for Rectangle "Area = width × height"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 4. State Diagrams
 
 [Documentation](https://mermaid.js.org/syntax/stateDiagram.html)
 
-State diagrams show the different states of an object and transitions between them.
+State diagrams show the different states of an object and transitions between
+them.
 
 ### Basic State Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 stateDiagram-v2
     [*] --> Still
@@ -272,9 +301,11 @@ stateDiagram-v2
     Moving --> Crash
     Crash --> [*]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced State Diagram with Conditions
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
@@ -297,9 +328,11 @@ stateDiagram-v2
         Executing --> [*] : done
     }
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### State Diagram with Choice and Fork
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 stateDiagram-v2
     [*] --> First
@@ -321,6 +354,7 @@ stateDiagram-v2
     choice_state --> First: if n < 0
     choice_state --> Second: if n >= 0
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 5. Entity Relationship Diagrams (ERD)
 
@@ -330,15 +364,18 @@ ERDs show the relationships between entities in a database.
 
 ### Basic ERD
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 erDiagram
     CUSTOMER ||--o{ ORDER : places
     ORDER ||--|{ LINE-ITEM : contains
     CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced ERD with Attributes
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 erDiagram
     CUSTOMER {
@@ -387,6 +424,7 @@ erDiagram
     PRODUCT ||--o{ ORDER_ITEM : "included in"
     CATEGORY ||--o{ PRODUCT : "categorizes"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 6. User Journey Diagrams
 
@@ -396,6 +434,7 @@ User journey diagrams show the path users take through a process or system.
 
 ### Basic User Journey
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 journey
     title My working day
@@ -407,9 +446,11 @@ journey
       Go downstairs: 5: Me
       Sit down: 5: Me
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced User Journey - E-commerce Experience
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 journey
     title Online Shopping Experience
@@ -431,6 +472,7 @@ journey
       Receive product: 5: Customer
       Leave review: 3: Customer
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 7. Gantt Charts
 
@@ -440,6 +482,7 @@ Gantt charts show project timelines and task dependencies.
 
 ### Basic Gantt Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 gantt
     title A Gantt Diagram
@@ -451,9 +494,11 @@ gantt
     Task in sec      :2014-01-12  , 12d
     another task      : 24d
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Project Gantt Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 gantt
     title Software Development Project
@@ -481,6 +526,7 @@ gantt
     Deployment            :deploy, after prod-setup, 3d
     Post-deployment Testing :post-test, after deploy, 7d
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 8. Pie Charts
 
@@ -490,15 +536,18 @@ Pie charts show proportional data and percentages.
 
 ### Basic Pie Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 pie title Pets adopted by volunteers
     "Dogs" : 386
     "Cats" : 85
     "Rats" : 15
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Pie Chart - Market Share
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 pie title Browser Market Share 2024
     "Chrome" : 65.1
@@ -508,6 +557,7 @@ pie title Browser Market Share 2024
     "Opera" : 2.8
     "Others" : 3.6
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 9. Quadrant Charts
 
@@ -517,6 +567,7 @@ Quadrant charts help with decision-making by plotting items on two axes.
 
 ### Basic Quadrant Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 quadrantChart
     title Reach and influence
@@ -532,9 +583,11 @@ quadrantChart
     Campaign D: [0.78, 0.34]
     Campaign E: [0.40, 0.34]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Strategic Planning Quadrant
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 quadrantChart
     title Product Portfolio Analysis
@@ -550,6 +603,7 @@ quadrantChart
     Product D: [0.7, 0.3]
     Product E: [0.5, 0.6]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 10. Requirement Diagrams
 
@@ -559,6 +613,7 @@ Requirement diagrams show requirements and their relationships.
 
 ### Basic Requirement Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 requirementDiagram
 requirement test_req {
@@ -574,9 +629,11 @@ element test_entity {
 
 test_entity - satisfies -> test_req
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced System Requirements
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 requirementDiagram
 requirement user_authentication {
@@ -619,6 +676,7 @@ session_manager - satisfies -> session_timeout
 user_authentication - derives -> password_policy
 user_authentication - derives -> session_timeout
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 11. Gitgraph Diagrams
 
@@ -628,6 +686,7 @@ Gitgraph diagrams show Git branching and merging workflows.
 
 ### Basic Git Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 gitGraph
     commit
@@ -641,9 +700,11 @@ gitGraph
     commit
     commit
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Git Workflow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 gitGraph
     commit id: "Initial commit"
@@ -680,7 +741,9 @@ gitGraph
     merge develop
     commit id: "Release v1.0"
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 gitGraph
   commit
@@ -725,6 +788,7 @@ gitGraph
   checkout develop
   merge release
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 12. C4 Diagrams
 
@@ -734,6 +798,7 @@ C4 diagrams show software architecture at different levels of abstraction.
 
 ### C4 Context Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 C4Context
     title System Context diagram for Internet Banking System
@@ -764,6 +829,7 @@ C4Context
 
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 13. Mind Maps
 
@@ -773,6 +839,7 @@ Mind maps show hierarchical information radiating from a central concept.
 
 ### Basic Mind Map
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 mindmap
   root((mindmap))
@@ -792,9 +859,11 @@ mindmap
       Pen and paper
       Mermaid
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Project Planning Mind Map
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 mindmap
   root((Web Application))
@@ -836,6 +905,7 @@ mindmap
         Metrics
         Alerts
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 14. Timeline Diagrams
 
@@ -845,6 +915,7 @@ Timeline diagrams show events over time.
 
 ### Basic Timeline
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 timeline
     title History of Social VR
@@ -859,9 +930,11 @@ timeline
          : Quest
     2020 : Quest 2
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Product Development Timeline
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 timeline
     title Product Development Lifecycle
@@ -891,38 +964,7 @@ timeline
                 : Market Expansion
                 : Performance Optimization
 ```
-
-## zenUML
-
-[Documentation](https://mermaid.js.org/syntax/zenuml.html)
-
-A Sequence diagram is an interaction diagram that shows how processes operate with one another and in what order.
-
-These types of diagrams are not supported by the blog system yet, they throw an error:
-
-```plaintext
-No diagram type detected matching given configuration for text: zenuml
-```
-
-Example mermaid code for this type of diagram:
-
-```text
-zenuml
-    // 1. assign a variable from a sync message.
-    a = A.SyncMessage()
-
-    // 1.1. optionally give the variable a type
-    SomeType a = A.SyncMessage()
-
-    // 2. use return keyword
-    A.SyncMessage() {
-    return result
-    }
-
-    // 3. use @return or @reply annotator on an async message
-    @return
-    A->B: result
-```
+<!-- markdownlint-enable MD013 -->
 
 ## 15. Sankey Diagrams
 
@@ -932,6 +974,7 @@ Sankey diagrams show flow and quantity through a system.
 
 ### Basic Sankey Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sankey-beta
     Agriculture,Bio-conversion,124.729
@@ -940,9 +983,11 @@ sankey-beta
     Bio-conversion,Solid,280.322
     Bio-conversion,Gas,81.144
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Energy Flow Sankey
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sankey-beta
     Coal,Electricity Generation,50
@@ -964,6 +1009,7 @@ sankey-beta
     Natural Gas,Commercial,15
     Natural Gas,Industrial,10
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 16. XY Charts
 
@@ -973,6 +1019,7 @@ XY charts show relationships between two quantitative variables.
 
 ### Basic XY Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 xychart-beta
     title "Sales Revenue"
@@ -980,9 +1027,11 @@ xychart-beta
     y-axis "Revenue (in $)" 4000 --> 11000
     bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 8800, 9000]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced Performance Metrics Chart
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 xychart-beta
     title "Website Performance Metrics"
@@ -992,6 +1041,7 @@ xychart-beta
     line "User Satisfaction (%)" [78, 82, 85, 88, 91, 94]
     bar "Conversion Rate (%)" [12, 15, 18, 22, 25, 28]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 17. Block Diagrams
 
@@ -999,19 +1049,26 @@ xychart-beta
 
 Block diagrams show system components and their relationships.
 
-These types of diagrams are not supported by the blog system yet, they throw an error:
+<!-- markdownlint-disable MD013 -->
 
-```plaintext
-Converting circular structure to JSON --> starting at object with constructor 'HTMLHtmlElement' | property '__reactFiber$45ydlvxhz2f' -> object with constructor 'FiberNode' --- property 'stateNode' closes the circle
-```
+> [!WARNING]
+> These types of diagrams are not supported by the blog system yet, they throw
+> an error:
+>
+> ```plaintext
+> Converting circular structure to JSON --> starting at object with constructor 'HTMLHtmlElement' | property '__reactFiber$45ydlvxhz2f' -> object with constructor 'FiberNode' --- property 'stateNode' closes the circle
+> ```
+>
+> Because supporting those required extensive monkey-patching of the JSON, we
+> need a better solution.
 
-To resolve that there was a lot of code needed to monkey-patch the JSON, a better solution is needed to be
-able to support those.
+<!-- markdownlint-enable MD013 -->
 
 Example mermaid code for this type of diagram:
 
+<!-- markdownlint-disable MD013 -->
 ```text
-block-beta
+block
 columns 1
   db(("DB"))
   blockArrowId6<["&nbsp;&nbsp;&nbsp;"]>(down)
@@ -1026,6 +1083,7 @@ columns 1
   C --> D
   style B fill:#969,stroke:#333,stroke-width:4px
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 18. Packet Diagrams
 
@@ -1035,6 +1093,7 @@ Packet diagrams show network packet structure.
 
 ### Basic Packet Diagram
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 packet-beta
 title UDP Packet
@@ -1044,9 +1103,11 @@ title UDP Packet
 48-63: "Checksum"
 64-95: "Data"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### Advanced TCP Packet Structure
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 packet-beta
 title TCP Packet Header
@@ -1063,6 +1124,7 @@ title TCP Packet Header
 160-191: "Options (if any)"
 192-223: "Data"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 19. Architecture Diagrams
 
@@ -1072,6 +1134,7 @@ Architecture diagrams show system structure and component relationships.
 
 ### Microservices Architecture
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 architecture-beta
     group api(cloud)[API Gateway]
@@ -1085,19 +1148,24 @@ architecture-beta
     disk1:T -- B:server
     disk2:T -- B:db
 ```
+<!-- markdownlint-enable MD013 -->
 
-Icons are very [limitied](https://mermaid.js.org/syntax/architecture.html#icons) unless using [Iconify Icons](https://icon-sets.iconify.design/) (and accepting the licenses), example psuedo-code:
-
-```typescript
-mermaid.registerIconPacks([
-  {
-    name: 'logos',
-    loader: () => fetch('…/logos@1/icons.json').then(r => r.json()),
-  },
-])
-```
-
-This is currently not suppported in the blog system.
+> [!WARNING]
+> Icons are very
+> [limited](https://mermaid.js.org/syntax/architecture.html#icons) unless using
+> [Iconify Icons](https://icon-sets.iconify.design/) (and accepting the
+> licenses), example pseudo-code:
+>
+> ```typescript
+> mermaid.registerIconPacks([
+>   {
+>     name: 'logos',
+>     loader: () => fetch('…/logos@1/icons.json').then(r => r.json()),
+>   },
+> ])
+> ```
+>
+> This is currently not supported in the blog system.
 
 ## 20. Kanban Boards
 
@@ -1107,6 +1175,7 @@ Kanban boards show work items and their progress through workflow stages.
 
 ### Basic Kanban Board
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 kanban
     Todo
@@ -1126,7 +1195,9 @@ kanban
         Create landing page
         Configure CI/CD pipeline
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 kanban
   Todo
@@ -1147,6 +1218,7 @@ kanban
   id12[Can't reproduce]
     id3[Weird flickering in Firefox]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Radar Diagrams
 
@@ -1154,6 +1226,7 @@ kanban
 
 A simple way to plot low-dimensional data in a circular format
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 radar-beta
   title Grades
@@ -1165,6 +1238,7 @@ radar-beta
   max 100
   min 0
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Treemap Diagrams
 
@@ -1172,6 +1246,7 @@ radar-beta
 
 Displays hierarchical data as a set of nested rectangles
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 treemap-beta
 "Products"
@@ -1183,6 +1258,7 @@ treemap-beta
         "Men's": 40
         "Women's": 40
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Best Practices for Mermaid Diagrams
 
@@ -1237,7 +1313,8 @@ treemap-beta
 
 <!-- cspell:ignore Gantt -->
 
-Mermaid diagrams are incredibly versatile tools for technical documentation. Each diagram type serves specific purposes:
+Mermaid diagrams are incredibly versatile tools for technical documentation.
+Each diagram type serves specific purposes:
 
 - **Flowcharts** for processes and workflows
 - **Sequence diagrams** for interactions over time
@@ -1247,7 +1324,10 @@ Mermaid diagrams are incredibly versatile tools for technical documentation. Eac
 - **Gantt charts** for project planning
 - **And many more** for specialized use cases
 
-Choose the right diagram type for your needs, keep them simple and focused, and maintain consistency across your documentation. With practice, you'll create clear, maintainable visual documentation that enhances understanding and communication.
+Choose the right diagram type for your needs, keep them simple and focused, and
+maintain consistency across your documentation. With practice, you'll create
+clear, maintainable visual documentation that enhances understanding and
+communication.
 
 ## Additional Resources
 
@@ -1257,4 +1337,7 @@ Choose the right diagram type for your needs, keep them simple and focused, and 
 - [Mermaid Syntax Reference](https://mermaid.js.org/syntax/flowchart.html)
 - [Visual Documentation Best Practices](https://www.writethedocs.org/)
 
-_This comprehensive guide covers all major Mermaid diagram types. Bookmark this page as a reference when creating visual documentation for your projects. Each diagram type has its strengths - choose the one that best communicates your specific information._
+_This comprehensive guide covers many major Mermaid diagram types and the most
+commonly used patterns. A few diagram types remain unsupported in this blog
+system (as noted above), so use those sections as references until renderer
+support is added._

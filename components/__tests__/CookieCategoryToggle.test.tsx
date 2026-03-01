@@ -1,6 +1,6 @@
-import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 
 describe('CookieCategoryToggle', () => {
   const defaultProps = {
@@ -12,7 +12,7 @@ describe('CookieCategoryToggle', () => {
   }
 
   beforeEach(() => {
-    defaultProps.onChange.mockClear()
+    vi.clearAllMocks()
   })
 
   it('renders an unchecked toggle', () => {
@@ -39,9 +39,9 @@ describe('CookieCategoryToggle', () => {
       <CookieCategoryToggle
         {...defaultProps}
         category="strictly-necessary"
-        checked={true}
         categoryName="Strictly Necessary"
-      />
+        checked={true}
+      />,
     )
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toBeDisabled()
@@ -58,7 +58,7 @@ describe('CookieCategoryToggle', () => {
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toHaveAttribute(
       'aria-describedby',
-      'analytics-description'
+      'analytics-description',
     )
   })
 
@@ -73,20 +73,34 @@ describe('CookieCategoryToggle', () => {
       <CookieCategoryToggle
         {...defaultProps}
         category="strictly-necessary"
-        checked={true}
         categoryName="Strictly Necessary"
-      />
+        checked={true}
+      />,
     )
     const checkbox = screen.getByRole('checkbox')
     expect(checkbox).toHaveAttribute(
       'aria-label',
-      'Strictly Necessary Required'
+      'Strictly Necessary Required',
     )
+  })
+
+  it('omits required suffix in aria-label when requiredLabel is not provided', () => {
+    render(
+      <CookieCategoryToggle
+        {...defaultProps}
+        category="strictly-necessary"
+        categoryName="Strictly Necessary"
+        checked={true}
+        requiredLabel={undefined}
+      />,
+    )
+    const checkbox = screen.getByRole('checkbox')
+    expect(checkbox).toHaveAttribute('aria-label', 'Strictly Necessary')
   })
 
   it('has consistent w-11 h-6 toggle track sizing', () => {
     const { container } = render(
-      <CookieCategoryToggle {...defaultProps} checked={true} />
+      <CookieCategoryToggle {...defaultProps} checked={true} />,
     )
     const track = container.querySelector('[role="presentation"]')
     expect(track).toBeInTheDocument()

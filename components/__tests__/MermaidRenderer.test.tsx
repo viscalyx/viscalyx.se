@@ -1,4 +1,5 @@
 import { render, waitFor } from '@testing-library/react'
+import type { Config } from 'dompurify'
 import { vi } from 'vitest'
 import MermaidRenderer from '../MermaidRenderer'
 
@@ -19,6 +20,17 @@ vi.mock('mermaid', () => ({
 
 // Mock console methods
 const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+const hasHtmlProfile = (config?: Config) => {
+  const useProfiles = config?.USE_PROFILES
+  if (useProfiles === false) {
+    return false
+  }
+  if (!useProfiles) {
+    return false
+  }
+  return Boolean(useProfiles.html)
+}
 
 describe('MermaidRenderer', () => {
   // Sample mermaid code for testing
@@ -69,8 +81,9 @@ describe('MermaidRenderer', () => {
   })
 
   afterEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
     document.body.innerHTML = ''
+    document.documentElement.classList.remove('dark')
   })
 
   describe('successful rendering', () => {
@@ -82,6 +95,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith({
           startOnLoad: false,
+          theme: 'default',
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -109,7 +123,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.render)).toHaveBeenCalledWith(
           expect.stringMatching(/^mermaid-diagram-\d+-0$/),
-          sampleMermaidCode
+          sampleMermaidCode,
         )
       })
 
@@ -123,7 +137,7 @@ describe('MermaidRenderer', () => {
         'border',
         'border-gray-200',
         'rounded-xl',
-        'shadow-lg'
+        'shadow-lg',
       )
 
       // Check that the diagram container was created with sanitized content
@@ -152,9 +166,34 @@ describe('MermaidRenderer', () => {
       })
 
       const diagramWrappers = document.querySelectorAll(
-        '.mermaid-diagram-wrapper'
+        '.mermaid-diagram-wrapper',
       )
       expect(diagramWrappers).toHaveLength(2)
+    })
+
+    it('should re-initialize mermaid when theme class changes', async () => {
+      const { default: mermaid } = await import('mermaid')
+
+      render(<MermaidRenderer contentLoaded={true} />)
+
+      await waitFor(() => {
+        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith(
+          expect.objectContaining({
+            theme: 'default',
+          }),
+        )
+      })
+
+      vi.mocked(mermaid.initialize).mockClear()
+      document.documentElement.classList.add('dark')
+
+      await waitFor(() => {
+        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalledWith(
+          expect.objectContaining({
+            theme: 'dark',
+          }),
+        )
+      })
     })
 
     it('should handle code blocks inside code-block-wrapper', async () => {
@@ -189,10 +228,10 @@ describe('MermaidRenderer', () => {
 
       // The code-block-wrapper should be replaced with the diagram wrapper
       expect(
-        document.querySelector('.code-block-wrapper')
+        document.querySelector('.code-block-wrapper'),
       ).not.toBeInTheDocument()
       expect(
-        document.querySelector('.mermaid-diagram-wrapper')
+        document.querySelector('.mermaid-diagram-wrapper'),
       ).toBeInTheDocument()
     })
   })
@@ -243,7 +282,7 @@ describe('MermaidRenderer', () => {
             ],
             ALLOW_DATA_ATTR: true,
             KEEP_CONTENT: true,
-          }
+          },
         )
       })
     })
@@ -271,6 +310,52 @@ describe('MermaidRenderer', () => {
   })
 
   describe('error handling', () => {
+    it('logs errors when re-rendering existing wrappers fails', async () => {
+      const { default: mermaid } = await import('mermaid')
+
+      const existingWrapper = document.createElement('div')
+      existingWrapper.className = 'mermaid-diagram-wrapper'
+      existingWrapper.setAttribute('data-mermaid-source', 'graph TD\nA-->B')
+      const existingContainer = document.createElement('div')
+      existingContainer.className = 'mermaid-diagram'
+      existingWrapper.appendChild(existingContainer)
+      document.querySelector('.blog-content')?.appendChild(existingWrapper)
+
+      const rerenderError = new Error('Failed theme re-render')
+      vi.mocked(mermaid.render)
+        .mockRejectedValueOnce(rerenderError)
+        .mockResolvedValue({
+          svg: mockSvgOutput,
+          diagramType: 'flowchart',
+        })
+
+      render(<MermaidRenderer contentLoaded={true} />)
+
+      await waitFor(() => {
+        expect(mockConsoleError).toHaveBeenCalledWith(
+          'Failed to re-render Mermaid diagram:',
+          rerenderError,
+        )
+      })
+    })
+
+    it('logs errors when mermaid initialization fails', async () => {
+      const { default: mermaid } = await import('mermaid')
+      const initializeError = new Error('Initialize failed')
+      vi.mocked(mermaid.initialize).mockImplementation(() => {
+        throw initializeError
+      })
+
+      render(<MermaidRenderer contentLoaded={true} />)
+
+      await waitFor(() => {
+        expect(mockConsoleError).toHaveBeenCalledWith(
+          'Failed to initialize Mermaid:',
+          initializeError,
+        )
+      })
+    })
+
     it('should handle diagram rendering errors', async () => {
       const { default: DOMPurify } = await import('dompurify')
       const { default: mermaid } = await import('mermaid')
@@ -285,14 +370,14 @@ describe('MermaidRenderer', () => {
       // Reset and configure mocks for this specific test
       vi.mocked(mermaid.render).mockRejectedValue(renderError)
       vi.mocked(DOMPurify.sanitize).mockImplementation(
-        (input: string | Node, config?: any) => {
-          if (config?.USE_PROFILES?.html) {
+        (input: string | Node, config?: Config) => {
+          if (hasHtmlProfile(config)) {
             // This is for error content sanitization
             return String(input)
           }
           // This is for SVG sanitization (shouldn't be called in error case)
           return mockSanitizedSvg
-        }
+        },
       )
 
       render(<MermaidRenderer contentLoaded={true} />)
@@ -306,7 +391,7 @@ describe('MermaidRenderer', () => {
       // Now check if console.error was called
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
-        renderError
+        renderError,
       )
 
       // Check that error message is displayed
@@ -318,13 +403,13 @@ describe('MermaidRenderer', () => {
         'border',
         'border-red-200',
         'rounded-lg',
-        'text-red-800'
+        'text-red-800',
       )
 
       // Check that error content is sanitized
       expect(vi.mocked(DOMPurify.sanitize)).toHaveBeenCalledWith(
         expect.stringContaining('Invalid mermaid syntax'),
-        { USE_PROFILES: { html: true } }
+        { USE_PROFILES: { html: true } },
       )
 
       consoleErrorSpy.mockRestore()
@@ -344,14 +429,14 @@ describe('MermaidRenderer', () => {
       // Reset and configure mocks for this specific test
       vi.mocked(mermaid.render).mockRejectedValue(nonErrorValue)
       vi.mocked(DOMPurify.sanitize).mockImplementation(
-        (input: string | Node, config?: any) => {
-          if (config?.USE_PROFILES?.html) {
+        (input: string | Node, config?: Config) => {
+          if (hasHtmlProfile(config)) {
             // This is for error content sanitization
             return String(input)
           }
           // This is for SVG sanitization (shouldn't be called in error case)
           return mockSanitizedSvg
-        }
+        },
       )
 
       render(<MermaidRenderer contentLoaded={true} />)
@@ -365,7 +450,7 @@ describe('MermaidRenderer', () => {
       // Now check if console.error was called
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
-        nonErrorValue
+        nonErrorValue,
       )
 
       // Check that generic error message is shown
@@ -373,7 +458,7 @@ describe('MermaidRenderer', () => {
       expect(errorDiv).toBeInTheDocument()
       expect(vi.mocked(DOMPurify.sanitize)).toHaveBeenCalledWith(
         expect.stringContaining('Unknown error occurred'),
-        { USE_PROFILES: { html: true } }
+        { USE_PROFILES: { html: true } },
       )
 
       consoleErrorSpy.mockRestore()
@@ -410,7 +495,7 @@ describe('MermaidRenderer', () => {
 
       await waitFor(() => {
         expect(
-          document.querySelector('.code-block-wrapper')
+          document.querySelector('.code-block-wrapper'),
         ).not.toBeInTheDocument()
         expect(document.querySelector('.mermaid-error')).toBeInTheDocument()
       })
@@ -420,14 +505,19 @@ describe('MermaidRenderer', () => {
   describe('content loading states', () => {
     it('should not process diagrams when contentLoaded is false', async () => {
       const { default: mermaid } = await import('mermaid')
+      vi.useFakeTimers()
 
-      render(<MermaidRenderer contentLoaded={false} />)
+      try {
+        render(<MermaidRenderer contentLoaded={false} />)
 
-      // Wait a bit to ensure no processing happens
-      await new Promise(resolve => setTimeout(resolve, 200))
+        // Flush any scheduled timers deterministically
+        vi.advanceTimersByTime(200)
 
-      expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
-      expect(vi.mocked(mermaid.render)).not.toHaveBeenCalled()
+        expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
+        expect(vi.mocked(mermaid.render)).not.toHaveBeenCalled()
+      } finally {
+        vi.useRealTimers()
+      }
     })
 
     it('should process diagrams when contentLoaded defaults to true', async () => {
@@ -443,20 +533,30 @@ describe('MermaidRenderer', () => {
 
     it('should process diagrams when contentLoaded changes from false to true', async () => {
       const { default: mermaid } = await import('mermaid')
+      vi.useFakeTimers()
+      try {
+        const { rerender } = render(<MermaidRenderer contentLoaded={false} />)
 
-      const { rerender } = render(<MermaidRenderer contentLoaded={false} />)
+        // Verify no processing initially
+        vi.advanceTimersByTime(200)
+        expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
 
-      // Verify no processing initially
-      await new Promise(resolve => setTimeout(resolve, 200))
-      expect(vi.mocked(mermaid.initialize)).not.toHaveBeenCalled()
+        // Change contentLoaded to true
+        rerender(<MermaidRenderer contentLoaded={true} />)
 
-      // Change contentLoaded to true
-      rerender(<MermaidRenderer contentLoaded={true} />)
+        // Advance fake timers to trigger the component's setTimeout
+        await vi.advanceTimersByTimeAsync(200)
 
-      await waitFor(() => {
-        expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()
-        expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
-      })
+        // Switch to real timers for waitFor polling
+        vi.useRealTimers()
+
+        await waitFor(() => {
+          expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()
+          expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
+        })
+      } finally {
+        vi.useRealTimers()
+      }
     })
   })
 
@@ -512,7 +612,7 @@ describe('MermaidRenderer', () => {
       await waitFor(() => {
         expect(vi.mocked(mermaid.render)).toHaveBeenCalledWith(
           expect.stringMatching(/^mermaid-diagram-\d+-0$/),
-          sampleMermaidCode
+          sampleMermaidCode,
         )
       })
     })
@@ -531,7 +631,7 @@ describe('MermaidRenderer', () => {
       const originalQuerySelectorAll = document.querySelectorAll
       vi.spyOn(document, 'querySelectorAll').mockReturnValue([
         detachedPre,
-      ] as any)
+      ] as unknown as NodeListOf<Element>)
 
       render(<MermaidRenderer contentLoaded={true} />)
 
@@ -541,7 +641,7 @@ describe('MermaidRenderer', () => {
 
       // Should not throw error even with missing parent
       expect(mockConsoleError).not.toHaveBeenCalledWith(
-        expect.stringContaining('Failed to render Mermaid diagram')
+        expect.stringContaining('Failed to render Mermaid diagram'),
       )
 
       // Restore original method

@@ -18,10 +18,7 @@ describe('blog-read analytics route', () => {
     })
   })
 
-  const createRequest = (
-    body: Record<string, unknown>,
-    headers?: HeadersInit
-  ) =>
+  const createRequest = (body: unknown, headers?: HeadersInit) =>
     new Request('https://viscalyx.org/api/analytics/blog-read', {
       method: 'POST',
       headers: {
@@ -35,7 +32,7 @@ describe('blog-read analytics route', () => {
   it('rejects requests from invalid origin', async () => {
     const req = createRequest(
       { slug: 'a', category: 'b', title: 'c' },
-      { origin: 'https://attacker.example' }
+      { origin: 'https://attacker.example' },
     )
     const res = await POST(req)
 
@@ -46,7 +43,7 @@ describe('blog-read analytics route', () => {
   it('rejects malformed origin header values', async () => {
     const req = createRequest(
       { slug: 'a', category: 'b', title: 'c' },
-      { origin: 'not-a-url' }
+      { origin: 'not-a-url' },
     )
     const res = await POST(req)
 
@@ -59,7 +56,7 @@ describe('blog-read analytics route', () => {
       {
         origin: '',
         referer: 'https://viscalyx.org/en/blog',
-      }
+      },
     )
 
     const res = await POST(req)
@@ -73,7 +70,7 @@ describe('blog-read analytics route', () => {
       {
         origin: '',
         referer: 'not-a-url',
-      }
+      },
     )
 
     const res = await POST(req)
@@ -83,7 +80,7 @@ describe('blog-read analytics route', () => {
   it('rejects requests without origin and referer headers', async () => {
     const req = createRequest(
       { slug: 'slug', category: 'cat', title: 'title' },
-      { origin: '' }
+      { origin: '' },
     )
     req.headers.delete('referer')
     const res = await POST(req)
@@ -97,7 +94,55 @@ describe('blog-read analytics route', () => {
 
     expect(res.status).toBe(400)
     expect(await res.json()).toEqual({
-      error: 'Missing required fields: slug, category, and title',
+      error: 'Missing or invalid fields: slug, category, title',
+    })
+  })
+
+  it('returns 400 for non-object JSON body', async () => {
+    const req = new Request('https://viscalyx.org/api/analytics/blog-read', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://viscalyx.org',
+      },
+      body: JSON.stringify([]),
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Request body must be a JSON object',
+    })
+  })
+
+  it('returns 400 for invalid JSON body', async () => {
+    const req = new Request('https://viscalyx.org/api/analytics/blog-read', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://viscalyx.org',
+      },
+      body: 'not valid json{{{',
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Invalid JSON',
+    })
+  })
+
+  it('returns 400 when required fields are not non-empty strings', async () => {
+    const req = createRequest({
+      slug: ' ',
+      category: 123,
+      title: ['bad'],
+    })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Missing or invalid fields: slug, category, title',
     })
   })
 
@@ -118,16 +163,89 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].blobs[0]).toBe('my-post')
   })
 
-  it('hashes client IP and stores hashed visitor identifier', async () => {
+  it('sanitizes invalid readProgress/timeSpent values before analytics write', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: { invalid: true },
+      timeSpent: 'not-a-number',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(0)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
+  it('coerces numeric string readProgress/timeSpent values before analytics write', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: '50.5',
+      timeSpent: '22',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(50.5)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(22)
+  })
+
+  it('clamps readProgress to 100 and timeSpent to 0', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: 150,
+      timeSpent: -5,
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(100)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
+  it('sanitizes partially numeric strings to zero', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: '50abc',
+      timeSpent: '22s',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(0)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
+  it('stores anonymous identifier when hashed IP storage is disabled', async () => {
+    // storeHashedIP is hard-coded to false in route.ts
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
-      { 'cf-connecting-ip': '203.0.113.10' }
+      { 'cf-connecting-ip': '203.0.113.10' },
     )
 
     await POST(req)
 
-    const hashed = mockWriteDataPoint.mock.calls[0][0].blobs[6]
-    expect(hashed).toMatch(/^[a-f0-9]{64}$/)
+    const stored = mockWriteDataPoint.mock.calls[0][0].blobs[6]
+    expect(stored).toBe('anonymous')
   })
 
   it('falls back to anonymous identifier when no client IP exists', async () => {
@@ -142,21 +260,21 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].blobs[6]).toBe('anonymous')
   })
 
-  it('continues when IP hashing fails', async () => {
+  it('does not attempt IP hashing when gate is disabled', async () => {
+    // storeHashedIP is hard-coded to false, so even without the
+    // secret the route should succeed without a hash warning.
     delete process.env.ANALYTICS_HASH_SECRET
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
-      { 'cf-connecting-ip': '203.0.113.2' }
+      { 'cf-connecting-ip': '203.0.113.2' },
     )
 
     const res = await POST(req)
 
     expect(res.status).toBe(200)
-    expect(warnSpy).toHaveBeenCalledWith(
-      'Failed to hash client IP:',
-      expect.any(Error)
-    )
+    expect(warnSpy).not.toHaveBeenCalled()
+    expect(mockWriteDataPoint.mock.calls[0][0].blobs[6]).toBe('anonymous')
   })
 
   it('continues when Cloudflare context retrieval fails', async () => {
@@ -175,12 +293,11 @@ describe('blog-read analytics route', () => {
     expect(res.status).toBe(200)
     expect(warnSpy).toHaveBeenCalledWith(
       'Failed to get Cloudflare context for analytics:',
-      expect.any(Error)
+      expect.any(Error),
     )
   })
 
-  it('returns 500 when request parsing throws', async () => {
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+  it('returns 400 when request parsing throws', async () => {
     const req = {
       headers: new Headers({ origin: 'https://viscalyx.org' }),
       json: async () => {
@@ -190,11 +307,7 @@ describe('blog-read analytics route', () => {
 
     const res = await POST(req)
 
-    expect(res.status).toBe(500)
-    expect(await res.json()).toEqual({ error: 'Failed to track blog read' })
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Error tracking blog read:',
-      expect.any(Error)
-    )
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ error: 'Invalid JSON' })
   })
 })

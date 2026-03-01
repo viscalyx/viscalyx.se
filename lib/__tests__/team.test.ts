@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getAuthorInitials,
   getSerializableTeamMemberById,
@@ -8,7 +9,6 @@ import {
   getTeamMembers,
   socialIconMap,
 } from '@/lib/team'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Mock translation function with correct typing
 const mockTranslation = vi.fn()
@@ -77,25 +77,25 @@ describe('team utilities', () => {
       // Check social links separately - currently 7 active links
       expect(teamMembers[0].socialLinks).toHaveLength(7)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Email')
+        teamMembers[0].socialLinks.some(link => link.name === 'Email'),
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'LinkedIn')
+        teamMembers[0].socialLinks.some(link => link.name === 'LinkedIn'),
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Bluesky')
+        teamMembers[0].socialLinks.some(link => link.name === 'Bluesky'),
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Mastodon')
+        teamMembers[0].socialLinks.some(link => link.name === 'Mastodon'),
       ).toBe(true)
       expect(teamMembers[0].socialLinks.some(link => link.name === 'X')).toBe(
-        true
+        true,
       )
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'Discord')
+        teamMembers[0].socialLinks.some(link => link.name === 'Discord'),
       ).toBe(true)
       expect(
-        teamMembers[0].socialLinks.some(link => link.name === 'GitHub')
+        teamMembers[0].socialLinks.some(link => link.name === 'GitHub'),
       ).toBe(true)
     })
 

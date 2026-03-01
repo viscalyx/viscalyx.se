@@ -24,7 +24,16 @@
     "termsOfService": "Terms of Service",
     "cookiePolicy": "Cookie Policy",
     "allRightsReserved": "All rights reserved.",
-    "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide."
+    "companyDescription": "Empowering organizations through intelligent automation. We deliver cutting-edge solutions that transform workflows and boost productivity for developers and IT professionals worldwide.",
+    "opensInNewTab": " (opens in new tab)",
+    "socialLinks": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "github": "GitHub"
+    }
   },
   "language": {
     "english": "English",
@@ -41,6 +50,7 @@
       "learnMore": "Learn More"
     },
     "errorFallback": "Image unavailable",
+    "indicator": "Show image {current} of {total}",
     "stats": {
       "experience": {
         "value": "30+",
@@ -102,6 +112,17 @@
     "description": "Meet the dedicated professionals who drive innovation and deliver exceptional automation solutions for our clients worldwide.",
     "specialties": "Specialties",
     "learnMore": "Learn More",
+    "viewProfile": "View profile for {name}",
+    "viewProfileFallback": "View profile for {name}",
+    "socialLinks": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "bluesky": "Bluesky",
+      "mastodon": "Mastodon",
+      "x": "X",
+      "discord": "Discord",
+      "github": "GitHub"
+    },
     "members": {
       "johlju": {
         "role": "Founder & Lead Consultant",
@@ -142,6 +163,7 @@
     "title": "Open Source",
     "titleHighlight": "Contributions",
     "description": "We believe in giving back to the community. Our active contributions to open-source projects help advance automation and DevOps practices worldwide.",
+    "projectsListLabel": "Open source projects",
     "stats": {
       "projects": {
         "value": "80+",
@@ -178,6 +200,11 @@
       }
     },
     "viewProject": "View Project",
+    "accessibility": {
+      "viewProject": "View project {name}",
+      "followGithub": "Follow on GitHub (opens in new tab)",
+      "collaborate": "Collaborate with DSC (opens in new tab)"
+    },
     "cta": {
       "title": "Join the PowerShell Open Source Community",
       "description": "Collaborate with us on cutting-edge automation tools and contribute to projects that impact thousands of developers worldwide.",
@@ -222,6 +249,7 @@
         "shareTextFallback": "Check out this blog post: {title}"
       },
       "authorBio": {
+        "ariaLabel": "Author biography",
         "name": "Johan Ljunggren",
         "title": "Founder and Lead Consultant at Viscalyx",
         "description": "Johan is a passionate automation expert with over 8 years of experience in DevOps, PowerShell DSC, and open-source development. He's an active contributor to the PowerShell DSC Community and helps organizations worldwide streamline their infrastructure management.",
@@ -260,7 +288,8 @@
     "title": "Page Not Found",
     "heading": "Page Not Found",
     "description": "Sorry, the page you are looking for does not exist or has been moved.",
-    "goHome": "Go to Homepage"
+    "goHome": "Go to Homepage",
+    "goHomeAriaLabel": "Go to homepage in current locale"
   },
   "error": {
     "title": "Something Went Wrong",
@@ -296,7 +325,8 @@
     "ariaLabel": "Loading"
   },
   "confirmationModal": {
-    "close": "Close modal"
+    "close": "Close modal",
+    "closeAriaLabel": "Close modal"
   },
   "cookieConsent": {
     "title": "We Use Cookies",
@@ -325,6 +355,33 @@
     "viewCookiesAriaLabel": "View Cookies for {categoryName} ({count} cookies)",
     "duration": "Duration",
     "provider": "Provider",
+    "cookies": {
+      "theme": {
+        "purpose": "Stores user theme preference (light/dark/system)",
+        "duration": "1 year"
+      },
+      "language": {
+        "purpose": "Stores user language preference (en/sv)",
+        "duration": "1 year"
+      },
+      "consent": {
+        "purpose": "Stores user cookie consent preferences",
+        "duration": "1 year"
+      },
+      "cfAnalytics": {
+        "purpose": "Cloudflare Analytics Engine data collection (country, user agent)",
+        "purposeWithVisitorId": "Cloudflare Analytics Engine data collection (country, user agent, pseudonymized visitor ID)",
+        "duration": "Session only - data processed server-side"
+      },
+      "blogReading": {
+        "purpose": "Tracks blog reading behavior (progress, time spent) for content optimization",
+        "duration": "Session only - data processed server-side"
+      },
+      "session": {
+        "purpose": "Maintains user session state",
+        "duration": "Session"
+      }
+    },
     "categories": {
       "title": "Cookie Categories",
       "strictly-necessary": {

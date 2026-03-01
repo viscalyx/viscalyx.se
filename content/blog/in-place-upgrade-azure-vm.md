@@ -4,86 +4,119 @@ date: '2025-07-26'
 author: 'Johan Ljunggren'
 excerpt: 'Complete guide for performing in-place upgrades of Windows Server on Azure VMs, including prerequisites, security considerations, and step-by-step instructions.'
 image: '/team-deep-in-thought.png'
-imageAlt: 'In a bright open‑plan office, three IT professionals—two men and one woman—study their monitors showing Azure logos, diagrams, and code, while a dream‑like, cloud‑shrouded datacenter complex hovers on the horizon.s'
+imageAlt: >
+  In a bright open‑plan office, three IT professionals—two men and one woman—study
+  their monitors showing Azure logos, diagrams, and code, while a dream‑like,
+  cloud‑shrouded datacenter complex hovers on the horizon.
 tags: ['Azure', 'Windows Server', 'Upgrade', 'Virtual Machines', 'PowerShell']
 readTime: '38 min read'
 category: 'Infrastructure'
 ---
 
-More information than what's in this guide can be found in the article [In-place upgrade for VMs running Windows Server in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade).
+For more information, see the Microsoft article
+[In-place upgrade for VMs running Windows Server in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade).
 
 ## Supported Upgrade Paths
 
 Currently only these upgrade scenarios are supported:
 
-- **Windows Server 2012** from Windows Server 2008 (64-bit) or Windows Server 2008 R2
+- **Windows Server 2012** from Windows Server 2008 (64-bit) or Windows Server
+  2008 R2
 - **Windows Server 2016** from Windows Server 2012 or Windows Server 2012 R2
 - **Windows Server 2019** from Windows Server 2012 R2 or Windows Server 2016
 - **Windows Server 2022** from Windows Server 2016 or Windows Server 2019
 - **Windows Server 2025** from Windows Server 2019 or Windows Server 2022
 
 > [!WARNING]
-> Remember to always test the upgrade process in a non-production environment first, and ensure you have reliable backups before proceeding with production systems.
+> Remember to always test the upgrade process in a non-production environment
+> first, and ensure you have reliable backups before proceeding with production
+> systems.
 
 ## Upgrade to Managed Disks
 
 > [!IMPORTANT]
-> The in-place upgrade process requires the use of Managed Disks on the VM to be upgraded.
+> The in-place upgrade process requires the use of Managed Disks on the VM to
+> be upgraded.
 
-Most VMs in Azure are already using Managed Disks. Retirement for unmanaged disks support was announced in November 2022. If your VM is currently using unmanaged disks, you must migrate to Managed Disks before proceeding.
+Most VMs in Azure are already using Managed Disks. Retirement for unmanaged
+disks support was announced in November 2022. If your VM is currently using
+unmanaged disks, you must migrate to Managed Disks before proceeding.
 
 ### Verify Managed Disks Usage
 
 1. Browse to: [Azure Portal, Virtual Machines](https://portal.azure.com/#view/Microsoft_Azure_ComputeHub/ComputeHubMenuBlade/~/virtualMachinesBrowse)
-1. Click **Manage View**, then **Edit columns** and enable **"Uses managed disks"**
-1. Verify it shows _Yes_ under **"Uses managed disks"** for the VM you are about to upgrade
+1. Click **Manage View**, then **Edit columns** and enable **"Uses managed
+   disks"**
+1. Verify it shows _Yes_ under **"Uses managed disks"** for the VM you are
+   about to upgrade
 
 ### Migrate to Managed Disks (if needed)
 
-If your VM shows _No_ under "Uses managed disks", follow the migration steps in [migrate to Managed Disks](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/migrate-to-managed-disks).
+If your VM shows _No_ under "Uses managed disks", follow the migration steps in
+[migrate to Managed Disks](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/migrate-to-managed-disks).
 
 ## Evaluate free space to perform in-place upgrade
 
-Make sure you have enough free space for the upgrade. If your current OS disk doesn't have enough free space, you must expand it before proceeding. See [Expand virtual hard disks attached to a Windows virtual machine](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/expand-disks) for detailed instructions.
+Make sure you have enough free space for the upgrade. If your current OS disk
+doesn't have enough free space, you must expand it before proceeding. See
+[Expand virtual hard disks attached to a Windows virtual machine](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/expand-disks)
+for detailed instructions.
 
+<!-- markdownlint-disable MD013 -->
 | Component                 | Requirement              |
 | ------------------------- | ------------------------ |
 | **System partition size** | 32 GB (absolute minimum) |
+<!-- markdownlint-enable MD013 -->
 
-Review the comprehensive [Hardware requirements for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hardware-requirements) documentation for complete details.
+Review the comprehensive [Hardware requirements for Windows Server](https://learn.microsoft.com/en-us/windows-server/get-started/hardware-requirements)
+documentation for complete details.
 
 ### Check Current Disk Size and free space
 
-Connect to your VM via RDP and run the following PowerShell command to check available space:
+Connect to your VM via RDP and run the following PowerShell command to check
+available space:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Get-CimInstance -ClassName Win32_LogicalDisk |
   Where-Object {$_.DeviceID -eq "C:"} |
   Select-Object Size,FreeSpace,@{Name="SizeGB";Expression={[math]::Round($_.Size/1GB,2)}},@{Name="FreeSpaceGB";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Disable security functions
 
-Disable antivirus and anti-spyware software and firewalls. These types of software can conflict with the upgrade process. Re-enable antivirus and anti-spyware software and firewalls after the upgrade is completed.
+Disable antivirus and anti-spyware software and firewalls. These types of
+software can conflict with the upgrade process. Re-enable antivirus and
+anti-spyware software and firewalls after the upgrade is completed.
 
 ### Firewall
 
 Open PowerShell in an elevated PowerShell session and run:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Verify current status
 Get-NetFirewallProfile | Select-Object Name, Enabled
 ```
+<!-- markdownlint-enable MD013 -->
 
-Disable Windows Defender Firewall for all three profiles (Domain, Private, Public) on the server:
+Disable Windows Defender Firewall for all three profiles (Domain, Private,
+Public) on the server:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
 ```
+<!-- markdownlint-enable MD013 -->
 
-You can also disable firewall through the user interface. On Windows Server 2019, this is done through Windows Defender Firewall settings:
+You can also disable firewall through the user interface. On Windows Server
+2019, this is done through Windows Defender Firewall settings:
 
-![Windows Control Panel settings window showing the customization options for Windows Defender Firewall. Both Private and Public network settings have the option 'Turn off Windows Defender Firewall (not recommended)' selected, indicated by red shield icons. The options to turn on the firewall are unselected.](/public/blog-images/windows-defender-firewall-network-settings-win2019.png)
+![Windows Control Panel settings window showing the customization options for
+Windows Defender Firewall. Both Private and Public network settings have the
+option 'Turn off Windows Defender Firewall (not recommended)' selected,
+indicated by red shield icons. The options to turn on the firewall are unselected.](/public/blog-images/windows-defender-firewall-network-settings-win2019.png)
 
 ### Antivirus and Anti-spyware software
 
@@ -91,57 +124,86 @@ Stop the real‑time engine but keep Defender installed.
 
 Open PowerShell in an elevated PowerShell session and run:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Verify current status
 (Get-MpPreference).DisableRealtimeMonitoring
 ```
+<!-- markdownlint-enable MD013 -->
 
 Disable real-time monitoring:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Set-MpPreference -DisableRealtimeMonitoring $true
 ```
+<!-- markdownlint-enable MD013 -->
 
-You can also disable the real‑time engine through the user interface. On Windows Server 2019, this is done through Windows Security settings:
+You can also disable the real‑time engine through the user interface. On Windows
+Server 2019, this is done through Windows Security settings:
 
-![Windows Security window showing the 'Virus & threat protection' section. Under 'Current threats', it reports no current threats and a last scan with zero threats found. Below, a warning under 'Virus & threat protection settings' states that real-time protection is off, leaving the device vulnerable, with a greyed-out 'Turn on' button and a 'Manage settings' link.](/public/blog-images/virus-and-threat-protection-settings-win2019.png)
+![Windows Security window showing the 'Virus & threat protection' section. Under
+'Current threats', it reports no current threats and a last scan with zero
+threats found. Below, a warning under 'Virus & threat protection settings'
+states that real-time protection is off, leaving the device vulnerable, with a
+greyed-out 'Turn on' button and a 'Manage settings' link.](/public/blog-images/virus-and-threat-protection-settings-win2019.png)
 
-When click on the Manage settings link:
+When you click the **Manage settings** link:
 
-![Windows Security window showing the 'Virus & threat protection settings' section. Under 'Real-time protection', it indicates that the setting is turned off, with a red warning icon and message stating 'Real-time protection is off, leaving your device vulnerable.' A toggle switch is set to 'Off' at the bottom of the section.](/public/blog-images/real-time-protection-setting-win2019.png)
+![Windows Security window showing the 'Virus & threat protection settings'
+section. Under 'Real-time protection', it indicates that the setting is turned
+off, with a red warning icon and message stating 'Real-time protection is off,
+leaving your device vulnerable.' A toggle switch is set to 'Off' at the bottom
+of the section.](/public/blog-images/real-time-protection-setting-win2019.png)
 
 ## Upgrade VM to volume license (KMS server activation)
 
 > [!IMPORTANT]
-> This step is only relevant if the VM was imported into Azure. VMs deployed from Azure Marketplace images are already configured for volume licensing.
+> This step is only relevant if the VM was imported into Azure. VMs deployed
+> from Azure Marketplace images are already configured for volume licensing.
 
-The upgrade media provided by Azure requires the VM to be configured for Windows Server volume licensing. This is the default behavior for any Windows Server VM that was installed from a generalized image in Azure.
+The upgrade media provided by Azure requires the VM to be configured for Windows
+Server volume licensing. This is the default behavior for any Windows Server VM
+that was installed from a generalized image in Azure.
 
-If the VM was imported into Azure, it might need to be converted to volume licensing to use the upgrade media provided by Azure. To confirm and configure the VM for volume license activation see [Upgrade VM to volume license (KMS server activation)](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#upgrade-vm-to-volume-license-kms-server-activation).
+If the VM was imported into Azure, it might need to be converted to volume
+licensing to use the upgrade media provided by Azure. To confirm and configure
+the VM for volume license activation see
+[Upgrade VM to volume license (KMS server activation)](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#upgrade-vm-to-volume-license-kms-server-activation).
 
-You can verify the current licensing configuration by running this PowerShell command:
+You can verify the current licensing configuration by running this PowerShell
+command:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Check current license status
 slmgr.vbs /dlv
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Snapshot the VM disks
 
 > [!CAUTION]
-> It is recommended to create a snapshot of the operating system disk (and any data disks) before starting the in-place upgrade process. Create a snapshot on each data disk as well if they exist. Without it you cannot revert to a previous state.
-
-> [!IMPORTANT]
-> To revert to the previous state of the VM if anything fails during the upgrade, you must have made snapshots. See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure) for recovery procedures.
+> It is recommended to create a snapshot of the operating system disk (and any
+> data disks) before starting the in-place upgrade process. Create a snapshot on
+> each data disk as well if they exist. Without it you cannot revert to a
+> previous state.
 
 ### Snapshot the operating system disk
 
-When creating the snapshot, for simplicity, create it in the same subscription, resource group and location (zone) as the Azure VM operating system disk.
+> [!IMPORTANT]
+> To revert to the previous state of the VM if anything fails during the
+> upgrade, you must have made snapshots. See [Recover from failure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows-in-place-upgrade#recover-from-failure)
+> for recovery procedures.
+
+When creating the snapshot, for simplicity, create it in the same subscription,
+resource group and location (zone) as the Azure VM operating system disk.
 
 See the article [Create a snapshot of a VHD](https://learn.microsoft.com/en-us/azure/virtual-machines/snapshot-copy-managed-disk?tabs=portal#create-a-snapshot-of-a-vhd).
 
 Set the properties:
 
+<!-- markdownlint-disable MD013 -->
 | Property            | Value                                             |
 | ------------------- | ------------------------------------------------- |
 | Subscription        | Same as the VM's operating system disk            |
@@ -153,11 +215,14 @@ Set the properties:
 | Source Subscription | same as the VM's operating system disk            |
 | Source disk         | Choose the VM's operating system disk in the list |
 | Storage type        | Standard HDD                                      |
+<!-- markdownlint-enable MD013 -->
 
 ## Set operating system language to English US
 
 > [!IMPORTANT]
-> The upgrade media disk can only use `en-US` language. No other languages are supported. To avoid any errors, set the system language to en-US or change the system locale to English (United States) in Control Panel.
+> The upgrade media disk can only use `en-US` language. No other languages are
+> supported. To avoid any errors, set the system language to en-US or change the
+> system locale to English (United States) in Control Panel.
 
 **Steps to change system locale:**
 
@@ -168,21 +233,29 @@ Set the properties:
 
 ## Create upgrade media disk
 
-To initiate an in-place upgrade, the upgrade media must be attached to the VM as a Managed Disk.
+To initiate an in-place upgrade, the upgrade media must be attached to the VM as
+a Managed Disk.
 
 ### Prerequisites for PowerShell Script
 
-Suggest using Azure Cloud Shell after logging in to the portal. Otherwise, to use the script below some PowerShell modules need to be installed (this will also automatically install dependent modules). You also need to connect to the correct tenant and subscription.
+Suggest using Azure Cloud Shell after logging in to the portal. Otherwise, to
+use the script below some PowerShell modules need to be installed (this will
+also automatically install dependent modules). You also need to connect to the
+correct tenant and subscription.
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 Install-PSResource Az.Compute, Az.Resource -TrustRepository
 Connect-AzAccount -Tenant '<tenant-id>' -Subscription '<subscription-hosting-vm>'
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### PowerShell Script Parameters
 
-Modify the following variables in the PowerShell script according to your environment:
+Modify the following variables in the PowerShell script according to your
+environment:
 
+<!-- markdownlint-disable MD013 -->
 | Parameter        | Description                                                    | Example                                                                                       |
 | ---------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | `$subscription`  | Subscription name or ID of the VM to be upgraded               | `'ad44ec4c-23de-4e25-fb2e-3ae9c5c0d4e2'`                                                      |
@@ -191,11 +264,14 @@ Modify the following variables in the PowerShell script according to your enviro
 | `$zone`          | Azure zone (must match VM zone, empty string for regional VMs) | `''` or `'1'`                                                                                 |
 | `$diskName`      | Name for the upgrade media disk                                | `'WindowsServer2022UpgradeDisk'`                                                              |
 | `$sku`           | Target OS version                                              | `'server2022Upgrade'`, `'server2019Upgrade'`, `'server2016Upgrade'`, or `'server2012Upgrade'` |
+<!-- markdownlint-enable MD013 -->
 
 ### PowerShell Script to Create Upgrade Media
 
-Use the following PowerShell script to create the upgrade media for Windows Server 2022, ensuring you modify the variables as needed:
+Use the following PowerShell script to create the upgrade media for Windows
+Server 2022, ensuring you modify the variables as needed:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 ### START - Modify variables
 
@@ -252,13 +328,17 @@ Set-AzDiskImageReference -Disk $diskConfig -Id $image.Id -Lun 0
 
 New-AzDisk -ResourceGroupName $resourceGroup -DiskName $diskName -Disk $diskConfig
 ```
+<!-- markdownlint-enable MD013 -->
 
 > [!IMPORTANT]
-> The upgrade media disk can be reused to upgrade multiple VMs, but only one VM can be upgraded at a time. If you need to upgrade multiple VMs simultaneously, you must create separate upgrade disks for each concurrent upgrade.
+> The upgrade media disk can be reused to upgrade multiple VMs, but only one VM
+> can be upgraded at a time. If you need to upgrade multiple VMs simultaneously,
+> you must create separate upgrade disks for each concurrent upgrade.
 
 ## Attach upgrade media to the VM
 
-Attach the upgrade media disk to the VM to upgrade. This can be performed whether the VM is running or stopped.
+Attach the upgrade media disk to the VM to upgrade. This can be performed
+whether the VM is running or stopped.
 
 ### Portal Steps
 
@@ -266,11 +346,13 @@ Attach the upgrade media disk to the VM to upgrade. This can be performed whethe
 1. In the left menu, select **Settings**, then **Disks**
 1. Select **Attach existing disks**
 1. In the drop-down for **LUN** keep 0 (or first free LUN)
-1. In the drop-down for **Disk name**, select the name of the upgrade disk created in the previous step
+1. In the drop-down for **Disk name**, select the name of the upgrade disk
+   created in the previous step
 1. Click **Apply** to attach the upgrade disk to the VM
 
 ### PowerShell Alternative
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Variables
 $vmName = 'YourVMName'
@@ -287,10 +369,12 @@ $vm = Add-AzVMDataDisk -VM $vm -Name $diskName -ManagedDiskId $disk.Id -Lun 0 -C
 # Update the VM
 Update-AzVM -ResourceGroupName $resourceGroupName -VM $vm
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Disable Auto-shutdown
 
-If there are any VM auto-shutdown policies that can impact the upgrade process, disable them temporarily.
+If there are any VM auto-shutdown policies that can impact the upgrade process,
+disable them temporarily.
 
 **Steps to disable auto-shutdown:**
 
@@ -306,16 +390,21 @@ If there are any VM auto-shutdown policies that can impact the upgrade process, 
 
 ### Steps to Perform the Upgrade
 
-1. **Connect to the VM** using [RDP](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-rdp#connect-to-the-virtual-machine) or [RDP-Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-connect-vm-rdp-windows#rdp)
-1. **Determine the drive letter** for the upgrade disk (typically `E:` if there are no other data disks, or `F:`)
+1. **Connect to the VM** using [RDP](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-rdp#connect-to-the-virtual-machine)
+   or
+   [RDP-Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-connect-vm-rdp-windows#rdp)
+1. **Determine the drive letter** for the upgrade disk (typically `E:` if there
+   are no other data disks, or `F:`)
 1. **Start an elevated Windows PowerShell session**
 1. **Navigate to the upgrade directory and start the upgrade:**
 
-```powershell
-# Change to correct folder on E: drive if other target OS.
-cd 'E:\Windows Server 2022'
-.\setup.exe /auto upgrade /dynamicupdate disable /eula accept
-```
+   <!-- markdownlint-disable MD013 -->
+   ```powershell
+   # Change to correct folder on E: drive if other target OS.
+   cd 'E:\Windows Server 2022'
+   .\setup.exe /auto upgrade /dynamicupdate disable /eula accept
+   ```
+   <!-- markdownlint-enable MD013 -->
 
 ### Understanding the Setup Command
 
@@ -325,15 +414,27 @@ cd 'E:\Windows Server 2022'
 
 ### During the Upgrade Process
 
-The Windows Server upgrade process will start. After a short while you need to select the image to upgrade to - choose desktop experience, and the same edition as the existing installation:
+The Windows Server upgrade process will start. After a short while you need to
+select the image to upgrade to - choose desktop experience, and the same edition
+as the existing installation:
 
-![Windows Server Setup screen titled 'Select Image'. The user is prompted to select the image to install. Four operating system options are listed: Windows Server 2022 Standard, Windows Server 2022 Standard (Desktop Experience), Windows Server 2022 Datacenter, and Windows Server 2022 Datacenter (Desktop Experience), all in the en-US language. A note below indicates that the non-Desktop Experience versions omit most graphical elements and are managed via command prompt, PowerShell, or remote tools. 'Next' and 'Back' buttons appear at the bottom.](/public/blog-images/win2019-setup-select-image.png)
+![Windows Server Setup screen titled 'Select Image'. The user is prompted to
+select the image to install. Four operating system options are listed: Windows
+Server 2022 Standard, Windows Server 2022 Standard (Desktop Experience), Windows
+Server 2022 Datacenter, and Windows Server 2022 Datacenter (Desktop Experience),
+all in the en-US language. A note below indicates that the non-Desktop
+Experience versions omit most graphical elements and are managed via command
+prompt, PowerShell, or remote tools. 'Next' and 'Back' buttons appear at the
+bottom.](/public/blog-images/win2019-setup-select-image.png)
 
 The upgrade process will continue and use unattended installation.
 
 ### Monitoring Progress
 
-During the upgrade process, the VM will automatically disconnect from the RDP session. After the VM is disconnected from the RDP session, the progress of the upgrade can be monitored through the [screenshot functionality available in the Azure portal](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/boot-diagnostics#enable-boot-diagnostics-on-existing-virtual-machine).
+During the upgrade process, the VM will automatically disconnect from the RDP
+session. After the VM is disconnected from the RDP session, the progress of the
+upgrade can be monitored through the
+[screenshot functionality available in the Azure portal](https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/boot-diagnostics#enable-boot-diagnostics-on-existing-virtual-machine).
 
 **To access boot diagnostics:**
 
@@ -353,23 +454,30 @@ For Windows Server 2012 upgrades, the process is slightly different:
 1. **Start Windows PowerShell**
 1. **Navigate to the upgrade directory:**
 
+   <!-- markdownlint-disable MD013 -->
    ```powershell
    cd 'E:\'
    .\setup.exe
    ```
+   <!-- markdownlint-enable MD013 -->
 
 1. **Follow the GUI wizard:**
    - Select **Install now**
    - For "Get important updates for Windows Setup", select **No thanks**
    - Select the correct Windows Server 2012 "Upgrade to" image
-   - On License terms page, select **I accept the license terms** and then **Next**
-   - For "What type of installation do you want?" select **Upgrade: Install Windows and keep files, settings, and applications**
-   - Setup will produce a Compatibility report, you can ignore any warnings and select **Next**
+   - On License terms page, select **I accept the license terms** and then
+     **Next**
+   - For "What type of installation do you want?" select **Upgrade: Install
+     Windows and keep files, settings, and applications**
+   - Setup will produce a Compatibility report, you can ignore any warnings and
+     select **Next**
 
 ## Re-enable firewall, anti-virus and anti-spyware
 
-After the upgrade is complete, re-enable all security software that was disabled:
+After the upgrade is complete, re-enable all security software that was
+disabled:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Re-enable Windows Defender Firewall
 Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
@@ -377,9 +485,11 @@ Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True
 # Re-enable Windows Defender real-time protection
 Set-MpPreference -DisableRealtimeMonitoring $false
 ```
+<!-- markdownlint-enable MD013 -->
 
 Verify the settings:
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Verify firewall status
 Get-NetFirewallProfile | Select-Object Name, Enabled
@@ -387,23 +497,30 @@ Get-NetFirewallProfile | Select-Object Name, Enabled
 # Verify antivirus status
 (Get-MpPreference).DisableRealtimeMonitoring
 ```
+<!-- markdownlint-enable MD013 -->
 
-## Post upgrade steps
+## Post-upgrade steps
 
-Once the upgrade process has completed successfully, the following steps should be taken to clean up any artifacts which were created during the upgrade process:
+Once the upgrade process has completed successfully, the following steps should
+be taken to clean up any artifacts which were created during the upgrade
+process:
 
 ### Immediate Cleanup Tasks
 
-1. **Delete the snapshots** of the OS disk and data disk(s) if they were created (after confirming upgrade success)
-2. **Detach the upgrade media Managed Disk** from the VM that was upgraded
-3. **Delete the upgrade media Managed Disk** (unless you plan to reuse it for other VMs)
-4. **Re-enable auto-shutdown** if it was disabled
-5. **Re-enable antivirus, anti-spyware, and firewall software** that was disabled at the start of the upgrade process
+1. **Delete the snapshots** of the OS disk and data disk(s) if they were
+   created (after confirming upgrade success)
+1. **Detach the upgrade media Managed Disk** from the VM that was upgraded
+1. **Delete the upgrade media Managed Disk** (unless you plan to reuse it for
+   other VMs)
+1. **Re-enable auto-shutdown** if it was disabled
+1. **Re-enable antivirus, anti-spyware, and firewall software** that was
+   disabled at the start of the upgrade process
 
 ### Verification Steps
 
 1. **Verify the OS version:**
 
+   <!-- markdownlint-disable MD013 -->
    ```powershell
    # Check Windows version
    Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, WindowsBuildLabEx
@@ -411,9 +528,11 @@ Once the upgrade process has completed successfully, the following steps should 
    # Alternative method
    [System.Environment]::OSVersion.Version
    ```
+   <!-- markdownlint-enable MD013 -->
 
 1. **Check system health:**
 
+   <!-- markdownlint-disable MD013 -->
    ```powershell
    # Run System File Checker
    sfc /scannow
@@ -421,6 +540,7 @@ Once the upgrade process has completed successfully, the following steps should 
    # Check Windows Update status
    Get-WindowsUpdate
    ```
+   <!-- markdownlint-enable MD013 -->
 
 1. **Verify services and applications:**
    - Test critical applications
@@ -429,6 +549,7 @@ Once the upgrade process has completed successfully, the following steps should 
 
 ### PowerShell Script for Cleanup
 
+<!-- markdownlint-disable MD013 -->
 ```powershell
 # Variables - Update these
 $resourceGroupName = 'YourResourceGroup'
@@ -449,6 +570,7 @@ Remove-AzSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotN
 
 Write-Output "Cleanup completed successfully"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Troubleshooting Common Issues
 

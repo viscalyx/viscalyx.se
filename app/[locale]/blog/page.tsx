@@ -1,16 +1,14 @@
+import { Calendar, Clock, User } from 'lucide-react'
+import type { Metadata, Route } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { getFormatter, getTranslations } from 'next-intl/server'
 import BlogPostGrid from '@/components/BlogPostGrid'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 import { SITE_URL } from '@/lib/constants'
 import { getCurrentDateISO } from '@/lib/date-utils'
-import { Calendar, Clock, User } from 'lucide-react'
-import { Route } from 'next'
-import { getFormatter, getTranslations } from 'next-intl/server'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import type { Metadata } from 'next'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -111,21 +109,21 @@ export default async function BlogPage({ params }: Props) {
             </h2>
 
             <Link
-              href={`/${locale}/blog/${displayFeaturedPost.slug}` as Route}
               className="block"
+              href={`/${locale}/blog/${displayFeaturedPost.slug}` as Route}
             >
               <div className="bg-white dark:bg-secondary-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 cursor-pointer hover:-translate-y-2 transform">
                 <div className="grid lg:grid-cols-2">
                   <div className="relative h-64 lg:h-full">
                     <Image
-                      src={displayFeaturedPost.image}
                       alt={
                         displayFeaturedPost.imageAlt ||
                         displayFeaturedPost.title
                       }
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                       fill
                       sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      src={displayFeaturedPost.image}
                     />
                     <div className="absolute top-4 left-4">
                       <span className="bg-primary-600 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -168,8 +166,8 @@ export default async function BlogPage({ params }: Props) {
       {/* Blog Posts Grid (client island) */}
       <BlogPostGrid
         allPosts={allPosts}
-        featuredPostCategory={displayFeaturedPost.category}
         categoriesAllLabel={t('categories.all')}
+        featuredPostCategory={displayFeaturedPost.category}
         loadMoreLabel={t('loadMore')}
       />
 

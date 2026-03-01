@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import type React from 'react'
+import { useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AlertIcon, type AlertIconProps } from './BlogIcons'
 
@@ -13,7 +14,18 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
   children,
   contentKey,
 }) => {
+  const rootRef = useRef<HTMLSpanElement>(null)
+
   useEffect(() => {
+    const contentIdentifier = contentKey ?? 'default'
+    const rootElement = rootRef.current
+
+    /* c8 ignore start -- defensive guard for non-DOM/teardown edge cases */
+    if (!rootElement) {
+      return
+    }
+    /* c8 ignore stop */
+
     // Store references to created roots for cleanup
     const roots: Array<{
       root: ReturnType<typeof createRoot>
@@ -22,20 +34,22 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
 
     // Use a timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {
-      // First, clean up any existing icon containers to avoid duplicates
-      const existingContainers = document.querySelectorAll(
-        '.alert-icon-container'
+      // First, remove any existing icon containers to prevent stale or duplicate icons.
+      const existingContainers = rootElement.querySelectorAll(
+        '.github-alert-title .alert-icon-container',
       )
-      existingContainers.forEach(container => container.remove())
+      existingContainers.forEach(container => {
+        container.remove()
+      })
 
       // Find all alert titles that need icons
-      const alertTitles = document.querySelectorAll(
-        '.github-alert-title[data-alert-icon]'
+      const alertTitles = rootElement.querySelectorAll(
+        '.github-alert-title[data-alert-icon]',
       )
 
       alertTitles.forEach(titleElement => {
         const iconType = titleElement.getAttribute(
-          'data-alert-icon'
+          'data-alert-icon',
         ) as AlertIconProps['type']
 
         if (
@@ -46,13 +60,14 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
           const iconContainer = document.createElement('span')
           iconContainer.className =
             'alert-icon-container inline-flex items-center mr-2'
+          iconContainer.setAttribute('data-content-key', contentIdentifier)
 
           // Insert the icon container at the beginning of the title
           titleElement.insertBefore(iconContainer, titleElement.firstChild)
 
           // Render the React icon component into the container
           const root = createRoot(iconContainer)
-          root.render(<AlertIcon type={iconType} className="w-5 h-5" />)
+          root.render(<AlertIcon className="w-5 h-5" type={iconType} />)
 
           // Store the root reference for cleanup
           roots.push({ root, container: iconContainer })
@@ -82,7 +97,11 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
     }
   }, [contentKey]) // Depend on contentKey to re-run when content changes
 
-  return <>{children}</>
+  return (
+    <span className="contents" ref={rootRef}>
+      {children}
+    </span>
+  )
 }
 
 export default AlertIconInjector

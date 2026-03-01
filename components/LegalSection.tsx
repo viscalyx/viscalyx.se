@@ -8,9 +8,9 @@ export const safeTranslationArray = (raw: unknown): string[] =>
     : []
 
 interface ComponentProps {
-  title: string
   description: string
   items?: string[]
+  title: string
 }
 
 const LegalSection = ({ title, description, items }: ComponentProps) => (
@@ -25,9 +25,14 @@ const LegalSection = ({ title, description, items }: ComponentProps) => (
     </p>
     {items && items.length > 0 && (
       <ul className="list-disc pl-6 text-secondary-600 dark:text-secondary-400 mb-8">
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
+        {(() => {
+          const itemOccurrences = new Map<string, number>()
+          return items.map(item => {
+            const occurrence = (itemOccurrences.get(item) ?? 0) + 1
+            itemOccurrences.set(item, occurrence)
+            return <li key={`${item}-${occurrence}`}>{item}</li>
+          })
+        })()}
       </ul>
     )}
   </>

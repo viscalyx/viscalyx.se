@@ -6,12 +6,12 @@
 export type ConsentEventType = 'consent-changed' | 'consent-reset'
 
 export interface ConsentChangeEvent {
-  type: 'consent-changed'
   settings: {
     'strictly-necessary': boolean
     analytics: boolean
     preferences: boolean
   }
+  type: 'consent-changed'
 }
 
 export interface ConsentResetEvent {
@@ -30,17 +30,21 @@ class ConsentEventEmitter {
    * Subscribe to consent events
    */
   on(eventType: ConsentEventType, listener: ConsentEventListener): () => void {
-    if (!this.listeners.has(eventType)) {
-      this.listeners.set(eventType, new Set())
+    let eventListeners = this.listeners.get(eventType)
+    if (!eventListeners) {
+      eventListeners = new Set()
+      this.listeners.set(eventType, eventListeners)
     }
-
-    const eventListeners = this.listeners.get(eventType)!
+    const currentListeners = eventListeners
     eventListeners.add(listener)
 
     // Return unsubscribe function
     return () => {
-      eventListeners.delete(listener)
-      if (eventListeners.size === 0) {
+      currentListeners.delete(listener)
+      if (
+        currentListeners.size === 0 &&
+        this.listeners.get(eventType) === currentListeners
+      ) {
         this.listeners.delete(eventType)
       }
     }

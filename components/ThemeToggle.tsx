@@ -1,13 +1,16 @@
 'use client'
 
-import { useTheme } from '@/lib/theme-context'
 import { motion } from 'framer-motion'
 import { Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useId } from 'react'
+import { useTheme } from '@/lib/theme-context'
 
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme()
   const t = useTranslations('themeToggle')
+  const instanceId = useId()
+  const indicatorLayoutId = `theme-indicator-${instanceId}`
 
   const themes = [
     { value: 'light', icon: Sun, labelKey: 'light' },
@@ -16,32 +19,34 @@ const ThemeToggle = () => {
   ] as const
 
   return (
-    <div className="relative">
-      <div className="flex items-center gap-1 p-1 bg-secondary-100 dark:bg-secondary-800 rounded-lg">
+    <div className="relative inline-block w-fit max-w-max">
+      <div className="inline-flex w-fit max-w-max items-center gap-1 rounded-lg border border-secondary-200 bg-secondary-100 p-1 dark:border-secondary-700 dark:bg-secondary-700">
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
-            key={value}
-            onClick={() => setTheme(value)}
+            aria-label={t('switchToTheme', { theme: t(labelKey) })}
+            aria-pressed={theme === value}
             className={`
-              relative flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200
+              relative flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-secondary-900
               ${
                 theme === value
                   ? 'text-white'
                   : 'text-secondary-600 dark:text-secondary-400 hover:text-secondary-900 dark:hover:text-secondary-100'
               }
             `}
+            key={value}
+            onClick={() => setTheme(value)}
             title={t('switchToTheme', { theme: t(labelKey) })}
-            aria-label={t('switchToTheme', { theme: t(labelKey) })}
+            type="button"
           >
             {theme === value && (
               <motion.div
-                layoutId="theme-indicator"
                 className="absolute inset-0 bg-primary-600 rounded-md"
                 initial={false}
+                layoutId={indicatorLayoutId}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
             )}
-            <Icon size={16} className="relative z-10" />
+            <Icon className="relative z-10" size={16} />
           </button>
         ))}
       </div>

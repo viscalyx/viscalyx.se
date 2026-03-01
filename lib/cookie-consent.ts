@@ -8,17 +8,25 @@ import { deleteCookie as deleteCookieUtil, setCookie } from './cookie-utils'
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
 
 export interface CookieConsentSettings {
-  'strictly-necessary': boolean
   analytics: boolean
   preferences: boolean
+  'strictly-necessary': boolean
 }
 
 export interface CookieInfo {
-  name: string
   category: CookieCategory
-  purpose: string
-  duration: string
+  /**
+   * Translation key under the `cookieConsent.cookies` namespace.
+   * Resolved at render time via `useTranslations('cookieConsent')`.
+   */
+  durationKey: string
+  name: string
   provider?: string
+  /**
+   * Translation key under the `cookieConsent.cookies` namespace.
+   * Resolved at render time via `useTranslations('cookieConsent')`.
+   */
+  purposeKey: string
 }
 
 // Default consent settings (only strictly necessary cookies are enabled by default)
@@ -29,46 +37,50 @@ export const defaultConsentSettings: CookieConsentSettings = {
 }
 
 // Cookie information registry
+// Purpose and duration strings are translation keys resolved in components.
 export const cookieRegistry: CookieInfo[] = [
   {
     name: 'theme',
     category: 'preferences',
-    purpose: 'Stores user theme preference (light/dark/system)',
-    duration: '1 year',
+    purposeKey: 'cookies.theme.purpose',
+    durationKey: 'cookies.theme.duration',
   },
   {
     name: 'language',
     category: 'preferences',
-    purpose: 'Stores user language preference (en/sv)',
-    duration: '1 year',
+    purposeKey: 'cookies.language.purpose',
+    durationKey: 'cookies.language.duration',
   },
   {
     name: 'viscalyx.org-cookie-consent',
     category: 'strictly-necessary',
-    purpose: 'Stores user cookie consent preferences',
-    duration: '1 year',
+    purposeKey: 'cookies.consent.purpose',
+    durationKey: 'cookies.consent.duration',
   },
   {
     name: 'cf-analytics',
     category: 'analytics',
-    purpose:
-      'Cloudflare Analytics Engine data collection (IP, country, user agent)',
-    duration: 'Session only - data processed server-side',
+    // Pseudonymized visitor ID collection is disabled. The hashed IP
+    // storage gate in app/api/analytics/blog-read/route.ts is set to
+    // false, making analytics data fully anonymous. Re-enable by
+    // setting storeHashedIP = true and restoring the purpose key to
+    // 'cookies.cfAnalytics.purposeWithVisitorId'.
+    purposeKey: 'cookies.cfAnalytics.purpose',
+    durationKey: 'cookies.cfAnalytics.duration',
     provider: 'Cloudflare',
   },
   {
     name: 'blog-reading-analytics',
     category: 'analytics',
-    purpose:
-      'Tracks blog reading behavior (progress, time spent) for content optimization',
-    duration: 'Session only - data processed server-side',
+    purposeKey: 'cookies.blogReading.purpose',
+    durationKey: 'cookies.blogReading.duration',
     provider: 'Cloudflare Analytics Engine',
   },
   {
     name: 'session',
     category: 'strictly-necessary',
-    purpose: 'Maintains user session state',
-    duration: 'Session',
+    purposeKey: 'cookies.session.purpose',
+    durationKey: 'cookies.session.duration',
   },
 ]
 

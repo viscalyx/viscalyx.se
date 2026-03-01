@@ -17,10 +17,10 @@
  * Exports marked with @internal are intended for tests and are not a stable public API.
  */
 
-const fs = require('fs')
-const path = require('path')
-const zlib = require('zlib')
-const { execSync } = require('child_process')
+const fs = require('node:fs')
+const path = require('node:path')
+const zlib = require('node:zlib')
+const { execSync } = require('node:child_process')
 
 // Cloudflare Workers limits (gzipped)
 const LIMITS = {
@@ -234,7 +234,7 @@ function isBuildFresh(maxAgeMinutes = 30) {
   const buildDir = path.join(process.cwd(), '.open-next')
   const serverHandler = path.join(
     buildDir,
-    'server-functions/default/handler.mjs'
+    'server-functions/default/handler.mjs',
   )
 
   if (!fs.existsSync(serverHandler)) {
@@ -290,7 +290,7 @@ function analyzeBuild(options = {}, deps = {}) {
   if (!fs.existsSync(buildDir)) {
     console.error('❌ Build directory .open-next not found!')
     console.error(
-      '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.'
+      '   Run "npm run preview" or "npx opennextjs-cloudflare build" first.',
     )
     return {
       ...cloneDefaultAnalyzeResult(),
@@ -306,7 +306,7 @@ function analyzeBuild(options = {}, deps = {}) {
   // Analyze server handler
   const serverHandlerPath = path.join(
     buildDir,
-    'server-functions/default/handler.mjs'
+    'server-functions/default/handler.mjs',
   )
   if (fs.existsSync(serverHandlerPath)) {
     results.serverHandler.size = getFileSize(serverHandlerPath)
@@ -401,20 +401,20 @@ function outputForCI(results) {
 
   output.push(`server-size=${results.serverHandler.size}`)
   output.push(
-    `server-size-formatted=${formatBytes(results.serverHandler.size)}`
+    `server-size-formatted=${formatBytes(results.serverHandler.size)}`,
   )
   output.push(`server-gzip-size=${results.serverHandler.gzipSize}`)
   output.push(
-    `server-gzip-formatted=${formatBytes(results.serverHandler.gzipSize)}`
+    `server-gzip-formatted=${formatBytes(results.serverHandler.gzipSize)}`,
   )
 
   output.push(`middleware-size=${results.middleware.size}`)
   output.push(
-    `middleware-size-formatted=${formatBytes(results.middleware.size)}`
+    `middleware-size-formatted=${formatBytes(results.middleware.size)}`,
   )
   output.push(`middleware-gzip-size=${results.middleware.gzipSize}`)
   output.push(
-    `middleware-gzip-formatted=${formatBytes(results.middleware.gzipSize)}`
+    `middleware-gzip-formatted=${formatBytes(results.middleware.gzipSize)}`,
   )
 
   output.push(`assets-size=${results.assets.size}`)
@@ -425,16 +425,16 @@ function outputForCI(results) {
 
   if (results.wrangler) {
     output.push(
-      `wrangler-size=${Math.round(results.wrangler.uncompressedKB * 1024)}`
+      `wrangler-size=${Math.round(results.wrangler.uncompressedKB * 1024)}`,
     )
     output.push(
-      `wrangler-size-formatted=${results.wrangler.uncompressedKB.toFixed(2)} KB`
+      `wrangler-size-formatted=${results.wrangler.uncompressedKB.toFixed(2)} KB`,
     )
     output.push(
-      `wrangler-gzip-size=${Math.round(results.wrangler.compressedKB * 1024)}`
+      `wrangler-gzip-size=${Math.round(results.wrangler.compressedKB * 1024)}`,
     )
     output.push(
-      `wrangler-gzip-formatted=${results.wrangler.compressedKB.toFixed(2)} KB`
+      `wrangler-gzip-formatted=${results.wrangler.compressedKB.toFixed(2)} KB`,
     )
   }
 
@@ -452,7 +452,7 @@ function outputForCI(results) {
   // Write to GITHUB_OUTPUT if available
   const githubOutput = process.env.GITHUB_OUTPUT
   if (githubOutput) {
-    fs.appendFileSync(githubOutput, output.join('\n') + '\n')
+    fs.appendFileSync(githubOutput, `${output.join('\n')}\n`)
   }
 
   // Also print to stdout for debugging
@@ -545,35 +545,35 @@ function outputForTerminal(results) {
 
   console.log('\n📊 Build Output Sizes:\n')
   console.log(
-    `  Server Handler:     ${formatBytes(results.serverHandler.size)}`
+    `  Server Handler:     ${formatBytes(results.serverHandler.size)}`,
   )
   console.log(
-    `    └─ gzipped:       ${formatBytes(results.serverHandler.gzipSize)}`
+    `    └─ gzipped:       ${formatBytes(results.serverHandler.gzipSize)}`,
   )
   console.log(`  Middleware:         ${formatBytes(results.middleware.size)}`)
   console.log(
-    `    └─ gzipped:       ${formatBytes(results.middleware.gzipSize)}`
+    `    └─ gzipped:       ${formatBytes(results.middleware.gzipSize)}`,
   )
   console.log(`  Static Assets:      ${formatBytes(results.assets.size)}`)
   console.log(
-    `  Server Functions:   ${formatBytes(results.serverFunctions.size)}`
+    `  Server Functions:   ${formatBytes(results.serverFunctions.size)}`,
   )
   console.log(`  Total Build:        ${formatBytes(results.total.size)}`)
 
   if (results.wrangler) {
     console.log('\n🚀 Wrangler Bundle (what Cloudflare sees):\n')
     console.log(
-      `  Total Upload:       ${results.wrangler.uncompressedKB.toFixed(2)} KB`
+      `  Total Upload:       ${results.wrangler.uncompressedKB.toFixed(2)} KB`,
     )
     console.log(
-      `  Gzipped:            ${results.wrangler.compressedKB.toFixed(2)} KB`
+      `  Gzipped:            ${results.wrangler.compressedKB.toFixed(2)} KB`,
     )
     console.log(
-      `                      (${(results.wrangler.compressedKB / 1024).toFixed(2)} MB)`
+      `                      (${(results.wrangler.compressedKB / 1024).toFixed(2)} MB)`,
     )
   }
 
-  console.log('\n' + '='.repeat(60))
+  console.log(`\n${'='.repeat(60)}`)
   console.log(`\n${statusEmoji} Status: ${results.statusMessage}`)
 
   console.log('\n📋 Cloudflare Workers Limits:\n')
@@ -587,10 +587,10 @@ function outputForTerminal(results) {
     const paidStatus = results.usage.exceedsPaid ? '❌ EXCEEDS' : '✅'
 
     console.log(
-      `  Free        ${limits.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`
+      `  Free        ${limits.freeCompressedMB} MB      ${freeBar} ${results.usage.freePercent.toFixed(1)}% ${freeStatus}`,
     )
     console.log(
-      `  Paid        ${limits.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`
+      `  Paid        ${limits.paidCompressedMB} MB     ${paidBar} ${results.usage.paidPercent.toFixed(1)}% ${paidStatus}`,
     )
   } else {
     console.log(`  Free        ${limits.freeCompressedMB} MB`)
@@ -660,10 +660,10 @@ Examples:
     const parsed = parseInt(maxAgeArg.split('=')[1], 10)
     if (!Number.isInteger(parsed) || parsed <= 0) {
       console.error(
-        `Error: Invalid --max-age value "${maxAgeArg.split('=')[1]}". Must be a positive integer.`
+        `Error: Invalid --max-age value "${maxAgeArg.split('=')[1]}". Must be a positive integer.`,
       )
       console.error(
-        'Usage: --max-age=N where N is minutes (e.g., --max-age=60)'
+        'Usage: --max-age=N where N is minutes (e.g., --max-age=60)',
       )
       process.exit(1)
     }
@@ -689,7 +689,7 @@ Examples:
       }
     } else {
       console.error(
-        `✅ Using existing build (${buildStatus.ageMinutes} minutes old)\n`
+        `✅ Using existing build (${buildStatus.ageMinutes} minutes old)\n`,
       )
     }
   }

@@ -8,6 +8,10 @@ vi.mock('next-intl', () => ({
 }))
 
 describe('LoadingSpinner', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders an accessible spinner', () => {
     render(<LoadingSpinner />)
     // cspell:disable-next-line -- translation key returned by mock
@@ -29,16 +33,16 @@ describe('LoadingSpinner', () => {
       { size: 'sm', classes: ['w-4', 'h-4'] },
       { size: 'md', classes: ['w-6', 'h-6'] },
       { size: 'lg', classes: ['w-8', 'h-8'] },
-    ])(
-      'renders spinner with correct classes for size %s',
-      ({ size, classes }) => {
-        render(<LoadingSpinner size={size} />)
-        const spinner = screen.getByRole('status')
-        const icon = spinner.querySelector('svg')
+    ])('renders spinner with correct classes for size %s', ({
+      size,
+      classes,
+    }) => {
+      render(<LoadingSpinner size={size} />)
+      const spinner = screen.getByRole('status')
+      const icon = spinner.querySelector('svg')
 
-        expect(icon).toHaveClass(...classes)
-      }
-    )
+      expect(icon).toHaveClass(...classes)
+    })
   })
 
   describe('color prop', () => {
@@ -46,18 +50,18 @@ describe('LoadingSpinner', () => {
       { propColor: undefined, expectedClass: 'text-primary-600' },
       { propColor: 'white', expectedClass: 'text-white' },
       { propColor: 'secondary', expectedClass: 'text-secondary-600' },
-    ])(
-      'renders $expectedClass when color is $propColor',
-      ({ propColor, expectedClass }) => {
-        const props: Record<string, unknown> = {}
-        if (propColor) props.color = propColor
-        render(<LoadingSpinner {...props} />)
-        const spinner = screen.getByRole('status')
-        const icon = spinner.querySelector('svg')
+    ])('renders $expectedClass when color is $propColor', ({
+      propColor,
+      expectedClass,
+    }) => {
+      const props: Record<string, unknown> = {}
+      if (propColor) props.color = propColor
+      render(<LoadingSpinner {...props} />)
+      const spinner = screen.getByRole('status')
+      const icon = spinner.querySelector('svg')
 
-        expect(icon).toHaveClass(expectedClass)
-      }
-    )
+      expect(icon).toHaveClass(expectedClass)
+    })
   })
 
   describe('loading states', () => {
@@ -70,7 +74,7 @@ describe('LoadingSpinner', () => {
 
     it('can be conditionally rendered based on loading state', () => {
       const { rerender } = render(
-        <div data-testid="container">{true && <LoadingSpinner />}</div>
+        <div data-testid="container">{true && <LoadingSpinner />}</div>,
       )
 
       rerender(<div data-testid="container">{false && <LoadingSpinner />}</div>)
@@ -127,7 +131,7 @@ describe('LoadingSpinner', () => {
 
   describe('prop combinations', () => {
     it('renders correctly with both size and color props', () => {
-      render(<LoadingSpinner size="lg" color="white" />)
+      render(<LoadingSpinner color="white" size="lg" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
 
@@ -135,7 +139,7 @@ describe('LoadingSpinner', () => {
     })
 
     it('renders correctly with small size and secondary color', () => {
-      render(<LoadingSpinner size="sm" color="secondary" />)
+      render(<LoadingSpinner color="secondary" size="sm" />)
       const spinner = screen.getByRole('status')
       const icon = spinner.querySelector('svg')
 
@@ -143,7 +147,7 @@ describe('LoadingSpinner', () => {
         'w-4',
         'h-4',
         'text-secondary-600',
-        'animate-spin'
+        'animate-spin',
       )
     })
   })

@@ -1,10 +1,11 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useBlogAnalytics, invalidateConsentCache } from '../analytics'
-import { hasConsent } from '../cookie-consent'
+import { invalidateConsentCache, useBlogAnalytics } from '@/lib/analytics'
+import { consentEvents } from '@/lib/consent-events'
+import { hasConsent } from '@/lib/cookie-consent'
 
 // Mock the cookie consent module
-vi.mock('../cookie-consent', () => ({
+vi.mock('@/lib/cookie-consent', () => ({
   hasConsent: vi.fn(),
 }))
 
@@ -30,7 +31,7 @@ describe('useBlogAnalytics', () => {
     vi.setSystemTime(mockStartTime)
 
     vi.mocked(global.fetch).mockResolvedValue(
-      new Response(JSON.stringify({ success: true }), { status: 200 })
+      new Response(JSON.stringify({ success: true }), { status: 200 }),
     )
 
     // Mock DOM APIs
@@ -69,7 +70,7 @@ describe('useBlogAnalytics', () => {
       useBlogAnalytics(mockBlogData, {
         trackReadProgress: true,
         trackTimeSpent: true,
-      })
+      }),
     )
 
     // Trigger a manual tracking event
@@ -99,7 +100,7 @@ describe('useBlogAnalytics', () => {
       useBlogAnalytics(mockBlogData, {
         trackReadProgress: true,
         trackTimeSpent: true,
-      })
+      }),
     )
 
     // Trigger a manual tracking event
@@ -110,6 +111,40 @@ describe('useBlogAnalytics', () => {
     expect(global.fetch).not.toHaveBeenCalled()
   })
 
+  it('should refresh cached consent state even when passive tracking options are disabled', async () => {
+    vi.mocked(hasConsent).mockReturnValue(false)
+
+    const { result } = renderHook(() =>
+      useBlogAnalytics(mockBlogData, {
+        trackReadProgress: false,
+        trackTimeSpent: false,
+      }),
+    )
+
+    await act(async () => {
+      await result.current.trackEvent(50, 30)
+    })
+    expect(global.fetch).not.toHaveBeenCalled()
+
+    vi.mocked(hasConsent).mockReturnValue(true)
+    act(() => {
+      consentEvents.emit({
+        type: 'consent-changed',
+        settings: {
+          'strictly-necessary': true,
+          analytics: true,
+          preferences: true,
+        },
+      })
+    })
+
+    await act(async () => {
+      await result.current.trackEvent(75, 45)
+    })
+
+    expect(global.fetch).toHaveBeenCalledTimes(1)
+  })
+
   it('should not track scroll events when analytics consent is denied', async () => {
     vi.mocked(hasConsent).mockReturnValue(false)
 
@@ -118,7 +153,7 @@ describe('useBlogAnalytics', () => {
         trackReadProgress: true,
         trackTimeSpent: true,
         progressThreshold: 50,
-      })
+      }),
     )
 
     // Simulate scroll to 50% - this should not trigger tracking
@@ -146,7 +181,7 @@ describe('useBlogAnalytics', () => {
         trackReadProgress: true,
         trackTimeSpent: true,
         progressThreshold: 50,
-      })
+      }),
     )
 
     // Advance time to trigger initial page view (1000ms timeout)
@@ -185,7 +220,7 @@ describe('useBlogAnalytics', () => {
           'Content-Type': 'application/json',
         },
         body: expect.stringContaining('"readProgress":0'),
-      })
+      }),
     )
 
     // Verify scroll tracking call
@@ -198,7 +233,7 @@ describe('useBlogAnalytics', () => {
           'Content-Type': 'application/json',
         },
         body: expect.stringContaining('"readProgress":50'),
-      })
+      }),
     )
 
     // Verify that timeSpent is calculated correctly (6 seconds total)
@@ -214,7 +249,7 @@ describe('useBlogAnalytics', () => {
       useBlogAnalytics(mockBlogData, {
         trackReadProgress: true,
         trackTimeSpent: true,
-      })
+      }),
     )
 
     // Advance time to simulate some elapsed time
@@ -237,7 +272,7 @@ describe('useBlogAnalytics', () => {
       useBlogAnalytics(mockBlogData, {
         trackReadProgress: true,
         trackTimeSpent: true,
-      })
+      }),
     )
 
     // Advance time to simulate elapsed time for timeSpent calculation

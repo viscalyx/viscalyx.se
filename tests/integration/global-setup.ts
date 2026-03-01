@@ -1,5 +1,5 @@
-import { execSync } from 'child_process'
-import { existsSync } from 'fs'
+import { execSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 
 /**
  * Playwright global setup — runs once before all tests.
@@ -14,7 +14,7 @@ export default function globalSetup(): void {
     // Ask Playwright for the Chromium executable path it expects
     browserPath = execSync(
       'node -e "console.log(require(\'playwright-core\').chromium.executablePath())"',
-      { encoding: 'utf-8', timeout: 10_000 }
+      { encoding: 'utf-8', timeout: 10_000 },
     ).trim()
   } catch {
     // If we can't even resolve the path, the binary is certainly missing

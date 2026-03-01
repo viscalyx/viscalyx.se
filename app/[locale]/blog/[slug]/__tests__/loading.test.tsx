@@ -4,9 +4,9 @@ import BlogPostLoading from '../loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size?: string }) => (
-    <div data-testid="loading-spinner" data-size={size} role="status">
+    <output aria-live="polite" data-size={size} data-testid="loading-spinner">
       Loading...
-    </div>
+    </output>
   ),
 }))
 
@@ -20,7 +20,7 @@ describe('Blog post loading page', () => {
     render(<BlogPostLoading />)
     expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
       'data-size',
-      'lg'
+      'lg',
     )
   })
 

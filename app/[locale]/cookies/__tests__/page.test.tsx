@@ -3,15 +3,11 @@ import { vi } from 'vitest'
 
 // Mock next-intl/server
 vi.mock('next-intl/server', () => ({
+  getRequestConfig: vi.fn(configFactory => configFactory),
   getTranslations: vi
     .fn()
     .mockResolvedValue((key: string) => `translated:${key}`),
-}))
-
-// Mock next-intl (used by page body)
-vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
-  useFormatter: () => ({
+  getFormatter: vi.fn().mockResolvedValue({
     dateTime: () => 'Jan 1, 2025',
   }),
 }))
@@ -52,10 +48,8 @@ vi.mock('@/lib/file-dates', () => ({
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import CookiesPage, { generateMetadata } from '@/app/[locale]/cookies/page'
-
 import type { Metadata } from 'next'
+import CookiesPage, { generateMetadata } from '@/app/[locale]/cookies/page'
 
 describe('CookiesPage', () => {
   beforeEach(() => {
@@ -121,14 +115,14 @@ describe('CookiesPage', () => {
   })
 
   describe('CookiesPage component', () => {
-    it('renders page heading', () => {
-      render(<CookiesPage />)
+    it('renders page heading', async () => {
+      render(await CookiesPage({ params: Promise.resolve({ locale: 'en' }) }))
 
       expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
     })
 
-    it('renders header and footer', () => {
-      render(<CookiesPage />)
+    it('renders header and footer', async () => {
+      render(await CookiesPage({ params: Promise.resolve({ locale: 'en' }) }))
 
       expect(screen.getByRole('banner')).toBeInTheDocument()
       expect(screen.getByRole('contentinfo')).toBeInTheDocument()

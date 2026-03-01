@@ -1,11 +1,11 @@
-import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 
 describe('CookieCategoryIcon', () => {
   it('renders Shield icon for strictly-necessary category', () => {
     const { container } = render(
-      <CookieCategoryIcon category="strictly-necessary" />
+      <CookieCategoryIcon category="strictly-necessary" />,
     )
     const svg = container.querySelector('svg')
     expect(svg).toBeInTheDocument()
@@ -35,7 +35,7 @@ describe('CookieCategoryIcon', () => {
 
     categories.forEach(category => {
       const { container, unmount } = render(
-        <CookieCategoryIcon category={category} />
+        <CookieCategoryIcon category={category} />,
       )
       const svg = container.querySelector('svg')
       expect(svg).toHaveClass('w-5', 'h-5')
@@ -45,7 +45,7 @@ describe('CookieCategoryIcon', () => {
 
   it('falls back to Cookie icon for unknown category values', () => {
     const { container } = render(
-      <CookieCategoryIcon category={'unknown' as never} />
+      <CookieCategoryIcon category={'unknown' as never} />,
     )
     const svg = container.querySelector('svg')
     expect(svg).toBeInTheDocument()

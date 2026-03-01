@@ -1,11 +1,11 @@
 'use client'
 
-import { useSectionNavigation } from '@/lib/use-section-navigation'
 import { motion } from 'framer-motion'
 import { ExternalLink, Users } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { GitHubIcon } from './SocialIcons'
+import { useTranslations } from 'next-intl'
+import { GitHubIcon } from '@/components/SocialIcons'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 const OpenSource = () => {
   const { handleNavigation } = useSectionNavigation({
@@ -46,16 +46,16 @@ const OpenSource = () => {
 
   return (
     <section
-      id="open-source"
       className="section-padding bg-secondary-50 dark:bg-secondary-900"
+      id="open-source"
     >
       <div className="container-custom">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
             {t('title')}{' '}
@@ -68,20 +68,20 @@ const OpenSource = () => {
 
         {/* Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           {stats.map((stat, index) => (
             <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center"
+              initial={{ opacity: 0, scale: 0.5 }}
+              key={stat.label}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, scale: 1 }}
             >
               <div className="text-3xl md:text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
                 {stat.value}
@@ -95,28 +95,28 @@ const OpenSource = () => {
 
         {/* Projects */}
         <ul
+          aria-label={t('projectsListLabel')}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          aria-label="Open source projects"
         >
           {contributions.map((project, index) => (
             <li
-              key={project.name}
               className="overflow-hidden rounded-xl shadow-lg"
+              key={project.name}
             >
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white dark:bg-secondary-800 rounded-xl overflow-hidden card-hover group"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
-                    src={project.image}
                     alt={project.name}
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    src={project.image}
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                   <div className="absolute top-4 right-4 bg-white/90 dark:bg-secondary-800/90 backdrop-blur-sm rounded-full p-2">
@@ -144,6 +144,10 @@ const OpenSource = () => {
                     </div>
 
                     <motion.a
+                      aria-label={t('accessibility.viewProject', {
+                        name: project.name,
+                      })}
+                      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                       href={project.link}
                       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                         // Only handle left-click mouse events
@@ -152,15 +156,13 @@ const OpenSource = () => {
                           handleNavigation(project.link)
                         }
                       }}
-                      target="_blank"
                       rel="noopener noreferrer"
+                      target="_blank"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
-                      aria-label={`View project ${project.name}`}
                     >
                       {t('viewProject')}
-                      <ExternalLink className="w-4 h-4 ml-1" />
+                      <ExternalLink className="w-4 h-4" />
                     </motion.a>
                   </div>
                 </div>
@@ -171,11 +173,11 @@ const OpenSource = () => {
 
         {/* Call to Action */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <div className="bg-primary-600 rounded-2xl p-8 md:p-12 text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
@@ -186,23 +188,25 @@ const OpenSource = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
+                aria-label={t('accessibility.followGithub')}
+                className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center min-h-[44px] min-w-[44px]"
                 href="https://github.com/viscalyx"
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-primary-600 font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-primary-50 flex items-center justify-center"
               >
                 <GitHubIcon className="w-5 h-5 mr-2" />
                 {t('cta.followGithub')}
               </motion.a>
               <motion.a
+                aria-label={t('accessibility.collaborate')}
+                className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center min-h-[44px] min-w-[44px]"
                 href="https://dsccommunity.org/"
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="border-2 border-white text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 hover:bg-white hover:text-primary-600 flex items-center justify-center"
               >
                 <Users className="w-5 h-5 mr-2" />
                 {t('cta.collaborate')}

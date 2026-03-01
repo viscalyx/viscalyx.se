@@ -1,7 +1,6 @@
 import { BarChart3, Cookie, Palette, Shield } from 'lucide-react'
-
-import type { CookieCategory } from '@/lib/cookie-consent'
 import type { JSX } from 'react'
+import type { CookieCategory } from '@/lib/cookie-consent'
 
 interface CookieCategoryIconProps {
   category: CookieCategory

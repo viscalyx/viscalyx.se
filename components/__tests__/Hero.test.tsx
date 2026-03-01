@@ -1,7 +1,6 @@
-import Hero from '@/components/Hero'
-
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Hero from '@/components/Hero'
 
 const mockHandleNavigation = vi.fn()
 const mockRouter = {
@@ -24,7 +23,18 @@ vi.mock('@/lib/use-section-navigation', () => ({
 
 // Mock next-intl translations
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations:
+    () => (key: string, values?: { current?: number; total?: number }) => {
+      if (
+        key === 'indicator' &&
+        typeof values?.current === 'number' &&
+        typeof values?.total === 'number'
+      ) {
+        return `Show image ${values.current} of ${values.total}`
+      }
+
+      return key
+    },
   useLocale: () => 'en',
 }))
 
@@ -69,7 +79,7 @@ describe('Hero component', () => {
     expect(images.length).toBeGreaterThanOrEqual(4)
     expect(images[0]).toHaveAttribute(
       'src',
-      expect.stringContaining('calm-productive-engineering-culture')
+      expect.stringContaining('calm-productive-engineering-culture'),
     )
   })
 
@@ -79,7 +89,9 @@ describe('Hero component', () => {
     const indicator = screen.getByRole('button', { name: 'Show image 3 of 4' })
     fireEvent.click(indicator)
 
-    expect(indicator).toHaveClass('bg-white', 'shadow-lg')
+    const activeDot = indicator.querySelector('span')
+    expect(activeDot).not.toBeNull()
+    expect(activeDot).toHaveClass('bg-white', 'shadow-lg')
   })
 
   it('shows image fallback UI when image loading fails', () => {
@@ -103,7 +115,7 @@ describe('Hero component', () => {
 
     expect(firstImage).toHaveClass('opacity-100')
     expect(container.querySelectorAll('.animate-spin')).toHaveLength(
-      initialSpinnerCount - 1
+      initialSpinnerCount - 1,
     )
   })
 
@@ -115,13 +127,16 @@ describe('Hero component', () => {
       const secondIndicator = screen.getByRole('button', {
         name: 'Show image 2 of 4',
       })
-      expect(secondIndicator).toHaveClass('bg-white/50')
+      const secondDot = secondIndicator.querySelector('span')
+      expect(secondDot).not.toBeNull()
+      expect(secondDot).toHaveClass('bg-white/50')
 
       act(() => {
         vi.advanceTimersByTime(4000)
       })
 
-      expect(secondIndicator).toHaveClass('bg-white', 'shadow-lg')
+      const updatedDot = secondIndicator.querySelector('span')
+      expect(updatedDot).toHaveClass('bg-white', 'shadow-lg')
     } finally {
       vi.useRealTimers()
     }

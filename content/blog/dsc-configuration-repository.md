@@ -61,7 +61,8 @@ services.
 
 ### Software that are required on the client
 
-- Git (can be downloaded [here](https://git-scm.com/downloads)).
+- Git (download from
+  [git-scm.com/downloads](https://git-scm.com/downloads)).
 - Your favorite text editor (Or [Visual Studio Code](https://code.visualstudio.com/)
   which I think is awesome, and free on every platform).
 - AzureRm PowerShell Modules (see this article
@@ -189,15 +190,21 @@ There are two ways to create the requirements for running the tests. I will show
 both methods.
 
 1. Using the Azure Portal.
-1. Using PowerShell using the script that [@PlagueHO](https://github.com/PlagueHO)
-   created [here](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357).
+1. Using PowerShell and the script that [@PlagueHO][plagueho-profile]
+   shared in
+   [PowerShell/DscConfigurations issue #5][dsc-configurations-issue-5].
+
+[plagueho-profile]: https://github.com/PlagueHO
+[dsc-configurations-issue-5]:
+  https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357
 
 #### Prepare Azure using Azure Portal
 
 1. Login in to the [Azure Portal](https://portal.azure.com).
 1. Create the Azure Active Directory application account.
    1. Go to **Azure Active Directory**.
-      _I assume you are in the correct directory, if not, change to the correct directory_.
+      _I assume you are in the correct directory, if not, change to the_
+      _correct directory_.
    1. Click on **App registrations**.
    1. Click on **New application registration**.
    1. Enter a descriptive name in the _Name_ field. For example '**DscConfigurationExampleAppId**'.
@@ -259,10 +266,12 @@ both methods.
 
 #### Prepare Azure using PowerShell
 
-For this we are going to use the script that [@PlagueHO](https://github.com/PlagueHO)
-created [here](https://github.com/PowerShell/DscConfigurations/issues/5#issue-234996357)
+For this we are going to use the script that [@PlagueHO][plagueho-profile]
+created in
+[PowerShell/DscConfigurations issue #5][dsc-configurations-issue-5]
 with some minor modifications.
-We will use the modified script [here](https://gist.github.com/johlju/301490cc813e4b490a3cecc1f010d921).
+We will use the modified script in
+[this gist](https://gist.github.com/johlju/301490cc813e4b490a3cecc1f010d921).
 
 The script will login to Azure and create a new Azure Active Directory application
 account and give the application account Contributor permission on the subscription.
@@ -426,11 +435,11 @@ to create a module manifest.
 For this exercise we just change the values in the existing module manifest we
 just renamed.
 
-1.  Open the module manifest file 'DscConfigurationExampleModule.psd1'.
-1.  Change the value for property **ModuleVersion** to '1.0.0.0'.
-1.  Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
+1. Open the module manifest file 'DscConfigurationExampleModule.psd1'.
+1. Change the value for property **ModuleVersion** to '1.0.0.0'.
+1. Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
     got from the cmdlet.
-1.  The property **RequiredModules** must be changed to the value below
+1. The property **RequiredModules** must be changed to the value below
 
     ```powershell
     RequiredModules = @('PSDscResources','xComputerManagement')
@@ -441,7 +450,7 @@ just renamed.
     > us it is used during testing to load the correct modules into the test
     > environment.
 
-1.  The property **WindowsOSVersion** is not a property that is part of the
+1. The property **WindowsOSVersion** is not a property that is part of the
     normal module manifest elements. This property has been added to the **PrivateData**
     hash table for the purpose of determine which operating systems the tests
     should run on. Let's change this to property to limit testing on
@@ -456,7 +465,7 @@ just renamed.
     > If you want to find out which Sku are available then read
     > [How to find Windows VM images in the Azure Marketplace with Azure PowerShell](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/cli-ps-findimage).
 
-1.  Change the values in the rest of the properties to something appropriate.
+1. Change the values in the rest of the properties to something appropriate.
     Properties that are commented are optional. They can be removed if not used.
 
     ```powershell

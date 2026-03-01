@@ -248,6 +248,9 @@
     "RTO",
     "RPO",
     "GDPR",
+    "anonymization",
+    "pseudonymized",
+    "pseudonymization",
     "HIPAA",
     "SOC2",
     "ISO27001",
@@ -350,7 +353,10 @@
     "inotifywait",
     "sparsebundle",
     "signingkey",
-    "lightbox"
+    "lightbox",
+
+    // Biome rule names
+    "noNoninteractiveTabindex"
   ],
   "import": ["@cspell/dict-sv/cspell-ext.json"],
   "flagWords": [

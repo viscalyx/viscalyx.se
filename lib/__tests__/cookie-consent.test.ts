@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { consentEvents } from '@/lib/consent-events'
 import {
   cleanupCookies,
@@ -10,7 +11,6 @@ import {
   resetConsent,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Don't mock cookie-utils, so we test the actual integration
 
@@ -92,7 +92,7 @@ describe('Cookie Consent', () => {
 
       localStorageMock.setItem(
         'viscalyx.org-cookie-consent',
-        JSON.stringify(data)
+        JSON.stringify(data),
       )
 
       expect(getConsentSettings()).toEqual(settings)
@@ -112,7 +112,7 @@ describe('Cookie Consent', () => {
 
       localStorageMock.setItem(
         'viscalyx.org-cookie-consent',
-        JSON.stringify(data)
+        JSON.stringify(data),
       )
       expect(getConsentSettings()).toBeNull()
     })
@@ -130,8 +130,11 @@ describe('Cookie Consent', () => {
 
       const stored = localStorageMock.getItem('viscalyx.org-cookie-consent')
       expect(stored).toBeTruthy()
+      if (!stored) {
+        throw new Error('Expected stored consent data')
+      }
 
-      const parsed = JSON.parse(stored!)
+      const parsed = JSON.parse(stored)
       expect(parsed.settings).toEqual(settings)
       expect(parsed.version).toBe('1.0')
       expect(parsed.timestamp).toBeTruthy()
@@ -141,11 +144,13 @@ describe('Cookie Consent', () => {
 
       // Verify the cookie contains the expected data structure
       const cookieMatch = document.cookie.match(
-        /viscalyx\.org-cookie-consent=([^;]+)/
+        /viscalyx\.org-cookie-consent=([^;]+)/,
       )
       expect(cookieMatch).toBeTruthy()
-
-      const cookieData = JSON.parse(decodeURIComponent(cookieMatch![1]))
+      if (!cookieMatch) {
+        throw new Error('Expected consent cookie match')
+      }
+      const cookieData = JSON.parse(decodeURIComponent(cookieMatch[1]))
       expect(cookieData.settings).toEqual(settings)
       expect(cookieData.version).toBe('1.0')
       expect(cookieData.timestamp).toBeTruthy()
@@ -216,7 +221,7 @@ describe('Cookie Consent', () => {
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(
           'Failed to save cookie consent:',
-          expect.any(Error)
+          expect.any(Error),
         )
       } finally {
         setItemSpy.mockRestore()
@@ -305,7 +310,7 @@ describe('Cookie Consent', () => {
 
       // Verify initial state - consent is stored
       expect(
-        localStorageMock.getItem('viscalyx.org-cookie-consent')
+        localStorageMock.getItem('viscalyx.org-cookie-consent'),
       ).not.toBeNull()
       expect(hasConsentChoice()).toBe(true)
       expect(cookieMock.value).toContain('viscalyx.org-cookie-consent=test')
@@ -332,7 +337,7 @@ describe('Cookie Consent', () => {
       const consentCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('viscalyx.org-cookie-consent=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(consentCookieDeletion).toBeDefined()
 
@@ -340,7 +345,7 @@ describe('Cookie Consent', () => {
       const languageCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('language=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(languageCookieDeletion).toBeDefined()
     })
@@ -396,14 +401,14 @@ describe('Cookie Consent', () => {
       const sessionCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('session=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(sessionCookieDeletion).toBeUndefined()
 
       const consentCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('viscalyx.org-cookie-consent=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(consentCookieDeletion).toBeUndefined()
     })
@@ -429,14 +434,14 @@ describe('Cookie Consent', () => {
       const cfAnalyticsDeletion = cookieMock.operations.find(
         op =>
           op.includes('cf-analytics=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(cfAnalyticsDeletion).toBeDefined()
 
       const blogAnalyticsDeletion = cookieMock.operations.find(
         op =>
           op.includes('blog-reading-analytics=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(blogAnalyticsDeletion).toBeDefined()
 
@@ -444,7 +449,7 @@ describe('Cookie Consent', () => {
       const themeCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('theme=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(themeCookieDeletion).toBeUndefined()
     })
@@ -470,14 +475,14 @@ describe('Cookie Consent', () => {
       const themeCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('theme=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(themeCookieDeletion).toBeDefined()
 
       const languageCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('language=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(languageCookieDeletion).toBeDefined()
 
@@ -485,7 +490,7 @@ describe('Cookie Consent', () => {
       const analyticsCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('cf-analytics=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(analyticsCookieDeletion).toBeUndefined()
     })
@@ -511,21 +516,21 @@ describe('Cookie Consent', () => {
       const themeCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('theme=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(themeCookieDeletion).toBeUndefined()
 
       const analyticsCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('cf-analytics=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(analyticsCookieDeletion).toBeUndefined()
 
       const languageCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('language=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(languageCookieDeletion).toBeUndefined()
     })
@@ -551,14 +556,14 @@ describe('Cookie Consent', () => {
       const unknownCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('unknown-cookie=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(unknownCookieDeletion).toBeUndefined()
 
       const anotherUnknownDeletion = cookieMock.operations.find(
         op =>
           op.includes('another-unknown=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(anotherUnknownDeletion).toBeUndefined()
 
@@ -566,7 +571,7 @@ describe('Cookie Consent', () => {
       const themeCookieDeletion = cookieMock.operations.find(
         op =>
           op.includes('theme=;') &&
-          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT')
+          op.includes('expires=Thu, 01 Jan 1970 00:00:00 GMT'),
       )
       expect(themeCookieDeletion).toBeDefined()
     })
@@ -595,7 +600,7 @@ describe('Cookie Consent', () => {
           version: '1.0',
           settings: defaultConsentSettings,
           timestamp,
-        })
+        }),
       )
 
       expect(getConsentTimestamp()?.toISOString()).toBe(timestamp)
@@ -612,7 +617,7 @@ describe('Cookie Consent', () => {
         JSON.stringify({
           version: '1.0',
           settings: defaultConsentSettings,
-        })
+        }),
       )
 
       expect(getConsentTimestamp()).toBeNull()
@@ -625,7 +630,7 @@ describe('Cookie Consent', () => {
           version: '1.0',
           settings: defaultConsentSettings,
           timestamp: 'not-a-date',
-        })
+        }),
       )
 
       expect(getConsentTimestamp()).toBeNull()

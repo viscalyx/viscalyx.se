@@ -16,7 +16,7 @@ describe('Root not-found page', () => {
   it('renders a description message', () => {
     render(<RootNotFound />)
     expect(
-      screen.getByText(/the page you are looking for does not exist/)
+      screen.getByText(/the page you are looking for does not exist/),
     ).toBeInTheDocument()
   })
 

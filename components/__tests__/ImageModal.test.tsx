@@ -1,6 +1,6 @@
-import ImageModal from '@/components/ImageModal'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
+import ImageModal from '@/components/ImageModal'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -27,7 +27,7 @@ describe('ImageModal', () => {
     expect(screen.getByRole('img')).toBeInTheDocument()
     expect(screen.getByAltText('Test image alt text')).toBeInTheDocument()
     expect(
-      screen.getByLabelText('accessibility.image.closeImagePreview')
+      screen.getByLabelText('accessibility.image.closeImagePreview'),
     ).toBeInTheDocument()
   })
 
@@ -41,7 +41,7 @@ describe('ImageModal', () => {
     render(<ImageModal {...defaultProps} />)
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     fireEvent.click(closeButton)
 
@@ -62,6 +62,15 @@ describe('ImageModal', () => {
 
     const image = screen.getByRole('img')
     fireEvent.click(image)
+
+    expect(defaultProps.onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not call onClose when image caption is clicked', () => {
+    render(<ImageModal {...defaultProps} />)
+
+    const caption = screen.getByText('Test image alt text')
+    fireEvent.click(caption)
 
     expect(defaultProps.onClose).not.toHaveBeenCalled()
   })
@@ -111,7 +120,7 @@ describe('ImageModal', () => {
     const dialog = screen.getByRole('dialog')
     expect(dialog).toHaveAttribute(
       'aria-label',
-      'accessibility.image.imagePreview'
+      'accessibility.image.imagePreview',
     )
   })
 
@@ -119,7 +128,7 @@ describe('ImageModal', () => {
     render(<ImageModal {...defaultProps} />)
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
   })
@@ -128,7 +137,7 @@ describe('ImageModal', () => {
     render(<ImageModal {...defaultProps} />)
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
 
@@ -141,7 +150,7 @@ describe('ImageModal', () => {
     render(<ImageModal {...defaultProps} />)
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
 
@@ -158,7 +167,7 @@ describe('ImageModal', () => {
     triggerButton.focus()
 
     const { rerender } = render(
-      <ImageModal {...defaultProps} triggerElement={triggerButton} />
+      <ImageModal {...defaultProps} triggerElement={triggerButton} />,
     )
 
     // Close the modal
@@ -167,7 +176,7 @@ describe('ImageModal', () => {
         {...defaultProps}
         isOpen={false}
         triggerElement={triggerButton}
-      />
+      />,
     )
 
     expect(triggerButton).toHaveFocus()
@@ -184,12 +193,12 @@ describe('ImageModal', () => {
     activeButton.focus()
 
     const { rerender } = render(
-      <ImageModal {...defaultProps} triggerElement={null} />
+      <ImageModal {...defaultProps} triggerElement={null} />,
     )
 
     // Close the modal
     rerender(
-      <ImageModal {...defaultProps} isOpen={false} triggerElement={null} />
+      <ImageModal {...defaultProps} isOpen={false} triggerElement={null} />,
     )
 
     expect(activeButton).toHaveFocus()

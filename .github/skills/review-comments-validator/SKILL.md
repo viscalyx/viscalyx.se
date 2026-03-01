@@ -12,10 +12,36 @@ Validate every requested finding against the current code before editing.
 1. Inspect each comment and map it to concrete files, symbols, and lines.
 2. Read the current implementation and tests before changing anything.
 3. Classify each finding as `valid`, `invalid`, or `unclear`.
-4. Fix only `valid` findings.
-5. For `invalid` findings, do not patch code and record why.
-6. For `unclear` findings, gather additional evidence (tests, grep results, runtime behavior) before deciding.
-7. Run focused verification for each applied fix.
+4. For each `valid` finding, write a brief per-finding change plan before editing.
+5. Execute only the planned edits for `valid` findings, and make sure they pass unit tests, integration tests, linting, spelling, type checking, formatting, and consistency checks.
+6. For `invalid` findings, do not patch code and record why.
+7. For `unclear` findings, gather additional evidence (tests, grep results, runtime behavior) before deciding.
+8. Run focused verification for each applied fix.
+
+## Pre-Edit Planning Gate
+
+Before modifying files, produce a brief per-finding plan covering edits, risk, and verification.
+Do not stop after planning; execute immediately unless blocked by missing information.
+
+For each `valid` finding, the mini-plan must include:
+
+1. Target files, symbols, and intended code changes.
+2. Expected side effects and behavioral impact.
+3. Lint/format/spelling/type checking risk and how to avoid violations.
+4. Exact verification commands to run after edits.
+5. If introducing new code paths or files, make sure they are also unit tested and do not break existing tests
+
+Lint/format/spelling/type checking planning checklist:
+
+1. Identify applicable lint/format/spelling/type rules for touched files.
+2. Prefer code changes that satisfy existing rules over adding ignores.
+3. If ignore is unavoidable, keep it local and justify it.
+
+Verification checklist:
+
+1. Run `npm run check` to execute lint, format, spelling, tests, type-checking, and security audit across the full project until clean. Re-run `npm run check` after dependency changes.
+2. Run focused integration tests for affected behavior.
+3. Report command results per finding.
 
 ## Decision Rules
 
@@ -23,10 +49,17 @@ Validate every requested finding against the current code before editing.
 - Reject claims based on outdated line numbers when behavior is already correct.
 - Reject stylistic changes when there is no correctness, maintainability, or consistency benefit.
 - Treat "consistency" claims as invalid unless confirmed by nearby project patterns.
+- Reject fix approaches that knowingly introduce lint or format errors when a compliant alternative exists.
+- If a lint suppression is required, keep scope minimal and provide explicit rationale.
+- Invalidate review comments that suggest changes to code formatting (e.g. reordering imports) if it goes against the project's Biome configuration.
+- If changes require modifications to any subsystem (components, backend, content, tooling, etc.), do not invalidate the change but make sure the change is properly planned and tested and demonstrates a clear improvement in functionality, correctness, or maintainability.
+- For AI instruction files (files under `.github/instructions/`, `.github/copilot-instructions.md`, `.github/prompts/`, `.github/skills/`), only flag suggested edits when they reduce token usage, remove conflicts, or improve precision, clarity, or conciseness.
 
 ## Response Contract
 
 - Include a per-finding status list: `valid` / `invalid` / `unclear`.
-- List concrete edits only for valid findings.
+- Include a short `Planned edits` section before `Applied edits`.
+- List concrete `Applied edits` only for valid findings.
+- Include per-finding verification evidence (lint/tests run and pass/fail outcome).
 - End with a summary section that explains why invalid findings were rejected.
 - If no changes are needed, explicitly state that no code was modified.

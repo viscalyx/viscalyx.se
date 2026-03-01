@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import LanguageSwitcher from '../LanguageSwitcher'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 // Mock next-intl translations and locale
 vi.mock('next-intl', () => ({
@@ -25,8 +25,7 @@ vi.mock('@/lib/language-preferences', () => ({
 
 describe('LanguageSwitcher component', () => {
   beforeEach(() => {
-    pushMock.mockClear()
-    saveLanguagePreferenceMock.mockClear()
+    vi.clearAllMocks()
   })
 
   describe('rendering', () => {
@@ -121,114 +120,128 @@ describe('LanguageSwitcher component', () => {
       expect(screen.getByRole('listbox')).toBeInTheDocument()
     })
 
-    it('closes dropdown with Escape key', () => {
+    it('closes dropdown with Escape key', async () => {
       render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
-        name: 'selectLanguage',
-      }).parentElement!
-
-      // Open
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
-      expect(screen.getByRole('listbox')).toBeInTheDocument()
-
-      // Close with Escape
-      fireEvent.keyDown(container, { key: 'Escape' })
-      expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
-    })
-
-    it('navigates options with ArrowDown and ArrowUp', () => {
-      render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
-        name: 'selectLanguage',
-      }).parentElement!
-
-      // Open dropdown
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
-
-      // Current locale is 'en', so focusedIndex starts at 0 (english)
-      // ArrowDown moves to index 1 (swedish)
-      fireEvent.keyDown(container, { key: 'ArrowDown' })
-
       const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
       })
-      expect(toggleButton).toHaveAttribute(
-        'aria-activedescendant',
-        'language-option-sv'
-      )
+      fireEvent.click(toggleButton)
 
-      // ArrowUp wraps back to english
-      // First ArrowDown moved to index 1, another ArrowDown wraps to 0
-      fireEvent.keyDown(container, { key: 'ArrowDown' })
-      expect(toggleButton).toHaveAttribute(
-        'aria-activedescendant',
-        'language-option-en'
-      )
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+
+      // Close with Escape from the focused option
+      fireEvent.keyDown(englishOption, { key: 'Escape' })
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
-    it('selects focused option with Enter key', () => {
+    it('updates active option when ArrowDown is pressed', async () => {
       render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
+      const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
-      }).parentElement!
+      })
 
       // Open dropdown
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
+      fireEvent.click(toggleButton)
 
-      // Move to swedish (index 1)
-      fireEvent.keyDown(container, { key: 'ArrowDown' })
+      await waitFor(() =>
+        expect(toggleButton).toHaveAttribute(
+          'aria-controls',
+          'language-listbox',
+        ),
+      )
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
 
-      // Select with Enter
-      fireEvent.keyDown(container, { key: 'Enter' })
-      expect(pushMock).toHaveBeenCalledWith('/sv/test')
+      // ArrowDown moves focus to the next option.
+      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      await waitFor(() => expect(document.activeElement).toBe(swedishOption))
+
+      // Second ArrowDown wraps back to the first option.
+      fireEvent.keyDown(swedishOption, {
+        key: 'ArrowDown',
+      })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
     })
 
-    it('selects focused option with Space key', () => {
+    it('selects focused option with Enter key', async () => {
       render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
+      const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
-      }).parentElement!
+      })
 
       // Open dropdown
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
+      fireEvent.click(toggleButton)
 
-      // Move to swedish (index 1)
-      fireEvent.keyDown(container, { key: 'ArrowDown' })
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
 
-      // Select with Space
-      fireEvent.keyDown(container, { key: ' ' })
+      // Move focus to swedish.
+      fireEvent.keyDown(englishOption, { key: 'ArrowDown' })
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      await waitFor(() => expect(document.activeElement).toBe(swedishOption))
+
+      // Enter selects the currently focused locale.
+      fireEvent.keyDown(swedishOption, {
+        key: 'Enter',
+      })
       expect(pushMock).toHaveBeenCalledWith('/sv/test')
+      expect(saveLanguagePreferenceMock).toHaveBeenCalledWith('sv')
     })
 
-    it('Home key moves focus to first option', () => {
+    it('selects focused option with Space key', async () => {
       render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
+      const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
-      }).parentElement!
+      })
 
-      // Open and move to last
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
-      fireEvent.keyDown(container, { key: 'End' })
-      fireEvent.keyDown(container, { key: 'Home' })
+      // Open dropdown
+      fireEvent.click(toggleButton)
 
-      expect(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      ).toHaveAttribute('aria-activedescendant', 'language-option-en')
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+      // Space selects the currently focused locale.
+      fireEvent.keyDown(englishOption, { key: ' ' })
+      expect(pushMock).toHaveBeenCalledWith('/en/test')
+      expect(saveLanguagePreferenceMock).toHaveBeenCalledWith('en')
     })
 
-    it('End key moves focus to last option', () => {
+    it('Home key moves focus to first option', async () => {
       render(<LanguageSwitcher />)
-      const container = screen.getByRole('button', {
+      const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
-      }).parentElement!
+      })
+
+      // Open and wait for focus
+      fireEvent.click(toggleButton)
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+
+      // Move to last, then back to first
+      fireEvent.keyDown(englishOption, { key: 'End' })
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      await waitFor(() => expect(document.activeElement).toBe(swedishOption))
+
+      fireEvent.keyDown(swedishOption, { key: 'Home' })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+    })
+
+    it('End key moves focus to last option', async () => {
+      render(<LanguageSwitcher />)
+      const toggleButton = screen.getByRole('button', {
+        name: 'selectLanguage',
+      })
 
       // Open
-      fireEvent.click(screen.getByRole('button', { name: 'selectLanguage' }))
-      fireEvent.keyDown(container, { key: 'End' })
+      fireEvent.click(toggleButton)
 
-      expect(
-        screen.getByRole('button', { name: 'selectLanguage' })
-      ).toHaveAttribute('aria-activedescendant', 'language-option-sv')
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+      fireEvent.keyDown(englishOption, { key: 'End' })
+
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      await waitFor(() => expect(document.activeElement).toBe(swedishOption))
     })
   })
 })

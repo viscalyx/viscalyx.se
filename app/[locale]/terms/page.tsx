@@ -1,10 +1,9 @@
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
-import { getTranslations } from 'next-intl/server'
-
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
 import TermsPageClient from './TermsPageClient'
-
-import type { Metadata } from 'next'
 
 const staticPageDates = getStaticPageDates()
 
@@ -14,8 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'terms' })
 
-  const title = t('terms.title')
-  const description = t('terms.subtitle')
+  const title = t('title')
+  const description = t('subtitle')
   const ogLocale = locale === 'sv' ? 'sv_SE' : 'en_US'
 
   return {
@@ -35,10 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/terms`,
-      languages: {
-        en: `${SITE_URL}/en/terms`,
-        sv: `${SITE_URL}/sv/terms`,
-      },
+      languages: buildLocalizedAlternates('terms'),
     },
   }
 }

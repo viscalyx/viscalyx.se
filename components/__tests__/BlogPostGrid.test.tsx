@@ -1,7 +1,6 @@
-import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
-
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
 
 import type { BlogPostMetadata } from '@/lib/blog'
 
@@ -21,14 +20,8 @@ vi.mock('next/link', () => ({
   ),
 }))
 
-vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} {...props} />
-  ),
-}))
-
 const createPost = (
-  overrides: Partial<BlogPostMetadata> = {}
+  overrides: Partial<BlogPostMetadata> = {},
 ): BlogPostMetadata => ({
   slug: 'test-post',
   title: 'Test Post',
@@ -49,8 +42,27 @@ const generatePosts = (count: number, category?: string): BlogPostMetadata[] =>
       slug: `post-${i + 1}`,
       title: `Post ${i + 1}`,
       category: category ?? (i % 2 === 0 ? 'DevOps' : 'PowerShell'),
-    })
+    }),
   )
+
+const renderGrid = (
+  overrides: Partial<{
+    allPosts: BlogPostMetadata[]
+    categoriesAllLabel: string
+    featuredPostCategory: string
+    loadMoreLabel: string
+  }> = {},
+) => {
+  const props = {
+    allPosts: generatePosts(3),
+    categoriesAllLabel: 'All',
+    featuredPostCategory: 'DevOps',
+    loadMoreLabel: 'Load More Articles',
+    ...overrides,
+  }
+
+  return render(<BlogPostGrid {...props} />)
+}
 
 describe('BlogPostGrid', () => {
   beforeEach(() => {
@@ -63,14 +75,7 @@ describe('BlogPostGrid', () => {
 
   it('renders all posts when fewer than page size', () => {
     const posts = generatePosts(3)
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     expect(screen.getByText('Post 1')).toBeInTheDocument()
     expect(screen.getByText('Post 2')).toBeInTheDocument()
@@ -83,14 +88,7 @@ describe('BlogPostGrid', () => {
       createPost({ slug: 'b', category: 'PowerShell' }),
       createPost({ slug: 'c', category: 'DevOps' }),
     ]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     const buttons = screen.getAllByRole('button')
     const labels = buttons.map(b => b.textContent)
@@ -103,14 +101,7 @@ describe('BlogPostGrid', () => {
 
   it('includes featured post category in filter even if not in allPosts', () => {
     const posts = [createPost({ slug: 'a', category: 'DevOps' })]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="Automation"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts, featuredPostCategory: 'Automation' })
 
     const buttons = screen.getAllByRole('button')
     const labels = buttons.map(b => b.textContent)
@@ -132,14 +123,13 @@ describe('BlogPostGrid', () => {
         category: 'DevOps',
       }),
     ]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
+
+    const allButton = screen.getByRole('button', { name: 'All' })
+    const powerShellButton = screen.getByRole('button', { name: 'PowerShell' })
+
+    expect(allButton).toHaveAttribute('aria-pressed', 'true')
+    expect(powerShellButton).toHaveAttribute('aria-pressed', 'false')
 
     // All posts visible initially
     expect(screen.getByText('DevOps Post')).toBeInTheDocument()
@@ -147,8 +137,10 @@ describe('BlogPostGrid', () => {
     expect(screen.getByText('Another DevOps')).toBeInTheDocument()
 
     // Click PowerShell filter
-    fireEvent.click(screen.getByRole('button', { name: 'PowerShell' }))
+    fireEvent.click(powerShellButton)
 
+    expect(powerShellButton).toHaveAttribute('aria-pressed', 'true')
+    expect(allButton).toHaveAttribute('aria-pressed', 'false')
     expect(screen.queryByText('DevOps Post')).not.toBeInTheDocument()
     expect(screen.getByText('PowerShell Post')).toBeInTheDocument()
     expect(screen.queryByText('Another DevOps')).not.toBeInTheDocument()
@@ -163,57 +155,43 @@ describe('BlogPostGrid', () => {
         category: 'PowerShell',
       }),
     ]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
+
+    const allButton = screen.getByRole('button', { name: 'All' })
+    const powerShellButton = screen.getByRole('button', { name: 'PowerShell' })
 
     // Filter to PowerShell
-    fireEvent.click(screen.getByRole('button', { name: 'PowerShell' }))
+    fireEvent.click(powerShellButton)
+    expect(powerShellButton).toHaveAttribute('aria-pressed', 'true')
+    expect(allButton).toHaveAttribute('aria-pressed', 'false')
     expect(screen.queryByText('DevOps Post')).not.toBeInTheDocument()
 
     // Reset to All
-    fireEvent.click(screen.getByRole('button', { name: 'All' }))
+    fireEvent.click(allButton)
+    expect(allButton).toHaveAttribute('aria-pressed', 'true')
+    expect(powerShellButton).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByText('DevOps Post')).toBeInTheDocument()
     expect(screen.getByText('PowerShell Post')).toBeInTheDocument()
   })
 
   it('shows Load More button when posts exceed page size', () => {
     const posts = generatePosts(8)
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     expect(
-      screen.getByRole('button', { name: 'Load More Articles' })
+      screen.getByRole('button', { name: 'Load More Articles' }),
     ).toBeInTheDocument()
     // Only the first POSTS_PER_PAGE posts should be visible
     expect(screen.getByText('Post 1')).toBeInTheDocument()
     expect(screen.getByText(`Post ${POSTS_PER_PAGE}`)).toBeInTheDocument()
     expect(
-      screen.queryByText(`Post ${POSTS_PER_PAGE + 1}`)
+      screen.queryByText(`Post ${POSTS_PER_PAGE + 1}`),
     ).not.toBeInTheDocument()
   })
 
   it('reveals more posts when Load More is clicked', () => {
     const posts = generatePosts(8)
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     fireEvent.click(screen.getByRole('button', { name: 'Load More Articles' }))
 
@@ -223,35 +201,21 @@ describe('BlogPostGrid', () => {
 
   it('hides Load More button when all posts are visible', () => {
     const posts = generatePosts(8)
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     fireEvent.click(screen.getByRole('button', { name: 'Load More Articles' }))
 
     expect(
-      screen.queryByRole('button', { name: 'Load More Articles' })
+      screen.queryByRole('button', { name: 'Load More Articles' }),
     ).not.toBeInTheDocument()
   })
 
   it('does not show Load More when posts fit within page size', () => {
     const posts = generatePosts(4)
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     expect(
-      screen.queryByRole('button', { name: 'Load More Articles' })
+      screen.queryByRole('button', { name: 'Load More Articles' }),
     ).not.toBeInTheDocument()
   })
 
@@ -260,14 +224,7 @@ describe('BlogPostGrid', () => {
       createPost({ slug: 'my-post', title: 'My Post' }),
       createPost({ slug: 'another-post', title: 'Another Post' }),
     ]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     const links = screen.getAllByRole('link')
     const hrefs = links.map(l => l.getAttribute('href'))
@@ -282,21 +239,19 @@ describe('BlogPostGrid', () => {
       createPost({ slug: 'ps-1', title: 'PS Post 1', category: 'PowerShell' }),
       createPost({ slug: 'ps-2', title: 'PS Post 2', category: 'PowerShell' }),
     ]
-    render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
     // Load more to see 7+ posts
     fireEvent.click(screen.getByRole('button', { name: 'Load More Articles' }))
     expect(screen.getByText('Post 7')).toBeInTheDocument()
 
+    const allButton = screen.getByRole('button', { name: 'All' })
+    const powerShellButton = screen.getByRole('button', { name: 'PowerShell' })
+
     // Switch category — should reset to first page
-    fireEvent.click(screen.getByRole('button', { name: 'PowerShell' }))
+    fireEvent.click(powerShellButton)
+    expect(powerShellButton).toHaveAttribute('aria-pressed', 'true')
+    expect(allButton).toHaveAttribute('aria-pressed', 'false')
     expect(screen.getByText('PS Post 1')).toBeInTheDocument()
     expect(screen.getByText('PS Post 2')).toBeInTheDocument()
     // DevOps posts should be hidden
@@ -312,16 +267,9 @@ describe('BlogPostGrid', () => {
         category: 'DevOps',
       }),
     ]
-    const { container } = render(
-      <BlogPostGrid
-        allPosts={posts}
-        featuredPostCategory="DevOps"
-        categoriesAllLabel="All"
-        loadMoreLabel="Load More Articles"
-      />
-    )
+    renderGrid({ allPosts: posts })
 
-    const article = container.querySelector('article')!
+    const article = screen.getByRole('article')
     expect(article.textContent).toContain('2026-01-15')
     expect(article.textContent).toContain('5 min read')
     // The category badge text should appear in the article

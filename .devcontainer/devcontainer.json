@@ -35,8 +35,8 @@
       "userGid": "automatic"
     },
     "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
-      "plugins": "zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search",
-      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git https://github.com/zsh-users/zsh-history-substring-search.git"
+      "plugins": "zsh-autosuggestions zsh-syntax-highlighting",
+      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git"
     }
   },
 
@@ -49,8 +49,9 @@
         "ms-azuretools.vscode-docker",
 
         // Extensions from .vscode/extensions.json
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint",
+        // cSpell:ignore davidanson kohler errorlens bpruitt-goddard bierner
+        "biomejs.biome",
+        "davidanson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-swedish",
         "bradlc.vscode-tailwindcss",
@@ -59,6 +60,7 @@
         "gruntfuggly.todo-tree",
         "usernamehw.errorlens",
         "GitHub.copilot-chat",
+        "openai.chatgpt",
         "vitest.explorer",
         "bierner.markdown-mermaid",
         "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
@@ -68,10 +70,15 @@
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true,
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": "explicit",
-          "source.organizeImports": "explicit"
+          "source.fixAll.biome": "explicit",
+          "source.fixAll.markdownlint": "explicit",
+          "source.organizeImports.biome": "explicit",
+          "source.organizeImports": "never"
         },
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.defaultFormatter": "biomejs.biome",
+        "[markdown]": {
+          "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        },
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
         "editor.detectIndentation": false,
@@ -82,8 +89,6 @@
         "editor.guides.bracketPairs": true,
 
         // File settings
-        "files.autoSave": "afterDelay",
-        "files.autoSaveDelay": 1000,
         "files.trimTrailingWhitespace": true,
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
@@ -102,22 +107,6 @@
         "typescript.updateImportsOnFileMove.enabled": "always",
         "typescript.suggest.autoImports": true,
         "typescript.preferences.includePackageJsonAutoImports": "auto",
-
-        // ESLint settings
-        "eslint.validate": [
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact"
-        ],
-        "eslint.format.enable": true,
-
-        // Prettier settings
-        "prettier.singleQuote": true,
-        "prettier.semi": false,
-        "prettier.trailingComma": "es5",
-        "prettier.tabWidth": 2,
-        "prettier.useTabs": false,
 
         // Tailwind CSS settings
         "tailwindCSS.includeLanguages": {
@@ -157,6 +146,7 @@
         ],
 
         // Git settings
+        // cSpell:ignore autofetch
         "git.autofetch": true,
         "git.enableSmartCommit": true,
         "git.confirmSync": false,

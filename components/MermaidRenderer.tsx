@@ -47,6 +47,41 @@ interface MermaidRendererProps {
   contentLoaded?: boolean
 }
 
+/**
+ * Shared DOMPurify options for sanitizing rendered Mermaid SVG output.
+ * Removes XSS vectors while preserving SVG-specific attributes that
+ * flowcharts and other diagram types rely on.
+ */
+export const SVG_SANITIZE_OPTIONS: {
+  ADD_ATTR: string[]
+  ADD_TAGS: string[]
+  ALLOW_DATA_ATTR: boolean
+  FORBID_ATTR: string[]
+  FORBID_TAGS: string[]
+  KEEP_CONTENT: boolean
+} = {
+  FORBID_TAGS: ['script'],
+  FORBID_ATTR: [
+    'onclick',
+    'onload',
+    'onerror',
+    'onmouseover',
+    'onmouseout',
+    'onfocus',
+    'onblur',
+  ],
+  ADD_TAGS: ['foreignObject'],
+  ADD_ATTR: [
+    'xmlns',
+    'xmlns:xlink',
+    'xml:space',
+    'dominant-baseline',
+    'text-anchor',
+  ],
+  ALLOW_DATA_ATTR: true,
+  KEEP_CONTENT: true,
+}
+
 const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
   const processedDiagrams = useRef(new Set<Element>())
 
@@ -54,15 +89,30 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
     // Only run if content is loaded
     if (!contentLoaded) return
 
+    let cancelled = false
+    let currentRunId = 0
+
+    const getTheme = () => {
+      return document.documentElement.classList.contains('dark')
+        ? 'dark'
+        : 'default'
+    }
+
     const initializeMermaid = async () => {
+      const runId = ++currentRunId
+      const isStale = () => cancelled || runId !== currentRunId
+
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = await import('mermaid')
+        if (isStale()) return
+        const currentTheme = getTheme()
 
         // Configure mermaid with default settings
         // https://mermaid.js.org/config/schema-docs/config.html
         mermaid.default.initialize({
           startOnLoad: false,
+          theme: currentTheme,
           flowchart: {
             useMaxWidth: true,
             htmlLabels: true,
@@ -86,14 +136,57 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
           },
         })
 
-        // Find all mermaid code blocks
-        const mermaidBlocks = document.querySelectorAll(
-          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]'
+        // Re-render existing diagram wrappers when theme changes.
+        const existingWrappers = Array.from(
+          document.querySelectorAll('.blog-content .mermaid-diagram-wrapper'),
         )
+        for (let i = 0; i < existingWrappers.length; i++) {
+          const wrapper = existingWrappers[i]
+          const mermaidCode = wrapper.getAttribute('data-mermaid-source')
+          const diagramContainer = wrapper.querySelector('.mermaid-diagram')
+
+          if (!mermaidCode || !diagramContainer) continue
+
+          try {
+            const diagramId = `mermaid-diagram-theme-${Date.now()}-${i}`
+            const { svg } = await mermaid.default.render(diagramId, mermaidCode)
+            if (isStale()) continue
+
+            const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
+
+            diagramContainer.textContent = ''
+            const tempDiv = document.createElement('div')
+            tempDiv.innerHTML = cleanSvg
+            const svgElement = tempDiv.querySelector('svg')
+            if (svgElement) {
+              diagramContainer.appendChild(svgElement)
+            }
+          } catch (error) {
+            console.error('Failed to re-render Mermaid diagram:', error)
+          }
+        }
+
+        // Find all mermaid code blocks
+        const mermaidSelector =
+          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]'
+        const mermaidBlocks = Array.from(
+          document.querySelectorAll(mermaidSelector),
+        )
+        const processedRoots = new Set<Element>()
+        const uniqueMermaidBlocks = mermaidBlocks
+          .map(block => {
+            const preBlock = block.closest('pre[class*="language-mermaid"]')
+            return preBlock ?? block
+          })
+          .filter(block => {
+            if (processedRoots.has(block)) return false
+            processedRoots.add(block)
+            return true
+          })
 
         // Process each mermaid block
-        for (let i = 0; i < mermaidBlocks.length; i++) {
-          const block = mermaidBlocks[i]
+        for (let i = 0; i < uniqueMermaidBlocks.length; i++) {
+          const block = uniqueMermaidBlocks[i]
 
           // Skip if already processed
           if (processedDiagrams.current.has(block)) continue
@@ -120,40 +213,22 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create wrapper div for the diagram
             const wrapper = document.createElement('div')
             wrapper.className =
-              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg my-8 p-6 overflow-x-auto text-center'
+              'mermaid-diagram-wrapper not-prose bg-white border border-gray-200 rounded-xl shadow-lg my-8 p-6 overflow-x-auto text-center text-gray-900 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100'
 
             // Create the diagram container
             const diagramContainer = document.createElement('div')
             diagramContainer.id = diagramId
-            diagramContainer.className = 'mermaid-diagram'
+            diagramContainer.className =
+              'mermaid-diagram text-gray-900 dark:text-gray-100'
             wrapper.appendChild(diagramContainer)
+            wrapper.setAttribute('data-mermaid-source', mermaidCode)
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
+            if (isStale()) continue
 
             // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
-            const cleanSvg = DOMPurify.sanitize(svg, {
-              FORBID_TAGS: ['script'],
-              FORBID_ATTR: [
-                'onclick',
-                'onload',
-                'onerror',
-                'onmouseover',
-                'onmouseout',
-                'onfocus',
-                'onblur',
-              ],
-              ADD_TAGS: ['foreignObject'], // Explicitly allow foreignObject which flowcharts use for text
-              ADD_ATTR: [
-                'xmlns',
-                'xmlns:xlink',
-                'xml:space',
-                'dominant-baseline',
-                'text-anchor',
-              ], // Allow SVG text attributes
-              ALLOW_DATA_ATTR: true,
-              KEEP_CONTENT: true,
-            })
+            const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
 
             // Clear container and safely append SVG
             diagramContainer.textContent = ''
@@ -177,7 +252,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Replace the code block with the rendered diagram
             containerToReplace.parentNode?.replaceChild(
               wrapper,
-              containerToReplace
+              containerToReplace,
             )
           } catch (error) {
             console.error('Failed to render Mermaid diagram:', error)
@@ -185,7 +260,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Create error message
             const errorDiv = document.createElement('div')
             errorDiv.className =
-              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800 my-8 p-4 font-mono text-sm'
+              'mermaid-error bg-red-50 border border-red-200 rounded-lg text-red-800 my-8 p-4 font-mono text-sm dark:bg-red-950 dark:border-red-900 dark:text-red-200'
             // Render error message with DOMPurify to avoid XSS
             const rawErrorHtml = `
               <strong>Mermaid Diagram Error:</strong><br>
@@ -206,7 +281,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Replace with error message
             containerToReplace.parentNode?.replaceChild(
               errorDiv,
-              containerToReplace
+              containerToReplace,
             )
           }
         }
@@ -217,9 +292,22 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(initializeMermaid, 100)
+    let activeTheme = getTheme()
+    const rootObserver = new MutationObserver(() => {
+      const nextTheme = getTheme()
+      if (nextTheme === activeTheme) return
+      activeTheme = nextTheme
+      void initializeMermaid()
+    })
+    rootObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
 
     return () => {
+      cancelled = true
       clearTimeout(timer)
+      rootObserver.disconnect()
     }
   }, [contentLoaded])
 

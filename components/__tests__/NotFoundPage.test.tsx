@@ -1,9 +1,13 @@
-import NotFoundPage from '@/components/NotFoundPage'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
+import NotFoundPage from '@/components/NotFoundPage'
+
+const { t } = vi.hoisted(() => ({
+  t: (key: string) => key,
+}))
 
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => t,
   useLocale: () => 'en',
 }))
 
@@ -29,7 +33,9 @@ describe('NotFoundPage', () => {
 
   it('renders a link to the homepage', () => {
     render(<NotFoundPage />)
-    const link = screen.getByRole('link', { name: 'goHome' })
+    const link = screen.getByRole('link', {
+      name: t('goHomeAriaLabel'),
+    })
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '/en')
   })
@@ -42,10 +48,10 @@ describe('NotFoundPage', () => {
   it('uses proper heading hierarchy', () => {
     render(<NotFoundPage />)
     expect(
-      screen.getByRole('heading', { level: 1, name: '404' })
+      screen.getByRole('heading', { level: 1, name: '404' }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { level: 2, name: 'heading' })
+      screen.getByRole('heading', { level: 2, name: 'heading' }),
     ).toBeInTheDocument()
   })
 })

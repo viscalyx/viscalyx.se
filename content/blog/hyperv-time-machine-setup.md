@@ -2,7 +2,9 @@
 title: 'Time Machine Network Backup Server on Hyper-V'
 date: '2025-08-15'
 author: 'Johan Ljunggren'
-excerpt: 'A step-by-step recipe for hosting a macOS-compatible Time Machine target inside an Ubuntu Server VM on Hyper-V (Windows 11), plus a troubleshooting checklist for the common "read-only share" error.'
+excerpt: >
+  Step-by-step guide to host a macOS Time Machine backup target in an Ubuntu
+  Server VM on Hyper-V (Windows 11)
 image: '/enterprise-server-rear-fans-leds-monochrome.png'
 imageAlt: 'Rear view of a rack-mounted enterprise server with rows of cooling fans, honeycomb vents, bundled cables, and small green status LEDs in low light.'
 tags: ['Hyper-V', 'macOS', 'Time Machine', 'Ubuntu', 'Samba', 'Backup']
@@ -49,6 +51,7 @@ Use USB-C or internal SATA. Leave it **un-formatted** in Windows.
 
 ## 3 - Prepare the backup volume in Ubuntu
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 sudo -i                      # become root
 lsblk                        # identify /dev/sdb
@@ -58,9 +61,11 @@ mkdir -p /srv/timemachine
 echo "UUID=$(blkid -s UUID -o value /dev/sdb1) /srv/timemachine ext4 defaults,user_xattr,acl 0 2" >> /etc/fstab
 mount -a
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 4 - Install & configure Samba + Avahi
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 apt update
 apt install -y samba avahi-daemon
@@ -68,9 +73,11 @@ apt install -y samba avahi-daemon
 adduser --disabled-login tmbackup
 smbpasswd -a tmbackup
 ```
+<!-- markdownlint-enable MD013 -->
 
 Append to **/etc/samba/smb.conf**:
 
+<!-- markdownlint-disable MD013 -->
 ```ini
 [timemachine]
    path = /srv/timemachine
@@ -86,20 +93,25 @@ Append to **/etc/samba/smb.conf**:
    fruit:metadata = stream
    fruit:model = MacPro7,1
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 systemctl restart smbd nmbd
 systemctl enable smbd nmbd avahi-daemon
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 5 - Optional: UFW firewall
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 apt install -y ufw
 ufw allow OpenSSH
 ufw allow samba
 ufw enable
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## 6 - Configure macOS Sonoma Time Machine
 
@@ -111,21 +123,25 @@ ufw enable
 
 ## 7 - Ongoing housekeeping
 
+<!-- markdownlint-disable MD013 -->
 | Task                              | Command                     |
 | --------------------------------- | --------------------------- |
 | Check active shares               | `smbstatus --shares`        |
 | Watch network traffic             | `iftop -i eth0`             |
 | Ubuntu security updates           | `sudo apt upgrade` (weekly) |
 | Hyper-V snapshot (only when idle) | Create Checkpoint           |
+<!-- markdownlint-enable MD013 -->
 
 ## 8 - Troubleshooting “does not allow reading, writing and appending”
 
 ### 8.1 - Fix directory ownership & mode
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 sudo chown -R tmbackup:tmbackup /srv/timemachine
 sudo chmod 750 /srv/timemachine      # or 770
 ```
+<!-- markdownlint-enable MD013 -->
 
 A quick note on those permission modes:
 
@@ -146,10 +162,12 @@ avoid accidental guest access from macOS clients.
 
 _The `user_xattr,acl` mount options **must** appear in `/etc/fstab`._
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 sudo mount -o remount /srv/timemachine
 mount | grep /srv/timemachine        # confirm options
 ```
+<!-- markdownlint-enable MD013 -->
 
 ### 8.3 - Verify Samba isn’t mapping to guest
 
@@ -158,16 +176,19 @@ _Check UID in_ `smbstatus --shares`. Should be the tmbackup UID, **not 65534**
 ### 8.4 - Reconnect from macOS
 
 1. Remove old entry in Time Machine.
-2. Reconnect via Finder with the **FQDN** (avoids Bonjour alias).
+1. Reconnect via Finder with the **FQDN** (avoids Bonjour alias).
 
 ### 8.5 - Quick checklist
 
+<!-- markdownlint-disable MD013 -->
 | Check              | Command                                                   |
 | ------------------ | --------------------------------------------------------- |
 | Share writable?    | `smbclient -U tmbackup -L //backup01/timemachine`         |
 | xattrs work?       | `setfattr -n user.test -v 1 /srv/timemachine/.xattr-test` |
 | Live file creation | `sudo inotifywait -m /srv/timemachine` during connection  |
+<!-- markdownlint-enable MD013 -->
 
 > [!NOTE]
-> Once the hidden file `.com.apple.timemachine.supported` and the `<Mac-Name>.sparsebundle`
-> appear in `/srv/timemachine`, Time Machine sees the share as fully read/write.
+> Once the hidden file `.com.apple.timemachine.supported` and the
+> `<Mac-Name>.sparsebundle` appear in `/srv/timemachine`, Time Machine
+> sees the share as fully read/write.

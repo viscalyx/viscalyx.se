@@ -1,7 +1,8 @@
-import Header from '@/components/Header'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { act } from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import Header from '@/components/Header'
+import { getHrefUrl } from '@/lib/navigation-utils'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
@@ -17,27 +18,39 @@ vi.mock('next/navigation', () => ({
 
 // Mock child components to isolate Header
 vi.mock('@/components/LanguageSwitcher', () => ({
-  default: () => <div data-testid="language-switcher">LanguageSwitcher</div>,
+  default: () => (
+    <button aria-label="language" type="button">
+      LanguageSwitcher
+    </button>
+  ),
 }))
 
 vi.mock('@/components/ThemeToggle', () => ({
-  default: () => <div data-testid="theme-toggle">ThemeToggle</div>,
+  default: () => (
+    <button aria-label="theme" type="button">
+      ThemeToggle
+    </button>
+  ),
 }))
 
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
   Menu: ({ className }: { className?: string }) => (
-    <svg data-testid="menu-icon" className={className} />
+    <svg className={className} data-testid="menu-icon" />
   ),
   Settings: ({ className }: { className?: string }) => (
-    <svg data-testid="settings-icon" className={className} />
+    <svg className={className} data-testid="settings-icon" />
   ),
   X: ({ className }: { className?: string }) => (
-    <svg data-testid="x-icon" className={className} />
+    <svg className={className} data-testid="x-icon" />
   ),
 }))
 
 describe('Header', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'
@@ -116,6 +129,22 @@ describe('Header', () => {
       const href = teamLink.getAttribute('href')
       expect(href).toBe('/en/team')
       expect(href).not.toContain('/en/en/')
+    })
+
+    it('returns absolute and protocol-relative URLs unchanged', () => {
+      expect(getHrefUrl('https://example.com/docs', 'en')).toBe(
+        'https://example.com/docs',
+      )
+      expect(getHrefUrl('mailto:test@example.com', 'en')).toBe(
+        'mailto:test@example.com',
+      )
+      expect(getHrefUrl('//cdn.example.com/asset.js', 'en')).toBe(
+        '//cdn.example.com/asset.js',
+      )
+    })
+
+    it('keeps existing locale-prefixed paths unchanged after normalization', () => {
+      expect(getHrefUrl('/EN/team', 'en')).toBe('/EN/team')
     })
   })
 
@@ -239,10 +268,10 @@ describe('Header', () => {
       const titles = screen.getAllByText('settings.title')
       expect(titles.length).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByText('settings.language').length
+        screen.getAllByText('settings.language').length,
       ).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByText('settings.theme').length
+        screen.getAllByText('settings.theme').length,
       ).toBeGreaterThanOrEqual(1)
     })
 
@@ -265,7 +294,7 @@ describe('Header', () => {
       })
     })
 
-    it('settings dropdown has dialog role and aria-label', () => {
+    it('settings dropdown uses popover semantics with aria-label', () => {
       render(<Header />)
 
       const settingsButtons = screen.getAllByRole('button', {
@@ -273,10 +302,15 @@ describe('Header', () => {
       })
       fireEvent.click(settingsButtons[0])
 
-      const dialogs = screen.getAllByRole('dialog', {
-        name: 'settings.title',
-      })
-      expect(dialogs.length).toBeGreaterThanOrEqual(1)
+      expect(screen.queryAllByRole('dialog')).toHaveLength(0)
+
+      const desktopMenu = document.getElementById('desktop-settings-menu')
+      const mobileMenu = document.getElementById('mobile-settings-menu')
+
+      expect(desktopMenu).toHaveAttribute('aria-label', 'settings.title')
+      expect(desktopMenu).not.toHaveAttribute('role')
+      expect(mobileMenu).toHaveAttribute('aria-label', 'settings.title')
+      expect(mobileMenu).not.toHaveAttribute('role')
     })
 
     it('closes settings dropdown when clicking outside', () => {
@@ -289,7 +323,7 @@ describe('Header', () => {
       // Open settings
       fireEvent.click(settingsButtons[0])
       expect(
-        screen.getAllByText('settings.title').length
+        screen.getAllByText('settings.title').length,
       ).toBeGreaterThanOrEqual(1)
 
       // Simulate click outside — mock window.innerWidth to be desktop
@@ -303,6 +337,35 @@ describe('Header', () => {
       expect(screen.queryByText('settings.title')).not.toBeInTheDocument()
     })
 
+    it('closes settings dropdown on mobile when clicking outside mobile settings container', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      fireEvent.click(settingsButtons[1])
+
+      Object.defineProperty(window, 'innerWidth', {
+        value: 375,
+        writable: true,
+      })
+      fireEvent.mouseDown(document.body)
+
+      expect(screen.queryByText('settings.title')).not.toBeInTheDocument()
+    })
+
+    it('toggles settings from the mobile settings button', () => {
+      render(<Header />)
+
+      const settingsButtons = screen.getAllByRole('button', {
+        name: 'settings.title',
+      })
+      const mobileSettingsButton = settingsButtons[1]
+      fireEvent.click(mobileSettingsButton)
+
+      expect(mobileSettingsButton).toHaveAttribute('aria-expanded', 'true')
+    })
+
     it('contains language switcher and theme toggle', () => {
       render(<Header />)
 
@@ -314,10 +377,10 @@ describe('Header', () => {
 
       // Both desktop and mobile dropdowns contain these
       expect(
-        screen.getAllByTestId('language-switcher').length
+        screen.getAllByRole('button', { name: /language/i }).length,
       ).toBeGreaterThanOrEqual(1)
       expect(
-        screen.getAllByTestId('theme-toggle').length
+        screen.getAllByRole('button', { name: /theme/i }).length,
       ).toBeGreaterThanOrEqual(1)
     })
   })
@@ -327,13 +390,13 @@ describe('Header', () => {
       mockPathname = '/en'
       const mockElement = { scrollIntoView: vi.fn() }
       vi.spyOn(document, 'querySelector').mockReturnValue(
-        mockElement as unknown as Element
+        mockElement as unknown as Element,
       )
       vi.spyOn(window, 'requestAnimationFrame').mockImplementation(
         (cb: FrameRequestCallback) => {
           cb(0)
           return 0
-        }
+        },
       )
 
       render(<Header />)
