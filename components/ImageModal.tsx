@@ -111,15 +111,11 @@ const ImageModal: React.FC<ImageModalProps> = ({
             >
               <Image
                 alt={imageAlt}
-                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl max-w-[min(90vw,1400px)] max-h-[min(85vh,1000px)]"
                 height={1000}
                 priority
                 sizes="(max-width: 1555px) 90vw, 1400px"
                 src={imageSrc}
-                style={{
-                  maxWidth: 'min(90vw, 1400px)',
-                  maxHeight: 'min(85vh, 1000px)',
-                }}
                 unoptimized
                 width={1400}
               />
