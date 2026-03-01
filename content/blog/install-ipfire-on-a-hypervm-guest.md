@@ -23,7 +23,7 @@ readTime: '9 min read'
 **TL;DR** — You can run IPFire (version **2.29 – Core 195** as of 2025-06) on
 Microsoft Hyper-V in about 30 minutes. Create a Generation 2 VM, turn **Secure
 Boot** off, attach **two or more NICs** for the IPFire color-coded zones, boot
-from the ISO and finish the console wizard; afterwards reach the WebUI at
+from the ISO and finish the console wizard; afterward reach the WebUI at
 `https://<GREEN-IP>:444`. Detailed, copy-ready steps follow.
 
 ## Prerequisites

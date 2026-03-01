@@ -114,7 +114,7 @@ Install-PSResource SqlServerDsc -Version 17.1.0 -TrustRepository
 ```
 <!-- markdownlint-enable MD013 -->
 
-### Download PowerBI Report Server
+### Download Power BI Report Server
 
 <!-- markdownlint-disable MD013 -->
 ```powershell

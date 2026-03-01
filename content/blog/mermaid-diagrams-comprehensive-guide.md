@@ -1049,17 +1049,20 @@ xychart-beta
 
 Block diagrams show system components and their relationships.
 
-These types of diagrams are not supported by the blog system yet, they throw an
-error:
-
 <!-- markdownlint-disable MD013 -->
-```plaintext
-Converting circular structure to JSON --> starting at object with constructor 'HTMLHtmlElement' | property '__reactFiber$45ydlvxhz2f' -> object with constructor 'FiberNode' --- property 'stateNode' closes the circle
-```
-<!-- markdownlint-enable MD013 -->
 
-Because supporting those required extensive monkey-patching of the JSON, we
-need a better solution.
+> [!WARNING]
+> These types of diagrams are not supported by the blog system yet, they throw
+> an error:
+>
+> ```plaintext
+> Converting circular structure to JSON --> starting at object with constructor 'HTMLHtmlElement' | property '__reactFiber$45ydlvxhz2f' -> object with constructor 'FiberNode' --- property 'stateNode' closes the circle
+> ```
+>
+> Because supporting those required extensive monkey-patching of the JSON, we
+> need a better solution.
+
+<!-- markdownlint-enable MD013 -->
 
 Example mermaid code for this type of diagram:
 
@@ -1147,22 +1150,22 @@ architecture-beta
 ```
 <!-- markdownlint-enable MD013 -->
 
-Icons are very [limited](https://mermaid.js.org/syntax/architecture.html#icons)
-unless using [Iconify Icons](https://icon-sets.iconify.design/) (and accepting
-the licenses), example pseudo-code:
-
-<!-- markdownlint-disable MD013 -->
-```typescript
-mermaid.registerIconPacks([
-  {
-    name: 'logos',
-    loader: () => fetch('…/logos@1/icons.json').then(r => r.json()),
-  },
-])
-```
-<!-- markdownlint-enable MD013 -->
-
-This is currently not supported in the blog system.
+> [!WARNING]
+> Icons are very
+> [limited](https://mermaid.js.org/syntax/architecture.html#icons) unless using
+> [Iconify Icons](https://icon-sets.iconify.design/) (and accepting the
+> licenses), example pseudo-code:
+>
+> ```typescript
+> mermaid.registerIconPacks([
+>   {
+>     name: 'logos',
+>     loader: () => fetch('…/logos@1/icons.json').then(r => r.json()),
+>   },
+> ])
+> ```
+>
+> This is currently not supported in the blog system.
 
 ## 20. Kanban Boards
 
@@ -1334,7 +1337,7 @@ communication.
 - [Mermaid Syntax Reference](https://mermaid.js.org/syntax/flowchart.html)
 - [Visual Documentation Best Practices](https://www.writethedocs.org/)
 
-_This comprehensive guide covers all major Mermaid diagram types. Bookmark this
-page as a reference when creating visual documentation for your projects. Each
-diagram type has its strengths - choose the one that best communicates your
-specific information._
+_This comprehensive guide covers many major Mermaid diagram types and the most
+commonly used patterns. A few diagram types remain unsupported in this blog
+system (as noted above), so use those sections as references until renderer
+support is added._
