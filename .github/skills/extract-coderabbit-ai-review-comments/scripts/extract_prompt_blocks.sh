@@ -28,6 +28,17 @@ if [[ ! -f "$input_file" ]]; then
   exit 1
 fi
 
+# Guard: if input and output resolve to the same file, route through a temp file
+# to prevent the shell redirect from truncating before AWK reads.
+resolved_input="$(realpath -- "$input_file" 2>/dev/null || echo "$input_file")"
+resolved_output="$(realpath -- "$output_file" 2>/dev/null || echo "$output_file")"
+use_temp_output=false
+temp_output_file=""
+if [[ "$resolved_input" == "$resolved_output" ]]; then
+  temp_output_file="$(mktemp)"
+  use_temp_output=true
+fi
+
 awk '
 function dequote(s) {
   sub(/^> ?/, "", s)
@@ -104,4 +115,9 @@ BEGIN {
   }
   print norm
 }
-' "$input_file" > "$output_file"
+' "$input_file" > "${temp_output_file:-$output_file}"
+
+# If we used a temp file to avoid same-file truncation, move it into place now.
+if [[ "$use_temp_output" == "true" ]]; then
+  mv -- "$temp_output_file" "$output_file"
+fi
