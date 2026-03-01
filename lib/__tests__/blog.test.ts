@@ -495,6 +495,7 @@ describe('validateBlogData edge cases (via getPostMetadata)', () => {
 
   it('preserves category when it is a valid string', () => {
     const post = getPostMetadata('second-post')
+    expect(post).not.toBeNull()
     expect(post?.category).toBe('Automation')
   })
 })

@@ -4,7 +4,11 @@ export const mockLoadingSpinner = () => {
   vi.mock('@/components/LoadingSpinner', () => ({
     __esModule: true,
     default: ({ size, color }: { size?: string; color?: string }) => (
-      <div data-color={color} data-size={size} data-testid="loading-spinner" />
+      <output
+        data-color={color}
+        data-size={size}
+        data-testid="loading-spinner"
+      />
     ),
   }))
 }

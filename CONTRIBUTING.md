@@ -298,7 +298,7 @@ coding agent:
 The Copilot environment is configured via
 `.github/workflows/copilot-setup-steps.yml` and includes:
 
-- Node.js 22 with npm caching
+- Node.js 24 LTS with npm caching
 - TypeScript strict mode checking
 - Biome linting/formatting and markdownlint checks
 - Vitest testing environment
@@ -1344,7 +1344,7 @@ Add `// cspell:disable-next-line` above the line with the "misspelled" word:
 <!-- markdownlint-disable MD013 -->
 ```typescript
 // cspell:disable-next-line
-const specialTechnicalTerm = \'someUniqueApiName\'
+const specialTechnicalTerm = 'someUniqueApiName'
 ```
 <!-- markdownlint-enable MD013 -->
 
