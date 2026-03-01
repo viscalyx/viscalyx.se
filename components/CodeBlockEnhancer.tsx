@@ -80,6 +80,7 @@ const CodeBlockEnhancer = ({
 
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(addCopyButtons, 50)
+    let containerWatcher: MutationObserver | null = null
     if (typeof MutationObserver !== 'undefined') {
       observer = new MutationObserver(mutationList => {
         const hasRelevantChange = mutationList.some(mutation =>
@@ -100,15 +101,37 @@ const CodeBlockEnhancer = ({
         })
       })
       const blogContainer = document.querySelector('.blog-content')
-      observer.observe(blogContainer ?? document.body, {
-        childList: true,
-        subtree: true,
-      })
+      if (blogContainer) {
+        observer.observe(blogContainer, {
+          childList: true,
+          subtree: true,
+        })
+      } else {
+        // .blog-content doesn't exist yet; watch document.body for its arrival,
+        // then bind the real observer and disconnect this temporary watcher.
+        containerWatcher = new MutationObserver(() => {
+          const found = document.querySelector('.blog-content')
+          if (found) {
+            containerWatcher?.disconnect()
+            containerWatcher = null
+            observer?.observe(found, {
+              childList: true,
+              subtree: true,
+            })
+            addCopyButtons()
+          }
+        })
+        containerWatcher.observe(document.body, {
+          childList: true,
+          subtree: true,
+        })
+      }
     }
 
     // Cleanup function
     return () => {
       clearTimeout(timer)
+      containerWatcher?.disconnect()
       observer?.disconnect()
       if (scanRafId !== 0) {
         cancelAnimationFrame(scanRafId)

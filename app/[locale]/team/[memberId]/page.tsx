@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import TeamMemberClient from '@/app/[locale]/team/[memberId]/TeamMemberClient'
 import { locales } from '@/i18n'
 import { SITE_URL } from '@/lib/constants'
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
 import { getSerializableTeamMemberById, getTeamMemberIds } from '@/lib/team'
 
 type Props = {
@@ -53,9 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/team/${memberId}`,
-      languages: Object.fromEntries(
-        locales.map(l => [l, `${SITE_URL}/${l}/team/${memberId}`]),
-      ),
+      languages: buildLocalizedAlternates(`team/${memberId}`),
     },
   }
 }

@@ -261,7 +261,10 @@ const CookieConsentBanner = () => {
                     }}
                     type="button"
                   >
-                    <Settings className="w-4 h-4 inline mr-2" />
+                    <Settings
+                      aria-hidden="true"
+                      className="w-4 h-4 inline mr-2"
+                    />
                     {t('customizeSettings')}
                   </button>
                   <button
@@ -299,7 +302,7 @@ const CookieConsentBanner = () => {
                       }}
                       type="button"
                     >
-                      <X className="w-5 h-5" />
+                      <X aria-hidden="true" className="w-5 h-5" />
                     </button>
                   </div>
 

@@ -4,9 +4,9 @@ import CookieSettingsWrapper from '@/components/CookieSettingsWrapper'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { locales } from '@/i18n'
 import { SITE_URL } from '@/lib/constants'
 import { getStaticPageDates } from '@/lib/file-dates'
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
 
 // Get the actual last modified date
 const staticPageDates = getStaticPageDates()
@@ -39,9 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/cookies`,
-      languages: Object.fromEntries(
-        locales.map(l => [l, `${SITE_URL}/${l}/cookies`]),
-      ),
+      languages: buildLocalizedAlternates('cookies'),
     },
   }
 }
