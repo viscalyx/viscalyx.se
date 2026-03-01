@@ -68,10 +68,11 @@ your OS architecture. There are multiple ways to determine the operating system
 (OS) architecture. The following three demonstrate using the command prompt,
 PowerShell, or msinfo.
 
+<!-- cSpell:ignore MSINFO -->
 1. Open a command prompt and type: echo %PROCESSOR_ARCHITECTURE%.
 1. Open a PowerShell terminal session and type:
    `[System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture`.
-1. In your Quick Start menu, type in msinfo32.exe and locate the System Type
+1. In your Quick Start menu, type in `msinfo32.exe` and locate the System Type
    property in the System Summary.
 
 After determining your OS architecture, proceed to download the release asset
