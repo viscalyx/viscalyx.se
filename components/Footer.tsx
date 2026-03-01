@@ -101,37 +101,31 @@ const Footer = () => {
 
   const socialLinks = [
     {
-      name: 'GitHub',
       translationKey: 'github',
       href: 'https://github.com/viscalyx',
       icon: GitHubIcon,
     },
     {
-      name: 'LinkedIn',
       translationKey: 'linkedin',
       href: 'https://linkedin.com/company/viscalyx',
       icon: LinkedInIcon,
     },
     {
-      name: 'X',
       translationKey: 'x',
       href: 'https://x.com/viscalyx',
       icon: XIcon,
     },
     {
-      name: 'Bluesky',
       translationKey: 'bluesky',
       href: 'https://bsky.app/profile/viscalyx.com',
       icon: BlueskyIcon,
     },
     {
-      name: 'Mastodon',
       translationKey: 'mastodon',
       href: 'https://mastodon.social/@viscalyx',
       icon: MastodonIcon,
     },
     {
-      name: 'Email',
       translationKey: 'email',
       href: 'mailto:info@viscalyx.se',
       icon: Mail,
@@ -171,7 +165,7 @@ const Footer = () => {
                     aria-label={t(`socialLinks.${social.translationKey}`)}
                     className="bg-secondary-800 p-3 rounded-lg hover:bg-primary-600 transition-colors duration-300 text-white"
                     href={social.href}
-                    key={social.name}
+                    key={social.translationKey}
                     rel={rel}
                     target={target}
                     whileHover={{ scale: 1.1, rotate: 5 }}
