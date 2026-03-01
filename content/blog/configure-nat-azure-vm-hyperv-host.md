@@ -93,9 +93,9 @@ flowchart TD
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
-# Bind the new internal switch to the host's physical NIC
-# Replace '<Host-NIC-Name>' with the name shown in Get-NetAdapter (e.g., 'Ethernet')
-New-VMSwitch -Name VmNAT -NetAdapterName '<Host-NIC-Name>' -AllowManagementOS $true -SwitchType Internal
+# Internal switches are not bound to a physical NIC — they only connect
+# VMs to the host.
+New-VMSwitch -Name VmNAT -SwitchType Internal
 ```
 <!-- markdownlint-enable MD013 -->
 
@@ -217,7 +217,7 @@ Remove-VMSwitch -Name VmNAT -Force -Confirm:$false
 Get-NetNat -Name VmNAT -ErrorAction SilentlyContinue | Remove-NetNat
 
 # Replace '<Host-NIC-Name>' with the name shown in Get-NetAdapter (e.g., 'Ethernet')
-New-VMSwitch -Name VmNAT -NetAdapterName '<Host-NIC-Name>' -AllowManagementOS $true -SwitchType Internal
+New-VMSwitch -Name VmNAT -SwitchType Internal
 New-NetIPAddress -InterfaceAlias 'vEthernet (VmNAT)' `
                  -IPAddress 192.168.100.1 -PrefixLength 24
 New-NetNat -Name VmNAT -InternalIPInterfaceAddressPrefix 192.168.100.0/24
@@ -232,6 +232,9 @@ Attach guest NICs again and you’re back online.
 ```powershell
 # List all NAT sessions
 Get-NetNatSession | ft -AutoSize
+
+# Delete a single static mapping
+Remove-NetNatStaticMapping -NatName VmNAT -ExternalPort 4022 -Protocol TCP
 
 # Show VM → switch associations
 Get-VMNetworkAdapter | select VMName, SwitchName, MacAddress
