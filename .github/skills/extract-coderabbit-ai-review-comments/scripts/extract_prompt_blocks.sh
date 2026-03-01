@@ -9,13 +9,17 @@ fi
 input_file="$1"
 output_file="$2"
 
-cleanup_temp_input_file() {
-  local temp_file="${temp_input_file:-}"
-  if [[ -n "$temp_file" && -f "$temp_file" ]]; then
-    rm -f "$temp_file"
+cleanup_temp_files() {
+  local input="${temp_input_file:-}"
+  if [[ -n "$input" && -f "$input" ]]; then
+    rm -f "$input"
+  fi
+  local output="${temp_output_file:-}"
+  if [[ -n "$output" && -f "$output" ]]; then
+    rm -f "$output"
   fi
 }
-trap cleanup_temp_input_file EXIT ERR
+trap cleanup_temp_files EXIT ERR
 
 if [[ "$input_file" == "-" ]]; then
   temp_input_file="$(mktemp)"
