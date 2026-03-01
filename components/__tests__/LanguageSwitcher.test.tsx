@@ -120,15 +120,18 @@ describe('LanguageSwitcher component', () => {
       expect(screen.getByRole('listbox')).toBeInTheDocument()
     })
 
-    it('closes dropdown with Escape key', () => {
+    it('closes dropdown with Escape key', async () => {
       render(<LanguageSwitcher />)
       const toggleButton = screen.getByRole('button', {
         name: 'selectLanguage',
       })
       fireEvent.click(toggleButton)
 
-      // Close with Escape
-      fireEvent.keyDown(toggleButton, { key: 'Escape' })
+      const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+
+      // Close with Escape from the focused option
+      fireEvent.keyDown(englishOption, { key: 'Escape' })
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
     })
 
@@ -184,6 +187,7 @@ describe('LanguageSwitcher component', () => {
         key: 'Enter',
       })
       expect(pushMock).toHaveBeenCalledWith('/sv/test')
+      expect(saveLanguagePreferenceMock).toHaveBeenCalledWith('sv')
     })
 
     it('selects focused option with Space key', async () => {
@@ -200,6 +204,7 @@ describe('LanguageSwitcher component', () => {
       // Space selects the currently focused locale.
       fireEvent.keyDown(englishOption, { key: ' ' })
       expect(pushMock).toHaveBeenCalledWith('/en/test')
+      expect(saveLanguagePreferenceMock).toHaveBeenCalledWith('en')
     })
 
     it('Home key moves focus to first option', async () => {
@@ -208,12 +213,17 @@ describe('LanguageSwitcher component', () => {
         name: 'selectLanguage',
       })
 
-      // Open and move to last
+      // Open and wait for focus
       fireEvent.click(toggleButton)
-      fireEvent.keyDown(toggleButton, { key: 'End' })
-      fireEvent.keyDown(toggleButton, { key: 'Home' })
-
       const englishOption = screen.getByRole('option', { name: /english/i })
+      await waitFor(() => expect(document.activeElement).toBe(englishOption))
+
+      // Move to last, then back to first
+      fireEvent.keyDown(englishOption, { key: 'End' })
+      const swedishOption = screen.getByRole('option', { name: /swedish/i })
+      await waitFor(() => expect(document.activeElement).toBe(swedishOption))
+
+      fireEvent.keyDown(swedishOption, { key: 'Home' })
       await waitFor(() => expect(document.activeElement).toBe(englishOption))
     })
 

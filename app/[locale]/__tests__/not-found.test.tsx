@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import LocaleNotFound from '@/app/[locale]/not-found'
 
 vi.mock('@/components/NotFoundPage', () => ({
-  default: () => <div data-testid="not-found-page">NotFoundPage</div>,
+  default: () => <main>NotFoundPage</main>,
 }))
 
 describe('Locale not-found page', () => {
@@ -13,6 +13,6 @@ describe('Locale not-found page', () => {
 
   it('renders the NotFoundPage component', () => {
     render(<LocaleNotFound />)
-    expect(screen.getByText('NotFoundPage')).toBeInTheDocument()
+    expect(screen.getByRole('main')).toBeInTheDocument()
   })
 })

@@ -168,8 +168,9 @@ describe('Team', () => {
               title?: string
             }) => (
               <span
+                aria-label={`${title} icon`}
                 className={className}
-                data-testid="unknown-network-icon"
+                role="img"
                 title={title}
               />
             ),
@@ -182,10 +183,9 @@ describe('Team', () => {
 
     const unknownLink = screen.getByLabelText('UnknownNetwork')
     expect(unknownLink).toHaveAttribute('href', 'https://example.com/profile')
-    expect(screen.getByTestId('unknown-network-icon')).toHaveAttribute(
-      'title',
-      'UnknownNetwork',
-    )
+    expect(
+      screen.getByRole('img', { name: 'UnknownNetwork icon' }),
+    ).toHaveAttribute('title', 'UnknownNetwork')
   })
 
   it('navigates to member detail on card click', () => {
