@@ -52,7 +52,8 @@ Verification checklist:
 - Reject fix approaches that knowingly introduce lint or format errors when a compliant alternative exists.
 - If a lint suppression is required, keep scope minimal and provide explicit rationale.
 - Invalidate review comments that suggest changes to code formatting (e.g. reordering imports) if it goes against the project's Biome configuration.
-- If changes require component changes, do not invalidate the change but make sure the change is properly planned and tested and improves the component's functionality.
+- If changes require modifications to any subsystem (components, backend, content, tooling, etc.), do not invalidate the change but make sure the change is properly planned and tested and demonstrates a clear improvement in functionality, correctness, or maintainability.
+- For AI instruction files (files under `.github/instructions/`, `.github/copilot-instructions.md`, `.github/prompts/`, `.github/skills/`), only flag suggested edits when they reduce token usage, remove conflicts, or improve precision, clarity, or conciseness.
 
 ## Response Contract
 
