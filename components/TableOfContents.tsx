@@ -51,7 +51,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       }
 
       // Compensate for sticky header height so "current section" feels accurate.
-      const topOffset = 140
+      const headerHeight =
+        document.querySelector('header')?.getBoundingClientRect().height ?? 100
+      const topOffset = headerHeight + 40
       const firstHeadingBelowOffsetIndex = headingsByPosition.findIndex(
         heading => heading.top > topOffset,
       )

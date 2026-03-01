@@ -166,16 +166,11 @@ describe('CookieSettings', () => {
   it('disables strictly necessary toggle', () => {
     render(<CookieSettings />)
 
-    // Find the strictly necessary section and its toggle
-    const strictlyNecessarySection = screen
-      .getByText('categories.strictly-necessary.name')
-      .closest('.border')
-    expect(strictlyNecessarySection).toBeInTheDocument()
-
-    // The toggle should be disabled (input is hidden, but container should have disabled styling)
-    const toggleContainer =
-      strictlyNecessarySection?.querySelector('.opacity-50')
-    expect(toggleContainer).toBeInTheDocument()
+    // Find the strictly necessary toggle via its accessible label
+    const toggle = screen.getByRole('checkbox', {
+      name: /categories\.strictly-necessary\.name/,
+    })
+    expect(toggle).toBeDisabled()
   })
 
   it('shows an error message when saving settings fails', async () => {

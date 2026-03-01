@@ -224,8 +224,8 @@ export async function POST(request: Request) {
       if (env?.viscalyx_se?.writeDataPoint) {
         env.viscalyx_se.writeDataPoint({
           blobs: [
-            slug, // blob1: Article slug
-            category, // blob2: Article category
+            slug.substring(0, 100), // blob1: Article slug (truncated)
+            category.substring(0, 100), // blob2: Article category (truncated)
             country, // blob3: Country from Cloudflare
             referer, // blob4: Referrer
             userAgent.substring(0, 100), // blob5: User agent (truncated)

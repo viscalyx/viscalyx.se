@@ -17,19 +17,19 @@ vi.mock('@/lib/constants', () => ({
 // Mock child components
 vi.mock('@/components/Header', () => ({
   __esModule: true,
-  default: () => React.createElement('header', { 'data-testid': 'header' }),
+  default: () => React.createElement('header', null),
 }))
 
 vi.mock('@/components/Hero', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('section', { 'data-testid': 'hero' }, 'Hero'),
+    React.createElement('section', { 'aria-label': 'hero' }, 'Hero'),
 }))
 
 vi.mock('@/components/About', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('section', { 'data-testid': 'about' }, 'About'),
+    React.createElement('section', { 'aria-label': 'about' }, 'About'),
 }))
 
 vi.mock('@/components/OpenSource', () => ({
@@ -37,14 +37,14 @@ vi.mock('@/components/OpenSource', () => ({
   default: () =>
     React.createElement(
       'section',
-      { 'data-testid': 'open-source' },
+      { 'aria-label': 'open-source' },
       'OpenSource',
     ),
 }))
 
 vi.mock('@/components/Footer', () => ({
   __esModule: true,
-  default: () => React.createElement('footer', { 'data-testid': 'footer' }),
+  default: () => React.createElement('footer', null),
 }))
 
 vi.mock('@/components/ScrollToTop', () => ({
@@ -52,7 +52,7 @@ vi.mock('@/components/ScrollToTop', () => ({
   default: () =>
     React.createElement(
       'button',
-      { type: 'button', 'data-testid': 'scroll-to-top' },
+      { type: 'button', 'aria-label': 'scroll to top' },
       'ScrollToTop',
     ),
 }))
@@ -69,12 +69,16 @@ describe('Home', () => {
     const page = await Home()
     render(page)
 
-    expect(screen.getByTestId('header')).toBeInTheDocument()
-    expect(screen.getByTestId('hero')).toBeInTheDocument()
-    expect(screen.getByTestId('about')).toBeInTheDocument()
-    expect(screen.getByTestId('open-source')).toBeInTheDocument()
-    expect(screen.getByTestId('footer')).toBeInTheDocument()
-    expect(screen.getByTestId('scroll-to-top')).toBeInTheDocument()
+    expect(screen.getByRole('banner')).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /hero/i })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /about/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('region', { name: /open-source/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /scroll to top/i }),
+    ).toBeInTheDocument()
   })
 
   it('renders main element with fade-in animation class', async () => {

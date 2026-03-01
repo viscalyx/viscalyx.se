@@ -199,6 +199,24 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(22)
   })
 
+  it('clamps readProgress to 100 and timeSpent to 0', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: 150,
+      timeSpent: -5,
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(100)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
   it('sanitizes partially numeric strings to zero', async () => {
     const req = createRequest({
       slug: 'my-post',

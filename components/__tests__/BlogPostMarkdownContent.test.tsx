@@ -76,6 +76,22 @@ describe('BlogPostMarkdownContent', () => {
       const link = container.querySelector('a')
       expect(link).toHaveAttribute('href', '/')
     })
+
+    it('allows mailto: in href but not in src', () => {
+      const hrefHtml = '<a href="mailto:test@example.com">Email</a>'
+      const { container: hrefContainer } = render(
+        <BlogPostMarkdownContent contentWithIds={hrefHtml} />,
+      )
+      const anchor = hrefContainer.querySelector('a')
+      expect(anchor).toHaveAttribute('href', 'mailto:test@example.com')
+
+      const srcHtml = '<img src="mailto:test@example.com" alt="test" />'
+      const { container: srcContainer } = render(
+        <BlogPostMarkdownContent contentWithIds={srcHtml} />,
+      )
+      const img = srcContainer.querySelector('img')
+      expect(img).not.toHaveAttribute('src')
+    })
   })
 
   describe('class preservation', () => {

@@ -132,11 +132,7 @@ const LanguageSwitcher = () => {
   return (
     <div className="relative" ref={containerRef}>
       <motion.button
-        aria-activedescendant={
-          isOpen && focusedIndex >= 0
-            ? `language-option-${languages[focusedIndex].code}`
-            : undefined
-        }
+        aria-controls={isOpen ? 'language-listbox' : undefined}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={t('selectLanguage')}
@@ -160,6 +156,7 @@ const LanguageSwitcher = () => {
             aria-label={t('selectLanguage')}
             className="absolute top-full mt-2 right-0 z-50 w-full max-w-xs overflow-hidden rounded-lg border border-secondary-200 bg-white shadow-lg dark:border-secondary-700 dark:bg-secondary-800"
             exit={{ opacity: 0, y: -10 }}
+            id="language-listbox"
             initial={{ opacity: 0, y: -10 }}
             key="language-dropdown"
             onKeyDown={handleKeyDown}

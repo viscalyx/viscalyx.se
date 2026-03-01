@@ -520,6 +520,7 @@ const BlogPostContent = ({
                         alt={teamMember.name}
                         className="w-16 h-16 object-cover rounded-full"
                         height={64}
+                        sizes="64px"
                         src={teamMember.image}
                         width={64}
                       />
