@@ -185,7 +185,8 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(22)
   })
 
-  it('hashes client IP and stores hashed visitor identifier', async () => {
+  it('stores anonymous identifier when hashed IP storage is disabled', async () => {
+    // storeHashedIP is hard-coded to false in route.ts
     const req = createRequest(
       { slug: 'my-post', category: 'automation', title: 'My Post' },
       { 'cf-connecting-ip': '203.0.113.10' },
@@ -193,8 +194,8 @@ describe('blog-read analytics route', () => {
 
     await POST(req)
 
-    const hashed = mockWriteDataPoint.mock.calls[0][0].blobs[6]
-    expect(hashed).toMatch(/^[a-f0-9]{64}$/)
+    const stored = mockWriteDataPoint.mock.calls[0][0].blobs[6]
+    expect(stored).toBe('anonymous')
   })
 
   it('falls back to anonymous identifier when no client IP exists', async () => {
@@ -209,7 +210,9 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].blobs[6]).toBe('anonymous')
   })
 
-  it('continues when IP hashing fails', async () => {
+  it('does not attempt IP hashing when gate is disabled', async () => {
+    // storeHashedIP is hard-coded to false, so even without the
+    // secret the route should succeed without a hash warning.
     delete process.env.ANALYTICS_HASH_SECRET
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const req = createRequest(
@@ -220,10 +223,11 @@ describe('blog-read analytics route', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(200)
-    expect(warnSpy).toHaveBeenCalledWith(
+    expect(warnSpy).not.toHaveBeenCalledWith(
       'Failed to hash client IP:',
       expect.any(Error),
     )
+    expect(mockWriteDataPoint.mock.calls[0][0].blobs[6]).toBe('anonymous')
   })
 
   it('continues when Cloudflare context retrieval fails', async () => {

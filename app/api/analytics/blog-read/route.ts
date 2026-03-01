@@ -189,11 +189,17 @@ export async function POST(request: Request) {
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       null
 
+    // Hard-coded gate: set to true to re-enable pseudonymized visitor
+    // ID storage (HMAC-SHA-256 hashed IP). Disabled to move analytics
+    // data from pseudonymized to fully anonymous under GDPR.
+    // See docs/analytics-privacy-design.md for rationale.
+    const storeHashedIP = false
+
     // Hash the IP for GDPR compliance — never store raw IPs
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
     let hashedIP: string | null = null
-    if (clientIP) {
+    if (storeHashedIP && clientIP) {
       try {
         hashedIP = await hashIP(clientIP)
       } catch (hashError) {

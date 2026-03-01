@@ -51,8 +51,15 @@ export const cookieRegistry: CookieInfo[] = [
   {
     name: 'cf-analytics',
     category: 'analytics',
+    // Pseudonymized visitor ID collection is disabled. The hashed IP
+    // storage gate in app/api/analytics/blog-read/route.ts is set to
+    // false, making analytics data fully anonymous. Re-enable by
+    // setting storeHashedIP = true and restoring the purpose text.
+    // Original purpose:
+    //   'Cloudflare Analytics Engine data collection (country, user agent, pseudonymized visitor ID)'
+    // TODO: Localize purpose strings via next-intl messages
     purpose:
-      'Cloudflare Analytics Engine data collection (IP, country, user agent)',
+      'Cloudflare Analytics Engine data collection (country, user agent)',
     duration: 'Session only - data processed server-side',
     provider: 'Cloudflare',
   },
