@@ -12,7 +12,7 @@ tags:
   - 'PowerShell'
   - 'Automation'
   - 'DevOps'
-category: 'DSC'
+category: 'Automation'
 readTime: '9 min read'
 ---
 
