@@ -13,6 +13,7 @@ import {
   MastodonIcon,
   XIcon,
 } from '@/components/SocialIcons'
+import { getHrefUrl } from '@/lib/navigation-utils'
 
 interface FooterLink {
   href: string
@@ -30,20 +31,6 @@ const Footer = () => {
 
   const isExternal = (href: string): boolean => {
     return ABSOLUTE_URL_REGEX.test(href) || href.startsWith('//')
-  }
-
-  // Helper function to generate proper URLs for links
-  const getHrefUrl = (href: string): string => {
-    if (isExternal(href)) {
-      return href
-    }
-
-    if (href.startsWith('#')) {
-      return `/${locale}${href}`
-    }
-
-    const cleanHref = href.startsWith('/') ? href : `/${href}`
-    return `/${locale}${cleanHref}`
   }
 
   // Handle click for section links that need smooth scrolling
@@ -88,7 +75,7 @@ const Footer = () => {
     return (
       <Link
         className="text-secondary-300 hover:text-primary-400 transition-colors duration-200 hover:underline"
-        href={getHrefUrl(link.href) as Route}
+        href={getHrefUrl(link.href, locale) as Route}
         onClick={e => handleLinkClick(e, link.href)}
       >
         {link.name}
