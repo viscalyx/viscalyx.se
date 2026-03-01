@@ -23,6 +23,7 @@ function greet(name) {
 }
 greet('World')
 ```
+
 ## Python Example
 
 ```python
@@ -32,6 +33,7 @@ def add(a, b):
 
 print(add(5, 3))
 ```
+
 ## PowerShell Example
 
 ```powershell
@@ -41,6 +43,7 @@ Param(
 )
 Write-Host "Hello, $name!"
 ```
+
 ## Bash Example
 
 ```bash
@@ -50,6 +53,7 @@ for i in {1..5}; do
   echo "Iteration $i"
 done
 ```
+
 ## HTML Example
 
 ```html
@@ -65,6 +69,7 @@ done
   </body>
 </html>
 ```
+
 ## TypeScript Example
 
 ```typescript
@@ -87,6 +92,7 @@ class UserService {
   }
 }
 ```
+
 ## C# Example (Anchor Uniqueness Test)
 
 ```csharp
@@ -116,6 +122,7 @@ class Program
     }
 }
 ```
+
 ## C# Example
 
 This second equally named section is to test unique anchoring when section has
@@ -148,6 +155,7 @@ class Program
     }
 }
 ```
+
 ## Java Example
 
 ```java
@@ -178,6 +186,7 @@ public class Person {
     }
 }
 ```
+
 ## Go Example
 
 ```go
@@ -199,6 +208,7 @@ func main() {
     http.ListenAndServe(":8080", nil)
 }
 ```
+
 ## Rust Example
 
 ```rust
@@ -233,6 +243,7 @@ fn main() {
     }
 }
 ```
+
 ## C++ Example
 
 ```cpp
@@ -273,6 +284,7 @@ int main() {
     return 0;
 }
 ```
+
 ## PHP Example
 
 <!-- markdownlint-disable MD013 -->
@@ -347,6 +359,7 @@ books.each do |book|
   puts "---"
 end
 ```
+
 ## Swift Example
 
 ```swift
@@ -394,6 +407,7 @@ for animal in animals {
     print("\(animal.name) says: \(animal.makeSound())")
 }
 ```
+
 ## Kotlin Example
 
 ```kotlin
@@ -431,6 +445,7 @@ fun main() {
     println("Average age: ${repository.getAverageAge()}")
 }
 ```
+
 ## SQL Example
 
 ```sql
@@ -460,6 +475,7 @@ GROUP BY department
 HAVING COUNT(*) > 1
 ORDER BY avg_salary DESC;
 ```
+
 ## CSS Example
 
 ```css
@@ -518,6 +534,7 @@ ORDER BY avg_salary DESC;
   }
 }
 ```
+
 ## YAML Example
 
 ```yaml
@@ -561,6 +578,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
 ```
+
 ## JSON Example
 
 ```json
@@ -597,6 +615,7 @@ spec:
   "keywords": ["javascript", "node", "web", "api"]
 }
 ```
+
 ## Docker Example
 
 <!-- markdownlint-disable MD013 -->
@@ -714,6 +733,7 @@ CMD ["node", "server.js"]
     </book>
 </bookstore>
 ```
+
 ## Scala Example
 
 ```scala
@@ -766,6 +786,7 @@ object ShoppingApp extends App {
   println(f"Total price: $$${cart.getTotalPrice}%.2f")
 }
 ```
+
 ## Haskell Example
 
 ```haskell
@@ -823,6 +844,7 @@ main = do
     putStrLn $ "Factorial of 5: " ++ show (factorial 5)
     putStrLn $ "Pairs from [1,2,3,4]: " ++ show (generatePairs [1,2,3,4])
 ```
+
 ## Lua Example
 
 <!-- markdownlint-disable MD013 -->
