@@ -51,8 +51,8 @@ configuration management in PowerShell. Benefits include:
 
 - **Broad compatibility**: Works with both DSC v3 and legacy PSDSC engines
 - **Cleaner code**: Encapsulates logic in a structured, maintainable way
-- **Cross-platform support**: Runs on Windows, Linux, and macOS with proper
-  implementation
+- **Cross-platform support**: Runs on Windows, Linux, and macOS with
+  DSC v3 (not legacy PSDSC/MOF-based configurations)
 
 ### Are class-based resources the future of DSC?
 
