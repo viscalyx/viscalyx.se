@@ -24,6 +24,7 @@ const ThemeToggle = () => {
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
             aria-label={t('switchToTheme', { theme: t(labelKey) })}
+            aria-pressed={theme === value}
             className={`
               relative flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-primary-400 dark:focus-visible:ring-offset-secondary-900
               ${
