@@ -2,7 +2,7 @@
 title: 'Configure NAT for nested guests on a Hyper-V host running on Azure VM'
 date: '2025-07-25'
 author: 'Johan Ljunggren'
-excerpt: 'Configure NAT networking for nested Hyper-V VMs on an Azure VM host with PowerShell to create an internal switch, set NAT, and give guests internet access.'
+excerpt: 'Set up NAT networking for nested Hyper-V VMs on an Azure VM host using PowerShell with an internal switch to give guests internet access.'
 image: '/professional-showing-azure-nat.png'
 imageAlt: 'Photograph of a modern office: a bearded engineer in a blue shirt points at a wall‑mounted screen diagram titled “Azure VM Host” that shows two nested Hyper‑V VMs connected through a NAT switch to an external NAT icon. On the desk below, a laptop displays the Azure portal next to a coiled Ethernet cable, coffee mug, and small plant.'
 tags:
@@ -44,7 +44,7 @@ flowchart TD
                 VM3[Guest VM 3<br/>IP: 192.168.10.17<br/>GW: 192.168.10.220<br/>DNS: 1.1.1.1]
             end
 
-            vSwitchNAT(Virtual Switch<br/>Name: VmNAT<br/>Type: External):::vswitchRed
+            vSwitchNAT(Virtual Switch<br/>Name: VmNAT<br/>Type: Internal):::vswitchRed
             vSwitchLAN(Virtual Switch<br/>Name: LAN<br/>Type: Internal):::vswitchGreen
             NATNIC[NAT Gateway<br/>192.168.100.1/24]:::nat
         end
@@ -89,13 +89,13 @@ flowchart TD
 | ⚠️ Security    | NAT hides guests from Azure’s NSG layer. Still apply guest firewalls/updates!   |
 <!-- markdownlint-enable MD013 -->
 
-## 1 . Create an External switch
+## 1 . Create an Internal switch
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
-# Bind the new external switch to the host's physical NIC
+# Bind the new internal switch to the host's physical NIC
 # Replace '<Host-NIC-Name>' with the name shown in Get-NetAdapter (e.g., 'Ethernet')
-New-VMSwitch -Name VmNAT -NetAdapterName '<Host-NIC-Name>' -AllowManagementOS $true -SwitchType External
+New-VMSwitch -Name VmNAT -NetAdapterName '<Host-NIC-Name>' -AllowManagementOS $true -SwitchType Internal
 ```
 <!-- markdownlint-enable MD013 -->
 
@@ -153,7 +153,7 @@ will be the VmNAT's IP address:
 <!-- markdownlint-disable MD013 -->
 | Setting     | Value (example)                                                                |
 | ----------- | ------------------------------------------------------------------------------ |
-| **IP**      | 192.168.100.1                                                                  |
+| **IP**      | 192.168.100.10                                                                  |
 | **Mask**    | 255.255.255.0                                                                  |
 | **Gateway** | 192.168.100.1                                                                  |
 | **DNS**     | 1.1.1.1 (or set to another guest's IP, if that guest VM forward DNS requests.) |
@@ -216,7 +216,8 @@ subnet.
 Remove-VMSwitch -Name VmNAT -Force -Confirm:$false
 Get-NetNat -Name VmNAT -ErrorAction SilentlyContinue | Remove-NetNat
 
-New-VMSwitch -Name VmNAT -SwitchType Internal
+# Replace '<Host-NIC-Name>' with the name shown in Get-NetAdapter (e.g., 'Ethernet')
+New-VMSwitch -Name VmNAT -NetAdapterName '<Host-NIC-Name>' -AllowManagementOS $true -SwitchType Internal
 New-NetIPAddress -InterfaceAlias 'vEthernet (VmNAT)' `
                  -IPAddress 192.168.100.1 -PrefixLength 24
 New-NetNat -Name VmNAT -InternalIPInterfaceAddressPrefix 192.168.100.0/24
@@ -231,9 +232,6 @@ Attach guest NICs again and you’re back online.
 ```powershell
 # List all NAT sessions
 Get-NetNatSession | ft -AutoSize
-
-# Delete a single static mapping
-Remove-NetNatStaticMapping -NatName VmNAT -ExternalPort 4022 -Protocol TCP
 
 # Show VM → switch associations
 Get-VMNetworkAdapter | select VMName, SwitchName, MacAddress
