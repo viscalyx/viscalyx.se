@@ -10,11 +10,12 @@ category: 'DSC'
 readTime: '8 min read'
 ---
 
-Microsoft Desired State Configuration (DSC) v3 represents the next generation of
-configuration management with cross-platform support. By creating class-based
-resources, you can build reusable components that work across both modern DSC v3
-and legacy PSDSC engines. This tutorial walks you through creating your first
-DSC resource from scratch.
+Microsoft Desired State Configuration (DSC) v3 represents the next generation
+of configuration management with cross-platform support. By creating
+class-based resources, you can build reusable components that work with DSC v3
+and can be authored with legacy PSDSC compatibility in mind, though behavior
+and capabilities may differ between DSC v3 and legacy PSDSC engines. This
+tutorial walks you through creating your first DSC resource from scratch.
 
 In this tutorial, you learn how to:
 
