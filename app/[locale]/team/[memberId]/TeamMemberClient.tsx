@@ -167,7 +167,7 @@ const TeamMemberClient = ({ member }: TeamMemberClientProps) => {
                           aria-label={socialLinkText}
                           className="flex items-center space-x-2 px-4 py-3 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                           href={social.href}
-                          key={social.name}
+                          key={`${social.name}-${social.href}`}
                           rel={
                             social.href.startsWith('mailto:')
                               ? undefined
