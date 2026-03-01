@@ -543,7 +543,11 @@ describe('MermaidRenderer', () => {
         // Change contentLoaded to true
         rerender(<MermaidRenderer contentLoaded={true} />)
 
-        await vi.runAllTimersAsync()
+        // Advance fake timers to trigger the component's setTimeout
+        await vi.advanceTimersByTimeAsync(200)
+
+        // Switch to real timers for waitFor polling
+        vi.useRealTimers()
 
         await waitFor(() => {
           expect(vi.mocked(mermaid.initialize)).toHaveBeenCalled()
