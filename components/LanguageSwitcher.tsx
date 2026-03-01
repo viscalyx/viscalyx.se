@@ -143,6 +143,7 @@ const LanguageSwitcher = () => {
         className="flex min-h-[44px] min-w-[44px] items-center space-x-2 rounded-lg border border-secondary-200 bg-white px-3 py-2 transition-colors duration-200 hover:bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-800 dark:hover:bg-secondary-700"
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
+        type="button"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >

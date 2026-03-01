@@ -49,6 +49,7 @@
         "ms-azuretools.vscode-docker",
 
         // Extensions from .vscode/extensions.json
+        // cSpell:ignore davidanson kohler errorlens bpruitt-goddard bierner
         "biomejs.biome",
         "davidanson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker",
@@ -76,7 +77,7 @@
         },
         "editor.defaultFormatter": "biomejs.biome",
         "[markdown]": {
-          "editor.defaultFormatter": "davidanson.vscode-markdownlint"
+          "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
         },
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
@@ -145,6 +146,7 @@
         ],
 
         // Git settings
+        // cSpell:ignore autofetch
         "git.autofetch": true,
         "git.enableSmartCommit": true,
         "git.confirmSync": false,

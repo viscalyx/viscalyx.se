@@ -45,7 +45,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
     const timeoutId = setTimeout(() => {
       const images = content.querySelectorAll('img')
 
-      imageHandlers = new Map<
+      const handlers = new Map<
         HTMLImageElement,
         {
           mouseEnter: () => void
@@ -54,6 +54,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
           keydown: (event: KeyboardEvent) => void
         }
       >()
+      imageHandlers = handlers
 
       // Add click handlers and hover effects to all images
       images.forEach(img => {
@@ -98,7 +99,7 @@ const ImageEnhancer: React.FC<ImageEnhancerProps> = ({ contentRef }) => {
         }
 
         // Store handlers for cleanup
-        imageHandlers?.set(imageElement, {
+        handlers.set(imageElement, {
           mouseEnter: handleMouseEnter,
           mouseLeave: handleMouseLeave,
           click: handleClick,

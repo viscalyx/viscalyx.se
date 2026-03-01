@@ -200,7 +200,10 @@ export async function POST(request: Request) {
     // See docs/analytics-privacy-design.md for rationale.
     const storeHashedIP = false
 
-    // Hash the IP for GDPR compliance — never store raw IPs
+    // Conditionally hash the client IP for pseudonymized visitor tracking.
+    // When storeHashedIP is false (current default), hashedIP stays null
+    // and no IP data — raw or hashed — is stored, keeping analytics
+    // fully anonymous under GDPR.
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
     let hashedIP: string | null = null

@@ -81,7 +81,16 @@ const CodeBlockEnhancer = ({
     // Small delay to ensure DOM rendering is complete
     const timer = setTimeout(addCopyButtons, 50)
     if (typeof MutationObserver !== 'undefined') {
-      observer = new MutationObserver(() => {
+      observer = new MutationObserver(mutationList => {
+        const hasRelevantChange = mutationList.some(mutation =>
+          Array.from(mutation.addedNodes).some(
+            node =>
+              node instanceof HTMLElement &&
+              (node.classList.contains('code-block-wrapper') ||
+                node.querySelector?.('.code-block-wrapper')),
+          ),
+        )
+        if (!hasRelevantChange) return
         if (scanRafId !== 0) {
           cancelAnimationFrame(scanRafId)
         }

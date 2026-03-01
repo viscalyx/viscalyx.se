@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
   "[markdown]": {
-    "editor.defaultFormatter": "davidanson.vscode-markdownlint"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
