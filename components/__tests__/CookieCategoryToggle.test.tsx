@@ -12,7 +12,7 @@ describe('CookieCategoryToggle', () => {
   }
 
   beforeEach(() => {
-    defaultProps.onChange.mockClear()
+    vi.clearAllMocks()
   })
 
   it('renders an unchecked toggle', () => {

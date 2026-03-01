@@ -77,4 +77,38 @@ describe('BlogPostMarkdownContent', () => {
       expect(link).toHaveAttribute('href', '/')
     })
   })
+
+  describe('class preservation', () => {
+    it('preserves language class on code elements', () => {
+      const html =
+        '<pre class="language-js"><code class="language-js">const x = 1</code></pre>'
+      const { container } = render(
+        <BlogPostMarkdownContent contentWithIds={html} />,
+      )
+      const code = container.querySelector('code')
+      expect(code).not.toBeNull()
+      expect(code).toHaveClass('language-js')
+    })
+
+    it('preserves data-alert-type on alert elements', () => {
+      const html = '<div data-alert-type="warning">Caution!</div>'
+      const { container } = render(
+        <BlogPostMarkdownContent contentWithIds={html} />,
+      )
+      const alert = container.querySelector('[data-alert-type="warning"]')
+      expect(alert).not.toBeNull()
+      expect(alert?.textContent).toBe('Caution!')
+    })
+
+    it('preserves id on heading elements', () => {
+      const html = '<h2 id="my-section" class="heading">Section</h2>'
+      const { container } = render(
+        <BlogPostMarkdownContent contentWithIds={html} />,
+      )
+      const heading = container.querySelector('h2')
+      expect(heading).not.toBeNull()
+      expect(heading).toHaveAttribute('id', 'my-section')
+      expect(heading).toHaveClass('heading')
+    })
+  })
 })
