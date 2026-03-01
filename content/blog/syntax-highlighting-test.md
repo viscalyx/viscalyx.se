@@ -16,7 +16,6 @@ background colors.
 
 ## JavaScript Example
 
-<!-- markdownlint-disable MD013 -->
 ```javascript
 // JavaScript example
 function greet(name) {
@@ -24,11 +23,8 @@ function greet(name) {
 }
 greet('World')
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Python Example
 
-<!-- markdownlint-disable MD013 -->
 ```python
 # Python example
 def add(a, b):
@@ -36,11 +32,8 @@ def add(a, b):
 
 print(add(5, 3))
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## PowerShell Example
 
-<!-- markdownlint-disable MD013 -->
 ```powershell
 # PowerShell example
 Param(
@@ -48,11 +41,8 @@ Param(
 )
 Write-Host "Hello, $name!"
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Bash Example
 
-<!-- markdownlint-disable MD013 -->
 ```bash
 # Bash example
 #!/bin/bash
@@ -60,11 +50,8 @@ for i in {1..5}; do
   echo "Iteration $i"
 done
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## HTML Example
 
-<!-- markdownlint-disable MD013 -->
 ```html
 <!-- HTML example -->
 <!DOCTYPE html>
@@ -78,11 +65,8 @@ done
   </body>
 </html>
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## TypeScript Example
 
-<!-- markdownlint-disable MD013 -->
 ```typescript
 // TypeScript example
 interface User {
@@ -103,11 +87,8 @@ class UserService {
   }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## C# Example (Anchor Uniqueness Test)
 
-<!-- markdownlint-disable MD013 -->
 ```csharp
 // C# example
 using System;
@@ -135,14 +116,11 @@ class Program
     }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## C# Example
 
 This second equally named section is to test unique anchoring when section has
 same names.
 
-<!-- markdownlint-disable MD013 -->
 ```csharp
 // C# example
 using System;
@@ -170,11 +148,8 @@ class Program
     }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Java Example
 
-<!-- markdownlint-disable MD013 -->
 ```java
 // Java example
 import java.util.ArrayList;
@@ -203,11 +178,8 @@ public class Person {
     }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Go Example
 
-<!-- markdownlint-disable MD013 -->
 ```go
 // Go example
 package main
@@ -227,11 +199,8 @@ func main() {
     http.ListenAndServe(":8080", nil)
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Rust Example
 
-<!-- markdownlint-disable MD013 -->
 ```rust
 // Rust example
 use std::collections::HashMap;
@@ -264,11 +233,8 @@ fn main() {
     }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## C++ Example
 
-<!-- markdownlint-disable MD013 -->
 ```cpp
 // C++ example
 #include <iostream>
@@ -307,8 +273,6 @@ int main() {
     return 0;
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## PHP Example
 
 <!-- markdownlint-disable MD013 -->
@@ -350,7 +314,6 @@ $db->connect();
 
 ## Ruby Example
 
-<!-- markdownlint-disable MD013 -->
 ```ruby
 # Ruby example
 class Book
@@ -384,11 +347,8 @@ books.each do |book|
   puts "---"
 end
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Swift Example
 
-<!-- markdownlint-disable MD013 -->
 ```swift
 // Swift example
 import Foundation
@@ -434,11 +394,8 @@ for animal in animals {
     print("\(animal.name) says: \(animal.makeSound())")
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Kotlin Example
 
-<!-- markdownlint-disable MD013 -->
 ```kotlin
 // Kotlin example
 data class Person(val name: String, val age: Int)
@@ -474,11 +431,8 @@ fun main() {
     println("Average age: ${repository.getAverageAge()}")
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## SQL Example
 
-<!-- markdownlint-disable MD013 -->
 ```sql
 -- SQL example
 CREATE TABLE employees (
@@ -506,11 +460,8 @@ GROUP BY department
 HAVING COUNT(*) > 1
 ORDER BY avg_salary DESC;
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## CSS Example
 
-<!-- markdownlint-disable MD013 -->
 ```css
 /* CSS example */
 :root {
@@ -567,11 +518,8 @@ ORDER BY avg_salary DESC;
   }
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## YAML Example
 
-<!-- markdownlint-disable MD013 -->
 ```yaml
 # YAML example
 apiVersion: apps/v1
@@ -613,11 +561,8 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## JSON Example
 
-<!-- markdownlint-disable MD013 -->
 ```json
 {
   "name": "sample-project",
@@ -652,8 +597,6 @@ spec:
   "keywords": ["javascript", "node", "web", "api"]
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Docker Example
 
 <!-- markdownlint-disable MD013 -->
@@ -735,7 +678,6 @@ CMD ["node", "server.js"]
 
 ## XML Example
 
-<!-- markdownlint-disable MD013 -->
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- XML example -->
@@ -772,11 +714,8 @@ CMD ["node", "server.js"]
     </book>
 </bookstore>
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Scala Example
 
-<!-- markdownlint-disable MD013 -->
 ```scala
 // Scala example
 import scala.collection.mutable
@@ -827,11 +766,8 @@ object ShoppingApp extends App {
   println(f"Total price: $$${cart.getTotalPrice}%.2f")
 }
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Haskell Example
 
-<!-- markdownlint-disable MD013 -->
 ```haskell
 -- Haskell example
 module Main where
@@ -887,8 +823,6 @@ main = do
     putStrLn $ "Factorial of 5: " ++ show (factorial 5)
     putStrLn $ "Pairs from [1,2,3,4]: " ++ show (generatePairs [1,2,3,4])
 ```
-<!-- markdownlint-enable MD013 -->
-
 ## Lua Example
 
 <!-- markdownlint-disable MD013 -->
