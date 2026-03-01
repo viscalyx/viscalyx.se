@@ -311,9 +311,6 @@ describe('MermaidRenderer', () => {
   describe('error handling', () => {
     it('logs errors when re-rendering existing wrappers fails', async () => {
       const { default: mermaid } = await import('mermaid')
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
 
       const existingWrapper = document.createElement('div')
       existingWrapper.className = 'mermaid-diagram-wrapper'
@@ -334,20 +331,15 @@ describe('MermaidRenderer', () => {
       render(<MermaidRenderer contentLoaded={true} />)
 
       await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect(mockConsoleError).toHaveBeenCalledWith(
           'Failed to re-render Mermaid diagram:',
           rerenderError,
         )
       })
-
-      consoleErrorSpy.mockRestore()
     })
 
     it('logs errors when mermaid initialization fails', async () => {
       const { default: mermaid } = await import('mermaid')
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
       const initializeError = new Error('Initialize failed')
       vi.mocked(mermaid.initialize).mockImplementation(() => {
         throw initializeError
@@ -356,13 +348,11 @@ describe('MermaidRenderer', () => {
       render(<MermaidRenderer contentLoaded={true} />)
 
       await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect(mockConsoleError).toHaveBeenCalledWith(
           'Failed to initialize Mermaid:',
           initializeError,
         )
       })
-
-      consoleErrorSpy.mockRestore()
     })
 
     it('should handle diagram rendering errors', async () => {

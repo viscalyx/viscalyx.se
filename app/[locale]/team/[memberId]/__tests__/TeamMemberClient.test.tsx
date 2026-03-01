@@ -92,6 +92,8 @@ describe('TeamMemberClient', () => {
 
     const linkedinLink = screen.getByRole('link', { name: 'LinkedIn' })
     expect(linkedinLink).toHaveAttribute('href', 'https://linkedin.com/in/test')
+    expect(linkedinLink).toHaveAttribute('target', '_blank')
+    expect(linkedinLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('renders back link with locale-prefixed href', () => {

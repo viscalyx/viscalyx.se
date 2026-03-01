@@ -22,7 +22,7 @@ vi.mock('@/lib/file-dates', () => ({
   getStaticPageDates: mockGetStaticPageDates,
 }))
 
-import sitemap from '../sitemap'
+import sitemap from '@/app/sitemap'
 
 describe('sitemap', () => {
   beforeEach(() => {

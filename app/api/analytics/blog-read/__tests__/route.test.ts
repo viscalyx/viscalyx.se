@@ -185,6 +185,24 @@ describe('blog-read analytics route', () => {
     expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(22)
   })
 
+  it('sanitizes partially numeric strings to zero', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      readProgress: '50abc',
+      timeSpent: '22s',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[1]).toBe(0)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(0)
+  })
+
   it('stores anonymous identifier when hashed IP storage is disabled', async () => {
     // storeHashedIP is hard-coded to false in route.ts
     const req = createRequest(
@@ -223,10 +241,7 @@ describe('blog-read analytics route', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(200)
-    expect(warnSpy).not.toHaveBeenCalledWith(
-      'Failed to hash client IP:',
-      expect.any(Error),
-    )
+    expect(warnSpy).not.toHaveBeenCalled()
     expect(mockWriteDataPoint.mock.calls[0][0].blobs[6]).toBe('anonymous')
   })
 

@@ -4,10 +4,14 @@ import { describe, expect, it, vi } from 'vitest'
 import TeamMemberNotFound from '../not-found'
 
 vi.mock('@/components/NotFoundPage', () => ({
-  default: () => <main data-testid="not-found-page" />,
+  default: () => <main />,
 }))
 
 describe('TeamMemberNotFound page', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders NotFoundPage component', () => {
     render(<TeamMemberNotFound />)
     expect(screen.getByRole('main')).toBeInTheDocument()
