@@ -5,6 +5,8 @@
       "allowed_elements": ["img"]
     } // no-inline-html (allow <img> for floating/styled images)
   },
+  "frontMatter": "(^---\\s*$[^]*?^---\\s*$)(\\r\\n|\\r|\\n|$)",
+  "gitignore": true,
   "globs": [
     "**/*.md",
     "!**/AGENTS.md",
