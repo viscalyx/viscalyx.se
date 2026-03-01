@@ -135,7 +135,8 @@ describe('Hero component', () => {
         vi.advanceTimersByTime(4000)
       })
 
-      expect(secondDot).toHaveClass('bg-white', 'shadow-lg')
+      const updatedDot = secondIndicator.querySelector('span')
+      expect(updatedDot).toHaveClass('bg-white', 'shadow-lg')
     } finally {
       vi.useRealTimers()
     }
