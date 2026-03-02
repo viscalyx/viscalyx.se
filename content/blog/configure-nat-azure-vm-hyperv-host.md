@@ -99,7 +99,7 @@ New-VMSwitch -Name VmNAT -SwitchType Internal
 ```
 <!-- markdownlint-enable MD013 -->
 
-## 2 . Give the host‑side vNIC an IP
+## 2. Give the host‑side vNIC an IP
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
@@ -127,7 +127,7 @@ Get-NetNat -Name VmNAT
 > • **One NAT per prefix** only. If you re-run, delete the old first:
 > `Remove-NetNat -Name VmNAT`
 
-## 4 . Attach the nested VM to the switch
+## 4. Attach the nested VM to the switch
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
@@ -141,7 +141,7 @@ Get-VMNetworkAdapter -VMName $fwName |
 
 Repeat for each guest that should use NAT.
 
-## 5 . Configure the nested VM’s NIC
+## 5. Configure the nested VM’s NIC
 
 Hand out DHCP addresses, or assign a static address.
 
@@ -153,7 +153,7 @@ will be the VmNAT's IP address:
 <!-- markdownlint-disable MD013 -->
 | Setting     | Value (example)                                                                |
 | ----------- | ------------------------------------------------------------------------------ |
-| **IP**      | 192.168.100.10                                                                 |
+| **IP**      | 192.168.100.2                                                                  |
 | **Mask**    | 255.255.255.0                                                                  |
 | **Gateway** | 192.168.100.1                                                                  |
 | **DNS**     | 1.1.1.1 (or set to another guest's IP, if that guest VM forward DNS requests.) |
@@ -164,14 +164,14 @@ will be the VmNAT's IP address:
 Install the **DHCP Server** role on the Hyper-V host, add a scope for
 **192.168.100.0/24** and the guests will lease automatically.
 
-## 6 . (Optional) Port‑forward inbound traffic
+## 6. (Optional) Port‑forward inbound traffic
 
 <!-- markdownlint-disable MD013 -->
 ```powershell
-# RDP to nested VM (hostPublicIP:4022 → 192.168.100.10:3389)
+# RDP to nested VM (hostPublicIP:4022 → 192.168.100.2:3389)
 Add-NetNatStaticMapping -NatName VmNAT -Protocol TCP `
     -ExternalIPAddress 0.0.0.0 -ExternalPort 4022 `
-    -InternalIPAddress 192.168.100.10 -InternalPort 3389
+    -InternalIPAddress 192.168.100.2 -InternalPort 3389
 ```
 <!-- markdownlint-enable MD013 -->
 
