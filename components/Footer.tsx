@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { ExternalLink, Mail } from 'lucide-react'
 import type { Route } from 'next'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import {
   BlueskyIcon,
@@ -14,6 +13,7 @@ import {
   XIcon,
 } from '@/components/SocialIcons'
 import { getHrefUrl } from '@/lib/navigation-utils'
+import { useSectionNavigation } from '@/lib/use-section-navigation'
 
 interface FooterLink {
   href: string
@@ -24,7 +24,7 @@ const ABSOLUTE_URL_REGEX = /^[a-z][a-z0-9+.-]*:/i
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
-  const pathname = usePathname()
+  const { handleNavigation } = useSectionNavigation()
   const t = useTranslations('footer')
   const tNav = useTranslations('navigation')
   const locale = useLocale()
@@ -39,17 +39,8 @@ const Footer = () => {
     href: string,
   ) => {
     if (href.startsWith('#')) {
-      const currentPath =
-        pathname.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/'
-      if (currentPath === '/' || currentPath === '') {
-        e.preventDefault()
-        requestAnimationFrame(() => {
-          const element = document.querySelector(href)
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' })
-          }
-        })
-      }
+      e.preventDefault()
+      handleNavigation(href)
     }
   }
 

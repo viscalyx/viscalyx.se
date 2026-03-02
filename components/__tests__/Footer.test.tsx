@@ -9,9 +9,11 @@ vi.mock('next-intl', () => ({
 }))
 
 let mockPathname = '/en'
+const mockRouterPush = vi.fn()
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: mockRouterPush }),
   usePathname: () => mockPathname,
 }))
 
@@ -48,6 +50,7 @@ describe('Footer', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'
+    mockRouterPush.mockClear()
   })
 
   afterEach(() => {
@@ -214,32 +217,33 @@ describe('Footer', () => {
     section.scrollIntoView = scrollIntoViewSpy
     document.body.appendChild(section)
 
-    const rafSpy = vi
-      .spyOn(window, 'requestAnimationFrame')
-      .mockImplementation(callback => {
-        callback(0)
-        return 1
-      })
-
     try {
       render(<Footer />)
       fireEvent.click(screen.getByText('aboutUs'))
 
-      expect(rafSpy).toHaveBeenCalled()
       expect(scrollIntoViewSpy).toHaveBeenCalledWith({ behavior: 'smooth' })
+      expect(mockRouterPush).not.toHaveBeenCalled()
     } finally {
-      rafSpy.mockRestore()
       section.remove()
     }
   })
 
   it('does not intercept section links when not on home page', () => {
     mockPathname = '/en/blog'
-    const rafSpy = vi.spyOn(window, 'requestAnimationFrame')
+    const scrollIntoViewSpy = vi.fn()
+    const section = document.createElement('div')
+    section.id = 'about'
+    section.scrollIntoView = scrollIntoViewSpy
+    document.body.appendChild(section)
 
-    render(<Footer />)
-    fireEvent.click(screen.getByText('aboutUs'))
+    try {
+      render(<Footer />)
+      fireEvent.click(screen.getByText('aboutUs'))
 
-    expect(rafSpy).not.toHaveBeenCalled()
+      expect(scrollIntoViewSpy).not.toHaveBeenCalled()
+      expect(mockRouterPush).toHaveBeenCalledWith('/en#about')
+    } finally {
+      section.remove()
+    }
   })
 })
