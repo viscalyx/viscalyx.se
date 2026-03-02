@@ -1,5 +1,5 @@
 ---
-applyTo: "**/{Dockerfile,.devcontainer/**,.github/workflows/**,package.json,.nvmrc,**/*.md)}"
+applyTo: "**/{Dockerfile,.devcontainer/**,.github/workflows/**,package.json,.nvmrc,**/*.md}"
 ---
 
 # Node Version Synchronization (AI-only instruction)
