@@ -154,7 +154,7 @@
 
 /* Keep scroll behavior on <pre>; give language blocks extra top breathing room */
 .blog-content pre[class*="language-"] {
-  max-height: 500px; /* limit vertical expansion */
+  max-height: min(500px, 60vh); /* limit vertical expansion */
   padding-top: 1.25rem; /* extra space between code and top of container */
   overflow-y: auto; /* prevent uncontrolled height growth */
 }
