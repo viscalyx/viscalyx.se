@@ -111,6 +111,15 @@ npm run dev
 ```
 <!-- markdownlint-enable MD013 -->
 
+Local Node version: to match CI and the project's `.nvmrc`, run the following
+with `nvm` before installing dependencies:
+
+```bash
+nvm install
+nvm use
+```
+
+
 ### Scripts
 
 <!-- markdownlint-disable MD013 -->
