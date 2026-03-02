@@ -65,8 +65,10 @@ future.
 
 For example, if your organization migrates from Windows-only infrastructure to a
 mix of Windows and Linux, or adopts newer versions of PowerShell, class-based
-resources help ensure your automation investments remain valid and portable
-across both the new Microsoft DSC v3 engine and the older PSDSC engine.
+resources help ensure your automation investments remain valid and portable.
+DSC v3 provides true cross-platform support for Windows, Linux, and macOS,
+while PSDSC remains Windows-focused. Targeting DSC v3 with class-based resources
+enables cross-platform portability for your configurations.
 
 In the next section, you will learn to set up a project structure with a
 class-based DSC resource named `DemoDscClass`.
