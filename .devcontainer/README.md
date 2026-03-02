@@ -9,8 +9,8 @@ and troubleshooting, see
 
 ### Docker Build
 
-The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu` image
-which:
+The Dockerfile uses the `mcr.microsoft.com/devcontainers/base:ubuntu-24.04`
+image which:
 
 - **Supports multi-architecture** - Works on both AMD64 and ARM64 natively
 - **Includes common tools** - git, curl, wget, sudo, and the vscode user
