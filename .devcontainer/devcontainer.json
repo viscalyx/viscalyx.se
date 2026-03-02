@@ -51,7 +51,7 @@
         // Extensions from .vscode/extensions.json
         // cSpell:ignore davidanson kohler errorlens bpruitt-goddard bierner
         "biomejs.biome",
-        "davidanson.vscode-markdownlint",
+        "DavidAnson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-swedish",
         "bradlc.vscode-tailwindcss",
