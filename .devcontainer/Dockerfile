@@ -1,7 +1,7 @@
 # Cross-platform devcontainer base image
 # Supports both AMD64 (Intel/AMD) and ARM64 (Apple Silicon)
 # Includes: git, curl, wget, sudo, zsh, and the vscode user
-FROM mcr.microsoft.com/devcontainers/base:ubuntu
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 # Install system dependencies needed for npm native modules (node-gyp)
 RUN apt-get update && \
