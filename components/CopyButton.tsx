@@ -42,8 +42,9 @@ const CopyButton = ({ text, className = '' }: ComponentProps) => {
       console.error('Failed to copy text: ', err)
 
       // Fallback for older browsers or when clipboard API is not available
+      let textArea: HTMLTextAreaElement | null = null
       try {
-        const textArea = document.createElement('textarea')
+        textArea = document.createElement('textarea')
         textArea.value = text
         textArea.style.position = 'fixed'
         textArea.style.left = '-999999px'
@@ -52,11 +53,12 @@ const CopyButton = ({ text, className = '' }: ComponentProps) => {
         textArea.focus()
         textArea.select()
         document.execCommand('copy')
-        textArea.remove()
         setCopied(true)
         scheduleCopiedReset()
       } catch (fallbackErr) {
         console.error('Fallback copy failed: ', fallbackErr)
+      } finally {
+        textArea?.remove()
       }
     }
   }

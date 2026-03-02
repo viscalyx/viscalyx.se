@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import ImageModal from './ImageModal'
+import ImageModal from '@/components/ImageModal'
 
 interface ImageEnhancerProps {
   contentRef: React.RefObject<HTMLDivElement | null>

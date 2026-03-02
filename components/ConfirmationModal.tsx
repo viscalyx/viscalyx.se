@@ -57,15 +57,19 @@ const ConfirmationModal = ({
       }
     }
 
+    let previousOverflow: string | undefined
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       // Prevent body scroll when modal is open
+      previousOverflow = document.body.style.overflow
       document.body.style.overflow = 'hidden'
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
+      if (previousOverflow !== undefined) {
+        document.body.style.overflow = previousOverflow
+      }
     }
   }, [isOpen, onClose])
 
