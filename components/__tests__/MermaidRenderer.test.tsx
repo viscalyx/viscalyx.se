@@ -628,19 +628,21 @@ describe('MermaidRenderer', () => {
         detachedPre,
       ] as unknown as NodeListOf<Element>)
 
-      render(<MermaidRenderer contentLoaded={true} />)
+      try {
+        render(<MermaidRenderer contentLoaded={true} />)
 
-      await waitFor(() => {
-        expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
-      })
+        await waitFor(() => {
+          expect(vi.mocked(mermaid.render)).toHaveBeenCalled()
+        })
 
-      // Should not throw error even with missing parent
-      expect(mockConsoleError).not.toHaveBeenCalledWith(
-        expect.stringContaining('Failed to render Mermaid diagram'),
-      )
-
-      // Restore original method
-      document.querySelectorAll = originalQuerySelectorAll
+        // Should not throw error even with missing parent
+        expect(mockConsoleError).not.toHaveBeenCalledWith(
+          expect.stringContaining('Failed to render Mermaid diagram'),
+        )
+      } finally {
+        // Restore original method
+        document.querySelectorAll = originalQuerySelectorAll
+      }
     })
   })
 

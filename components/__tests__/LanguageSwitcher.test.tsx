@@ -145,12 +145,10 @@ describe('LanguageSwitcher component', () => {
       // Open dropdown
       fireEvent.click(toggleButton)
 
-      await waitFor(() =>
-        expect(toggleButton).toHaveAttribute(
-          'aria-controls',
-          'language-listbox',
-        ),
-      )
+      await waitFor(() => {
+        const listbox = screen.getByRole('listbox')
+        expect(toggleButton).toHaveAttribute('aria-controls', listbox.id)
+      })
       const englishOption = screen.getByRole('option', { name: /english/i })
       await waitFor(() => expect(document.activeElement).toBe(englishOption))
 

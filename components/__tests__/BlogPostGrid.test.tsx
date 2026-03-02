@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import type { ComponentProps } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
-
 import type { BlogPostMetadata } from '@/lib/blog'
 
 vi.mock('next/link', () => ({
@@ -46,12 +46,7 @@ const generatePosts = (count: number, category?: string): BlogPostMetadata[] =>
   )
 
 const renderGrid = (
-  overrides: Partial<{
-    allPosts: BlogPostMetadata[]
-    categoriesAllLabel: string
-    featuredPostCategory: string
-    loadMoreLabel: string
-  }> = {},
+  overrides: Partial<ComponentProps<typeof BlogPostGrid>> = {},
 ) => {
   const props = {
     allPosts: generatePosts(3),

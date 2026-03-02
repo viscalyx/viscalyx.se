@@ -57,6 +57,7 @@ describe('ReadingProgress', () => {
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     document.body.innerHTML = ''
     if (originalScrollHeightDescriptor) {
       Object.defineProperty(

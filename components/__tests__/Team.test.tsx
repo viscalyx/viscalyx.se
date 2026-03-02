@@ -188,26 +188,22 @@ describe('Team', () => {
     ).toHaveAttribute('title', 'UnknownNetwork')
   })
 
-  it('navigates to member detail on card click', () => {
+  it('renders a view profile link for each member', () => {
     render(<Team />)
-    // Click on the member card (the clickable wrapper)
-    fireEvent.click(screen.getByText('Johan Ljunggren'))
-    expect(mockPush).toHaveBeenCalledWith('/en/team/johlju')
-  })
-
-  it('navigates to member detail on Enter and Space key press', () => {
-    render(<Team />)
-    const memberCard = screen.getByRole('button', {
+    const profileLink = screen.getByRole('link', {
       name: 'View profile for Johan Ljunggren',
     })
+    expect(profileLink).toHaveAttribute('href', '/en/team/johlju')
+  })
 
-    fireEvent.keyDown(memberCard, { key: 'Enter' })
-    fireEvent.keyDown(memberCard, { key: ' ' })
-    fireEvent.keyDown(memberCard, { key: 'Escape' })
-
-    expect(mockPush).toHaveBeenCalledTimes(2)
-    expect(mockPush).toHaveBeenNthCalledWith(1, '/en/team/johlju')
-    expect(mockPush).toHaveBeenNthCalledWith(2, '/en/team/johlju')
+  it('view profile link is accessible via keyboard', () => {
+    render(<Team />)
+    const profileLink = screen.getByRole('link', {
+      name: 'View profile for Johan Ljunggren',
+    })
+    expect(profileLink).toBeInTheDocument()
+    // Link elements are natively keyboard-accessible
+    expect(profileLink.tagName).toBe('A')
   })
 
   it('renders camera fallback when a member has no profile image', () => {
@@ -230,18 +226,18 @@ describe('Team', () => {
     expect(screen.getByRole('img', { name: /camera/i })).toBeInTheDocument()
   })
 
-  it('stops propagation on social link clicks', () => {
+  it('social links are independent of profile navigation', () => {
     render(<Team />)
-    fireEvent.click(screen.getByLabelText('GitHub'))
-    // Should not navigate to member page when social link is clicked
+    const githubLink = screen.getByLabelText('GitHub')
+    fireEvent.click(githubLink)
+    // Social links should not trigger profile navigation
     expect(mockPush).not.toHaveBeenCalled()
   })
 
-  it('does not navigate when Enter is pressed on a nested social link', () => {
+  it('social links do not interfere with keyboard navigation', () => {
     render(<Team />)
-
-    fireEvent.keyDown(screen.getByLabelText('GitHub'), { key: 'Enter' })
-
+    const githubLink = screen.getByLabelText('GitHub')
+    fireEvent.keyDown(githubLink, { key: 'Enter' })
     expect(mockPush).not.toHaveBeenCalled()
   })
 
