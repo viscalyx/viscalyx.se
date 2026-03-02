@@ -45,9 +45,7 @@ describe('AlertIconInjector', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
-    renderMock.mockClear()
-    unmountMock.mockClear()
-    createRootMock.mockClear()
+    vi.clearAllMocks()
     document.body.innerHTML = ''
   })
 

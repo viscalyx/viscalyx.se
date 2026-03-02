@@ -113,7 +113,7 @@ describe('useSectionNavigation', () => {
       expect(openSpy).toHaveBeenCalledWith(
         'https://github.com',
         '_blank',
-        'noopener noreferrer', // cSpell:disable-line
+        'noopener,noreferrer', // cSpell:disable-line
       )
       expect(pushMock).not.toHaveBeenCalled()
     })

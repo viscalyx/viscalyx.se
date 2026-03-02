@@ -48,13 +48,13 @@ vi.mock('@/lib/team', () => ({
 // Mock lucide-react
 vi.mock('lucide-react', () => ({
   ArrowRight: ({ className }: { className?: string }) => (
-    <svg className={className} data-testid="arrow-right-icon" />
+    <svg aria-label="Arrow right" className={className} role="img" />
   ),
   Camera: ({ className }: { className?: string }) => (
     <svg aria-label="Camera" className={className} role="img" />
   ),
   MapPin: ({ className }: { className?: string }) => (
-    <svg className={className} data-testid="map-pin-icon" />
+    <svg aria-label="Map pin" className={className} role="img" />
   ),
 }))
 
@@ -111,7 +111,7 @@ describe('Team', () => {
   it('renders member location with map pin icon', () => {
     render(<Team />)
     expect(screen.getByText('Sweden')).toBeInTheDocument()
-    expect(screen.getByTestId('map-pin-icon')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Map pin' })).toBeInTheDocument()
   })
 
   it('renders member specialties', () => {

@@ -225,66 +225,48 @@ describe('BlogIcons', () => {
       ).toBeInTheDocument()
     })
 
-    it('handles case insensitive input for note', () => {
-      const testCases = ['NOTE', 'nOtE']
+    it.each<{
+      typeName: string
+      testCases: string[]
+      renderedLabel: string
+    }>([
+      {
+        typeName: 'note',
+        testCases: ['NOTE', 'nOtE'],
+        renderedLabel: 'Note information',
+      },
+      {
+        typeName: 'tip',
+        testCases: ['TIP', 'tIp'],
+        renderedLabel: 'Tip information',
+      },
+      {
+        typeName: 'important',
+        testCases: ['Important', 'imPORtant'],
+        renderedLabel: 'Important information',
+      },
+      {
+        typeName: 'warning',
+        testCases: ['WaRnInG', 'wArNiNg'],
+        renderedLabel: 'Warning information',
+      },
+      {
+        typeName: 'caution',
+        testCases: ['CaUtIoN', 'cAuTiOn'],
+        renderedLabel: 'Caution icon',
+      },
+    ])('handles case insensitive input for $typeName', ({
+      testCases,
+      renderedLabel,
+    }) => {
       testCases.forEach(input => {
         const IconComponent = getAlertIcon(input)
         expect(IconComponent).toBeDefined()
-        render(<IconComponent label="Note information" />)
+        render(<IconComponent label={renderedLabel} />)
         expect(
-          screen.getByRole('img', { name: /note information/i }),
-        ).toBeInTheDocument()
-        cleanup()
-      })
-    })
-
-    it('handles case insensitive input for tip', () => {
-      const testCases = ['TIP', 'tIp']
-      testCases.forEach(input => {
-        const IconComponent = getAlertIcon(input)
-        expect(IconComponent).toBeDefined()
-        render(<IconComponent label="Tip information" />)
-        expect(
-          screen.getByRole('img', { name: /tip information/i }),
-        ).toBeInTheDocument()
-        cleanup()
-      })
-    })
-
-    it('handles case insensitive input for important', () => {
-      const testCases = ['Important', 'imPORtant']
-      testCases.forEach(input => {
-        const IconComponent = getAlertIcon(input)
-        expect(IconComponent).toBeDefined()
-        render(<IconComponent label="Important information" />)
-        expect(
-          screen.getByRole('img', { name: /important information/i }),
-        ).toBeInTheDocument()
-        cleanup()
-      })
-    })
-
-    it('handles case insensitive input for warning', () => {
-      const testCases = ['WaRnInG', 'wArNiNg']
-      testCases.forEach(input => {
-        const IconComponent = getAlertIcon(input)
-        expect(IconComponent).toBeDefined()
-        render(<IconComponent label="Warning information" />)
-        expect(
-          screen.getByRole('img', { name: /warning information/i }),
-        ).toBeInTheDocument()
-        cleanup()
-      })
-    })
-
-    it('handles case insensitive input for caution', () => {
-      const testCases = ['CaUtIoN', 'cAuTiOn']
-      testCases.forEach(input => {
-        const IconComponent = getAlertIcon(input)
-        expect(IconComponent).toBeDefined()
-        render(<IconComponent label="Caution icon" />)
-        expect(
-          screen.getByRole('img', { name: /caution icon/i }),
+          screen.getByRole('img', {
+            name: new RegExp(renderedLabel, 'i'),
+          }),
         ).toBeInTheDocument()
         cleanup()
       })
