@@ -350,9 +350,9 @@ $env:PSModulePath += [System.IO.Path]::PathSeparator + (Split-Path -Path (Get-Lo
 <!-- markdownlint-enable MD013 -->
 
 This command appends the parent directory of your current location to
-PSModulePath so PowerShell can find your DSC resource. PowerShell can now
-find your DSC resource from that parent directory when you list or invoke
-capabilities against it.
+`PSModulePath` so PowerShell can find your DSC resource. PowerShell
+can now find your DSC resource from that parent directory when you
+list or invoke capabilities against it.
 
 ### List available resources
 
@@ -464,7 +464,7 @@ resources:
 ```
 <!-- markdownlint-enable MD013 -->
 
-You can now run the configuration file with the same commands ran earlier.
+You can now run the configuration file with the same commands run earlier.
 
 > [!WARNING]
 > Using implicit syntax comes at a performance cost. Each adapter runs through
