@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { saveLanguagePreference } from '@/lib/language-preferences'
 
 const LanguageSwitcher = () => {
@@ -13,6 +13,7 @@ const LanguageSwitcher = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const listboxRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const listboxId = useId()
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
@@ -45,13 +46,17 @@ const LanguageSwitcher = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isOpen])
 
+  const activeLanguageIndex = useMemo(() => {
+    const idx = languages.findIndex(lang => lang.code === locale)
+    return idx >= 0 ? idx : 0
+  }, [languages, locale])
+
   // Focus the active option when dropdown opens
   useEffect(() => {
     if (!isOpen) return
 
-    const activeIndex = locale === 'sv' ? 1 : 0
-    setFocusedIndex(activeIndex)
-  }, [isOpen, locale])
+    setFocusedIndex(activeLanguageIndex)
+  }, [isOpen, activeLanguageIndex])
 
   useEffect(() => {
     if (!isOpen || focusedIndex < 0) return
@@ -134,7 +139,7 @@ const LanguageSwitcher = () => {
   return (
     <div className="relative" ref={containerRef}>
       <motion.button
-        aria-controls={isOpen ? 'language-listbox' : undefined}
+        aria-controls={isOpen ? listboxId : undefined}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={t('selectLanguage')}
@@ -159,7 +164,7 @@ const LanguageSwitcher = () => {
             aria-label={t('selectLanguage')}
             className="absolute top-full mt-2 right-0 z-50 w-full max-w-xs overflow-hidden rounded-lg border border-secondary-200 bg-white shadow-lg dark:border-secondary-700 dark:bg-secondary-800"
             exit={{ opacity: 0, y: -10 }}
-            id="language-listbox"
+            id={listboxId}
             initial={{ opacity: 0, y: -10 }}
             key="language-dropdown"
             onKeyDown={handleKeyDown}

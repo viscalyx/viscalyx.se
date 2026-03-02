@@ -449,8 +449,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
     margin-left: 0.25rem;
     vertical-align: middle;
     color: var(--color-gray-500);

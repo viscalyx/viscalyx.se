@@ -150,7 +150,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
           try {
             const diagramId = `mermaid-diagram-theme-${Date.now()}-${i}`
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
-            if (isStale()) continue
+            if (isStale()) return
 
             const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
 
@@ -222,7 +222,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
             // Render the diagram - If rendering fails, check for syntax issues or sanitization conflicts.
             const { svg } = await mermaid.default.render(diagramId, mermaidCode)
-            if (isStale()) continue
+            if (isStale()) return
 
             // Use targeted sanitization to preserve mermaid rendering while removing XSS vectors
             const cleanSvg = DOMPurify.sanitize(svg, SVG_SANITIZE_OPTIONS)
@@ -255,7 +255,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Mark as processed only after successful render and DOM replacement
             processedDiagrams.current.add(block)
           } catch (error) {
-            if (isStale()) continue
+            if (isStale()) return
             console.error('Failed to render Mermaid diagram:', error)
 
             // Create error message

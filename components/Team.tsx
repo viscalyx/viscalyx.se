@@ -3,18 +3,13 @@
 import { motion, type Variants } from 'framer-motion'
 import { ArrowRight, Camera, MapPin } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { getTeamMembers, socialIconTranslationKeyMap } from '@/lib/team'
 
 const Team = () => {
   const t = useTranslations('team')
   const locale = useLocale()
-  const router = useRouter()
-
-  const handleCardClick = (memberId: string) => {
-    router.push(`/${locale}/team/${memberId}`)
-  }
 
   const teamMembers = getTeamMembers(t)
 
@@ -133,28 +128,7 @@ const Team = () => {
                 whileHover="hover"
               >
                 <motion.div
-                  aria-label={getViewProfileAriaLabel(member.name)}
-                  className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-secondary-900"
-                  onClick={() => handleCardClick(member.id)}
-                  onKeyDown={event => {
-                    const target = event.target as HTMLElement | null
-                    if (
-                      target &&
-                      target !== event.currentTarget &&
-                      target.closest(
-                        'a, button, [role="link"], [role="button"]',
-                      )
-                    ) {
-                      return
-                    }
-
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault()
-                      handleCardClick(member.id)
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
+                  className="relative bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-secondary-200 dark:border-secondary-700 h-full cursor-pointer"
                   variants={cardVariants}
                 >
                   {/* Profile Image */}
@@ -212,7 +186,7 @@ const Team = () => {
                   </div>
 
                   {/* Social Links */}
-                  <div className="flex flex-col items-center space-y-3 mb-6">
+                  <div className="relative z-10 flex flex-col items-center space-y-3 mb-6">
                     {socialLinkRows.map(row => (
                       <div
                         className="flex justify-center space-x-4"
@@ -224,7 +198,6 @@ const Team = () => {
                             className="min-h-[44px] min-w-[44px] p-2 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center justify-center"
                             href={social.href}
                             key={social.name}
-                            onClick={e => e.stopPropagation()}
                             rel={
                               social.href.startsWith('mailto:')
                                 ? undefined
@@ -246,6 +219,17 @@ const Team = () => {
                         ))}
                       </div>
                     ))}
+                  </div>
+
+                  {/* View Profile Link — stretched to cover the entire card */}
+                  <div className="text-center">
+                    <Link
+                      aria-label={getViewProfileAriaLabel(member.name)}
+                      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 px-4 py-2 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40 dark:focus-visible:ring-offset-secondary-800 after:absolute after:inset-0 after:rounded-2xl"
+                      href={`/${locale}/team/${member.id}`}
+                    >
+                      {t('viewProfileButton')}
+                    </Link>
                   </div>
                 </motion.div>
               </motion.div>
