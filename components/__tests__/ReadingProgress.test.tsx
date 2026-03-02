@@ -268,6 +268,8 @@ describe('ReadingProgress', () => {
     // Start with no prose element
     document.body.innerHTML = ''
 
+    const querySpy = vi.spyOn(document, 'querySelector')
+
     render(<ReadingProgress target=".late-prose" />)
     const progressBar = screen.getByRole('progressbar')
 
@@ -299,7 +301,10 @@ describe('ReadingProgress', () => {
     })
 
     fireEvent.scroll(window)
+    expect(querySpy).toHaveBeenCalledWith('.late-prose')
     expect(progressBar).toBeInTheDocument()
+
+    querySpy.mockRestore()
   })
 
   it('re-queries disconnected endTarget element on scroll', () => {
@@ -332,8 +337,12 @@ describe('ReadingProgress', () => {
     }))
     document.body.appendChild(lateEndElement)
 
+    const querySpy = vi.spyOn(document, 'querySelector')
     fireEvent.scroll(window)
+    expect(querySpy).toHaveBeenCalledWith('#late-bio')
     expect(progressBar).toBeInTheDocument()
+
+    querySpy.mockRestore()
   })
 
   it('shows zero progress when total scroll height matches window height', () => {
@@ -363,6 +372,35 @@ describe('ReadingProgress', () => {
     fireEvent.resize(window)
     const progressBar = screen.getByRole('progressbar')
     expect(progressBar).toBeInTheDocument()
+  })
+
+  it('updates progress on resize events at mobile viewport', () => {
+    const originalInnerWidth = window.innerWidth
+    Object.defineProperty(window, 'innerWidth', {
+      value: 375,
+      writable: true,
+      configurable: true,
+    })
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      configurable: true,
+    })
+    Object.defineProperty(window, 'scrollY', {
+      value: 500,
+      writable: true,
+      configurable: true,
+    })
+
+    render(<ReadingProgress />)
+    fireEvent.resize(window)
+    const progressBar = screen.getByRole('progressbar')
+    expect(progressBar).toBeInTheDocument()
+
+    Object.defineProperty(window, 'innerWidth', {
+      value: originalInnerWidth,
+      writable: true,
+      configurable: true,
+    })
   })
 
   it('cancels animation frame on unmount', () => {

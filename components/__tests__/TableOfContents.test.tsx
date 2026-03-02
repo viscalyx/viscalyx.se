@@ -218,7 +218,9 @@ describe('TableOfContents', () => {
         )
       })
 
-      const activeButton = screen.getByRole('button', { name: 'Installation' })
+      const activeButton = screen.getByRole('button', {
+        name: /Installation/,
+      })
       expect(activeButton).toHaveAttribute('aria-current', 'location')
     } finally {
       heading.remove()
@@ -254,7 +256,7 @@ describe('TableOfContents', () => {
 
       await waitFor(() => {
         const introductionButton = screen.getByRole('button', {
-          name: 'Introduction',
+          name: /Introduction/,
         })
         expect(introductionButton).toHaveAttribute('aria-current', 'location')
       })
@@ -266,7 +268,7 @@ describe('TableOfContents', () => {
 
       await waitFor(() => {
         const gettingStartedButton = screen.getByRole('button', {
-          name: 'Getting Started',
+          name: /Getting Started/,
         })
         expect(gettingStartedButton).toHaveAttribute('aria-current', 'location')
       })
@@ -293,7 +295,9 @@ describe('TableOfContents', () => {
         configurable: true,
       })
 
-      const targetButton = screen.getByRole('button', { name: 'Conclusion' })
+      const targetButton = screen.getByRole('button', {
+        name: /Conclusion/,
+      })
       Object.defineProperty(targetButton, 'offsetTop', {
         value: 400,
         configurable: true,

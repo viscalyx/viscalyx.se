@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import type React from 'react'
 import { vi } from 'vitest'
-import LoadingSpinner from '../LoadingSpinner'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 // Mock next-intl
 vi.mock('next-intl', () => ({

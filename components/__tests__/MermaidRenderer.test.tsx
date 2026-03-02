@@ -623,10 +623,9 @@ describe('MermaidRenderer', () => {
       detachedPre.appendChild(detachedCode)
 
       // Mock querySelectorAll to return the detached element
-      const originalQuerySelectorAll = document.querySelectorAll
-      vi.spyOn(document, 'querySelectorAll').mockReturnValue([
-        detachedPre,
-      ] as unknown as NodeListOf<Element>)
+      const querySpy = vi
+        .spyOn(document, 'querySelectorAll')
+        .mockReturnValue([detachedPre] as unknown as NodeListOf<Element>)
 
       try {
         render(<MermaidRenderer contentLoaded={true} />)
@@ -640,8 +639,7 @@ describe('MermaidRenderer', () => {
           expect.stringContaining('Failed to render Mermaid diagram'),
         )
       } finally {
-        // Restore original method
-        document.querySelectorAll = originalQuerySelectorAll
+        querySpy.mockRestore()
       }
     })
   })
