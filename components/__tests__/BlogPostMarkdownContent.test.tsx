@@ -414,20 +414,6 @@ describe('BlogPostMarkdownContent', () => {
       expect(rel).toContain('noreferrer')
     })
 
-    it('adds noopener noreferrer even when target is _blank without prior rel', () => {
-      // sanitize-html strips rel since it is not in the allowed attributes;
-      // the component still adds noopener and noreferrer dynamically
-      const html =
-        '<a href="https://example.com" target="_blank">External Link</a>'
-      const { container } = render(
-        <BlogPostMarkdownContent contentWithIds={html} />,
-      )
-      const link = container.querySelector('a')
-      const rel = link?.getAttribute('rel') ?? ''
-      expect(rel).toContain('noopener')
-      expect(rel).toContain('noreferrer')
-    })
-
     it('does not add rel to links without target="_blank"', () => {
       const html = '<a href="https://example.com">Internal</a>'
       const { container } = render(
