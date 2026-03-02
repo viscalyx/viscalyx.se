@@ -117,7 +117,7 @@ You can also disable firewall through the user interface. On Windows Server
 ![Windows Control Panel settings window showing the customization options for
 Windows Defender Firewall. Both Private and Public network settings have the
 option 'Turn off Windows Defender Firewall (not recommended)' selected,
-indicated by red shield icons. The options to turn on the firewall are unselected.](/public/blog-images/windows-defender-firewall-network-settings-win2019.png)
+indicated by red shield icons. The options to turn on the firewall are unselected.](/blog-images/windows-defender-firewall-network-settings-win2019.png)
 
 ### Antivirus and Anti-spyware software
 
@@ -147,7 +147,7 @@ Server 2019, this is done through Windows Security settings:
 'Current threats', it reports no current threats and a last scan with zero
 threats found. Below, a warning under 'Virus & threat protection settings'
 states that real-time protection is off, leaving the device vulnerable, with a
-greyed-out 'Turn on' button and a 'Manage settings' link.](/public/blog-images/virus-and-threat-protection-settings-win2019.png)
+greyed-out 'Turn on' button and a 'Manage settings' link.](/blog-images/virus-and-threat-protection-settings-win2019.png)
 
 When you click the **Manage settings** link:
 
@@ -155,7 +155,7 @@ When you click the **Manage settings** link:
 section. Under 'Real-time protection', it indicates that the setting is turned
 off, with a red warning icon and message stating 'Real-time protection is off,
 leaving your device vulnerable.' A toggle switch is set to 'Off' at the bottom
-of the section.](/public/blog-images/real-time-protection-setting-win2019.png)
+of the section.](/blog-images/real-time-protection-setting-win2019.png)
 
 ## Upgrade VM to volume license (KMS server activation)
 
@@ -426,7 +426,7 @@ Server 2022 Datacenter, and Windows Server 2022 Datacenter (Desktop Experience),
 all in the en-US language. A note below indicates that the non-Desktop
 Experience versions omit most graphical elements and are managed via command
 prompt, PowerShell, or remote tools. 'Next' and 'Back' buttons appear at the
-bottom.](/public/blog-images/win2019-setup-select-image.png)
+bottom.](/blog-images/win2019-setup-select-image.png)
 
 The upgrade process will continue and use unattended installation.
 
