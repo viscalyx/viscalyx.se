@@ -114,6 +114,7 @@
     "learnMore": "Läs mer",
     "viewProfile": "Visa profil för {name}",
     "viewProfileFallback": "Visa profil för {name}",
+    "viewProfileButton": "Visa profil",
     "socialLinks": {
       "email": "E-post",
       "linkedin": "LinkedIn",

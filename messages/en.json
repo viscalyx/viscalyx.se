@@ -114,6 +114,7 @@
     "learnMore": "Learn More",
     "viewProfile": "View profile for {name}",
     "viewProfileFallback": "View profile for {name}",
+    "viewProfileButton": "View Profile",
     "socialLinks": {
       "email": "Email",
       "linkedin": "LinkedIn",
