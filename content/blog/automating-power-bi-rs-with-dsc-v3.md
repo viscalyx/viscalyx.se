@@ -545,8 +545,9 @@ winget configure --file deploy-PBIRS.winget.config.yaml --verbose-logs
 ```
 <!-- markdownlint-enable MD013 -->
 
-You will get an output similar to the one below, you need to accept this if you
-want to continue. When you accept it you will be prompted for the UAC question.
+You will get an output similar to the one below. You need to accept
+this if you want to continue. After accepting, you will be prompted
+for the UAC question.
 
 <!-- markdownlint-disable MD013 -->
 ```text
