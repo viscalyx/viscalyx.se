@@ -56,14 +56,15 @@ BEGIN {
   seen_nonblank_in_block = 0
   pending_blank_lines = 0
   drop_next_blank = 0
+  block_is_quoted = 0
   leadin = "Verify each finding against the current code and only fix it if needed."
 }
 
 {
   line = $0
-  norm = dequote(line)
 
   if (!in_code) {
+    norm = dequote(line)
     if (norm ~ /^<summary>🤖 Prompt for AI Agents<\/summary>$/) {
       waiting = 1
       next
@@ -71,6 +72,7 @@ BEGIN {
 
     if (waiting && norm ~ /^```/) {
       in_code = 1
+      block_is_quoted = (line != norm)
       seen_nonblank_in_block = 0
       pending_blank_lines = 0
       drop_next_blank = 0
@@ -84,26 +86,34 @@ BEGIN {
     next
   }
 
-  if (norm ~ /^```/) {
+  # Inside a code block: dequote only if the block started quoted
+  if (block_is_quoted) {
+    out = dequote(line)
+  } else {
+    out = line
+  }
+
+  if (out ~ /^```/) {
     in_code = 0
     waiting = 0
+    block_is_quoted = 0
     seen_nonblank_in_block = 0
     pending_blank_lines = 0
     drop_next_blank = 0
     next
   }
 
-  if (!seen_nonblank_in_block && norm == leadin) {
+  if (!seen_nonblank_in_block && out == leadin) {
     drop_next_blank = 1
     next
   }
 
-  if (drop_next_blank && norm == "") {
+  if (drop_next_blank && out == "") {
     drop_next_blank = 0
     next
   }
 
-  if (norm == "") {
+  if (out == "") {
     if (!seen_nonblank_in_block) {
       next
     }
@@ -117,7 +127,7 @@ BEGIN {
     print ""
     pending_blank_lines--
   }
-  print norm
+  print out
 }
 ' "$input_file" > "${temp_output_file:-$output_file}"
 
