@@ -207,8 +207,9 @@ export async function POST(request: Request) {
 
     // Conditionally hash the client IP for pseudonymized visitor tracking.
     // When storeHashedIP is false (current default), hashedIP stays null
-    // and no IP data — raw or hashed — is stored, keeping analytics
-    // fully anonymous under GDPR.
+    // and no IP-derived identifier is stored, keeping analytics
+    // fully anonymous under GDPR. Other metadata such as
+    // user-agent, referer, and timestamp may still be retained.
     // Skip rate limiting when no client IP is available to avoid
     // funnelling all unknown-IP requests into a single bucket.
     let hashedIP: string | null = null
