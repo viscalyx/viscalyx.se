@@ -318,6 +318,7 @@ const TableOfContents: React.FC<ComponentProps> = ({
             >
               <button
                 aria-current={activeId === item.id ? 'location' : undefined}
+                aria-label={`${t('goToSection')}: ${item.text}`}
                 className={`text-left w-full min-h-[44px] min-w-[44px] transition-all duration-200 block py-2 px-3 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/30 ${
                   activeId === item.id
                     ? 'text-primary-600 dark:text-primary-400 font-medium bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-600 dark:border-primary-400'

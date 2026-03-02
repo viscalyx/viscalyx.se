@@ -1,5 +1,6 @@
 'use client'
 
+import type { Config } from 'dompurify'
 import DOMPurify from 'dompurify'
 import { useEffect, useRef } from 'react'
 
@@ -52,14 +53,7 @@ interface MermaidRendererProps {
  * Removes XSS vectors while preserving SVG-specific attributes that
  * flowcharts and other diagram types rely on.
  */
-export const SVG_SANITIZE_OPTIONS: {
-  ADD_ATTR: string[]
-  ADD_TAGS: string[]
-  ALLOW_DATA_ATTR: boolean
-  FORBID_ATTR: string[]
-  FORBID_TAGS: string[]
-  KEEP_CONTENT: boolean
-} = {
+export const SVG_SANITIZE_OPTIONS = {
   FORBID_TAGS: ['script'],
   FORBID_ATTR: [
     'onclick',
@@ -80,7 +74,7 @@ export const SVG_SANITIZE_OPTIONS: {
   ],
   ALLOW_DATA_ATTR: true,
   KEEP_CONTENT: true,
-}
+} satisfies Config
 
 const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
   const processedDiagrams = useRef(new Set<Element>())

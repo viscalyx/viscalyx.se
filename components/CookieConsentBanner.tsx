@@ -41,6 +41,7 @@ const CookieConsentBanner = () => {
   const bannerRef = useRef<HTMLDivElement>(null)
   const firstFocusableRef = useRef<HTMLButtonElement>(null) // Accept All button
   const rejectButtonRef = useRef<HTMLButtonElement>(null) // Reject All button
+  const detailedCloseButtonRef = useRef<HTMLButtonElement>(null) // Detailed view close button
   const previousActiveElement = useRef<HTMLElement | null>(null)
 
   // Cache focusable elements to avoid repeated DOM queries
@@ -133,9 +134,13 @@ const CookieConsentBanner = () => {
       // Add keyboard event listener for focus trap
       document.addEventListener('keydown', handleKeyDown)
 
-      // Focus the first interactive element (Accept All button) for better UX
+      // Focus the appropriate element based on current view
       focusTimerId = setTimeout(() => {
-        firstFocusableRef.current?.focus()
+        if (showDetails) {
+          detailedCloseButtonRef.current?.focus()
+        } else {
+          firstFocusableRef.current?.focus()
+        }
       }, 100)
     } else {
       // Remove keyboard event listener
@@ -303,6 +308,7 @@ const CookieConsentBanner = () => {
                         cachedFocusableElements.current = null
                         setShowDetails(false)
                       }}
+                      ref={detailedCloseButtonRef}
                       type="button"
                     >
                       <X aria-hidden="true" className="w-5 h-5" />

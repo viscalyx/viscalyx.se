@@ -62,10 +62,10 @@ const LanguageSwitcher = () => {
     if (!isOpen || focusedIndex < 0) return
 
     const activeOption = listboxRef.current?.querySelector<HTMLButtonElement>(
-      `#language-option-${languages[focusedIndex].code}`,
+      `[id="${listboxId}-option-${languages[focusedIndex].code}"]`,
     )
     activeOption?.focus()
-  }, [isOpen, focusedIndex, languages])
+  }, [isOpen, focusedIndex, languages, listboxId])
 
   const handleLanguageChange = useCallback(
     (newLocale: string) => {
@@ -179,7 +179,7 @@ const LanguageSwitcher = () => {
                     ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
                     : 'text-secondary-700 dark:text-secondary-300'
                 } ${focusedIndex === index ? 'ring-2 ring-inset ring-primary-500' : ''}`}
-                id={`language-option-${language.code}`}
+                id={`${listboxId}-option-${language.code}`}
                 key={language.code}
                 onClick={() => handleLanguageChange(language.code)}
                 onKeyDown={handleOptionKeyDown}
