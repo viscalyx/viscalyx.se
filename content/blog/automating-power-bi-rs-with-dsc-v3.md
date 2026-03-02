@@ -521,7 +521,7 @@ winget settings
 ```
 <!-- markdownlint-enable MD013 -->
 
-Open in any text editor and add `experimentalFeatures` as show here:
+Open in any text editor and add `experimentalFeatures` as shown here:
 
 <!-- markdownlint-disable MD013 -->
 ```json
