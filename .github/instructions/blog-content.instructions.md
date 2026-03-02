@@ -59,7 +59,7 @@ native GitHub alert type.
 Plain blockquote:
 
 ```markdown
-> Regular blockquote without any special alert type. It maintains the original styling and behavior.
+> Regular blockquote without an alert marker.
 ```
 
 Use GitHub-style blockquote alerts:
