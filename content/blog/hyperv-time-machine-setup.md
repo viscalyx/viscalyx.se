@@ -115,7 +115,8 @@ ufw enable
 
 ## 6 - Configure macOS Sonoma Time Machine
 
-1. **Finder > Go > Connect to Server** > `smb://backup01.company.se/timemachine`
+1. **Finder > Go > Connect to Server** >
+   `smb://backup01.company.se/timemachine`
    - Log in as **tmbackup**, save in keychain.
 1. **System Settings > General > Time Machine** > **Add Backup Disk…**
    - Select the network volume.
@@ -171,7 +172,8 @@ mount | grep /srv/timemachine        # confirm options
 
 ### 8.3 - Verify Samba isn’t mapping to guest
 
-_Check UID in_ `smbstatus --shares`. Should be the tmbackup UID, **not 65534**.
+_Check UID in_ `smbstatus --shares`.
+Should be the tmbackup UID, **not 65534**.
 
 ### 8.4 - Reconnect from macOS
 
