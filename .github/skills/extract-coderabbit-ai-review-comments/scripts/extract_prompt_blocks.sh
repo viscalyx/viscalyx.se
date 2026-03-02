@@ -38,7 +38,7 @@ resolved_input="$(realpath -- "$input_file" 2>/dev/null || echo "$input_file")"
 resolved_output="$(realpath -- "$output_file" 2>/dev/null || echo "$output_file")"
 use_temp_output=false
 temp_output_file=""
-if [[ "$resolved_input" == "$resolved_output" ]]; then
+if [[ "$resolved_input" -ef "$resolved_output" ]]; then
   temp_output_file="$(mktemp)"
   use_temp_output=true
 fi
