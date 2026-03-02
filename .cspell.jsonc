@@ -66,6 +66,7 @@
     "workerd",
     "pipefail",
     "Vitest",
+    "nvmrc",
 
     // PowerShell DSC specific
     "DSC",
