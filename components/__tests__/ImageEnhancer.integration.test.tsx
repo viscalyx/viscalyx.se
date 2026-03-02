@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import Image from 'next/image'
 import { useRef } from 'react'
 import { vi } from 'vitest'
-import ImageEnhancer from '../ImageEnhancer'
+import ImageEnhancer from '@/components/ImageEnhancer'
 
 // Mock next-intl with a stable translator reference (matches production behavior)
 vi.mock('next-intl', () => {
