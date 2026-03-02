@@ -172,8 +172,8 @@ mount | grep /srv/timemachine        # confirm options
 
 ### 8.3 - Verify Samba isn’t mapping to guest
 
-_Check UID in_ `smbstatus --shares`.
-Should be the tmbackup UID, **not 65534**.
+Check the UID reported by `smbstatus --shares` and
+ensure it is the tmbackup UID rather than **65534**.
 
 ### 8.4 - Reconnect from macOS
 
