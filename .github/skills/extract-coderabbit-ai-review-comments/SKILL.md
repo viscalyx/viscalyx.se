@@ -1,6 +1,6 @@
 ---
 name: extract-coderabbit-ai-review-comments
-description: Extract CodeRabbit AI review comment code-block text that follows `<summary>🤖 Prompt for AI Agents</summary>` sections in markdown/text files or prompt-provided content, remove the repeated lead-in sentence, and write the findings to a markdown file with a blank line between entries.
+description: Extract CodeRabbit AI review comment code-block text that follows `Prompt for AI Agents` sections in markdown/text files or prompt-provided content, remove the repeated lead-in sentence, and write the findings to a markdown file with a blank line between entries.
 ---
 
 # Extract CodeRabbit AI Review Comments
