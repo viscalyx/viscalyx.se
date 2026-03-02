@@ -46,39 +46,23 @@ category: 'Any category — reuse existing ones when possible (e.g., DevOps, Pow
 
 ## Callouts
 
-Quote callout:
+Allowed callouts and examples:
 
-Note: `[!QUOTE]` is a **repository-specific** callout convention, not a
-native GitHub alert type.
-
-```markdown
-> [!QUOTE]
-> Quote text phrases from references
-```
-
-Plain blockquote:
-
-```markdown
-> Regular blockquote without an alert marker.
-```
-
-Use GitHub-style blockquote alerts:
+- `[!QUOTE]` — **repo-specific** (not a native GitHub alert)
+- `[!NOTE]` — informational
+- `[!TIP]` — helpful advice
+- `[!IMPORTANT]` — critical for success
+- `[!WARNING]` — important caution
+- `[!CAUTION]` — critical warning
 
 ```markdown
 > [!NOTE]
-> Informational callout
+> Callout text here
 
-> [!TIP]
-> Helpful advice
+> [!QUOTE]
+> Quoted reference text
 
-> [!IMPORTANT]
-> Critical information needed for success
-
-> [!WARNING]
-> Important caution
-
-> [!CAUTION]
-> Critical warning
+> Regular blockquote (no marker)
 ```
 
 ## Quality Check
