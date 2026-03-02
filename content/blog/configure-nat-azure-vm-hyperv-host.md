@@ -38,7 +38,7 @@ flowchart TD
             subgraph "Hyper‑V Guests"
                 direction TB
 
-                FW["Guest Firewall VM<br/>RED: 192.168.100.1 (Static IP)<br/>GREEN: 192.168.10.220 (Static IP)"]:::fw
+                FW["Guest Firewall VM<br/>RED: 192.168.100.2 (Static IP)<br/>GREEN: 192.168.10.220 (Static IP)"]:::fw
                 VM1[Guest VM 1<br/>IP: 192.168.10.15<br/>GW: 192.168.10.220<br/>DNS: 1.1.1.1]
                 VM2[Guest VM 2<br/>IP: 192.168.10.16<br/>GW: 192.168.10.220<br/>DNS: 1.1.1.1]
                 VM3[Guest VM 3<br/>IP: 192.168.10.17<br/>GW: 192.168.10.220<br/>DNS: 1.1.1.1]
@@ -198,7 +198,8 @@ subnet.
 | **Gateway ping**    | _(inside guest)_ `ping 192.168.100.1`                  | Replies                     | Re‑attach NIC to VmNAT                   |
 | **Active sessions** | `Get-NetNat \| fl Active*`                             | > 0 after guest traffic     | Firewall/DNS blocking, or NatSvc stuck   |
 | **DNS**             | `nslookup microsoft.com` in guest                      | Resolves                    | Use public DNS or host DNS               |
-| **NAT service**     | `Restart-Service ipnat`                                | Restarts cleanly            | Service disabled/crashed—set to Auto     |
+<!-- cSpell:disable-next-line -->
+| **NAT service**     | `Restart-Service winnat`                               | Restarts cleanly            | Service disabled/crashed—set to Auto     |
 <!-- markdownlint-enable MD013 -->
 
 > **Still stuck?**

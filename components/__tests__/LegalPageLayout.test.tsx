@@ -88,8 +88,8 @@ describe('LegalPageLayout', () => {
       </LegalPageLayout>,
     )
 
-    expect(screen.getByTestId('header')).toBeInTheDocument()
-    expect(screen.getByTestId('footer')).toBeInTheDocument()
+    expect(screen.getByRole('banner')).toBeInTheDocument()
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 
   it('renders ScrollToTop', () => {

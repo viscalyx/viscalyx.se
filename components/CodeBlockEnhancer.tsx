@@ -5,13 +5,11 @@ import { useEffect } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import CopyButton from '@/components/CopyButton'
 
-interface CodeBlockEnhancerProps {
+interface ComponentProps {
   contentLoaded?: boolean
 }
 
-const CodeBlockEnhancer = ({
-  contentLoaded = true,
-}: CodeBlockEnhancerProps) => {
+const CodeBlockEnhancer = ({ contentLoaded = true }: ComponentProps) => {
   const locale = useLocale()
   const messages = useMessages()
 

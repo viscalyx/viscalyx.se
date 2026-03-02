@@ -142,7 +142,7 @@ In the text setup:
 
 From a LAN host browse to **`https://192.168.1.1:444`** and log in as **admin**
 with the password you set. Immediately open **Pakfire → Update Lists → Upgrade**
-to apply any new Core Updates (latest is Core 195) ([IPFire.org][2]).
+to apply any new Core Updates — Core 195 at time of writing ([IPFire.org][2]).
 
 ## 6 – Post-install Hyper-V tweaks (optional)
 

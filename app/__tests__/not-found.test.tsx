@@ -14,6 +14,8 @@ async function renderAsync() {
 }
 
 describe('Root not-found page', () => {
+  beforeEach(() => vi.clearAllMocks())
+
   it('renders the 404 heading', async () => {
     await renderAsync()
     expect(screen.getByText('404')).toBeInTheDocument()

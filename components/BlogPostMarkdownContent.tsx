@@ -83,11 +83,18 @@ function sanitizeUrl(
 // crossorigin→crossOrigin, referrerpolicy→referrerPolicy, datetime→dateTime)
 // were removed because BLOG_MARKDOWN_SANITIZE_OPTIONS never allows those
 // attributes through, so they can never reach this function.
+// SVG attributes that must preserve their exact casing for React.
+const SVG_CASE_SENSITIVE_ATTRIBUTES: Record<string, string> = {
+  viewbox: 'viewBox', // cSpell:disable-line
+}
+
 function toReactAttributeName(attributeName: string): string {
   if (attributeName === 'class') return 'className'
   if (attributeName.startsWith('data-') || attributeName.startsWith('aria-')) {
     return attributeName
   }
+  const svgOverride = SVG_CASE_SENSITIVE_ATTRIBUTES[attributeName]
+  if (svgOverride) return svgOverride
   return attributeName.replace(/-([a-z])/gu, (_, char: string) =>
     char.toUpperCase(),
   )

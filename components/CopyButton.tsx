@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CheckmarkIcon, CopyIcon } from '@/components/BlogIcons'
 
 interface ComponentProps {
@@ -12,16 +12,32 @@ interface ComponentProps {
 const CopyButton = ({ text, className = '' }: ComponentProps) => {
   const t = useTranslations('copyButton')
   const [copied, setCopied] = useState(false)
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current !== null) {
+        clearTimeout(copyTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  const scheduleCopiedReset = () => {
+    if (copyTimeoutRef.current !== null) {
+      clearTimeout(copyTimeoutRef.current)
+    }
+    copyTimeoutRef.current = setTimeout(() => {
+      copyTimeoutRef.current = null
+      setCopied(false)
+    }, 2000)
+  }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
-
-      // Reset the copied state after 2 seconds
-      setTimeout(() => {
-        setCopied(false)
-      }, 2000)
+      scheduleCopiedReset()
     } catch (err) {
       console.error('Failed to copy text: ', err)
 
@@ -38,7 +54,7 @@ const CopyButton = ({ text, className = '' }: ComponentProps) => {
         document.execCommand('copy')
         textArea.remove()
         setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        scheduleCopiedReset()
       } catch (fallbackErr) {
         console.error('Fallback copy failed: ', fallbackErr)
       }

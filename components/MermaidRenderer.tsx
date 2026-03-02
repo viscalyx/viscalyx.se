@@ -255,6 +255,7 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
             // Mark as processed only after successful render and DOM replacement
             processedDiagrams.current.add(block)
           } catch (error) {
+            if (isStale()) continue
             console.error('Failed to render Mermaid diagram:', error)
 
             // Create error message

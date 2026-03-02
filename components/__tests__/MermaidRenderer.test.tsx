@@ -412,7 +412,7 @@ describe('MermaidRenderer', () => {
         { USE_PROFILES: { html: true } },
       )
 
-      consoleErrorSpy.mockRestore()
+      consoleErrorSpy.mockClear()
     })
 
     it('should handle non-Error objects in catch blocks', async () => {
@@ -461,7 +461,7 @@ describe('MermaidRenderer', () => {
         { USE_PROFILES: { html: true } },
       )
 
-      consoleErrorSpy.mockRestore()
+      consoleErrorSpy.mockClear()
     })
 
     it('should replace code-block-wrapper with error message on render failure', async () => {
