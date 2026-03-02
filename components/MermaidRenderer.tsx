@@ -191,9 +191,6 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
           // Skip if already processed
           if (processedDiagrams.current.has(block)) continue
 
-          // Mark as processed
-          processedDiagrams.current.add(block)
-
           // Get the mermaid code
           let mermaidCode = ''
           if (block.tagName === 'PRE') {
@@ -254,6 +251,9 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
               wrapper,
               containerToReplace,
             )
+
+            // Mark as processed only after successful render and DOM replacement
+            processedDiagrams.current.add(block)
           } catch (error) {
             console.error('Failed to render Mermaid diagram:', error)
 

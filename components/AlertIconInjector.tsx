@@ -84,13 +84,13 @@ export const AlertIconInjector: React.FC<AlertIconInjectorProps> = ({
         roots.forEach(({ root, container }) => {
           try {
             root.unmount()
-            // Remove the container from DOM if it still exists
+          } catch (error) {
+            console.warn('Error unmounting AlertIcon root:', error)
+          } finally {
+            // Always remove the container from DOM, even if unmount failed
             if (container.parentNode) {
               container.parentNode.removeChild(container)
             }
-          } catch (error) {
-            // Silently handle unmount errors (e.g., if already unmounted)
-            console.warn('Error unmounting AlertIcon root:', error)
           }
         })
       }, 0)

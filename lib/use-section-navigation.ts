@@ -45,7 +45,7 @@ export const useSectionNavigation = (
 
       // External links
       if (handleExternalLinks && href.startsWith('http')) {
-        window.open(href, '_blank', 'noopener noreferrer') // cSpell:disable-line
+        window.open(href, '_blank', 'noopener,noreferrer') // cSpell:disable-line
         return
       }
 
