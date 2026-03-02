@@ -22,7 +22,6 @@ Locations to check:
 Use the same single major version (e.g., `24`) across `.nvmrc`, `package.json` `engines`, and GitHub workflows:
 - `.nvmrc` → `24`
 - `package.json` → `"engines": { "node": "24" }`
-- Workflows → `node-version: '24'`
 - Dockerfiles → `node:24` or `node:24-alpine`
 
 ## 3. Verify
