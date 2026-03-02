@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import NotFoundPage from '@/components/NotFoundPage'
 
 const { t } = vi.hoisted(() => ({

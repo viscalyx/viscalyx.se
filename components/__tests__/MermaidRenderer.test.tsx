@@ -360,10 +360,7 @@ describe('MermaidRenderer', () => {
       const { default: DOMPurify } = await import('dompurify')
       const { default: mermaid } = await import('mermaid')
 
-      // Create fresh console error spy for this test
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
+      mockConsoleError.mockClear()
 
       const renderError = new Error('Invalid mermaid syntax')
 
@@ -389,7 +386,7 @@ describe('MermaidRenderer', () => {
       })
 
       // Now check if console.error was called
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect(mockConsoleError).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
         renderError,
       )
@@ -411,18 +408,13 @@ describe('MermaidRenderer', () => {
         expect.stringContaining('Invalid mermaid syntax'),
         { USE_PROFILES: { html: true } },
       )
-
-      consoleErrorSpy.mockClear()
     })
 
     it('should handle non-Error objects in catch blocks', async () => {
       const { default: DOMPurify } = await import('dompurify')
       const { default: mermaid } = await import('mermaid')
 
-      // Create fresh console error spy for this test
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {})
+      mockConsoleError.mockClear()
 
       const nonErrorValue = 'String error'
 
@@ -448,7 +440,7 @@ describe('MermaidRenderer', () => {
       })
 
       // Now check if console.error was called
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect(mockConsoleError).toHaveBeenCalledWith(
         'Failed to render Mermaid diagram:',
         nonErrorValue,
       )
@@ -460,8 +452,6 @@ describe('MermaidRenderer', () => {
         expect.stringContaining('Unknown error occurred'),
         { USE_PROFILES: { html: true } },
       )
-
-      consoleErrorSpy.mockClear()
     })
 
     it('should replace code-block-wrapper with error message on render failure', async () => {

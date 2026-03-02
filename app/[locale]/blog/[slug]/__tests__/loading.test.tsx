@@ -13,15 +13,12 @@ vi.mock('@/components/LoadingSpinner', () => ({
 describe('Blog post loading page', () => {
   it('renders the LoadingSpinner component', () => {
     render(<BlogPostLoading />)
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('passes size="lg" to LoadingSpinner', () => {
     render(<BlogPostLoading />)
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-size',
-      'lg',
-    )
+    expect(screen.getByRole('status')).toHaveAttribute('data-size', 'lg')
   })
 
   it('renders with an accessible loading status', () => {

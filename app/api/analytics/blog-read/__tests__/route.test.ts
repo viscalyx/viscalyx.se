@@ -16,7 +16,16 @@ const originalEnv = { ...process.env }
 
 describe('blog-read analytics route', () => {
   afterAll(() => {
-    process.env = { ...originalEnv }
+    if (originalEnv.ANALYTICS_HASH_SECRET === undefined) {
+      delete process.env.ANALYTICS_HASH_SECRET
+    } else {
+      process.env.ANALYTICS_HASH_SECRET = originalEnv.ANALYTICS_HASH_SECRET
+    }
+    if (originalEnv.STORE_HASHED_IP === undefined) {
+      delete process.env.STORE_HASHED_IP
+    } else {
+      process.env.STORE_HASHED_IP = originalEnv.STORE_HASHED_IP
+    }
   })
 
   beforeEach(() => {
@@ -65,10 +74,10 @@ describe('blog-read analytics route', () => {
     const req = createRequest(
       { slug: 'slug', category: 'cat', title: 'title' },
       {
-        origin: '',
         referer: 'https://viscalyx.org/en/blog',
       },
     )
+    req.headers.delete('origin')
 
     const res = await POST(req)
     expect(res.status).toBe(200)
@@ -79,20 +88,18 @@ describe('blog-read analytics route', () => {
     const req = createRequest(
       { slug: 'slug', category: 'cat', title: 'title' },
       {
-        origin: '',
         referer: 'not-a-url',
       },
     )
+    req.headers.delete('origin')
 
     const res = await POST(req)
     expect(res.status).toBe(403)
   })
 
   it('rejects requests without origin and referer headers', async () => {
-    const req = createRequest(
-      { slug: 'slug', category: 'cat', title: 'title' },
-      { origin: '' },
-    )
+    const req = createRequest({ slug: 'slug', category: 'cat', title: 'title' })
+    req.headers.delete('origin')
     req.headers.delete('referer')
     const res = await POST(req)
 
