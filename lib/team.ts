@@ -123,7 +123,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
         },
         {
           name: 'X',
-          href: 'https://twitter.com/johlju',
+          href: 'https://x.com/johanljunggren',
           icon: XIcon,
         },
         {
