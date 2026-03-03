@@ -48,11 +48,11 @@ function getCachedAnalyticsConsent(): boolean {
 }
 
 /**
- * Helper function to check if two objects are deeply equal using JSON serialization
- * This is safe for simple objects without functions, circular references, or undefined values
+ * Helper function to check if two analytics data objects are equal
+ * Uses direct property comparison for reliability (key-order-independent) and performance
  */
 function isDataEqual(a: BlogAnalyticsData, b: BlogAnalyticsData): boolean {
-  return JSON.stringify(a) === JSON.stringify(b)
+  return a.category === b.category && a.slug === b.slug && a.title === b.title
 }
 
 /**
@@ -167,7 +167,7 @@ export function useBlogAnalytics(
       return cleanupConsentListener
     }
 
-    let throttleTimer: NodeJS.Timeout | null = null
+    let throttleTimer: ReturnType<typeof setTimeout> | null = null
 
     const handleScroll = () => {
       if (!trackReadProgress || !getCachedAnalyticsConsent()) return
@@ -175,8 +175,7 @@ export function useBlogAnalytics(
       if (throttleTimer) return
 
       throttleTimer = setTimeout(() => {
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
         const documentHeight =
           document.documentElement.scrollHeight - window.innerHeight
         const scrollProgress =
