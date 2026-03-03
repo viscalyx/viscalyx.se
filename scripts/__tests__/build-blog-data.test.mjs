@@ -229,8 +229,10 @@ tags: ["dev"]
 
     vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'warn').mockImplementation(() => {})
-    vi.spyOn(console, 'error').mockImplementation(() => {})
-    vi.spyOn(process, 'exit').mockImplementation(() => undefined)
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => undefined)
 
     process.chdir(tempDir)
     const metadataPath = path.join(tempDir, 'lib/blog-data.json')
@@ -246,6 +248,8 @@ tags: ["dev"]
     )
     // The directory itself should exist
     expect(fs.existsSync(contentOutputDir)).toBe(true)
+    expect(errorSpy).not.toHaveBeenCalled()
+    expect(exitSpy).not.toHaveBeenCalled()
   })
 
   it('cleans stale content files when source directory is missing', async () => {
@@ -263,8 +267,10 @@ tags: ["dev"]
 
     vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'warn').mockImplementation(() => {})
-    vi.spyOn(console, 'error').mockImplementation(() => {})
-    vi.spyOn(process, 'exit').mockImplementation(() => undefined)
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => undefined)
 
     process.chdir(tempDir)
     const metadataPath = path.join(tempDir, 'lib/blog-data.json')
@@ -277,5 +283,7 @@ tags: ["dev"]
     // Output directory should exist but be empty
     expect(fs.existsSync(contentOutputDir)).toBe(true)
     expect(fs.readdirSync(contentOutputDir)).toHaveLength(0)
+    expect(errorSpy).not.toHaveBeenCalled()
+    expect(exitSpy).not.toHaveBeenCalled()
   })
 })
