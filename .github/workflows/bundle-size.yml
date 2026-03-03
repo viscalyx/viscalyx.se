@@ -91,7 +91,7 @@ jobs:
           exit 1
 
       - name: Upload bundle analysis
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bundle-analysis
           path: test-results/bundle-report.md
