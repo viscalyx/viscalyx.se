@@ -173,3 +173,22 @@ vi.mock('**/*.css', () => ({}))
 
 // Mock static assets
 vi.mock('**/*.(png|jpg|jpeg|gif|svg)', () => 'test-file-stub')
+
+// Mock next/navigation globally — provides sensible defaults.
+// Individual test files can override with their own vi.mock('next/navigation', ...)
+// or use vi.mocked() to customize per-test.
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+  usePathname: () => '/en',
+  useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({}),
+  redirect: vi.fn(),
+  notFound: vi.fn(),
+}))
