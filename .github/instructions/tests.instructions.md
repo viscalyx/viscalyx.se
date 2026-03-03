@@ -6,17 +6,18 @@ applyTo: '**/*.{test,spec}.{ts,tsx,js,mjs,cjs},**/__tests__/**/*'
 
 ## Required Mocks
 
-> **Note:** `framer-motion` and `next/image` are globally mocked in `vitest.setup.ts`.
-> Do **not** re-mock them in individual test files. The global framer-motion mock
-> uses a `Proxy` that handles any `motion.*` element, `AnimatePresence`,
-> `useInView`, and `motion.create()`.
+> **Note:** `framer-motion`, `next/image`, and `next/navigation` are globally
+> mocked in `vitest.setup.ts`.
+> Do **not** re-mock them in individual test files unless you need custom
+> behavior (e.g., controllable pathname, spying on `router.push`).
+> The global framer-motion mock uses a `Proxy` that handles any `motion.*`
+> element, `AnimatePresence`, `useInView`, and `motion.create()`.
+> The global `next/navigation` mock provides default `useRouter`, `usePathname`,
+> `useSearchParams`, `useParams`, `redirect`, and `notFound`. Override per-file
+> with your own `vi.mock('next/navigation', ...)` when needed.
 
 ```tsx
 vi.mock('next-intl', () => ({ useTranslations: () => (key: string) => key }))
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: vi.fn(), back: vi.fn() }),
-  usePathname: () => '/en',
-}))
 ```
 
 ## Structure
