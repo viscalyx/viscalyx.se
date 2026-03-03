@@ -2,12 +2,12 @@
  * Cookie consent management utilities for GDPR compliance
  */
 
-import { consentEvents } from './consent-events'
+import { consentEvents } from '@/lib/consent-events'
 import {
   deleteCookie as deleteCookieUtil,
   parseCookies,
   setCookie,
-} from './cookie-utils'
+} from '@/lib/cookie-utils'
 
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
 

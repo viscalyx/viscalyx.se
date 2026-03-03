@@ -62,7 +62,10 @@ describe('structured-data', () => {
       expect(data.description).toBe('A test blog post excerpt')
       expect(data.datePublished).toBe('2025-06-15')
       expect(data.inLanguage).toBe('en-US')
-      expect(data.image).toBe(`${SITE_URL}/images/test.png`)
+      const image = data.image as Record<string, unknown>
+      expect(image['@type']).toBe('ImageObject')
+      expect(image.url).toBe(`${SITE_URL}/images/test.png`)
+      expect(image.alternateName).toBe('Test image alt')
     })
 
     it('sets author as Person with name', () => {
@@ -127,13 +130,24 @@ describe('structured-data', () => {
         image: 'https://example.com/image.png',
       }) as unknown as Record<string, unknown>
 
-      expect(data.image).toBe('https://example.com/image.png')
+      const image = data.image as Record<string, unknown>
+      expect(image.url).toBe('https://example.com/image.png')
     })
 
     it('prepends SITE_URL for relative image paths without leading slash', () => {
       const data = getBlogPostingJsonLd({
         ...basePost,
         image: 'images/test.png',
+      }) as unknown as Record<string, unknown>
+
+      const image = data.image as Record<string, unknown>
+      expect(image.url).toBe(`${SITE_URL}/images/test.png`)
+    })
+
+    it('uses plain image URL string when imageAlt is not provided', () => {
+      const data = getBlogPostingJsonLd({
+        ...basePost,
+        imageAlt: undefined,
       }) as unknown as Record<string, unknown>
 
       expect(data.image).toBe(`${SITE_URL}/images/test.png`)

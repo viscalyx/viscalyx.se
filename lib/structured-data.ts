@@ -67,7 +67,9 @@ export function getBlogPostingJsonLd(
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: imageUrl,
+    image: post.imageAlt
+      ? { '@type': 'ImageObject', url: imageUrl, alternateName: post.imageAlt }
+      : imageUrl,
     author: {
       '@type': 'Person',
       name: post.author,

@@ -4,7 +4,6 @@ import {
   getAllPosts,
   getFeaturedPost,
   getPostBySlug,
-  getPostData,
   getPostMetadata,
   getRelatedPosts,
   loadBlogContent,
@@ -148,19 +147,21 @@ describe('getPostMetadata', () => {
   })
 })
 
-describe('getPostData', () => {
-  it('returns metadata (alias for getPostMetadata)', () => {
-    const post = getPostData('first-post')
-    expect(post).not.toBeNull()
-    expect(post?.title).toBe('First Post')
-  })
-})
-
 describe('getPostBySlug', () => {
-  it('returns metadata (alias for getPostMetadata)', () => {
+  it('returns metadata for a valid slug', () => {
     const post = getPostBySlug('second-post')
     expect(post).not.toBeNull()
     expect(post?.title).toBe('Second Post')
+  })
+
+  it('returns null for a nonexistent slug', () => {
+    expect(getPostBySlug('nonexistent')).toBeNull()
+  })
+
+  it('delegates to getPostMetadata (same reference)', () => {
+    const bySlug = getPostBySlug('first-post')
+    const byMeta = getPostMetadata('first-post')
+    expect(bySlug).toBe(byMeta)
   })
 })
 

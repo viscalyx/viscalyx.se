@@ -104,6 +104,9 @@ async function buildBlogData() {
     const { default: rehypeStringify } = await import('rehype-stringify')
     const { visit } = await import('unist-util-visit')
 
+    // Clean output directory before any processing to prevent stale files
+    cleanDir(contentOutputDir)
+
     // Check if content directory exists
     if (!fs.existsSync(postsDirectory)) {
       console.warn('Blog content directory not found, creating empty blog data')
@@ -124,7 +127,6 @@ async function buildBlogData() {
 
     const posts = []
     const slugs = []
-    cleanDir(contentOutputDir)
 
     for (const fileName of markdownFiles) {
       const slug = fileName.replace(/\.md$/, '')
