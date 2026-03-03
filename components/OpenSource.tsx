@@ -150,11 +150,18 @@ const OpenSource = () => {
                       className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm font-medium"
                       href={project.link}
                       onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                        // Only handle left-click mouse events
-                        if (e.button === 0) {
-                          e.preventDefault()
-                          handleNavigation(project.link)
+                        // Let modified clicks use native browser behavior (open in new tab/window)
+                        if (
+                          e.button !== 0 ||
+                          e.metaKey ||
+                          e.ctrlKey ||
+                          e.shiftKey ||
+                          e.altKey
+                        ) {
+                          return
                         }
+                        e.preventDefault()
+                        handleNavigation(project.link)
                       }}
                       rel="noopener noreferrer"
                       target="_blank"
