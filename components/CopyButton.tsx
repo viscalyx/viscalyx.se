@@ -52,9 +52,11 @@ const CopyButton = ({ text, className = '' }: ComponentProps) => {
         document.body.appendChild(textArea)
         textArea.focus()
         textArea.select()
-        document.execCommand('copy')
-        setCopied(true)
-        scheduleCopiedReset()
+        const success = document.execCommand('copy')
+        if (success) {
+          setCopied(true)
+          scheduleCopiedReset()
+        }
       } catch (fallbackErr) {
         console.error('Fallback copy failed: ', fallbackErr)
       } finally {

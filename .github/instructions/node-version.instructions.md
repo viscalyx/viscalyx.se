@@ -8,12 +8,12 @@ When you change a file that sets or documents a Node version (e.g., `FROM node:`
 
 ## 1. Find all pinning locations
 
-Search: `grep -R "node-version:\|FROM node:\|\.nvmrc\|\"engines\".*\"node\"" .`
+Search: `grep -R "node-version:\|node-version-file:\|FROM node:\|\.nvmrc\|\"engines\".*\"node\"" .`
 
 Locations to check:
 - `.nvmrc`
 - `package.json` → `engines.node`
-- `.github/workflows/*.yml` → `node-version:`
+- `.github/workflows/*.yml` → `node-version:` and `node-version-file:`
 - `Dockerfile` / `.devcontainer/Dockerfile` → `FROM node:`
 - `bundled/` → generated `NODE_VERSION` constants
 
