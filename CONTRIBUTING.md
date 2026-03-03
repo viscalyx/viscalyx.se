@@ -691,6 +691,14 @@ To modify syntax highlighting, choose different
 - **Copy functionality**: Each code block includes a copy-to-clipboard button
   for easy code sharing
 
+> **Why `rehype-pretty-code` instead of `@shikijs/rehype`?**
+> `rehype-pretty-code` is a thin wrapper around Shiki that adds conveniences the
+> build pipeline relies on: `<figure>` wrappers with `data-rehype-pretty-code-figure`
+> (used by the code-block wrapper plugin), automatic `data-language` and `tabindex`
+> attributes on `<pre>`, and built-in line-highlighting meta-string parsing.
+> Switching to `@shikijs/rehype` would mean reimplementing those conveniences
+> ourselves for no functional gain.
+
 **Copy-to-Clipboard Feature:**
 
 All code blocks automatically include a copy button in the top-right corner that
