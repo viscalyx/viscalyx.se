@@ -8,7 +8,6 @@ import { useFormatter } from 'next-intl'
 import { useState } from 'react'
 
 import type { BlogPostMetadata } from '@/lib/blog'
-import { isValidDate } from '@/lib/date-utils'
 
 interface BlogPostGridProps {
   allPosts: BlogPostMetadata[]
