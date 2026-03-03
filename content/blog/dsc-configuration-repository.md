@@ -439,7 +439,7 @@ just renamed.
 1. Change the value for property **ModuleVersion** to '1.0.0.0'.
 1. Run the cmdlet `New-Guid` and change property **GUID** to the GUID that you
     got from the cmdlet.
-1. The property **RequiredModules** must be changed to the value below
+1. The property **RequiredModules** must be changed to the value below.
 
     ```powershell
     RequiredModules = @('PSDscResources','xComputerManagement')
