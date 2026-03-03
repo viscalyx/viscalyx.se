@@ -67,6 +67,7 @@
     "pipefail",
     "Vitest",
     "nvmrc",
+    "shikijs",
 
     // PowerShell DSC specific
     "DSC",
