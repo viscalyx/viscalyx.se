@@ -198,4 +198,92 @@ const a = 1
     expect(errorSpy).not.toHaveBeenCalled()
     expect(exitSpy).not.toHaveBeenCalled()
   })
+
+  it('removes stale content files when rebuilding', async () => {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'build-blog-data-stale-'))
+
+    // Create a blog post
+    const blogDir = path.join(tempDir, 'content/blog')
+    fs.mkdirSync(blogDir, { recursive: true })
+    fs.writeFileSync(
+      path.join(blogDir, 'current.md'),
+      `---
+title: "Current"
+date: "2025-01-01"
+author: "A"
+excerpt: "Current post"
+tags: ["dev"]
+---
+
+# Current Post
+`,
+    )
+
+    // Pre-populate output dir with a stale file
+    const contentOutputDir = path.join(tempDir, 'public/blog-content')
+    fs.mkdirSync(contentOutputDir, { recursive: true })
+    fs.writeFileSync(
+      path.join(contentOutputDir, 'deleted-post.json'),
+      JSON.stringify({ content: '<p>stale</p>' }),
+    )
+
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => undefined)
+
+    process.chdir(tempDir)
+    const metadataPath = path.join(tempDir, 'lib/blog-data.json')
+    await requireScriptAndWait(metadataPath)
+
+    // The stale file should be gone
+    expect(
+      fs.existsSync(path.join(contentOutputDir, 'deleted-post.json')),
+    ).toBe(false)
+    // The current post content should exist
+    expect(fs.existsSync(path.join(contentOutputDir, 'current.json'))).toBe(
+      true,
+    )
+    // The directory itself should exist
+    expect(fs.existsSync(contentOutputDir)).toBe(true)
+    expect(errorSpy).not.toHaveBeenCalled()
+    expect(exitSpy).not.toHaveBeenCalled()
+  })
+
+  it('cleans stale content files when source directory is missing', async () => {
+    tempDir = fs.mkdtempSync(
+      path.join(os.tmpdir(), 'build-blog-data-stale-empty-'),
+    )
+
+    // Pre-populate output dir with a stale file (no source content/blog dir)
+    const contentOutputDir = path.join(tempDir, 'public/blog-content')
+    fs.mkdirSync(contentOutputDir, { recursive: true })
+    fs.writeFileSync(
+      path.join(contentOutputDir, 'old-post.json'),
+      JSON.stringify({ content: '<p>stale</p>' }),
+    )
+
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => undefined)
+
+    process.chdir(tempDir)
+    const metadataPath = path.join(tempDir, 'lib/blog-data.json')
+    await requireScriptAndWait(metadataPath)
+
+    // Stale file should be removed
+    expect(fs.existsSync(path.join(contentOutputDir, 'old-post.json'))).toBe(
+      false,
+    )
+    // Output directory should exist but be empty
+    expect(fs.existsSync(contentOutputDir)).toBe(true)
+    expect(fs.readdirSync(contentOutputDir)).toHaveLength(0)
+    expect(errorSpy).not.toHaveBeenCalled()
+    expect(exitSpy).not.toHaveBeenCalled()
+  })
 })

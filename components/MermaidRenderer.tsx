@@ -162,14 +162,14 @@ const MermaidRenderer = ({ contentLoaded = true }: MermaidRendererProps) => {
 
         // Find all mermaid code blocks
         const mermaidSelector =
-          '.blog-content pre[class*="language-mermaid"], .blog-content code[class*="language-mermaid"]'
+          '.blog-content pre[data-language="mermaid"], .blog-content code[data-language="mermaid"]'
         const mermaidBlocks = Array.from(
           document.querySelectorAll(mermaidSelector),
         )
         const processedRoots = new Set<Element>()
         const uniqueMermaidBlocks = mermaidBlocks
           .map(block => {
-            const preBlock = block.closest('pre[class*="language-mermaid"]')
+            const preBlock = block.closest('pre[data-language="mermaid"]')
             return preBlock ?? block
           })
           .filter(block => {

@@ -80,6 +80,15 @@ type TranslationFunction = {
   raw: (key: string) => unknown
 }
 
+/**
+ * Validate that a raw translation value is an array of strings.
+ * Returns the validated array or an empty fallback.
+ */
+function validateStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+  return value.filter((item): item is string => typeof item === 'string')
+}
+
 // Get team member data with translations
 export function getTeamMembers(t: TranslationFunction): TeamMember[] {
   return [
@@ -90,7 +99,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
       image: '/johlju-profile.jpg',
       bio: t('members.johlju.bio'),
       location: 'Sweden',
-      specialties: t.raw('members.johlju.specialties') as string[],
+      specialties: validateStringArray(t.raw('members.johlju.specialties')),
       socialLinks: [
         {
           name: 'Email',
@@ -99,7 +108,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
         },
         {
           name: 'LinkedIn',
-          href: 'https://linkedin.com/in/johlju',
+          href: 'https://linkedin.com/in/johanljunggren',
           icon: LinkedInIcon,
         },
         {
@@ -109,12 +118,12 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
         },
         {
           name: 'Mastodon',
-          href: 'https://mastodon.social/@johlju',
+          href: 'https://hachyderm.io/@johlju',
           icon: MastodonIcon,
         },
         {
           name: 'X',
-          href: 'https://twitter.com/johlju',
+          href: 'https://x.com/johanljunggren',
           icon: XIcon,
         },
         {
@@ -151,7 +160,9 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
     //   image: undefined, // No image available
     //   bio: t('members.testsson.bio'),
     //   location: 'Sweden',
-    //   specialties: t.raw('members.testsson.specialties') as string[],
+    //   specialties: validateStringArray(
+    //     t.raw('members.testsson.specialties'),
+    //   ),
     //   socialLinks: [
     //     {
     //       name: 'Instagram',

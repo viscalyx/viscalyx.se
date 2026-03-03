@@ -25,7 +25,7 @@ const BLOG_MARKDOWN_SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
       'aria-label',
       'title',
     ],
-    code: ['class'],
+    code: ['class', 'style'],
     div: ['class', 'data-alert-type'],
     h1: ['id', 'class'],
     h2: ['id', 'class'],
@@ -42,8 +42,8 @@ const BLOG_MARKDOWN_SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
       'fill',
       'd',
     ],
-    pre: ['class', 'data-language'],
-    span: ['class'],
+    pre: ['class', 'data-language', 'tabindex'],
+    span: ['class', 'style'],
     svg: ['class', 'fill', 'stroke', 'viewBox', 'xmlns', 'aria-hidden'],
     '*': ['data-*', 'aria-*'],
   },
@@ -90,6 +90,7 @@ const SVG_CASE_SENSITIVE_ATTRIBUTES: Record<string, string> = {
 
 function toReactAttributeName(attributeName: string): string {
   if (attributeName === 'class') return 'className'
+  if (attributeName === 'tabindex') return 'tabIndex'
   if (attributeName.startsWith('data-') || attributeName.startsWith('aria-')) {
     return attributeName
   }
@@ -122,10 +123,12 @@ function parseInlineStyle(styleText: string): CSSProperties {
       continue
     }
 
-    const reactProperty = trimmedProperty.replace(
-      /-([a-z])/gu,
-      (_, char: string) => char.toUpperCase(),
-    )
+    // CSS custom properties (e.g. --shiki-light) must be kept as-is
+    const reactProperty = trimmedProperty.startsWith('--')
+      ? trimmedProperty
+      : trimmedProperty.replace(/-([a-z])/gu, (_, char: string) =>
+          char.toUpperCase(),
+        )
     style[reactProperty] = value
   }
 
@@ -244,7 +247,7 @@ const BlogPostMarkdownContent = ({ contentWithIds }: ComponentProps) => {
   )
   const root = parse(sanitizedContent, {
     comment: false,
-    // Keep <pre> descendants parsed so Prism token spans and code nodes survive.
+    // Keep <pre> descendants parsed so Shiki token spans and code nodes survive.
     blockTextElements: {
       script: true,
       noscript: true,

@@ -4,7 +4,7 @@
  * - Language labels (positioning and styling)
  * - Copy button positioning and interactions
  * - Code block container backgrounds, padding, borders
- * - Prism.js specific overrides
+ * - Shiki syntax highlighting support
  * This consolidates all code block-related styles in one file
 
  * Note: Inline code styles remain in globals.css as part of typography
@@ -24,33 +24,33 @@
   position: relative;
 }
 
-/* Remove top margin for pre elements inside wrapper to avoid double spacing */
-.blog-content .code-block-wrapper pre,
-.blog-content .code-block-wrapper pre[class*="language-"] {
-  margin-top: 0;
-}
-
 /* Fallback spacing for browsers without :has() support */
-.blog-content pre[class*="language-"].pre--has-label,
-.blog-content pre[class*="language-"][data-language] {
+.blog-content pre[data-language].pre--has-label,
+.blog-content pre[data-language] {
   margin-top: 3rem; /* Extra space for the language label */
 }
 
+/* Remove top margin for pre elements inside wrapper to avoid double spacing */
+.blog-content .code-block-wrapper pre,
+.blog-content .code-block-wrapper pre[data-language] {
+  margin-top: 0;
+}
+
 /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-.blog-content .code-block-wrapper pre[class*="language-"].pre--has-label,
-.blog-content .code-block-wrapper pre[class*="language-"][data-language] {
+.blog-content .code-block-wrapper pre[data-language].pre--has-label,
+.blog-content .code-block-wrapper pre[data-language] {
   margin-top: 0;
 }
 
 @supports selector(:has(*)) {
   /* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
-  .blog-content pre[class*="language-"]:has(.code-language-label) {
+  .blog-content pre[data-language]:has(.code-language-label) {
     margin-top: 3rem; /* Extra space for the language label */
   }
 
   /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
   .blog-content .code-block-wrapper
-    pre[class*="language-"]:has(.code-language-label) {
+    pre[data-language]:has(.code-language-label) {
     margin-top: 0;
   }
 }
@@ -68,13 +68,13 @@
   padding: 0.375rem 0.75rem 0.5rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #374151; /* text-secondary-700 */
+  color: var(--color-secondary-700);
   letter-spacing: 0.05em;
   white-space: nowrap;
   /* Ensure it stays above the code block */
   pointer-events: none;
-  background: #e5e7eb; /* bg-secondary-200 */
-  border: 1px solid #d1d5db; /* border-secondary-300 */
+  background: var(--color-secondary-200);
+  border: 1px solid var(--color-secondary-300);
   border-bottom: none;
   border-radius: 0.375rem 0.375rem 0 0;
   /* Tab effect - connect to code block */
@@ -82,9 +82,9 @@
 }
 
 .dark .blog-content .code-language-label {
-  color: #e5e7eb; /* dark:text-secondary-200 */
-  background: #0c0a09; /* dark:bg-secondary-950 */
-  border-color: #4b5563; /* dark:border-secondary-600 */
+  color: var(--color-secondary-200);
+  background: var(--color-secondary-950);
+  border-color: var(--color-secondary-600);
   box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -100,7 +100,7 @@
 /* ===== Copy Button Positioning ===== */
 
 /* Copy button for regular pre elements */
-.blog-content pre[class*="language-"] .copy-button-container {
+.blog-content pre[data-language] .copy-button-container {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -125,13 +125,13 @@
 }
 
 /* Copy button visibility on hover over regular pre elements (fallback for non-wrapper code blocks) */
-.blog-content pre[class*="language-"]:hover .copy-button-container {
+.blog-content pre[data-language]:hover .copy-button-container {
   opacity: 1;
 }
 
 /* Copy button visibility when any child in wrapper receives focus */
 .blog-content .code-block-wrapper:focus-within .copy-button-container,
-.blog-content pre[class*="language-"]:focus-within .copy-button-container {
+.blog-content pre[data-language]:focus-within .copy-button-container {
   opacity: 1;
 }
 
@@ -146,32 +146,32 @@
   padding-left: 1rem;
   margin: 1.5rem 0; /* my-6 */
   overflow-x: auto; /* overflow-x-auto */
-  color: #111827; /* text-secondary-900 */
-  background-color: #f9fafb; /* bg-secondary-50 */
-  border: 1px solid #f3f4f6; /* border-secondary-100 */
+  color: var(--color-secondary-900);
+  background-color: var(--color-secondary-50);
+  border: 1px solid var(--color-secondary-100);
   border-radius: 0.5rem;
 }
 
 /* Keep scroll behavior on <pre>; give language blocks extra top breathing room */
-.blog-content pre[class*="language-"] {
+.blog-content pre[data-language] {
   max-height: min(500px, 60vh); /* limit vertical expansion */
   padding-top: 1.25rem; /* extra space between code and top of container */
   overflow-y: auto; /* prevent uncontrolled height growth */
 }
 
 .dark .blog-content pre {
-  color: #ffffff; /* dark:text-white */
-  background-color: #0c0a09; /* dark:bg-secondary-950 */
-  border-color: #374151; /* dark:border-secondary-700 */
+  color: var(--color-white);
+  background-color: var(--color-secondary-950);
+  border-color: var(--color-secondary-700);
 }
 
-/* Higher specificity for Prism.js code elements */
-.blog-content pre[class*="language-"] code[class*="language-"] {
+/* Higher specificity for Shiki code elements */
+.blog-content pre[data-language] code[data-language] {
   padding: 0; /* p-0 */
-  color: #111827; /* text-secondary-900 */
+  color: var(--color-secondary-900);
   background: transparent; /* transparent background */
 }
 
-.dark .blog-content pre[class*="language-"] code[class*="language-"] {
-  color: #ffffff; /* dark:text-white */
+.dark .blog-content pre[data-language] code[data-language] {
+  color: var(--color-white);
 }

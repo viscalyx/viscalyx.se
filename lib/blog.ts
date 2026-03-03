@@ -103,13 +103,7 @@ export function getPostMetadata(slug: string): BlogPostMetadata | null {
   return post || null
 }
 
-// Get blog post data by slug (with content loaded from separate file)
-// Note: Content is now loaded from /blog-content/[slug].json via API
-export function getPostData(slug: string): BlogPostMetadata | null {
-  return getPostMetadata(slug)
-}
-
-// Alias for getPostData for consistency
+// Public API: look up a single post by slug
 export function getPostBySlug(slug: string): BlogPostMetadata | null {
   return getPostMetadata(slug)
 }

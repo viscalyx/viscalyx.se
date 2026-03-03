@@ -127,14 +127,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     isInitialized,
   )
 
-  const handleSetTheme = (newTheme: Theme) => {
-    setTheme(newTheme)
-  }
-
   return (
-    <ThemeContext.Provider
-      value={{ theme, setTheme: handleSetTheme, resolvedTheme }}
-    >
+    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
       {children}
     </ThemeContext.Provider>
   )

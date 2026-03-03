@@ -2,8 +2,12 @@
  * Cookie consent management utilities for GDPR compliance
  */
 
-import { consentEvents } from './consent-events'
-import { deleteCookie as deleteCookieUtil, setCookie } from './cookie-utils'
+import { consentEvents } from '@/lib/consent-events'
+import {
+  deleteCookie as deleteCookieUtil,
+  parseCookies,
+  setCookie,
+} from '@/lib/cookie-utils'
 
 export type CookieCategory = 'strictly-necessary' | 'analytics' | 'preferences'
 
@@ -106,16 +110,11 @@ class CookieCacheManager {
       return this.cache
     }
 
-    // Parse cookies and update cache
-    const cookies: { [key: string]: string } = {}
-    if (typeof window !== 'undefined' && document.cookie) {
-      document.cookie.split(';').forEach(cookie => {
-        const [name, ...valueParts] = cookie.trim().split('=')
-        if (name) {
-          cookies[name] = valueParts.join('=') || ''
-        }
-      })
-    }
+    // Parse cookies using shared utility and update cache
+    const cookies: { [key: string]: string } =
+      typeof window !== 'undefined' && document.cookie
+        ? parseCookies(document.cookie)
+        : {}
 
     this.cache = cookies
     this.cacheTimestamp = now

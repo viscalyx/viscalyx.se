@@ -7,29 +7,29 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { useSectionNavigation } from '@/lib/use-section-navigation'
 
+// Images representing productivity, automation, and business processes
+const heroImages = [
+  {
+    src: '/calm-productive-engineering-culture.png',
+    alt: 'A man in glasses works at a tidy desk with a raised laptop and large monitor showing code, while another coworker focuses at a side-by-side desk in the background of a bright, plant-filled office.',
+  },
+  {
+    src: '/laptop-rising-market-chart-modern-office.png',
+    alt: 'Side-angle close-up of a laptop displaying a rising financial market chart in a blurred glass office.',
+  },
+  {
+    src: '/laptop-analytics-dashboard-glossy-table.png',
+    alt: 'Open silver laptop on a glossy table displaying a web analytics dashboard with KPIs and charts.',
+  },
+  {
+    src: '/collaborative-planning-hands-diagram-laptops.png',
+    alt: 'Two people collaborate over a diagram-filled sheet of paper, one pointing with a pencil while laptops and pens surround the workspace.',
+  },
+]
+
 const Hero = () => {
   const { handleNavigation } = useSectionNavigation()
   const t = useTranslations('hero')
-
-  // Images representing productivity, automation, and business processes
-  const heroImages = [
-    {
-      src: '/calm-productive-engineering-culture.png',
-      alt: 'A man in glasses works at a tidy desk with a raised laptop and large monitor showing code, while another coworker focuses at a side-by-side desk in the background of a bright, plant-filled office.',
-    },
-    {
-      src: '/laptop-rising-market-chart-modern-office.png',
-      alt: 'Side-angle close-up of a laptop displaying a rising financial market chart in a blurred glass office.',
-    },
-    {
-      src: '/laptop-analytics-dashboard-glossy-table.png',
-      alt: 'Open silver laptop on a glossy table displaying a web analytics dashboard with KPIs and charts.',
-    },
-    {
-      src: '/collaborative-planning-hands-diagram-laptops.png',
-      alt: 'Two people collaborate over a diagram-filled sheet of paper, one pointing with a pencil while laptops and pens surround the workspace.',
-    },
-  ]
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageLoadErrors, setImageLoadErrors] = useState<boolean[]>(
@@ -45,7 +45,7 @@ const Hero = () => {
     }, 4000) // Change image every 4 seconds
 
     return () => clearInterval(interval)
-  }, [heroImages.length])
+  }, [])
 
   const handleImageError = (index: number) => {
     setImageLoadErrors(prev => {
