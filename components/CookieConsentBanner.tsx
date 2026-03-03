@@ -14,6 +14,7 @@ import {
   getConsentSettings,
   saveConsentSettings,
 } from '@/lib/cookie-consent'
+import { consentEvents } from '@/lib/consent-events'
 import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
 
 const CookieConsentBanner = () => {
@@ -35,6 +36,17 @@ const CookieConsentBanner = () => {
     if (storedSettings) {
       setSettings(storedSettings)
     }
+  }, [])
+
+  // Listen for consent-reset events so the banner re-appears immediately
+  // without requiring a full page refresh (e.g. after resetting from CookieSettings)
+  useEffect(() => {
+    const unsubscribe = consentEvents.on('consent-reset', () => {
+      setSettings(defaultConsentSettings)
+      setShowDetails(false)
+      setIsVisible(true)
+    })
+    return unsubscribe
   }, [])
 
   // Refs for focus management

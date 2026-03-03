@@ -2,8 +2,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactNode } from 'react'
+import { act } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CookieConsentBanner from '@/components/CookieConsentBanner'
+import { consentEvents } from '@/lib/consent-events'
 import * as cookieConsent from '@/lib/cookie-consent'
 
 // Mock the cookie consent utilities
@@ -456,6 +458,33 @@ describe('CookieConsentBanner', () => {
       await waitFor(() => {
         expect(screen.getByText(/Provider: Site Provider/i)).toBeInTheDocument()
       })
+    })
+  })
+
+  it('should show banner immediately after consent-reset event', async () => {
+    // Start with consent already given so banner is hidden
+    mockGetConsentSettings.mockReturnValue({
+      'strictly-necessary': true,
+      analytics: true,
+      preferences: true,
+    })
+
+    renderWithIntl(<CookieConsentBanner />)
+
+    // Banner should not be visible since consent exists
+    await waitFor(() => {
+      expect(screen.queryByText('We Use Cookies')).not.toBeInTheDocument()
+    })
+
+    // Emit consent-reset event (simulating what resetConsent() does)
+    act(() => {
+      consentEvents.emit({ type: 'consent-reset' })
+    })
+
+    // Banner should now be visible without a page refresh
+    await waitFor(() => {
+      expect(screen.getByText('We Use Cookies')).toBeInTheDocument()
+      expect(screen.getByText('Accept All')).toBeInTheDocument()
     })
   })
 })
