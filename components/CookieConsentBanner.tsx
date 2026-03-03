@@ -396,7 +396,7 @@ const CookieConsentBanner = () => {
                                     categoryName,
                                     count: cookiesInCategory.length,
                                   })}
-                                  className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded px-1"
+                                  className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 rounded px-1"
                                 >
                                   {t('viewCookies')} ({cookiesInCategory.length}
                                   )
