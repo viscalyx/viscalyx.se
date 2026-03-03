@@ -616,8 +616,8 @@ You can now easily create different blog post styles by combining modifiers:
 #### Syntax Highlighting
 
 The blog system includes automatic syntax highlighting for code blocks using
-Prism.js. This feature works with 200+ programming languages and automatically
-adapts to the current theme.
+Shiki (via rehype-pretty-code). This feature works with 200+ programming
+languages and automatically adapts to the current theme.
 
 **Using Syntax Highlighting:**
 
@@ -657,36 +657,36 @@ adapts to the current theme.
 
 **Customizing Syntax Highlighting:**
 
-The syntax highlighting styles are defined in `app/prism-theme.css`. The
+The syntax highlighting styles are defined in `app/shiki-theme.css`. The
 implementation:
 
-- Uses the Tailwind CSS color palette for consistency
+- Uses CSS custom properties (`--shiki-light`, `--shiki-dark`) for dual themes
 - Preserves existing blog content backgrounds
-- Supports both light and dark themes
-- Includes PowerShell-specific token styling
+- Supports both light and dark themes via `.dark` class
+- Handles all languages supported by Shiki's grammar set
 
-To modify syntax highlighting colors:
+To modify syntax highlighting, choose different
+[Shiki themes](https://shiki.style/themes) in `scripts/build-blog-data.js`:
 
 <!-- markdownlint-disable MD013 -->
-```css
-/* Light theme colors */
-.token.keyword {
-  color: #2563eb; /* blue-600 */
-}
-
-/* Dark theme colors */
-.dark .token.keyword {
-  color: #60a5fa; /* blue-400 */
-}
+```javascript
+.use(rehypePrettyCode, {
+  theme: {
+    light: 'github-light',
+    dark: 'github-dark',
+  },
+  defaultColor: false,
+  keepBackground: false,
+})
 ```
 <!-- markdownlint-enable MD013 -->
 
 **Technical Implementation:**
 
 - **Server-side processing**: Syntax highlighting is applied during the build
-  process using `rehype-prism-plus`
+  process using `rehype-pretty-code` (Shiki)
 - **Build script**: Code highlighting is handled in `scripts/build-blog-data.js`
-- **HTML sanitization**: Updated to allow syntax highlighting classes and spans
+- **HTML sanitization**: Updated to allow syntax highlighting styles and spans
 - **Performance**: No client-side JavaScript required for syntax highlighting
 - **Copy functionality**: Each code block includes a copy-to-clipboard button
   for easy code sharing
@@ -1806,12 +1806,12 @@ const sanitizeOptions = {
     h4: ['id'],
     h5: ['id'],
     h6: ['id'],
-    // Syntax highlighting
-    code: ['class'],
-    pre: ['class', 'data-language'],
-    span: ['class'],
+    // Syntax highlighting (Shiki)
+    code: ['class', 'style'],
+    pre: ['class', 'data-language', 'tabindex'],
+    span: ['class', 'style'],
     div: ['class'],
-    // Prism.js data attributes
+    // Shiki data attributes
     '*': ['data-*'],
   },
   allowedTags: [

@@ -8,7 +8,7 @@ and deployed to Cloudflare Workers via OpenNext.
 - 🌐 Multi-language support (English/Swedish) via next-intl
 - 📱 Responsive design with Tailwind CSS 4 (mobile-first, dark mode)
 - 📝 Blog with Markdown content (remark/rehype pipeline with GFM support)
-- 🎨 Code syntax highlighting via Prism.js with copy-to-clipboard
+- 🎨 Code syntax highlighting via Shiki with copy-to-clipboard
 - 📊 Mermaid diagram rendering (lazy-loaded, DOMPurify-sanitized)
 - 📖 Table of contents with active heading tracking
 - 📈 Reading progress indicator for blog posts
@@ -63,10 +63,10 @@ requirements:
 - **Internationalization**:
   [next-intl](https://next-intl.dev/) (en/sv)
 - **Content**: Markdown processed via remark +
-  remark-gfm → rehype-prism-plus → rehype-stringify
+  remark-gfm → rehype-pretty-code → rehype-stringify
 - **Syntax Highlighting**:
-  [Prism.js](https://prismjs.com/)
-  (build-time via rehype-prism-plus)
+  [Shiki](https://shiki.style/)
+  (build-time via rehype-pretty-code)
 - **Diagrams**:
   [Mermaid](https://mermaid.js.org/)
   (lazy-loaded at runtime)

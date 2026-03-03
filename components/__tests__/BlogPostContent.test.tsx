@@ -354,16 +354,16 @@ describe('BlogPostContent', () => {
       expect(screen.getByText('Test content')).toBeInTheDocument()
     })
 
-    it('preserves syntax-highlight token classes in code blocks', () => {
+    it('preserves syntax-highlight token styles in code blocks', () => {
       renderComponent({
         contentWithIds:
-          '<div class="code-block-wrapper" data-language="bash"><div class="code-language-label">BASH</div><pre class="language-bash" data-processed data-language="bash"><code class="language-bash code-highlight"><span class="code-line"><span class="token keyword">echo</span> hi</span></code></pre></div>',
+          '<div class="code-block-wrapper" data-language="bash"><div class="code-language-label">BASH</div><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark" style="display: grid;"><span data-line=""><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">echo</span> hi</span></code></pre></div>',
       })
 
       expect(document.querySelector('.code-block-wrapper')).toBeTruthy()
-      expect(document.querySelector('pre.language-bash')).toBeTruthy()
-      expect(document.querySelector('code.code-highlight')).toBeTruthy()
-      expect(document.querySelector('.token.keyword')).toBeTruthy()
+      expect(document.querySelector('pre[data-language="bash"]')).toBeTruthy()
+      expect(document.querySelector('code[data-language]')).toBeTruthy()
+      expect(document.querySelector('span[data-line]')).toBeTruthy()
     })
 
     it('does not wrap bare tables at runtime', async () => {

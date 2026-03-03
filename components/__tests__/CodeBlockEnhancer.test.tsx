@@ -54,7 +54,7 @@ describe('CodeBlockEnhancer', () => {
     wrapper.className = 'code-block-wrapper'
 
     const pre = document.createElement('pre')
-    pre.className = `language-${language}`
+    pre.dataset.language = language
 
     const codeEl = document.createElement('code')
     codeEl.textContent = code
@@ -144,7 +144,7 @@ describe('CodeBlockEnhancer', () => {
       const wrapper = document.createElement('div')
       wrapper.className = 'code-block-wrapper'
       const pre = document.createElement('pre')
-      pre.className = 'language-js'
+      pre.dataset.language = 'js'
       const code = document.createElement('code')
       code.textContent = `code block ${i}`
       pre.appendChild(code)

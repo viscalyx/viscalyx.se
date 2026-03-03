@@ -34,7 +34,7 @@ const CodeBlockEnhancer = ({ contentLoaded = true }: ComponentProps) => {
 
         // Find the <pre> element
         const pre = wrapper.querySelector(
-          'pre[class*="language-"]',
+          'pre[data-language]',
         ) as HTMLElement | null
         if (!pre) return
 
