@@ -6,7 +6,7 @@
 
 Next.js 16 (App Router) | React 19 | TypeScript strict | Tailwind CSS 4 | next-intl (en/sv) | Framer Motion | Vitest | Cloudflare Workers
 
-# Commands
+## Commands
 
 | Command | Purpose |
 |---|---|
@@ -53,10 +53,3 @@ Prefer **server page + client island**:
 - Hardcoded UI strings (use translations) or secrets
 - Relative imports (use `@/lib/`, `@/components/`, etc.)
 - Mixing client/server patterns (see Component Architecture)
-
-## Instruction Conflicts
-
-Never silently deviate. When a conflict arises:
-1. State the conflict clearly
-2. Propose update: what to change, why, pros/cons
-3. Recommend: permanent change or one-time exception
