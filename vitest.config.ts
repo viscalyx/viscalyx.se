@@ -57,10 +57,10 @@ export default defineConfig({
         'scripts/security-audit.js',
       ],
       thresholds: {
-        branches: 20,
-        functions: 20,
-        lines: 20,
-        statements: 20,
+        branches: 85,
+        functions: 85,
+        lines: 85,
+        statements: 85,
       },
     },
 
