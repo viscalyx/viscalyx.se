@@ -2,6 +2,40 @@
  * Cookie utility functions for secure cookie management
  */
 
+// Characters forbidden in cookie names per RFC 6265
+const INVALID_COOKIE_NAME_CHARS = /[\s"(),/:;<=>?@[\\\]{}]/
+
+/**
+ * Validate a cookie name per RFC 6265 (US-ASCII printable, no separators)
+ */
+export function isValidCookieName(name: string): boolean {
+  if (!name || name.length === 0) return false
+  return !INVALID_COOKIE_NAME_CHARS.test(name)
+}
+
+/**
+ * Parse all cookies from a cookie string into a key-value record.
+ * Values are URI-decoded. Handles values containing '=' correctly.
+ */
+export function parseCookies(cookieString: string): Record<string, string> {
+  const cookies: Record<string, string> = {}
+  if (!cookieString) return cookies
+
+  for (const cookie of cookieString.split(';')) {
+    const [name, ...valueParts] = cookie.trim().split('=')
+    if (name) {
+      try {
+        cookies[name] = decodeURIComponent(valueParts.join('=') || '')
+      } catch {
+        // If decoding fails, use the raw value
+        cookies[name] = valueParts.join('=') || ''
+      }
+    }
+  }
+
+  return cookies
+}
+
 /**
  * Get secure attribute string for cookies based on protocol
  * @returns '; Secure' if served over HTTPS, empty string otherwise
@@ -39,6 +73,11 @@ export function setCookie(
   } = {},
 ): void {
   if (typeof window === 'undefined') return
+
+  if (!isValidCookieName(name)) {
+    console.error(`Invalid cookie name: "${name}"`)
+    return
+  }
 
   const { path = '/', maxAge, expires, sameSite = 'Lax', domain } = options
 
@@ -121,15 +160,8 @@ export function getCookie(name: string): string | null {
   if (typeof window === 'undefined') return null
 
   try {
-    const cookies = getDocumentCookie().split(';')
-    const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`))
-
-    if (cookie) {
-      const [, ...valueParts] = cookie.split('=')
-      return decodeURIComponent(valueParts.join('='))
-    }
-
-    return null
+    const cookies = parseCookies(getDocumentCookie())
+    return name in cookies ? cookies[name] : null
   } catch {
     return null
   }

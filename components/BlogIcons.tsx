@@ -102,6 +102,7 @@ export const NoteIcon: React.FC<BlogIconProps> = memo(
     <svg
       {...getIconAccessibilityProps(label)}
       className={className}
+      data-icon-type="note"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -122,6 +123,7 @@ export const TipIcon: React.FC<BlogIconProps> = memo(
     <svg
       {...getIconAccessibilityProps(label)}
       className={className}
+      data-icon-type="tip"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -142,6 +144,7 @@ export const ImportantIcon: React.FC<BlogIconProps> = memo(
     <svg
       {...getIconAccessibilityProps(label)}
       className={className}
+      data-icon-type="important"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -162,6 +165,7 @@ export const WarningIcon: React.FC<BlogIconProps> = memo(
     <svg
       {...getIconAccessibilityProps(label)}
       className={className}
+      data-icon-type="warning"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -182,6 +186,7 @@ export const CautionIcon: React.FC<BlogIconProps> = memo(
     <svg
       {...getIconAccessibilityProps(label)}
       className={className}
+      data-icon-type="caution"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"

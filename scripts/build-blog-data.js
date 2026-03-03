@@ -15,6 +15,18 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true })
 }
 
+/**
+ * Clean a directory by removing all existing files,
+ * then recreate it. Prevents stale content from persisting
+ * when blog posts are deleted.
+ */
+function cleanDir(dir) {
+  if (fs.existsSync(dir)) {
+    fs.rmSync(dir, { recursive: true })
+  }
+  ensureDir(dir)
+}
+
 // Function to calculate reading time based on word count
 function calculateReadingTime(content) {
   // Sanitize HTML first, then extract text content for accurate word count
@@ -92,6 +104,9 @@ async function buildBlogData() {
     const { default: rehypeStringify } = await import('rehype-stringify')
     const { visit } = await import('unist-util-visit')
 
+    // Clean output directory before any processing to prevent stale files
+    cleanDir(contentOutputDir)
+
     // Check if content directory exists
     if (!fs.existsSync(postsDirectory)) {
       console.warn('Blog content directory not found, creating empty blog data')
@@ -112,7 +127,6 @@ async function buildBlogData() {
 
     const posts = []
     const slugs = []
-    ensureDir(contentOutputDir)
 
     for (const fileName of markdownFiles) {
       const slug = fileName.replace(/\.md$/, '')

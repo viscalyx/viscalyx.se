@@ -57,7 +57,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     onSettingsChange?.(newSettings)
   }
 
-  const handleSaveSettings = async () => {
+  const handleSaveSettings = () => {
     setIsLoading(true)
     setShowError(false) // Reset any previous error state
 
@@ -96,7 +96,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     setShowResetConfirmation(true)
   }
 
-  const confirmResetConsent = async () => {
+  const confirmResetConsent = () => {
     setIsLoading(true)
     setShowResetConfirmation(false)
 

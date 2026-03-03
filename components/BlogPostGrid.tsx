@@ -4,9 +4,11 @@ import { Calendar, Clock } from 'lucide-react'
 import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useFormatter } from 'next-intl'
 import { useState } from 'react'
 
 import type { BlogPostMetadata } from '@/lib/blog'
+import { isValidDate } from '@/lib/date-utils'
 
 interface BlogPostGridProps {
   allPosts: BlogPostMetadata[]
@@ -23,6 +25,7 @@ const BlogPostGrid = ({
   categoriesAllLabel,
   loadMoreLabel,
 }: BlogPostGridProps) => {
+  const format = useFormatter()
   const [visiblePosts, setVisiblePosts] = useState(POSTS_PER_PAGE)
   const [selectedCategory, setSelectedCategory] = useState<string>('')
 
@@ -117,7 +120,13 @@ const BlogPostGrid = ({
                 <div className="p-6">
                   <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
                     <Calendar className="w-3 h-3 mr-1" />
-                    {post.date}
+                    {post.date && isValidDate(post.date)
+                      ? format.dateTime(new Date(post.date), {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })
+                      : ''}
                     <span className="mx-2">•</span>
                     <Clock className="w-3 h-3 mr-1" />
                     {post.readTime}

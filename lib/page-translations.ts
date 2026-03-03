@@ -217,7 +217,13 @@ function validateLocale(locale: string): string {
   return locale
 }
 
-function usePageTranslations<T>(filePrefix: string) {
+interface PageTranslationsResult<T> {
+  error: Error | null
+  loading: boolean
+  translations: T | null
+}
+
+function usePageTranslations<T>(filePrefix: string): PageTranslationsResult<T> {
   const locale = useLocale()
   const [translations, setTranslations] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
@@ -270,15 +276,15 @@ function usePageTranslations<T>(filePrefix: string) {
   return { translations, loading, error }
 }
 
-export function usePrivacyTranslations() {
+export function usePrivacyTranslations(): PageTranslationsResult<PrivacyTranslations> {
   return usePageTranslations<PrivacyTranslations>('privacy')
 }
 
-export function useTermsTranslations() {
+export function useTermsTranslations(): PageTranslationsResult<TermsTranslations> {
   return usePageTranslations<TermsTranslations>('terms')
 }
 
-export function useCookiesTranslations() {
+export function useCookiesTranslations(): PageTranslationsResult<CookiesTranslations> {
   return usePageTranslations<CookiesTranslations>('cookies')
 }
 

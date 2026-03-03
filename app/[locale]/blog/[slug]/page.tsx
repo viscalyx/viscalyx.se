@@ -20,6 +20,10 @@ import {
   addHeadingIds,
   extractTableOfContentsServer,
 } from '@/lib/slug-utils-server'
+import {
+  getBlogPostingJsonLd,
+  getBreadcrumbListJsonLd,
+} from '@/lib/structured-data'
 import { getAuthorInitials, getSerializableTeamMemberByName } from '@/lib/team'
 
 type Props = {
@@ -146,6 +150,33 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
+
+      <script id="blog-posting-jsonld" type="application/ld+json">
+        {JSON.stringify(
+          getBlogPostingJsonLd({
+            title: post.title,
+            excerpt: post.excerpt,
+            author: post.author,
+            date: normalizedDate,
+            image: post.image,
+            imageAlt: post.imageAlt,
+            slug: post.slug,
+            locale,
+          }),
+        )}
+      </script>
+      <script id="breadcrumb-jsonld" type="application/ld+json">
+        {JSON.stringify(
+          getBreadcrumbListJsonLd([
+            { name: 'Home', url: `${SITE_URL}/${locale}` },
+            { name: t('hero.title'), url: `${SITE_URL}/${locale}/blog` },
+            {
+              name: post.title,
+              url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+            },
+          ]),
+        )}
+      </script>
 
       <BlogPostContent
         authorInitials={authorInitials}

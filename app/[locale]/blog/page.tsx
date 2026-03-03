@@ -9,6 +9,7 @@ import Header from '@/components/Header'
 import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 import { SITE_URL } from '@/lib/constants'
 import { getCurrentDateISO } from '@/lib/date-utils'
+import { getBreadcrumbListJsonLd } from '@/lib/structured-data'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -84,6 +85,18 @@ export default async function BlogPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-white dark:bg-secondary-900">
       <Header />
+
+      <script id="breadcrumb-jsonld" type="application/ld+json">
+        {JSON.stringify(
+          getBreadcrumbListJsonLd([
+            { name: 'Home', url: `${SITE_URL}/${locale}` },
+            {
+              name: `${t('hero.title')} ${t('hero.titleHighlight')}`,
+              url: `${SITE_URL}/${locale}/blog`,
+            },
+          ]),
+        )}
+      </script>
 
       {/* Hero Section */}
       <section className="gradient-bg section-padding pt-32">
