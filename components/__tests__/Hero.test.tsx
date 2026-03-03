@@ -141,7 +141,7 @@ describe('Hero component', () => {
   it('cycles active image over time', () => {
     try {
       vi.useFakeTimers()
-      render(<Hero />)
+      const { unmount } = render(<Hero />)
 
       const secondIndicator = screen.getByRole('button', {
         name: 'Show image 2 of 4',
@@ -156,6 +156,7 @@ describe('Hero component', () => {
 
       const updatedDot = secondIndicator.querySelector('span')
       expect(updatedDot).toHaveClass('bg-white', 'shadow-lg')
+      unmount()
     } finally {
       vi.useRealTimers()
     }
