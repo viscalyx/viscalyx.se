@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import rehypeCodeBlockWrapper from '../plugins/rehype-code-block-wrapper.js'
+import rehypeTableScroll from '../plugins/rehype-table-scroll.js'
 
 /**
- * Unit tests for the anonymous rehype plugins in build-blog-data.js
+ * Unit tests for the rehype plugins extracted from build-blog-data.js
  * that transform code blocks and tables during the blog build pipeline.
  *
  * These tests run the same remark → rehype pipeline used by the build script
@@ -18,7 +20,6 @@ async function processMarkdown(markdown) {
   const { default: remarkRehype } = await import('remark-rehype')
   const { default: rehypePrettyCode } = await import('rehype-pretty-code')
   const { default: rehypeStringify } = await import('rehype-stringify')
-  const { visit } = await import('unist-util-visit')
 
   const result = await remark()
     .use(remarkGfm)
@@ -30,94 +31,8 @@ async function processMarkdown(markdown) {
       },
       keepBackground: false,
     })
-    .use(() => {
-      // Mirrors the code-block-wrapper plugin in build-blog-data.js
-      return tree => {
-        visit(tree, 'element', node => {
-          if (
-            node.tagName !== 'figure' ||
-            node.properties['data-rehype-pretty-code-figure'] === undefined
-          ) {
-            return
-          }
-
-          const preChild = node.children.find(
-            child => child.type === 'element' && child.tagName === 'pre',
-          )
-          if (!preChild) return
-
-          const language =
-            typeof preChild.properties['data-language'] === 'string'
-              ? preChild.properties['data-language']
-              : ''
-          const isMermaid = language === 'mermaid'
-
-          const labelElement = {
-            type: 'element',
-            tagName: 'div',
-            properties: { className: ['code-language-label'] },
-            children: [
-              {
-                type: 'text',
-                value: isMermaid ? 'MERMAID DIAGRAM' : language.toUpperCase(),
-              },
-            ],
-          }
-
-          if (isMermaid) {
-            preChild.properties['data-mermaid'] = 'true'
-          }
-
-          node.tagName = 'div'
-          node.properties = {
-            className: [
-              'code-block-wrapper',
-              ...(isMermaid ? ['mermaid-code-block'] : []),
-            ],
-            'data-language': language,
-          }
-          node.children = [labelElement, preChild]
-        })
-      }
-    })
-    .use(() => {
-      // Mirrors the table-scroll-region plugin in build-blog-data.js
-      return tree => {
-        const wrappedTables = new Set()
-
-        visit(tree, 'element', (node, index, parent) => {
-          if (
-            node.tagName !== 'table' ||
-            wrappedTables.has(node) ||
-            !parent ||
-            typeof index !== 'number'
-          ) {
-            return
-          }
-
-          wrappedTables.add(node)
-
-          parent.children[index] = {
-            type: 'element',
-            tagName: 'div',
-            properties: {
-              className: ['table-scroll-region'],
-            },
-            children: [
-              node,
-              {
-                type: 'element',
-                tagName: 'div',
-                properties: {
-                  className: ['table-right-fade'],
-                },
-                children: [],
-              },
-            ],
-          }
-        })
-      }
-    })
+    .use(rehypeCodeBlockWrapper)
+    .use(rehypeTableScroll)
     .use(rehypeStringify)
     .process(markdown)
 

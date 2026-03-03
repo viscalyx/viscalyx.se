@@ -5,6 +5,8 @@ const sanitizeHtml = require('sanitize-html')
 const remarkBlockquoteTypes = require('./plugins/blockquote-types')
 const remarkFloatingImages = require('./plugins/remark-floating-images')
 const remarkImagePaths = require('./plugins/remark-image-paths')
+const rehypeCodeBlockWrapper = require('./plugins/rehype-code-block-wrapper')
+const rehypeTableScroll = require('./plugins/rehype-table-scroll')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -150,99 +152,8 @@ async function buildBlogData() {
             },
             keepBackground: false,
           })
-          .use(() => {
-            // Convert rehype-pretty-code <figure> wrappers into .code-block-wrapper
-            return tree => {
-              visit(tree, 'element', node => {
-                if (
-                  node.tagName !== 'figure' ||
-                  node.properties['data-rehype-pretty-code-figure'] ===
-                    undefined
-                ) {
-                  return
-                }
-
-                const preChild = node.children.find(
-                  child => child.type === 'element' && child.tagName === 'pre',
-                )
-                if (!preChild) return
-
-                const language =
-                  typeof preChild.properties['data-language'] === 'string'
-                    ? preChild.properties['data-language']
-                    : ''
-                const isMermaid = language === 'mermaid'
-
-                // Build label element
-                const labelElement = {
-                  type: 'element',
-                  tagName: 'div',
-                  properties: { className: ['code-language-label'] },
-                  children: [
-                    {
-                      type: 'text',
-                      value: isMermaid
-                        ? 'MERMAID DIAGRAM'
-                        : language.toUpperCase(),
-                    },
-                  ],
-                }
-
-                if (isMermaid) {
-                  preChild.properties['data-mermaid'] = 'true'
-                }
-
-                // Replace figure with our wrapper div
-                node.tagName = 'div'
-                node.properties = {
-                  className: [
-                    'code-block-wrapper',
-                    ...(isMermaid ? ['mermaid-code-block'] : []),
-                  ],
-                  'data-language': language,
-                }
-                node.children = [labelElement, preChild]
-              })
-            }
-          })
-          .use(() => {
-            // Wrap markdown tables with a scroll region and a dedicated fade element.
-            return tree => {
-              const wrappedTables = new Set()
-
-              visit(tree, 'element', (node, index, parent) => {
-                if (
-                  node.tagName !== 'table' ||
-                  wrappedTables.has(node) ||
-                  !parent ||
-                  typeof index !== 'number'
-                ) {
-                  return
-                }
-
-                wrappedTables.add(node)
-
-                parent.children[index] = {
-                  type: 'element',
-                  tagName: 'div',
-                  properties: {
-                    className: ['table-scroll-region'],
-                  },
-                  children: [
-                    node,
-                    {
-                      type: 'element',
-                      tagName: 'div',
-                      properties: {
-                        className: ['table-right-fade'],
-                      },
-                      children: [],
-                    },
-                  ],
-                }
-              })
-            }
-          })
+          .use(rehypeCodeBlockWrapper)
+          .use(rehypeTableScroll)
           .use(rehypeStringify)
           .process(content)
 
