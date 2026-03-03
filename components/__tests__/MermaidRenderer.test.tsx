@@ -21,6 +21,10 @@ vi.mock('mermaid', () => ({
 // Mock console methods
 const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
 
+afterAll(() => {
+  mockConsoleError.mockRestore()
+})
+
 const hasHtmlProfile = (config?: Config) => {
   const useProfiles = config?.USE_PROFILES
   if (useProfiles === false) {

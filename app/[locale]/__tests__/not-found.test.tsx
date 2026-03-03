@@ -13,6 +13,8 @@ describe('Locale not-found page', () => {
 
   it('renders the NotFoundPage component', () => {
     render(<LocaleNotFound />)
-    expect(screen.getByRole('main')).toBeInTheDocument()
+    const main = screen.getByRole('main')
+    expect(main).toBeInTheDocument()
+    expect(main).toHaveTextContent('NotFoundPage')
   })
 })

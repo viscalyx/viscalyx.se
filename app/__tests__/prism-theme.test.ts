@@ -39,7 +39,8 @@ describe('prism-theme.css', () => {
     // Extract :root block content
     const rootMatch = cssContent.match(/:root\s*\{([^}]+)\}/)
     expect(rootMatch).not.toBeNull()
-    const rootBlock = rootMatch?.[1]
+    if (!rootMatch) throw new Error(':root block not found in CSS')
+    const rootBlock = rootMatch[1]
 
     for (const varName of allTokenVars) {
       expect(rootBlock).toContain(varName)
@@ -50,7 +51,8 @@ describe('prism-theme.css', () => {
     // Extract .dark block content
     const darkMatch = cssContent.match(/\.dark\s*\{([^}]+)\}/)
     expect(darkMatch).not.toBeNull()
-    const darkBlock = darkMatch?.[1]
+    if (!darkMatch) throw new Error('.dark block not found in CSS')
+    const darkBlock = darkMatch[1]
 
     for (const varName of allTokenVars) {
       expect(darkBlock).toContain(varName)
