@@ -20,7 +20,7 @@ const ThemeToggle = () => {
 
   return (
     <div className="relative inline-block w-fit max-w-max">
-      <div className="inline-flex w-fit max-w-max items-center gap-1 rounded-lg border border-secondary-200 bg-secondary-100 p-1 dark:border-secondary-700 dark:bg-secondary-700">
+      <div className="inline-flex items-center gap-1 rounded-lg border border-secondary-200 bg-secondary-100 p-1 dark:border-secondary-700 dark:bg-secondary-700">
         {themes.map(({ value, icon: Icon, labelKey }) => (
           <button
             aria-label={t('switchToTheme', { theme: t(labelKey) })}
