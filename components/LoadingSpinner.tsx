@@ -5,8 +5,8 @@ import { Loader2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 interface LoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg'
   color?: 'primary' | 'white' | 'secondary'
+  size?: 'sm' | 'md' | 'lg'
 }
 
 const LoadingSpinner = ({
@@ -29,15 +29,15 @@ const LoadingSpinner = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      role="status"
       aria-label={t('ariaLabel')}
       className="flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      role="status"
     >
       <Loader2
-        data-icon="loader-2"
         className={`${sizeClasses[size]} ${colorClasses[color]} animate-spin`}
+        data-icon="loader-2"
       />
     </motion.div>
   )

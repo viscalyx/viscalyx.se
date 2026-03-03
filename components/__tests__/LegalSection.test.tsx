@@ -5,10 +5,10 @@ import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
 
 describe('LegalSection', () => {
   it('renders title and description', () => {
-    render(<LegalSection title="Test Title" description="Test description" />)
+    render(<LegalSection description="Test description" title="Test Title" />)
 
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Test Title' })
+      screen.getByRole('heading', { level: 2, name: 'Test Title' }),
     ).toBeInTheDocument()
     expect(screen.getByText('Test description')).toBeInTheDocument()
   })
@@ -16,10 +16,10 @@ describe('LegalSection', () => {
   it('renders list items when items are provided', () => {
     render(
       <LegalSection
-        title="Title"
         description="Description"
         items={['Item A', 'Item B', 'Item C']}
-      />
+        title="Title"
+      />,
     )
 
     const listItems = screen.getAllByRole('listitem')
@@ -30,20 +30,20 @@ describe('LegalSection', () => {
   })
 
   it('does not render list when items are not provided', () => {
-    render(<LegalSection title="Title" description="Description" />)
+    render(<LegalSection description="Description" title="Title" />)
 
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
   })
 
   it('does not render list when items array is empty', () => {
-    render(<LegalSection title="Title" description="Description" items={[]} />)
+    render(<LegalSection description="Description" items={[]} title="Title" />)
 
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
   })
 
   it('applies mb-6 to description when items are present', () => {
     render(
-      <LegalSection title="Title" description="Description" items={['Item']} />
+      <LegalSection description="Description" items={['Item']} title="Title" />,
     )
 
     const description = screen.getByText('Description')
@@ -52,7 +52,7 @@ describe('LegalSection', () => {
   })
 
   it('applies mb-8 to description when no items', () => {
-    render(<LegalSection title="Title" description="Description" />)
+    render(<LegalSection description="Description" title="Title" />)
 
     const description = screen.getByText('Description')
     expect(description).toHaveClass('mb-8')

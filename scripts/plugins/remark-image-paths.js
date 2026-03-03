@@ -32,7 +32,7 @@ function remarkImagePaths(options = {}) {
           // Remove /public prefix: /public/image.png -> /image.png
           node.url = node.url.substring(7) // Remove '/public'
           if (!node.url.startsWith('/')) {
-            node.url = '/' + node.url
+            node.url = `/${node.url}`
           }
         }
         // For VS Code preview, leave the path as-is since it can resolve /public/ paths

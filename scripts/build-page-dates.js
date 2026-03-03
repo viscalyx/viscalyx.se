@@ -19,7 +19,7 @@ async function getFilesLastModified(filePaths) {
       const { stdout } = await execFileAsync(
         'git',
         ['log', '--follow', '--format=%ci', '--', filePath],
-        { encoding: 'utf8', cwd: process.cwd() }
+        { encoding: 'utf8', cwd: process.cwd() },
       )
 
       const firstLine = stdout.split('\n')[0].trim()
@@ -30,7 +30,7 @@ async function getFilesLastModified(filePaths) {
     } catch (error) {
       console.warn(
         `Could not get last modified date for ${filePath}:`,
-        error.message
+        error.message,
       )
       return null
     }
@@ -43,7 +43,7 @@ async function getFilesLastModified(filePaths) {
   const validDates = dates.filter(date => date !== null)
   if (validDates.length > 0) {
     const latestDate = validDates.reduce((latest, current) =>
-      current > latest ? current : latest
+      current > latest ? current : latest,
     )
     return latestDate.toISOString()
   }

@@ -1,15 +1,5 @@
 'use client'
 
-import AlertIconInjector from '@/components/AlertIconInjector'
-import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
-import ImageEnhancer from '@/components/ImageEnhancer'
-import MermaidRenderer from '@/components/MermaidRenderer'
-import ReadingProgress from '@/components/ReadingProgress'
-import ScrollToTop from '@/components/ScrollToTop'
-import TableOfContents from '@/components/TableOfContents'
-import { useBlogAnalytics } from '@/lib/analytics'
-import { socialIconMap } from '@/lib/team'
-
 import {
   ArrowLeft,
   BookOpen,
@@ -19,54 +9,61 @@ import {
   Tag,
   User,
 } from 'lucide-react'
-
-import { Route } from 'next'
-import { useFormatter, useLocale, useTranslations } from 'next-intl'
+import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-
-import { useCallback, useEffect, useRef, useState } from 'react'
-
-import type { TocItem } from '@/lib/slug-utils'
+import { useFormatter, useLocale, useTranslations } from 'next-intl'
+import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import AlertIconInjector from '@/components/AlertIconInjector'
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
+import ImageEnhancer from '@/components/ImageEnhancer'
+import MermaidRenderer from '@/components/MermaidRenderer'
+import ReadingProgress from '@/components/ReadingProgress'
+import ScrollToTop from '@/components/ScrollToTop'
+import TableOfContents from '@/components/TableOfContents'
+import { useBlogAnalytics } from '@/lib/analytics'
+import type { TocItem } from '@/lib/slug-utils-client'
 import type { SerializableTeamMember, SocialIconName } from '@/lib/team'
+import { socialIconMap, socialIconTranslationKeyMap } from '@/lib/team'
 
 interface BlogPostData {
-  title: string
   author: string
+  category: string
   date: string | null
-  readTime: string
+  excerpt: string
   image: string
   imageAlt?: string
-  category: string
+  readTime: string
   slug: string
   tags: string[]
-  excerpt: string
+  title: string
 }
 
 interface RelatedPost {
+  image: string
   slug: string
   title: string
-  image: string
 }
 
 export interface ComponentProps {
+  authorInitials: string
+  children: ReactNode
   post: BlogPostData
-  contentWithIds: string
   relatedPosts: RelatedPost[]
   tableOfContents: TocItem[]
   teamMember: SerializableTeamMember | null
-  authorInitials: string
 }
 
 const BlogPostContent = ({
   post,
-  contentWithIds,
+  children,
   relatedPosts,
   tableOfContents,
   teamMember,
   authorInitials,
 }: ComponentProps) => {
   const t = useTranslations('blog')
+  const tTeam = useTranslations('team')
   const format = useFormatter()
   const locale = useLocale()
 
@@ -154,10 +151,10 @@ const BlogPostContent = ({
       setShareNotification({ message, type })
       shareTimeoutRef.current = setTimeout(
         () => setShareNotification(null),
-        3000
+        3000,
       )
     },
-    []
+    [],
   )
 
   // Function to handle sharing/copying URL
@@ -171,7 +168,7 @@ const BlogPostContent = ({
         await navigator.clipboard.writeText(url)
         setNotificationWithTimeout(
           t('post.notifications.linkCopied'),
-          'success'
+          'success',
         )
         return
       } catch (clipboardError) {
@@ -218,7 +215,7 @@ const BlogPostContent = ({
           if (successful) {
             setNotificationWithTimeout(
               t('post.notifications.linkCopied'),
-              'success'
+              'success',
             )
           } else {
             throw new Error('execCommand failed')
@@ -227,7 +224,7 @@ const BlogPostContent = ({
           console.error('All share methods failed:', fallbackError)
           setNotificationWithTimeout(
             t('post.notifications.shareError'),
-            'error'
+            'error',
           )
         }
       }
@@ -274,13 +271,13 @@ const BlogPostContent = ({
               .then(() => {
                 setNotificationWithTimeout(
                   t('post.notifications.linkCopied'),
-                  'success'
+                  'success',
                 )
               })
               .catch(() => {
                 setNotificationWithTimeout(
                   t('post.notifications.shareError'),
-                  'error'
+                  'error',
                 )
               })
           }
@@ -307,8 +304,8 @@ const BlogPostContent = ({
 
     const regions = Array.from(
       contentElement.querySelectorAll<HTMLDivElement>(
-        '.markdown-content .table-scroll-region'
-      )
+        '.markdown-content .table-scroll-region',
+      ),
     )
 
     const updateRegionState = (region: HTMLDivElement) => {
@@ -345,19 +342,19 @@ const BlogPostContent = ({
         region.removeEventListener('scroll', handler)
       })
     }
-  }, [contentWithIds])
+  }, [])
 
   return (
     <>
-      <ReadingProgress target=".markdown-content" endTarget=".author-bio" />
+      <ReadingProgress endTarget=".author-bio" target=".markdown-content" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-secondary-50 dark:bg-secondary-800">
         <div className="container-custom">
           <div className="pl-3">
             <Link
-              href={`/${locale}/blog` as Route}
               className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mb-8 group"
+              href={`/${locale}/blog` as Route}
             >
               <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               {t('post.backToBlog')}
@@ -400,13 +397,13 @@ const BlogPostContent = ({
                   {isSharing ? t('post.sharing') : t('post.share')}
                 </span>
                 <button
-                  type="button"
-                  onClick={handleShare}
-                  disabled={isSharing}
                   aria-busy={isSharing}
-                  className="bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
-                  title={t('post.sharePost')}
                   aria-label={t('post.sharePost')}
+                  className="min-h-[44px] min-w-[44px] bg-white dark:bg-secondary-800 p-2 rounded-lg shadow hover:shadow-md transition-shadow border border-secondary-200 dark:border-secondary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-secondary-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                  disabled={isSharing}
+                  onClick={handleShare}
+                  title={t('post.sharePost')}
+                  type="button"
                 >
                   <Share2 className="w-4 h-4 text-secondary-600 dark:text-secondary-400" />
                 </button>
@@ -430,11 +427,11 @@ const BlogPostContent = ({
       {/* Featured Image */}
       <section className="relative h-96 md:h-125">
         <Image
-          src={post.image}
           alt={post.imageAlt || post.title}
+          className="object-cover"
           fill
           sizes="100vw"
-          className="object-cover"
+          src={post.image}
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
       </section>
@@ -451,8 +448,8 @@ const BlogPostContent = ({
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer text-lg font-bold text-secondary-900 dark:text-secondary-100">
                       <div
-                        id="toc-heading-mobile"
                         className="flex items-center"
+                        id="toc-heading-mobile"
                       >
                         <BookOpen className="w-5 h-5 mr-2" />
                         {t('post.tableOfContents')}
@@ -463,19 +460,20 @@ const BlogPostContent = ({
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
+                        <title>{t('post.tableOfContents')}</title>
                         <path
+                          d="M19 9l-7 7-7-7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
                         />
                       </svg>
                     </summary>
                     <div className="mt-4">
                       <TableOfContents
+                        headingId="toc-heading-mobile"
                         items={tableOfContents}
                         maxHeight="sm"
-                        headingId="toc-heading-mobile"
                       />
                     </div>
                   </details>
@@ -487,11 +485,7 @@ const BlogPostContent = ({
                 ref={contentRef}
               >
                 <AlertIconInjector contentKey={post.slug}>
-                  {/* Note: contentWithIds is sanitized at build time; runtime sanitization not required */}
-                  <div
-                    dangerouslySetInnerHTML={{ __html: contentWithIds }}
-                    className="markdown-content"
-                  />
+                  {children}
                   <CodeBlockEnhancer contentLoaded={true} />
                   <MermaidRenderer contentLoaded={true} />
                   <ImageEnhancer contentRef={contentRef} />
@@ -504,8 +498,8 @@ const BlogPostContent = ({
                   <Tag className="w-4 h-4 text-secondary-500 dark:text-secondary-400" />
                   {post.tags.map((tag: string) => (
                     <span
-                      key={tag}
                       className="bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 px-3 py-1 rounded-full text-sm transition-colors"
+                      key={tag}
                     >
                       {tag}
                     </span>
@@ -515,19 +509,20 @@ const BlogPostContent = ({
 
               {/* Author Bio */}
               <section
-                aria-label="Author biography"
-                data-testid="author-bio"
+                aria-label={t('post.authorBio.ariaLabel')}
                 className="author-bio mt-12 p-8 bg-secondary-50 dark:bg-secondary-800 rounded-xl border border-secondary-100 dark:border-secondary-700"
+                data-testid="author-bio"
               >
                 <div className="flex items-start space-x-4">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl overflow-hidden shrink-0">
                     {teamMember?.image ? (
                       <Image
-                        src={teamMember.image}
                         alt={teamMember.name}
-                        width={64}
-                        height={64}
                         className="w-16 h-16 object-cover rounded-full"
+                        height={64}
+                        sizes="64px"
+                        src={teamMember.image}
+                        width={64}
                       />
                     ) : (
                       <div className="w-full h-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center rounded-full">
@@ -540,8 +535,8 @@ const BlogPostContent = ({
                       <h2 className="text-xl font-bold text-secondary-900 dark:text-secondary-100">
                         {teamMember ? (
                           <Link
-                            href={`/${locale}/team/${teamMember.id}` as Route}
                             className="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            href={`/${locale}/team/${teamMember.id}` as Route}
                           >
                             {teamMember.name}
                           </Link>
@@ -551,8 +546,8 @@ const BlogPostContent = ({
                       </h2>
                       {teamMember && (
                         <Link
-                          href={`/${locale}/team/${teamMember.id}` as Route}
                           className="inline-flex items-center space-x-1 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors group"
+                          href={`/${locale}/team/${teamMember.id}` as Route}
                         >
                           <span className="font-medium text-sm underline decoration-1 underline-offset-2">
                             {t('post.authorBio.viewProfile')}
@@ -563,11 +558,12 @@ const BlogPostContent = ({
                             stroke="currentColor"
                             viewBox="0 0 24 24"
                           >
+                            <title>{t('post.authorBio.viewProfile')}</title>
                             <path
+                              d="M9 5l7 7-7 7"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth={2}
-                              d="M9 5l7 7-7 7"
                             />
                           </svg>
                         </Link>
@@ -587,25 +583,31 @@ const BlogPostContent = ({
                           const IconComponent =
                             socialIconMap[social.name as SocialIconName]
                           if (!IconComponent) return null
+                          const localizedSocialLabel = tTeam(
+                            `socialLinks.${socialIconTranslationKeyMap[social.name as SocialIconName]}`,
+                          )
                           return (
                             <a
-                              key={social.name}
+                              aria-label={localizedSocialLabel}
+                              className="flex items-center justify-center min-w-[44px] min-h-[44px] bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                               href={social.href}
-                              target={
-                                social.href.startsWith('mailto:')
-                                  ? '_self'
-                                  : '_blank'
-                              }
+                              key={social.name}
                               rel={
                                 social.href.startsWith('mailto:')
                                   ? undefined
                                   : 'noopener noreferrer'
                               }
-                              className="flex items-center justify-center w-10 h-10 bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-300 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                              aria-label={social.name}
-                              title={social.name}
+                              target={
+                                social.href.startsWith('mailto:')
+                                  ? '_self'
+                                  : '_blank'
+                              }
+                              title={localizedSocialLabel}
                             >
-                              <IconComponent className="h-4 w-4" />
+                              <IconComponent
+                                className="h-4 w-4"
+                                title={localizedSocialLabel}
+                              />
                             </a>
                           )
                         })}
@@ -622,17 +624,17 @@ const BlogPostContent = ({
                 {tableOfContents.length > 0 && (
                   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-lg p-6 border border-secondary-100 dark:border-secondary-700">
                     <h2
-                      id="toc-heading"
                       className="text-lg font-bold text-secondary-900 dark:text-secondary-100 mb-4 flex items-center"
+                      id="toc-heading"
                     >
                       <BookOpen className="w-5 h-5 mr-2" />
                       {t('post.tableOfContents')}
                     </h2>
                     <div>
                       <TableOfContents
+                        headingId="toc-heading"
                         items={tableOfContents}
                         maxHeight="lg"
-                        headingId="toc-heading"
                       />
                     </div>
                   </div>
@@ -647,17 +649,17 @@ const BlogPostContent = ({
                     <div className="space-y-4">
                       {relatedPosts.map(relatedPost => (
                         <Link
-                          key={relatedPost.slug}
-                          href={`/${locale}/blog/${relatedPost.slug}` as Route}
                           className="flex space-x-3 group"
+                          href={`/${locale}/blog/${relatedPost.slug}` as Route}
+                          key={relatedPost.slug}
                         >
                           <div className="relative w-16 h-16 rounded-lg overflow-hidden shrink-0">
                             <Image
-                              src={relatedPost.image}
                               alt={relatedPost.title}
+                              className="object-cover transition-transform group-hover:scale-110"
                               fill
                               sizes="64px"
-                              className="object-cover transition-transform group-hover:scale-110"
+                              src={relatedPost.image}
                             />
                           </div>
                           <div>

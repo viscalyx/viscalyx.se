@@ -11,6 +11,16 @@ export function getSecureAttribute(): string {
   return window.location.protocol === 'https:' ? '; Secure' : ''
 }
 
+// Access document.cookie through helpers to keep lint suppressions local.
+function setDocumentCookie(cookie: string): void {
+  // biome-ignore lint/suspicious/noDocumentCookie: helper intentionally writes document.cookie for broad browser support.
+  window.document.cookie = cookie
+}
+
+function getDocumentCookie(): string {
+  return document.cookie
+}
+
 /**
  * Set a cookie with proper security attributes
  * @param name - Cookie name
@@ -26,7 +36,7 @@ export function setCookie(
     expires?: string
     sameSite?: 'Strict' | 'Lax' | 'None'
     domain?: string
-  } = {}
+  } = {},
 ): void {
   if (typeof window === 'undefined') return
 
@@ -47,7 +57,7 @@ export function setCookie(
   }
 
   try {
-    document.cookie = cookieString
+    setDocumentCookie(cookieString)
   } catch (error) {
     console.error('Failed to set cookie:', error)
   }
@@ -63,7 +73,7 @@ export function deleteCookie(
   options: {
     path?: string
     domain?: string
-  } = {}
+  } = {},
 ): void {
   if (typeof window === 'undefined') return
 
@@ -73,20 +83,28 @@ export function deleteCookie(
 
   try {
     // Delete for current path
-    document.cookie = `${name}=; path=${path}; ${expiresPast}${secureAttribute}`
+    setDocumentCookie(
+      `${name}=; path=${path}; ${expiresPast}${secureAttribute}`,
+    )
 
     // Delete for specified domain
     if (domain) {
-      document.cookie = `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`
+      setDocumentCookie(
+        `${name}=; domain=${domain}; path=${path}; ${expiresPast}${secureAttribute}`,
+      )
     } else {
       // Delete for root domain
       const currentDomain = window.location.hostname
-      document.cookie = `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+      setDocumentCookie(
+        `${name}=; domain=${currentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
+      )
 
       // Delete for parent domain (if subdomain)
       if (currentDomain.includes('.')) {
         const parentDomain = currentDomain.substring(currentDomain.indexOf('.'))
-        document.cookie = `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`
+        setDocumentCookie(
+          `${name}=; domain=${parentDomain}; path=${path}; ${expiresPast}${secureAttribute}`,
+        )
       }
     }
   } catch (error) {
@@ -103,7 +121,7 @@ export function getCookie(name: string): string | null {
   if (typeof window === 'undefined') return null
 
   try {
-    const cookies = document.cookie.split(';')
+    const cookies = getDocumentCookie().split(';')
     const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`))
 
     if (cookie) {

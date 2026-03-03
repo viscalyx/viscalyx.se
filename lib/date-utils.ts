@@ -18,7 +18,7 @@
  */
 export function normalizeDate(
   dateString?: string,
-  fallbackValue?: Date | string
+  fallbackValue?: Date | string,
 ): string {
   const parsedDate = dateString ? new Date(dateString) : undefined
   if (parsedDate && isValidDate(parsedDate)) {
@@ -53,7 +53,7 @@ export function isValidDate(dateString: string): boolean
 export function isValidDate(dateOrString?: Date | string): boolean {
   if (typeof dateOrString === 'string') {
     const parsed = new Date(dateOrString)
-    if (!(parsed instanceof Date) || isNaN(parsed.getTime())) {
+    if (!(parsed instanceof Date) || Number.isNaN(parsed.getTime())) {
       return false
     }
     const strictFormat = /^\d{4}-\d{2}-\d{2}$/
@@ -62,7 +62,7 @@ export function isValidDate(dateOrString?: Date | string): boolean {
     }
     return true
   }
-  return dateOrString instanceof Date && !isNaN(dateOrString.getTime())
+  return dateOrString instanceof Date && !Number.isNaN(dateOrString.getTime())
 }
 
 /**

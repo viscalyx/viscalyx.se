@@ -1,5 +1,8 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
 
@@ -21,8 +24,10 @@
 
   // Editor enhancements from devcontainer.json for non-container use
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.fixAll.biome": "explicit",
+    "source.fixAll.markdownlint": "explicit",
+    "source.organizeImports.biome": "explicit",
+    "source.organizeImports": "never"
   },
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
@@ -34,8 +39,6 @@
   "editor.guides.bracketPairs": true,
 
   // File handling
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
@@ -55,22 +58,6 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.suggest.autoImports": true,
   "typescript.preferences.includePackageJsonAutoImports": "auto",
-
-  // ESLint settings
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "eslint.format.enable": true,
-
-  // Prettier settings
-  "prettier.singleQuote": true,
-  "prettier.semi": false,
-  "prettier.trailingComma": "es5",
-  "prettier.tabWidth": 2,
-  "prettier.useTabs": false,
 
   // TailwindCSS settings
   "tailwindCSS.includeLanguages": {

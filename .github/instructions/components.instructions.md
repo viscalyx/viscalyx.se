@@ -7,7 +7,7 @@ applyTo: 'components/**/*.tsx'
 ## Structure
 
 1. `'use client'` (only if hooks/events/animations)
-2. Imports: `@/components`, `@/lib` → Third-party → `next`, `next/*`, `next-intl` → `react` → Relative → Types
+2. Imports: Defer ordering to Biome's automatic import organization; use `@/*` aliases for project-internal imports to avoid relative paths
 3. `interface ComponentProps { }`
 4. Arrow function component
 5. `export default`

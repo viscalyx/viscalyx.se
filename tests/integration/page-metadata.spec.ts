@@ -16,7 +16,7 @@ test.describe('Page Metadata', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(10)
+      expect(description?.length).toBeGreaterThan(10)
     })
 
     test('should have Open Graph metadata', async ({ page }) => {
@@ -70,7 +70,7 @@ test.describe('Page Metadata', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(10)
+      expect(description?.length).toBeGreaterThan(10)
     })
 
     test('should have Open Graph metadata', async ({ page }) => {

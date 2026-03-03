@@ -1,27 +1,24 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import BlogPostLoading from '../loading'
+import BlogPostLoading from '@/app/[locale]/blog/[slug]/loading'
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size }: { size?: string }) => (
-    <div data-testid="loading-spinner" data-size={size} role="status">
+    <output aria-live="polite" data-size={size} data-testid="loading-spinner">
       Loading...
-    </div>
+    </output>
   ),
 }))
 
 describe('Blog post loading page', () => {
   it('renders the LoadingSpinner component', () => {
     render(<BlogPostLoading />)
-    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
 
   it('passes size="lg" to LoadingSpinner', () => {
     render(<BlogPostLoading />)
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-size',
-      'lg'
-    )
+    expect(screen.getByRole('status')).toHaveAttribute('data-size', 'lg')
   })
 
   it('renders with an accessible loading status', () => {

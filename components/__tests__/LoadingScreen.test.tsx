@@ -1,6 +1,6 @@
-import LoadingScreen from '@/components/LoadingScreen'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import LoadingScreen from '@/components/LoadingScreen'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -8,11 +8,15 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/components/LoadingSpinner', () => ({
   default: ({ size, color }: { size: string; color: string }) => (
-    <div data-testid="loading-spinner" data-color={color} data-size={size} />
+    <output aria-label="Loading spinner" data-color={color} data-size={size} />
   ),
 }))
 
 describe('LoadingScreen', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('renders the default loading message', () => {
     render(<LoadingScreen />)
 
@@ -36,13 +40,8 @@ describe('LoadingScreen', () => {
     render(<LoadingScreen />)
 
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-size',
-      'lg'
-    )
-    expect(screen.getByTestId('loading-spinner')).toHaveAttribute(
-      'data-color',
-      'primary'
-    )
+    const spinner = screen.getByRole('status', { name: 'Loading spinner' })
+    expect(spinner).toHaveAttribute('data-size', 'lg')
+    expect(spinner).toHaveAttribute('data-color', 'primary')
   })
 })

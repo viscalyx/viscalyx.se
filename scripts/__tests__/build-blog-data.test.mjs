@@ -26,7 +26,7 @@ const clearModuleDependencyTree = entryPath => {
     }
 
     cachedModule.children.forEach(child => {
-      if (child?.id && child.id.startsWith(rootDir)) {
+      if (child?.id?.startsWith(rootDir)) {
         stack.push(child.id)
       }
     })
@@ -104,7 +104,7 @@ Safe content with **bold** text.
 
 
 a <script>alert('xss')</script> test.
-`
+`,
     )
 
     fs.writeFileSync(
@@ -122,7 +122,7 @@ A second post with code.
 \`\`\`js
 const a = 1
 \`\`\`
-`
+`,
     )
 
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
@@ -139,7 +139,7 @@ const a = 1
     const blogData = JSON.parse(fs.readFileSync(metadataPath, 'utf8'))
     expect(blogData.posts).toHaveLength(2)
     expect(blogData.slugs).toEqual(
-      expect.arrayContaining(['newest', 'old-no-date'])
+      expect.arrayContaining(['newest', 'old-no-date']),
     )
     expect(typeof blogData.lastBuilt).toBe('string')
 
@@ -149,18 +149,18 @@ const a = 1
 
     const newestContentPath = path.join(
       tempDir,
-      'public/blog-content/newest.json'
+      'public/blog-content/newest.json',
     )
     const oldContentPath = path.join(
       tempDir,
-      'public/blog-content/old-no-date.json'
+      'public/blog-content/old-no-date.json',
     )
 
     expect(fs.existsSync(newestContentPath)).toBe(true)
     expect(fs.existsSync(oldContentPath)).toBe(true)
 
     const newestContent = JSON.parse(
-      fs.readFileSync(newestContentPath, 'utf8')
+      fs.readFileSync(newestContentPath, 'utf8'),
     ).content
     expect(newestContent).toContain('<h1')
     expect(newestContent).toContain('<strong>bold</strong>')
@@ -171,7 +171,7 @@ const a = 1
 
     expect(logSpy).toHaveBeenCalled()
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('old-no-date.md')
+      expect.stringContaining('old-no-date.md'),
     )
     expect(errorSpy).not.toHaveBeenCalled()
     expect(exitSpy).not.toHaveBeenCalled()

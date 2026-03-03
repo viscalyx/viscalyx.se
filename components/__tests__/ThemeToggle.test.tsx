@@ -26,7 +26,7 @@ describe('ThemeToggle component', () => {
     const lightButton = screen.getByLabelText('switchToTheme:{"theme":"light"}')
     const darkButton = screen.getByLabelText('switchToTheme:{"theme":"dark"}')
     const systemButton = screen.getByLabelText(
-      'switchToTheme:{"theme":"system"}'
+      'switchToTheme:{"theme":"system"}',
     )
 
     expect(lightButton).toBeInTheDocument()
@@ -42,7 +42,7 @@ describe('ThemeToggle component', () => {
     expect(setThemeMock).toHaveBeenCalledWith('dark')
 
     const systemButton = screen.getByLabelText(
-      'switchToTheme:{"theme":"system"}'
+      'switchToTheme:{"theme":"system"}',
     )
     fireEvent.click(systemButton)
     expect(setThemeMock).toHaveBeenCalledWith('system')

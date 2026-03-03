@@ -190,10 +190,10 @@
 
 /* Line highlighting for code examples */
 .highlight-line {
-  background-color: var(--color-highlight-line-bg, rgba(59, 130, 246, 0.1));
   display: block;
-  margin: 0 -1rem;
   padding: 0 1rem;
+  margin: 0 -1rem;
+  background-color: var(--color-highlight-line-bg, rgba(59, 130, 246, 0.1));
 }
 
 .dark .highlight-line {

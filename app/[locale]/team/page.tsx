@@ -1,9 +1,8 @@
-import { SITE_URL } from '@/lib/constants'
-import { getTranslations } from 'next-intl/server'
-
-import TeamPageClient from './TeamPageClient'
-
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
+import { SITE_URL } from '@/lib/constants'
+import { buildLocalizedAlternates } from '@/lib/metadata-utils'
+import TeamPageClient from './TeamPageClient'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -32,10 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     alternates: {
       canonical: `${SITE_URL}/${locale}/team`,
-      languages: {
-        en: `${SITE_URL}/en/team`,
-        sv: `${SITE_URL}/sv/team`,
-      },
+      languages: buildLocalizedAlternates('team'),
     },
   }
 }

@@ -1,8 +1,8 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import LegalPageLayout from '@/components/LegalPageLayout'
 import LegalSection, { safeTranslationArray } from '@/components/LegalSection'
-import { useTranslations } from 'next-intl'
 
 interface PrivacyPageClientProps {
   lastUpdatedDate: Date
@@ -13,45 +13,45 @@ const PrivacyPageClient = ({ lastUpdatedDate }: PrivacyPageClientProps) => {
 
   return (
     <LegalPageLayout
-      title={t('title')}
-      subtitle={t('subtitle')}
-      lastUpdatedLabel={t('lastUpdated')}
       lastUpdatedDate={lastUpdatedDate}
+      lastUpdatedLabel={t('lastUpdated')}
+      subtitle={t('subtitle')}
+      title={t('title')}
     >
       <LegalSection
-        title={t('sections.informationWeCollect.title')}
         description={t('sections.informationWeCollect.description')}
         items={safeTranslationArray(
-          t.raw('sections.informationWeCollect.items')
+          t.raw('sections.informationWeCollect.items'),
         )}
+        title={t('sections.informationWeCollect.title')}
       />
 
       <LegalSection
-        title={t('sections.howWeUse.title')}
         description={t('sections.howWeUse.description')}
         items={safeTranslationArray(t.raw('sections.howWeUse.items'))}
+        title={t('sections.howWeUse.title')}
       />
 
       <LegalSection
-        title={t('sections.dataSecurity.title')}
         description={t('sections.dataSecurity.description')}
+        title={t('sections.dataSecurity.title')}
       />
 
       <LegalSection
-        title={t('sections.cookies.title')}
         description={t('sections.cookies.description')}
+        title={t('sections.cookies.title')}
       />
 
       <LegalSection
-        title={t('sections.thirdParty.title')}
         description={t('sections.thirdParty.description')}
         items={safeTranslationArray(t.raw('sections.thirdParty.items'))}
+        title={t('sections.thirdParty.title')}
       />
 
       <LegalSection
-        title={t('sections.yourRights.title')}
         description={t('sections.yourRights.description')}
         items={safeTranslationArray(t.raw('sections.yourRights.items'))}
+        title={t('sections.yourRights.title')}
       />
 
       {/* Contact Us */}
@@ -64,8 +64,9 @@ const PrivacyPageClient = ({ lastUpdatedDate }: PrivacyPageClientProps) => {
       <p className="text-secondary-600 dark:text-secondary-400">
         <strong>{t('sections.contact.email')}:</strong>{' '}
         <a
-          href={`mailto:${t('sections.contact.emailAddress')}`}
+          aria-label={`${t('sections.contact.email')} ${t('sections.contact.emailAddress')}`}
           className="text-primary-600 dark:text-primary-400 hover:underline"
+          href={`mailto:${t('sections.contact.emailAddress')}`}
         >
           {t('sections.contact.emailAddress')}
         </a>

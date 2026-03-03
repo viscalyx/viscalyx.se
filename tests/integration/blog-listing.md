@@ -2,12 +2,16 @@
 
 > Test flow documentation for [`blog-listing.spec.ts`](blog-listing.spec.ts)
 
-These tests validate the blog listing page after its conversion from a client-rendered page (with loading spinner + API fetch) to a server-rendered page with interactive client islands. They verify SSR behavior, SEO metadata, category filtering, pagination, navigation, and locale support.
+These tests validate the blog listing page after its conversion from a
+client-rendered page (with loading spinner + API fetch) to a server-rendered
+page with interactive client islands. They verify SSR behavior, SEO metadata,
+category filtering, pagination, navigation, and locale support.
 
 ---
 
 ## Key Architecture
 
+<!-- markdownlint-disable MD013 -->
 | Aspect             | Before (client)                    | After (server component)                     |
 | ------------------ | ---------------------------------- | -------------------------------------------- |
 | Data loading       | `useEffect` → `fetch('/api/blog')` | Direct `getAllPosts()` / `getFeaturedPost()` |
@@ -15,11 +19,13 @@ These tests validate the blog listing page after its conversion from a client-re
 | Page `<title>`     | Root fallback only                 | `generateMetadata` with localized blog title |
 | Interactive parts  | Entire page is `'use client'`      | `BlogPostGrid` client island only            |
 | Category filtering | Client state in page component     | Client state in `BlogPostGrid` island        |
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Overview — Test Coverage Flow
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 flowchart TD
     A[Navigate to /blog] --> B{Content Visible?}
@@ -45,12 +51,15 @@ flowchart TD
     J --> J1[/sv/blog shows Swedish text]
     J --> J2[Swedish metadata in title]
 ```
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## Test Setup
 
-No `beforeEach` hook is needed — each test navigates to the blog page independently. The page is server-rendered, so content is available immediately without clearing any client-side state.
+No `beforeEach` hook is needed — each test navigates to the blog page independently.
+The page is server-rendered, so content is available immediately without clearing
+any client-side state.
 
 ---
 
@@ -60,14 +69,16 @@ No `beforeEach` hook is needed — each test navigates to the blog page independ
 
 #### should render blog page with hero content visible immediately
 
-**Purpose:** Confirms the page is server-rendered with content in the initial HTML response, not hidden behind a loading spinner.
+**Purpose:** Confirms the page is server-rendered with content in the initial
+HTML response, not hidden behind a loading spinner.
 
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert the hero `<h1>` contains "Insights" and "Knowledge".
-3. Assert the "Featured Article" heading is visible.
+1. Assert the hero `<h1>` contains "Insights" and "Knowledge".
+1. Assert the "Featured Article" heading is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -80,15 +91,17 @@ sequenceDiagram
     Note over B: ✓ h1 "Insights & Knowledge" visible
     Note over B: ✓ h2 "Featured Article" visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should not show a loading spinner
 
-**Purpose:** Validates the old `LoadingScreen` component is gone — content renders without a loading state.
+**Purpose:** Validates the old `LoadingScreen` component is gone — content
+renders without a loading state.
 
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "Loading blog posts" text is NOT visible.
+1. Assert "Loading blog posts" text is NOT visible.
 
 #### should have correct page title (not root fallback)
 
@@ -97,8 +110,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Read `document.title`.
-3. Assert it contains "Insights", "Knowledge", and "Viscalyx".
+1. Read `document.title`.
+1. Assert it contains "Insights", "Knowledge", and "Viscalyx".
 
 #### should have meta description
 
@@ -107,8 +120,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Read `<meta name="description">` content attribute.
-3. Assert it is a non-empty string (>20 chars).
+1. Read `<meta name="description">` content attribute.
+1. Assert it is a non-empty string (>20 chars).
 
 ---
 
@@ -121,10 +134,11 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Locate the section containing the "Featured Article" heading.
-3. Assert an image is visible within the featured section.
-4. Assert the featured card link is visible.
+1. Locate the section containing the "Featured Article" heading.
+1. Assert an image is visible within the featured section.
+1. Assert the featured card link is visible.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -135,16 +149,18 @@ sequenceDiagram
     Note over P: ✓ Image visible
     Note over P: ✓ Card link visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should navigate to blog post when featured card is clicked
 
-**Purpose:** Confirms the featured post card links to the correct blog post page.
+**Purpose:** Confirms the featured post card links to the correct blog post
+page.
 
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click the featured post card link.
-3. Assert the URL matches `/blog/{slug}`.
+1. Click the featured post card link.
+1. Assert the URL matches `/blog/{slug}`.
 
 ---
 
@@ -157,8 +173,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "All" button is visible.
-3. Assert more than one category button exists.
+1. Assert "All" button is visible.
+1. Assert more than one category button exists.
 
 #### should filter posts when a category is clicked
 
@@ -167,11 +183,12 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Count all visible `<article>` elements.
-3. Click the "DevOps" category button.
-4. Assert article count is ≥ 1 and ≤ initial count.
-5. Assert all visible category badges show "DevOps".
+1. Count all visible `<article>` elements.
+1. Click the "DevOps" category button.
+1. Assert article count is ≥ 1 and ≤ initial count.
+1. Assert all visible category badges show "DevOps".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -184,6 +201,7 @@ sequenceDiagram
     Note over G: ✓ Only DevOps posts shown
     Note over G: ✓ Category badges all say "DevOps"
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should reset to all posts when "All" is clicked
 
@@ -192,9 +210,9 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`, note initial article count.
-2. Click "DevOps" to filter.
-3. Click "All" to reset.
-4. Assert article count equals initial count.
+1. Click "DevOps" to filter.
+1. Click "All" to reset.
+1. Assert article count equals initial count.
 
 ---
 
@@ -207,8 +225,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Assert "Load More" button is visible.
-3. Assert exactly 6 articles are in the grid.
+1. Assert "Load More" button is visible.
+1. Assert exactly 6 articles are in the grid.
 
 #### should reveal more posts when Load More is clicked
 
@@ -217,9 +235,10 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`, count articles.
-2. Click "Load More".
-3. Assert article count increased.
+1. Click "Load More".
+1. Assert article count increased.
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -230,6 +249,7 @@ sequenceDiagram
     G->>G: setVisiblePosts(prev + 6)
     Note over G: ✓ 12 posts visible
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should hide Load More when all posts are visible
 
@@ -238,8 +258,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click "Load More" repeatedly until it disappears.
-3. Assert the button is no longer visible.
+1. Click "Load More" repeatedly until it disappears.
+1. Assert the button is no longer visible.
 
 ---
 
@@ -252,8 +272,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Locate the first `<article>`.
-3. Assert it has an image and a title (`<h3>`).
+1. Locate the first `<article>`.
+1. Assert it has an image and a title (`<h3>`).
 
 #### should navigate to blog post when card is clicked
 
@@ -262,8 +282,8 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/blog`.
-2. Click the first post card's parent `<a>`.
-3. Assert URL matches `/blog/{slug}`.
+1. Click the first post card's parent `<a>`.
+1. Assert URL matches `/blog/{slug}`.
 
 ---
 
@@ -271,15 +291,17 @@ sequenceDiagram
 
 #### should render blog page in Swedish at /sv/blog
 
-**Purpose:** Verifies the server component uses `getTranslations` correctly for Swedish.
+**Purpose:** Verifies the server component uses `getTranslations` correctly for
+Swedish.
 
 **Steps:**
 
 1. Navigate to `/sv/blog`.
-2. Assert hero heading contains "Insikter" and "Kunskap".
-3. Assert featured post heading is "Utvald Artikel".
-4. Assert the "All" category button shows "Alla".
+1. Assert hero heading contains "Insikter" and "Kunskap".
+1. Assert featured post heading is "Utvald Artikel".
+1. Assert the "All" category button shows "Alla".
 
+<!-- markdownlint-disable MD013 -->
 ```mermaid
 sequenceDiagram
     participant B as Browser
@@ -292,6 +314,7 @@ sequenceDiagram
     Note over B: ✓ "Utvald Artikel"
     Note over B: ✓ "Alla" button
 ```
+<!-- markdownlint-enable MD013 -->
 
 #### should have Swedish metadata at /sv/blog
 
@@ -300,5 +323,5 @@ sequenceDiagram
 **Steps:**
 
 1. Navigate to `/sv/blog`.
-2. Read `document.title`.
-3. Assert it contains "Insikter" and "Kunskap".
+1. Read `document.title`.
+1. Assert it contains "Insikter" and "Kunskap".

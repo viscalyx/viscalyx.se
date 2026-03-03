@@ -1,35 +1,50 @@
 'use client'
 
-import { CopyIcon, CheckmarkIcon } from '@/components/BlogIcons'
-
 import { useTranslations } from 'next-intl'
+import { useEffect, useRef, useState } from 'react'
+import { CheckmarkIcon, CopyIcon } from '@/components/BlogIcons'
 
-import { useState } from 'react'
-
-interface CopyButtonProps {
-  text: string
+interface ComponentProps {
   className?: string
+  text: string
 }
 
-export default function CopyButton({ text, className = '' }: CopyButtonProps) {
+const CopyButton = ({ text, className = '' }: ComponentProps) => {
   const t = useTranslations('copyButton')
   const [copied, setCopied] = useState(false)
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimeoutRef.current !== null) {
+        clearTimeout(copyTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  const scheduleCopiedReset = () => {
+    if (copyTimeoutRef.current !== null) {
+      clearTimeout(copyTimeoutRef.current)
+    }
+    copyTimeoutRef.current = setTimeout(() => {
+      copyTimeoutRef.current = null
+      setCopied(false)
+    }, 2000)
+  }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
-
-      // Reset the copied state after 2 seconds
-      setTimeout(() => {
-        setCopied(false)
-      }, 2000)
+      scheduleCopiedReset()
     } catch (err) {
       console.error('Failed to copy text: ', err)
 
       // Fallback for older browsers or when clipboard API is not available
+      let textArea: HTMLTextAreaElement | null = null
       try {
-        const textArea = document.createElement('textarea')
+        textArea = document.createElement('textarea')
         textArea.value = text
         textArea.style.position = 'fixed'
         textArea.style.left = '-999999px'
@@ -37,23 +52,26 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
         document.body.appendChild(textArea)
         textArea.focus()
         textArea.select()
-        document.execCommand('copy')
-        textArea.remove()
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        const success = document.execCommand('copy')
+        if (success) {
+          setCopied(true)
+          scheduleCopiedReset()
+        }
       } catch (fallbackErr) {
         console.error('Fallback copy failed: ', fallbackErr)
+      } finally {
+        textArea?.remove()
       }
     }
   }
 
   return (
     <button
-      type="button"
-      onClick={handleCopy}
-      className={`group relative p-2 rounded-md bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200 dark:border-gray-600 backdrop-blur-sm shadow-sm hover:shadow-md ${className}`}
-      title={copied ? t('copied') : t('copyToClipboard')}
       aria-label={copied ? t('copiedToClipboard') : t('copyCodeToClipboard')}
+      className={`group relative flex min-h-[44px] min-w-[44px] items-center justify-center p-2 rounded-md bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 transition-all duration-200 border border-gray-200 dark:border-gray-600 backdrop-blur-sm shadow-sm hover:shadow-md focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary-500 dark:focus-visible:outline-primary-300 ${className}`}
+      onClick={handleCopy}
+      title={copied ? t('copied') : t('copyToClipboard')}
+      type="button"
     >
       {copied ? (
         <CheckmarkIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -68,3 +86,5 @@ export default function CopyButton({ text, className = '' }: CopyButtonProps) {
     </button>
   )
 }
+
+export default CopyButton

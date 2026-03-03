@@ -40,12 +40,26 @@ describe('SocialIcons', () => {
         expect(svg).toHaveClass('w-5', 'h-5')
         expect(svg).toHaveAttribute('viewBox', viewBox)
         expect(svg).toHaveAttribute('fill', 'currentColor')
+        expect(svg).toHaveAttribute('aria-hidden', 'true')
+        expect(svg).not.toHaveAttribute('role')
+        expect(container.querySelector('title')).not.toBeInTheDocument()
       })
 
       it('accepts a custom className', () => {
         const { container } = render(<Icon className="custom-class" />)
         const svg = container.querySelector('svg')
         expect(svg).toHaveClass('custom-class')
+      })
+
+      it('renders an accessible title when provided', () => {
+        const title = `${name} label`
+        const { container } = render(<Icon title={title} />)
+        const svg = container.querySelector('svg')
+        const titleElement = container.querySelector('title')
+
+        expect(svg).toHaveAttribute('role', 'img')
+        expect(svg).not.toHaveAttribute('aria-hidden')
+        expect(titleElement).toHaveTextContent(title)
       })
     })
   })

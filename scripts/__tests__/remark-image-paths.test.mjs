@@ -17,22 +17,22 @@ describe('remark-image-paths plugin', () => {
   it('removes /public prefix in build mode', () => {
     expect(run('/public/image.png', { mode: 'build' })).toBe('/image.png')
     expect(run('/public/blog-images/test.jpg', { mode: 'build' })).toBe(
-      '/blog-images/test.jpg'
+      '/blog-images/test.jpg',
     )
   })
 
   it('does not rewrite /public paths in non-build mode', () => {
     expect(run('/public/image.png', { mode: 'preview' })).toBe(
-      '/public/image.png'
+      '/public/image.png',
     )
   })
 
   it('ignores external URLs', () => {
     expect(run('https://example.com/a.png', { mode: 'build' })).toBe(
-      'https://example.com/a.png'
+      'https://example.com/a.png',
     )
     expect(run('http://example.com/a.png', { mode: 'build' })).toBe(
-      'http://example.com/a.png'
+      'http://example.com/a.png',
     )
   })
 
@@ -50,5 +50,21 @@ describe('remark-image-paths plugin', () => {
 
     expect(() => plugin(tree)).not.toThrow()
     expect(tree.children[0].url).toBeUndefined()
+  })
+
+  it('adds a leading slash when transformed url does not start with slash', () => {
+    const plugin = remarkImagePaths({ mode: 'build' })
+    const customUrl = {
+      startsWith: prefix => prefix === '/public/',
+      substring: () => 'image.png',
+    }
+    const tree = {
+      type: 'root',
+      children: [{ type: 'image', url: customUrl }],
+    }
+
+    plugin(tree)
+
+    expect(tree.children[0].url).toBe('/image.png')
   })
 })

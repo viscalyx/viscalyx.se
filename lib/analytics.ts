@@ -1,19 +1,23 @@
 'use client'
 
 import { useCallback, useEffect, useRef } from 'react'
-import { consentEvents } from './consent-events'
-import { hasConsent } from './cookie-consent'
+import { consentEvents } from '@/lib/consent-events'
+import { hasConsent } from '@/lib/cookie-consent'
 
 interface BlogAnalyticsData {
-  slug: string
   category: string
+  slug: string
   title: string
 }
 
 interface UseAnalyticsOptions {
+  progressThreshold?: number // Send analytics when user reaches this % of content
   trackReadProgress?: boolean
   trackTimeSpent?: boolean
-  progressThreshold?: number // Send analytics when user reaches this % of content
+}
+
+interface UseBlogAnalyticsReturn {
+  trackEvent: (readProgress?: number, timeSpent?: number) => Promise<void>
 }
 
 // Cache for consent status to avoid repeated localStorage reads
@@ -92,13 +96,21 @@ function setupConsentCacheInvalidation(): () => void {
 
 export function useBlogAnalytics(
   data: BlogAnalyticsData,
-  options: UseAnalyticsOptions = {}
-) {
+  options: UseAnalyticsOptions = {},
+): UseBlogAnalyticsReturn {
   const {
     trackReadProgress = true,
     trackTimeSpent = true,
     progressThreshold = 50, // Track when user reads 50% of content
   } = options
+  const coercedProgressThreshold = Number(progressThreshold)
+  const normalizedProgressThreshold = Math.max(
+    0,
+    Math.min(
+      100,
+      Number.isFinite(coercedProgressThreshold) ? coercedProgressThreshold : 0,
+    ),
+  )
 
   const startTime = useRef<number | null>(null)
   const hasTrackedProgress = useRef<boolean>(false)
@@ -144,14 +156,16 @@ export function useBlogAnalytics(
         console.warn('Failed to track blog analytics:', error)
       }
     },
-    [] // No dependencies - uses stable dataRef.current
+    [], // No dependencies - uses stable dataRef.current
   )
 
   useEffect(() => {
-    if (!trackReadProgress && !trackTimeSpent) return
-
     // Setup consent cache invalidation listener
     const cleanupConsentListener = setupConsentCacheInvalidation()
+
+    if (!trackReadProgress && !trackTimeSpent) {
+      return cleanupConsentListener
+    }
 
     let throttleTimer: NodeJS.Timeout | null = null
 
@@ -173,13 +187,13 @@ export function useBlogAnalytics(
         // Track the maximum scroll progress
         maxScrollProgress.current = Math.max(
           maxScrollProgress.current,
-          scrollProgress
+          scrollProgress,
         )
 
         // Track when user reaches the progress threshold
         if (
           !hasTrackedProgress.current &&
-          scrollProgress >= progressThreshold
+          scrollProgress >= normalizedProgressThreshold
         ) {
           hasTrackedProgress.current = true
           const timeSpent =
@@ -220,8 +234,8 @@ export function useBlogAnalytics(
                 timeSpent,
               }),
             ],
-            { type: 'application/json' }
-          )
+            { type: 'application/json' },
+          ),
         )
       }
     }
@@ -256,7 +270,7 @@ export function useBlogAnalytics(
   }, [
     trackReadProgress,
     trackTimeSpent,
-    progressThreshold,
+    normalizedProgressThreshold,
     trackEvent, // Include trackEvent but it's now stable (no deps) so won't cause re-renders
   ])
 

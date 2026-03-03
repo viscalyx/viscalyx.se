@@ -1,7 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { vi } from 'vitest'
-import ImageEnhancer from '../ImageEnhancer'
+import ImageEnhancer from '@/components/ImageEnhancer'
 
 // Mock next-intl with a stable translator reference (matches production behavior)
 vi.mock('next-intl', () => {
@@ -28,12 +29,20 @@ const TestComponent = ({
 
   return (
     <div>
-      <button type="button" data-testid="outside-button">
+      <button data-testid="outside-button" type="button">
         Outside
       </button>
-      <div ref={contentRef} className="blog-content">
+      <div className="blog-content" ref={contentRef}>
         {defaultImages.map(img => (
-          <img key={img.src} src={img.src} alt={img.alt} />
+          <Image
+            alt={img.alt}
+            height={100}
+            key={img.src}
+            sizes="(max-width: 1555px) 90vw, 1400px"
+            src={img.src}
+            unoptimized
+            width={100}
+          />
         ))}
       </div>
       <ImageEnhancer contentRef={contentRef} />
@@ -86,7 +95,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
   })
@@ -107,7 +116,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
   })
@@ -126,7 +135,7 @@ describe('ImageEnhancer + ImageModal Integration', () => {
     })
 
     const closeButton = screen.getByLabelText(
-      'accessibility.image.closeImagePreview'
+      'accessibility.image.closeImagePreview',
     )
     expect(closeButton).toHaveFocus()
 

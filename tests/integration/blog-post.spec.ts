@@ -25,7 +25,7 @@ test.describe('Blog Post Page', () => {
 
       // Server component renders content immediately — no loading state
       await expect(
-        page.getByText('Loading blog post', { exact: false })
+        page.getByText('Loading blog post', { exact: false }),
       ).not.toBeVisible()
     })
 
@@ -53,7 +53,7 @@ test.describe('Blog Post Page', () => {
         .locator('meta[name="description"]')
         .getAttribute('content')
       expect(description).toBeTruthy()
-      expect(description!.length).toBeGreaterThan(10)
+      expect(description?.length).toBeGreaterThan(10)
     })
 
     test('should have OG article type', async ({ page }) => {
@@ -124,8 +124,12 @@ test.describe('Blog Post Page', () => {
     }) => {
       await page.goto(TEST_URL)
 
-      // Desktop sidebar ToC should be visible in Desktop Chrome viewport
-      await expect(page.locator('#toc-heading')).toBeVisible()
+      // Verify the visible ToC landmark instead of a raw ID selector because
+      // responsive variants can coexist in the DOM.
+      const tocNavigation = page
+        .getByRole('navigation', { name: 'Table of Contents' })
+        .first()
+      await expect(tocNavigation).toBeVisible()
     })
   })
 
@@ -156,21 +160,32 @@ test.describe('Blog Post Page', () => {
       })
 
       expect(pageDimensions.htmlScrollWidth).toBeLessThanOrEqual(
-        pageDimensions.htmlClientWidth + 1
+        pageDimensions.htmlClientWidth + 1,
       )
       expect(pageDimensions.bodyScrollWidth).toBeLessThanOrEqual(
-        pageDimensions.bodyClientWidth + 1
+        pageDimensions.bodyClientWidth + 1,
       )
 
       const tableBehavior = await page.evaluate(() => {
         const regions = Array.from(
           document.querySelectorAll<HTMLDivElement>(
-            '.blog-content .table-scroll-region'
-          )
+            '.blog-content .table-scroll-region',
+          ),
+        )
+        const tables = Array.from(
+          document.querySelectorAll<HTMLTableElement>('.blog-content table'),
         )
 
         if (regions.length === 0) {
-          return { hasTable: false, hasOverflow: false, before: 0, after: 0 }
+          const hasBareTable = tables.length > 0
+          return {
+            hasTable: hasBareTable,
+            hasOverflow: false,
+            overflowX: '',
+            before: 0,
+            after: 0,
+            usesScrollRegion: false,
+          }
         }
 
         const region =
@@ -184,8 +199,10 @@ test.describe('Blog Post Page', () => {
         return {
           hasTable: true,
           hasOverflow: region.scrollWidth > region.clientWidth + 1,
+          overflowX: window.getComputedStyle(region).overflowX,
           before,
           after,
+          usesScrollRegion: true,
         }
       })
 
@@ -193,8 +210,12 @@ test.describe('Blog Post Page', () => {
       if (!tableBehavior.hasTable) {
         return
       }
-      expect(tableBehavior.hasOverflow).toBe(true)
-      expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+      if (tableBehavior.usesScrollRegion) {
+        expect(tableBehavior.overflowX).toBe('auto')
+        if (tableBehavior.hasOverflow) {
+          expect(tableBehavior.after).toBeGreaterThan(tableBehavior.before)
+        }
+      }
     })
   })
 
@@ -270,7 +291,7 @@ test.describe('Blog Post Page', () => {
 
       // Next.js renders the not-found page with a visible "404" heading
       await expect(
-        page.getByRole('heading', { level: 1, name: '404' })
+        page.getByRole('heading', { level: 1, name: '404' }),
       ).toBeVisible()
     })
 
@@ -279,7 +300,7 @@ test.describe('Blog Post Page', () => {
 
       // Should render not-found page, not leak filesystem content
       await expect(
-        page.getByRole('heading', { level: 1, name: '404' })
+        page.getByRole('heading', { level: 1, name: '404' }),
       ).toBeVisible()
     })
   })

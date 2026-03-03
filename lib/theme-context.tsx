@@ -1,12 +1,7 @@
 'use client'
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { hasConsent } from './cookie-consent'
 
 type Theme = 'light' | 'dark' | 'system'
@@ -15,19 +10,19 @@ type Theme = 'light' | 'dark' | 'system'
 function useEffectWhenInitialized(
   effect: React.EffectCallback,
   deps: React.DependencyList,
-  isInitialized: boolean
+  isInitialized: boolean,
 ) {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally excludes `effect` to avoid reruns from inline callbacks.
   useEffect(() => {
     if (!isInitialized) return
     return effect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInitialized, effect, ...deps])
+  }, [isInitialized, ...deps])
 }
 
 interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
   resolvedTheme: 'light' | 'dark'
+  setTheme: (theme: Theme) => void
+  theme: Theme
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
@@ -37,7 +32,11 @@ export const isValidTheme = (value: string | null): value is Theme => {
   return value !== null && ['light', 'dark', 'system'].includes(value)
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+interface ThemeProviderProps {
+  children: React.ReactNode
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
   // Start with defaults to match server rendering
   const [theme, setTheme] = useState<Theme>('system')
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
@@ -47,7 +46,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Sync with localStorage and DOM after hydration
   // This is intentional - we're syncing with external storage state on mount
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
     // Load theme from localStorage with error handling
     let savedTheme: Theme = 'system'
     try {
@@ -70,7 +68,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(savedTheme)
     setResolvedTheme(initialResolvedTheme)
     setIsInitialized(true)
-    /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
 
   useEffectWhenInitialized(
@@ -78,7 +75,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       // Initialize media query ref if not already done
       if (!mediaQueryRef.current) {
         mediaQueryRef.current = window.matchMedia(
-          '(prefers-color-scheme: dark)'
+          '(prefers-color-scheme: dark)',
         )
       }
 
@@ -103,7 +100,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     },
     [theme],
-    isInitialized
+    isInitialized,
   )
 
   useEffectWhenInitialized(
@@ -127,7 +124,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     },
     [theme, resolvedTheme],
-    isInitialized
+    isInitialized,
   )
 
   const handleSetTheme = (newTheme: Theme) => {

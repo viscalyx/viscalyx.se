@@ -1,10 +1,9 @@
-import { locales } from '@/i18n'
-
 import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { locales } from '@/i18n'
 
 const require = createRequire(import.meta.url)
 const og = require('../generate-og-images.js')
@@ -68,7 +67,7 @@ describe('generate-og-images.js', () => {
 
   it('escapes xml-sensitive characters', () => {
     expect(og.escapeXml(`A & B <tag> "x" 'y'`)).toBe(
-      'A &amp; B &lt;tag&gt; &quot;x&quot; &apos;y&apos;'
+      'A &amp; B &lt;tag&gt; &quot;x&quot; &apos;y&apos;',
     )
   })
 
@@ -91,7 +90,7 @@ describe('generate-og-images.js', () => {
     return withPreservedFile(filePath, async () => {
       fs.writeFileSync(filePath, JSON.stringify({ blog: {} }))
       expect(() => og.getLocaleStrings(testLocale, tempMessagesDir)).toThrow(
-        `Missing blog.og.title or blog.og.tagline in ${filePath}`
+        `Missing blog.og.title or blog.og.tagline in ${filePath}`,
       )
     }).finally(() => {
       fs.rmSync(tempMessagesDir, { recursive: true, force: true })
@@ -109,7 +108,7 @@ describe('generate-og-images.js', () => {
 
   it('throws when generateBlogOG is called without sharp', async () => {
     await expect(og.generateBlogOG('en', null)).rejects.toThrow(
-      'sharp is not installed'
+      'sharp is not installed',
     )
   })
 
@@ -124,11 +123,11 @@ describe('generate-og-images.js', () => {
 
     fs.copyFileSync(
       path.join(process.cwd(), 'messages', 'en.json'),
-      path.join(tempMessagesDir, 'en.json')
+      path.join(tempMessagesDir, 'en.json'),
     )
     fs.copyFileSync(
       path.join(process.cwd(), 'public', 'viscalyx_logo.svg'),
-      path.join(tempPublicDir, 'viscalyx_logo.svg')
+      path.join(tempPublicDir, 'viscalyx_logo.svg'),
     )
 
     const outputPath = path.join(tempPublicDir, 'og-blog-en.png')
@@ -164,15 +163,15 @@ describe('generate-og-images.js', () => {
     fs.mkdirSync(tempPublicDir, { recursive: true })
     fs.copyFileSync(
       path.join(process.cwd(), 'scripts', 'generate-og-images.js'),
-      copiedScriptPath
+      copiedScriptPath,
     )
     fs.copyFileSync(
       path.join(process.cwd(), 'messages', 'en.json'),
-      path.join(tempMessagesDir, 'en.json')
+      path.join(tempMessagesDir, 'en.json'),
     )
     fs.copyFileSync(
       path.join(process.cwd(), 'public', 'viscalyx_logo.svg'),
-      path.join(tempPublicDir, 'viscalyx_logo.svg')
+      path.join(tempPublicDir, 'viscalyx_logo.svg'),
     )
 
     const tempRequire = createRequire(copiedScriptPath)

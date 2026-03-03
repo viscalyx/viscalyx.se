@@ -103,7 +103,7 @@ describe('ConsentEventEmitter', () => {
     expect(workingListener).toHaveBeenCalledWith(event)
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error in consent event listener:',
-      expect.any(Error)
+      expect.any(Error),
     )
 
     consoleErrorSpy.mockRestore()

@@ -14,7 +14,7 @@ vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn().mockResolvedValue(
     Object.assign((key: string) => `translated:${key}`, {
       rich: (key: string) => `translated:${key}`,
-    })
+    }),
   ),
   getFormatter: vi.fn().mockResolvedValue({
     dateTime: () => 'Jan 1, 2025',
@@ -49,7 +49,7 @@ vi.mock('@/components/BlogPostGrid', () => ({
     React.createElement(
       'div',
       { 'data-testid': 'blog-post-grid' },
-      `Posts: ${allPosts.length}`
+      `Posts: ${allPosts.length}`,
     ),
 }))
 
@@ -126,7 +126,7 @@ describe('BlogPage', () => {
 
     // Should render the fallback featured post with translated keys
     expect(
-      screen.getByText('translated:fallback.featuredPost.title')
+      screen.getByText('translated:fallback.featuredPost.title'),
     ).toBeInTheDocument()
   })
 
@@ -162,7 +162,7 @@ describe('BlogPage', () => {
 
     expect(screen.getByText('translated:hero.title')).toBeInTheDocument()
     expect(
-      screen.getByText('translated:hero.titleHighlight')
+      screen.getByText('translated:hero.titleHighlight'),
     ).toBeInTheDocument()
     expect(screen.getByText('translated:hero.description')).toBeInTheDocument()
   })

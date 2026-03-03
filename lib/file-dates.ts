@@ -1,4 +1,86 @@
-import pageDatesData from './page-dates.json'
+import fs from 'node:fs'
+import path from 'node:path'
+
+interface StaticPageDateMap {
+  blog: string
+  cookies: string
+  home: string
+  privacy: string
+  terms: string
+}
+
+const FALLBACK_PAGE_DATES: StaticPageDateMap = {
+  home: '2024-01-01T00:00:00.000Z',
+  blog: '2024-01-01T00:00:00.000Z',
+  privacy: '2024-01-01T00:00:00.000Z',
+  terms: '2024-01-01T00:00:00.000Z',
+  cookies: '2024-01-01T00:00:00.000Z',
+}
+
+const ISO_8601_REGEX =
+  /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])(?:T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{1,3})?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)?)?$/
+
+function hasValidCalendarDate(
+  year: number,
+  month: number,
+  day: number,
+): boolean {
+  const maxDay = new Date(Date.UTC(year, month, 0)).getUTCDate()
+  return day <= maxDay
+}
+
+function isValidISODate(value: unknown): value is string {
+  if (typeof value !== 'string') return false
+
+  const match = value.match(ISO_8601_REGEX)
+  if (!match) return false
+
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+
+  if (!hasValidCalendarDate(year, month, day)) {
+    return false
+  }
+
+  return !Number.isNaN(Date.parse(value))
+}
+
+function loadPageDatesData(): StaticPageDateMap {
+  const pageDatesPath = path.join(process.cwd(), 'lib', 'page-dates.json')
+
+  try {
+    if (!fs.existsSync(pageDatesPath)) {
+      return FALLBACK_PAGE_DATES
+    }
+
+    const raw = fs.readFileSync(pageDatesPath, 'utf8')
+    const parsed = JSON.parse(raw) as Partial<StaticPageDateMap>
+
+    const sanitized = {} as StaticPageDateMap
+    const keys = Object.keys(FALLBACK_PAGE_DATES) as Array<
+      keyof StaticPageDateMap
+    >
+
+    for (const key of keys) {
+      sanitized[key] = isValidISODate(parsed[key])
+        ? parsed[key]
+        : FALLBACK_PAGE_DATES[key]
+    }
+
+    return sanitized
+  } catch {
+    return FALLBACK_PAGE_DATES
+  }
+}
+
+export interface StaticPageDates {
+  blog: Date
+  cookies: Date
+  home: Date
+  privacy: Date
+  terms: Date
+}
 
 /**
  * Get last modified dates for specific static pages
@@ -10,7 +92,9 @@ import pageDatesData from './page-dates.json'
  * 2. This will read Git commit history and update lib/page-dates.json
  * 3. The updated dates will be used in the sitemap and pages
  */
-export function getStaticPageDates() {
+export function getStaticPageDates(): StaticPageDates {
+  const pageDatesData = loadPageDatesData()
+
   return {
     home: new Date(pageDatesData.home),
     blog: new Date(pageDatesData.blog),

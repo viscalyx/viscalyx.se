@@ -10,7 +10,7 @@ import {
  * @returns Array of CookieInfo objects matching the category
  */
 export const getCookiesForCategory = (
-  category: CookieCategory
+  category: CookieCategory,
 ): CookieInfo[] => {
   return cookieRegistry.filter(cookie => cookie.category === category)
 }

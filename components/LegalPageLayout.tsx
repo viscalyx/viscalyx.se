@@ -1,19 +1,18 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { useFormatter } from 'next-intl'
+import type { ReactNode } from 'react'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollToTop'
-import { motion } from 'framer-motion'
-import { useFormatter } from 'next-intl'
 
-import type { ReactNode } from 'react'
-
-interface LegalPageLayoutProps {
-  title: string
-  subtitle: string
-  lastUpdatedLabel: string
-  lastUpdatedDate: Date
+interface ComponentProps {
   children: ReactNode
+  lastUpdatedDate: Date
+  lastUpdatedLabel: string
+  subtitle: string
+  title: string
 }
 
 const LegalPageLayout = ({
@@ -22,15 +21,15 @@ const LegalPageLayout = ({
   lastUpdatedLabel,
   lastUpdatedDate,
   children,
-}: LegalPageLayoutProps) => {
+}: ComponentProps) => {
   const format = useFormatter()
 
   return (
     <motion.main
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
       className="min-h-screen bg-white dark:bg-secondary-900"
+      initial={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Header />
 
@@ -38,10 +37,10 @@ const LegalPageLayout = ({
       <section className="gradient-bg section-padding pt-32">
         <div className="container-custom">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-6xl font-bold text-secondary-900 dark:text-secondary-100 mb-6">
               {title}
@@ -66,10 +65,10 @@ const LegalPageLayout = ({
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
               className="prose prose-lg dark:prose-invert max-w-none"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               {children}
             </motion.div>

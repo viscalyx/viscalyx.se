@@ -3,16 +3,16 @@ import { isValidDate, normalizeDate } from './date-utils'
 
 // BlogPostMetadata without content (for listings - stored in blog-data.json)
 export interface BlogPostMetadata {
-  slug: string
-  title: string
-  date?: string
   author: string
+  category?: string
+  date?: string
   excerpt: string
   image: string
   imageAlt?: string
-  tags: string[]
   readTime: string
-  category?: string
+  slug: string
+  tags: string[]
+  title: string
 }
 
 // BlogPost with content (for single post pages)
@@ -60,8 +60,8 @@ function validateBlogData(data: typeof blogData): BlogData {
     tags: Array.isArray(p.tags)
       ? Array.from(
           new Set(
-            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase())
-          )
+            p.tags.filter(t => typeof t === 'string').map(t => t.toLowerCase()),
+          ),
         )
       : [],
     readTime: p.readTime,
@@ -135,7 +135,7 @@ export function getFeaturedPost(): BlogPostMetadata | null {
 export function getRelatedPosts(
   currentSlug: string,
   category?: string,
-  limit: number = 3
+  limit: number = 3,
 ): BlogPostMetadata[] {
   const allPosts = getAllPosts() // This now automatically filters out template when other posts exist
   let relatedPosts = allPosts.filter(post => post.slug !== currentSlug)
@@ -146,7 +146,7 @@ export function getRelatedPosts(
     relatedPosts = relatedPosts.filter(
       post =>
         post.category?.toLowerCase() === normalizedCategory ||
-        post.tags.includes(normalizedCategory)
+        post.tags.includes(normalizedCategory),
     )
   }
 
@@ -182,6 +182,16 @@ export function validateSlug(slug: string): string | null {
 /**
  * Load blog content from static file via Cloudflare ASSETS binding or filesystem fallback.
  * Works in both server components and API routes.
+ *
+ * Note for local development:
+ * - `env.ASSETS` is a runtime binding (not a plain `.env` variable).
+ * - `next dev` + `initOpenNextCloudflareForDev()` is best-effort emulation, not
+ *   the same guarantee as Cloudflare preview runtime.
+ * - After running `npm run preview`, `next dev` may still see stale ASSETS
+ *   content; prefer filesystem-first reads in development for immediate edits.
+ * - Prefer `npm run preview` when you need Cloudflare binding parity guarantees.
+ * - Keep filesystem fallback enabled so local runs still work when ASSETS is unavailable
+ *   or temporarily stale.
  */
 export async function loadBlogContent(slug: string): Promise<string | null> {
   // Validate slug to prevent path traversal attacks
@@ -193,14 +203,49 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
   const shouldDebugSourcePath =
     process.env.NODE_ENV !== 'production' &&
     process.env.DEBUG_BLOG_CONTENT_SOURCE === '1'
+  const isDevelopment = process.env.NODE_ENV === 'development'
+
+  const readFromFilesystem = async (): Promise<string | null> => {
+    const fs = await import('node:fs/promises')
+    const path = await import('node:path')
+    const contentPath = path.join(
+      process.cwd(),
+      'public',
+      'blog-content',
+      `${validatedSlug}.json`,
+    )
+    const contentData = await fs.readFile(contentPath, 'utf-8')
+    if (shouldDebugSourcePath) {
+      console.info('[blog-content] source=filesystem', {
+        slug: validatedSlug,
+        path: contentPath,
+      })
+    }
+    const parsed = JSON.parse(contentData) as { content?: string }
+    return typeof parsed.content === 'string' ? parsed.content : null
+  }
 
   try {
+    // In local `next dev`, prefer freshly generated disk content.
+    if (isDevelopment) {
+      try {
+        return await readFromFilesystem()
+      } catch {
+        if (shouldDebugSourcePath) {
+          console.info('[blog-content] source=filesystem-miss', {
+            slug: validatedSlug,
+          })
+        }
+      }
+    }
+
     // Try to use Cloudflare ASSETS binding first (works in production)
     try {
       const { getCloudflareContext } = await import(
         '@opennextjs/cloudflare' as string
       )
       const { env } = getCloudflareContext()
+
       if (env?.ASSETS) {
         const assetUrl = `https://placeholder.local/blog-content/${encodeURIComponent(validatedSlug)}.json`
         const assetResponse = await env.ASSETS.fetch(assetUrl)
@@ -231,23 +276,7 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
     }
 
     // Fallback: Read from filesystem (works in local development and build time)
-    const fs = await import('node:fs/promises')
-    const path = await import('node:path')
-    const contentPath = path.join(
-      process.cwd(),
-      'public',
-      'blog-content',
-      `${validatedSlug}.json`
-    )
-    const contentData = await fs.readFile(contentPath, 'utf-8')
-    if (shouldDebugSourcePath) {
-      console.info('[blog-content] source=filesystem', {
-        slug: validatedSlug,
-        path: contentPath,
-      })
-    }
-    const parsed = JSON.parse(contentData) as { content?: string }
-    return typeof parsed.content === 'string' ? parsed.content : null
+    return await readFromFilesystem()
   } catch {
     if (shouldDebugSourcePath) {
       console.info('[blog-content] source=none', { slug: validatedSlug })
@@ -290,7 +319,7 @@ export function sanitizeCategory(category: string): string {
  */
 export async function trackPageView(
   slug: string,
-  category: string
+  category: string,
 ): Promise<void> {
   try {
     // Validate slug to avoid polluting analytics data with unsanitized input

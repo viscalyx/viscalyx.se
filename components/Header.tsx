@@ -2,13 +2,13 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, Settings, X } from 'lucide-react'
-import { Route } from 'next'
-import { useLocale, useTranslations } from 'next-intl'
+import type { Route } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-import { locales } from '../i18n'
+import { getHrefUrl } from '@/lib/navigation-utils'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 
@@ -58,49 +58,10 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isSettingsOpen])
 
-  // Helper function to generate proper URLs for links
-  const getHrefUrl = (href: string) => {
-    // Enhanced absolute URL detection using regex to cover all protocols
-    const absoluteUrlRegex = /^[a-z][a-z0-9+.-]*:/i
-
-    // Check if it's an absolute URL (external link) or special protocols
-    if (absoluteUrlRegex.test(href) || href.startsWith('//')) {
-      return href
-    }
-
-    if (href.startsWith('#')) {
-      // For section links, link to home page with hash
-      return `/${locale}${href}`
-    } else {
-      // Regular page navigation - preserve locale
-      const cleanHref = href.startsWith('/') ? href : `/${href}`
-
-      // Check if the path already starts with a locale prefix to avoid duplication
-      const pathSegments = cleanHref.split('/').filter(Boolean)
-      const firstSegment = pathSegments[0]
-
-      // Normalize the first segment by converting to lowercase and trimming slashes
-      const normalizedFirstSegment = firstSegment
-        ?.toLowerCase()
-        .replace(/\/$/, '')
-
-      if (
-        normalizedFirstSegment &&
-        locales.includes(normalizedFirstSegment as (typeof locales)[number])
-      ) {
-        // Path already has a locale, return as-is
-        return cleanHref
-      } else {
-        // Add locale prefix, ensuring no double slashes
-        return `/${locale}${cleanHref}`
-      }
-    }
-  }
-
   // Handle click for section links that need smooth scrolling
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string
+    href: string,
   ) => {
     // Always close the mobile menu when any link is clicked
     setIsMenuOpen(false)
@@ -132,28 +93,28 @@ const Header = () => {
 
   return (
     <motion.header
-      initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'bg-white/90 dark:bg-secondary-900/90 backdrop-blur-custom shadow-lg'
           : 'bg-transparent'
       }`}
+      initial={{ y: -100 }}
     >
       <nav className="container-custom section-padding py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center space-x-2">
+          <Link className="flex items-center space-x-2" href={`/${locale}`}>
             <motion.div
-              whileHover={{ scale: 1.05 }}
               className="flex items-center space-x-2"
+              whileHover={{ scale: 1.05 }}
             >
               <Image
-                src="/favicon-32x32.png"
                 alt="Viscalyx Logo"
-                width={32}
-                height={32}
                 className="h-8 w-8"
+                height={32}
+                src="/favicon-32x32.png"
+                width={32}
               />
               <span className="text-2xl font-bold text-gradient">Viscalyx</span>
             </motion.div>
@@ -163,12 +124,12 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item, index) => (
               <MotionLink
-                key={item.name}
-                href={getHrefUrl(item.href) as Route}
-                onClick={e => handleLinkClick(e, item.href)}
-                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
-                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors duration-200 cursor-pointer inline-block"
+                href={getHrefUrl(item.href, locale) as Route}
+                initial={{ opacity: 0, y: -20 }}
+                key={item.name}
+                onClick={e => handleLinkClick(e, item.href)}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
               >
@@ -179,13 +140,13 @@ const Header = () => {
             {/* Settings Dropdown */}
             <div className="relative" ref={settingsRef}>
               <motion.button
+                aria-controls="desktop-settings-menu"
+                aria-expanded={isSettingsOpen}
+                aria-label={t('settings.title')}
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 transition-colors hover:bg-primary-100 dark:bg-primary-900/50 dark:text-primary-400 dark:hover:bg-primary-900/70"
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/70 transition-colors"
-                aria-label={t('settings.title')}
-                aria-expanded={isSettingsOpen}
-                aria-controls="desktop-settings-menu"
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -193,13 +154,12 @@ const Header = () => {
               <AnimatePresence>
                 {isSettingsOpen && (
                   <motion.div
-                    id="desktop-settings-menu"
-                    role="dialog"
-                    aria-label={t('settings.title')}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    aria-label={t('settings.title')}
                     className="absolute right-0 mt-2 w-64 bg-white dark:bg-secondary-800 rounded-lg shadow-xl border border-secondary-200 dark:border-secondary-700 py-2 z-10"
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    id="desktop-settings-menu"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   >
                     <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
                       {t('settings.title')}
@@ -207,16 +167,16 @@ const Header = () => {
 
                     <div className="p-3 space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                        <p className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
                           {t('settings.language')}
-                        </label>
+                        </p>
                         <LanguageSwitcher />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+                        <p className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
                           {t('settings.theme')}
-                        </label>
+                        </p>
                         <ThemeToggle />
                       </div>
                     </div>
@@ -230,12 +190,12 @@ const Header = () => {
           <div className="md:hidden flex items-center space-x-2">
             <div className="relative" ref={mobileSettingsRef}>
               <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
-                aria-label={t('settings.title')}
-                aria-expanded={isSettingsOpen}
                 aria-controls="mobile-settings-menu"
+                aria-expanded={isSettingsOpen}
+                aria-label={t('settings.title')}
+                className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                whileTap={{ scale: 0.95 }}
               >
                 <Settings className="h-5 w-5" />
               </motion.button>
@@ -243,13 +203,12 @@ const Header = () => {
               <AnimatePresence>
                 {isSettingsOpen && (
                   <motion.div
-                    id="mobile-settings-menu"
-                    role="dialog"
-                    aria-label={t('settings.title')}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    aria-label={t('settings.title')}
                     className="absolute right-0 mt-2 w-56 bg-white dark:bg-secondary-800 rounded-lg shadow-xl border border-secondary-200 dark:border-secondary-700 py-2 z-10"
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    id="mobile-settings-menu"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   >
                     <div className="px-3 py-2 text-sm font-medium text-secondary-500 dark:text-secondary-400 border-b border-secondary-200 dark:border-secondary-700">
                       {t('settings.title')}
@@ -270,12 +229,12 @@ const Header = () => {
             </div>
 
             <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg bg-primary-50 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400"
-              aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
-              aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
+              aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-primary-50 p-2 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              whileTap={{ scale: 0.95 }}
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -290,25 +249,25 @@ const Header = () => {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.nav
-              id="mobile-menu"
-              aria-label={t('mobileMenu')}
-              initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              aria-label={t('mobileMenu')}
               className="md:hidden mt-4 bg-white dark:bg-secondary-800 rounded-lg shadow-xl overflow-hidden"
+              exit={{ opacity: 0, height: 0 }}
+              id="mobile-menu"
+              initial={{ opacity: 0, height: 0 }}
             >
               <div className="py-4 space-y-2">
                 {menuItems.map((item, index) => (
                   <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    key={item.name}
                     transition={{ delay: index * 0.1 }}
                   >
                     <Link
-                      href={getHrefUrl(item.href) as Route}
-                      onClick={e => handleLinkClick(e, item.href)}
                       className="block w-full text-left px-6 py-3 text-secondary-700 dark:text-secondary-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-secondary-700 transition-colors duration-200 cursor-pointer"
+                      href={getHrefUrl(item.href, locale) as Route}
+                      onClick={e => handleLinkClick(e, item.href)}
                     >
                       {item.name}
                     </Link>

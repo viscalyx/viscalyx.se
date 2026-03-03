@@ -46,21 +46,15 @@ vi.mock('next/navigation', () => ({
 vi.mock('@/app/[locale]/team/[memberId]/TeamMemberClient', () => ({
   __esModule: true,
   default: ({ member }: { member: { name: string } }) =>
-    React.createElement(
-      'div',
-      { 'data-testid': 'team-member-client' },
-      member.name
-    ),
+    React.createElement('article', { 'aria-label': member.name }, member.name),
 }))
 
 import { render, screen } from '@testing-library/react'
-
+import type { Metadata } from 'next'
 import TeamMemberPage, {
   generateMetadata,
   generateStaticParams,
 } from '@/app/[locale]/team/[memberId]/page'
-
-import type { Metadata } from 'next'
 
 const mockMember = {
   id: 'johlju',
@@ -106,7 +100,7 @@ describe('TeamMemberPage', () => {
 
       expect(metadata.title).toBe('Johan Ljunggren — Founder & Lead Consultant')
       expect(metadata.description).toBe(
-        'Passionate automation expert with over 30 years of experience.'
+        'Passionate automation expert with over 30 years of experience.',
       )
     })
 
@@ -186,7 +180,9 @@ describe('TeamMemberPage', () => {
       const page = await TeamMemberPage({ params })
       render(page)
 
-      expect(screen.getByTestId('team-member-client')).toBeInTheDocument()
+      expect(
+        screen.getByRole('article', { name: 'Johan Ljunggren' }),
+      ).toBeInTheDocument()
       expect(screen.getByText('Johan Ljunggren')).toBeInTheDocument()
     })
 
@@ -195,7 +191,7 @@ describe('TeamMemberPage', () => {
       const params = Promise.resolve({ locale: 'en', memberId: 'nobody' })
 
       await expect(async () => TeamMemberPage({ params })).rejects.toThrow(
-        'NEXT_NOT_FOUND'
+        'NEXT_NOT_FOUND',
       )
       expect(mockNotFound).toHaveBeenCalled()
     })

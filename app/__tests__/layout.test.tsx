@@ -1,9 +1,12 @@
+import type { ReactNode } from 'react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import RootLayout, { metadata } from '@/app/layout'
 import { metadata as metadataObject } from '@/app/metadata'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { ReactNode } from 'react'
+const { getOrganizationJsonLdMock, getWebSiteJsonLdMock } = vi.hoisted(() => ({
+  getOrganizationJsonLdMock: vi.fn(() => ({ '@type': 'Organization' })),
+  getWebSiteJsonLdMock: vi.fn(() => ({ '@type': 'WebSite' })),
+}))
 
 vi.mock('next-intl/server', () => ({
   getLocale: vi.fn(async () => 'en'),
@@ -23,30 +26,37 @@ vi.mock('@/lib/theme-context', () => ({
   ),
 }))
 
+vi.mock('@/lib/structured-data', () => ({
+  getOrganizationJsonLd: () => getOrganizationJsonLdMock(),
+  getWebSiteJsonLd: () => getWebSiteJsonLdMock(),
+}))
+
 describe('RootLayout', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  const findNodeWithProp = (
+  const findScriptNodeById = (
     node: unknown,
-    propName: string
+    id: string,
   ): { props: Record<string, unknown> } | null => {
     if (!node || typeof node !== 'object') {
       return null
     }
+
     const candidate = node as {
-      props?: Record<string, unknown>
       type?: unknown
+      props?: Record<string, unknown>
     }
-    if (candidate.props && propName in candidate.props) {
+
+    if (candidate.type === 'script' && candidate.props?.id === id) {
       return candidate as { props: Record<string, unknown> }
     }
 
     const children = candidate.props?.children
     const childList = Array.isArray(children) ? children : [children]
     for (const child of childList) {
-      const found = findNodeWithProp(child, propName)
+      const found = findScriptNodeById(child, id)
       if (found) return found
     }
     return null
@@ -69,15 +79,31 @@ describe('RootLayout', () => {
 
   it('injects anti-FOUC theme bootstrap script', async () => {
     const ui = await RootLayout({ children: <div /> })
-    const scriptNode = findNodeWithProp(ui, 'dangerouslySetInnerHTML') as {
-      props: { dangerouslySetInnerHTML: { __html: string } }
-    } | null
+    const scriptNode = findScriptNodeById(ui, 'theme-init-script')
 
     expect(scriptNode).not.toBeNull()
-    const scriptContent = scriptNode!.props.dangerouslySetInnerHTML.__html
+    const scriptContent = String(scriptNode?.props.children ?? '')
 
     expect(scriptContent).toContain("localStorage.getItem('theme')")
     expect(scriptContent).toContain('document.documentElement.classList')
+  })
+
+  it('emits organization and website JSON-LD scripts in head', async () => {
+    const ui = await RootLayout({ children: <div /> })
+
+    const organizationScriptNode = findScriptNodeById(ui, 'organization-jsonld')
+    const websiteScriptNode = findScriptNodeById(ui, 'website-jsonld')
+
+    expect(getOrganizationJsonLdMock).toHaveBeenCalledTimes(1)
+    expect(getWebSiteJsonLdMock).toHaveBeenCalledTimes(1)
+    expect(organizationScriptNode).not.toBeNull()
+    expect(websiteScriptNode).not.toBeNull()
+    expect(String(organizationScriptNode?.props.children)).toBe(
+      JSON.stringify(getOrganizationJsonLdMock.mock.results[0].value),
+    )
+    expect(String(websiteScriptNode?.props.children)).toBe(
+      JSON.stringify(getWebSiteJsonLdMock.mock.results[0].value),
+    )
   })
 
   it('re-exports metadata object', () => {

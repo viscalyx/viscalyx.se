@@ -10,17 +10,15 @@ vi.mock('next-intl/server', () => ({
 }))
 
 // Mock child component
-vi.mock('../TeamPageClient', () => ({
+vi.mock('@/app/[locale]/team/TeamPageClient', () => ({
   __esModule: true,
   default: () =>
-    React.createElement('div', { 'data-testid': 'team-page-client' }),
+    React.createElement('div', { role: 'region', 'aria-label': 'Team page' }),
 }))
 
 import { render, screen } from '@testing-library/react'
-
-import TeamPage, { generateMetadata } from '@/app/[locale]/team/page'
-
 import type { Metadata } from 'next'
+import TeamPage, { generateMetadata } from '@/app/[locale]/team/page'
 
 describe('TeamPage', () => {
   beforeEach(() => {
@@ -89,7 +87,9 @@ describe('TeamPage', () => {
     it('renders TeamPageClient', () => {
       render(<TeamPage />)
 
-      expect(screen.getByTestId('team-page-client')).toBeInTheDocument()
+      expect(
+        screen.getByRole('region', { name: /team page/i }),
+      ).toBeInTheDocument()
     })
   })
 })

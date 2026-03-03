@@ -86,34 +86,34 @@ describe('analyze-bundle.js', () => {
   it('parses wrangler output in KiB and MiB formats', () => {
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1500.00 KiB / gzip: 450.00 KiB'
-      )
+        'Total Upload: 1500.00 KiB / gzip: 450.00 KiB',
+      ),
     ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
 
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1.50 MiB / gzip: 0.45 MiB'
-      )
+        'Total Upload: 1.50 MiB / gzip: 0.45 MiB',
+      ),
     ).toEqual({ uncompressedKB: 1536, compressedKB: 460.8 })
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1,50 MiB / gzip: 0,45 MiB'
-      )
+        'Total Upload: 1,50 MiB / gzip: 0,45 MiB',
+      ),
     ).toEqual({ uncompressedKB: 1536, compressedKB: 460.8 })
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1,500.00 KiB / gzip: 450.00 KiB'
-      )
+        'Total Upload: 1,500.00 KiB / gzip: 450.00 KiB',
+      ),
     ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1500,00 KiB / gzip: 450,00 KiB'
-      )
+        'Total Upload: 1500,00 KiB / gzip: 450,00 KiB',
+      ),
     ).toEqual({ uncompressedKB: 1500, compressedKB: 450 })
     expect(
       analyzeBundle.parseWranglerOutput(
-        'Total Upload: 1.500,00 KiB / gzip: 500,00 KiB'
-      )
+        'Total Upload: 1.500,00 KiB / gzip: 500,00 KiB',
+      ),
     ).toEqual({ uncompressedKB: 1500, compressedKB: 500 })
 
     expect(analyzeBundle.parseWranglerOutput('no size info')).toBeNull()
@@ -152,7 +152,7 @@ describe('analyze-bundle.js', () => {
         '.open-next',
         'server-functions',
         'default',
-        'handler.mjs'
+        'handler.mjs',
       )
       writeFile(handler, 'export default {}')
 
@@ -172,13 +172,13 @@ describe('analyze-bundle.js', () => {
         '.open-next',
         'server-functions',
         'default',
-        'handler.mjs'
+        'handler.mjs',
       )
       const middleware = path.join(
         dir,
         '.open-next',
         'middleware',
-        'handler.mjs'
+        'handler.mjs',
       )
       const asset = path.join(dir, '.open-next', 'assets', 'asset.txt')
       writeFile(handler, 'console.log("handler")')
@@ -202,7 +202,7 @@ describe('analyze-bundle.js', () => {
         '.open-next',
         'server-functions',
         'default',
-        'handler.mjs'
+        'handler.mjs',
       )
       writeFile(handler, 'console.log("handler")')
 
@@ -217,8 +217,8 @@ describe('analyze-bundle.js', () => {
               paidCompressedMB: 1,
               warnPercentage: 99,
             },
-          }
-        ).status
+          },
+        ).status,
       ).toBe('warning')
 
       expect(
@@ -232,8 +232,8 @@ describe('analyze-bundle.js', () => {
               paidCompressedMB: 0.000001,
               warnPercentage: 99,
             },
-          }
-        ).status
+          },
+        ).status,
       ).toBe('error')
 
       expect(
@@ -247,8 +247,8 @@ describe('analyze-bundle.js', () => {
               paidCompressedMB: 1,
               warnPercentage: 0.001,
             },
-          }
-        ).status
+          },
+        ).status,
       ).toBe('info')
     })
   })
@@ -283,12 +283,12 @@ describe('analyze-bundle.js', () => {
         '.open-next',
         'server-functions',
         'default',
-        'handler.mjs'
+        'handler.mjs',
       )
       writeFile(handler, 'console.log("handler")')
       const results = analyzeBundle.analyzeBuild(
         { dryRun: true },
-        { getWranglerBundleSize: () => null }
+        { getWranglerBundleSize: () => null },
       )
       expect(results.status).toBe('error')
       expect(results.statusMessage).toContain('dry-run requested')
@@ -356,7 +356,7 @@ describe('analyze-bundle.js', () => {
   it('renders markdown warning and error advisory text', () => {
     const lines = []
     vi.spyOn(console, 'log').mockImplementation(message =>
-      lines.push(String(message))
+      lines.push(String(message)),
     )
 
     const base = {
@@ -438,7 +438,7 @@ describe('analyze-bundle.js', () => {
   it('main prints help and exits 0', () => {
     const logs = []
     vi.spyOn(console, 'log').mockImplementation(message =>
-      logs.push(String(message))
+      logs.push(String(message)),
     )
     vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
@@ -447,7 +447,7 @@ describe('analyze-bundle.js', () => {
     expect(() => analyzeBundle.main(['--help'])).toThrow('exit:0')
 
     expect(logs.join('\n')).toContain(
-      'Bundle Size Analyzer for Cloudflare Workers'
+      'Bundle Size Analyzer for Cloudflare Workers',
     )
   })
 
@@ -455,7 +455,7 @@ describe('analyze-bundle.js', () => {
     const errs = []
     vi.spyOn(console, 'log').mockImplementation(() => {})
     vi.spyOn(console, 'error').mockImplementation(message =>
-      errs.push(String(message))
+      errs.push(String(message)),
     )
     vi.spyOn(process, 'exit').mockImplementation(code => {
       throw new Error(`exit:${code}`)
@@ -469,7 +469,7 @@ describe('analyze-bundle.js', () => {
   it('main routes to JSON/markdown/ci/terminal outputs', () => {
     const logs = []
     vi.spyOn(console, 'log').mockImplementation(message =>
-      logs.push(String(message))
+      logs.push(String(message)),
     )
 
     const mockResults = {
@@ -516,7 +516,7 @@ describe('analyze-bundle.js', () => {
       analyzeBundle.main(['--max-age=1'], {
         isBuildFresh: () => ({ fresh: false, reason: 'stale build' }),
         runBuild: () => false,
-      })
+      }),
     ).toThrow('exit:1')
   })
 
@@ -539,14 +539,14 @@ describe('analyze-bundle.js', () => {
           statusMessage: 'too big',
         }),
         outputForTerminal: () => {},
-      })
+      }),
     ).toThrow('exit:1')
   })
 
   it('main uses existing build when fresh and sets dry-run by default', () => {
     const errs = []
     vi.spyOn(console, 'error').mockImplementation(message =>
-      errs.push(String(message))
+      errs.push(String(message)),
     )
 
     const seen = []

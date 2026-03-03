@@ -1,12 +1,16 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
+import { Download, Settings, Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 import ConfirmationModal from '@/components/ConfirmationModal'
 import CookieCategoryIcon from '@/components/CookieCategoryIcon'
 import CookieCategoryToggle from '@/components/CookieCategoryToggle'
 import {
-  cleanupCookies,
   type CookieCategory,
   type CookieConsentSettings,
+  cleanupCookies,
   cookieRegistry,
   defaultConsentSettings,
   getConsentSettings,
@@ -15,10 +19,6 @@ import {
   saveConsentSettings,
 } from '@/lib/cookie-consent'
 import { getCookiesForCategory } from '@/lib/cookie-ui-utils'
-import { motion } from 'framer-motion'
-import { Download, Settings, Trash2 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
 
 interface CookieSettingsProps {
   onSettingsChange?: (settings: CookieConsentSettings) => void
@@ -27,7 +27,7 @@ interface CookieSettingsProps {
 const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const t = useTranslations('cookieConsent')
   const [settings, setSettings] = useState<CookieConsentSettings>(
-    defaultConsentSettings
+    defaultConsentSettings,
   )
   const [consentTimestamp, setConsentTimestamp] = useState<Date | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -122,7 +122,7 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
   const cleanupDownloadResources = (
     element: HTMLAnchorElement | null,
     elementAppended: boolean,
-    url: string | null
+    url: string | null,
   ) => {
     // Clean up DOM element
     if (element && elementAppended) {
@@ -155,7 +155,13 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
     const data = {
       consentSettings: settings,
       consentTimestamp: consentTimestamp?.toISOString(),
-      cookieRegistry: cookieRegistry,
+      cookieRegistry: cookieRegistry.map(cookie => ({
+        name: cookie.name,
+        category: cookie.category,
+        purpose: t(cookie.purposeKey),
+        duration: t(cookie.durationKey),
+        ...(cookie.provider && { provider: cookie.provider }),
+      })),
       exportTimestamp: new Date().toISOString(),
     }
 
@@ -210,31 +216,41 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
           </div>
         )}
 
-        {showSuccess && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
-          >
-            <p className="text-sm text-green-800 dark:text-green-200">
-              ✓ {t('settingsSaved')}
-            </p>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              aria-atomic="true"
+              aria-live="polite"
+              className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -10 }}
+              key="settings-success"
+              role="status"
+            >
+              <p className="text-sm text-green-800 dark:text-green-200">
+                ✓ {t('settingsSaved')}
+              </p>
+            </motion.div>
+          )}
 
-        {showError && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-          >
-            <p className="text-sm text-red-800 dark:text-red-200">
-              ⚠ {t('settingsError')}
-            </p>
-          </motion.div>
-        )}
+          {showError && (
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              aria-atomic="true"
+              aria-live="assertive"
+              className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -10 }}
+              key="settings-error"
+              role="alert"
+            >
+              <p className="text-sm text-red-800 dark:text-red-200">
+                ⚠ {t('settingsError')}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Quick Actions */}
@@ -244,32 +260,32 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
         </h2>
         <div className="flex flex-wrap gap-3">
           <button
-            type="button"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
             onClick={handleAcceptAll}
-            className="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors"
+            type="button"
           >
             {t('acceptAll')}
           </button>
           <button
-            type="button"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
             onClick={handleRejectAll}
-            className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors"
+            type="button"
           >
             {t('rejectAll')}
           </button>
           <button
-            type="button"
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
             onClick={handleExportData}
-            className="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+            type="button"
           >
             <Download aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('exportData')}
           </button>
           <button
-            type="button"
-            onClick={handleResetConsent}
+            className="min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleResetConsent}
+            type="button"
           >
             <Trash2 aria-hidden="true" className="w-4 h-4 inline mr-2" />
             {t('resetConsent')}
@@ -293,11 +309,11 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
           return (
             <motion.div
-              key={category}
-              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
               className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-900/50"
+              initial={{ opacity: 0, y: 20 }}
+              key={category}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -315,16 +331,16 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                 </div>
                 <CookieCategoryToggle
                   category={category}
-                  checked={settings[category]}
                   categoryName={categoryName}
-                  requiredLabel={t('required')}
+                  checked={settings[category]}
                   onChange={handleCategoryToggle}
+                  requiredLabel={t('required')}
                 />
               </div>
 
               <p
-                id={`${category}-description`}
                 className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed"
+                id={`${category}-description`}
               >
                 {categoryDescription}
               </p>
@@ -337,20 +353,20 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
                   <div className="mt-4 space-y-4 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
                     {cookiesInCategory.map(cookie => (
                       <div
-                        key={cookie.name}
                         className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg"
+                        key={cookie.name}
                       >
                         <div className="font-mono font-medium text-primary-600 dark:text-primary-400 mb-2">
                           {cookie.name}
                         </div>
                         <div className="text-gray-700 dark:text-gray-300 mb-2">
-                          {cookie.purpose}
+                          {t(cookie.purposeKey)}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
                           <div>
                             {t('duration')}:{' '}
                             <span className="font-medium">
-                              {cookie.duration}
+                              {t(cookie.durationKey)}
                             </span>
                           </div>
                           {cookie.provider && (
@@ -375,10 +391,10 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
       {/* Save Button */}
       <div className="flex justify-end">
         <button
-          type="button"
-          onClick={handleSaveSettings}
+          className="px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]"
           disabled={isLoading}
-          className="px-8 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={handleSaveSettings}
+          type="button"
         >
           {isLoading ? t('saving') : t('savePreferences')}
         </button>
@@ -386,16 +402,16 @@ const CookieSettings = ({ onSettingsChange }: CookieSettingsProps) => {
 
       {/* Reset Confirmation Modal */}
       <ConfirmationModal
+        cancelText={t('cancel')}
+        confirmIcon={<Trash2 aria-hidden="true" className="w-4 h-4" />}
+        confirmLoading={isLoading}
+        confirmText={t('confirmReset')}
         isOpen={showResetConfirmation}
+        message={t('resetConfirmation')}
         onClose={() => setShowResetConfirmation(false)}
         onConfirm={confirmResetConsent}
         title={t('resetConfirmationTitle')}
-        message={t('resetConfirmation')}
-        confirmText={t('confirmReset')}
-        cancelText={t('cancel')}
         variant="danger"
-        confirmLoading={isLoading}
-        confirmIcon={<Trash2 className="w-4 h-4" aria-hidden="true" />}
       />
     </div>
   )

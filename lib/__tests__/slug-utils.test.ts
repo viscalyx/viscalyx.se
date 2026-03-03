@@ -1,17 +1,50 @@
-import { describe, expect, it, vi } from 'vitest'
+import { getTranslations } from 'next-intl/server'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  addHeadingIds,
   createSlug,
   createSlugId,
   ensureUniqueId,
   extractCleanText,
-  extractTableOfContents,
   extractTableOfContentsClient,
-  extractTableOfContentsServer,
   generateFallbackId,
-} from '../slug-utils'
+  type SlugOptions,
+} from '@/lib/slug-utils-client'
+import {
+  addHeadingIds,
+  extractTableOfContentsServer,
+} from '@/lib/slug-utils-server'
+
+vi.mock('next-intl/server', () => ({
+  getTranslations: vi.fn(
+    async () => (key: string, values?: { heading?: string }) => {
+      const heading = values?.heading ?? ''
+      if (key === 'accessibility.anchorLink.ariaLabel') {
+        return `Link to section: ${heading}`
+      }
+      if (key === 'accessibility.anchorLink.title') {
+        return `Copy link to section: ${heading}`
+      }
+      return key
+    },
+  ),
+}))
+
+const mockedGetTranslations = vi.mocked(getTranslations)
+
+function extractTableOfContents(
+  htmlContent: string,
+  options: SlugOptions = {},
+) {
+  return typeof window === 'undefined'
+    ? extractTableOfContentsServer(htmlContent, options)
+    : extractTableOfContentsClient(htmlContent, options)
+}
 
 describe('slug-utils', () => {
+  beforeEach(() => {
+    mockedGetTranslations.mockClear()
+  })
+
   describe('createSlug', () => {
     it('creates a basic slug from text', () => {
       expect(createSlug('Hello World')).toBe('hello-world')
@@ -33,7 +66,7 @@ describe('slug-utils', () => {
 
     it('handles nested HTML', () => {
       expect(extractCleanText('<div><span>Nested</span> Content</div>')).toBe(
-        'Nested Content'
+        'Nested Content',
       )
     })
 
@@ -55,6 +88,10 @@ describe('slug-utils', () => {
       // sanitize-html replaces surrogates with U+FFFD before our decoder
       expect(extractCleanText('&#xD800;')).toBe('\uFFFD')
       expect(extractCleanText('&#55296;')).toBe('\uFFFD')
+    })
+
+    it('decodes common named entities', () => {
+      expect(extractCleanText('&quot;a&amp;b&lt;c&gt;&quot;')).toBe('"a&b<c>"')
     })
   })
 
@@ -137,7 +174,7 @@ describe('slug-utils', () => {
 
     it('handles HTML content', () => {
       expect(createSlugId('<strong>Bold</strong> Section', 2)).toBe(
-        'bold-section'
+        'bold-section',
       )
     })
   })
@@ -206,47 +243,70 @@ describe('slug-utils', () => {
     })
   })
 
+  describe('extractTableOfContentsClient', () => {
+    it('extracts headings and creates unique IDs for duplicates', () => {
+      const html = `
+        <h2>Intro</h2>
+        <h3>Details</h3>
+        <h2>Intro</h2>
+      `
+
+      const toc = extractTableOfContentsClient(html)
+
+      expect(toc).toEqual([
+        { id: 'intro', level: 2, text: 'Intro' },
+        { id: 'details', level: 3, text: 'Details' },
+        { id: 'intro-1', level: 2, text: 'Intro' },
+      ])
+    })
+  })
+
   describe('addHeadingIds', () => {
-    it('adds IDs to headings with default accessibility labels', () => {
+    it('adds IDs to headings with default accessibility labels', async () => {
       const html = '<h2>My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="my-section"')
       expect(result).toContain('class="heading-with-anchor"')
       expect(result).toContain('href="#my-section"')
       expect(result).toContain('aria-label="Link to section: My Section"')
       expect(result).toContain('title="Copy link to section: My Section"')
+      expect(mockedGetTranslations).toHaveBeenCalledWith({
+        locale: 'en',
+        namespace: 'blog',
+      })
     })
 
-    it('uses localized accessibility labels when translation function provided', () => {
+    it('uses localized accessibility labels when translation function provided', async () => {
       const html = '<h2>My Section</h2>'
       const mockTranslate = vi
         .fn()
         .mockReturnValueOnce('Länk till sektion: My Section')
         .mockReturnValueOnce('Kopiera länk till sektion: My Section')
 
-      const result = addHeadingIds(html, {}, mockTranslate)
+      const result = await addHeadingIds(html, {}, mockTranslate)
 
       expect(mockTranslate).toHaveBeenCalledWith(
         'accessibility.anchorLink.ariaLabel',
-        { heading: 'My Section' }
+        { heading: 'My Section' },
       )
       expect(mockTranslate).toHaveBeenCalledWith(
         'accessibility.anchorLink.title',
-        { heading: 'My Section' }
+        { heading: 'My Section' },
       )
       expect(result).toContain('aria-label="Länk till sektion: My Section"')
       expect(result).toContain('title="Kopiera länk till sektion: My Section"')
+      expect(mockedGetTranslations).not.toHaveBeenCalled()
     })
 
-    it('handles duplicate headings with unique IDs', () => {
+    it('handles duplicate headings with unique IDs', async () => {
       const html = `
         <h2>Installation</h2>
         <h3>Prerequisites</h3>
         <h2>Installation</h2>
         <h3>Prerequisites</h3>
       `
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="installation"')
       expect(result).toContain('id="prerequisites"')
@@ -258,9 +318,9 @@ describe('slug-utils', () => {
       expect(result).toContain('href="#prerequisites-1"')
     })
 
-    it('preserves existing attributes and merges class', () => {
+    it('preserves existing attributes and merges class', async () => {
       const html = '<h2 class="custom-class">My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       // Should merge heading-with-anchor into the existing class, not create a duplicate class attr
       expect(result).toContain('class="custom-class heading-with-anchor"')
@@ -270,39 +330,59 @@ describe('slug-utils', () => {
       expect(classCount).toBe(3) // heading, anchor link, SVG icon
     })
 
-    it('does not override existing ID attributes', () => {
+    it('does not override existing ID attributes', async () => {
       const html = '<h2 id="existing-id">My Section</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="existing-id"')
       expect(result).not.toContain('id="my-section"')
+      expect(result).toContain('href="#existing-id"')
+      expect(result).not.toContain('href="#my-section"')
     })
 
-    it('handles complex HTML content in headings', () => {
+    it('reserves existing heading IDs to avoid generated collisions', async () => {
+      const html = '<h2 id="setup">Setup</h2><h2>Setup</h2>'
+      const result = await addHeadingIds(html)
+
+      expect(result).toContain('<h2 id="setup" class="heading-with-anchor">')
+      expect(result).toContain('href="#setup"')
+      expect(result).toContain('<h2 id="setup-1" class="heading-with-anchor">')
+      expect(result).toContain('href="#setup-1"')
+    })
+
+    it('escapes existing IDs before interpolating anchor href attributes', async () => {
+      const html = `<h2 id="existing'id">My Section</h2>`
+      const result = await addHeadingIds(html)
+
+      expect(result).toContain('href="#existing&#x27;id"')
+      expect(result).not.toContain(`href="#existing'id"`)
+    })
+
+    it('handles complex HTML content in headings', async () => {
       const html = '<h2><code>API</code> <strong>Reference</strong></h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('id="api-reference"')
       expect(result).toContain('href="#api-reference"')
     })
 
-    it('escapes double quotes in heading text for aria-label and title', () => {
+    it('escapes double quotes in heading text for aria-label and title', async () => {
       const html = '<h2>Config "key=value" pairs</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain(
-        'aria-label="Link to section: Config &quot;key=value&quot; pairs"'
+        'aria-label="Link to section: Config &quot;key=value&quot; pairs"',
       )
       expect(result).toContain(
-        'title="Copy link to section: Config &quot;key=value&quot; pairs"'
+        'title="Copy link to section: Config &quot;key=value&quot; pairs"',
       )
     })
 
-    it('escapes angle brackets and ampersands in heading text', () => {
+    it('escapes angle brackets and ampersands in heading text', async () => {
       // extractCleanText decodes HTML entities first, so "&amp;" becomes "&",
       // then escapeHtmlAttr re-encodes it once → "&amp;" (no double-encoding)
       const html = '<h2>A &amp; B</h2>'
-      const result = addHeadingIds(html)
+      const result = await addHeadingIds(html)
 
       expect(result).toContain('aria-label="Link to section: A &amp; B"')
       expect(result).toContain('title="Copy link to section: A &amp; B"')
@@ -310,14 +390,14 @@ describe('slug-utils', () => {
       expect(result).not.toMatch(/aria-label="[^"]*</)
     })
 
-    it('escapes quotes in translated strings from translateFn', () => {
+    it('escapes quotes in translated strings from translateFn', async () => {
       const html = '<h2>Section</h2>'
       const mockTranslate = vi
         .fn()
         .mockReturnValueOnce('Länk till "Section"')
         .mockReturnValueOnce('Kopiera länk till "Section"')
 
-      const result = addHeadingIds(html, {}, mockTranslate)
+      const result = await addHeadingIds(html, {}, mockTranslate)
 
       expect(result).toContain('aria-label="Länk till &quot;Section&quot;"')
       expect(result).toContain('title="Kopiera länk till &quot;Section&quot;"')

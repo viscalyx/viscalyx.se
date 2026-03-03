@@ -1,6 +1,6 @@
-import { SITE_URL } from '@/lib/constants'
 import { describe, expect, it } from 'vitest'
-import { metadata } from '../metadata'
+import { SITE_URL } from '@/lib/constants'
+import { metadata } from '@/metadata'
 
 describe('app metadata', () => {
   it('contains expected core metadata fields', () => {

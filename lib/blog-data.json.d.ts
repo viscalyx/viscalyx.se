@@ -6,9 +6,9 @@
 import type { BlogPostMetadata } from './blog'
 
 interface BlogDataStructure {
+  lastBuilt?: string
   posts: BlogPostMetadata[]
   slugs: string[]
-  lastBuilt?: string
 }
 
 declare const blogData: BlogDataStructure

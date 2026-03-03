@@ -1,9 +1,8 @@
-import CookieSettings from '@/components/CookieSettings'
-import * as cookieConsent from '@/lib/cookie-consent'
-
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import CookieSettings from '@/components/CookieSettings'
+import * as cookieConsent from '@/lib/cookie-consent'
 
 // Mock cookie-consent lib
 vi.mock('@/lib/cookie-consent', () => ({
@@ -21,8 +20,8 @@ vi.mock('@/lib/cookie-consent', () => ({
     {
       name: 'test-cookie',
       category: 'strictly-necessary' as const,
-      purpose: 'Test purpose',
-      duration: '1 year',
+      purposeKey: 'cookies.testCookie.purpose',
+      durationKey: 'cookies.testCookie.duration',
       provider: 'Test Provider',
     },
   ],
@@ -36,40 +35,7 @@ const mockResetConsent = vi.mocked(cookieConsent.resetConsent)
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => {
-    const translations: Record<string, string> = {
-      cookieSettings: 'Cookie Settings',
-      settingsDescription: 'Manage your cookie preferences',
-      resetConfirmationTitle: 'Reset Cookie Preferences',
-      resetConfirmation:
-        'Are you sure you want to reset all cookie preferences?',
-      confirmReset: 'Reset Preferences',
-      cancel: 'Cancel',
-      resetConsent: 'Reset Consent',
-      acceptAll: 'Accept All',
-      rejectAll: 'Reject All',
-      exportData: 'Export Data',
-      savePreferences: 'Save Preferences',
-      saving: 'Saving...',
-      settingsSaved: 'Settings saved successfully',
-      settingsError: 'Error saving settings',
-      quickActions: 'Quick Actions',
-      'categories.title': 'Cookie Categories',
-      'categories.strictly-necessary.name': 'Strictly Necessary',
-      'categories.strictly-necessary.description':
-        'Required for basic functionality',
-      'categories.analytics.name': 'Analytics',
-      'categories.analytics.description': 'Help us improve our website',
-      'categories.preferences.name': 'Preferences',
-      'categories.preferences.description': 'Remember your settings',
-      required: 'Required',
-      viewCookies: 'View Cookies',
-      duration: 'Duration',
-      provider: 'Provider',
-      lastUpdated: 'Last updated',
-    }
-    return translations[key] || key
-  },
+  useTranslations: () => (key: string) => key,
 }))
 
 describe('CookieSettings', () => {
@@ -89,52 +55,48 @@ describe('CookieSettings', () => {
   it('renders cookie settings interface', () => {
     render(<CookieSettings />)
 
-    expect(screen.getByText('Cookie Settings')).toBeInTheDocument()
-    expect(
-      screen.getByText('Manage your cookie preferences')
-    ).toBeInTheDocument()
-    expect(screen.getByText('Accept All')).toBeInTheDocument()
-    expect(screen.getByText('Reject All')).toBeInTheDocument()
-    expect(screen.getByText('Reset Consent')).toBeInTheDocument()
+    expect(screen.getByText('cookieSettings')).toBeInTheDocument()
+    expect(screen.getByText('settingsDescription')).toBeInTheDocument()
+    expect(screen.getByText('acceptAll')).toBeInTheDocument()
+    expect(screen.getByText('rejectAll')).toBeInTheDocument()
+    expect(screen.getByText('resetConsent')).toBeInTheDocument()
   })
 
   it('displays cookie categories', () => {
     render(<CookieSettings />)
 
-    expect(screen.getByText('Strictly Necessary')).toBeInTheDocument()
-    expect(screen.getByText('Analytics')).toBeInTheDocument()
-    expect(screen.getByText('Preferences')).toBeInTheDocument()
+    expect(
+      screen.getByText('categories.strictly-necessary.name'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('categories.analytics.name')).toBeInTheDocument()
+    expect(screen.getByText('categories.preferences.name')).toBeInTheDocument()
   })
 
   it('shows confirmation modal when reset is clicked', async () => {
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('resetConsent'))
 
     await waitFor(() => {
-      expect(screen.getByText('Reset Cookie Preferences')).toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'Are you sure you want to reset all cookie preferences?'
-        )
-      ).toBeInTheDocument()
+      expect(screen.getByText('resetConfirmationTitle')).toBeInTheDocument()
+      expect(screen.getByText('resetConfirmation')).toBeInTheDocument()
     })
   })
 
   it('closes confirmation modal when cancel is clicked', async () => {
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('resetConsent'))
 
     await waitFor(() => {
-      expect(screen.getByText('Cancel')).toBeInTheDocument()
+      expect(screen.getByText('cancel')).toBeInTheDocument()
     })
 
-    await user.click(screen.getByText('Cancel'))
+    await user.click(screen.getByText('cancel'))
 
     await waitFor(() => {
       expect(
-        screen.queryByText('Reset Cookie Preferences')
+        screen.queryByText('resetConfirmationTitle'),
       ).not.toBeInTheDocument()
     })
   })
@@ -142,13 +104,13 @@ describe('CookieSettings', () => {
   it('resets consent when confirmed', async () => {
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('resetConsent'))
 
     await waitFor(() => {
-      expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
+      expect(screen.getByText('confirmReset')).toBeInTheDocument()
     })
 
-    await user.click(screen.getByText('Reset Preferences'))
+    await user.click(screen.getByText('confirmReset'))
 
     await waitFor(() => {
       expect(mockResetConsent).toHaveBeenCalledTimes(1)
@@ -158,7 +120,7 @@ describe('CookieSettings', () => {
   it('saves settings when save button is clicked', async () => {
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Save Preferences'))
+    await user.click(screen.getByText('savePreferences'))
 
     await waitFor(() => {
       expect(mockSaveConsentSettings).toHaveBeenCalledTimes(1)
@@ -170,7 +132,7 @@ describe('CookieSettings', () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    await user.click(screen.getByText('Accept All'))
+    await user.click(screen.getByText('acceptAll'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -183,7 +145,7 @@ describe('CookieSettings', () => {
     const onSettingsChange = vi.fn()
     render(<CookieSettings onSettingsChange={onSettingsChange} />)
 
-    await user.click(screen.getByText('Reject All'))
+    await user.click(screen.getByText('rejectAll'))
 
     expect(onSettingsChange).toHaveBeenCalledWith({
       'strictly-necessary': true,
@@ -198,22 +160,17 @@ describe('CookieSettings', () => {
 
     render(<CookieSettings />)
 
-    expect(screen.getByText(/Last updated/)).toBeInTheDocument()
+    expect(screen.getByText(/lastUpdated/)).toBeInTheDocument()
   })
 
   it('disables strictly necessary toggle', () => {
     render(<CookieSettings />)
 
-    // Find the strictly necessary section and its toggle
-    const strictlyNecessarySection = screen
-      .getByText('Strictly Necessary')
-      .closest('.border')
-    expect(strictlyNecessarySection).toBeInTheDocument()
-
-    // The toggle should be disabled (input is hidden, but container should have disabled styling)
-    const toggleContainer =
-      strictlyNecessarySection?.querySelector('.opacity-50')
-    expect(toggleContainer).toBeInTheDocument()
+    // Find the strictly necessary toggle via its accessible label
+    const toggle = screen.getByRole('checkbox', {
+      name: /categories\.strictly-necessary\.name/,
+    })
+    expect(toggle).toBeDisabled()
   })
 
   it('shows an error message when saving settings fails', async () => {
@@ -226,13 +183,13 @@ describe('CookieSettings', () => {
 
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Save Preferences'))
+    await user.click(screen.getByText('savePreferences'))
 
     await waitFor(() => {
-      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(screen.getByText(/settingsError/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to save cookie settings:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -247,18 +204,18 @@ describe('CookieSettings', () => {
 
     render(<CookieSettings />)
 
-    await user.click(screen.getByText('Reset Consent'))
+    await user.click(screen.getByText('resetConsent'))
     await waitFor(() => {
-      expect(screen.getByText('Reset Preferences')).toBeInTheDocument()
+      expect(screen.getByText('confirmReset')).toBeInTheDocument()
     })
 
-    await user.click(screen.getByText('Reset Preferences'))
+    await user.click(screen.getByText('confirmReset'))
 
     await waitFor(() => {
-      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(screen.getByText(/settingsError/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to reset consent:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -274,7 +231,7 @@ describe('CookieSettings', () => {
     const removeChildSpy = vi.spyOn(document.body, 'removeChild')
 
     render(<CookieSettings />)
-    await user.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('exportData'))
 
     await waitFor(() => {
       expect(createObjectUrlSpy).toHaveBeenCalledTimes(1)
@@ -300,16 +257,16 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    await user.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('exportData'))
 
     await waitFor(() => {
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         'Failed to remove download element:',
-        expect.any(Error)
+        expect.any(Error),
       )
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         'Failed to revoke blob URL:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -323,13 +280,13 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    await user.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('exportData'))
 
     await waitFor(() => {
-      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(screen.getByText(/settingsError/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -349,13 +306,13 @@ describe('CookieSettings', () => {
       return HTMLBodyElement.prototype.appendChild.call(document.body, node)
     })
 
-    await user.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('exportData'))
 
     await waitFor(() => {
-      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(screen.getByText(/settingsError/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })
@@ -370,13 +327,13 @@ describe('CookieSettings', () => {
     })
 
     render(<CookieSettings />)
-    await user.click(screen.getByText('Export Data'))
+    await user.click(screen.getByText('exportData'))
 
     await waitFor(() => {
-      expect(screen.getByText(/Error saving settings/)).toBeInTheDocument()
+      expect(screen.getByText(/settingsError/)).toBeInTheDocument()
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Failed to export cookie data:',
-        expect.any(Error)
+        expect.any(Error),
       )
     })
   })

@@ -1,13 +1,18 @@
+import { render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Team from '@/components/Team'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 
-const mockPush = vi.fn()
+const mockGetTeamMembers = vi.fn()
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
   useTranslations: () => {
-    const t = (key: string) => key
+    const t = (key: string, values?: { name?: string }) => {
+      if (key === 'viewProfileFallback' && values?.name) {
+        return `View profile for ${values.name}`
+      }
+      return key
+    }
     t.raw = (key: string) => {
       if (key === 'members.johlju.specialties') {
         return ['PowerShell', 'DevOps', 'DSC']
@@ -21,57 +26,67 @@ vi.mock('next-intl', () => ({
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush }),
+  useRouter: () => ({ push: vi.fn() }),
   usePathname: () => '/en',
 }))
 
 // Mock @/lib/team
 vi.mock('@/lib/team', () => ({
-  getTeamMembers: () => [
-    {
-      id: 'johlju',
-      name: 'Johan Ljunggren',
-      role: 'members.johlju.role',
-      image: '/johlju-profile.jpg',
-      bio: 'members.johlju.bio',
-      location: 'Sweden',
-      specialties: ['PowerShell', 'DevOps', 'DSC'],
-      socialLinks: [
-        {
-          name: 'Email',
-          href: 'mailto:test@example.com',
-          icon: ({ className }: { className?: string }) => (
-            <svg data-testid="email-icon" className={className} />
-          ),
-        },
-        {
-          name: 'GitHub',
-          href: 'https://github.com/test',
-          icon: ({ className }: { className?: string }) => (
-            <svg data-testid="github-icon" className={className} />
-          ),
-        },
-      ],
-    },
-  ],
+  getTeamMembers: (...args: unknown[]) => mockGetTeamMembers(...args),
+  socialIconTranslationKeyMap: {
+    Email: 'email',
+    LinkedIn: 'linkedin',
+    Bluesky: 'bluesky',
+    Mastodon: 'mastodon',
+    X: 'x',
+    Discord: 'discord',
+    GitHub: 'github',
+  },
 }))
 
 // Mock lucide-react
 vi.mock('lucide-react', () => ({
   ArrowRight: ({ className }: { className?: string }) => (
-    <svg data-testid="arrow-right-icon" className={className} />
+    <svg aria-label="Arrow right" className={className} role="img" />
   ),
   Camera: ({ className }: { className?: string }) => (
-    <svg data-testid="camera-icon" className={className} />
+    <svg aria-label="Camera" className={className} role="img" />
   ),
   MapPin: ({ className }: { className?: string }) => (
-    <svg data-testid="map-pin-icon" className={className} />
+    <svg aria-label="Map pin" className={className} role="img" />
   ),
 }))
 
 describe('Team', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetTeamMembers.mockReturnValue([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '/johlju-profile.jpg',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [
+          {
+            name: 'Email',
+            href: 'mailto:test@example.com',
+            icon: ({ className }: { className?: string }) => (
+              <svg className={className} data-testid="email-icon" />
+            ),
+          },
+          {
+            name: 'GitHub',
+            href: 'https://github.com/test',
+            icon: ({ className }: { className?: string }) => (
+              <svg className={className} data-testid="github-icon" />
+            ),
+          },
+        ],
+      },
+    ])
   })
 
   it('renders the team section', () => {
@@ -95,7 +110,7 @@ describe('Team', () => {
   it('renders member location with map pin icon', () => {
     render(<Team />)
     expect(screen.getByText('Sweden')).toBeInTheDocument()
-    expect(screen.getByTestId('map-pin-icon')).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Map pin' })).toBeInTheDocument()
   })
 
   it('renders member specialties', () => {
@@ -121,6 +136,8 @@ describe('Team', () => {
     render(<Team />)
     const emailLink = screen.getByLabelText('Email')
     expect(emailLink).toHaveAttribute('href', 'mailto:test@example.com')
+    expect(emailLink).toHaveAttribute('target', '_self')
+    expect(emailLink).not.toHaveAttribute('rel')
 
     const githubLink = screen.getByLabelText('GitHub')
     expect(githubLink).toHaveAttribute('href', 'https://github.com/test')
@@ -128,18 +145,102 @@ describe('Team', () => {
     expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  it('navigates to member detail on card click', () => {
+  it('falls back to raw social name when translation key mapping is missing', () => {
+    mockGetTeamMembers.mockReturnValueOnce([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '/johlju-profile.jpg',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [
+          {
+            name: 'UnknownNetwork',
+            href: 'https://example.com/profile',
+            icon: ({
+              className,
+              title,
+            }: {
+              className?: string
+              title?: string
+            }) => (
+              <span
+                aria-label={`${title} icon`}
+                className={className}
+                role="img"
+                title={title}
+              />
+            ),
+          },
+        ],
+      },
+    ])
+
     render(<Team />)
-    // Click on the member card (the clickable wrapper)
-    fireEvent.click(screen.getByText('Johan Ljunggren'))
-    expect(mockPush).toHaveBeenCalledWith('/en/team/johlju')
+
+    const unknownLink = screen.getByLabelText('UnknownNetwork')
+    expect(unknownLink).toHaveAttribute('href', 'https://example.com/profile')
+    expect(
+      screen.getByRole('img', { name: 'UnknownNetwork icon' }),
+    ).toHaveAttribute('title', 'UnknownNetwork')
   })
 
-  it('stops propagation on social link clicks', () => {
+  it('renders a view profile link for each member', () => {
     render(<Team />)
-    fireEvent.click(screen.getByLabelText('GitHub'))
-    // Should not navigate to member page when social link is clicked
-    expect(mockPush).not.toHaveBeenCalled()
+    const profileLink = screen.getByRole('link', {
+      name: 'View profile for Johan Ljunggren',
+    })
+    expect(profileLink).toHaveAttribute('href', '/en/team/johlju')
+  })
+
+  it('view profile link is accessible via keyboard', () => {
+    render(<Team />)
+    const profileLink = screen.getByRole('link', {
+      name: 'View profile for Johan Ljunggren',
+    })
+    expect(profileLink).toBeInTheDocument()
+    // Link elements are natively keyboard-accessible
+    expect(profileLink.tagName).toBe('A')
+  })
+
+  it('renders camera fallback when a member has no profile image', () => {
+    mockGetTeamMembers.mockReturnValueOnce([
+      {
+        id: 'johlju',
+        name: 'Johan Ljunggren',
+        role: 'members.johlju.role',
+        image: '',
+        bio: 'members.johlju.bio',
+        location: 'Sweden',
+        specialties: ['PowerShell', 'DevOps', 'DSC'],
+        socialLinks: [],
+      },
+    ])
+
+    render(<Team />)
+
+    expect(screen.queryByAltText('Johan Ljunggren')).not.toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /camera/i })).toBeInTheDocument()
+  })
+
+  it('social links are independent of profile navigation', () => {
+    render(<Team />)
+    const githubLink = screen.getByLabelText('GitHub')
+    // Social links open externally, not via client-side navigation
+    expect(githubLink.closest('a')).toHaveAttribute('target', '_blank')
+    expect(githubLink.closest('a')).toHaveAttribute(
+      'rel',
+      'noopener noreferrer',
+    )
+  })
+
+  it('social links do not interfere with keyboard navigation', () => {
+    render(<Team />)
+    const githubLink = screen.getByLabelText('GitHub')
+    // Social link is a proper anchor element accessible via keyboard
+    expect(githubLink.closest('a')).toHaveAttribute('href')
   })
 
   it('renders the call to action section', () => {

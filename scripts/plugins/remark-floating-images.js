@@ -47,7 +47,7 @@ function remarkFloatingImages() {
         // If parsing fails, leave the node unchanged
         console.warn(
           'Failed to parse HTML in remark-floating-images:',
-          error.message
+          error.message,
         )
       }
     })

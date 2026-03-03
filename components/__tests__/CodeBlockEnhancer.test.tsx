@@ -1,5 +1,5 @@
 import { act, render } from '@testing-library/react'
-import React from 'react'
+import type React from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer'
 
@@ -18,7 +18,9 @@ vi.mock('react-dom/client', () => ({
 // Mock CopyButton
 vi.mock('@/components/CopyButton', () => ({
   default: ({ text }: { text: string }) => (
-    <button data-testid="copy-button">{text}</button>
+    <button data-testid="copy-button" type="button">
+      {text}
+    </button>
   ),
 }))
 
@@ -119,7 +121,7 @@ describe('CodeBlockEnhancer', () => {
 
     const scrollWrapper = wrapper.querySelector('.code-scroll-wrapper')
     expect(scrollWrapper).not.toBeNull()
-    expect(scrollWrapper!.contains(pre)).toBe(true)
+    expect(scrollWrapper?.contains(pre)).toBe(true)
   })
 
   it('does not run when contentLoaded is false', () => {
@@ -225,5 +227,26 @@ describe('CodeBlockEnhancer', () => {
     const scrollWrapper = wrapper.querySelector('.code-scroll-wrapper')
     const copyContainer = scrollWrapper?.querySelector('.copy-button-container')
     expect(copyContainer).not.toBeNull()
+  })
+
+  it('enhances code blocks added after initial scan', async () => {
+    render(<CodeBlockEnhancer />)
+
+    act(() => {
+      vi.advanceTimersByTime(50)
+    })
+    expect(mockCreateRoot).not.toHaveBeenCalled()
+
+    createCodeBlock('javascript', 'console.log("late block")')
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+    act(() => {
+      vi.advanceTimersByTime(16)
+    })
+
+    expect(mockCreateRoot).toHaveBeenCalledTimes(1)
+    expect(mockRender).toHaveBeenCalledTimes(1)
   })
 })

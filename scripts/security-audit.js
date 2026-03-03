@@ -52,7 +52,7 @@ try {
   ) {
     console.log('  📦 Dependency Issue:')
     console.log(
-      '    • Run "npm install" to ensure all dependencies are installed'
+      '    • Run "npm install" to ensure all dependencies are installed',
     )
     console.log('    • Verify Vitest is properly installed in package.json')
     console.log('    • Check if npx is available in your PATH')
@@ -60,21 +60,21 @@ try {
     console.log('  🧪 Test Failure Analysis:')
     if (combinedError.includes('sanitization')) {
       console.log(
-        '    • XSS prevention tests failed - review sanitize-html configuration'
+        '    • XSS prevention tests failed - review sanitize-html configuration',
       )
       console.log(
-        '    • Check if new malicious patterns need to be added to tests'
+        '    • Check if new malicious patterns need to be added to tests',
       )
       console.log('    • Verify sanitization rules in build-blog-data.js')
     } else if (combinedError.includes('integration')) {
       console.log(
-        '    • Integration tests failed - check build process compatibility'
+        '    • Integration tests failed - check build process compatibility',
       )
       console.log('    • Verify blog content files are accessible and valid')
       console.log('    • Review file system permissions for content directory')
     } else {
       console.log(
-        '    • Review test output above for specific assertion failures'
+        '    • Review test output above for specific assertion failures',
       )
       console.log('    • Check if test data or expectations need updating')
     }
@@ -84,9 +84,9 @@ try {
   ) {
     console.log('  📁 File System Issue:')
     console.log(
-      '    • Missing test files - ensure test directory structure is correct'
+      '    • Missing test files - ensure test directory structure is correct',
     )
-    console.log('    • Check if build-blog-data-sanitization.test.js exists')
+    console.log('    • Check if build-blog-data-sanitization.test.mjs exists')
     console.log('    • Check if build-blog-data-integration.test.js exists')
     console.log('    • Verify content/blog directory exists with test files')
   } else if (
@@ -113,12 +113,12 @@ try {
   } else {
     console.log('  🔍 General Recommendations:')
     console.log(
-      '    • Review the sanitization configuration in build-blog-data.js'
+      '    • Review the sanitization configuration in build-blog-data.js',
     )
     console.log('    • Ensure sanitize-html is up to date')
     console.log('    • Check for any new XSS vectors in the failing tests')
     console.log(
-      '    • Verify that legitimate content is not being over-sanitized'
+      '    • Verify that legitimate content is not being over-sanitized',
     )
   }
 

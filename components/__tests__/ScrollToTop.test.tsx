@@ -1,7 +1,6 @@
-import ScrollToTop from '@/components/ScrollToTop'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import ScrollToTop from '@/components/ScrollToTop'
 
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
@@ -9,7 +8,7 @@ vi.mock('next-intl', () => ({
 
 describe('ScrollToTop', () => {
   beforeEach(() => {
-    vi.restoreAllMocks()
+    vi.clearAllMocks()
     Object.defineProperty(window, 'scrollY', {
       value: 0,
       writable: true,
@@ -20,7 +19,7 @@ describe('ScrollToTop', () => {
       (cb: FrameRequestCallback) => {
         cb(0)
         return 0
-      }
+      },
     )
   })
 
@@ -50,7 +49,7 @@ describe('ScrollToTop', () => {
     fireEvent.scroll(window)
     expect(screen.getByRole('button')).toHaveAttribute(
       'aria-label',
-      'ariaLabel'
+      'ariaLabel',
     )
   })
 

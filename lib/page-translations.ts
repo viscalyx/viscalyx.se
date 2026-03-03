@@ -1,9 +1,8 @@
 import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
+import { locales } from '@/i18n'
 
 interface PrivacyTranslations {
-  title: string
-  subtitle: string
   lastUpdated: string
   sections: {
     informationWeCollect: {
@@ -41,66 +40,64 @@ interface PrivacyTranslations {
       emailAddress: string
     }
   }
+  subtitle: string
+  title: string
 }
 
 interface TermsTranslations {
-  terms: {
-    title: string
-    subtitle: string
-    lastUpdated: string
-    sections: {
-      agreement: {
-        title: string
-        description: string
-      }
-      services: {
-        title: string
-        description: string
-        items: string[]
-      }
-      userResponsibilities: {
-        title: string
-        description: string
-        items: string[]
-      }
-      intellectualProperty: {
-        title: string
-        description: string
-      }
-      limitationOfLiability: {
-        title: string
-        description: string
-      }
-      termination: {
-        title: string
-        description: string
-      }
-      governingLaw: {
-        title: string
-        description: string
-      }
-      changes: {
-        title: string
-        description: string
-      }
-      contact: {
-        title: string
-        description: string
-        email: string
-        emailAddress: string
-      }
+  lastUpdated: string
+  sections: {
+    agreement: {
+      title: string
+      description: string
+    }
+    services: {
+      title: string
+      description: string
+      items: string[]
+    }
+    userResponsibilities: {
+      title: string
+      description: string
+      items: string[]
+    }
+    intellectualProperty: {
+      title: string
+      description: string
+    }
+    limitationOfLiability: {
+      title: string
+      description: string
+    }
+    termination: {
+      title: string
+      description: string
+    }
+    governingLaw: {
+      title: string
+      description: string
+    }
+    changes: {
+      title: string
+      description: string
+    }
+    contact: {
+      title: string
+      description: string
+      email: string
+      emailAddress: string
     }
   }
+  subtitle: string
+  title: string
 }
 
 interface CookiesTranslations {
-  title: string
-  description: string
-  lastUpdated: string
-  whatAreCookies: {
+  contact: {
     title: string
     description: string
   }
+  description: string
   howWeUseCookies: {
     title: string
     description: string
@@ -110,6 +107,8 @@ interface CookiesTranslations {
       analytics: string
     }
   }
+  lastUpdated: string
+  title: string
   typesOfCookies: {
     title: string
     session: {
@@ -129,6 +128,10 @@ interface CookiesTranslations {
       description: string
     }
   }
+  whatAreCookies: {
+    title: string
+    description: string
+  }
   yourChoices: {
     title: string
     description: string
@@ -138,10 +141,6 @@ interface CookiesTranslations {
       thirdPartyOptOut: string
     }
     disclaimer: string
-  }
-  contact: {
-    title: string
-    description: string
   }
 }
 
@@ -172,7 +171,7 @@ function validateFilePrefix(filePrefix: string): string {
     trimmed.includes('\\')
   ) {
     throw new Error(
-      `File prefix contains invalid path characters: "${filePrefix}"`
+      `File prefix contains invalid path characters: "${filePrefix}"`,
     )
   }
 
@@ -182,7 +181,7 @@ function validateFilePrefix(filePrefix: string): string {
 
   if (!allowedPattern.test(trimmed)) {
     throw new Error(
-      `Invalid file prefix: "${filePrefix}". Only lowercase alphanumeric characters, underscores, and hyphens are allowed.`
+      `Invalid file prefix: "${filePrefix}". Only lowercase alphanumeric characters, underscores, and hyphens are allowed.`,
     )
   }
 
@@ -193,7 +192,7 @@ function validateFilePrefix(filePrefix: string): string {
     trimmed.startsWith('_')
   ) {
     throw new Error(
-      `File prefix cannot start with underscore or hyphen, or end with hyphen: "${filePrefix}"`
+      `File prefix cannot start with underscore or hyphen, or end with hyphen: "${filePrefix}"`,
     )
   }
 
@@ -212,8 +211,7 @@ function validateFilePrefix(filePrefix: string): string {
  * @returns Object containing translations, loading state, and error state
  */
 function validateLocale(locale: string): string {
-  const allowedLocales = ['en', 'sv']
-  if (!allowedLocales.includes(locale)) {
+  if (!locales.includes(locale as (typeof locales)[number])) {
     throw new Error(`Invalid locale: "${locale}"`)
   }
   return locale
@@ -242,7 +240,7 @@ function usePageTranslations<T>(filePrefix: string) {
       } catch (error) {
         console.error(
           `Error loading ${filePrefix} translations for ${locale}:`,
-          error
+          error,
         )
         // Fallback to English
         try {
@@ -253,12 +251,12 @@ function usePageTranslations<T>(filePrefix: string) {
         } catch (fallbackError) {
           console.error(
             `Error loading fallback ${filePrefix} translations:`,
-            fallbackError
+            fallbackError,
           )
           setError(
             fallbackError instanceof Error
               ? fallbackError
-              : new Error(`Failed to load ${filePrefix} translations`)
+              : new Error(`Failed to load ${filePrefix} translations`),
           )
         }
       } finally {

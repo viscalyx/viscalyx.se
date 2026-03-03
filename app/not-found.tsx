@@ -1,28 +1,28 @@
 import Link from 'next/link'
+import { getLocale, getTranslations } from 'next-intl/server'
 
-export default function RootNotFound() {
+export default async function RootNotFound() {
+  const locale = await getLocale()
+  const t = await getTranslations({ locale, namespace: 'notFound' })
+
   return (
-    <html lang="en">
-      <body className="bg-white dark:bg-gray-900">
-        <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
-          <h1 className="mb-4 text-6xl font-bold text-gray-900 dark:text-white">
-            404
-          </h1>
-          <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-            Page Not Found
-          </h2>
-          <p className="mb-8 max-w-md text-gray-600 dark:text-gray-300">
-            Sorry, the page you are looking for does not exist or has been
-            moved.
-          </p>
-          <Link
-            href="/en"
-            className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
-          >
-            Go to Homepage
-          </Link>
-        </main>
-      </body>
-    </html>
+    <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
+      <h1 className="mb-4 text-6xl font-bold text-gray-900 dark:text-white">
+        404
+      </h1>
+      <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
+        {t('heading')}
+      </h2>
+      <p className="mb-8 max-w-md text-gray-600 dark:text-gray-300">
+        {t('description')}
+      </p>
+      <Link
+        aria-label={t('goHomeAriaLabel')}
+        className="inline-flex min-h-[44px] min-w-[44px] rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        href={`/${locale}`}
+      >
+        {t('goHome')}
+      </Link>
+    </main>
   )
 }
