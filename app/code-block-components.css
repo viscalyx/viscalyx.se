@@ -4,7 +4,7 @@
  * - Language labels (positioning and styling)
  * - Copy button positioning and interactions
  * - Code block container backgrounds, padding, borders
- * - Prism.js specific overrides
+ * - Shiki syntax highlighting support
  * This consolidates all code block-related styles in one file
 
  * Note: Inline code styles remain in globals.css as part of typography
@@ -24,33 +24,33 @@
   position: relative;
 }
 
-/* Remove top margin for pre elements inside wrapper to avoid double spacing */
-.blog-content .code-block-wrapper pre,
-.blog-content .code-block-wrapper pre[class*="language-"] {
-  margin-top: 0;
-}
-
 /* Fallback spacing for browsers without :has() support */
-.blog-content pre[class*="language-"].pre--has-label,
-.blog-content pre[class*="language-"][data-language] {
+.blog-content pre[data-language].pre--has-label,
+.blog-content pre[data-language] {
   margin-top: 3rem; /* Extra space for the language label */
 }
 
+/* Remove top margin for pre elements inside wrapper to avoid double spacing */
+.blog-content .code-block-wrapper pre,
+.blog-content .code-block-wrapper pre[data-language] {
+  margin-top: 0;
+}
+
 /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-.blog-content .code-block-wrapper pre[class*="language-"].pre--has-label,
-.blog-content .code-block-wrapper pre[class*="language-"][data-language] {
+.blog-content .code-block-wrapper pre[data-language].pre--has-label,
+.blog-content .code-block-wrapper pre[data-language] {
   margin-top: 0;
 }
 
 @supports selector(:has(*)) {
   /* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
-  .blog-content pre[class*="language-"]:has(.code-language-label) {
+  .blog-content pre[data-language]:has(.code-language-label) {
     margin-top: 3rem; /* Extra space for the language label */
   }
 
   /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
   .blog-content .code-block-wrapper
-    pre[class*="language-"]:has(.code-language-label) {
+    pre[data-language]:has(.code-language-label) {
     margin-top: 0;
   }
 }
@@ -100,7 +100,7 @@
 /* ===== Copy Button Positioning ===== */
 
 /* Copy button for regular pre elements */
-.blog-content pre[class*="language-"] .copy-button-container {
+.blog-content pre[data-language] .copy-button-container {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -125,13 +125,13 @@
 }
 
 /* Copy button visibility on hover over regular pre elements (fallback for non-wrapper code blocks) */
-.blog-content pre[class*="language-"]:hover .copy-button-container {
+.blog-content pre[data-language]:hover .copy-button-container {
   opacity: 1;
 }
 
 /* Copy button visibility when any child in wrapper receives focus */
 .blog-content .code-block-wrapper:focus-within .copy-button-container,
-.blog-content pre[class*="language-"]:focus-within .copy-button-container {
+.blog-content pre[data-language]:focus-within .copy-button-container {
   opacity: 1;
 }
 
@@ -153,7 +153,7 @@
 }
 
 /* Keep scroll behavior on <pre>; give language blocks extra top breathing room */
-.blog-content pre[class*="language-"] {
+.blog-content pre[data-language] {
   max-height: min(500px, 60vh); /* limit vertical expansion */
   padding-top: 1.25rem; /* extra space between code and top of container */
   overflow-y: auto; /* prevent uncontrolled height growth */
@@ -165,13 +165,13 @@
   border-color: var(--color-secondary-700);
 }
 
-/* Higher specificity for Prism.js code elements */
-.blog-content pre[class*="language-"] code[class*="language-"] {
+/* Higher specificity for Shiki code elements */
+.blog-content pre[data-language] code[data-language] {
   padding: 0; /* p-0 */
   color: var(--color-secondary-900);
   background: transparent; /* transparent background */
 }
 
-.dark .blog-content pre[class*="language-"] code[class*="language-"] {
+.dark .blog-content pre[data-language] code[data-language] {
   color: var(--color-white);
 }

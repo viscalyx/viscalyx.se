@@ -246,18 +246,14 @@ const users: User[] = [
           const content = readBlogContent(tempDir, post.slug)
           expect(content).not.toBeNull()
 
-          // Verify syntax highlighting classes are preserved
-          expect(content).toContain('class="language-javascript"')
-          expect(content).toContain('class="language-python"')
-          expect(content).toContain('class="language-typescript"')
-
-          // Verify data-language attributes are preserved
+          // Verify syntax highlighting data-language attributes are preserved
           expect(content).toContain('data-language="javascript"')
           expect(content).toContain('data-language="python"')
           expect(content).toContain('data-language="typescript"')
 
-          // Verify token classes are preserved (from Prism.js)
-          expect(content).toContain('class="token')
+          // Verify Shiki inline style tokens are present
+          expect(content).toContain('--shiki-light:')
+          expect(content).toContain('--shiki-dark:')
 
           // Verify actual code content is preserved (search for tokens within the syntax highlighting)
           expect(content).toContain('hello') // Function name
@@ -393,7 +389,7 @@ But styling should be removed while preserving the rest.
 
           const mixedPost = blogData.posts.find(p => p.title === 'Mixed Post')
           const mixedContent = readBlogContent(tempDir, mixedPost.slug)
-          expect(mixedContent).toContain('class="language-bash"')
+          expect(mixedContent).toContain('data-language="bash"')
           expect(mixedContent).toContain('echo') // Command name within syntax highlighting
         } catch (error) {
           console.error('Build script execution failed:', error.toString())

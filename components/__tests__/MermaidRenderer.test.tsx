@@ -73,10 +73,10 @@ describe('MermaidRenderer', () => {
     blogContent.className = 'blog-content'
 
     const preElement = document.createElement('pre')
-    preElement.className = 'language-mermaid'
+    preElement.dataset.language = 'mermaid'
 
     const codeElement = document.createElement('code')
-    codeElement.className = 'language-mermaid'
+    codeElement.dataset.language = 'mermaid'
     codeElement.textContent = sampleMermaidCode
 
     preElement.appendChild(codeElement)
@@ -156,9 +156,9 @@ describe('MermaidRenderer', () => {
       // Add a second mermaid block
       const blogContent = document.querySelector('.blog-content')
       const secondPre = document.createElement('pre')
-      secondPre.className = 'language-mermaid'
+      secondPre.dataset.language = 'mermaid'
       const secondCode = document.createElement('code')
-      secondCode.className = 'language-mermaid'
+      secondCode.dataset.language = 'mermaid'
       secondCode.textContent = 'graph LR\nX --> Y'
       secondPre.appendChild(secondCode)
       blogContent?.appendChild(secondPre)
@@ -213,10 +213,10 @@ describe('MermaidRenderer', () => {
       codeBlockWrapper.className = 'code-block-wrapper'
 
       const preElement = document.createElement('pre')
-      preElement.className = 'language-mermaid'
+      preElement.dataset.language = 'mermaid'
 
       const codeElement = document.createElement('code')
-      codeElement.className = 'language-mermaid'
+      codeElement.dataset.language = 'mermaid'
       codeElement.textContent = sampleMermaidCode
 
       preElement.appendChild(codeElement)
@@ -471,10 +471,10 @@ describe('MermaidRenderer', () => {
       codeBlockWrapper.className = 'code-block-wrapper'
 
       const preElement = document.createElement('pre')
-      preElement.className = 'language-mermaid'
+      preElement.dataset.language = 'mermaid'
 
       const codeElement = document.createElement('code')
-      codeElement.className = 'language-mermaid'
+      codeElement.dataset.language = 'mermaid'
       codeElement.textContent = sampleMermaidCode
 
       preElement.appendChild(codeElement)
@@ -560,10 +560,10 @@ describe('MermaidRenderer', () => {
       blogContent.className = 'blog-content'
 
       const preElement = document.createElement('pre')
-      preElement.className = 'language-mermaid'
+      preElement.dataset.language = 'mermaid'
 
       const codeElement = document.createElement('code')
-      codeElement.className = 'language-mermaid'
+      codeElement.dataset.language = 'mermaid'
       codeElement.textContent = '   ' // Only whitespace
 
       preElement.appendChild(codeElement)
@@ -590,7 +590,7 @@ describe('MermaidRenderer', () => {
       blogContent.className = 'blog-content'
 
       const codeElement = document.createElement('code')
-      codeElement.className = 'language-mermaid'
+      codeElement.dataset.language = 'mermaid'
       codeElement.textContent = sampleMermaidCode
 
       blogContent.appendChild(codeElement)
@@ -611,7 +611,7 @@ describe('MermaidRenderer', () => {
 
       // Create a detached element (no parent)
       const detachedPre = document.createElement('pre')
-      detachedPre.className = 'language-mermaid'
+      detachedPre.dataset.language = 'mermaid'
       const detachedCode = document.createElement('code')
       detachedCode.textContent = sampleMermaidCode
       detachedPre.appendChild(detachedCode)

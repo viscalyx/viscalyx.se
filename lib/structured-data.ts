@@ -20,7 +20,13 @@ export function getOrganizationJsonLd(): WithContext<Organization> {
     logo: `${SITE_URL}/viscalyx_logo_128x128.png`,
     description:
       'Expert automation consulting specializing in PowerShell DSC, DevOps, and infrastructure automation.',
-    sameAs: ['https://github.com/viscalyx'],
+    sameAs: [
+      'https://github.com/viscalyx',
+      'https://linkedin.com/company/viscalyx',
+      'https://x.com/viscalyx',
+      'https://bsky.app/profile/viscalyx.com',
+      'https://mastodon.social/@viscalyx',
+    ],
   }
 }
 

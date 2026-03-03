@@ -1,0 +1,53 @@
+/* Shiki dual-theme support
+ * rehype-pretty-code outputs inline CSS custom properties on each token span:
+ *   --shiki-light  (light-mode color)
+ *   --shiki-dark   (dark-mode color)
+ * These rules select the correct value based on the active theme.
+ */
+
+/* Light theme (default): use --shiki-light values */
+code[data-theme] span {
+  color: var(--shiki-light);
+}
+
+/* Dark theme: switch to --shiki-dark values */
+.dark code[data-theme] span {
+  color: var(--shiki-dark);
+}
+
+/* Pre element foreground/background via Shiki custom properties */
+pre[data-theme] {
+  color: var(--shiki-light);
+  background-color: var(--color-secondary-50);
+}
+
+.dark pre[data-theme] {
+  color: var(--shiki-dark);
+  background-color: var(--color-secondary-950);
+}
+
+/* Bold and italic tokens (Shiki preserves font-weight/style in the tree) */
+code[data-theme] span[style*="font-weight"] {
+  font-weight: bold;
+}
+
+code[data-theme] span[style*="font-style"] {
+  font-style: italic;
+}
+
+/* Line highlighting for code examples */
+span[data-highlighted-line] {
+  display: block;
+  padding: 0 1rem;
+  margin: 0 -1rem;
+  background-color: var(--color-highlight-line-bg, rgba(59, 130, 246, 0.1));
+}
+
+.dark span[data-highlighted-line] {
+  --color-highlight-line-bg: rgba(
+    96,
+    165,
+    250,
+    0.1
+  ); /* blue-400 with opacity */
+}

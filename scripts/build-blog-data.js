@@ -5,6 +5,8 @@ const sanitizeHtml = require('sanitize-html')
 const remarkBlockquoteTypes = require('./plugins/blockquote-types')
 const remarkFloatingImages = require('./plugins/remark-floating-images')
 const remarkImagePaths = require('./plugins/remark-image-paths')
+const rehypeCodeBlockWrapper = require('./plugins/rehype-code-block-wrapper')
+const rehypeTableScroll = require('./plugins/rehype-table-scroll')
 
 const postsDirectory = path.join(process.cwd(), 'content/blog')
 const outputPath = path.join(process.cwd(), 'lib/blog-data.json')
@@ -64,20 +66,20 @@ const sanitizeOptions = {
     h4: ['id'],
     h5: ['id'],
     h6: ['id'],
-    // Allow class attributes for syntax highlighting
-    code: ['class'],
-    pre: ['class', 'data-language'],
-    span: ['class'],
+    // Allow class and style attributes for syntax highlighting (Shiki)
+    code: ['class', 'style'],
+    pre: ['class', 'data-language', 'tabindex'],
+    span: ['class', 'style'],
     div: ['class', 'data-alert-type'],
     // Allow img attributes for inline images
     img: ['src', 'alt', 'style', 'width', 'height'],
-    // Allow data attributes for Prism.js functionality
+    // Allow data attributes for Shiki and code block functionality
     '*': ['data-*'],
   },
-  // Allow additional tags that Prism.js might use and images for inline content
+  // Allow additional tags that Shiki might use and images for inline content
   allowedTags: [
     ...sanitizeHtml.defaults.allowedTags,
-    'span', // Prism.js uses spans for syntax highlighting
+    'span', // Shiki uses spans for syntax highlighting
     'img', // Allow inline images in blog content
   ],
   // Allow specific classes for floating images
@@ -100,7 +102,7 @@ async function buildBlogData() {
     const { remark } = await import('remark')
     const { default: remarkGfm } = await import('remark-gfm')
     const { default: remarkRehype } = await import('remark-rehype')
-    const { default: rehypePrismPlus } = await import('rehype-prism-plus')
+    const { default: rehypePrettyCode } = await import('rehype-pretty-code')
     const { default: rehypeStringify } = await import('rehype-stringify')
     const { visit } = await import('unist-util-visit')
 
@@ -143,119 +145,15 @@ async function buildBlogData() {
           .use(remarkImagePaths, { mode: 'build' })
           .use(remarkFloatingImages)
           .use(remarkRehype)
-          .use(rehypePrismPlus, {
-            showLineNumbers: false,
-            ignoreMissing: true,
-            // Skip syntax highlighting for Mermaid diagrams
-            ignoredLanguages: ['mermaid'],
+          .use(rehypePrettyCode, {
+            theme: {
+              light: 'github-light',
+              dark: 'github-dark',
+            },
+            keepBackground: false,
           })
-          .use(() => {
-            // Wrap code blocks in a container with static language label
-            return tree => {
-              visit(tree, 'element', node => {
-                // Only process unwrapped <pre> nodes
-                if (
-                  node.tagName === 'pre' &&
-                  node.properties.className &&
-                  !node.properties['data-processed']
-                ) {
-                  // Mark this node as processed to avoid recursion
-                  node.properties['data-processed'] = true
-
-                  const classNames = Array.isArray(node.properties.className)
-                    ? node.properties.className
-                    : [node.properties.className]
-                  const languageClass = classNames.find(
-                    c => typeof c === 'string' && c.startsWith('language-'),
-                  )
-                  if (!languageClass) return
-                  const language = languageClass.replace('language-', '')
-
-                  // For Mermaid diagrams, we want to preserve the code for client-side rendering
-                  // but still wrap it for consistency
-                  const isMermaid = language === 'mermaid'
-
-                  // Build label element
-                  const labelElement = {
-                    type: 'element',
-                    tagName: 'div',
-                    properties: { className: ['code-language-label'] },
-                    children: [
-                      {
-                        type: 'text',
-                        value: isMermaid
-                          ? 'MERMAID DIAGRAM'
-                          : language.toUpperCase(),
-                      },
-                    ],
-                  }
-
-                  // Clone original pre node for nesting and mark processed
-                  const preNode = {
-                    type: 'element',
-                    tagName: 'pre',
-                    properties: {
-                      ...node.properties,
-                      'data-processed': true,
-                      'data-language': language,
-                      // Add special attribute for Mermaid diagrams
-                      ...(isMermaid && { 'data-mermaid': 'true' }),
-                    },
-                    children: node.children,
-                  }
-
-                  // Replace original node with wrapper div
-                  node.tagName = 'div'
-                  node.properties = {
-                    className: [
-                      'code-block-wrapper',
-                      ...(isMermaid ? ['mermaid-code-block'] : []),
-                    ],
-                    'data-language': language,
-                  }
-                  node.children = [labelElement, preNode]
-                }
-              })
-            }
-          })
-          .use(() => {
-            // Wrap markdown tables with a scroll region and a dedicated fade element.
-            return tree => {
-              const wrappedTables = new Set()
-
-              visit(tree, 'element', (node, index, parent) => {
-                if (
-                  node.tagName !== 'table' ||
-                  wrappedTables.has(node) ||
-                  !parent ||
-                  typeof index !== 'number'
-                ) {
-                  return
-                }
-
-                wrappedTables.add(node)
-
-                parent.children[index] = {
-                  type: 'element',
-                  tagName: 'div',
-                  properties: {
-                    className: ['table-scroll-region'],
-                  },
-                  children: [
-                    node,
-                    {
-                      type: 'element',
-                      tagName: 'div',
-                      properties: {
-                        className: ['table-right-fade'],
-                      },
-                      children: [],
-                    },
-                  ],
-                }
-              })
-            }
-          })
+          .use(rehypeCodeBlockWrapper)
+          .use(rehypeTableScroll)
           .use(rehypeStringify)
           .process(content)
 

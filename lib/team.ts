@@ -108,7 +108,7 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
         },
         {
           name: 'LinkedIn',
-          href: 'https://linkedin.com/in/johlju',
+          href: 'https://linkedin.com/in/johanljunggren',
           icon: LinkedInIcon,
         },
         {
@@ -118,12 +118,12 @@ export function getTeamMembers(t: TranslationFunction): TeamMember[] {
         },
         {
           name: 'Mastodon',
-          href: 'https://mastodon.social/@johlju',
+          href: 'https://hachyderm.io/@johlju',
           icon: MastodonIcon,
         },
         {
           name: 'X',
-          href: 'https://twitter.com/johlju',
+          href: 'https://x.com/johanljunggren',
           icon: XIcon,
         },
         {
