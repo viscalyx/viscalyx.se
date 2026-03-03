@@ -74,7 +74,7 @@ export function clearLanguagePreference(): void {
  * // Browser language is 'de-DE' → returns 'en' (fallback)
  * // Server-side rendering → returns 'en' (fallback)
  */
-export function getDefaultLanguage(): string {
+export function getDefaultLanguage(): 'sv' | 'en' {
   if (typeof window === 'undefined') return 'en'
 
   try {

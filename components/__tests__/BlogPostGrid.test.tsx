@@ -4,6 +4,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import BlogPostGrid, { POSTS_PER_PAGE } from '@/components/BlogPostGrid'
 import type { BlogPostMetadata } from '@/lib/blog'
 
+vi.mock('next-intl', () => ({
+  useFormatter: () => ({
+    dateTime: (date: Date, options?: Record<string, string>) =>
+      date.toLocaleDateString('en-US', options),
+  }),
+}))
+
 vi.mock('next/link', () => ({
   default: ({
     children,
@@ -265,7 +272,7 @@ describe('BlogPostGrid', () => {
     renderGrid({ allPosts: posts })
 
     const article = screen.getByRole('article')
-    expect(article.textContent).toContain('2026-01-15')
+    expect(article.textContent).toContain('Jan 15, 2026')
     expect(article.textContent).toContain('5 min read')
     // The category badge text should appear in the article
     expect(article.textContent).toContain('DevOps')
