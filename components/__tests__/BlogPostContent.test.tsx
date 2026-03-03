@@ -362,8 +362,20 @@ describe('BlogPostContent', () => {
 
       expect(document.querySelector('.code-block-wrapper')).toBeTruthy()
       expect(document.querySelector('pre[data-language="bash"]')).toBeTruthy()
-      expect(document.querySelector('code[data-language]')).toBeTruthy()
-      expect(document.querySelector('span[data-line]')).toBeTruthy()
+
+      const codeEl = document.querySelector(
+        'code[data-language]',
+      ) as HTMLElement
+      expect(codeEl).toBeTruthy()
+      expect(codeEl.style.display).toBe('grid')
+
+      const lineSpan = document.querySelector('span[data-line]') as HTMLElement
+      expect(lineSpan).toBeTruthy()
+
+      const tokenSpan = lineSpan.querySelector('span') as HTMLElement
+      expect(tokenSpan).toBeTruthy()
+      expect(tokenSpan.style.getPropertyValue('--shiki-light')).toBe('#6F42C1')
+      expect(tokenSpan.style.getPropertyValue('--shiki-dark')).toBe('#B392F0')
     })
 
     it('does not wrap bare tables at runtime', async () => {

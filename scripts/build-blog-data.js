@@ -168,7 +168,10 @@ async function buildBlogData() {
                 )
                 if (!preChild) return
 
-                const language = preChild.properties['data-language'] || ''
+                const language =
+                  typeof preChild.properties['data-language'] === 'string'
+                    ? preChild.properties['data-language']
+                    : ''
                 const isMermaid = language === 'mermaid'
 
                 // Build label element

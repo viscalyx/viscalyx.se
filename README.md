@@ -63,7 +63,7 @@ requirements:
 - **Internationalization**:
   [next-intl](https://next-intl.dev/) (en/sv)
 - **Content**: Markdown processed via remark +
-  remark-gfm → rehype-pretty-code → rehype-stringify
+  `remark-gfm` → `rehype-pretty-code` → `rehype-stringify`
 - **Syntax Highlighting**:
   [Shiki](https://shiki.style/)
   (build-time via rehype-pretty-code)
