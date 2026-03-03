@@ -50,7 +50,6 @@ describe('Footer', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockPathname = '/en'
-    mockRouterPush.mockClear()
   })
 
   afterEach(() => {

@@ -225,7 +225,7 @@ AlertIcon.displayName = 'AlertIcon'
 export const getAlertIcon = (
   type: string,
 ): React.ComponentType<BlogIconProps> => {
-  const normalized = (typeof type === 'string' ? type : '').toLowerCase()
+  const normalized = type.toLowerCase()
   switch (normalized) {
     case 'note':
       return NoteIcon

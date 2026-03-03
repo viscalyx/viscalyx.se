@@ -4,12 +4,12 @@ import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import LoadingSpinner from '@/components/LoadingSpinner'
 
-interface LoadingScreenProps {
+interface ComponentProps {
   message?: string
   type?: 'loading' | 'redirecting'
 }
 
-const LoadingScreen = ({ message, type = 'loading' }: LoadingScreenProps) => {
+const LoadingScreen = ({ message, type = 'loading' }: ComponentProps) => {
   const t = useTranslations('loadingScreen')
   const defaultMessage =
     type === 'redirecting' ? t('redirecting') : t('loading')

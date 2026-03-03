@@ -11,12 +11,12 @@ vi.mock('next-intl', () => ({
 // Mock child components
 vi.mock('@/components/Header', () => ({
   __esModule: true,
-  default: () => React.createElement('header', { 'data-testid': 'header' }),
+  default: () => React.createElement('header'),
 }))
 
 vi.mock('@/components/Footer', () => ({
   __esModule: true,
-  default: () => React.createElement('footer', { 'data-testid': 'footer' }),
+  default: () => React.createElement('footer'),
 }))
 
 vi.mock('@/components/ScrollToTop', () => ({
