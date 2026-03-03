@@ -44,6 +44,7 @@ const CookieConsentBanner = () => {
     const unsubscribe = consentEvents.on('consent-reset', () => {
       setSettings(defaultConsentSettings)
       setShowDetails(false)
+      cachedFocusableElements.current = null
       setIsVisible(true)
     })
     return unsubscribe
