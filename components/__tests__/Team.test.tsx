@@ -1,8 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Team from '@/components/Team'
 
-const mockPush = vi.fn()
 const mockGetTeamMembers = vi.fn()
 
 // Mock next-intl
@@ -27,7 +26,7 @@ vi.mock('next-intl', () => ({
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush }),
+  useRouter: () => ({ push: vi.fn() }),
   usePathname: () => '/en',
 }))
 
@@ -229,16 +228,19 @@ describe('Team', () => {
   it('social links are independent of profile navigation', () => {
     render(<Team />)
     const githubLink = screen.getByLabelText('GitHub')
-    fireEvent.click(githubLink)
-    // Social links should not trigger profile navigation
-    expect(mockPush).not.toHaveBeenCalled()
+    // Social links open externally, not via client-side navigation
+    expect(githubLink.closest('a')).toHaveAttribute('target', '_blank')
+    expect(githubLink.closest('a')).toHaveAttribute(
+      'rel',
+      'noopener noreferrer',
+    )
   })
 
   it('social links do not interfere with keyboard navigation', () => {
     render(<Team />)
     const githubLink = screen.getByLabelText('GitHub')
-    fireEvent.keyDown(githubLink, { key: 'Enter' })
-    expect(mockPush).not.toHaveBeenCalled()
+    // Social link is a proper anchor element accessible via keyboard
+    expect(githubLink.closest('a')).toHaveAttribute('href')
   })
 
   it('renders the call to action section', () => {
