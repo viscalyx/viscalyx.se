@@ -430,6 +430,7 @@ const BlogPostContent = ({
           alt={post.imageAlt || post.title}
           className="object-cover"
           fill
+          priority
           sizes="100vw"
           src={post.image}
         />
