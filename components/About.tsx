@@ -13,21 +13,25 @@ const About = () => {
 
   const values = [
     {
+      id: 'precision',
       icon: Target,
       title: t('values.precision.title'),
       description: t('values.precision.description'),
     },
     {
+      id: 'client-centric',
       icon: Users,
       title: t('values.clientCentric.title'),
       description: t('values.clientCentric.description'),
     },
     {
+      id: 'innovation',
       icon: Lightbulb,
       title: t('values.innovation.title'),
       description: t('values.innovation.description'),
     },
     {
+      id: 'open-source',
       icon: Award,
       title: t('values.openSource.title'),
       description: t('values.openSource.description'),
@@ -96,7 +100,7 @@ const About = () => {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   className="flex items-start space-x-4 p-4 rounded-lg hover:bg-primary-50/50 dark:hover:bg-primary-900/20 transition-colors duration-200"
                   initial={{ opacity: 0, y: 20 }}
-                  key={value.title}
+                  key={value.id}
                   transition={{ delay: 0.6 + index * 0.1 }}
                 >
                   <div className="shrink-0">
