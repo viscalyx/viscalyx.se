@@ -9,6 +9,7 @@ vi.mock('next-intl', () => ({
     dateTime: (date: Date, options?: Record<string, string>) =>
       date.toLocaleDateString('en-US', options),
   }),
+  useTranslations: () => (key: string) => key,
 }))
 
 vi.mock('next/link', () => ({

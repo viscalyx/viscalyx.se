@@ -8,6 +8,7 @@ import { useFormatter } from 'next-intl'
 import { useState } from 'react'
 
 import type { BlogPostMetadata } from '@/lib/blog'
+import { isValidDate } from '@/lib/date-utils'
 
 interface BlogPostGridProps {
   allPosts: BlogPostMetadata[]
@@ -119,11 +120,13 @@ const BlogPostGrid = ({
                 <div className="p-6">
                   <div className="flex items-center text-secondary-500 dark:text-secondary-400 text-xs mb-3">
                     <Calendar className="w-3 h-3 mr-1" />
-                    {format.dateTime(new Date(post.date), {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                    {post.date && isValidDate(post.date)
+                      ? format.dateTime(new Date(post.date), {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })
+                      : ''}
                     <span className="mx-2">•</span>
                     <Clock className="w-3 h-3 mr-1" />
                     {post.readTime}
