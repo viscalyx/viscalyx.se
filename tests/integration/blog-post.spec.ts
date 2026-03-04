@@ -11,6 +11,24 @@ const TEST_SLUG = 'ssh-signing-keys-for-github-codespaces'
 const TEST_URL = `/blog/${TEST_SLUG}`
 
 test.describe('Blog Post Page', () => {
+  // Dismiss the cookie consent banner so its overlay does not block clicks
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'viscalyx.org-cookie-consent',
+        JSON.stringify({
+          settings: {
+            'strictly-necessary': true,
+            analytics: false,
+            preferences: false,
+          },
+          timestamp: new Date().toISOString(),
+          version: '1.0',
+        }),
+      )
+    })
+  })
+
   test.describe('Server-Side Rendering', () => {
     test('should render the post title as an h1', async ({ page }) => {
       await page.goto(TEST_URL)
