@@ -24,7 +24,7 @@
   .blog-content .markdown-content {
     min-width: 0;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* Headings - Override prose defaults with scroll behavior and custom colors */
@@ -446,33 +446,34 @@
   }
 
   .heading-anchor {
+    position: relative;
+    top: 0.03em;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.75rem;
-    min-height: 2.75rem;
+    padding: 0.125rem;
     margin-left: 0.25rem;
-    vertical-align: middle;
-    color: var(--color-gray-500);
+    vertical-align: baseline;
+    color: var(--color-gray-400);
     text-decoration: none;
-    border-radius: 0.25rem;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease;
   }
 
   .heading-anchor svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    flex-shrink: 0;
+    width: 0.75em;
+    height: 0.75em;
   }
 
   .heading-anchor:hover {
     color: var(--color-blue-600);
-    background-color: var(--color-gray-100);
   }
 
   .dark .heading-anchor:hover {
     color: var(--color-blue-400);
-    background-color: var(--color-gray-700);
   }
 
   .heading-with-anchor:hover .heading-anchor {
