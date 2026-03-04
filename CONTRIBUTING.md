@@ -224,6 +224,51 @@ npm run dev
 This command will also run `build:blog` and `build:page-dates` scripts. The
 application will be available at `http://localhost:3000`.
 
+### HTTPS Development
+
+<!-- markdownlint-disable MD013 -->
+
+To start the dev server over HTTPS (required for features like the CookieStore
+API):
+
+```bash
+npm run dev:https
+```
+
+The app will be available at `https://localhost:4443`. The browser will show a
+"Not Secure" warning for the self-signed certificate — click **Advanced →
+Proceed** to continue.
+
+#### Cloudflare Tunnel (optional)
+
+For a publicly trusted HTTPS URL (e.g., sharing with a colleague or testing on a
+mobile device), use a [Cloudflare quick tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/):
+
+```bash
+# Terminal 1 — start the dev server
+npm run dev:https
+
+# Terminal 2 — start the tunnel (requires cloudflared installed)
+cloudflared tunnel --url https://localhost:4443 --no-tls-verify
+```
+
+Cloudflared prints a random `https://*.trycloudflare.com` URL with a valid
+public certificate. No Cloudflare account is needed. The `--no-tls-verify` flag
+is required because the local dev server uses a self-signed certificate.
+
+To install `cloudflared` in the devcontainer:
+
+```bash
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
+  | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] \
+  https://pkg.cloudflare.com/cloudflared $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/cloudflared.list
+sudo apt-get update && sudo apt-get install -y cloudflared
+```
+
+<!-- markdownlint-enable MD013 -->
+
 ### Building the App
 
 To create a production build:
