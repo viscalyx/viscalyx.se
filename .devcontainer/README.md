@@ -47,6 +47,7 @@ Docker Desktop automatically detects and handles:
 ## Available Ports
 
 - **3000** or **3001** - Next.js development server
+- **4443** - Next.js HTTPS development server (`npm run dev:https`)
 - **8787** - Cloudflare Wrangler preview / production server
 - **51204** - Vitest UI server
 

@@ -9,6 +9,7 @@
   "scripts": {
     "predev": "npm run build:sitedata",
     "dev": "next dev",
+    "dev:https": "next dev --experimental-https --port 4443",
     "prebuild": "node ./scripts/prebuild.js",
     "build": "cross-env NODE_ENV=production next build",
     "start": "next start",

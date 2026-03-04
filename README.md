@@ -113,12 +113,22 @@ npm run dev
 ```
 <!-- markdownlint-enable MD013 -->
 
+### HTTPS Development
+
+Run `npm run dev:https` to start the dev server over HTTPS on port 4443.
+Next.js generates a self-signed certificate automatically. In a devcontainer the
+host browser will show a "Not Secure" warning — click **Advanced → Proceed** to
+continue. For a trusted certificate on bare-metal, install
+[mkcert](https://github.com/FiloSottile/mkcert) on the host and run
+`mkcert -install` before starting the dev server.
+
 ### Scripts
 
 <!-- markdownlint-disable MD013 -->
 ```bash
 # Development
-npm run dev                          # Start development server
+npm run dev                          # Start development server (http://localhost:3000)
+npm run dev:https                    # Start development server with HTTPS (https://localhost:4443)
 npm run build                        # Production build (runs prebuild automatically)
 npm run preview                      # Build and preview via Cloudflare Workers locally
 
