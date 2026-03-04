@@ -267,10 +267,10 @@ class Folder {
 
 1. **Enum for Ensure** — Using a PowerShell `enum` instead of a
    `ValidateSet` string gives type safety and autocomplete.
-2. **Static helpers** — `TestAttribute` and `SetAttribute` are
+1. **Static helpers** — `TestAttribute` and `SetAttribute` are
    `hidden static` methods so they stay off the public surface but
    are reusable inside every lifecycle method.
-3. **No SMB sharing** — `Shared` and `ShareName` are dropped because
+1. **No SMB sharing** — `Shared` and `ShareName` are dropped because
    `Get-SmbShare` is Windows-only. Add them behind
    `$IsWindows` guards if needed.
 
@@ -464,7 +464,7 @@ Invoke-Pester -Path ./Folder.tests.ps1 -Output Detailed
 
 ## Alternative: Implementing the resource in Python
 
->[!IMPORTANT]
+> [!IMPORTANT]
 > This might not be a fully working example, but it illustrates how the
 > same DSC v3 resource can be implemented as a command-based resource in
 > Python instead of PowerShell. See the walkthrough and linked resources
@@ -762,13 +762,13 @@ Key takeaways:
 
 1. MOF schemas and `*-TargetResource` functions are replaced by a
    single PowerShell class with `[DscProperty()]` attributes.
-2. The `Export()` method is a new DSC v3 capability that MOF-based
+1. The `Export()` method is a new DSC v3 capability that MOF-based
    resources cannot provide.
-3. Cross-platform resources should avoid Windows-only APIs such as
+1. Cross-platform resources should avoid Windows-only APIs such as
    `Get-SmbShare` or guard them behind `$IsWindows`.
-4. File-system attributes behave differently across operating systems —
+1. File-system attributes behave differently across operating systems —
    always test on every target platform.
-5. Python offers a language-agnostic alternative — any executable
+1. Python offers a language-agnostic alternative — any executable
    that speaks JSON over STDIN/STDOUT works with DSC v3.
 
 ### What to explore next
