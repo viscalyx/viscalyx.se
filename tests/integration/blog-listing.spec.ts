@@ -1,6 +1,12 @@
 import { expect, test } from '@playwright/test'
+import { seedCookieConsent } from './helpers'
 
 test.describe('Blog Listing Page', () => {
+  // Dismiss the cookie consent banner so its overlay does not block clicks
+  test.beforeEach(async ({ page }) => {
+    await seedCookieConsent(page)
+  })
+
   test.describe('Server-Side Rendering', () => {
     test('should render blog page with hero content visible immediately', async ({
       page,

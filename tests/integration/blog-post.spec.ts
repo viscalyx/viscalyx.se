@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { seedCookieConsent } from './helpers'
 
 /**
  * Integration tests for the blog post page after the Phase 2 server component
@@ -11,6 +12,11 @@ const TEST_SLUG = 'ssh-signing-keys-for-github-codespaces'
 const TEST_URL = `/blog/${TEST_SLUG}`
 
 test.describe('Blog Post Page', () => {
+  // Dismiss the cookie consent banner so its overlay does not block clicks
+  test.beforeEach(async ({ page }) => {
+    await seedCookieConsent(page)
+  })
+
   test.describe('Server-Side Rendering', () => {
     test('should render the post title as an h1', async ({ page }) => {
       await page.goto(TEST_URL)

@@ -68,6 +68,9 @@
     "Vitest",
     "nvmrc",
     "shikijs",
+    "frontmatter",
+    "prebuild",
+    "sitedata",
 
     // PowerShell DSC specific
     "DSC",
