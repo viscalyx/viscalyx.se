@@ -1,22 +1,10 @@
 import { expect, test } from '@playwright/test'
+import { seedCookieConsent } from './helpers'
 
 test.describe('Blog Listing Page', () => {
   // Dismiss the cookie consent banner so its overlay does not block clicks
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem(
-        'viscalyx.org-cookie-consent',
-        JSON.stringify({
-          settings: {
-            'strictly-necessary': true,
-            analytics: false,
-            preferences: false,
-          },
-          timestamp: new Date().toISOString(),
-          version: '1.0',
-        }),
-      )
-    })
+    await seedCookieConsent(page)
   })
 
   test.describe('Server-Side Rendering', () => {
