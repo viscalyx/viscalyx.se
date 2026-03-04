@@ -15,7 +15,7 @@ applyTo: 'content/blog/**/*.md'
 title: 'Post Title'
 date: 'YYYY-MM-DD'
 author: 'Author Name'
-excerpt: 'SEO summary (target 140-155 chars, hard max 160)'
+excerpt: 'SEO summary (aim for 140-155 chars, hard max 160)'
 image: '/temporary-image.png'
 imageAlt: 'Alt text describing the subject the final image should depict'
 tags: ['tag1', 'tag2']
