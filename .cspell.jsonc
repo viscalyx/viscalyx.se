@@ -40,6 +40,8 @@
     "Nginx",
     "Ingress",
     "ConfigMaps",
+    "cloudflared",
+    "trycloudflare",
     "Deployments",
     "StatefulSets",
     "DaemonSets",
