@@ -24,7 +24,7 @@ const intlMiddleware = createMiddleware({
 // Why middleware? CSP is set here instead of next.config.ts headers() because
 // the app uses legitimate inline scripts (theme detection, JSON-LD structured
 // data) that require a nonce to execute. A per-request nonce in script-src
-// (e.g. 'nonce-<uuid>') blocks all injected scripts that lack the nonce —
+// (e.g. 'nonce-<base64>') blocks all injected scripts that lack the nonce —
 // this is CSP's primary XSS defense. Static headers in next.config.ts cannot
 // vary per request, so they would need script-src 'unsafe-inline' which
 // permits any injected script and effectively disables CSP protection.
@@ -69,7 +69,9 @@ function buildDevCsp(nonce: string): string {
 export default function middleware(request: NextRequest) {
   const response = intlMiddleware(request)
 
-  const nonce = crypto.randomUUID()
+  const nonceBytes = new Uint8Array(16)
+  crypto.getRandomValues(nonceBytes)
+  const nonce = btoa(String.fromCharCode(...nonceBytes)).replace(/=+$/, '')
 
   // Propagate nonce as a request-header override so Server Components
   // can read it via headers().get('x-nonce'). This mirrors what

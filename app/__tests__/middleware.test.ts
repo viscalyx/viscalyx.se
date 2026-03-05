@@ -33,9 +33,7 @@ describe('middleware', () => {
     const nonce = response.headers.get('x-middleware-request-x-nonce')
 
     expect(nonce).toBeTruthy()
-    expect(nonce).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
-    )
+    expect(nonce).toMatch(/^[A-Za-z0-9+/]{22}$/)
 
     const overrides = response.headers.get('x-middleware-override-headers')
     expect(overrides).toContain('x-nonce')
