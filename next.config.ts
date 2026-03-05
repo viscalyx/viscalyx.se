@@ -4,9 +4,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
 const nextConfig: NextConfig = {
-  // Allow cross-origin dev requests from 0.0.0.0 and 127.0.0.1 (used in devcontainers)
+  // Allow cross-origin dev requests from devcontainer IPs and Cloudflare quick tunnels
   // See: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
-  allowedDevOrigins: ['0.0.0.0', '127.0.0.1'],
+  allowedDevOrigins: ['0.0.0.0', '127.0.0.1', '*.trycloudflare.com'],
   // Exclude heavy packages from server bundle to reduce Cloudflare Worker size
   // These packages are either client-only or not needed in the worker runtime
   serverExternalPackages: ['mermaid', '@mermaid-js/parser', 'dompurify'],
@@ -74,7 +74,7 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' ws://localhost:* ws://0.0.0.0:*; frame-ancestors 'none'; base-uri 'self'",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' ws://localhost:* ws://0.0.0.0:* ws://127.0.0.1:* wss://localhost:* wss://0.0.0.0:* wss://127.0.0.1:*; frame-ancestors 'none'; base-uri 'self'",
           },
         ],
       },
