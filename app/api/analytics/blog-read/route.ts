@@ -1,6 +1,17 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { NextResponse } from 'next/server'
+import { SAFE_CATEGORY_PATTERN, SAFE_SLUG_PATTERN } from '@/lib/blog'
 import { SITE_URL } from '@/lib/constants'
+
+/** Maximum allowed length for string fields (slug, category, title). */
+const MAX_STRING_FIELD_LENGTH = 200
+
+/** Maximum allowed value for timeSpent in seconds (24 hours). */
+const MAX_TIME_SPENT = 86_400
+
+/** Title must contain only printable characters (no C0 control chars or DEL). */
+// biome-ignore lint/suspicious/noControlCharactersInRegex: Intentional — this pattern exists specifically to reject control characters in user input.
+const SAFE_TITLE_PATTERN = /^[^\x00-\x1F\x7F]+$/u
 
 interface BlogReadEvent {
   category: unknown
@@ -175,10 +186,34 @@ export async function POST(request: Request) {
       )
     }
 
+    // Reject excessively long strings before further processing
+    if (
+      rawSlug.length > MAX_STRING_FIELD_LENGTH ||
+      rawCategory.length > MAX_STRING_FIELD_LENGTH ||
+      rawTitle.length > MAX_STRING_FIELD_LENGTH
+    ) {
+      return NextResponse.json(
+        { error: 'Field value exceeds maximum length' },
+        { status: 400 },
+      )
+    }
+
     // Normalize validated strings to avoid fragmented analytics
     const slug = rawSlug.trim()
     const category = rawCategory.trim()
     const title = rawTitle.trim()
+
+    // Validate character sets to prevent injection / polluted analytics
+    if (
+      !SAFE_SLUG_PATTERN.test(slug) ||
+      !SAFE_CATEGORY_PATTERN.test(category) ||
+      !SAFE_TITLE_PATTERN.test(title)
+    ) {
+      return NextResponse.json(
+        { error: 'Field contains invalid characters' },
+        { status: 400 },
+      )
+    }
 
     const parsedReadProgress = parseFiniteMetric(rawReadProgress)
     const parsedTimeSpent = parseFiniteMetric(rawTimeSpent)
@@ -187,7 +222,9 @@ export async function POST(request: Request) {
         ? null
         : Math.min(Math.max(parsedReadProgress, 0), 100)
     const timeSpent =
-      parsedTimeSpent === null ? null : Math.max(parsedTimeSpent, 0)
+      parsedTimeSpent === null
+        ? null
+        : Math.min(Math.max(parsedTimeSpent, 0), MAX_TIME_SPENT)
 
     // Get request metadata for analytics
     const userAgent = request.headers.get('user-agent') || 'unknown'

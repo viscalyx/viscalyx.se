@@ -160,7 +160,7 @@ export function getRelatedPosts(
 }
 
 // Slug validation pattern: only allow alphanumerics, hyphens, and underscores
-const SAFE_SLUG_PATTERN = /^[a-zA-Z0-9_-]+$/
+export const SAFE_SLUG_PATTERN = /^[a-zA-Z0-9_-]+$/
 
 /**
  * Validates that a slug is safe and doesn't allow path traversal attacks.
@@ -283,7 +283,7 @@ export async function loadBlogContent(slug: string): Promise<string | null> {
 const MAX_CATEGORY_LENGTH = 50
 
 /** Pattern for valid category strings: word characters, spaces, hyphens. */
-const SAFE_CATEGORY_PATTERN = /^[\w\s-]+$/
+export const SAFE_CATEGORY_PATTERN = /^[\w\s-]+$/
 
 /**
  * Validate and sanitize a category string for analytics.
