@@ -994,17 +994,14 @@ sankey-beta
     Natural Gas,Electricity Generation,30
     Nuclear,Electricity Generation,15
     Renewables,Electricity Generation,25
-
     Electricity Generation,Residential,35
     Electricity Generation,Commercial,25
     Electricity Generation,Industrial,45
     Electricity Generation,Transportation,5
     Electricity Generation,Losses,10
-
     Oil,Transportation,40
     Oil,Industrial,15
     Oil,Residential,5
-
     Natural Gas,Residential,20
     Natural Gas,Commercial,15
     Natural Gas,Industrial,10
