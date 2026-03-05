@@ -6,7 +6,7 @@
 
 import type { NextRequest } from 'next/server'
 import createMiddleware from 'next-intl/middleware'
-import { locales } from './i18n'
+import { locales } from '@/i18n'
 
 const intlMiddleware = createMiddleware({
   // A list of all locales that are supported
