@@ -12,7 +12,7 @@ vi.mock('next-intl/middleware', () => ({
   default: () => intlMiddlewareMock,
 }))
 
-vi.mock('./../../i18n', () => ({
+vi.mock('@/i18n', () => ({
   locales: ['en', 'sv'],
 }))
 
@@ -28,9 +28,9 @@ describe('middleware', () => {
     return new NextRequest(new URL(url))
   }
 
-  it('sets x-nonce header on the response', () => {
+  it('propagates x-nonce as a request-header override', () => {
     const response = middleware(createRequest())
-    const nonce = response.headers.get('x-nonce')
+    const nonce = response.headers.get('x-middleware-request-x-nonce')
 
     expect(nonce).toBeTruthy()
     expect(nonce).toMatch(
@@ -42,15 +42,15 @@ describe('middleware', () => {
     const response1 = middleware(createRequest())
     const response2 = middleware(createRequest())
 
-    expect(response1.headers.get('x-nonce')).not.toBe(
-      response2.headers.get('x-nonce'),
+    expect(response1.headers.get('x-middleware-request-x-nonce')).not.toBe(
+      response2.headers.get('x-middleware-request-x-nonce'),
     )
   })
 
   it('sets Content-Security-Policy header with nonce in script-src', () => {
     const response = middleware(createRequest())
     const csp = response.headers.get('Content-Security-Policy')
-    const nonce = response.headers.get('x-nonce')
+    const nonce = response.headers.get('x-middleware-request-x-nonce')
 
     expect(csp).toContain(`'nonce-${nonce}'`)
     expect(csp).toContain("script-src 'self'")

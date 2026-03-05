@@ -66,7 +66,11 @@ export default function middleware(request: NextRequest) {
   const response = intlMiddleware(request)
 
   const nonce = crypto.randomUUID()
-  response.headers.set('x-nonce', nonce)
+
+  // Propagate nonce as a request-header override so Server Components
+  // can read it via headers().get('x-nonce'). This mirrors what
+  // NextResponse.next({ request: { headers } }) does internally.
+  response.headers.set('x-middleware-request-x-nonce', nonce)
 
   const csp =
     process.env.NODE_ENV === 'production' ? buildCsp(nonce) : buildDevCsp(nonce)
