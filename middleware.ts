@@ -70,6 +70,13 @@ export default function middleware(request: NextRequest) {
   // Propagate nonce as a request-header override so Server Components
   // can read it via headers().get('x-nonce'). This mirrors what
   // NextResponse.next({ request: { headers } }) does internally.
+  const overrideKey = 'x-middleware-override-headers'
+  const existing = response.headers.get(overrideKey)
+  const list = existing ? existing.split(',').map(h => h.trim()) : []
+  if (!list.includes('x-nonce')) {
+    list.push('x-nonce')
+  }
+  response.headers.set(overrideKey, list.join(','))
   response.headers.set('x-middleware-request-x-nonce', nonce)
 
   const csp =

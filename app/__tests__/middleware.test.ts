@@ -36,6 +36,9 @@ describe('middleware', () => {
     expect(nonce).toMatch(
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
     )
+
+    const overrides = response.headers.get('x-middleware-override-headers')
+    expect(overrides).toContain('x-nonce')
   })
 
   it('generates a unique nonce per request', () => {
