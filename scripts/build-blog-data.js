@@ -150,6 +150,7 @@ async function buildBlogData() {
               light: 'github-light',
               dark: 'github-dark',
             },
+            defaultColor: false,
             keepBackground: false,
           })
           .use(rehypeCodeBlockWrapper)

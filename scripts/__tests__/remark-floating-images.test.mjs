@@ -45,7 +45,6 @@ describe('remark-floating-images plugin', () => {
   const createExpectedImageNode = (
     src,
     alt,
-    style,
     shouldHaveFloatingClass = false,
   ) => ({
     type: 'paragraph',
@@ -56,7 +55,6 @@ describe('remark-floating-images plugin', () => {
         alt: alt,
         data: {
           hProperties: {
-            style: style,
             className: shouldHaveFloatingClass ? ['floating-image'] : undefined,
           },
         },
@@ -70,18 +68,18 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', 'Test image', ''),
+        createExpectedImageNode('/test.jpg', 'Test image'),
       )
     })
 
-    it('should parse img tag with style attribute', () => {
+    it('should parse img tag with style attribute (style not passed through)', () => {
       const tree = createTestTree(
         '<img src="/test.jpg" alt="Test image" style="width: 100px;">',
       )
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', 'Test image', 'width: 100px;'),
+        createExpectedImageNode('/test.jpg', 'Test image'),
       )
     })
 
@@ -92,12 +90,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          'Test image',
-          'float: left; margin: 10px;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', 'Test image', true),
       )
     })
 
@@ -105,18 +98,14 @@ describe('remark-floating-images plugin', () => {
       const tree = createTestTree('<img src="/test.jpg">')
       plugin(tree)
 
-      expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', '', ''),
-      )
+      expect(tree.children[0]).toEqual(createExpectedImageNode('/test.jpg', ''))
     })
 
     it('should handle empty alt attribute', () => {
       const tree = createTestTree('<img src="/test.jpg" alt="">')
       plugin(tree)
 
-      expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', '', ''),
-      )
+      expect(tree.children[0]).toEqual(createExpectedImageNode('/test.jpg', ''))
     })
   })
 
@@ -128,7 +117,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', "Image with 'nested' quotes", ''),
+        createExpectedImageNode('/test.jpg', "Image with 'nested' quotes"),
       )
     })
 
@@ -139,12 +128,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          'Mixed quotes',
-          'float: right;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', 'Mixed quotes', true),
       )
     })
 
@@ -155,12 +139,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          'Spaced attributes',
-          'float: left;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', 'Spaced attributes', true),
       )
     })
 
@@ -169,7 +148,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode('/test.jpg', 'Self closing', ''),
+        createExpectedImageNode('/test.jpg', 'Self closing'),
       )
     })
 
@@ -180,12 +159,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          'Extra attributes',
-          'float: left;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', 'Extra attributes', true),
       )
     })
 
@@ -196,12 +170,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          'With data',
-          'float: right;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', 'With data', true),
       )
     })
   })
@@ -313,15 +282,10 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/first.jpg',
-          'First image',
-          'float: left;',
-          true,
-        ),
+        createExpectedImageNode('/first.jpg', 'First image', true),
       )
       expect(tree.children[1]).toEqual(
-        createExpectedImageNode('/second.jpg', 'Second image', ''),
+        createExpectedImageNode('/second.jpg', 'Second image'),
       )
     })
 
@@ -340,7 +304,7 @@ describe('remark-floating-images plugin', () => {
       expect(tree.children.length).toBe(3)
       expect(tree.children[0].type).toBe('paragraph')
       expect(tree.children[1]).toEqual(
-        createExpectedImageNode('/test.jpg', 'Test', ''),
+        createExpectedImageNode('/test.jpg', 'Test'),
       )
       expect(tree.children[2].type).toBe('paragraph')
     })
@@ -358,7 +322,9 @@ describe('remark-floating-images plugin', () => {
 
       const result = tree.children[0]
       expect(result.children[0].alt).toBe(longAlt)
-      expect(result.children[0].data.hProperties.style).toBe(longStyle)
+      expect(result.children[0].data.hProperties.className).toEqual([
+        'floating-image',
+      ])
     })
 
     it('should handle unicode characters in attributes', () => {
@@ -368,12 +334,7 @@ describe('remark-floating-images plugin', () => {
       plugin(tree)
 
       expect(tree.children[0]).toEqual(
-        createExpectedImageNode(
-          '/test.jpg',
-          '🖼️ Unicode emoji',
-          'float: left;',
-          true,
-        ),
+        createExpectedImageNode('/test.jpg', '🖼️ Unicode emoji', true),
       )
     })
   })

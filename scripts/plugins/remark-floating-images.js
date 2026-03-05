@@ -31,7 +31,6 @@ function remarkFloatingImages() {
               alt: alt,
               data: {
                 hProperties: {
-                  style: style,
                   className: style.includes('float')
                     ? ['floating-image']
                     : undefined,

@@ -16,6 +16,12 @@ vi.mock('next-intl/server', () => ({
   })),
 }))
 
+vi.mock('next/headers', () => ({
+  headers: vi.fn(async () => ({
+    get: (name: string) => (name === 'x-nonce' ? 'test-nonce-123' : null),
+  })),
+}))
+
 vi.mock('next/font/google', () => ({
   Inter: () => ({ className: 'mocked-inter' }),
 }))
@@ -108,5 +114,31 @@ describe('RootLayout', () => {
 
   it('re-exports metadata object', () => {
     expect(metadata).toBe(metadataObject)
+  })
+
+  it('applies nonce attribute to all script tags', async () => {
+    const ui = await RootLayout({ children: <div /> })
+
+    const themeScript = findScriptNodeById(ui, 'theme-init-script')
+    const orgScript = findScriptNodeById(ui, 'organization-jsonld')
+    const websiteScript = findScriptNodeById(ui, 'website-jsonld')
+
+    expect(themeScript?.props.nonce).toBe('test-nonce-123')
+    expect(orgScript?.props.nonce).toBe('test-nonce-123')
+    expect(websiteScript?.props.nonce).toBe('test-nonce-123')
+  })
+
+  it('sets suppressHydrationWarning on all script tags', async () => {
+    const ui = await RootLayout({ children: <div /> })
+
+    const themeScript = findScriptNodeById(ui, 'theme-init-script')
+    const orgScript = findScriptNodeById(ui, 'organization-jsonld')
+    const websiteScript = findScriptNodeById(ui, 'website-jsonld')
+
+    // Browsers strip nonce from DOM after CSP evaluation, causing a harmless
+    // hydration mismatch. suppressHydrationWarning silences it.
+    expect(themeScript?.props.suppressHydrationWarning).toBe(true)
+    expect(orgScript?.props.suppressHydrationWarning).toBe(true)
+    expect(websiteScript?.props.suppressHydrationWarning).toBe(true)
   })
 })
