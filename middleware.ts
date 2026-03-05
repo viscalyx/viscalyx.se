@@ -43,6 +43,8 @@ function buildCsp(nonce: string): string {
     "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self'",
+    "object-src 'none'",
+    "form-action 'self'",
     "frame-ancestors 'none'",
     "base-uri 'self'",
   ].join('; ')
@@ -57,6 +59,8 @@ function buildDevCsp(nonce: string): string {
     "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self' ws://localhost:* ws://0.0.0.0:* ws://127.0.0.1:* wss://localhost:* wss://0.0.0.0:* wss://127.0.0.1:*",
+    "object-src 'none'",
+    "form-action 'self'",
     "frame-ancestors 'none'",
     "base-uri 'self'",
   ].join('; ')

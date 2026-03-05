@@ -82,6 +82,8 @@ describe('middleware', () => {
     expect(csp).toContain("img-src 'self' data:")
     expect(csp).toContain("font-src 'self'")
     expect(csp).toContain("connect-src 'self'")
+    expect(csp).toContain("object-src 'none'")
+    expect(csp).toContain("form-action 'self'")
     expect(csp).toContain("frame-ancestors 'none'")
     expect(csp).toContain("base-uri 'self'")
   })
