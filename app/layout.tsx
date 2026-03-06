@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google'
+import { headers } from 'next/headers'
 import { getLocale } from 'next-intl/server'
 import { getOrganizationJsonLd, getWebSiteJsonLd } from '@/lib/structured-data'
 import { ThemeProvider } from '@/lib/theme-context'
@@ -48,6 +49,10 @@ export default async function RootLayout({ children }: Props) {
   // Get the current locale using next-intl
   const locale = await getLocale()
 
+  // Read the per-request CSP nonce set by middleware
+  const headerStore = await headers()
+  const nonce = headerStore.get('x-nonce') ?? ''
+
   return (
     <html
       className={`scroll-smooth ${inter.className}`}
@@ -55,11 +60,23 @@ export default async function RootLayout({ children }: Props) {
       suppressHydrationWarning
     >
       <head>
-        <script id="theme-init-script">{themeInitScript}</script>
-        <script id="organization-jsonld" type="application/ld+json">
+        <script id="theme-init-script" nonce={nonce} suppressHydrationWarning>
+          {themeInitScript}
+        </script>
+        <script
+          id="organization-jsonld"
+          nonce={nonce}
+          suppressHydrationWarning
+          type="application/ld+json"
+        >
           {JSON.stringify(getOrganizationJsonLd())}
         </script>
-        <script id="website-jsonld" type="application/ld+json">
+        <script
+          id="website-jsonld"
+          nonce={nonce}
+          suppressHydrationWarning
+          type="application/ld+json"
+        >
           {JSON.stringify(getWebSiteJsonLd())}
         </script>
       </head>

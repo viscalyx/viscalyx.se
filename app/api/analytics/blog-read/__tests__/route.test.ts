@@ -423,6 +423,95 @@ describe('blog-read analytics route', () => {
     ).toBe('anonymous')
   })
 
+  it('clamps timeSpent to the upper bound', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'My Post',
+      timeSpent: 999_999_999,
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(mockWriteDataPoint).toHaveBeenCalledTimes(1)
+    expect(mockWriteDataPoint.mock.calls[0][0].doubles[2]).toBe(86_400)
+  })
+
+  it('rejects oversized string fields early', async () => {
+    const req = createRequest({
+      slug: 'a'.repeat(201),
+      category: 'automation',
+      title: 'My Post',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Field value exceeds maximum length',
+    })
+  })
+
+  it('rejects slug with invalid characters', async () => {
+    const req = createRequest({
+      slug: '../etc/passwd',
+      category: 'automation',
+      title: 'My Post',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Field contains invalid characters',
+    })
+  })
+
+  it('rejects category with invalid characters', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: '<script>alert(1)</script>',
+      title: 'My Post',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Field contains invalid characters',
+    })
+  })
+
+  it('rejects title with control characters', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      title: 'Hello\x00World',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({
+      error: 'Field contains invalid characters',
+    })
+  })
+
+  it('accepts valid unicode title', async () => {
+    const req = createRequest({
+      slug: 'my-post',
+      category: 'automation',
+      // cSpell:ignore Héllo Wörld
+      title: 'Héllo Wörld: A Guide!',
+    })
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ success: true })
+  })
+
   it('returns 500 when an unexpected error occurs', async () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     vi.spyOn(crypto, 'randomUUID').mockImplementation(() => {

@@ -320,6 +320,22 @@
       0 5px 15px 0 rgba(0, 0, 0, 0.5);
   }
 
+  /* Floating images pulled to the right (e.g. diagrams alongside text) */
+  .blog-content img.floating-image {
+    float: right;
+    max-width: 400px;
+    height: auto;
+    margin: 0 0 1rem 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .blog-content img.floating-image {
+      float: none;
+      max-width: 100%;
+      margin: 2rem auto;
+    }
+  }
+
   /* Disable motion effects for users who prefer reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .blog-content img {

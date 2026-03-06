@@ -45,7 +45,7 @@ page ([IPFire.org][2]) and verify its SHA256 checksum.
 ## 1 – Plan your network setup
 
 <!-- markdownlint-disable MD013 -->
-<img src="/blog-images/ipfire-deploy.png" alt="IPFire network zone deployment diagram" style="float: right; margin: 0 0 1rem 1rem; max-width: 400px; height: auto;" />
+<img src="/blog-images/ipfire-deploy.png" alt="IPFire network zone deployment diagram" class="floating-image" />
 <!-- markdownlint-enable MD013 -->
 
 IPFire separates traffic into up to four security zones:
