@@ -56,7 +56,7 @@
     "@opennextjs/cloudflare": "^1.17.1",
     "@tailwindcss/typography": "^0.5.19",
     "dompurify": "^3.3.1",
-    "framer-motion": "^12.34.5",
+    "framer-motion": "^12.35.1",
     "lucide-react": "^0.576.0",
     "next": "^16.1.6",
     "next-intl": "^4.8.3",
