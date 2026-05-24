@@ -24,37 +24,6 @@
   position: relative;
 }
 
-/* Fallback spacing for browsers without :has() support */
-.blog-content pre[data-language].pre--has-label,
-.blog-content pre[data-language] {
-  margin-top: 3rem; /* Extra space for the language label */
-}
-
-/* Remove top margin for pre elements inside wrapper to avoid double spacing */
-.blog-content .code-block-wrapper pre,
-.blog-content .code-block-wrapper pre[data-language] {
-  margin-top: 0;
-}
-
-/* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-.blog-content .code-block-wrapper pre[data-language].pre--has-label,
-.blog-content .code-block-wrapper pre[data-language] {
-  margin-top: 0;
-}
-
-@supports selector(:has(*)) {
-  /* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
-  .blog-content pre[data-language]:has(.code-language-label) {
-    margin-top: 3rem; /* Extra space for the language label */
-  }
-
-  /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
-  .blog-content .code-block-wrapper
-    pre[data-language]:has(.code-language-label) {
-    margin-top: 0;
-  }
-}
-
 /* ===== Language Label Styling ===== */
 
 /* Complete language label styles - consolidated positioning and styling */
@@ -157,6 +126,37 @@
   max-height: min(500px, 60vh); /* limit vertical expansion */
   padding-top: 1.25rem; /* extra space between code and top of container */
   overflow-y: auto; /* prevent uncontrolled height growth */
+}
+
+/* Fallback spacing for browsers without :has() support */
+.blog-content pre[data-language].pre--has-label,
+.blog-content pre[data-language] {
+  margin-top: 3rem; /* Extra space for the language label */
+}
+
+/* Remove top margin for pre elements inside wrapper to avoid double spacing */
+.blog-content .code-block-wrapper pre,
+.blog-content .code-block-wrapper pre[data-language] {
+  margin-top: 0;
+}
+
+/* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
+.blog-content .code-block-wrapper pre[data-language].pre--has-label,
+.blog-content .code-block-wrapper pre[data-language] {
+  margin-top: 0;
+}
+
+@supports selector(:has(*)) {
+  /* Ensure proper spacing for language labels - only for legacy code blocks not in wrapper */
+  .blog-content pre[data-language]:has(.code-language-label) {
+    margin-top: 3rem; /* Extra space for the language label */
+  }
+
+  /* Remove extra margin for code blocks inside wrapper (wrapper provides padding-top) */
+  .blog-content .code-block-wrapper
+    pre[data-language]:has(.code-language-label) {
+    margin-top: 0;
+  }
 }
 
 .dark .blog-content pre {

@@ -1,5 +1,5 @@
 ---
-applyTo: "**/{Dockerfile,.devcontainer/**,.github/workflows/**,package.json,.nvmrc,**/*.md}"
+applyTo: "**/{Dockerfile,.devcontainer/**,.github/workflows/**,package.json,.nvmrc}"
 ---
 
 # Node Version Synchronization (AI-only instruction)
@@ -35,8 +35,3 @@ npm run check
 ## 4. Document exceptions
 
 If any location cannot be updated, note it explicitly in the PR description.
-
-## Context
-
-- Node version affects build-time only; Cloudflare Workers run in a V8 isolate, not Node.
-- Aligned `.nvmrc` + `engines.node` + CI workflows prevent environment drift.

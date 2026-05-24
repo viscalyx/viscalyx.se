@@ -234,3 +234,6 @@ next-env.d.ts
 
 # Test artifacts
 /temp-test-content/
+.agent
+.agents
+.devcontainer/devcontainer-lock.json
