@@ -4,10 +4,7 @@ date: '2026-05-24'
 author: 'Johan Ljunggren'
 excerpt: 'Install RHEL 10 or Rocky Linux 10 on Hyper-V with secure Gen 2 VM settings, storage layout, networking, post-install checks, and Rocky notes.'
 image: '/abstract-hyper-v-gen2-rocky-linux-10-vm-installation.png'
-imageAlt: >
-  Hyper-V host console showing a Generation 2 Linux virtual machine installing
-  RHEL 10 or Rocky Linux 10 with secure boot, storage layout, and network
-  settings.
+imageAlt: 'Hyper-V host console showing a Generation 2 Linux virtual machine installing RHEL 10 or Rocky Linux 10 with secure boot, storage layout, and network settings.'
 tags:
   - 'RHEL'
   - 'Rocky Linux'
