@@ -16,10 +16,11 @@ applyTo: 'package.json'
 - Keep `@biomejs/biome` and the `biome.json` `$schema` version aligned when upgrading Biome
 - `@types/react` and `@types/react-dom` should match the installed React major version
 
+## Playwright
+
+- When `@playwright/test` is updated, run `npx playwright install chromium` immediately after `npm install` to download the matching Chromium binary. The version pinned in `package.json` must match the installed browser binary or integration tests will fail with "Executable doesn't exist".
+
 ## After Any Dependency Change
 
-Run `npm run check` to verify type-checking, formatting, linting, tests, and security audit all pass.
-
-## Full Update Workflow
-
-For a comprehensive package update check, use the `update-packages` prompt.
+- Run `npm run check` to verify type-checking, formatting, linting, tests, and markdown checks pass.
+- Run `npm audit` to verify vulnerability checks pass after each dependency change.

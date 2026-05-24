@@ -53,7 +53,7 @@ const ReadingProgress = ({ target = '.prose', endTarget }: ComponentProps) => {
       // Lazily re-query refs that haven't been found yet (handles lazy rendering)
       if (
         !targetSelectorInvalidRef.current &&
-        (!targetRef.current || !targetRef.current.isConnected)
+        !targetRef.current?.isConnected
       ) {
         try {
           targetRef.current = document.querySelector(target)
@@ -65,7 +65,7 @@ const ReadingProgress = ({ target = '.prose', endTarget }: ComponentProps) => {
       if (
         endTarget &&
         !endTargetSelectorInvalidRef.current &&
-        (!endTargetRef.current || !endTargetRef.current.isConnected)
+        !endTargetRef.current?.isConnected
       ) {
         try {
           endTargetRef.current = document.querySelector(endTarget)
