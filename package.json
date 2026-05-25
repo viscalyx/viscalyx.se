@@ -85,7 +85,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
     "cross-env": "^10.1.0",
-    "cspell": "^9.7.0",
+    "cspell": "^10.0.0",
     "globals": "^17.4.0",
     "gray-matter": "^4.0.3",
     "identity-obj-proxy": "^3.0.0",
