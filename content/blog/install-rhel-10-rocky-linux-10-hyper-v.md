@@ -13,11 +13,14 @@ tags:
   - 'Virtualization'
   - 'Infrastructure'
 category: 'Infrastructure'
-readTime: '16 min read'
+readTime: '18 min read'
 ---
 
-<!-- cSpell:ignore AppStream chrony chronyd Cockpit firewalld hypervkvpd -->
-<!-- cSpell:ignore hypervfcopyd hypervvssd noexec nosuid nodev rhsm UEFI -->
+<!-- cSpell:ignore AppStream chrony chronyd Cockpit firewalld freerdp -->
+<!-- cSpell:ignore gdm gnome getenforce grdctl hypervkvpd hypervfcopyd -->
+<!-- cSpell:ignore hypervvssd -->
+<!-- cSpell:ignore FQDN mstsc noexec nosuid nodev ntpd rhsm timesyncd -->
+<!-- cSpell:ignore UEFI VMConnect winpr -->
 <!-- cSpell:ignore VHDX vSwitch xfsprogs x86_64 XFS Anaconda OpenSCAP -->
 <!-- cSpell:ignore setroubleshoot sshd mntops fcopy Hypervisors -->
 <!-- cSpell:ignore vmbus netvsc storvsc -->
@@ -216,6 +219,131 @@ space unallocated for future growth.
 > for service VMs because `/tmp`, `/var/log`, and `/var/log/audit` can fill up
 > without taking the whole system down.
 
+## First Login: Hostname, IP Address, And SSH
+
+After the installer finishes and the VM boots from disk, sign in through
+**Hyper-V Virtual Machine Connection** with the admin user you created during
+installation. Before you leave the console behind, set the final hostname and
+network address, then make sure SSH is available.
+
+Set the hostname to the name you want the server to use long term:
+
+```bash
+sudo hostnamectl set-hostname linux10-lab01.example.com
+hostnamectl status
+```
+
+Use a short name instead if your environment does not use fully qualified
+domain names for servers:
+
+```bash
+sudo hostnamectl set-hostname linux10-lab01
+```
+
+Show the address currently assigned to the VM:
+
+```bash
+ip -brief address show scope global
+ip route get 1.1.1.1
+```
+
+The first command shows the active interface addresses. The second command is
+a quick way to identify the source address the VM uses for outbound traffic;
+look for the `src` value in the output.
+
+If the VM needs a static IP address, set it now before you move on to SSH and
+DNS. RHEL and Rocky use NetworkManager, so adjust the connection name and
+network values for your environment:
+
+<!-- markdownlint-disable MD013 -->
+```bash
+nmcli -f NAME,TYPE,DEVICE connection show --active
+
+sudo nmcli connection modify 'System eth0' \
+  ipv4.method manual \
+  ipv4.addresses 192.0.2.50/24 \
+  ipv4.gateway 192.0.2.1 \
+  ipv4.dns '192.0.2.10 192.0.2.11' \
+  ipv6.method disabled
+
+sudo nmcli connection up 'System eth0'
+ip -brief address show scope global
+ip route show default
+```
+<!-- markdownlint-enable MD013 -->
+
+If your network uses IPv6, configure it deliberately rather than disabling it.
+The example above disables IPv6 only to keep the static IPv4 example compact.
+
+If you use a fully qualified domain name, make sure DNS has matching forward
+and reverse records. For small isolated labs without DNS, add a temporary
+`/etc/hosts` entry so local tools can resolve the server's own name:
+
+<!-- markdownlint-disable MD013 -->
+```bash
+echo '192.0.2.50 linux10-lab01.example.com linux10-lab01' | sudo tee -a /etc/hosts
+getent hosts linux10-lab01.example.com
+```
+<!-- markdownlint-enable MD013 -->
+
+OpenSSH server is normally present on server installs, but verify it before you
+close VMConnect:
+
+```bash
+rpm -q openssh-server
+systemctl is-enabled sshd
+systemctl is-active sshd
+```
+
+If the package is missing, or `sshd` is not enabled and active, fix that while
+you still have console access:
+
+```bash
+rpm -q openssh-server || sudo dnf install -y openssh-server
+sudo systemctl enable --now sshd
+systemctl --no-pager --full status sshd
+```
+
+Check whether the guest firewall is enabled and active:
+
+```bash
+systemctl is-enabled firewalld
+systemctl is-active firewalld
+```
+
+If either check is not `enabled` or `active`, enable it:
+
+```bash
+sudo systemctl enable --now firewalld
+```
+
+Check whether SSH is already allowed through the guest firewall:
+
+```bash
+sudo firewall-cmd --query-service=ssh
+```
+
+If that returns `no`, add the SSH service and reload the firewall:
+
+```bash
+sudo firewall-cmd --permanent --add-service=ssh
+sudo firewall-cmd --reload
+sudo firewall-cmd --query-service=ssh
+```
+
+> [!NOTE]
+> On RHEL, if `dnf install openssh-server` cannot find repositories yet,
+> complete the registration steps in the next section and then rerun the
+> OpenSSH command. Rocky Linux should have its BaseOS and AppStream
+> repositories available immediately after install.
+
+Only after those checks pass, test SSH from the Hyper-V host before
+disconnecting from VMConnect:
+
+```powershell
+ssh adminuser@linux10-lab01.example.com
+```
+
 After first boot, tighten mount options in `/etc/fstab`. The exact device
 names depend on the logical volume names created by the installer, so edit the
 existing lines instead of copying this block blindly.
@@ -227,6 +355,10 @@ existing lines instead of copying this block blindly.
 /var/log        xfs   defaults,nodev,nosuid,noexec   0 0
 /var/log/audit  xfs   defaults,nodev,nosuid,noexec   0 0
 ```
+
+Do not set `noexec` on `/var` itself. Many real services store runtime files
+there, and over-hardening `/var` tends to break useful software in surprising
+ways.
 
 Then remount and verify:
 
@@ -240,9 +372,17 @@ sudo mount -o remount /var/log/audit
 findmnt /home /tmp /var/tmp /var/log /var/log/audit
 ```
 
-Do not set `noexec` on `/var` itself. Many real services store runtime files
-there, and over-hardening `/var` tends to break useful software in surprising
-ways.
+Show the available space on each mount point:
+
+```bash
+df -h
+```
+
+or for specifc mount points:
+
+```bash
+df -hT / /home /tmp /var /var/tmp /var/log /var/log/audit
+```
 
 ## Register And Update
 
@@ -276,11 +416,11 @@ Reboot if the update installs a new kernel:
 sudo reboot
 ```
 
-## Install Hyper-V And Admin Packages
+## Install Hyper-V Integration Services And Admin Packages
 
 RHEL and Rocky include Hyper-V kernel drivers. Install the user-space daemons
 so Hyper-V can exchange key/value data, coordinate backup-related operations,
-and support file copy integration where available.
+and run the standard Linux integration services expected by Hyper-V.
 
 <!-- markdownlint-disable MD013 -->
 ```bash
@@ -299,10 +439,46 @@ sudo dnf install -y \
 sudo systemctl enable --now \
   hypervkvpd.service \
   hypervvssd.service \
-  hypervfcopyd.service \
-  chronyd.service
+  hypervfcopyd.service
 ```
 <!-- markdownlint-enable MD013 -->
+
+Before enabling `chronyd`, check whether this VM already has an NTP client
+enabled or active:
+
+```bash
+for unit in chronyd.service ntpd.service systemd-timesyncd.service; do
+  systemctl is-enabled --quiet "$unit" && echo "$unit is enabled"
+  systemctl is-active --quiet "$unit" && echo "$unit is active"
+done
+```
+
+If that prints nothing, use `chronyd`:
+
+```bash
+sudo systemctl enable --now chronyd.service
+```
+
+If another NTP client is already active because of your image or organization
+policy, leave it in place. Run only one guest NTP client at a time.
+
+OIDC tokens, Kerberos, package mirrors, certificates, and logs all become
+annoying when VM time drifts. Verify the guest's time state after choosing the
+NTP client:
+
+```bash
+timedatectl status
+```
+
+If you are using `chronyd`, also check its tracking and sources:
+
+```bash
+chronyc tracking
+chronyc sources -v
+```
+
+Hyper-V also offers host time synchronization. That is useful during boot and
+resume, but the guest's NTP client should still be the normal time authority.
 
 Verify the Hyper-V services:
 
@@ -322,20 +498,81 @@ lsmod | grep '^hv_'
 You should see modules such as `hv_vmbus`, `hv_netvsc`, `hv_storvsc`, and
 possibly `hv_utils` or `hv_balloon`, depending on the guest and workload.
 
-## Time Sync
+### Clipboard In Hyper-V Virtual Machine Connection
 
-OIDC tokens, Kerberos, package mirrors, certificates, and logs all become
-annoying when VM time drifts. Keep `chronyd` enabled and let it use your normal
-network time sources.
+There is no supported package you can install in RHEL 10 or Rocky Linux 10 that
+adds shared clipboard support to the basic **Hyper-V Virtual Machine
+Connection** console. The Hyper-V Linux integration services are useful, but
+they are not clipboard tools.
 
-```bash
-timedatectl status
-chronyc tracking
-chronyc sources -v
+Microsoft's VMConnect local-resource and Enhanced Session Mode clipboard
+features are RDP-based and documented for recent Windows guests, not RHEL or
+Rocky Linux guests. If you are sitting at the Linux text console in VMConnect,
+host clipboard paste is not a guest setting you can enable.
+
+For server work, use SSH from Windows Terminal instead. That gives you normal
+copy/paste without adding a desktop to the VM:
+
+```powershell
+ssh adminuser@linux10-lab01.example.com
 ```
 
-Hyper-V also offers host time synchronization. That is useful during boot and
-resume, but `chronyd` should still be the guest's normal time authority.
+Keep VMConnect for bootloader work, installer access, emergency console access,
+and network recovery.
+
+### Optional Clipboard Copy/Paste With RDP
+
+Hyper-V does not provide a VMware Tools-style Linux package that makes
+clipboard sharing work in the basic VMConnect console. Microsoft's clipboard
+sharing path for Hyper-V is RDP-based Enhanced Session Mode, and the documented
+VMConnect local-resource support targets Windows guests. For RHEL 10 and Rocky
+Linux 10, use a normal RDP connection to GNOME Remote Desktop instead.
+
+If you installed **Minimal Install**, add a desktop first. Skip this section on
+server-only VMs where SSH gives you all the copy/paste you need.
+
+<!-- markdownlint-disable MD013 -->
+```bash
+sudo dnf group install -y "Server with GUI"
+sudo dnf install -y gnome-remote-desktop gdm freerdp
+sudo reboot
+```
+<!-- markdownlint-enable MD013 -->
+
+After the reboot, configure system-wide GNOME Remote Desktop for RDP. The
+`grdctl --system rdp set-credentials` command prompts for the system-wide RDP
+credentials that expose the GNOME login screen; users still sign in with their
+normal Linux accounts after connecting.
+
+<!-- markdownlint-disable MD013 -->
+```bash
+sudo firewall-cmd --permanent --add-port=3389/tcp
+sudo firewall-cmd --reload
+
+sudo -u gnome-remote-desktop mkdir -p ~gnome-remote-desktop/.local/share/gnome-remote-desktop
+sudo -u gnome-remote-desktop winpr-makecert -silent -rdp -path ~gnome-remote-desktop/.local/share/gnome-remote-desktop tls
+
+sudo grdctl --system rdp set-tls-key ~gnome-remote-desktop/.local/share/gnome-remote-desktop/tls.key
+sudo grdctl --system rdp set-tls-cert ~gnome-remote-desktop/.local/share/gnome-remote-desktop/tls.crt
+sudo grdctl --system rdp set-credentials
+sudo grdctl --system rdp enable
+
+sudo systemctl enable --now gdm
+sudo systemctl enable --now gnome-remote-desktop.service
+sudo systemctl set-default graphical.target
+```
+<!-- markdownlint-enable MD013 -->
+
+Connect from the Hyper-V host or another trusted Windows machine:
+
+```powershell
+mstsc.exe /v:linux10-lab01.example.com
+```
+
+Use the VM's IP address if DNS is not ready yet. In the RDP connection options,
+check **Local Resources** and leave the clipboard enabled. After connecting,
+copy and paste text between Windows and the GNOME session through the RDP
+clipboard.
 
 ## Network Configuration
 
@@ -349,48 +586,65 @@ During or after install, configure either:
 - A DHCP reservation for the VM MAC address, or
 - A static IP address inside the guest.
 
+If the guest needs a static IP address, configure it during first login before
+you test SSH. That keeps the address, DNS records, and SSH target aligned from
+the start.
+
 For a server VM, also create DNS records:
 
 - Forward record: `linux10-lab01.example.com` to the VM IP address
 - Reverse record: VM IP address to the hostname
 
-RHEL and Rocky use NetworkManager. To set a static address after install,
-adjust the connection name and values:
-
-<!-- markdownlint-disable MD013 -->
-```bash
-nmcli connection show
-
-sudo nmcli connection modify 'System eth0' \
-  ipv4.method manual \
-  ipv4.addresses 192.0.2.50/24 \
-  ipv4.gateway 192.0.2.1 \
-  ipv4.dns '192.0.2.10 192.0.2.11' \
-  ipv6.method disabled
-
-sudo nmcli connection up 'System eth0'
-ip address show
-ip route show
-```
-<!-- markdownlint-enable MD013 -->
-
-If your network uses IPv6, configure it deliberately rather than disabling it.
-The example above disables IPv6 only to keep the static IPv4 example compact.
-
 ## Baseline Hardening
 
 Keep SELinux and firewalld enabled. They are part of the platform, not optional
-extras.
+extras. Check the current state before changing anything; if the check already
+shows the hardened state, skip the change.
+
+### SELinux
+
+Check the current and persistent SELinux mode:
 
 ```bash
 getenforce
-sudo systemctl enable --now firewalld
-sudo firewall-cmd --permanent --add-service=ssh
-sudo firewall-cmd --reload
+grep '^SELINUX=' /etc/selinux/config
+```
+
+If `getenforce` returns `Permissive`, enable enforcing mode now and make it
+persistent:
+
+```bash
+sudo setenforce 1
+sudo sed -i 's/^SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+```
+
+If `getenforce` returns `Disabled`, update `/etc/selinux/config` and reboot:
+
+```bash
+sudo sed -i 's/^SELINUX=.*/SELINUX=enforcing/' /etc/selinux/config
+sudo reboot
+```
+
+### Firewalld
+
+SSH firewall access was handled during first login, before switching away from
+VMConnect. Here, verify that `firewalld` is still enabled and active:
+
+```bash
+systemctl is-enabled firewalld
+systemctl is-active firewalld
 sudo firewall-cmd --list-all
 ```
 
-Verify SSH's effective root login policy:
+If either check is not `enabled` or `active`, enable it:
+
+```bash
+sudo systemctl enable --now firewalld
+```
+
+### SSH Root Login
+
+Check SSH's effective root login policy:
 
 ```bash
 sudo sshd -T | grep '^permitrootlogin'
@@ -399,13 +653,40 @@ sudo sshd -T | grep '^permitrootlogin'
 For most service VMs, use a named admin account with SSH keys and `sudo`.
 Avoid direct root SSH login and avoid password-based root access.
 
-If you want Cockpit web management, install it explicitly and open the service:
+If the check shows that direct root SSH login is allowed, disable it with a
+drop-in file:
+
+<!-- markdownlint-disable MD013 -->
+```bash
+echo 'PermitRootLogin no' | sudo tee /etc/ssh/sshd_config.d/01-disable-root-login.conf
+sudo sshd -t
+sudo systemctl reload sshd
+sudo sshd -T | grep '^permitrootlogin'
+```
+<!-- markdownlint-enable MD013 -->
+
+### Cockpit
+
+If you want Cockpit web management, check whether it is already installed,
+enabled, and allowed through the firewall:
 
 ```bash
-sudo dnf install -y cockpit
+rpm -q cockpit
+systemctl is-enabled cockpit.socket
+systemctl is-active cockpit.socket
+sudo firewall-cmd --query-service=cockpit
+```
+
+Install or enable only the missing pieces:
+
+```bash
+rpm -q cockpit || sudo dnf install -y cockpit
 sudo systemctl enable --now cockpit.socket
-sudo firewall-cmd --permanent --add-service=cockpit
-sudo firewall-cmd --reload
+
+sudo firewall-cmd --query-service=cockpit || {
+  sudo firewall-cmd --permanent --add-service=cockpit
+  sudo firewall-cmd --reload
+}
 ```
 
 Cockpit listens on `9090/tcp`. Do not open it broadly on shared networks.
@@ -462,6 +743,7 @@ you care about.
 | RHEL cannot install packages | System is not registered or repos are disabled | Register with RHSM and enable BaseOS/AppStream. |
 | Rocky cannot install packages | Mirror or DNS problem | Check DNS, default route, and mirror reachability. |
 | SSH works only from the host | VM is on Default Switch or NAT network | Move it to an external vSwitch for server use. |
+| Clipboard does not work in VMConnect | Linux guests do not get shared clipboard in the basic VMConnect console | Use SSH for terminal work or RDP to GNOME Remote Desktop for a graphical clipboard. |
 | Audit logs fill quickly | `/var/log/audit` too small for policy volume | Extend the logical volume and filesystem. |
 <!-- markdownlint-enable MD013 -->
 
@@ -502,6 +784,10 @@ certification, use RHEL.
 - Rocky Linux: installation guide [6]
 - Rocky Linux: 10.0 release notes [7]
 - Rocky Linux: x86-64-v3 CPU compatibility check [8]
+- Microsoft Learn: Hyper-V integration services [9]
+- Microsoft Learn: VMConnect local resources and clipboard requirements [10]
+- Microsoft Learn: Enhanced Session Mode clipboard behavior [11]
+- Red Hat: remotely accessing the RHEL 10 desktop with RDP [12]
 
 [1]: https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/supported-centos-and-red-hat-enterprise-linux-virtual-machines-on-hyper-v 'Supported CentOS and Red Hat Enterprise Linux virtual machines on Hyper-V'
 [2]: https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/learn-more/generation-2-virtual-machine-security-settings-for-hyper-v 'Generation 2 virtual machine security settings for Hyper-V'
@@ -511,3 +797,7 @@ certification, use RHEL.
 [6]: https://docs.rockylinux.org/guides/installation/ 'Rocky Linux installation guide'
 [7]: https://docs.rockylinux.org/release_notes/10_0/ 'Rocky Linux 10.0 release notes'
 [8]: https://docs.rockylinux.org/gemstones/test_cpu_compat/ 'Rocky Linux x86-64-v3 CPU compatibility check'
+[9]: https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/integration-services 'Hyper-V integration services'
+[10]: https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/use-local-resources-virtual-machine-connection 'Use local resources on Hyper-V virtual machine with VMConnect'
+[11]: https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/enhanced-session-mode 'Share devices with your Hyper-V virtual machine'
+[12]: https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html-single/administering_rhel_by_using_the_gnome_desktop_environment/administering_rhel_by_using_the_gnome_desktop_environment 'Administering RHEL by using the GNOME desktop environment'
