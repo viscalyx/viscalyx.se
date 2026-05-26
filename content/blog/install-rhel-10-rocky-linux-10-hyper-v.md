@@ -17,13 +17,14 @@ readTime: '18 min read'
 ---
 
 <!-- cSpell:ignore AppStream chrony chronyd Cockpit firewalld freerdp -->
+<!-- cSpell:ignore CodeReady CRB EPEL epel podman -->
 <!-- cSpell:ignore gdm gnome getenforce grdctl hypervkvpd hypervfcopyd -->
 <!-- cSpell:ignore hypervvssd -->
 <!-- cSpell:ignore FQDN mstsc noexec nosuid nodev ntpd rhsm timesyncd -->
 <!-- cSpell:ignore UEFI VMConnect winpr -->
 <!-- cSpell:ignore VHDX vSwitch xfsprogs x86_64 XFS Anaconda OpenSCAP -->
 <!-- cSpell:ignore setroubleshoot sshd mntops fcopy Hypervisors -->
-<!-- cSpell:ignore vmbus netvsc storvsc -->
+<!-- cSpell:ignore vmbus netvsc storvsc config-manager codeready -->
 
 This guide builds a practical **RHEL 10** or **Rocky Linux 10** virtual
 machine on Microsoft Hyper-V. The goal is a VM you can actually use for
@@ -414,6 +415,49 @@ Reboot if the update installs a new kernel:
 
 ```bash
 sudo reboot
+```
+
+## Optional: Enable CRB And EPEL
+
+The default VM does not need EPEL. Enable CRB and EPEL only when you need
+packages outside the standard RHEL or Rocky repositories. A common example is
+`podman-compose`, which is packaged in Fedora EPEL 10.
+
+On Rocky Linux, enable CRB and install EPEL from the default Rocky
+repositories:
+
+```bash
+sudo dnf config-manager --set-enabled crb
+sudo dnf install -y epel-release
+```
+
+On Rocky Linux, `crb` is the repository ID for Code Ready Builder. If you see
+this repository called CBR elsewhere, treat that as a typo for CRB.
+
+On RHEL, use the Red Hat Subscription Manager command instead. RHEL does not
+use Rocky's local `crb` repository definition, and `subscription-manager`
+enables the Red Hat CodeReady Linux Builder repository attached to your
+subscription:
+
+<!-- markdownlint-disable MD013 -->
+```bash
+sudo subscription-manager repos \
+  --enable=codeready-builder-for-rhel-10-x86_64-rpms
+
+sudo dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+```
+<!-- markdownlint-enable MD013 -->
+
+Check the enabled repositories:
+
+```bash
+dnf repolist --enabled
+```
+
+Then install the optional package you needed EPEL for:
+
+```bash
+sudo dnf install -y podman-compose
 ```
 
 ## Install Hyper-V Integration Services And Admin Packages
