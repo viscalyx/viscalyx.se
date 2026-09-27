@@ -1,0 +1,155 @@
+{
+  "projectId": "d7cf0dc9-6b88-48b9-8553-410e29c1b9f0",
+  "shape": "package",
+  "pkg": "viscalyx-site",
+  "globalName": "Viscalyx",
+  "buildCmd": "node .design-sync/build.mjs",
+  "entry": ".design-sync/.cache/pkg/dist/index.mjs",
+  "srcDir": "../../../components",
+  "cssEntry": "styles.css",
+  "provider": {
+    "component": "SiteProvider",
+    "props": {
+      "skipAnimations": true
+    }
+  },
+  "componentSrcMap": {
+    "SiteProvider": null,
+    "AlertIconInjector": null,
+    "CodeBlockEnhancer": null,
+    "ImageEnhancer": null,
+    "CookieSettingsWrapper": null,
+    "CopyIcon": null,
+    "CheckmarkIcon": null,
+    "ChevronUpIcon": null,
+    "ChevronDownIcon": null,
+    "NoteIcon": null,
+    "TipIcon": null,
+    "ImportantIcon": null,
+    "WarningIcon": null,
+    "CautionIcon": null
+  },
+  "docsMap": {
+    "Header": "../../groups/Layout.md",
+    "Footer": "../../groups/Layout.md",
+    "LegalPageLayout": "../../groups/Layout.md",
+    "LegalSection": "../../groups/Layout.md",
+    "Hero": "../../groups/Sections.md",
+    "About": "../../groups/Sections.md",
+    "Team": "../../groups/Sections.md",
+    "OpenSource": "../../groups/Sections.md",
+    "BlogPostGrid": "../../groups/Blog.md",
+    "BlogPostContent": "../../groups/Blog.md",
+    "BlogPostMarkdownContent": "../../groups/Blog.md",
+    "TableOfContents": "../../groups/Blog.md",
+    "ReadingProgress": "../../groups/Blog.md",
+    "MermaidRenderer": "../../groups/Blog.md",
+    "AlertIcon": "../../groups/Blog.md",
+    "CopyButton": "../../groups/Controls.md",
+    "ThemeToggle": "../../groups/Controls.md",
+    "LanguageSwitcher": "../../groups/Controls.md",
+    "ScrollToTop": "../../groups/Controls.md",
+    "ConfirmationModal": "../../groups/Feedback.md",
+    "ImageModal": "../../groups/Feedback.md",
+    "LoadingSpinner": "../../groups/Feedback.md",
+    "LoadingScreen": "../../groups/Feedback.md",
+    "CookieConsentBanner": "../../groups/Cookies.md",
+    "CookieSettings": "../../groups/Cookies.md",
+    "CookieCategoryToggle": "../../groups/Cookies.md",
+    "CookieCategoryIcon": "../../groups/Cookies.md",
+    "ErrorPage": "../../groups/Pages.md",
+    "NotFoundPage": "../../groups/Pages.md",
+    "GitHubIcon": "../../groups/Icons.md",
+    "LinkedInIcon": "../../groups/Icons.md",
+    "XIcon": "../../groups/Icons.md",
+    "BlueskyIcon": "../../groups/Icons.md",
+    "MastodonIcon": "../../groups/Icons.md",
+    "StackOverflowIcon": "../../groups/Icons.md",
+    "YouTubeIcon": "../../groups/Icons.md",
+    "DiscordIcon": "../../groups/Icons.md",
+    "InstagramIcon": "../../groups/Icons.md",
+    "SlackIcon": "../../groups/Icons.md"
+  },
+  "overrides": {
+    "ConfirmationModal": {
+      "cardMode": "single",
+      "primaryStory": "Danger",
+      "viewport": "720x480"
+    },
+    "About": {
+      "cardMode": "column",
+      "viewport": "1280x1100"
+    },
+    "Header": {
+      "cardMode": "single",
+      "primaryStory": "Default"
+    },
+    "Hero": {
+      "cardMode": "column"
+    },
+    "Team": {
+      "cardMode": "column"
+    },
+    "OpenSource": {
+      "cardMode": "column"
+    },
+    "LegalPageLayout": {
+      "cardMode": "single",
+      "primaryStory": "PrivacyPolicy"
+    },
+    "CookieSettings": {
+      "cardMode": "column"
+    },
+    "LoadingScreen": {
+      "cardMode": "column"
+    },
+    "BlogPostGrid": {
+      "cardMode": "column"
+    },
+    "BlogPostContent": {
+      "cardMode": "single",
+      "primaryStory": "Default"
+    },
+    "CookieConsentBanner": {
+      "cardMode": "single",
+      "primaryStory": "Default",
+      "viewport": "900x460"
+    },
+    "ScrollToTop": {
+      "cardMode": "single",
+      "primaryStory": "Visible",
+      "viewport": "620x400"
+    },
+    "ImageModal": {
+      "cardMode": "single",
+      "primaryStory": "BlogImage",
+      "viewport": "900x620"
+    },
+    "ReadingProgress": {
+      "cardMode": "single",
+      "primaryStory": "PartWayThrough"
+    },
+    "TableOfContents": {
+      "cardMode": "column"
+    },
+    "CopyButton": {
+      "cardMode": "column"
+    },
+    "LanguageSwitcher": {
+      "cardMode": "column"
+    },
+    "ThemeToggle": {
+      "cardMode": "column"
+    },
+    "CookieCategoryToggle": {
+      "cardMode": "column"
+    },
+    "ErrorPage": {
+      "cardMode": "column"
+    },
+    "NotFoundPage": {
+      "cardMode": "column"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

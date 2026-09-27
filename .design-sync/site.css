@@ -1,0 +1,25 @@
+/* Stylesheet source for the Claude Design sync - compiled by .design-sync/build.mjs.
+   app/blog-content.css is compiled separately there: its @reference would put this tree in reference mode. */
+@import "../app/globals.css";
+@import "../app/code-block-components.css";
+@import "../app/shiki-theme.css";
+
+@source "../components";
+@source "../app";
+@source "./previews";
+/* Tailwind also auto-scans the repo; keep agent/skill docs out (one pulled in font-serif and its Cambria stack). */
+@source not "../.agents";
+@source not "../.github";
+
+/* Utility vocabulary the design agent may use for its own layout glue, beyond what the site already uses. */
+@source inline("{,hover:,dark:,dark:hover:}{bg,text,border}-{primary,secondary}-{50,{100..900..100},950}");
+@source inline("{,dark:}{bg,text,border}-{white,black,transparent}");
+@source inline("{,sm:,md:,lg:}{p,px,py,pt,pb,pl,pr,m,mx,my,mt,mb,ml,mr,gap,gap-x,gap-y,space-y,space-x}-{0,1,2,3,4,5,6,8,10,12,16,20,24}");
+@source inline("{,sm:,md:,lg:}{flex,inline-flex,grid,block,inline-block,hidden,flex-col,flex-row,flex-wrap,items-center,items-start,items-end,justify-center,justify-between,justify-end,text-center,text-left}");
+@source inline("{,sm:,md:,lg:}grid-cols-{1..6}");
+@source inline("{,sm:,md:,lg:}text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl,6xl}");
+@source inline("font-{light,normal,medium,semibold,bold,extrabold}");
+@source inline("rounded{,-md,-lg,-xl,-2xl,-full}");
+@source inline("{,hover:}shadow{,-sm,-md,-lg,-xl}");
+@source inline("{w,h}-{full,screen,auto,4,5,6,8,10,12,16}");
+@source inline("max-w-{sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl}");
