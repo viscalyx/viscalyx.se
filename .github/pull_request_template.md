@@ -1,34 +1,28 @@
 ## Description
 
-<!-- Provide a clear description of what this PR does -->
+<!-- Optional: what changed and why? -->
 
-### Related Issues
+## Related Issues
 
-<!-- Link related issues using "Fixes #123", "Closes #123", or "Relates to #123" -->
+<!-- Fixes #123, Closes #123, or Relates to #123 -->
 
-## Type of Change
+## Reviewer Notes
 
-- [ ] Blog (new or updated)
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-- [ ] Refactoring
-- [ ] Performance improvement
-- [ ] Dependency update
+<!-- Optional: screenshots, test notes, rollout notes, or review context. -->
 
-## Testing (if applicable)
+## Operator Upgrade Impact
 
-- [ ] All checks pass (`npm run check`)
-- [ ] Manual testing completed
-- [ ] UI tested on desktop and mobile (if applicable)
+Select exactly one declaration for every PR except Dependabot PRs. Commit
+required guidance under `## Unreleased` in
+`docs/operations/operator-upgrade-notes.md` with the source changes.
 
-## Screenshots (if applicable)
+- [ ] Operator notes updated. <!-- DO NOT REMOVE: operator-upgrade:updated -->
+- [ ] No operator notes needed. <!-- DO NOT REMOVE: operator-upgrade:no-notes -->
 
-<!-- Include screenshots if the changes affect the UI -->
+## SSDLC (Secure Software Development Life Cycle) Gate
 
-## Checklist
+Complete this section for every PR. You are responsible for ensuring that
+the change meets SSDLC requirements. If you are not confident you can
+check this box, request a security review.
 
-- [ ] Code follows project conventions
-- [ ] Tests added/updated as needed
-- [ ] Documentation updated as needed
+- [ ] I have reviewed SSDLC requirements for this change and addressed any security, data protection, threat-model, and security-testing impacts. <!-- DO NOT REMOVE: ssdlc:requirements -->

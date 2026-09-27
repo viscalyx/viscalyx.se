@@ -234,6 +234,14 @@ next-env.d.ts
 
 # Test artifacts
 /temp-test-content/
+
+# Claude Code: commit only shared project settings
+.claude/*
+!.claude/settings.json
+!.claude/statusline.sh
+
+# AI agent runtime files: commit only shared skills
 .agent
-.agents
+.agents/*
+!.agents/skills/
 .devcontainer/devcontainer-lock.json

@@ -8,12 +8,16 @@ services:
       - ..:/workspace:cached
       # Persistent npm cache for faster installs across rebuilds (commented out - not needed for infrequent rebuilds)
       # - npm-cache:/home/vscode/.npm
+      # Persist Claude Code sign-in, settings, and history across rebuilds
+      - claude-state:/home/vscode/.claude
     # Keep container running
     command: sleep infinity
     # Set environment variables
     environment:
       - NODE_ENV=development
       - NEXT_TELEMETRY_DISABLED=1
+      # Keep Claude Code's global .claude.json inside the persisted volume
+      - CLAUDE_CONFIG_DIR=/home/vscode/.claude
     # WARNING: This profile grants elevated privileges (SYS_ADMIN,
     # seccomp=unconfined) and is intended only for trusted code.
     # It must remain opt-in — do not use as the default configuration.
@@ -41,5 +45,6 @@ services:
     # Proper init system for signal handling and zombie process reaping
     init: true
 
-# volumes:
-# npm-cache:
+volumes:
+  # npm-cache:
+  claude-state:

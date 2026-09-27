@@ -23,6 +23,9 @@ image which:
 - **npm cache** - The `npm-cache` named volume is commented out in
   docker-compose.yml (not needed for infrequent rebuilds) and therefore not used
 - **node_modules** - Stored in the workspace (bind mount), not a separate volume
+- **Claude Code state** - The `claude-state` named volume keeps `~/.claude`
+  (sign-in, settings, history, and `.claude.json` via `CLAUDE_CONFIG_DIR`)
+  across rebuilds. The host's Claude Code files are not shared
 
 ### Platform Handling
 
@@ -40,9 +43,17 @@ Docker Desktop automatically detects and handles:
 ├── devcontainer.json      # Main configuration file with cross-platform settings
 ├── docker-compose.yml     # Docker Compose setup with volume configuration
 ├── Dockerfile            # Container image definition
+├── install-claude-code.sh # Installs the latest Claude Code on container creation
 └── README.md            # This file
 ```
 <!-- markdownlint-enable MD013 -->
+
+## Claude Code
+
+Container creation installs the latest Claude Code release in
+`~/.local/bin` using the official native installer. If you use it, run
+`claude` in the container and sign in once; the sign-in persists across
+rebuilds in the `claude-state` volume. Removing that volume signs you out.
 
 ## Available Ports
 

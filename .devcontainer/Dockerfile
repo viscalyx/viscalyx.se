@@ -10,6 +10,11 @@ RUN apt-get update && \
         python3 && \
     rm -rf /var/lib/apt/lists/*
 
+# Pre-create the Claude Code state directory so the named volume mounted
+# there inherits vscode ownership on first use.
+RUN mkdir -p /home/vscode/.claude && \
+    chown -R vscode:vscode /home/vscode/.claude
+
 # Set the working directory
 WORKDIR /workspace
 
